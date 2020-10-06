@@ -1,0 +1,14 @@
+NIST Community Resilience Planning Playbook
+============================================
+
+**Work in Progress**
+
+Uses react.js, redux, webpack, babel, handsontable
+
+Requirements: [Node.js](https://nodejs.org) and [Yarn](https://yarnpkg.com).
+
+Install dependencies: `yarn install` or `npm install`
+
+Develop: `export DEPLOY_ENV=development` and run `yarn start` or `npm start`
+
+Build: `yarn run build` or `npm run build`
