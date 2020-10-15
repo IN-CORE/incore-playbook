@@ -10,11 +10,10 @@ class App extends Component {
 		this.state = {};
 	}
 
-	componentWillMount() {
-	}
-
 	render() {
-		return (<div/>);
+		return (
+			<div />
+		);
 	}
 
 }

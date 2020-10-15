@@ -1,0 +1,131 @@
+import React from "react";
+import {
+	Paper,
+	Table,
+	TableBody,
+	TableCell,
+	TableContainer,
+	TableHead,
+	TableRow,
+	withStyles
+} from "@material-ui/core";
+import config from "../app.config";
+
+const styles = {
+	table: {
+		minWidth: 650,
+	},
+	baseColorBlue: {
+		height: "29px",
+		width: "96px",
+		backgroundColor: "#ED8036",
+	},
+	tableHeaderRow: {
+		height: "34px",
+		width: "1134px",
+	},
+	tableHeaderCell:{
+		height: "14px",
+		width: "37px",
+		color: "#69707F",
+		fontFamily: "Rubik",
+		fontSize: "12px",
+		fontWeight: 500,
+		letterSpacing: "1.13px",
+		lineHeight: "14px"
+	},
+	tableBodyRow:{
+		height: "75px",
+		width: "1134px",
+	},
+	tableBodyCell:{
+		height: "21px",
+		width: "68.75px",
+		color: "#2E384D",
+		fontFamily: "Rubik",
+		fontSize: "15px",
+		letterSpacing: 0,
+		lineHeight: "22px"
+	},
+	guid: {
+		height: "18px",
+		width: "208px",
+		color: "#2E384D",
+		fontFamily: "Rubik",
+		fontSize: "15px",
+		fontWeight: 600,
+		letterSpacing: 0,
+		lineHeight: "18px"
+	}
+};
+
+/**
+ * Generate a attributes table
+ * props.attributeName = {"prettyName":"", "columnName":""}
+ * props.attributes = [ features returned from WFS query ]
+ */
+class AttributesTable extends React.Component {
+	constructor(props) {
+		super(props);
+	}
+
+	render() {
+		const {classes} = this.props;
+
+		return (
+			<TableContainer component={Paper}>
+				<Table className={classes.table} size="small" aria-label="a dense table">
+					<TableHead>
+						<TableRow className={classes.tableHeaderRow}>
+							{
+								this.props.attributeNames.map((attributeName) =>{
+									return (
+										<TableCell className={classes.tableHeaderCell}>{attributeName["prettyName"]}</TableCell>
+									);
+								})
+							}
+						</TableRow>
+					</TableHead>
+					<TableBody>
+						{
+							this.props.attributes.map((attribute) => {
+
+								return (
+									<TableRow className={classes.tableBodyRow} key={attribute["id"]}>
+										{
+											this.props.attributeNames.map((attributeName) =>{
+												if (attributeName["prettyName"] === "MEAN DAMAGE"){
+													return (
+														<TableCell className={classes.tableBodyCell}>
+															{parseFloat(attribute["properties"][attributeName["columnName"]]).toFixed(4)}</TableCell>
+													);
+												}
+												else if (attributeName["prettyName"] === "BUILDING DESCRIPTION"){
+													return (
+														<TableCell className={classes.tableBodyCell}>
+															{config.ARCHETYPE[attribute["properties"][attributeName["columnName"]]]}</TableCell>
+													);
+												}
+												else{
+													return (
+														<TableCell className={classes.tableBodyCell}>
+															{attribute["properties"][attributeName["columnName"]]}</TableCell>
+													);
+												}
+
+											})
+										}
+									</TableRow>
+								);
+
+							})
+						}
+
+					</TableBody>
+				</Table>
+			</TableContainer>
+		);
+	}
+}
+
+export default withStyles(styles)(AttributesTable);

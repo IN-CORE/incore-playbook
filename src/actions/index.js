@@ -227,7 +227,6 @@ export function getHeader() {
 	}
 }
 
-
 function getDatawolfHeader() {
 	const headers = new Headers({
 		"X-Credential-Username": sessionStorage.user
