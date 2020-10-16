@@ -29,7 +29,9 @@ RUN npm run build
 FROM nginx:alpine
 
 RUN apk add --no-cache jq
+RUN mkdir /usr/share/nginx/html/playbook && \
+  mkdir /usr/share/nginx/html/playbook/public
 
-COPY --from=builder /usr/src/app/dist/ /usr/share/nginx/html/
-COPY src/public /usr/share/nginx/html/public/
+COPY --from=builder /usr/src/app/dist/ /usr/share/nginx/html/playbook/
+COPY src/public /usr/share/nginx/html/playbook/public/
 COPY playbook.conf /etc/nginx/conf.d/default.conf
