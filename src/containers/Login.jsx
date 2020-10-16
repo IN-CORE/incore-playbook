@@ -4,7 +4,7 @@ export class Login extends React.Component {
 	render() {
 		return(
 			<div>
-				This is a Login Page <br/>
+				This is a Login Page
 			</div>
 		);
 	}
