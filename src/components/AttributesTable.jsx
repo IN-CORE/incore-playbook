@@ -76,11 +76,13 @@ class AttributesTable extends React.Component {
 			<TableContainer component={Paper}>
 				<Table className={classes.table} size="small" aria-label="a dense table">
 					<TableHead>
-						<TableRow className={classes.tableHeaderRow}>
+						<TableRow className={classes.tableHeaderRow} key="hdrRow">
 							{
 								this.props.attributeNames.map((attributeName) =>{
 									return (
-										<TableCell className={classes.tableHeaderCell}>{attributeName["prettyName"]}</TableCell>
+										<TableCell className={classes.tableHeaderCell} key={attributeName["prettyName"]} >
+											{attributeName["prettyName"]}
+										</TableCell>
 									);
 								})
 							}
@@ -93,22 +95,22 @@ class AttributesTable extends React.Component {
 								return (
 									<TableRow className={classes.tableBodyRow} key={attribute["id"]}>
 										{
-											this.props.attributeNames.map((attributeName) =>{
+											this.props.attributeNames.map((attributeName, idx) =>{
 												if (attributeName["prettyName"] === "MEAN DAMAGE"){
 													return (
-														<TableCell className={classes.tableBodyCell}>
+														<TableCell key={idx} className={classes.tableBodyCell}>
 															{parseFloat(attribute["properties"][attributeName["columnName"]]).toFixed(4)}</TableCell>
 													);
 												}
 												else if (attributeName["prettyName"] === "BUILDING DESCRIPTION"){
 													return (
-														<TableCell className={classes.tableBodyCell}>
+														<TableCell key={idx} className={classes.tableBodyCell}>
 															{config.ARCHETYPE[attribute["properties"][attributeName["columnName"]]]}</TableCell>
 													);
 												}
 												else{
 													return (
-														<TableCell className={classes.tableBodyCell}>
+														<TableCell key={idx} className={classes.tableBodyCell}>
 															{attribute["properties"][attributeName["columnName"]]}</TableCell>
 													);
 												}
