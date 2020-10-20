@@ -1,10 +1,10 @@
 import * as React from "react";
 import {withStyles} from "@material-ui/core";
 import AttributesTable from "./AttributesTable";
+import Layout from "../containers/Layout";
 
 
 const styles = {};
-
 
 class AnticipatedPerformance extends React.Component {
 
@@ -52,9 +52,9 @@ class AnticipatedPerformance extends React.Component {
 	render() {
 
 		return (
-			<div>
+			<Layout>
 				{this.props.attributes.length>0 ?<AttributesTable attributeNames={this.attributeNames} attributes={this.props.attributes}/>:null}
-			</div>
+			</Layout>
 		);
 	}
 }

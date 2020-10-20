@@ -1,3 +1,26 @@
-.testingDeleteMe {
-  color: green;
+body {
+	font-family: Rubik, sans-serif;
+	font-weight: 300;
+	margin: 0;
+}
+
+.masterContent {
+	min-height: calc(100vh - 118px);
+	/*max-width: 1400px;*/
+	margin: auto;
+	border-left-color: darkgrey;
+	/*border-left-style: double;*/
+	border-right-color: darkgrey;
+	/*border-right-style: double;*/
+}
+
+.footerDiv{
+	width: 100%;
+	border-top-color: lightgray;
+	border-top-style: solid;
+	border-top-width: thin;
+}
+
+.p-panelmenu-header > a{
+	background-color: rgba(0,97, 157, 0.1) !important;
 }

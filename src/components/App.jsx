@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-
+import "../styles/main.css";
 
 global.__base = `${__dirname  }/`;
 

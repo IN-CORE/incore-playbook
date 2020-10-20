@@ -8,6 +8,7 @@ import autoprefixer from "autoprefixer";
 import path from "path";
 import TerserPlugin from "terser-webpack-plugin";
 
+// eslint-disable-next-line no-console
 console.log(`the current DEPLOY_ENV environment variable is ${  process.env.DEPLOY_ENV}`);
 
 export default {

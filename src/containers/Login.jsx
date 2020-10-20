@@ -4,7 +4,7 @@ import "../styles/main.css";
 export class Login extends React.Component {
 	render() {
 		return(
-			<div className="testingDeleteMe">
+			<div>
 				This is a Login Page
 			</div>
 		);

@@ -3,6 +3,8 @@ import HtmlWebpackPlugin from "html-webpack-plugin";
 import autoprefixer from "autoprefixer";
 import path from "path";
 
+
+// eslint-disable-next-line no-console
 console.log(`the current DEPLOY_ENV environment variable is ${  process.env.DEPLOY_ENV}`);
 
 export default {

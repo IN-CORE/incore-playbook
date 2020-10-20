@@ -28,6 +28,10 @@
 	"author": "NCSA",
 	"dependencies": {
 		"@material-ui/core": "^4.11.0",
+		"@material-ui/icons": "^4.9.1",
+		"primereact": "5.0.1",
+		"classnames": "^2.2.6",
+		"primeicons": "^4.0.0",
 		"babel-polyfill": "^6.26.0",
 		"ol": "^6.4.3",
 		"react": "~16.14.0",

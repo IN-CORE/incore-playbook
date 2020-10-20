@@ -7,15 +7,31 @@ import { Provider } from "react-redux";
 import { BrowserRouter } from "react-router-dom";
 import routes from "./routes";
 import configureStore from "./store/configureStore";
+import {createMuiTheme, MuiThemeProvider} from "@material-ui/core/styles";
 
 require("./public/favicon.ico");
 
 const store = configureStore();
 
+const theme = createMuiTheme({
+
+	typography: {
+		fontFamily: "Rubik"
+	},
+	palette:{
+		fontFamily: "Rubik"
+	}
+
+});
+
 render(
-	<Provider store={store}>
-		<BrowserRouter >
-			{routes}
-		</BrowserRouter>
-	</Provider>, document.getElementById("app")
+	<MuiThemeProvider theme={theme}>
+		<Provider store={store}>
+			<BrowserRouter >
+				{routes}
+			</BrowserRouter>
+		</Provider>
+
+	</MuiThemeProvider>
+	, document.getElementById("app")
 );
