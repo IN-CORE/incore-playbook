@@ -1,12 +1,16 @@
 import React from "react";
 import {Link} from "react-router-dom";
 import {processStatus} from "../globals";
+import {stepInfo} from "../app.messages";
 import StepStatus from "../components/StepStatus";
+import StepDescription from "../components/StepDescription";
 import Layout from "./Layout";
 
 
 export class HomePage extends React.Component {
 	render() {
+		let activeKey = "inprogress";
+
 		return(
 			<div>
 				<Layout>
@@ -15,13 +19,17 @@ export class HomePage extends React.Component {
 					<Link to="/login">
 						Login
 					</Link>
-					<br/>
+					<br />
 					<Link to="/determine-anticipated-performance">
 						Results
 					</Link>
+
+					<StepStatus statusOptions= {processStatus} status={activeKey} />
+					<br />
+					<StepDescription stepInfo={stepInfo[0]} />
+
 				</Layout>
 			</div>
-
 		);
 	}
 }

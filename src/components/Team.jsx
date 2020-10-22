@@ -5,8 +5,11 @@ import {
 } from "@material-ui/core";
 import UserInfo from "./UserInfo";
 import StepStatus from "./StepStatus";
+import StepDescription from "./StepDescription";
 import PageBanner from "./Banner";
 import Layout from "../containers/Layout";
+import {stepInfo} from "../app.messages";
+import {processStatus} from "../globals";
 
 
 class Team extends React.Component {
@@ -41,7 +44,8 @@ class Team extends React.Component {
 							<UserInfo userList={this.props.userList} handleStepStatusChange={this.handleStepStatusChange}/>
 						</Grid>
 						<Grid item className="gridItem">
-							<StepStatus status={this.state.activeKey} />
+							<StepStatus statusOptions={processStatus} status={this.state.activeKey} />
+							<StepDescription stepInfo={stepInfo[0]} />
 						</Grid>
 					</Grid>
 				</Box>

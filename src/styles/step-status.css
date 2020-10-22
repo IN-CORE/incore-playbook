@@ -7,14 +7,14 @@
 	font-weight: 400;
 	letter-spacing: 0;
 	line-height: 14px;
-	margin: 5px;
+	margin: 20px 5px 0px 5px;
 }
 .statusBox {
 	height: 25px;
 	width: 362px;
 	border-radius: 8px;
 	background-color: #BFC5D2;
-	margin: 10px 10px 10px 5px;
+	margin: 5px 10px 10px 5px;
 	padding: 0px 2px 0px 2px;
 }
 .statusInfo {
