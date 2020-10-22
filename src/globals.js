@@ -1,6 +1,3 @@
-import Layout from "./containers/Layout";
-import React from "react";
-
 export const globals = {
 	menuWidth: 300
 };

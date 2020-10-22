@@ -28,7 +28,6 @@ const styles = {
 		height: "14px",
 		width: "37px",
 		color: "#69707F",
-		fontFamily: "Rubik",
 		fontSize: "12px",
 		fontWeight: 500,
 		letterSpacing: "1.13px",
@@ -42,7 +41,6 @@ const styles = {
 		height: "21px",
 		width: "68.75px",
 		color: "#2E384D",
-		fontFamily: "Rubik",
 		fontSize: "15px",
 		letterSpacing: 0,
 		lineHeight: "22px"
@@ -51,7 +49,6 @@ const styles = {
 		height: "18px",
 		width: "208px",
 		color: "#2E384D",
-		fontFamily: "Rubik",
 		fontSize: "15px",
 		fontWeight: 600,
 		letterSpacing: 0,

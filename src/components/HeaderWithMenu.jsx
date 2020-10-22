@@ -154,7 +154,7 @@ const HeaderWithMenu = ({dispatch}) => {
 			label: "1-1 Identify leader",
 			icon: "pi pi-user-plus",
 			command: () => {
-				window.location.hash = "/";
+				window.location = "/create-team";
 			}
 		},
 		{

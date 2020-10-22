@@ -22,5 +22,37 @@ body {
 }
 
 .p-panelmenu-header > a{
-	background-color: rgba(0,97, 157, 0.1) !important;
+	background-color: rgba(0, 97, 157, 0.1) !important;
+}
+
+/* for main panel */
+.innerBox {
+	min-height: 800px;
+	background-color: #F8F9FF;
+	margin: auto 15px;
+	padding: 23px;
+}
+
+.outerBox {
+	padding: 17px;
+	background-color: #ffffff;
+	margin: auto 15px;
+}
+
+.gridItem {
+	margin: 36px 15px;
+}
+
+.inputGroup {
+	height: 100%;
+	width: 100%;
+	margin: 20px auto;
+}
+
+/* for map */
+.fillContainer {
+	width: 100%;
+	height: 100%;
+	max-width: unset;
+	max-height: unset;
 }

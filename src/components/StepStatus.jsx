@@ -19,7 +19,7 @@ class StepStatus extends React.Component {
 
 	render() {
 		return (
-			<div style={{backgroundColor: "#F4F6FC"}}>
+			<div>
 				<div className={"stepStatus"}>
 					Step Status
 				</div>

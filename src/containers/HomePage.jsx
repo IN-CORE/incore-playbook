@@ -7,7 +7,6 @@ import Layout from "./Layout";
 
 export class HomePage extends React.Component {
 	render() {
-		let activeKey = "inprogress";
 		return(
 			<div>
 				<Layout>
@@ -20,8 +19,6 @@ export class HomePage extends React.Component {
 					<Link to="/determine-anticipated-performance">
 						Results
 					</Link>
-
-					<StepStatus status={activeKey} />
 				</Layout>
 			</div>
 
