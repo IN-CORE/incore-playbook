@@ -3,7 +3,7 @@ import {Route, Switch} from "react-router-dom";
 
 import Team from "./containers/Team";
 import AnticipatedPerformance from "./containers/AnticipatedPerformance";
-import {Login} from "./containers/Login";
+import Login from "./containers/Login";
 import {HomePage} from "./containers/HomePage";
 import {NotFound} from "./containers/NotFound";
 

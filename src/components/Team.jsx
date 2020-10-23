@@ -36,19 +36,21 @@ class Team extends React.Component {
 	render() {
 		return (
 			<Layout>
-				<PageBanner parentStep="Form a Collaborative Planning Team"
-					childStep="Identify a Resilience Leader for the Community"/>
-				<Box className="outerBox">
-					<Grid container spacing={3} className="innerBox">
-						<Grid item className="gridItem">
-							<UserInfo userList={this.props.userList} handleStepStatusChange={this.handleStepStatusChange}/>
+				<div className="firstDivInContent">
+					<PageBanner parentStep="Form a Collaborative Planning Team"
+						childStep="Identify a Resilience Leader for the Community"/>
+					<Box className="outerBox">
+						<Grid container spacing={3} className="innerBox">
+							<Grid item className="gridItem">
+								<UserInfo userList={this.props.userList} handleStepStatusChange={this.handleStepStatusChange}/>
+							</Grid>
+							<Grid item className="gridItem">
+								<StepStatus statusOptions={processStatus} status={this.state.activeKey} />
+								<StepDescription stepInfo={stepInfo[0]} />
+							</Grid>
 						</Grid>
-						<Grid item className="gridItem">
-							<StepStatus statusOptions={processStatus} status={this.state.activeKey} />
-							<StepDescription stepInfo={stepInfo[0]} />
-						</Grid>
-					</Grid>
-				</Box>
+					</Box>
+				</div>
 			</Layout>
 		);
 	}

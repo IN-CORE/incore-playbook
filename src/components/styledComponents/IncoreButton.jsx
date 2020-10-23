@@ -7,8 +7,9 @@ export const IncoreButton = styled(Button)({
 	fontSize: "16px",
 	fontWeight: 500,
 	backgroundColor: "#00619D",
-	"&:hover": {
-		backgroundColor: "#96B712"
-	},
-	color:"#ffffff"
+	// "&:hover": {
+	// 	backgroundColor: "#96B712"
+	// },
+	color:"#ffffff",
+	textTransform: "capitalize"
 });

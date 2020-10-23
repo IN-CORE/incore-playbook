@@ -12,6 +12,12 @@ body {
 	/*border-left-style: double;*/
 	border-right-color: darkgrey;
 	/*border-right-style: double;*/
+	display: flex;
+	/*flex-wrap: wrap;*/
+}
+
+.firstDivInContent {
+	margin: auto
 }
 
 .footerDiv{
@@ -20,6 +26,7 @@ body {
 	border-top-style: solid;
 	border-top-width: thin;
 }
+
 
 .p-panelmenu-header > a{
 	background-color: rgba(0, 97, 157, 0.1) !important;

@@ -14,19 +14,22 @@ export class HomePage extends React.Component {
 		return(
 			<div>
 				<Layout>
-					This is the home page  - to be replaced <br/>
+					<div>
+						This is the home page  - to be replaced <br/>
 
-					<Link to="/login">
-						Login
-					</Link>
-					<br />
-					<Link to="/determine-anticipated-performance">
-						Results
-					</Link>
+						<Link to="/login">
+							Login
+						</Link>
+						<br />
+						<Link to="/determine-anticipated-performance">
+							Results
+						</Link>
 
-					<StepStatus statusOptions= {processStatus} status={activeKey} />
-					<br />
-					<StepDescription stepInfo={stepInfo[0]} />
+						<StepStatus statusOptions= {processStatus} status={activeKey} />
+						<br />
+						<StepDescription stepInfo={stepInfo[0]} />
+					</div>
+
 
 				</Layout>
 			</div>

@@ -1,5 +1,6 @@
 import React from "react";
 import {connect} from "react-redux";
+import { useHistory } from "react-router-dom";
 import {makeStyles, useTheme } from "@material-ui/core/styles";
 import clsx from "clsx";
 import AppBar from "@material-ui/core/AppBar";
@@ -28,6 +29,9 @@ import {setMenuState} from "../actions/layout";
 
 import Logo from "../public/cr-logo.png";
 import {globals} from "../globals";
+import Cookies from "universal-cookie";
+
+const cookies = new Cookies();
 
 const drawerWidth = globals.menuWidth;
 
@@ -96,18 +100,20 @@ const useStyles = makeStyles((theme) => ({
 		color: "inherit",
 	},
 	sectionDesktop: {
-		display: "none",
-		[theme.breakpoints.up("md")]: {
-			display: "flex",
-		},
+		display: "flex",
+		// [theme.breakpoints.up("sm")]: {
+		// 	display: "flex",
+		// },
 	},
 }));
 
 
 
-const HeaderWithMenu = ({dispatch}) => {
+const HeaderWithMenu = ({dispatch, isAuthenticated}) => {
 	const classes = useStyles();
 	const theme = useTheme();
+	const history = useHistory();
+
 	const [anchorEl, setAnchorEl] = React.useState(null);
 
 	const isMenuOpen = Boolean(anchorEl);
@@ -118,6 +124,12 @@ const HeaderWithMenu = ({dispatch}) => {
 
 	const handleMenuClose = () => {
 		setAnchorEl(null);
+	};
+
+	// //TODO: move this to utils if needed
+	const handleLogout = () => {
+		cookies.remove("Authorization");
+		history.push("/login");
 	};
 
 	const [open, setOpen] = React.useState(false);
@@ -143,8 +155,8 @@ const HeaderWithMenu = ({dispatch}) => {
 			open={isMenuOpen}
 			onClose={handleMenuClose}
 		>
-			<MenuItem onClick={handleMenuClose}>Profile</MenuItem>
-			<MenuItem onClick={handleMenuClose}>My account</MenuItem>
+			<MenuItem onClick={handleMenuClose}>My Account</MenuItem>
+			<MenuItem onClick={handleLogout}>Logout</MenuItem>
 		</Menu>
 	);
 
@@ -220,7 +232,7 @@ const HeaderWithMenu = ({dispatch}) => {
 						aria-label="open drawer"
 						onClick={handleDrawerOpen}
 						edge="start"
-						className={clsx(classes.menuButton, open && classes.hide)}
+						className={isAuthenticated ? clsx(classes.menuButton, open && classes.hide) : classes.hide}
 					>
 						<MenuIcon className={classes.menuIcon} />
 					</IconButton>
@@ -235,7 +247,7 @@ const HeaderWithMenu = ({dispatch}) => {
 					</a>
 
 					<div className={classes.grow} />
-					<div className={classes.sectionDesktop}>
+					<div className={isAuthenticated ? classes.sectionDesktop: classes.hide}>
 						<IconButton aria-label="show messages" color="inherit">
 							<Badge badgeContent={2} color="primary">
 								<MailIcon />
@@ -285,8 +297,6 @@ const HeaderWithMenu = ({dispatch}) => {
 					[classes.contentShift]: open,
 				})}
 			 />
-
-
 
 		</div>
 	);
