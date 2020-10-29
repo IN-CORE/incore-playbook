@@ -34,7 +34,6 @@ body {
 
 /* for main panel */
 .innerBox {
-	min-height: 800px;
 	background-color: #F8F9FF;
 	margin: auto 15px;
 	padding: 23px;
@@ -48,12 +47,17 @@ body {
 
 .gridItem {
 	margin: 36px 15px;
+	width: 500px;
 }
 
 .inputGroup {
 	height: 100%;
 	width: 100%;
 	margin: 20px auto;
+}
+
+.entryTableContainer {
+	padding: 23px 40px;
 }
 
 /* for map */

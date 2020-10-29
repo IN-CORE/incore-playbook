@@ -67,4 +67,6 @@ config["ARCHETYPE"] = {
 	"19":"Office Building"
 };
 
+config["dataServiceBase"] = `${apiurl}/data/api/`;
+
 export default config;

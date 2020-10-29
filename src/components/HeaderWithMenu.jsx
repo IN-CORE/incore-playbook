@@ -187,7 +187,10 @@ const HeaderWithMenu = ({dispatch, isAuthenticated}) => {
 		},
 		{
 			label: "2-4. Characterize built environment",
-			icon: "pi pi-sliders-v"
+			icon: "pi pi-sliders-v",
+			command: () => {
+				window.location = "/set-built-environment";
+			}
 		},
 		{
 			label: "2-5. Link social functions & built environment",

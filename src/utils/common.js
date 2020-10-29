@@ -1,5 +1,7 @@
 import React from "react";
 import Cookies from "universal-cookie";
+import jwt_decode from "jwt-decode";
+import config from "../app.config";
 
 const cookies = new Cookies();
 
@@ -10,6 +12,38 @@ export const isAuthorized = () => {
 			(authorization !== undefined && authorization !== "" && authorization !==
 					null);
 };
+
+// construct header
+export function getHeader() {
+	if (process.env.DEPLOY_ENV === "local"){
+		const headers = new Headers({
+			"x-auth-userinfo": `{"preferred_username":"${config.testUserInfo}"}`,
+		});
+
+		return headers;
+	}
+	else{
+		const headers = new Headers({
+			"Authorization": cookies.get("Authorization"),
+		});
+
+		return headers;
+	}
+}
+
+// get current username
+export function getCurrUsername(){
+	if (process.env.DEPLOY_ENV === "local"){
+		return config.testUserInfo;
+	}
+	else{
+		let cookie = cookies.get("Authorization");
+		if (cookie !== "" && cookie.split(" ").length > 0){
+			let userInfo = jwt_decode(cookie.split(" ")[1]);
+			return userInfo["preferred_username"];
+		}
+	}
+}
 
 // Figure out how to access history from a common util without hooks
 // export const clearCookieAndLogout = () => {

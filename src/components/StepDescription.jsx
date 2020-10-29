@@ -16,8 +16,8 @@ const styles = {
 		margin: "20px 5px 0px 5px"
 	},
 	thisStepAbout: {
-		height: "240px",
-		width: "520px",
+		minHeight: "240px",
+		width: "100%",
 		color: "#8798AD",
 		fontFamily: "Rubik, sans-serif",
 		fontSize: "12px",
