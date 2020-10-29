@@ -14,7 +14,7 @@ export function receiveDatasets(type, json){
 	};
 }
 
-export function fetchDatasets(limit=20, offset=0, dataType="ergo:buildingInventoryVer6"){
+export function fetchDatasets(limit=5, offset=0, dataType="ergo:buildingInventoryVer6"){
 	let endpoint = `${config.dataServiceBase}datasets?limit=${limit}&skip=${offset}&type=${dataType}`;
 
 	// default to current user's space
@@ -31,12 +31,10 @@ export function fetchDatasets(limit=20, offset=0, dataType="ergo:buildingInvento
 				}
 				else if (response.status === 401) {
 					// TODO Auth Failed
-					console.log("Auth Failed!");
 					dispatch(receiveDatasets(LOGIN_ERROR, []));
 				}
 				else {
 					// TODO Request Failed
-					console.log("Request Failed!");
 					dispatch(receiveDatasets(RECEIVE_DATASETS, []));
 				}
 			});

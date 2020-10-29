@@ -22,7 +22,6 @@ const useStyles = makeStyles({
 		height: "54px",
 		width: "92px",
 		color: "#8798AD",
-		fontFamily: "Rubik",
 		fontSize: "15px",
 		fontWeight: 500,
 		letterSpacing: 0,
@@ -50,7 +49,6 @@ const useStyles = makeStyles({
 	displayFilename: {
 		height: "18px",
 		color: "#00619D",
-		fontFamily: "Rubik",
 		fontSize: "15px",
 		fontWeight: 500,
 		letterSpacing: 0,

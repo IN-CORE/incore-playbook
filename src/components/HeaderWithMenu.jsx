@@ -204,7 +204,7 @@ const HeaderWithMenu = ({dispatch, isAuthenticated}) => {
 			label: "3-3: Define community hazards",
 			icon: "pi pi-compass",
 			command: () => {
-				window.location.hash = "/";
+				window.location = "/define-community-hazards";
 			}
 		},
 		{

@@ -20,7 +20,9 @@ export default {
 	entry: [
 		"babel-polyfill",
 		"whatwg-fetch",
-		path.resolve(__dirname, "src/index.js")
+		path.resolve(__dirname, "src/index.js"),
+		"ol/ol.css",
+		"ol-layerswitcher/src/ol-layerswitcher.css",
 	],
 	target: "web", // necessary per https://webpack.github.io/docs/testing.html#compile-and-test
 	output: {

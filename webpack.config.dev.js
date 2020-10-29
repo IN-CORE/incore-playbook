@@ -18,7 +18,9 @@ export default {
 		"whatwg-fetch",
 		"./src/webpack-public-path",
 		"webpack-hot-middleware/client?reload=true",
-		path.resolve(__dirname, "src/index.js")
+		path.resolve(__dirname, "src/index.js"),
+		"ol/ol.css",
+		"ol-layerswitcher/src/ol-layerswitcher.css",
 	],
 	target: "web",
 	output: {

@@ -9,7 +9,7 @@ import {
 	TableRow,
 	withStyles
 } from "@material-ui/core";
-import config from "../app.config";
+import {globals} from "../globals";
 
 const styles = {
 	table: {
@@ -102,7 +102,7 @@ class AttributesTable extends React.Component {
 												else if (attributeName["prettyName"] === "BUILDING DESCRIPTION"){
 													return (
 														<TableCell key={idx} className={classes.tableBodyCell}>
-															{config.ARCHETYPE[attribute["properties"][attributeName["columnName"]]]}</TableCell>
+															{globals.ARCHETYPE[attribute["properties"][attributeName["columnName"]]]}</TableCell>
 													);
 												}
 												else{

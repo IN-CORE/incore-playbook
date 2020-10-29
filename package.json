@@ -33,6 +33,7 @@
 		"classnames": "^2.2.6",
 		"jwt-decode": "^3.0.0",
 		"ol": "^6.4.3",
+		"ol-layerswitcher": "^3.7.0",
 		"primeicons": "^4.0.0",
 		"primereact": "5.0.1",
 		"react": "~16.14.0",

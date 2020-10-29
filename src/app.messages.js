@@ -1,5 +1,4 @@
 // List of texts and messages
-import * as React from "react";
 
 export const stepInfo = [
 	{

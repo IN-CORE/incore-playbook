@@ -18,14 +18,8 @@ const useStyles = makeStyles({
 	table: {
 		minWidth: 650,
 	},
-	baseColorBlue: {
-		height: "29px",
-		width: "96px",
-		backgroundColor: "#ED8036",
-	},
 	tableHeaderRow: {
 		height: "34px",
-		width: "1134px",
 	},
 	tableHeaderCell:{
 		height: "14px",
@@ -38,7 +32,6 @@ const useStyles = makeStyles({
 	},
 	tableBodyRow:{
 		height: "75px",
-		width: "1134px",
 	},
 	tableBodyCell:{
 		height: "21px",
@@ -48,7 +41,15 @@ const useStyles = makeStyles({
 		letterSpacing: 0,
 		lineHeight: "22px"
 	},
-	clickableCell:{
+	firstTableBodyCell:{
+		width: "250px",
+		height: "21px",
+		color: "#2E384D",
+		fontSize: "15px",
+		letterSpacing: 0,
+		lineHeight: "22px"
+	},
+	clickableLink:{
 		"&:hover":{
 			cursor: "pointer"
 		}
@@ -135,16 +136,16 @@ export function EntryTable(props) {
 											if (fieldName["handleClick"] !== undefined){
 												let handleClick = fieldName["handleClick"];
 												return (
-													<TableCell key={idx} className={classes.tableBodyCell}>
+													<TableCell key={idx} className={idx ===0 ?classes.firstTableBodyCell:classes.tableBodyCell}>
 														<Link color="primary" onClick={() => {handleClick(field);}}
-															  className={classes.clickableCell}>
+															  className={classes.clickableLink}>
 															{field[fieldName["columnName"]]}
 														</Link>
 													</TableCell>
 												);
 											}
 											return (
-												<TableCell key={idx} className={classes.tableBodyCell}>
+												<TableCell key={idx} className={idx ===0 ?classes.firstTableBodyCell:classes.tableBodyCell}>
 													{field[fieldName["columnName"]]}</TableCell>
 											);
 										})

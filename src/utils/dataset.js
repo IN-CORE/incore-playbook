@@ -45,22 +45,18 @@ export async function createDataset(title, description, files){
 			return fileRequest.json();
 		}
 		else if  (fileRequest.status  === 401){
-			console.log("Auth Failed");
 			return {};
 		}
 		else {
-			console.log("Request Failed");
 			return {};
 		}
 	}
 	else if  (datasetRequest.status  === 401){
 		// TODO handle error
-		console.log("Auth Failed");
 		return {};
 	}
 	else {
 		// TODO handle error
-		console.log("Request Failed");
 		return {};
 	}
 }
