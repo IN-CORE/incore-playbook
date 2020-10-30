@@ -1,12 +1,22 @@
-import React from "react";
+import React, {useEffect} from "react";
 import {connect} from "react-redux";
 import Header from "../components/HeaderWithMenu";
 import Footer from "../components/Footer";
 import {globals} from "../globals";
+import { useHistory } from "react-router-dom";
 
 import {isAuthorized} from "../utils/common";
 
 const Layout = (props) => {
+
+	const history = useHistory();
+
+	useEffect(() =>{
+		if(!isAuthorized()){
+			history.push("/login");
+		}
+	}, []);
+
 	let mLeft = 0;
 	if(props.layout.isMenuOpen){
 		mLeft = globals.menuWidth;

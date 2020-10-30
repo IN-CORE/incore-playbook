@@ -12,11 +12,27 @@ import {NotFound} from "./containers/NotFound";
 
 export default (
 	<Switch>
-		<Route exact path="/" component={HomePage}/>
-		<Route path="/determine-anticipated-performance" component={AnticipatedPerformance}/>
-		<Route path="/define-community-hazards" component={CommunityHazards}/>
-		<Route path="/set-built-environment" component={BuiltEnvironment}/>
-		<Route path="/create-team" component={Team}/>
+		<Route exact path="/" render={() => {
+			sessionStorage.setItem("menu", "1-1");
+			return (<Team/>);
+			// return (<HomePage/>);
+		}}/>
+		<Route path="/set-built-environment" render={() => {
+			sessionStorage.setItem("menu", "2-4");
+			return (<BuiltEnvironment/>);
+		}}/>
+		<Route path="/define-community-hazards" render={() => {
+			sessionStorage.setItem("menu", "3-3");
+			return (<CommunityHazards/>);
+		}}/>
+		<Route path="/determine-anticipated-performance" render={() => {
+			sessionStorage.setItem("menu", "3-4");
+			return (<AnticipatedPerformance/>);
+		}}/>
+		<Route path="/create-team" render={() => {
+			sessionStorage.setItem("menu", "1-1");
+			return (<Team/>);
+		}}/>
 		<Route path="/login" component={Login} />
 		<Route path="*" component={NotFound}/>
 	</Switch>

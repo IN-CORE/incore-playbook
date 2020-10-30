@@ -21,15 +21,22 @@ import Divider from "@material-ui/core/Divider";
 import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
 import ChevronRightIcon from "@material-ui/icons/ChevronRight";
 
-import { PanelMenu } from "primereact/panelmenu";
-import "primereact/resources/themes/saga-blue/theme.css";
-import "primereact/resources/primereact.min.css";
-import "primeicons/primeicons.css";
 import {setMenuState} from "../actions/layout";
 
 import Logo from "../public/cr-logo.png";
 import {globals} from "../globals";
 import Cookies from "universal-cookie";
+
+import List from "@material-ui/core/List";
+import ListItem from "@material-ui/core/ListItem";
+import ListItemIcon from "@material-ui/core/ListItemIcon";
+import ListItemText from "@material-ui/core/ListItemText";
+import Collapse from "@material-ui/core/Collapse";
+import DownIcon from "@material-ui/icons/KeyboardArrowDown";
+import RightIcon from "@material-ui/icons/KeyboardArrowRight";
+import CheckCircleIcon from "@material-ui/icons/CheckCircle";
+import PoweredBy from "./PoweredBy";
+
 
 const cookies = new Cookies();
 
@@ -105,6 +112,10 @@ const useStyles = makeStyles((theme) => ({
 		// 	display: "flex",
 		// },
 	},
+	parentMenu: {
+		fontWeight: 500,
+		backgroundColor: "rgba(0, 97, 157, 0.1)"
+	}
 }));
 
 
@@ -117,6 +128,12 @@ const HeaderWithMenu = ({dispatch, isAuthenticated}) => {
 	const [anchorEl, setAnchorEl] = React.useState(null);
 
 	const isMenuOpen = Boolean(anchorEl);
+
+	let header = "Playbook Interactive Guide";
+
+	if(isAuthenticated){
+		header = "Playbook Interactive Guide for Community Resilience Planning";
+	}
 
 	const handleProfileMenuOpen = (event) => {
 		setAnchorEl(event.currentTarget);
@@ -132,7 +149,23 @@ const HeaderWithMenu = ({dispatch, isAuthenticated}) => {
 		history.push("/login");
 	};
 
-	const [open, setOpen] = React.useState(false);
+	let openSubMenu = "1-1";
+	let openMenu = 1;
+
+	if(sessionStorage.getItem("menu")){
+		openSubMenu = sessionStorage.getItem("menu");
+		openMenu = openSubMenu.split("-")[0];
+	}
+
+
+
+	if(openMenu === null || openMenu === undefined){
+		openMenu = "1";
+	}
+
+	let [open, setOpen] = isAuthenticated ? React.useState(true): React.useState(false);
+
+	const [openTask, setOpenTask] = React.useState(openMenu);
 
 	const handleDrawerOpen = () => {
 		setOpen(true);
@@ -142,6 +175,18 @@ const HeaderWithMenu = ({dispatch, isAuthenticated}) => {
 	const handleDrawerClose = () => {
 		setOpen(false);
 		dispatch(setMenuState(false));
+	};
+
+	const handleParentClick = (key) => () => {
+		(openTask === key) ? setOpenTask("0"): setOpenTask(key);
+	};
+
+	const handleParentLoad = (key) => () => {
+		(openTask === key) ? setOpenTask("0"): setOpenTask(key);
+	};
+
+	const handleSubmenuClick = (route) => () => {
+		history.push(route);
 	};
 
 	const menuId = "primary-search-account-menu";
@@ -160,67 +205,98 @@ const HeaderWithMenu = ({dispatch, isAuthenticated}) => {
 		</Menu>
 	);
 
-	const items = [{
-		label: "1. Form Collaborative Planning Team",
-		items: [{
-			label: "1-1 Identify leader",
-			icon: "pi pi-user-plus",
-			command: () => {
-				window.location = "/create-team";
-			}
+	let treeData =  [
+		{
+			key: "1",
+			label: "Form Collaborative Planning Team",
+			nodes: [
+				{
+					key: "1-1",
+					label: " Identify leader",
+					completed: false,
+					route: "/create-team"
+				},
+				{
+					key: "1-2",
+					label: " Identify Team Members",
+					completed: true,
+					disabled: true
+				},
+			],
 		},
 		{
-			label: "1-2 Identify team members",
-			icon: "pi pi-users",
-			url: "https://google.com"
-		}
-		]
-	},
-	{
-		label: "2. Understanding the Situation",
-		items: [{
-			label: "2-3 Characterize social functions",
-			icon: "pi pi-fw pi-cog",
-			command: () => {
-				window.location.hash = "/";
-			}
+			key: "2",
+			label: "Understanding the Situation",
+			nodes: [
+				{
+					key: "2-3",
+					label: "Characterize social functions",
+					completed: true,
+					disabled: true
+				},
+				{
+					key: "2-4",
+					label: "Characterize built environment",
+					completed: false,
+					disabled: false,
+					route: "/set-built-environment"
+				},
+				{
+					key: "2-5",
+					label: "Link social functions & built environment",
+					completed: true,
+					disabled: true
+				},
+			],
 		},
 		{
-			label: "2-4. Characterize built environment",
-			icon: "pi pi-sliders-v",
-			command: () => {
-				window.location = "/set-built-environment";
-			}
+			key: "3",
+			label: "Determine Goals & Objectives",
+			nodes: [
+				{
+					key: "3-3",
+					label: "Define community hazards",
+					completed: false,
+					disabled: false,
+					route: "/define-community-hazards"
+				},
+				{
+					key: "3-4",
+					label: "Determine anticipated performance",
+					completed: false,
+					route: "/determine-anticipated-performance"
+				},
+			],
 		},
-		{
-			label: "2-5. Link social functions & built environment",
-			icon: "pi pi-chart-line"
-		}
-		]
-	},
-	{
-		label: "3. Determine Goals & Objectives",
-		items: [{
-			label: "3-3: Define community hazards",
-			icon: "pi pi-compass",
-			command: () => {
-				window.location = "/define-community-hazards";
-			}
-		},
-		{
-			label: "3-4: Determine anticipated performance",
-			icon: "pi pi-sliders-h",
-			command: () => {
-				window.location = "/determine-anticipated-performance";
-			}
-		},
-		{
-			label: "3-5: Summarize the results",
-			icon: "pi pi-chart-line"
-		}
-		]
-	}
 	];
+
+	let menus = [];
+
+	treeData.map(({key, label, nodes}) => {
+		let subMenus = [];
+		nodes.map(({key, label, completed, disabled, route}) => {
+			subMenus.push(
+				<ListItem button style={{paddingLeft: 40}} key={key} selected={openSubMenu === key}
+				  onClick={handleSubmenuClick(route)} disabled={disabled}>
+					<ListItemText primary={`${key}. ${label}`} />
+					{completed ? <CheckCircleIcon style={{color: "green"}}/> : "" }
+				</ListItem>
+			);
+		});
+		menus.push(
+			<div key={key}>
+				<ListItem button disableGutters={true} className={classes.parentMenu}
+					onClick={handleParentClick(key)} onLoad={handleParentLoad(key)}>
+					{openTask === key ? <DownIcon fontSize="large" /> : <RightIcon fontSize="large"/>}
+					<ListItemText  primary={`${key}. ${label}`} />
+				</ListItem>
+				<Collapse in={openTask === key} timeout="auto" unmountOnExit>
+					{subMenus}
+				</Collapse>
+				<Divider/>
+			</div>
+		);
+	});
 
 	return (
 		<div className={classes.grow}>
@@ -239,25 +315,30 @@ const HeaderWithMenu = ({dispatch, isAuthenticated}) => {
 					>
 						<MenuIcon className={classes.menuIcon} />
 					</IconButton>
+					<div style={{display: "flex"}}>
+						<a href="/" className={classes.titleLink}>
+							<Typography className={classes.title} variant="h6" noWrap>
+								<img src={Logo} className={classes.headerLogo} alt="Community Resilience" style={{maxHeight: 40}}/>
+								<span style={{marginRight: "8px"}}>
+									{/*CORE Playbook*/}
+									{header}
+								</span>
+							</Typography>
+						</a>
 
-					<a href="/" className={classes.titleLink}>
-						<Typography className={classes.title} variant="h6" noWrap>
-							<img src={Logo} className={classes.headerLogo} alt="Community Resilience"/>
-							<span>
-								CORE Playbook
-							</span>
-						</Typography>
-					</a>
+						<PoweredBy text="analyses provided by"/>
+
+					</div>
 
 					<div className={classes.grow} />
 					<div className={isAuthenticated ? classes.sectionDesktop: classes.hide}>
 						<IconButton aria-label="show messages" color="inherit">
-							<Badge badgeContent={2} color="primary">
+							<Badge variant="dot" color="primary">
 								<MailIcon />
 							</Badge>
 						</IconButton>
 						<IconButton aria-label="show notifications" color="inherit">
-							<Badge badgeContent={5} color="primary">
+							<Badge variant="dot" color="primary">
 								<NotificationsIcon />
 							</Badge>
 						</IconButton>
@@ -292,8 +373,13 @@ const HeaderWithMenu = ({dispatch, isAuthenticated}) => {
 					</IconButton> <br/>
 					<Divider/>
 				</div>
-				<PanelMenu model={items} />
-				<Divider />
+				<List
+					component="nav"
+					aria-labelledby="nested-list-subheader"
+					// className={classes.root}
+				 >
+					{menus}
+				</List>
 			</Drawer>
 			<main
 				className={clsx(classes.content, {

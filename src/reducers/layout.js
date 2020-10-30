@@ -1,6 +1,6 @@
 import { SET_MENU_STATE } from "../actions/layout";
 
-const defaultState = {isMenuOpen: false};
+const defaultState = {isMenuOpen: true};
 
 const layout = (state=defaultState, action) => {
 	switch(action.type) {

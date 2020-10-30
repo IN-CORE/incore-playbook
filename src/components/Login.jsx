@@ -5,6 +5,8 @@ import {makeStyles } from "@material-ui/core/styles";
 import {IncoreButton} from "./styledComponents/IncoreButton";
 import Cookies from "universal-cookie";
 import config from "../app.config";
+import {setMenuState} from "../actions/layout";
+import {connect} from "react-redux";
 
 const cookies = new Cookies();
 
@@ -72,7 +74,7 @@ const useStyles = makeStyles((theme) => ({
 	},
 }));
 
-const Login = () => {
+const Login = ({dispatch}) => {
 	const classes = useStyles();
 	const history = useHistory();
 
@@ -117,6 +119,7 @@ const Login = () => {
 		if (tokenJson["access_token"] !== undefined) {
 			cookies.set("Authorization", `bearer ${tokenJson["access_token"]}`, {maxAge: tokenJson["expires_in"]});
 			setAuthFail(false);
+			dispatch(setMenuState(true));
 			history.push("/");
 		} else {
 			setAuthFail(true);
@@ -184,4 +187,4 @@ const Login = () => {
 	);
 };
 
-export default Login;
+export default connect()(Login);
