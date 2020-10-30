@@ -32,12 +32,10 @@ export async function createModelTornado(name, description, rating, startLat, st
 	}
 	else if  (tornadoRequest.status  === 401){
 		// TODO handle error
-		 console.log("Auth Failed");
 		return {};
 	}
 	else {
 		// TODO handle error
-		console.log("Request Failed");
 		return {};
 	}
 }

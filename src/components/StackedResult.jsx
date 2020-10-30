@@ -4,10 +4,6 @@ import {Bar} from "react-chartjs-2";
 export function StackedResult(props) {
 	let {categorySummary} = props;
 
-	categorySummary = "[{\"category\": \"Critical Facilities\", \"complete\": 0, \"heavy\": 2, \"insignific\": 25, \"moderate\": 0}, {\"category\": \"Emergency Housing \", \"complete\": -1, \"heavy\": -1, \"insignific\": -1, \"moderate\": -1}, {\"category\": \"Housing / Neighborhood\", \"complete\": 2453, \"heavy\": 3, \"insignific\": 5841, \"moderate\": 9}, {\"category\": \"Community Recovery\", \"complete\": 159, \"heavy\": 25, \"insignific\": 844, \"moderate\": 85}]";
-
-	let resJson = JSON.parse(categorySummary);
-
 	let categories = [];
 	let totals = [];
 	let insignific = [];
@@ -15,7 +11,7 @@ export function StackedResult(props) {
 	let extensive = [];
 	let complete = [];
 
-	resJson.map((entry, idx) => {
+	categorySummary.map((entry, idx) => {
 		insignific.push(entry.insignific < 0 ? 0 : entry.insignific);
 		moderate.push(entry.moderate < 0 ? 0 : entry.moderate);
 		extensive.push(entry.heavy < 0 ? 0 : entry.heavy);
@@ -76,7 +72,7 @@ export function StackedResult(props) {
 				},
 				barPercentage: 0.75,
 				ticks: {
-					fontStyle: "bold",
+					// fontStyle: "bold",
 					fontFamily: "Rubik",
 					fontSize: 14
 				}
@@ -95,7 +91,7 @@ export function StackedResult(props) {
 	};
 
 	return(
-		<div style={{maxWidth: "900px", height: "250px"}}>
+		<div style={{maxWidth: "900px", height: "180px"}}>
 			<Bar data={data} options={options}/>
 		</div>
 	);

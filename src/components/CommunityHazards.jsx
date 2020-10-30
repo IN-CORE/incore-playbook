@@ -174,7 +174,7 @@ class CommunityHazards extends React.Component {
 
 		const source = new TileWMS({
 			url: `${config.geoServerWMS}`,
-			params: {LAYERS: layerId},
+			params: {LAYERS: layerId, STYLES: "incore:tornado"},
 			ratio: 1,
 			serverType: "geoserver"
 		});
@@ -182,7 +182,7 @@ class CommunityHazards extends React.Component {
 			title: layerTitle,
 			source: source,
 			zIndex: 1,
-			opacity: 0.8
+			opacity: 1
 		});
 
 		// add created hazard to this created group layer

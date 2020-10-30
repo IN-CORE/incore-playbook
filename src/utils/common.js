@@ -44,6 +44,35 @@ export function getCurrUsername(){
 	}
 }
 
+// get current user's encoded email address for datawolf use
+export function getCurrUserInfo(){
+	if (process.env.DEPLOY_ENV === "local"){
+		return config.testUserInfo;
+	}
+	else{
+		let cookie = cookies.get("Authorization");
+		if (cookie !== "" && cookie.split(" ").length > 0){
+			let userInfo = jwt_decode(cookie.split(" ")[1]);
+			let email = userInfo["email"];
+			return btoa(`{"email":"${email}"}`);
+		}
+	}
+}
+
+// get current user's encoded email address for datawolf use
+export function getCurrUserEmail(){
+	if (process.env.DEPLOY_ENV === "local"){
+		return config.testUserInfo;
+	}
+	else{
+		let cookie = cookies.get("Authorization");
+		if (cookie !== "" && cookie.split(" ").length > 0){
+			let userInfo = jwt_decode(cookie.split(" ")[1]);
+			return userInfo["email"];
+		}
+	}
+}
+
 // Figure out how to access history from a common util without hooks
 // export const clearCookieAndLogout = () => {
 // 	const history = useHistory();

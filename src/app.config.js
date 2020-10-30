@@ -48,4 +48,5 @@ config["hazardServiceBase"] = `${apiurl}/hazard/api/`;
 
 config["dataServiceBase"] = `${apiurl}/data/api/`;
 
+
 export default config;

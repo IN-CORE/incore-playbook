@@ -27,7 +27,7 @@ export const globals = {
 		-8436000.174951272,
 		6512287.786512453
 	],
-	JOPLIN_MAP_CENTER: [-94.5133, 37.0842],
+	JOPLIN_MAP_CENTER: [-94.4980, 37.0672],
 };
 
 export const processStatus = [

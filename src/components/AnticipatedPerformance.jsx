@@ -1,7 +1,8 @@
 import * as React from "react";
-import {withStyles} from "@material-ui/core";
-import AttributesTable from "./AttributesTable";
+import {Box, withStyles, Tabs, Tab, Grid} from "@material-ui/core";
 import Layout from "../containers/Layout";
+
+import ViewResult from "./ViewResult";
 
 
 const styles = {};
@@ -11,49 +12,36 @@ class AnticipatedPerformance extends React.Component {
 	constructor(props) {
 		super(props);
 
-		this.attributeNames = [
-			{
-				"prettyName": "MEAN DAMAGE",
-				"columnName" :"meandamage",
-			},
-			{
-				"prettyName": "BLDG ID",
-				"columnName" :"guid",
-			},
-			{
-				"prettyName": "ARCHETYPE",
-				"columnName" :"archetype",
-			},
-			{
-				"prettyName": "BUILDING DESCRIPTION",
-				"columnName" :"archetype",
-			},
-			{
-				"prettyName": "YEAR",
-				"columnName" :"year_built",
-			},
-			{
-				"prettyName": "SQ FT",
-				"columnName" :"gsq_foot",
-			},
-
-		];
-
 		this.state = {
-			selectedId: "incore:5f84acfc45365e253d0744e6",
-			sortColumnName: "meandamage"
+			currTabIndex: 0,
 		};
 	}
 
-	componentDidMount() {
-		this.props.getTopAttributes(this.state.selectedId, this.state.sortColumnName);
-	}
+	componentDidMount() {}
 
 	render() {
 
+		const {classes} = this.props;
+
 		return (
 			<Layout>
-				{this.props.attributes.length>0 ?<AttributesTable attributeNames={this.attributeNames} attributes={this.props.attributes}/>:null}
+				<div className="firstDivInContent">
+					<Box className="outerBox">
+						<Grid container spacing={3} className="innerBox">
+							<Grid item>
+								<Tabs aria-label="determine anticipated performance tabs" value={this.state.currTabIndex} className={classes.tabs}
+									  onChange={(e, value) => {this.setState({ currTabIndex: value});}}>
+									<Tab label="view results" className={classes.tab}/>
+									<Tab label="run analysis" className={classes.tab}/>
+								</Tabs>
+								<ViewResult value={this.state.currTabIndex} index={0}
+									getExecutionList={this.props.getExecutionList}
+									executions={this.props.executions}/>
+								{/*<RunAnalysis value={this.state.currTabIndex} index={1} />*/}
+							</Grid>
+						</Grid>
+					</Box>
+				</div>
 			</Layout>
 		);
 	}
