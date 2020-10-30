@@ -10,7 +10,6 @@ import {HomePage} from "./containers/HomePage";
 import {NotFound} from "./containers/NotFound";
 
 
-
 export default (
 	<Switch>
 		<Route exact path="/" component={HomePage}/>
