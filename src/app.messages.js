@@ -46,5 +46,39 @@ export const stepInfo = [
 			text: "Learn More about characterizing the built environment."
 		}
 	},
-];
+	{
+		"stepTitle": "About this Step",
+		"stepAbout": [
+			"A community’s built environment is foundational to community functions, services, and the variety of daily activities of its residents.",
+			"Ideally, you will have already completed this work in Step 2.3—Characterize the Built Environment—of this playbook.",
+			"The built environment includes, but is not limited to: buildings, transportation facilities, energy systems, communication systems, water and wastewater systems."
+		],
+		"stepLink": {
+			uri: "https://incore.ncsa.illinois.edu",
+			text: "Learn More about Defining the Built Environment"
+		}
+	},
+	{
+		"stepTitle": "About this Step",
+		"stepAbout": [
+			"The planning team should identify the prevailing hazards that will affect community functions and resilience.",
+			"Ideally, you will have already defined the prevailing hazards for your community in Step 3.3 of this playbook.",
+			"Hazards are typically organized into these categories: Routine Events, Design Event, and Extreme Events."
 
+		],
+		"stepLink": {
+			uri: "https://incore.ncsa.illinois.edu",
+			text: "Learn More about Defining the Hazards."
+		}
+	},
+	{
+		"stepTitle": "About this Step",
+		"stepAbout": [
+			"In-CORE uses sophisticated analysis techniques to analyze your specific community data with the latest data available on a variety of hazard threats to produce actional information on your community’s resiliance."
+		],
+		"stepLink": {
+			uri: "https://incore.ncsa.illinois.edu",
+			text: "Learn More about IN-CORE"
+		}
+	},
+];

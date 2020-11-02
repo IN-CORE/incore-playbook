@@ -53,6 +53,11 @@ const useStyles = makeStyles({
 		"&:hover":{
 			cursor: "pointer"
 		}
+	},
+	clickableLinkDisabled:{
+		pointerEvents: "none",
+		textDecoration: "none",
+		color: "#9E9E9E",
 	}
 });
 
@@ -138,7 +143,8 @@ export function EntryTable(props) {
 												return (
 													<TableCell key={idx} className={idx ===0 ?classes.firstTableBodyCell:classes.tableBodyCell}>
 														<Link color="primary" onClick={() => {handleClick(field);}}
-															  className={classes.clickableLink}>
+															  className={field["finalStatus"] === undefined || field["finalStatus"] === "FINISHED" ?
+																  classes.clickableLink:classes.clickableLinkDisabled}>
 															{field[fieldName["columnName"]]}
 														</Link>
 													</TableCell>

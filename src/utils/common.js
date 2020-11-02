@@ -59,6 +59,16 @@ export function getCurrUserInfo(){
 	}
 }
 
+// get incore token and write to a file
+export function getIncoreTokenFile(){
+	if (process.env.DEPLOY_ENV !== "local"){
+		return new Blob([cookies.get("Authorization")], {type:"text/plain"});
+	}
+	else{
+		return null;
+	}
+}
+
 // get current user's encoded email address for datawolf use
 export function getCurrUserEmail(){
 	if (process.env.DEPLOY_ENV === "local"){

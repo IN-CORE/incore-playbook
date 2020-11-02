@@ -138,26 +138,30 @@ export default function ViewResult(props) {
 
 	// show preview
 	const executionIdClick = async (executionItem) => {
-		// file that has incore dataset ID in it that's what i need to generate the map
-		let bldgMaxDamageStateId = executionItem["datasets"][datawolfConfig["bldgMaxDamageStateId"]];
-		let bldgMaxDamageStateINCOREId = await getOutputFileJson(bldgMaxDamageStateId);
-		handleLayerUpdate(bldgMaxDamageStateINCOREId);
+		// see the status of executionItem
+		let finalStatus = extractStatus(executionItem);
+		if (finalStatus === "FINISHED") {
+			// file that has incore dataset ID in it that's what i need to generate the map
+			let bldgMaxDamageStateId = executionItem["datasets"][datawolfConfig["bldgMaxDamageStateId"]];
+			let bldgMaxDamageStateINCOREId = await getOutputFileJson(bldgMaxDamageStateId);
+			handleLayerUpdate(bldgMaxDamageStateINCOREId);
 
-		let summaryTableId = executionItem["datasets"][datawolfConfig["summaryTableId"]];
-		let summaryTable = await getOutputFileJson(summaryTableId);
-		let sumaryTableContent = JSON.parse(summaryTable);
+			let summaryTableId = executionItem["datasets"][datawolfConfig["summaryTableId"]];
+			let summaryTable = await getOutputFileJson(summaryTableId);
+			let sumaryTableContent = JSON.parse(summaryTable);
 
-		// for summary table on the top
-		setRuntime(executionItem["date"].slice(0,10));
+			// for summary table on the top
+			setRuntime(executionItem["date"].slice(0,10));
 
-		// for table
-		setSummaryTableFields(sumaryTableContent);
+			// for table
+			setSummaryTableFields(sumaryTableContent);
 
-		// for chart
-		setBarChartFields(sumaryTableContent["by_category"]);
+			// for chart
+			setBarChartFields(sumaryTableContent["by_category"]);
 
-		// open preview
-		setMode("preview");
+			// open preview
+			setMode("preview");
+		}
 	};
 
 	const fieldNames = [

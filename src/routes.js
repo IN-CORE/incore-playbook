@@ -6,7 +6,6 @@ import AnticipatedPerformance from "./containers/AnticipatedPerformance";
 import CommunityHazards from "./containers/CommunityHazards";
 import BuiltEnvironment from "./containers/BuiltEnvironment";
 import Login from "./containers/Login";
-import {HomePage} from "./containers/HomePage";
 import {NotFound} from "./containers/NotFound";
 
 

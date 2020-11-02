@@ -7,7 +7,9 @@ import StepDescription from "../components/StepDescription";
 import Layout from "./Layout";
 
 
+
 export class HomePage extends React.Component {
+
 	render() {
 		let activeKey = "inprogress";
 
@@ -16,7 +18,17 @@ export class HomePage extends React.Component {
 				<Layout>
 					<div>
 						This is the home page  - to be replaced <br/>
+						<Dropdown>
+							<Dropdown.Toggle variant="success" id="dropdown-basic">
+						Dropdown Button
+							</Dropdown.Toggle>
 
+							<Dropdown.Menu>
+								<Dropdown.Item href="#/action-1">Action</Dropdown.Item>
+								<Dropdown.Item href="#/action-2">Another action</Dropdown.Item>
+								<Dropdown.Item href="#/action-3">Something else</Dropdown.Item>
+							</Dropdown.Menu>
+						</Dropdown>
 						<Link to="/login">
 							Login
 						</Link>

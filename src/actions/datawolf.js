@@ -15,7 +15,7 @@ export function receiveExecutions(type, json){
 }
 
 export function fetchExecutions(){
-	let endpoint = datawolfConfig.executionBaseURL;
+	let endpoint = datawolfConfig.executionGetURL;
 	// filter by current user's email
 	endpoint = `${endpoint}?email=${getCurrUserEmail()}`;
 
