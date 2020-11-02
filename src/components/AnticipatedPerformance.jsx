@@ -4,6 +4,7 @@ import Layout from "../containers/Layout";
 
 import ViewResult from "./ViewResult";
 import RunAnalysis from "./RunAnalysis";
+import PageBanner from "./Banner";
 
 
 const styles = {};
@@ -33,6 +34,8 @@ class AnticipatedPerformance extends React.Component {
 		return (
 			<Layout>
 				<div className="firstDivInContent">
+					<PageBanner parentStep="Determine Goals & Objectives"
+						childStep="Determine Anticipated Performance" taskNo="3" subtaskNo="3-4"/>
 					<Box className="outerBox">
 						<Grid container spacing={3} className="innerBox">
 							<Grid item>

@@ -92,3 +92,8 @@ body {
 	letter-spacing: 0.5px;
 	line-height: 22px;
 }
+
+.MuiChip-label {
+	padding-left: 8px !important;
+	padding-right: 8px !important;
+}
