@@ -31,7 +31,6 @@ const useStyles = makeStyles({
 		margin: "55px auto",
 	},
 	chartContainer:{
-		height: "294px",
 	},
 	mapContainer: {
 		height: "366px",

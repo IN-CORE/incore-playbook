@@ -6,7 +6,6 @@ import clsx from "clsx";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import IconButton from "@material-ui/core/IconButton";
-import Typography from "@material-ui/core/Typography";
 import Badge from "@material-ui/core/Badge";
 import MenuItem from "@material-ui/core/MenuItem";
 import Menu from "@material-ui/core/Menu";
@@ -29,13 +28,12 @@ import Cookies from "universal-cookie";
 
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
-import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
 import Collapse from "@material-ui/core/Collapse";
 import DownIcon from "@material-ui/icons/KeyboardArrowDown";
 import RightIcon from "@material-ui/icons/KeyboardArrowRight";
 import CheckCircleIcon from "@material-ui/icons/CheckCircle";
-import PoweredBy from "./PoweredBy";
+import Grid from "@material-ui/core/Grid";
 
 
 const cookies = new Cookies();
@@ -128,12 +126,6 @@ const HeaderWithMenu = ({dispatch, isAuthenticated}) => {
 	const [anchorEl, setAnchorEl] = React.useState(null);
 
 	const isMenuOpen = Boolean(anchorEl);
-
-	let header = "Playbook Interactive Guide";
-
-	if(isAuthenticated){
-		header = "Playbook Interactive Guide for Community Resilience Planning";
-	}
 
 	const handleProfileMenuOpen = (event) => {
 		setAnchorEl(event.currentTarget);
@@ -315,20 +307,27 @@ const HeaderWithMenu = ({dispatch, isAuthenticated}) => {
 					>
 						<MenuIcon className={classes.menuIcon} />
 					</IconButton>
-					<div style={{display: "flex"}}>
-						<a href="/" className={classes.titleLink}>
-							<Typography className={classes.title} variant="h6" noWrap>
-								<img src={Logo} className={classes.headerLogo} alt="Community Resilience" style={{maxHeight: 40}}/>
-								<span style={{marginRight: "8px"}}>
-									{/*CORE Playbook*/}
-									{header}
-								</span>
-							</Typography>
-						</a>
 
-						<PoweredBy text="analyses provided by"/>
+					<a href="/" className={classes.titleLink}>
 
-					</div>
+						<Grid container justify="center">
+							<Grid item>
+								<img src={Logo} className={classes.headerLogo} alt="Community Resilience"
+										 style={{maxHeight: 50, maxWidth: 50}}/>
+							</Grid>
+
+							<Grid item style={{display: "flex", marginTop: "6px"}}>
+								<div >
+									<div className="titleSmall">
+										Playbook Interactive Guide for
+									</div>
+									<div className="titleLarge">
+										Community Resilience Planning
+									</div>
+								</div>
+							</Grid>
+						</Grid>
+					</a>
 
 					<div className={classes.grow} />
 					<div className={isAuthenticated ? classes.sectionDesktop: classes.hide}>

@@ -67,3 +67,28 @@ body {
 	max-width: unset;
 	max-height: unset;
 }
+
+.compactButton {
+	padding: 2px 2px !important;
+	margin-bottom: 6px !important;
+	font-size: 12px !important;
+	height: 16px !important;
+	text-transform: capitalize !important;
+	font-weight: 400 !important;
+}
+
+.titleSmall {
+	color: #2E384D;
+	font-size: 13px;
+	font-weight: 500;
+	letter-spacing: 0.33px;
+	line-height: 14px;
+}
+
+.titleLarge {
+	color: #2E384D;
+	font-size: 19px;
+	font-weight: 500;
+	letter-spacing: 0.5px;
+	line-height: 22px;
+}

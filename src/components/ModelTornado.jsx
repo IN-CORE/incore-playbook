@@ -12,6 +12,7 @@ import {IncoreInputLabel} from "./styledComponents/IncoreInputLabel";
 import {toLonLat} from "ol/proj";
 
 import {createModelTornado} from "../utils/hazard";
+import LoadingOverlay from "react-loading-overlay";
 
 const useStyles = makeStyles({
 	startLabel: {
@@ -62,6 +63,7 @@ export default function ModelTornado(props) {
 	const [startCoord, setStartCoord] = useState("");
 	const [endCoord, setEndCoord] = useState("");
 	const [disabled, setDisabled] = useState(true);
+	const [loading, setLoading] = useState(false);
 
 	// form check
 	useEffect(() => {
@@ -81,6 +83,7 @@ export default function ModelTornado(props) {
 	}, [startCoordProps, endCoordProps]);
 
 	const onSave = async () => {
+		setLoading(true);
 		let startLat = startCoord.split(",")[0];
 		let startLon = startCoord.split(",")[1];
 		let endLat = endCoord.split(",")[0];
@@ -95,6 +98,7 @@ export default function ModelTornado(props) {
 			setStartCoord("");
 			setEndCoord("");
 		}
+		setLoading(false);
 	};
 
 	return (
@@ -104,43 +108,49 @@ export default function ModelTornado(props) {
 		>
 			{value === index && (
 				<Container>
-					<Box className="inputGroup">
-						<IncoreInputLabel>Name</IncoreInputLabel>
-						<IncoreTextField value={name} variant="outlined" onChange={(e) => setName(e.target.value)}/>
-					</Box>
-					<Box className="inputGroup">
-						<IncoreInputLabel>Description</IncoreInputLabel>
-						<IncoreTextField value={description} variant="outlined"
+					<LoadingOverlay
+						active={loading}
+						spinner
+						text="Saving..."
+					>
+						<Box className="inputGroup">
+							<IncoreInputLabel>Name</IncoreInputLabel>
+							<IncoreTextField value={name} variant="outlined" onChange={(e) => setName(e.target.value)}/>
+						</Box>
+						<Box className="inputGroup">
+							<IncoreInputLabel>Description</IncoreInputLabel>
+							<IncoreTextField value={description} variant="outlined"
 										 onChange={(e) => setDescription(e.target.value)}/>
-					</Box>
-					<Box className="inputGroup">
-						<IncoreInputLabel>Rating</IncoreInputLabel>
-						<IncoreSelectBox labelId="label" id="select" variant="outlined" defaultValue={rating}
+						</Box>
+						<Box className="inputGroup">
+							<IncoreInputLabel>Rating</IncoreInputLabel>
+							<IncoreSelectBox labelId="label" id="select" variant="outlined" defaultValue={rating}
 										 onChange={(e) => setRating(e.target.value)}>
-							<IncoreMenuItem value="EF0" key="EF0">EF0</IncoreMenuItem>
-							<IncoreMenuItem value="EF1" key="EF1">EF1</IncoreMenuItem>
-							<IncoreMenuItem value="EF2" key="EF2">EF2</IncoreMenuItem>
-							<IncoreMenuItem value="EF3" key="EF3">EF3</IncoreMenuItem>
-							<IncoreMenuItem value="EF4" key="EF4">EF4</IncoreMenuItem>
-							<IncoreMenuItem value="EF5" key="EF5">EF5</IncoreMenuItem>
-						</IncoreSelectBox>
-					</Box>
-					<Box className="inputGroup">
-						<IncoreInputLabel>Start and End Points</IncoreInputLabel>
-						<Box className={classes.coordBox}>
-							<InputLabel className={classes.startLabel}>Start: </InputLabel>
-							<input placeholder="set start on map" className={classes.coordInput}
+								<IncoreMenuItem value="EF0" key="EF0">EF0</IncoreMenuItem>
+								<IncoreMenuItem value="EF1" key="EF1">EF1</IncoreMenuItem>
+								<IncoreMenuItem value="EF2" key="EF2">EF2</IncoreMenuItem>
+								<IncoreMenuItem value="EF3" key="EF3">EF3</IncoreMenuItem>
+								<IncoreMenuItem value="EF4" key="EF4">EF4</IncoreMenuItem>
+								<IncoreMenuItem value="EF5" key="EF5">EF5</IncoreMenuItem>
+							</IncoreSelectBox>
+						</Box>
+						<Box className="inputGroup">
+							<IncoreInputLabel>Start and End Points</IncoreInputLabel>
+							<Box className={classes.coordBox}>
+								<InputLabel className={classes.startLabel}>Start: </InputLabel>
+								<input placeholder="set start on map" className={classes.coordInput}
 								   value={startCoord}
 								   onChange={(e) => setStartCoord(e.target.value)}/>
-							<InputLabel className={classes.endLabel}>End: </InputLabel>
-							<input placeholder="set end on map" className={classes.coordInput}
+								<InputLabel className={classes.endLabel}>End: </InputLabel>
+								<input placeholder="set end on map" className={classes.coordInput}
 								   value={endCoord}
 								   onChange={(e) => setEndCoord(e.target.value)}/>
+							</Box>
 						</Box>
-					</Box>
-					<Box className="inputGroup">
-						<IncoreButton variant="contained" onClick={onSave} disabled={disabled}>Save</IncoreButton>
-					</Box>
+						<Box className="inputGroup">
+							<IncoreButton variant="contained" onClick={onSave} disabled={disabled}>Save</IncoreButton>
+						</Box>
+					</LoadingOverlay>
 				</Container>
 			)}
 		</div>

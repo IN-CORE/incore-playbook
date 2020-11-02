@@ -9,7 +9,7 @@ import {IncoreInputLabel} from "./styledComponents/IncoreInputLabel";
 import FileUploadDrop from "./FileUploadDrop";
 
 import {createRasterTornado} from "../utils/hazard";
-
+import LoadingOverlay from "react-loading-overlay";
 
 export default function RasterTornado(props) {
 	const {value, index, handleLayerUpdate, handleListUpdate, ...other} = props;
@@ -19,6 +19,7 @@ export default function RasterTornado(props) {
 	const [name, setName] = useState("");
 	const [description, setDescription] = useState("");
 	const [disabled, setDisabled] = useState(true);
+	const [loading, setLoading] = useState(false);
 
 	// form check
 	useEffect(() => {
@@ -36,6 +37,7 @@ export default function RasterTornado(props) {
 	};
 
 	const onSave = async () => {
+		setLoading(true);
 		// check if all fields are filled:
 		const tornadoJson = await createRasterTornado(name, description, files);
 		if (tornadoJson !== {}) {
@@ -45,6 +47,7 @@ export default function RasterTornado(props) {
 			setName("");
 			setDescription("");
 		}
+		setLoading(false);
 	};
 
 	const onDeleteClick = (filename) => {
@@ -57,23 +60,30 @@ export default function RasterTornado(props) {
 			 {...other}
 		>
 			{value === index && (
+
 				<Container>
-					<Box className="inputGroup">
-						<IncoreInputLabel>Name</IncoreInputLabel>
-						<IncoreTextField value={name} variant="outlined" onChange={(e) => setName(e.target.value)}/>
-					</Box>
-					<Box className="inputGroup">
-						<IncoreInputLabel>Description</IncoreInputLabel>
-						<IncoreTextField value={description} variant="outlined"
+					<LoadingOverlay
+						active={loading}
+						spinner
+						text="Saving..."
+					>
+						<Box className="inputGroup">
+							<IncoreInputLabel>Name</IncoreInputLabel>
+							<IncoreTextField value={name} variant="outlined" onChange={(e) => setName(e.target.value)}/>
+						</Box>
+						<Box className="inputGroup">
+							<IncoreInputLabel>Description</IncoreInputLabel>
+							<IncoreTextField value={description} variant="outlined"
 										 onChange={(e) => setDescription(e.target.value)}/>
-					</Box>
-					<Box className="inputGroup">
-						<FileUploadDrop onDrop={onDrop} onFileInputChange={onFileInputChange} fileInput={fileInputRef}
-							files={files} onDeleteClick={onDeleteClick}/>
-					</Box>
-					<Box className="inputGroup">
-						<IncoreButton variant="contained" onClick={onSave} disabled={disabled}>Save</IncoreButton>
-					</Box>
+						</Box>
+						<Box className="inputGroup">
+							<FileUploadDrop onDrop={onDrop} onFileInputChange={onFileInputChange} fileInput={fileInputRef}
+								files={files} onDeleteClick={onDeleteClick}/>
+						</Box>
+						<Box className="inputGroup">
+							<IncoreButton variant="contained" onClick={onSave} disabled={disabled}>Save</IncoreButton>
+						</Box>
+					</LoadingOverlay>
 				</Container>
 			)}
 		</div>

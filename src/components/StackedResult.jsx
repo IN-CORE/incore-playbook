@@ -1,8 +1,15 @@
 import React from "react";
 import {Bar} from "react-chartjs-2";
+import "chartjs-plugin-zoom";
+import {Button} from "@material-ui/core";
 
 export function StackedResult(props) {
 	let {categorySummary} = props;
+	const ref = React.useRef();
+
+	const resetClick = () => {
+		ref.current.chartInstance.resetZoom();
+	};
 
 	let categories = [];
 	let totals = [];
@@ -87,12 +94,41 @@ export function StackedResult(props) {
 					maxTicksLimit: 6
 				}
 			}],
+		},
+		plugins: {
+			zoom: {
+				pan:{
+					enabled: false,
+				},
+				zoom: {
+					enabled: true,
+					mode: "y",
+					// Drag-to-zoom effect. Set same to false to disable
+					drag: {
+						 borderColor: "rgba(225,225,225,0.3)",
+						 borderWidth: 5,
+						 backgroundColor: "rgb(225,225,225)",
+						 animationDuration: 0
+					},
+					rangeMin: {
+						x: 0,
+						y: 0
+					},
+				}
+			}
 		}
 	};
 
 	return(
-		<div style={{maxWidth: "900px", height: "180px"}}>
-			<Bar data={data} options={options}/>
+		<div>
+			<div style={{textAlign: "right"}}>
+				<Button onClick={resetClick} variant="outlined" size="small" className="compactButton">Reset Zoom</Button>
+			</div>
+			<div style={{maxWidth: "900px", height: "180px"}}>
+				<Bar data={data} options={options}
+							 ref={ref}/>
+			</div>
+
 		</div>
 	);
 

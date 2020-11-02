@@ -22,7 +22,7 @@ const useStyles = makeStyles((theme) => ({
 		margin: "auto"
 	},
 	loginFieldsContainer:{
-		width: "320px",
+		width: "360px",
 		marginLeft: 0,
 		paddingLeft: 0
 	},

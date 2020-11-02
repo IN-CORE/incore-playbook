@@ -31,7 +31,7 @@ const useStyles = makeStyles({
 		lineHeight: "14px"
 	},
 	tableBodyRow:{
-		height: "75px",
+		// height: "75px",
 	},
 	tableBodyCell:{
 		height: "21px",
