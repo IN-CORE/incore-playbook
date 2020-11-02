@@ -25,6 +25,7 @@ import {IncoreMenuItem, IncoreSelectBox} from "./styledComponents/IncoreSelect";
 import FilterListIcon from "@material-ui/icons/FilterList";
 
 import {EntryTable} from "./EntryTable";
+import PageBanner from "./Banner";
 
 const styles = {
 	tabDiv: {
@@ -235,8 +236,8 @@ class CommunityHazards extends React.Component {
 		return (
 			<Layout>
 				<div className="firstDivInContent">
-					{/*<PageBanner parentStep="Form a Collaborative Planning CommunityHazards"*/}
-					{/*			childStep="Identify a Resilience Leader for the Community"/>*/}
+					<PageBanner parentStep="Determine Goals & Objectives"
+						childStep="Define Community Hazards" taskNo="3" subtaskNo="3-3"/>
 					<Box className="outerBox">
 						{/*List created tornadoes*/}
 						<Container className="entryTableContainer">

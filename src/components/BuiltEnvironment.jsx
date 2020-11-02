@@ -91,7 +91,7 @@ export default function BuiltEnvironment(props) {
 
 			<div className="firstDivInContent">
 				<PageBanner parentStep="Understand the Situation"
-					childStep="Identify & Characterize the Built Environment"/>
+					childStep="Identify & Characterize the Built Environment" taskNo="2" subtaskNo="2-4"/>
 				<Box className="outerBox">
 					{/*List uploaded datasets*/}
 					<Container className="entryTableContainer">

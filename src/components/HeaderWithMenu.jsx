@@ -112,7 +112,8 @@ const useStyles = makeStyles((theme) => ({
 	},
 	parentMenu: {
 		fontWeight: 500,
-		backgroundColor: "rgba(0, 97, 157, 0.1)"
+		backgroundColor: "rgba(0, 97, 157, 0.1)",
+		textTransform: "capitalize"
 	}
 }));
 
@@ -204,13 +205,25 @@ const HeaderWithMenu = ({dispatch, isAuthenticated}) => {
 			nodes: [
 				{
 					key: "1-1",
-					label: " Identify leader",
+					label: "Identify leader",
 					completed: false,
 					route: "/create-team"
 				},
 				{
 					key: "1-2",
-					label: " Identify Team Members",
+					label: "Identify Team Members",
+					completed: true,
+					disabled: true
+				},
+				{
+					key: "1-3",
+					label: "Establish the scope",
+					completed: true,
+					disabled: true
+				},
+				{
+					key: "1-4",
+					label: " Identify key stakeholders",
 					completed: true,
 					disabled: true
 				},
@@ -220,6 +233,18 @@ const HeaderWithMenu = ({dispatch, isAuthenticated}) => {
 			key: "2",
 			label: "Understanding the Situation",
 			nodes: [
+				{
+					key: "2-1",
+					label: "Assess existing community plans",
+					completed: true,
+					disabled: true
+				},
+				{
+					key: "2-2",
+					label: "Characterize community members",
+					completed: true,
+					disabled: true
+				},
 				{
 					key: "2-3",
 					label: "Characterize social functions",
@@ -246,6 +271,20 @@ const HeaderWithMenu = ({dispatch, isAuthenticated}) => {
 			label: "Determine Goals & Objectives",
 			nodes: [
 				{
+					key: "3-1",
+					label: "Identify long-term community goals",
+					completed: true,
+					disabled: true,
+					route: "/define-community-hazards"
+				},
+				{
+					key: "3-2",
+					label: "Establish performance goals",
+					completed: true,
+					disabled: true,
+					route: "/define-community-hazards"
+				},
+				{
 					key: "3-3",
 					label: "Define community hazards",
 					completed: false,
@@ -258,8 +297,87 @@ const HeaderWithMenu = ({dispatch, isAuthenticated}) => {
 					completed: false,
 					route: "/determine-anticipated-performance"
 				},
+				{
+					key: "3-5",
+					label: "Summarize the results",
+					completed: true,
+					disabled: true,
+					route: "/define-community-hazards"
+				},
 			],
 		},
+		{
+			key: "4",
+			label: "Plan Development",
+			nodes: [
+				{
+					key: "4-1",
+					label: "Evaluate Gaps",
+					completed: true,
+					disabled: true
+				},
+				{
+					key: "4-2",
+					label: "Identify Solutions",
+					completed: true,
+					disabled: true
+				},
+				{
+					key: "4-3",
+					label: "Prioritize implementation strategy",
+					completed: true,
+					disabled: true
+				},
+			]
+		},
+		{
+			key: "5",
+			label: "Plan Prep, Review, & Approval",
+			nodes: [
+				{
+					key: "5-1",
+					label: "Document Plans & Strategy",
+					completed: true,
+					disabled: true
+				},
+				{
+					key: "5-2",
+					label: "Obtain Feedback & Approval",
+					completed: true,
+					disabled: true
+				},
+				{
+					key: "5-3",
+					label: "Finalize & Approve The Plan",
+					completed: true,
+					disabled: true
+				},
+			]
+		},
+		{
+			key: "6",
+			label: "Plan Implementation & Maintenance",
+			nodes: [
+				{
+					key: "6-1",
+					label: "Execute approved solutions",
+					completed: true,
+					disabled: true
+				},
+				{
+					key: "6-2",
+					label: "Evaluate & Update",
+					completed: true,
+					disabled: true
+				},
+				{
+					key: "6-3",
+					label: "Modify Strategy (as needed)",
+					completed: true,
+					disabled: true
+				},
+			]
+		}
 	];
 
 	let menus = [];
@@ -268,9 +386,9 @@ const HeaderWithMenu = ({dispatch, isAuthenticated}) => {
 		let subMenus = [];
 		nodes.map(({key, label, completed, disabled, route}) => {
 			subMenus.push(
-				<ListItem button style={{paddingLeft: 40}} key={key} selected={openSubMenu === key}
+				<ListItem button style={{paddingLeft: 40, textTransform: "capitalize"}} key={key} selected={openSubMenu === key}
 				  onClick={handleSubmenuClick(route)} disabled={disabled}>
-					<ListItemText primary={`${key}. ${label}`} />
+					<ListItemText primary={`${key}. ${label}`}  />
 					{completed ? <CheckCircleIcon style={{color: "green"}}/> : "" }
 				</ListItem>
 			);

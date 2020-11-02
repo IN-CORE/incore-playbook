@@ -25,7 +25,8 @@ const Layout = (props) => {
 	return(
 		<div>
 			<Header isAuthenticated={isAuthorized()}/>
-			<div className="masterContent" style={{marginLeft: mLeft, padding: 8}}>
+			<div className="masterContent" style={{marginLeft: mLeft, padding: 8,
+				backgroundColor: "rgba(248, 249, 255, 0.5)"}}>
 				{props.children}
 			</div>
 			<div style={{marginLeft: mLeft}}>

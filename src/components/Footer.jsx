@@ -1,6 +1,9 @@
 import React from "react";
 import {Container} from "@material-ui/core";
 import {makeStyles } from "@material-ui/core/styles";
+import "../public/CSU-logo.png";
+import "../public/resilience-logo.png";
+import "../public/NCSA-logo.png";
 
 const useStyles = makeStyles((theme) => ({
 
@@ -33,17 +36,17 @@ const Footer = () => {
 	const footerLogos = [
 		{
 			name: "CSU",
-			image: "/public/CSU-logo.png",
+			image: "/CSU-logo.png",
 			url: "https://www.colostate.edu/"
 		},
 		{
 			name: "IN-CORE",
-			image: "/public/resilience-logo.png",
+			image: "/resilience-logo.png",
 			url: "http://resilience.colostate.edu/"
 		},
 		{
 			name: "NCSA",
-			image: "/public/NCSA-logo.png",
+			image: "/NCSA-logo.png",
 			url: "http://www.ncsa.illinois.edu/"
 		}
 	];
