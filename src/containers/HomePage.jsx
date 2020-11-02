@@ -37,7 +37,7 @@ export class HomePage extends React.Component {
 							Results
 						</Link>
 
-						<StepStatus statusOptions= {processStatus} status={activeKey} />
+						<StepStatus />
 						<br />
 						<StepDescription stepInfo={stepInfo[0]} />
 					</div>

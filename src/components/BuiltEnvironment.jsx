@@ -5,14 +5,12 @@ import {Box, Container, Grid, IconButton} from "@material-ui/core";
 import Layout from "../containers/Layout";
 import PageBanner from "./Banner";
 import StepStatus from "./StepStatus";
-import {processStatus} from "../globals";
 import StepDescription from "./StepDescription";
 import {stepInfo} from "../app.messages";
 import FileUploadDrop from "./FileUploadDrop";
 import {IncoreInputLabel} from "./styledComponents/IncoreInputLabel";
 import {IncoreTextField} from "./styledComponents/IncoreInput";
 import {IncoreButton} from "./styledComponents/IncoreButton";
-import {IncoreSelectBox, IncoreMenuItem} from "./styledComponents/IncoreSelect";
 
 import {createDataset} from "../utils/dataset";
 import {EntryTable} from "./EntryTable";
@@ -74,6 +72,10 @@ export default function BuiltEnvironment(props) {
 			"columnName" :"title",
 		},
 		{
+			"prettyName": "DESCRIPTION",
+			"columnName": "description"
+		},
+		{
 			"prettyName": "DATE ADDED",
 			"columnName" :"date",
 		},
@@ -93,7 +95,7 @@ export default function BuiltEnvironment(props) {
 				<Box className="outerBox">
 					{/*List uploaded datasets*/}
 					<Container className="entryTableContainer">
-						<Box className="inputGroup">
+						<Box className="entryTableTitle">
 							<IncoreInputLabel>Uploaded Data</IncoreInputLabel>
 							<Box style={{float:"right"}}>
 								<IconButton>
@@ -101,7 +103,7 @@ export default function BuiltEnvironment(props) {
 								</IconButton>
 							</Box>
 						</Box>
-						<Box className="inputGroup">
+						<Box className="entryTable">
 							<EntryTable fieldNames={fieldNames} fields={datasets}/>
 						</Box>
 					</Container>
@@ -127,15 +129,15 @@ export default function BuiltEnvironment(props) {
 										<IncoreInputLabel>Description</IncoreInputLabel>
 										<IncoreTextField value={description} variant="outlined" onChange={(e) => setDescription(e.target.value)}/>
 									</Box>
-									<Box className="inputGroup">
-										<IncoreInputLabel>Select Building Cluster</IncoreInputLabel>
-										<IncoreSelectBox labelId="label" id="select" variant="outlined" defaultValue="criticalFacilities">
-											<IncoreMenuItem value="criticalFacilities" key="criticalFacilities">Critical Facilities</IncoreMenuItem>
-											<IncoreMenuItem value="emergencyHousing" key="emergencyHousing">Emergency Housing</IncoreMenuItem>
-											<IncoreMenuItem value="housingNeighborhood" key="housingNeighborhood">Housing / Neighborhood</IncoreMenuItem>
-											<IncoreMenuItem value="communityRecovery" key="communityRecovery">Community Recovery</IncoreMenuItem>
-										</IncoreSelectBox>
-									</Box>
+									{/*<Box className="inputGroup">*/}
+									{/*	<IncoreInputLabel>Select Building Cluster</IncoreInputLabel>*/}
+									{/*	<IncoreSelectBox labelId="label" id="select" variant="outlined" defaultValue="criticalFacilities">*/}
+									{/*		<IncoreMenuItem value="criticalFacilities" key="criticalFacilities">Critical Facilities</IncoreMenuItem>*/}
+									{/*		<IncoreMenuItem value="emergencyHousing" key="emergencyHousing">Emergency Housing</IncoreMenuItem>*/}
+									{/*		<IncoreMenuItem value="housingNeighborhood" key="housingNeighborhood">Housing / Neighborhood</IncoreMenuItem>*/}
+									{/*		<IncoreMenuItem value="communityRecovery" key="communityRecovery">Community Recovery</IncoreMenuItem>*/}
+									{/*	</IncoreSelectBox>*/}
+									{/*</Box>*/}
 									<Box className="inputGroup">
 										<IncoreButton variant="contained" onClick={onSave} disabled={disabled}>Save</IncoreButton>
 									</Box>
@@ -143,7 +145,7 @@ export default function BuiltEnvironment(props) {
 							</LoadingOverlay>
 						</Grid>
 						<Grid item className="gridItem">
-							<StepStatus statusOptions={processStatus} status={activeKey} />
+							<StepStatus />
 							<StepDescription stepInfo={stepInfo[1]} />
 						</Grid>
 					</Grid>

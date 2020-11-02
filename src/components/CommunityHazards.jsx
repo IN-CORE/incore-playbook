@@ -138,6 +138,10 @@ class CommunityHazards extends React.Component {
 				"handleClick": this.hazardIdClick
 			},
 			{
+				"prettyName": "DESCRIPTION",
+				"columnName": "description"
+			},
+			{
 				"prettyName": "DATE ADDED",
 				"columnName": "date",
 			},
@@ -236,15 +240,15 @@ class CommunityHazards extends React.Component {
 					<Box className="outerBox">
 						{/*List created tornadoes*/}
 						<Container className="entryTableContainer">
-							<Box className="inputGroup">
-								<IncoreInputLabel>Created Hazards</IncoreInputLabel>
-								<Box style={{float: "right"}}>
+							<Box className="entryTableTitle">
+								<IncoreInputLabel>Created Hazard</IncoreInputLabel>
+								<Box style={{float:"right"}}>
 									<IconButton>
 										<FilterListIcon/>
 									</IconButton>
 								</Box>
 							</Box>
-							<Box className="inputGroup">
+							<Box className="entryTable">
 								<EntryTable fieldNames={this.fieldNames} fields={this.props.tornadoes}/>
 							</Box>
 						</Container>

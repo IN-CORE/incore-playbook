@@ -1,38 +1,23 @@
-import * as React from "react";
-import {withStyles} from "@material-ui/core";
+import React, {useState} from "react";
 import "../styles/step-status.css";
+import { processStatus } from "../globals";
 
-const styles = {
+export default function StepStatus(props){
 
-};
+	const [activeKey, setActiveKey] = useState("inprogress");
 
-
-class StepStatus extends React.Component {
-	constructor(props) {
-		super(props);
-	}
-
-	componentDidMount() {
-
-	}
-
-	render() {
-		const processStatus = this.props.statusOptions;
-
-		return (
-			<div>
-				<div className={"stepStatus"}>
-					Step Status
-				</div>
-				<div className={"statusBox"}>
-					{processStatus.map((status, index) => (
-						<div  key={index} className={`statusInfo ${this.props.status === status.key ? "active": ""}`}>
-							<div style={{paddingTop:2}}>{status.name}</div>
-						</div>))}
-				</div>
+	return (
+		<div>
+			<div className={"stepStatus"}>
+				Step Status
 			</div>
-		);
-	}
+			<div className={"statusBox"}>
+				{processStatus.map((status, index) => (
+					<div key={index} className={`statusInfo ${ activeKey === status.key ? "active": ""}`} >
+						<div style={{paddingTop:2, cursor: "pointer"}} onClick={()=>{setActiveKey(status.key);}}>
+							{status.name}</div>
+					</div>))}
+			</div>
+		</div>
+	);
 }
-
-export default withStyles(styles)(StepStatus);

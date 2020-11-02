@@ -19,7 +19,7 @@ const useStyles = makeStyles({
 		minWidth: 650,
 	},
 	tableHeaderRow: {
-		height: "34px",
+		// height: "34px",
 	},
 	tableHeaderCell:{
 		height: "14px",
@@ -91,8 +91,8 @@ export function EntryTable(props) {
 
 	const { fieldNames, fields } = props;
 
-	const [order, setOrder] = useState("asc");
-	const [orderBy, setOrderBy] = React.useState("title");
+	const [order, setOrder] = useState("desc");
+	const [orderBy, setOrderBy] = React.useState("date");
 
 	const handleRequestSort = (event, property) => {
 		const isAsc = orderBy === property && order === "asc";

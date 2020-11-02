@@ -14,7 +14,7 @@ export function receiveDatasets(type, json){
 	};
 }
 
-export function fetchDatasets(limit=5, offset=0, dataType="ergo:buildingInventoryVer6"){
+export function fetchDatasets(limit=20, offset=0, dataType="ergo:buildingInventoryVer6"){
 	let endpoint = `${config.dataServiceBase}datasets?limit=${limit}&skip=${offset}&type=${dataType}`;
 
 	// default to current user's space

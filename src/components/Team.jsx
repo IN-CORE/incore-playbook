@@ -9,16 +9,13 @@ import StepDescription from "./StepDescription";
 import PageBanner from "./Banner";
 import Layout from "../containers/Layout";
 import {stepInfo} from "../app.messages";
-import {processStatus} from "../globals";
 
 
 class Team extends React.Component {
 
 	constructor(props) {
 		super(props);
-		this.state = {
-			activeKey: "inprogress"
-		};
+		this.state = {};
 
 		this.handleStepStatusChange = this.handleStepStatusChange.bind(this);
 	}
@@ -45,7 +42,7 @@ class Team extends React.Component {
 								<UserInfo userList={this.props.userList} handleStepStatusChange={this.handleStepStatusChange}/>
 							</Grid>
 							<Grid item className="gridItem">
-								<StepStatus statusOptions={processStatus} status={this.state.activeKey} />
+								<StepStatus />
 								<StepDescription stepInfo={stepInfo[0]} />
 							</Grid>
 						</Grid>

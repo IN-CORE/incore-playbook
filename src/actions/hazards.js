@@ -14,7 +14,7 @@ export function receiveTornadoes(type, json){
 	};
 }
 
-export function fetchTornadoes(limit=5, offset=0){
+export function fetchTornadoes(limit=20, offset=0){
 	let endpoint = `${config.hazardServiceBase}tornadoes?limit=${limit}&skip=${offset}`;
 
 	// default to current user's space

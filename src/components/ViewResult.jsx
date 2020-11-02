@@ -24,7 +24,7 @@ import {ResultTable} from "./ResultTable";
 import {StackedResult} from "./StackedResult";
 
 import CloseIcon from "@material-ui/icons/Close";
-import {ResultSummaryTable} from "./resultSummaryTable";
+import {ResultSummaryTable} from "./ResultSummaryTable";
 
 const useStyles = makeStyles({
 	statTitle:{

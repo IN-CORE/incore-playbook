@@ -48,7 +48,7 @@ export function ResultSummaryTable(props) {
 					<TableCell align="left" className={classes.tableBodyCellRight}>Buildings</TableCell>
 				</TableRow>
 				<TableRow align="right" className={classes.tableBodyRow}>
-					<TableCell align="left" component="th" scope="row" className={classes.tableBodyCellLeft}>run time</TableCell>
+					<TableCell align="left" component="th" scope="row" className={classes.tableBodyCellLeft}>run at</TableCell>
 					<TableCell align="left" className={classes.tableBodyCellRight}>{runtime}</TableCell>
 				</TableRow>
 			</TableBody>
