@@ -99,4 +99,4 @@ export const usersList = [
 		"lastName": "Naraharisetty",
 		"email": "vnarah2@illinois.edu"
 	}
-]
+];

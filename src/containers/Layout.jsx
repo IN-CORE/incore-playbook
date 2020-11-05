@@ -1,7 +1,7 @@
 import React, {useEffect} from "react";
 import {connect} from "react-redux";
 import Header from "../components/HeaderWithMenu";
-import Footer from "../components/Footer";
+// import Footer from "../components/Footer";
 import {globals} from "../globals";
 import { useHistory } from "react-router-dom";
 
@@ -29,10 +29,9 @@ const Layout = (props) => {
 				backgroundColor: "rgba(248, 249, 255, 0.5)"}}>
 				{props.children}
 			</div>
-			<div style={{marginLeft: mLeft}}>
-				<Footer />
-			</div>
-
+			{/*<div style={{marginLeft: mLeft}}>*/}
+			{/*	<Footer />*/}
+			{/*</div>*/}
 
 		</div>
 	);

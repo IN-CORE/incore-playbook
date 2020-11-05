@@ -1,6 +1,6 @@
 import React from "react";
 import {connect} from "react-redux";
-import { useHistory } from "react-router-dom";
+import {Link, useHistory} from "react-router-dom";
 import {makeStyles, useTheme } from "@material-ui/core/styles";
 import clsx from "clsx";
 import AppBar from "@material-ui/core/AppBar";
@@ -426,7 +426,7 @@ const HeaderWithMenu = ({dispatch, isAuthenticated}) => {
 						<MenuIcon className={classes.menuIcon} />
 					</IconButton>
 
-					<a href="/" className={classes.titleLink}>
+					<Link to="/" className={classes.titleLink}>
 
 						<Grid container justify="center">
 							<Grid item>
@@ -445,7 +445,7 @@ const HeaderWithMenu = ({dispatch, isAuthenticated}) => {
 								</div>
 							</Grid>
 						</Grid>
-					</a>
+					</Link>
 
 					<div className={classes.grow} />
 					<div className={isAuthenticated ? classes.sectionDesktop: classes.hide}>

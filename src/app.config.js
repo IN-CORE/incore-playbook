@@ -1,6 +1,6 @@
 let apiprotocol = "https";
 
-let config = {};
+let config;
 let apihost;
 let apiurl;
 
@@ -8,6 +8,7 @@ if (process.env.DEPLOY_ENV === "production") {
 	apihost = "incore.ncsa.illinois.edu";
 	apiurl = `${apiprotocol}://${apihost}`;
 	config = {
+		baseUrlRoute: "playbook",
 		geoServerWMS: "https://incore-geoserver.ncsa.illinois.edu/geoserver/incore/wms",
 		geoServerWFS: "https://incore-geoserver.ncsa.illinois.edu/geoserver/incore/ows",
 	};
@@ -15,6 +16,7 @@ if (process.env.DEPLOY_ENV === "production") {
 	apihost = "incore-test-kube.ncsa.illinois.edu";
 	apiurl = `${apiprotocol}://${apihost}`;
 	config = {
+		baseUrlRoute: "playbook",
 		geoServerWMS: "https://incore-test-kube.ncsa.illinois.edu/geoserver/incore/wms",
 		geoServerWFS: "https://incore-test-kube.ncsa.illinois.edu/geoserver/incore/ows",
 	};
@@ -22,6 +24,7 @@ if (process.env.DEPLOY_ENV === "production") {
 	apihost = "localhost:8080";
 	apiurl = `http://${apihost}`;
 	config = {
+		baseUrlRoute: "",
 		geoServerWMS: "https://incore-test-kube.ncsa.illinois.edu/geoserver/incore/wms",
 		geoServerWFS: "https://incore-test-kube.ncsa.illinois.edu/geoserver/incore/ows",
 	};
@@ -29,6 +32,7 @@ if (process.env.DEPLOY_ENV === "production") {
 	apihost = "incore-dev-kube.ncsa.illinois.edu";
 	apiurl = `${apiprotocol}://${apihost}`;
 	config = {
+		baseUrlRoute: "playbook",
 		geoServerWMS: "https://incore-dev-kube.ncsa.illinois.edu/geoserver/incore/wms",
 		geoServerWFS: "https://incore-dev-kube.ncsa.illinois.edu/geoserver/incore/ows",
 	};
@@ -36,6 +40,7 @@ if (process.env.DEPLOY_ENV === "production") {
 	apihost = "";
 	apiurl = "";
 	config = {
+		baseUrlRoute: "playbook",
 		geoServerWMS: "/geoserver/incore/wms",
 		geoServerWFS: "https://incore-geoserver.ncsa.illinois.edu/geoserver/incore/ows",
 	};

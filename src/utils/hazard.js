@@ -1,7 +1,7 @@
 import config from "../app.config";
 import {getHeader} from "./common";
 
-export async function createModelTornado(name, description, rating, startLat, startLon, endLat, endLon){
+export async function createModelTornado(name, description, rating, startLat, startLon, endLat, endLon) {
 	const endpoint = `${config.hazardServiceBase}tornadoes`;
 	let formData = new FormData();
 	let tornadoMetadata = {
@@ -27,20 +27,18 @@ export async function createModelTornado(name, description, rating, startLat, st
 		body: formData,
 	});
 
-	if (tornadoRequest.status  === 200){
+	if (tornadoRequest.status === 200) {
 		return tornadoRequest.json();
-	}
-	else if  (tornadoRequest.status  === 401){
+	} else if (tornadoRequest.status === 401) {
 		// TODO handle error
 		return {};
-	}
-	else {
+	} else {
 		// TODO handle error
 		return {};
 	}
 }
 
-export async function createRasterTornado(name, description, files){
+export async function createRasterTornado(name, description, files) {
 	const endpoint = `${config.hazardServiceBase}tornadoes`;
 	let formData = new FormData();
 
@@ -62,14 +60,26 @@ export async function createRasterTornado(name, description, files){
 		body: formData,
 	});
 
-	if (tornadoRequest.status  === 200){
+	if (tornadoRequest.status === 200) {
 		return tornadoRequest.json();
-	}
-	else if  (tornadoRequest.status  === 401){
+	} else if (tornadoRequest.status === 401) {
+		// TODO handle error
+		return {};
+	} else {
 		// TODO handle error
 		return {};
 	}
-	else {
+}
+
+export async function getTornadoMetadata(tornadoId) {
+	let endpoint = `${config.hazardServiceBase}tornadoes/${tornadoId}`;
+	let tornadoRequest = await fetch(endpoint, {mode: "cors", headers: getHeader()});
+	if (tornadoRequest.status === 200) {
+		return tornadoRequest.json();
+	} else if (tornadoRequest.status === 401) {
+		// TODO handle error
+		return {};
+	} else {
 		// TODO handle error
 		return {};
 	}

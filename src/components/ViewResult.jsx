@@ -11,6 +11,8 @@ import {EntryTable} from "./EntryTable";
 import datawolfConfig from "../datawolf.config";
 
 import { getOutputFileJson } from "../utils/datawolf";
+import { getTornadoMetadata } from "../utils/hazard";
+
 import Map from "./Map";
 import {globals} from "../globals";
 import {fromLonLat} from "ol/proj";
@@ -144,7 +146,10 @@ export default function ViewResult(props) {
 			// file that has incore dataset ID in it that's what i need to generate the map
 			let bldgMaxDamageStateId = executionItem["datasets"][datawolfConfig["bldgMaxDamageStateId"]];
 			let bldgMaxDamageStateINCOREId = await getOutputFileJson(bldgMaxDamageStateId);
-			handleLayerUpdate(bldgMaxDamageStateINCOREId);
+			let hazardId = executionItem["parameters"][datawolfConfig["parameters"]["hazardId"]];
+			let hazardMetadata = await getTornadoMetadata(hazardId);
+			let hazardDatasetId = hazardMetadata["datasetId"];
+			handleLayerUpdate(hazardDatasetId, bldgMaxDamageStateINCOREId);
 
 			let summaryTableId = executionItem["datasets"][datawolfConfig["summaryTableId"]];
 			let summaryTable = await getOutputFileJson(summaryTableId);
@@ -189,23 +194,36 @@ export default function ViewResult(props) {
 	];
 
 	// for map
-	const handleLayerUpdate = (layerId) => {
-		const source = new TileWMS({
+	const handleLayerUpdate = (hazardDatasetId, layerId) => {
+		const damageSource = new TileWMS({
 			url: `${config.geoServerWMS}`,
 			params: {LAYERS: layerId, STYLES: "incore:bldg-dmg-summary"},
 			ratio: 1,
 			serverType: "geoserver"
 		});
-		let HazardMapLayer = new TileLayer({
+		let damageMapLayer = new TileLayer({
 			title: "Building Damage",
-			source: source,
+			source: damageSource,
 			zIndex: 1,
 			opacity: 1
 		});
 
+		const hazardSource = new TileWMS({
+			url: `${config.geoServerWMS}`,
+			params: {LAYERS: hazardDatasetId, STYLES: "incore:tornado"},
+			ratio: 1,
+			serverType: "geoserver"
+		});
+		let hazardMapLayer = new TileLayer({
+			title: "Tornado Hazard",
+			source: hazardSource,
+			zIndex: 1,
+			opacity: 0.5
+		});
+
 		layers["tilelayer"] = new GroupLayer({
 			title: "Damage",
-			layers: [HazardMapLayer]
+			layers: [damageMapLayer, hazardMapLayer]
 		});
 	};
 
@@ -267,7 +285,7 @@ export default function ViewResult(props) {
 						<Container className={classes.mapContainer} disableGutters>
 							<Map
 								className="fillContainer"
-								zoom={13}
+								zoom={12}
 								minZoom={5}
 								maxZoom={15}
 								extent={globals.JOPLIN_MAP_BOUNDS}

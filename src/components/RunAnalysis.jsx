@@ -18,6 +18,7 @@ import {stepInfo} from "../app.messages";
 import {IncoreTextField} from "./styledComponents/IncoreInput";
 
 import {submitExecution} from "../utils/datawolf";
+import PoweredBy from "../public/powered-by-incore.svg";
 
 const useStyles = makeStyles({
 	runButton:{
@@ -168,7 +169,7 @@ export default function ViewResult(props) {
 						<IncoreInputLabel>Run the Analysis</IncoreInputLabel>
 						<Button variant="contained" color="primary" onClick={handleRunButtonClick}
 									  disabled={disabled}
-									  endIcon={<Avatar src={"../public/powered-by-incore.svg"} className={classes.avatarStyle}/>}
+									  endIcon={<Avatar src={PoweredBy} className={classes.avatarStyle}/>}
 									  classes={{ root: classes.runButton, endIcon: classes.endIconStyle}}
 						>
 							CALCULATE THE HAZARD RISK
