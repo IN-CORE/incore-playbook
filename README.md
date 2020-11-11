@@ -3,8 +3,6 @@ NIST Community Resilience Planning Playbook
 
 **Work in Progress**
 
-Uses react.js, redux, webpack, babel, handsontable
-
 Requirements: [Node.js](https://nodejs.org) and [Yarn](https://yarnpkg.com).
 
 Install dependencies: `yarn install` or `npm install`
