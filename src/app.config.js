@@ -28,13 +28,13 @@ if (process.env.DEPLOY_ENV === "production") {
 		geoServerWMS: "https://incore-test-kube.ncsa.illinois.edu/geoserver/incore/wms",
 		geoServerWFS: "https://incore-test-kube.ncsa.illinois.edu/geoserver/incore/ows",
 	};
-} else if (process.env.DEPLOY_ENV === "develop") {
-	apihost = "incore-dev-kube.ncsa.illinois.edu";
+} else if (process.env.DEPLOY_ENV === "development") {
+	apihost = "incore-dev.ncsa.illinois.edu";
 	apiurl = `${apiprotocol}://${apihost}`;
 	config = {
 		baseUrlRoute: "playbook",
-		geoServerWMS: "https://incore-dev-kube.ncsa.illinois.edu/geoserver/incore/wms",
-		geoServerWFS: "https://incore-dev-kube.ncsa.illinois.edu/geoserver/incore/ows",
+		geoServerWMS: "https://incore-dev.ncsa.illinois.edu/geoserver/incore/wms",
+		geoServerWFS: "https://incore-dev.ncsa.illinois.edu/geoserver/incore/ows",
 	};
 } else { // default case that used dev environment
 	apihost = "";
