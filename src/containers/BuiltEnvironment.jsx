@@ -5,14 +5,15 @@ import {fetchDatasets} from "../actions/datasets";
 
 const mapStateToProps = (state) => {
 	return {
-		datasets: state.dataset.datasets
+		buildings: state.dataset.buildings,
+		epfs: state.dataset.epfs
 	};
 };
 
 const mapDispatchToProps = (dispatch) => {
 	return {
-		listDatasets: (limit, offset, dataType) => {
-			dispatch(fetchDatasets(limit, offset, dataType));
+		listDatasets: (limit, offset, type) => {
+			dispatch(fetchDatasets(limit, offset, type));
 		}
 	};
 };

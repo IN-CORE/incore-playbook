@@ -7,11 +7,7 @@ import PageBanner from "./Banner";
 import StepStatus from "./StepStatus";
 import StepDescription from "./StepDescription";
 import {stepInfo} from "../app.messages";
-import FileUploadDrop from "./FileUploadDrop";
 import {IncoreInputLabel} from "./styledComponents/IncoreInputLabel";
-import {IncoreTextField} from "./styledComponents/IncoreInput";
-import {IncoreMenuItem, IncoreSelectBox} from "./styledComponents/IncoreSelect";
-import {IncoreButton} from "./styledComponents/IncoreButton";
 
 import {createDataset} from "../utils/dataset";
 import {EntryTable} from "./EntryTable";
@@ -20,7 +16,7 @@ import FilterListIcon from "@material-ui/icons/FilterList";
 import LoadingOverlay from "react-loading-overlay";
 
 export default function BuiltEnvironment(props) {
-	const { listDatasets, datasets } = props;
+	const {listDatasets, buildings, epfs} = props;
 	const fileInputRef = useRef(null);
 	const [files, setFile] = useState([]);
 	const [activeKey, setActiveKey] = useState("inprogress");
@@ -31,7 +27,10 @@ export default function BuiltEnvironment(props) {
 	const [loading, setLoading] = useState(false);
 
 	// load uploaded dataset
-	useEffect(() => { listDatasets();}, []);
+	useEffect(() => {
+		listDatasets(20, 0, "ergo:buildingInventoryVer6");
+		listDatasets(20, 0, "incore:epf");
+	}, []);
 
 	// form check
 	useEffect(() => {
@@ -58,7 +57,8 @@ export default function BuiltEnvironment(props) {
 		if (datasetJson !== {}) {
 
 			// update table to show uploaded data
-			listDatasets();
+			listDatasets(20, 0, "ergo:buildingInventoryVer6");
+			listDatasets(20, 0, "incore:epf");
 
 			setFile([]);
 			setTitle("");
@@ -72,7 +72,7 @@ export default function BuiltEnvironment(props) {
 	const fieldNames = [
 		{
 			"prettyName": "NAME",
-			"columnName" :"title",
+			"columnName": "title",
 		},
 		{
 			"prettyName": "DESCRIPTION",
@@ -80,7 +80,7 @@ export default function BuiltEnvironment(props) {
 		},
 		{
 			"prettyName": "DATE ADDED",
-			"columnName" :"date",
+			"columnName": "date",
 		}
 	];
 
@@ -104,41 +104,40 @@ export default function BuiltEnvironment(props) {
 									<Box>
 										<Box className="entryTableTitle">
 											<IncoreInputLabel>Building Inventory</IncoreInputLabel>
-											<Box style={{float:"right"}}>
+											<Box style={{float: "right"}}>
 												<IconButton>
 													<FilterListIcon/>
 												</IconButton>
 											</Box>
 										</Box>
 										<Box className="entryTable">
-											<EntryTable fieldNames={fieldNames} fields={datasets}/>
+											<EntryTable fieldNames={fieldNames} fields={buildings}/>
 										</Box>
 									</Box>
 									{/*list of uploaded EPF inventory*/}
 									<Box>
 										<Box className="entryTableTitle">
 											<IncoreInputLabel>Electric Power Facility</IncoreInputLabel>
-											<Box style={{float:"right"}}>
+											<Box style={{float: "right"}}>
 												<IconButton>
 													<FilterListIcon/>
 												</IconButton>
 											</Box>
 										</Box>
 										<Box className="entryTable">
-											<EntryTable fieldNames={fieldNames} fields={datasets}/>
+											<EntryTable fieldNames={fieldNames} fields={epfs}/>
 										</Box>
 									</Box>
 								</Container>
 							</LoadingOverlay>
 						</Grid>
 						<Grid item className="gridItem">
-							<StepStatus />
-							<StepDescription stepInfo={stepInfo[1]} />
+							<StepStatus/>
+							<StepDescription stepInfo={stepInfo[1]}/>
 						</Grid>
 					</Grid>
 				</Box>
 			</div>
-
 
 
 		</Layout>

@@ -71,7 +71,8 @@ export default function ViewResult(props) {
 
 	// load datasets and tornadoes
 	useEffect(() =>{
-		listDatasets();
+		listDatasets(20, 0, "ergo:buildingInventoryVer6");
+		listDatasets(20, 0, "incore:epf");
 		listTornadoes();}, []);
 
 	// form check
