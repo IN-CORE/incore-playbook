@@ -59,7 +59,7 @@ const useStyles = makeStyles({
 });
 
 export default function ViewResult(props) {
-	const {value, index, listTornadoes, tornadoes, listDatasets, datasets,
+	const {value, index, listTornadoes, tornadoes, listDatasets, buildings, epfs,
 		getExecutionList, gotoViewResultTab, ...other} = props;
 
 	const [title, setTitle] = useState("");
@@ -117,17 +117,49 @@ export default function ViewResult(props) {
 			</Grid>
 			<Grid container spacing={3}>
 				<Grid item className="gridItem">
-					<Box className="inputGroup">
-						<IncoreInputLabel>Select a Building, Building Cluster, or Infrastructure Entity
+					<Box className="inputGroup" style={{height: "auto"}}>
+						<IncoreInputLabel>Select a Building, Building Cluster
 						</IncoreInputLabel>
 						<IncoreSelectBox labelId="label" id="select" variant="outlined"
 										 onChange={(e)=>{ setDatasetId(e.target.value); }}
 										 value={selectedDatasetId}>
 							{
-								datasets.map((dataset) => {
+								buildings.map((building) => {
 									return (
-										<IncoreMenuItem value={dataset["id"]} key={dataset["id"]}>
-											{dataset["title"]}</IncoreMenuItem>
+										<IncoreMenuItem value={building["id"]} key={building["id"]}>
+											{building["title"]}</IncoreMenuItem>
+									);
+								})
+							}
+						</IncoreSelectBox>
+					</Box>
+					<Box className="inputGroup" style={{height: "auto"}}>
+						<IncoreInputLabel>Select Electric Power Facilities (Poles)
+						</IncoreInputLabel>
+						<IncoreSelectBox labelId="label" id="select" variant="outlined"
+										 onChange={(e)=>{ setDatasetId(e.target.value); }}
+										 value={selectedDatasetId}>
+							{
+								epfs.map((epf) => {
+									return (
+										<IncoreMenuItem value={epf["id"]} key={epf["id"]}>
+											{epf["title"]}</IncoreMenuItem>
+									);
+								})
+							}
+						</IncoreSelectBox>
+					</Box>
+					<Box className="inputGroup" style={{height: "auto"}}>
+						<IncoreInputLabel>Select Electric Power Facilities (Substation)
+						</IncoreInputLabel>
+						<IncoreSelectBox labelId="label" id="select" variant="outlined"
+										 onChange={(e)=>{ setDatasetId(e.target.value); }}
+										 value={selectedDatasetId}>
+							{
+								epfs.map((epf) => {
+									return (
+										<IncoreMenuItem value={epf["id"]} key={epf["id"]}>
+											{epf["title"]}</IncoreMenuItem>
 									);
 								})
 							}
