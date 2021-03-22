@@ -12,7 +12,7 @@ import {IncoreInputLabel} from "./styledComponents/IncoreInputLabel";
 import {createDataset} from "../utils/dataset";
 import {EntryTable} from "./EntryTable";
 
-import FilterListIcon from "@material-ui/icons/FilterList";
+import AddCircleOutlineIcon from "@material-ui/icons/AddCircleOutline";
 import LoadingOverlay from "react-loading-overlay";
 
 export default function BuiltEnvironment(props) {
@@ -75,10 +75,6 @@ export default function BuiltEnvironment(props) {
 			"columnName": "title",
 		},
 		{
-			"prettyName": "DESCRIPTION",
-			"columnName": "description"
-		},
-		{
 			"prettyName": "DATE ADDED",
 			"columnName": "date",
 		}
@@ -106,7 +102,7 @@ export default function BuiltEnvironment(props) {
 											<IncoreInputLabel>Building Inventory</IncoreInputLabel>
 											<Box style={{float: "right"}}>
 												<IconButton>
-													<FilterListIcon/>
+													<AddCircleOutlineIcon/>
 												</IconButton>
 											</Box>
 										</Box>
@@ -120,7 +116,7 @@ export default function BuiltEnvironment(props) {
 											<IncoreInputLabel>Electric Power Facility</IncoreInputLabel>
 											<Box style={{float: "right"}}>
 												<IconButton>
-													<FilterListIcon/>
+													<AddCircleOutlineIcon/>
 												</IconButton>
 											</Box>
 										</Box>
