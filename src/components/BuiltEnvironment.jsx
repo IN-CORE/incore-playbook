@@ -37,7 +37,7 @@ export default function BuiltEnvironment(props) {
 	useEffect(() => {
 		if (title !== "" && description !== "" && dataType !== "" && files.length > 0) setDisabled(false);
 		else setDisabled(true);
-	}, [title, description, files]);
+	}, [title, description, dataType, files]);
 
 	const onFileInputChange = (event) => {
 		const fileList = Array.from(event.target.files);
@@ -81,14 +81,6 @@ export default function BuiltEnvironment(props) {
 		{
 			"prettyName": "DATE ADDED",
 			"columnName" :"date",
-		},
-		{
-			"prettyName": "SUBMITTED BY",
-			"columnName" :"creator",
-		},
-		{
-			"prettyName":"TYPE",
-			"columnName" : "dataType"
 		}
 	];
 
@@ -100,20 +92,6 @@ export default function BuiltEnvironment(props) {
 				<PageBanner parentStep="Understand the Situation"
 					childStep="Identify & Characterize the Built Environment" taskNo="2" subtaskNo="2-4"/>
 				<Box className="outerBox">
-					{/*List uploaded datasets*/}
-					<Container className="entryTableContainer">
-						<Box className="entryTableTitle">
-							<IncoreInputLabel>Uploaded Data</IncoreInputLabel>
-							<Box style={{float:"right"}}>
-								<IconButton>
-									<FilterListIcon/>
-								</IconButton>
-							</Box>
-						</Box>
-						<Box className="entryTable">
-							<EntryTable fieldNames={fieldNames} fields={datasets}/>
-						</Box>
-					</Container>
 					<Grid container spacing={3} className="innerBox">
 						<Grid item className="gridItem">
 							<LoadingOverlay
@@ -122,31 +100,33 @@ export default function BuiltEnvironment(props) {
 								text="Saving..."
 							>
 								<Container>
-									<Box className="inputGroup">
-										<IncoreInputLabel>Select Data</IncoreInputLabel>
-										<FileUploadDrop onDrop={onDrop} onFileInputChange={onFileInputChange}
-											fileInput={fileInputRef}
-											files={files} onDeleteClick={onDeleteClick}/>
+									{/*list of uploaded building inventory*/}
+									<Box>
+										<Box className="entryTableTitle">
+											<IncoreInputLabel>Building Inventory</IncoreInputLabel>
+											<Box style={{float:"right"}}>
+												<IconButton>
+													<FilterListIcon/>
+												</IconButton>
+											</Box>
+										</Box>
+										<Box className="entryTable">
+											<EntryTable fieldNames={fieldNames} fields={datasets}/>
+										</Box>
 									</Box>
-									<Box className="inputGroup">
-										<IncoreInputLabel>Name</IncoreInputLabel>
-										<IncoreTextField value={title} variant="outlined" onChange={(e) => setTitle(e.target.value)}/>
-									</Box>
-									<Box className="inputGroup">
-										<IncoreInputLabel>Description</IncoreInputLabel>
-										<IncoreTextField value={description} variant="outlined" onChange={(e) => setDescription(e.target.value)}/>
-									</Box>
-									<Box className="inputGroup">
-										<IncoreInputLabel>Select Data Type</IncoreInputLabel>
-										<IncoreSelectBox labelId="label" id="select"
-														 variant="outlined"
-														 onChange={(e)=>setDataType(e.target.value)}>
-											<IncoreMenuItem value="ergo:buildingInventoryVer6" key="ergo:buildingInventoryVer6">Building</IncoreMenuItem>
-											<IncoreMenuItem value="incore:epf" key="incore:epf">Electric Power Facility</IncoreMenuItem>
-										</IncoreSelectBox>
-									</Box>
-									<Box className="inputGroup">
-										<IncoreButton variant="contained" onClick={onSave} disabled={disabled}>Save</IncoreButton>
+									{/*list of uploaded EPF inventory*/}
+									<Box>
+										<Box className="entryTableTitle">
+											<IncoreInputLabel>Electric Power Facility</IncoreInputLabel>
+											<Box style={{float:"right"}}>
+												<IconButton>
+													<FilterListIcon/>
+												</IconButton>
+											</Box>
+										</Box>
+										<Box className="entryTable">
+											<EntryTable fieldNames={fieldNames} fields={datasets}/>
+										</Box>
 									</Box>
 								</Container>
 							</LoadingOverlay>

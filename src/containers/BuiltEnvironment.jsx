@@ -11,8 +11,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
 	return {
-		listDatasets: (limit, offset) => {
-			dispatch(fetchDatasets(limit, offset));
+		listDatasets: (limit, offset, dataType) => {
+			dispatch(fetchDatasets(limit, offset, dataType));
 		}
 	};
 };
