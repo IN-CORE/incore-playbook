@@ -10,6 +10,7 @@ import {stepInfo} from "../app.messages";
 import FileUploadDrop from "./FileUploadDrop";
 import {IncoreInputLabel} from "./styledComponents/IncoreInputLabel";
 import {IncoreTextField} from "./styledComponents/IncoreInput";
+import {IncoreMenuItem, IncoreSelectBox} from "./styledComponents/IncoreSelect";
 import {IncoreButton} from "./styledComponents/IncoreButton";
 
 import {createDataset} from "../utils/dataset";
@@ -25,6 +26,7 @@ export default function BuiltEnvironment(props) {
 	const [activeKey, setActiveKey] = useState("inprogress");
 	const [title, setTitle] = useState("");
 	const [description, setDescription] = useState("");
+	const [dataType, setDataType] = useState("");
 	const [disabled, setDisabled] = useState(true);
 	const [loading, setLoading] = useState(false);
 
@@ -33,7 +35,7 @@ export default function BuiltEnvironment(props) {
 
 	// form check
 	useEffect(() => {
-		if (title !== "" && description !== "" && files.length > 0) setDisabled(false);
+		if (title !== "" && description !== "" && dataType !== "" && files.length > 0) setDisabled(false);
 		else setDisabled(true);
 	}, [title, description, files]);
 
@@ -52,7 +54,7 @@ export default function BuiltEnvironment(props) {
 
 	const onSave = async () => {
 		setLoading(true);
-		const datasetJson = await createDataset(title, description, files);
+		const datasetJson = await createDataset(title, description, dataType, files);
 		if (datasetJson !== {}) {
 
 			// update table to show uploaded data
@@ -61,6 +63,7 @@ export default function BuiltEnvironment(props) {
 			setFile([]);
 			setTitle("");
 			setDescription("");
+			setDataType("");
 			setActiveKey("complete");
 			setLoading(false);
 		}
@@ -82,6 +85,10 @@ export default function BuiltEnvironment(props) {
 		{
 			"prettyName": "SUBMITTED BY",
 			"columnName" :"creator",
+		},
+		{
+			"prettyName":"TYPE",
+			"columnName" : "dataType"
 		}
 	];
 
@@ -129,15 +136,15 @@ export default function BuiltEnvironment(props) {
 										<IncoreInputLabel>Description</IncoreInputLabel>
 										<IncoreTextField value={description} variant="outlined" onChange={(e) => setDescription(e.target.value)}/>
 									</Box>
-									{/*<Box className="inputGroup">*/}
-									{/*	<IncoreInputLabel>Select Building Cluster</IncoreInputLabel>*/}
-									{/*	<IncoreSelectBox labelId="label" id="select" variant="outlined" defaultValue="criticalFacilities">*/}
-									{/*		<IncoreMenuItem value="criticalFacilities" key="criticalFacilities">Critical Facilities</IncoreMenuItem>*/}
-									{/*		<IncoreMenuItem value="emergencyHousing" key="emergencyHousing">Emergency Housing</IncoreMenuItem>*/}
-									{/*		<IncoreMenuItem value="housingNeighborhood" key="housingNeighborhood">Housing / Neighborhood</IncoreMenuItem>*/}
-									{/*		<IncoreMenuItem value="communityRecovery" key="communityRecovery">Community Recovery</IncoreMenuItem>*/}
-									{/*	</IncoreSelectBox>*/}
-									{/*</Box>*/}
+									<Box className="inputGroup">
+										<IncoreInputLabel>Select Data Type</IncoreInputLabel>
+										<IncoreSelectBox labelId="label" id="select"
+														 variant="outlined"
+														 onChange={(e)=>setDataType(e.target.value)}>
+											<IncoreMenuItem value="ergo:buildingInventoryVer6" key="ergo:buildingInventoryVer6">Building</IncoreMenuItem>
+											<IncoreMenuItem value="incore:epf" key="incore:epf">Electric Power Facility</IncoreMenuItem>
+										</IncoreSelectBox>
+									</Box>
 									<Box className="inputGroup">
 										<IncoreButton variant="contained" onClick={onSave} disabled={disabled}>Save</IncoreButton>
 									</Box>
