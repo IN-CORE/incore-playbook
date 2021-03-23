@@ -1,6 +1,6 @@
 import React, {useEffect, useRef, useState} from "react";
 
-import {Box, Container, Dialog, DialogContent, Grid, IconButton} from "@material-ui/core";
+import {Box, Container, Dialog, DialogContent, Divider, Grid, IconButton} from "@material-ui/core";
 
 import Layout from "../containers/Layout";
 import PageBanner from "./Banner";
@@ -18,12 +18,49 @@ import AddCircleOutlineIcon from "@material-ui/icons/AddCircleOutline";
 import LoadingOverlay from "react-loading-overlay";
 import CloseIcon from "@material-ui/icons/Close";
 import FileUploadDrop from "./FileUploadDrop";
+import {makeStyles} from "@material-ui/core/styles";
+
+const useStyles = makeStyles({
+	title:{
+		fontSize:"20px",
+	},
+	divider:{
+		color:"red",
+		border:"solid 1px",
+		width: "100%"
+	},
+	uploadSection:{
+		padding:"20px",
+	},
+	subUploadSection:{
+		marginTop:"20px",
+		marginBottom:"80px",
+	},
+	subTitleRow:{
+		height:"50px"
+	},
+	subTitle:{
+		display:"inline"
+	},
+	plusButton:{
+		display:"inline",
+		float:"right",
+		padding:0
+	},
+	subDivider:{
+		color:"#00619d",
+		border:"solid 1px",
+		width: "100%"
+	}
+});
+
 
 export default function BuiltEnvironment(props) {
+	const classes = useStyles();
+
 	const {listDatasets, buildings, epfs} = props;
 	const fileInputRef = useRef(null);
 	const [files, setFile] = useState([]);
-	const [activeKey, setActiveKey] = useState("inprogress");
 	const [title, setTitle] = useState("");
 	const [description, setDescription] = useState("");
 	const [dataType, setDataType] = useState("");
@@ -69,8 +106,8 @@ export default function BuiltEnvironment(props) {
 			setTitle("");
 			setDescription("");
 			setDataType("");
-			setActiveKey("complete");
 			setLoading(false);
+			setUploadModalStatus(false);
 		}
 	};
 
@@ -79,6 +116,7 @@ export default function BuiltEnvironment(props) {
 		setFile([]);
 		setTitle("");
 		setDescription("");
+		setLoading(false);
 		setDataType("");
 	};
 
@@ -97,7 +135,7 @@ export default function BuiltEnvironment(props) {
 		<Layout>
 			<div className="firstDivInContent">
 				<PageBanner parentStep="Understand the Situation"
-							childStep="Identify & Characterize the Built Environment" taskNo="2" subtaskNo="2-4"/>
+					childStep="Identify & Characterize the Built Environment" taskNo="2" subtaskNo="2-4"/>
 				<Box className="outerBox">
 					<Grid container spacing={3} className="innerBox">
 						<Grid item className="gridItem">
@@ -107,38 +145,40 @@ export default function BuiltEnvironment(props) {
 								text="Saving..."
 							>
 								<Container>
-									{/*list of uploaded building inventory*/}
-									<Box>
-										<Box className="entryTableTitle">
-											<IncoreInputLabel>Building Inventory</IncoreInputLabel>
-											<Box style={{float: "right"}}>
-												<IconButton onClick={() => {
+									<IncoreInputLabel className={classes.title}>Uploaded Data</IncoreInputLabel>
+									<Divider orientation="horizontal" className={classes.divider} flexItem />
+									<Box className={classes.uploadSection}>
+										{/*list of uploaded building inventory*/}
+										<Box className={classes.subUploadSection}>
+											<Box className={classes.subTitleRow}>
+												<IncoreInputLabel className={classes.subTitle}>Building Inventory</IncoreInputLabel>
+												<IconButton className={classes.plusButton} onClick={() => {
 													setUploadModalStatus(true);
 													setDataType("ergo:buildingInventoryVer6");
 												}}>
 													<AddCircleOutlineIcon/>
 												</IconButton>
+												<Divider orientation="horizontal" className={classes.subDivider} flexItem />
+											</Box>
+											<Box className="entryTable">
+												<EntryTable fieldNames={fieldNames} fields={buildings}/>
 											</Box>
 										</Box>
-										<Box className="entryTable">
-											<EntryTable fieldNames={fieldNames} fields={buildings}/>
-										</Box>
-									</Box>
-									{/*list of uploaded EPF inventory*/}
-									<Box>
-										<Box className="entryTableTitle">
-											<IncoreInputLabel>Electric Power Facility</IncoreInputLabel>
-											<Box style={{float: "right"}}>
-												<IconButton onClick={() => {
+										{/*list of uploaded EPF inventory*/}
+										<Box className={classes.subUploadSection}>
+											<Box className={classes.subTitleRow}>
+												<IncoreInputLabel className={classes.subTitle}>Electric Power Facility</IncoreInputLabel>
+												<IconButton className={classes.plusButton} onClick={() => {
 													setUploadModalStatus(true);
 													setDataType("incore:epf");
 												}}>
 													<AddCircleOutlineIcon/>
 												</IconButton>
+												<Divider orientation="horizontal" className={classes.subDivider} flexItem />
 											</Box>
-										</Box>
-										<Box className="entryTable">
-											<EntryTable fieldNames={fieldNames} fields={epfs}/>
+											<Box className="entryTable">
+												<EntryTable fieldNames={fieldNames} fields={epfs}/>
+											</Box>
 										</Box>
 									</Box>
 								</Container>
@@ -150,7 +190,7 @@ export default function BuiltEnvironment(props) {
 						</Grid>
 					</Grid>
 					{/*for individual analysis result preview*/}
-					<Dialog open={uploadModalStatus} onClose={handleUploadClose} maxWidth="lg" fullWidth scroll="paper">
+					<Dialog open={uploadModalStatus} onClose={handleUploadClose} maxWidth="sm" fullWidth scroll="paper">
 						<DialogContent>
 							<IconButton aria-label="Close" onClick={handleUploadClose} style={{float: "right"}}>
 								<CloseIcon fontSize="small"/>
@@ -160,8 +200,8 @@ export default function BuiltEnvironment(props) {
 								<Box className="inputGroup">
 									<IncoreInputLabel>Select Data</IncoreInputLabel>
 									<FileUploadDrop onDrop={onDrop} onFileInputChange={onFileInputChange}
-													fileInput={fileInputRef}
-													files={files} onDeleteClick={onDeleteClick}/>
+										fileInput={fileInputRef}
+										files={files} onDeleteClick={onDeleteClick}/>
 								</Box>
 								<Box className="inputGroup">
 									<IncoreInputLabel>Name</IncoreInputLabel>
