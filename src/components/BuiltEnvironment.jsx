@@ -1,6 +1,6 @@
 import React, {useEffect, useRef, useState} from "react";
 
-import {Box, Container, Grid, IconButton} from "@material-ui/core";
+import {Box, Container, Dialog, DialogContent, Grid, IconButton} from "@material-ui/core";
 
 import Layout from "../containers/Layout";
 import PageBanner from "./Banner";
@@ -8,12 +8,16 @@ import StepStatus from "./StepStatus";
 import StepDescription from "./StepDescription";
 import {stepInfo} from "../app.messages";
 import {IncoreInputLabel} from "./styledComponents/IncoreInputLabel";
+import {IncoreTextField} from "./styledComponents/IncoreInput";
+import {IncoreButton} from "./styledComponents/IncoreButton";
 
 import {createDataset} from "../utils/dataset";
 import {EntryTable} from "./EntryTable";
 
 import AddCircleOutlineIcon from "@material-ui/icons/AddCircleOutline";
 import LoadingOverlay from "react-loading-overlay";
+import CloseIcon from "@material-ui/icons/Close";
+import FileUploadDrop from "./FileUploadDrop";
 
 export default function BuiltEnvironment(props) {
 	const {listDatasets, buildings, epfs} = props;
@@ -25,6 +29,7 @@ export default function BuiltEnvironment(props) {
 	const [dataType, setDataType] = useState("");
 	const [disabled, setDisabled] = useState(true);
 	const [loading, setLoading] = useState(false);
+	const [uploadModalStatus, setUploadModalStatus] = useState(false);
 
 	// load uploaded dataset
 	useEffect(() => {
@@ -69,6 +74,14 @@ export default function BuiltEnvironment(props) {
 		}
 	};
 
+	const handleUploadClose = () => {
+		setUploadModalStatus(false);
+		setFile([]);
+		setTitle("");
+		setDescription("");
+		setDataType("");
+	};
+
 	const fieldNames = [
 		{
 			"prettyName": "NAME",
@@ -82,11 +95,9 @@ export default function BuiltEnvironment(props) {
 
 	return (
 		<Layout>
-
-
 			<div className="firstDivInContent">
 				<PageBanner parentStep="Understand the Situation"
-					childStep="Identify & Characterize the Built Environment" taskNo="2" subtaskNo="2-4"/>
+							childStep="Identify & Characterize the Built Environment" taskNo="2" subtaskNo="2-4"/>
 				<Box className="outerBox">
 					<Grid container spacing={3} className="innerBox">
 						<Grid item className="gridItem">
@@ -101,7 +112,10 @@ export default function BuiltEnvironment(props) {
 										<Box className="entryTableTitle">
 											<IncoreInputLabel>Building Inventory</IncoreInputLabel>
 											<Box style={{float: "right"}}>
-												<IconButton>
+												<IconButton onClick={() => {
+													setUploadModalStatus(true);
+													setDataType("ergo:buildingInventoryVer6");
+												}}>
 													<AddCircleOutlineIcon/>
 												</IconButton>
 											</Box>
@@ -115,7 +129,10 @@ export default function BuiltEnvironment(props) {
 										<Box className="entryTableTitle">
 											<IncoreInputLabel>Electric Power Facility</IncoreInputLabel>
 											<Box style={{float: "right"}}>
-												<IconButton>
+												<IconButton onClick={() => {
+													setUploadModalStatus(true);
+													setDataType("incore:epf");
+												}}>
 													<AddCircleOutlineIcon/>
 												</IconButton>
 											</Box>
@@ -132,10 +149,39 @@ export default function BuiltEnvironment(props) {
 							<StepDescription stepInfo={stepInfo[1]}/>
 						</Grid>
 					</Grid>
+					{/*for individual analysis result preview*/}
+					<Dialog open={uploadModalStatus} onClose={handleUploadClose} maxWidth="lg" fullWidth scroll="paper">
+						<DialogContent>
+							<IconButton aria-label="Close" onClick={handleUploadClose} style={{float: "right"}}>
+								<CloseIcon fontSize="small"/>
+							</IconButton>
+							{/*Upload Form*/}
+							<>
+								<Box className="inputGroup">
+									<IncoreInputLabel>Select Data</IncoreInputLabel>
+									<FileUploadDrop onDrop={onDrop} onFileInputChange={onFileInputChange}
+													fileInput={fileInputRef}
+													files={files} onDeleteClick={onDeleteClick}/>
+								</Box>
+								<Box className="inputGroup">
+									<IncoreInputLabel>Name</IncoreInputLabel>
+									<IncoreTextField value={title} variant="outlined"
+													 onChange={(e) => setTitle(e.target.value)}/>
+								</Box>
+								<Box className="inputGroup">
+									<IncoreInputLabel>Description</IncoreInputLabel>
+									<IncoreTextField value={description} variant="outlined"
+													 onChange={(e) => setDescription(e.target.value)}/>
+								</Box>
+								<Box className="inputGroup">
+									<IncoreButton variant="contained" onClick={onSave}
+												  disabled={disabled}>Save</IncoreButton>
+								</Box>
+							</>
+						</DialogContent>
+					</Dialog>
 				</Box>
 			</div>
-
-
 		</Layout>
 	);
 }
