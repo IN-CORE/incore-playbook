@@ -19,7 +19,9 @@ class Team extends React.Component {
 
 	constructor(props) {
 		super(props);
-		this.state = {};
+		this.state = {
+			open: false
+		};
 
 		this.handleStepStatusChange = this.handleStepStatusChange.bind(this);
 	}
@@ -62,7 +64,7 @@ class Team extends React.Component {
 
 								<div dangerouslySetInnerHTML={{__html: short}} />
 								<span style={{color: "#00619D", textDecoration: "underline", cursor: "pointer"}} onClick={handleClickOpen}> Learn More About This Step</span>
-								<Dialog open={this.state.open} divider={true} onClose={handleClose} aria-labelledby="form-dialog-title" maxWidth="lg">
+								<Dialog open={this.state.open} onClose={handleClose} aria-labelledby="form-dialog-title" maxWidth="lg">
 									<DialogContent>
 										<div dangerouslySetInnerHTML={{__html: html11}} />
 									</DialogContent>
