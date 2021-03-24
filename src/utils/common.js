@@ -1,8 +1,10 @@
 import Cookies from "universal-cookie";
 import jwt_decode from "jwt-decode";
 import config from "../app.config";
+import JSSoup from "jssoup";
 
 const cookies = new Cookies();
+
 
 //NOTE: This is only checking if a cookie is present, but not validating the cookie.
 export const isAuthorized = () => {
@@ -83,10 +85,7 @@ export function getCurrUserEmail(){
 	}
 }
 
-// Figure out how to access history from a common util without hooks
-// export const clearCookieAndLogout = () => {
-// 	const history = useHistory();
-// 	cookies.remove("Authorization");
-// 	history.push("/login");
-// };
-
+export function getShortHTML(html){
+	let htmlSoup = new JSSoup(html);
+	return htmlSoup.find("div", "shortDescription");
+}
