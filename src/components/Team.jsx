@@ -9,7 +9,6 @@ import PageBanner from "./Banner";
 import Layout from "../containers/Layout";
 import StepInfo from "./StepInfo";
 import fullHtml from "../public/steps/1-1.html";
-import {getShortHTML} from "../utils/common";
 
 
 class Team extends React.Component {
@@ -34,7 +33,6 @@ class Team extends React.Component {
 	}
 
 	render() {
-		let shortHtml = getShortHTML(fullHtml);
 
 		return (
 			<Layout>
@@ -48,10 +46,7 @@ class Team extends React.Component {
 							</Grid>
 							<Grid item className="gridItem">
 								<StepStatus />
-								{/*<StepDescription stepInfo={stepInfo[0]} />*/}
-								<StepInfo fullHtml={fullHtml} shortHtml={shortHtml} />
-
-
+								<StepInfo fullHtml={fullHtml} />
 							</Grid>
 						</Grid>
 					</Box>
