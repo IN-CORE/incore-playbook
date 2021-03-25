@@ -22,13 +22,13 @@ const StepInfo = (props) => {
 		let sHtml = getShortHTML(props.fullHtml);
 		if (sHtml === undefined) {
 			setShowMoreLink(false);
-			setShortHtml(html);
+			setShortHtml(props.fullHtml);
 		}
 		else{
 			setShortHtml(sHtml);
 		}
 
-	}, [props]);
+	}, [props.fullHtml]);
 
 	const handleClickOpen = () => {
 		setOpen(true);
