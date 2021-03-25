@@ -10,7 +10,7 @@ import {
 import {getShortHTML} from "../utils/common";
 
 
-const StepInfo = (props: {fullHtml: string}) => {
+const StepInfo = (props) => {
 
 	const [open, setOpen] = useState(false);
 	const [html, setHtml] = useState(null);
@@ -19,13 +19,13 @@ const StepInfo = (props: {fullHtml: string}) => {
 
 	useEffect( () => {
 		setHtml(props.fullHtml);
-		let shortHtml = getShortHTML((props.fullHtml));
-		if (shortHtml === undefined) {
+		let sHtml = getShortHTML(props.fullHtml);
+		if (sHtml === undefined) {
 			setShowMoreLink(false);
 			setShortHtml(html);
 		}
 		else{
-			setShortHtml(shortHtml);
+			setShortHtml(sHtml);
 		}
 
 	}, [props]);
