@@ -1,3 +1,5 @@
+import appConfig from "./app.config";
+
 let config = {};
 
 config["workflowId"] = "119e7ca2-e44c-476d-a62b-c9d2e54301d3";
@@ -25,10 +27,10 @@ config["datasets"] = {
 	"incoreTokenId2":"94d4bd0c-6386-4aae-f401-c37a0e1f5c07"
 };
 
-config["executionGetURL"] = `https://incore-dev-kube.ncsa.illinois.edu/datawolf/workflows/${config["workflowId"]}/executions`;
-config["executionPostURL"] = "https://incore-dev-kube.ncsa.illinois.edu/datawolf/executions";
+config["executionGetURL"] = `${appConfig.apiUrl}/${config["workflowId"]}/executions`;
+config["executionPostURL"] = `${appConfig.apiUrl}/datawolf/executions`;
 
-config["datasetBaseURL"] = "https://incore-dev-kube.ncsa.illinois.edu/datawolf/datasets";
+config["datasetBaseURL"] =  `${appConfig.apiUrl}/datawolf/datasets`;
 
 config["bldgMeanDamageId"] = "62c2aec0-dfd8-4300-bb9a-bd5559e84316";
 config["summaryTableId"] = "c4285f72-4259-464b-91bf-3e71f0f6e196";

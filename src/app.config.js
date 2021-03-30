@@ -13,20 +13,20 @@ if (process.env.DEPLOY_ENV === "production") {
 		geoServerWFS: "https://incore-geoserver.ncsa.illinois.edu/geoserver/incore/ows",
 	};
 } else if (process.env.DEPLOY_ENV === "test") {
-	apihost = "incore-test-kube.ncsa.illinois.edu";
+	apihost = "incore-tst.ncsa.illinois.edu";
 	apiurl = `${apiprotocol}://${apihost}`;
 	config = {
 		baseUrlRoute: "playbook",
-		geoServerWMS: "https://incore-test-kube.ncsa.illinois.edu/geoserver/incore/wms",
-		geoServerWFS: "https://incore-test-kube.ncsa.illinois.edu/geoserver/incore/ows",
+		geoServerWMS: "https://incore-tst.ncsa.illinois.edu/geoserver/incore/wms",
+		geoServerWFS: "https://incore-tst.ncsa.illinois.edu/geoserver/incore/ows",
 	};
 } else if (process.env.DEPLOY_ENV === "local") {
 	apihost = "localhost:8080";
 	apiurl = `http://${apihost}`;
 	config = {
 		baseUrlRoute: "",
-		geoServerWMS: "https://incore-test-kube.ncsa.illinois.edu/geoserver/incore/wms",
-		geoServerWFS: "https://incore-test-kube.ncsa.illinois.edu/geoserver/incore/ows",
+		geoServerWMS: "https://incore-tst.ncsa.illinois.edu/geoserver/incore/wms",
+		geoServerWFS: "https://incore-tst.ncsa.illinois.edu/geoserver/incore/ows",
 	};
 } else if (process.env.DEPLOY_ENV === "development") {
 	apihost = "incore-dev.ncsa.illinois.edu";
@@ -45,6 +45,7 @@ if (process.env.DEPLOY_ENV === "production") {
 		geoServerWFS: "https://incore-geoserver.ncsa.illinois.edu/geoserver/incore/ows",
 	};
 }
+config["apiUrl"] = apiurl;
 config["dataWolf"] = "https://incore2-datawolf.ncsa.illinois.edu/datawolf/";
 config["client_id"] = "react-auth";
 config["authService"] = `${apiurl}/auth/realms/In-core/protocol/openid-connect/token`;

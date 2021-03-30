@@ -1,5 +1,6 @@
 import {getHeader, getCurrUserInfo, getCurrUserEmail, getIncoreTokenFile} from "./common";
 import datawolfConfig from "../datawolf.config";
+import appConfig from "../app.config";
 
 export async function getOutputFileJson(datasetId, outputFileName = null) {
 	let authHeader = getHeader();
@@ -77,12 +78,12 @@ export async function submitExecution(title, description, datasetId, hazardId,){
 		requestBody["parameters"][datawolfParams["mappingId"]] = "5e8e3a21eaa8b80001f04f1c";
 		requestBody["parameters"][datawolfParams["damageIntervalKeysId"]] = "insignific moderate heavy complete";
 		requestBody["parameters"][datawolfParams["numCpuId1"]] = 4;
-		requestBody["parameters"][datawolfParams["serviceUrlId1"]] = "https://incore-dev-kube.ncsa.illinois.edu";
+		requestBody["parameters"][datawolfParams["serviceUrlId1"]] = appConfig.apiUrl;
 		requestBody["parameters"][datawolfParams["damageTypeId"]] = "ergo:buildingDamageVer4";
 		requestBody["parameters"][datawolfParams["resultNameId1"]] = "joplin_bldg_dmg";
 		requestBody["parameters"][datawolfParams["resultNameId2"]] = "joplin_bldg_mean_dmg";
 		requestBody["parameters"][datawolfParams["hazardId"]] = hazardId;
-		requestBody["parameters"][datawolfParams["serviceUrlId2"]] = "https://incore-dev-kube.ncsa.illinois.edu";
+		requestBody["parameters"][datawolfParams["serviceUrlId2"]] = appConfig.apiUrl;
 		requestBody["parameters"][datawolfParams["sourceId"]] = datasetId;
 		requestBody["parameters"][datawolfParams["buildingId"]] = datasetId;
 		requestBody["parameters"][datawolfParams["numCpuId2"]] = 4;
