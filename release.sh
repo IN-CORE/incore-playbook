@@ -22,4 +22,4 @@ fi
 
 #TODO this should be replaced with tagging
 # Push front end image
-docker push hub.ncsa.illinois.edu/incore-playbook/frontend$VERSION:latest
+docker push hub.ncsa.illinois.edu/incore/playbook/frontend:$VERSION
