@@ -64,7 +64,9 @@ export default function ViewResult(props) {
 
 	const [title, setTitle] = useState("");
 	const [description, setDescription] = useState("");
-	const [selectedDatasetId, setDatasetId] = useState("");
+	const [selectedBldgId, setBldgId] = useState("");
+	const [selectedSubstationId, setSubstationId] = useState("");
+	const [selectedPoleId, setPoleId] = useState("");
 	const [selectedTornadoId, setTornadoId] = useState("");
 	const [disabled, setDisabled] = useState(true);
 
@@ -77,19 +79,23 @@ export default function ViewResult(props) {
 
 	// form check
 	useEffect(() => {
-		if (selectedDatasetId !== "" && selectedDatasetId !== "" && title !== "" && description !== "") setDisabled(false);
+		if (selectedBldgId !== "" && selectedSubstationId !== ""  && selectedPoleId !== ""
+			&& title !== "" && description !== "") setDisabled(false);
 		else setDisabled(true);
-	}, [selectedDatasetId, selectedDatasetId, title, description]);
+	}, [selectedBldgId, selectedSubstationId, selectedPoleId, title, description]);
 
 
 	const classes = useStyles();
 
 	const handleRunButtonClick = async () =>{
-		const datawolfJson = await submitExecution(title, description, selectedDatasetId,selectedTornadoId);
+		const datawolfJson = await submitExecution(title, description, selectedBldgId, selectedSubstationId,
+			selectedPoleId, selectedTornadoId);
 		if (datawolfJson && datawolfJson !== "") {
 			setTitle("");
 			setDescription("");
-			setDatasetId("");
+			setBldgId("");
+			setSubstationId("");
+			setPoleId("");
 			setTornadoId("");
 
 			// update execution list and then jump to view result tab
@@ -121,8 +127,8 @@ export default function ViewResult(props) {
 						<IncoreInputLabel>Select a Building, Building Cluster
 						</IncoreInputLabel>
 						<IncoreSelectBox labelId="label" id="select" variant="outlined"
-										 onChange={(e)=>{ setDatasetId(e.target.value); }}
-										 value={selectedDatasetId}>
+										 onChange={(e)=>{ setBldgId(e.target.value); }}
+										 value={selectedBldgId}>
 							{
 								buildings.map((building) => {
 									return (
@@ -137,8 +143,8 @@ export default function ViewResult(props) {
 						<IncoreInputLabel>Select Electric Power Facilities (Poles)
 						</IncoreInputLabel>
 						<IncoreSelectBox labelId="label" id="select" variant="outlined"
-										 onChange={(e)=>{ setDatasetId(e.target.value); }}
-										 value={selectedDatasetId}>
+										 onChange={(e)=>{ setPoleId(e.target.value); }}
+										 value={selectedPoleId}>
 							{
 								epfs.map((epf) => {
 									return (
@@ -153,8 +159,8 @@ export default function ViewResult(props) {
 						<IncoreInputLabel>Select Electric Power Facilities (Substation)
 						</IncoreInputLabel>
 						<IncoreSelectBox labelId="label" id="select" variant="outlined"
-										 onChange={(e)=>{ setDatasetId(e.target.value); }}
-										 value={selectedDatasetId}>
+										 onChange={(e)=>{ setSubstationId(e.target.value); }}
+										 value={selectedSubstationId}>
 							{
 								epfs.map((epf) => {
 									return (

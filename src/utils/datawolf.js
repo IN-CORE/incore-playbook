@@ -49,8 +49,9 @@ export async function getOutputFileJson(datasetId, outputFileName = null) {
 	}
 }
 
-export async function submitExecution(title, description, datasetId, hazardId,){
-
+export async function submitExecution(title, description, bldgId, substationId, poleId, hazardId,){
+	// TODO - now include more input datasets of EPF
+	// TODO - need to rewrite this function!
 	let incoreTokenDatasetId = await postDataset();
 	if (incoreTokenDatasetId === null) {
 		console.log("Fail to post incoretoken. Abort exeuction submission!");
@@ -84,8 +85,8 @@ export async function submitExecution(title, description, datasetId, hazardId,){
 		requestBody["parameters"][datawolfParams["resultNameId2"]] = "joplin_bldg_mean_dmg";
 		requestBody["parameters"][datawolfParams["hazardId"]] = hazardId;
 		requestBody["parameters"][datawolfParams["serviceUrlId2"]] = appConfig.apiUrl;
-		requestBody["parameters"][datawolfParams["sourceId"]] = datasetId;
-		requestBody["parameters"][datawolfParams["buildingId"]] = datasetId;
+		requestBody["parameters"][datawolfParams["sourceId"]] = bldgId;
+		requestBody["parameters"][datawolfParams["buildingId"]] = bldgId;
 		requestBody["parameters"][datawolfParams["numCpuId2"]] = 4;
 
 		// these two ids need to change since token will expire
