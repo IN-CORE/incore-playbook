@@ -14,11 +14,11 @@ import {NotFound} from "./containers/NotFound";
 export default (
 	<Switch>
 		<Route exact path="/" render={() => {
-			sessionStorage.setItem("menu", "0-0");
-			return (<Introduction menu={"0-0"}/>);
+			sessionStorage.setItem("menu", "0");
+			return (<Introduction menu={"0"}/>);
 		}}/>
 		<Route path="/create-team" render={() => {
-			sessionStorage.setItem("menu", "1-0");
+			sessionStorage.setItem("menu", "1");
 			return (<Introduction menu={"1"}/>);
 		}}/>
 		<Route path="/create-team-leader" render={() => {
@@ -38,8 +38,8 @@ export default (
 			return (<Team menu={"1-4"}/>);
 		}}/>
 		<Route path="/community" render={() => {
-			sessionStorage.setItem("menu", "2-0");
-			return (<Introduction menu={"2-0"}/>);
+			sessionStorage.setItem("menu", "2");
+			return (<Introduction menu={"2"}/>);
 		}}/>
 		<Route path="/community-plan" render={() => {
 			sessionStorage.setItem("menu", "2-1");
@@ -62,16 +62,16 @@ export default (
 			return (<Team menu={"2-5"}/>);
 		}}/>
 		<Route path="/goal-objective" render={() => {
-			sessionStorage.setItem("menu", "3-0");
-			return (<Introduction menu={"3-0"}/>);
+			sessionStorage.setItem("menu", "3");
+			return (<Introduction menu={"3"}/>);
 		}}/>
 		<Route path="/goal-objective-long" render={() => {
 			sessionStorage.setItem("menu", "3-1");
-			return (<CommunityHazards/>);
+			return (<Team menu={"3-1"}/>);
 		}}/>
 		<Route path="/goal-objective-desired" render={() => {
 			sessionStorage.setItem("menu", "3-2");
-			return (<CommunityHazards/>);
+			return (<Team menu={"3-2"}/>);
 		}}/>
 		<Route path="/goal-objective-hazard" render={() => {
 			sessionStorage.setItem("menu", "3-3");
@@ -86,8 +86,8 @@ export default (
 			return (<Team menu={"3-5"}/>);
 		}}/>
 		<Route path="/plan-development" render={() => {
-			sessionStorage.setItem("menu", "4-0");
-			return (<Introduction menu={"4-0"}/>);
+			sessionStorage.setItem("menu", "4");
+			return (<Introduction menu={"4"}/>);
 		}}/>
 		<Route path="/plan-development-gap" render={() => {
 			sessionStorage.setItem("menu", "4-1");
@@ -102,8 +102,8 @@ export default (
 			return (<Team menu={"4-3"}/>);
 		}}/>
 		<Route path="/review" render={() => {
-			sessionStorage.setItem("menu", "5-0");
-			return (<Introduction menu={"5-0"}/>);
+			sessionStorage.setItem("menu", "5");
+			return (<Introduction menu={"5"}/>);
 		}}/>
 		<Route path="/review-strategy" render={() => {
 			sessionStorage.setItem("menu", "5-1");
@@ -118,8 +118,8 @@ export default (
 			return (<Team menu={"5-3"}/>);
 		}}/>
 		<Route path="/implementation" render={() => {
-			sessionStorage.setItem("menu", "6-0");
-			return (<Introduction menu={"6-0"}/>);
+			sessionStorage.setItem("menu", "6");
+			return (<Introduction menu={"6"}/>);
 		}}/>
 		<Route path="/implementation-execute" render={() => {
 			sessionStorage.setItem("menu", "6-1");

@@ -13,6 +13,9 @@ import fullHtml50 from "../public/steps/5-0.html";
 import fullHtml60 from "../public/steps/6-0.html";
 
 const useStyles = makeStyles({
+	firstDivInContent: {
+		marginLeft: "30px"
+	},
 	innerBox: {
 		backgroundColor: "#F8F9FF"
 	},
@@ -30,35 +33,35 @@ const Introduction = ({menu}: string) => {
 
 	let fullHtml = fullHtml00;
 	let pageBanner = null;
-	if (menu === "1-0") {
+	if (menu === "1") {
 		console.log(menu);
 		fullHtml = fullHtml10;
 		pageBanner = <PageBanner parentStep="Form a Collaborative Planning Team" taskNo="1" />;
 	}
-	else if (menu === "2-0") {
+	else if (menu === "2") {
 		fullHtml = fullHtml20;
 		pageBanner = <PageBanner parentStep="Understanding the Situation" taskNo="2" />;
 	}
-	else if (menu === "3-0") {
+	else if (menu === "3") {
 		fullHtml = fullHtml30;
 		pageBanner = <PageBanner parentStep="Determine Goals & Objectives" taskNo="3" />;
 	}
-	else if (menu === "4-0") {
+	else if (menu === "4") {
 		fullHtml = fullHtml40;
 		pageBanner = <PageBanner parentStep="Plan Development" taskNo="4" />;
 	}
-	else if (menu === "5-0") {
+	else if (menu === "5") {
 		fullHtml = fullHtml50;
 		pageBanner = <PageBanner parentStep="Plan Prep, Review, & Approval" taskNo="5" />;
 	}
-	else if (menu === "6-0") {
+	else if (menu === "6") {
 		fullHtml = fullHtml60;
 		pageBanner = <PageBanner parentStep="Plan Implementation & Maintenance" taskNo="6" />;
 	}
 
 	return (
 		<Layout>
-			<div className="firstDivInContent">
+			<div className={classes.firstDivInContent}>
 				{pageBanner}
 				<Box  className={classes.outerBox}>
 					<Grid container spacing={12} className={classes.innerBox}>

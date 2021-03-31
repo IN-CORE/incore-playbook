@@ -95,14 +95,14 @@ const Team = ({menu}: string) => {
 		fullHtml = fullHtml32;
 		pageBanner = <PageBanner parentStep="Determine Goals & Objectives" childStep="Identify a Resilience Leader for the Community" taskNo="3" subtaskNo="3-2"/>;
 	}
-	else if (menu === "3-3") {
-		fullHtml = fullHtml33;
-		pageBanner = <PageBanner parentStep="Determine Goals & Objectives" childStep="Identify a Resilience Leader for the Community" taskNo="3" subtaskNo="3-3"/>;
-	}
-	else if (menu === "3-4") {
-		fullHtml = fullHtml34;
-		pageBanner = <PageBanner parentStep="Determine Goals & Objectives" childStep="Identify a Resilience Leader for the Community" taskNo="3" subtaskNo="3-4"/>;
-	}
+	// else if (menu === "3-3") {
+	// 	fullHtml = fullHtml33;
+	// 	pageBanner = <PageBanner parentStep="Determine Goals & Objectives" childStep="Identify a Resilience Leader for the Community" taskNo="3" subtaskNo="3-3"/>;
+	// }
+	// else if (menu === "3-4") {
+	// 	fullHtml = fullHtml34;
+	// 	pageBanner = <PageBanner parentStep="Determine Goals & Objectives" childStep="Identify a Resilience Leader for the Community" taskNo="3" subtaskNo="3-4"/>;
+	// }
 	else if (menu === "3-5") {
 		fullHtml = fullHtml35;
 		pageBanner = <PageBanner parentStep="Determine Goals & Objectives" childStep="Summarize the results" taskNo="3" subtaskNo="3-5"/>;

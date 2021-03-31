@@ -172,22 +172,22 @@ const HeaderWithMenu = ({dispatch, isAuthenticated}) => {
 
 	const handleParentClick = (key) => () => {
 		(openTask === key) ? setOpenTask("0"): setOpenTask(key);
-		if (key === "1-0") {
+		if (key === "1") {
 			history.push("/create-team");
 		}
-		else if (key === "2-0") {
+		else if (key === "2") {
 			history.push("/community");
 		}
-		else if (key === "3-0") {
+		else if (key === "3") {
 			history.push("/goal-objective");
 		}
-		else if (key === "4-0") {
+		else if (key === "4") {
 			history.push("/plan-development");
 		}
-		else if (key === "5-0") {
+		else if (key === "5") {
 			history.push("/review");
 		}
-		else if (key === "6-0") {
+		else if (key === "6") {
 			history.push("/implementation");
 		}
 		else {
