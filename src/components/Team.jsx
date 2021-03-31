@@ -37,7 +37,8 @@ class Team extends React.Component {
 		return (
 			<Layout>
 				<div className="firstDivInContent">
-					<PageBanner parentStep="Form a Collaborative Planning Team" childStep="Identify a Resilience Leader for the Community" taskNo="1" subtaskNo="1-1"/>
+					<PageBanner parentStep="Form a Collaborative Planning Team"
+						childStep="Identify a Resilience Leader for the Community" taskNo="1" subtaskNo="1-1"/>
 					<Box className="outerBox">
 						<Grid container spacing={3} className="innerBox">
 							<Grid item className="gridItem">
@@ -54,3 +55,5 @@ class Team extends React.Component {
 		);
 	}
 }
+
+export default Team;
