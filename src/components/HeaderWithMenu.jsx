@@ -172,6 +172,27 @@ const HeaderWithMenu = ({dispatch, isAuthenticated}) => {
 
 	const handleParentClick = (key) => () => {
 		(openTask === key) ? setOpenTask("0"): setOpenTask(key);
+		if (key === "1") {
+			history.push("/create-team");
+		}
+		else if (key === "2") {
+			history.push("/built-environment");
+		}
+		else if (key === "3") {
+			history.push("/goals-objective");
+		}
+		else if (key === "4") {
+			history.push("/plan-development");
+		}
+		else if (key === "5") {
+			history.push("/review-approval");
+		}
+		else if (key === "6") {
+			history.push("/implementation");
+		}
+		else {
+			history.push("/");
+		}
 	};
 
 	const handleParentLoad = (key) => () => {
@@ -207,7 +228,7 @@ const HeaderWithMenu = ({dispatch, isAuthenticated}) => {
 					key: "1-1",
 					label: "Identify leader",
 					completed: false,
-					route: "/create-team"
+					route: "/create-team-leader"
 				},
 				{
 					key: "1-2",

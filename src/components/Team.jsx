@@ -3,12 +3,9 @@ import {
 	Box,
 	Grid,
 } from "@material-ui/core";
-import UserInfo from "./UserInfo";
-import StepStatus from "./StepStatus";
-import PageBanner from "./Banner";
 import Layout from "../containers/Layout";
 import StepInfo from "./StepInfo";
-import fullHtml from "../public/steps/1-1.html";
+import fullHtml from "../public/steps/1-0.html";
 
 
 class Team extends React.Component {
@@ -37,15 +34,9 @@ class Team extends React.Component {
 		return (
 			<Layout>
 				<div className="firstDivInContent">
-					<PageBanner parentStep="Form a Collaborative Planning Team"
-						childStep="Identify a Resilience Leader for the Community" taskNo="1" subtaskNo="1-1"/>
-					<Box className="outerBox">
-						<Grid container spacing={3} className="innerBox">
-							<Grid item className="gridItem">
-								<UserInfo userList={this.props.userList} handleStepStatusChange={this.handleStepStatusChange}/>
-							</Grid>
-							<Grid item className="gridItem">
-								<StepStatus />
+					<Box className="outerIntroBox">
+						<Grid container spacing={12} className="innerIntroBox">
+							<Grid item className="gridIntroItem">
 								<StepInfo fullHtml={fullHtml} />
 							</Grid>
 						</Grid>
