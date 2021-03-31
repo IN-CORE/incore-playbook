@@ -172,22 +172,22 @@ const HeaderWithMenu = ({dispatch, isAuthenticated}) => {
 
 	const handleParentClick = (key) => () => {
 		(openTask === key) ? setOpenTask("0"): setOpenTask(key);
-		if (key === "1") {
+		if (key === "1-0") {
 			history.push("/create-team");
 		}
-		else if (key === "2") {
+		else if (key === "2-0") {
 			history.push("/community");
 		}
-		else if (key === "3") {
+		else if (key === "3-0") {
 			history.push("/goal-objective");
 		}
-		else if (key === "4") {
+		else if (key === "4-0") {
 			history.push("/plan-development");
 		}
-		else if (key === "5") {
+		else if (key === "5-0") {
 			history.push("/review");
 		}
-		else if (key === "6") {
+		else if (key === "6-0") {
 			history.push("/implementation");
 		}
 		else {
@@ -371,21 +371,21 @@ const HeaderWithMenu = ({dispatch, isAuthenticated}) => {
 					key: "5-1",
 					label: "Document Plans & Strategy",
 					completed: true,
-					disabled: true,
+					disabled: false,
 					route: "/review-strategy"
 				},
 				{
 					key: "5-2",
 					label: "Obtain Feedback & Approval",
 					completed: true,
-					disabled: true,
+					disabled: false,
 					route: "/review-approval"
 				},
 				{
 					key: "5-3",
 					label: "Finalize & Approve The Plan",
 					completed: true,
-					disabled: true,
+					disabled: false,
 					route: "/review-final"
 				},
 			]
@@ -398,21 +398,21 @@ const HeaderWithMenu = ({dispatch, isAuthenticated}) => {
 					key: "6-1",
 					label: "Execute approved solutions",
 					completed: true,
-					disabled: true,
+					disabled: false,
 					route: "/implementation-execute"
 				},
 				{
 					key: "6-2",
 					label: "Evaluate & Update",
 					completed: true,
-					disabled: true,
+					disabled: false,
 					route: "/implementation-update"
 				},
 				{
 					key: "6-3",
 					label: "Modify Strategy (as needed)",
 					completed: true,
-					disabled: true,
+					disabled: false,
 					route: "/implementation-modify"
 				},
 			]

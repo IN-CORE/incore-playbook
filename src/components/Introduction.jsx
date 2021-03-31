@@ -4,13 +4,13 @@ import {Box, Grid} from "@material-ui/core";
 import PageBanner from "./Banner";
 import Layout from "../containers/Layout";
 import StepInfo from "./StepInfo";
-import fullHtml0 from "../public/steps/0-0.html";
-import fullHtml1 from "../public/steps/1-0.html";
-import fullHtml2 from "../public/steps/2-0.html";
-import fullHtml3 from "../public/steps/3-0.html";
-import fullHtml4 from "../public/steps/4-0.html";
-import fullHtml5 from "../public/steps/5-0.html";
-import fullHtml6 from "../public/steps/6-0.html";
+import fullHtml00 from "../public/steps/0-0.html";
+import fullHtml10 from "../public/steps/1-0.html";
+import fullHtml20 from "../public/steps/2-0.html";
+import fullHtml30 from "../public/steps/3-0.html";
+import fullHtml40 from "../public/steps/4-0.html";
+import fullHtml50 from "../public/steps/5-0.html";
+import fullHtml60 from "../public/steps/6-0.html";
 
 const useStyles = makeStyles({
 	innerBox: {
@@ -28,31 +28,31 @@ const useStyles = makeStyles({
 const Introduction = ({menu}: string) => {
 	const classes = useStyles();
 
-	let fullHtml = fullHtml0;
+	let fullHtml = fullHtml00;
 	let pageBanner = null;
-	if (menu === "1") {
+	if (menu === "1-0") {
 		console.log(menu);
-		fullHtml = fullHtml1;
+		fullHtml = fullHtml10;
 		pageBanner = <PageBanner parentStep="Form a Collaborative Planning Team" taskNo="1" />;
 	}
-	else if (menu === "2") {
-		fullHtml = fullHtml2;
+	else if (menu === "2-0") {
+		fullHtml = fullHtml20;
 		pageBanner = <PageBanner parentStep="Understanding the Situation" taskNo="2" />;
 	}
-	else if (menu === "3") {
-		fullHtml = fullHtml3;
+	else if (menu === "3-0") {
+		fullHtml = fullHtml30;
 		pageBanner = <PageBanner parentStep="Determine Goals & Objectives" taskNo="3" />;
 	}
-	else if (menu === "4") {
-		fullHtml = fullHtml4;
+	else if (menu === "4-0") {
+		fullHtml = fullHtml40;
 		pageBanner = <PageBanner parentStep="Plan Development" taskNo="4" />;
 	}
-	else if (menu === "5") {
-		fullHtml = fullHtml5;
+	else if (menu === "5-0") {
+		fullHtml = fullHtml50;
 		pageBanner = <PageBanner parentStep="Plan Prep, Review, & Approval" taskNo="5" />;
 	}
-	else if (menu === "6") {
-		fullHtml = fullHtml6;
+	else if (menu === "6-0") {
+		fullHtml = fullHtml60;
 		pageBanner = <PageBanner parentStep="Plan Implementation & Maintenance" taskNo="6" />;
 	}
 
