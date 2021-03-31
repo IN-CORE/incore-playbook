@@ -176,16 +176,16 @@ const HeaderWithMenu = ({dispatch, isAuthenticated}) => {
 			history.push("/create-team");
 		}
 		else if (key === "2") {
-			history.push("/built-environment");
+			history.push("/community");
 		}
 		else if (key === "3") {
-			history.push("/goals-objective");
+			history.push("/goal-objective");
 		}
 		else if (key === "4") {
 			history.push("/plan-development");
 		}
 		else if (key === "5") {
-			history.push("/review-approval");
+			history.push("/review");
 		}
 		else if (key === "6") {
 			history.push("/implementation");
@@ -228,25 +228,29 @@ const HeaderWithMenu = ({dispatch, isAuthenticated}) => {
 					key: "1-1",
 					label: "Identify leader",
 					completed: false,
+					disabled: false,
 					route: "/create-team-leader"
 				},
 				{
 					key: "1-2",
 					label: "Identify Team Members",
 					completed: true,
-					disabled: true
+					disabled: false,
+					route: "/create-team-member"
 				},
 				{
 					key: "1-3",
 					label: "Establish the scope",
 					completed: true,
-					disabled: true
+					disabled: false,
+					route: "/create-team-scope"
 				},
 				{
 					key: "1-4",
 					label: " Identify key stakeholders",
 					completed: true,
-					disabled: true
+					disabled: false,
+					route: "/create-team-stakeholder"
 				},
 			],
 		},
@@ -258,32 +262,36 @@ const HeaderWithMenu = ({dispatch, isAuthenticated}) => {
 					key: "2-1",
 					label: "Assess existing community plans",
 					completed: true,
-					disabled: true
+					disabled: false,
+					route: "/community-plan"
 				},
 				{
 					key: "2-2",
 					label: "Characterize community members",
 					completed: true,
-					disabled: true
+					disabled: false,
+					route: "/community-member"
 				},
 				{
 					key: "2-3",
 					label: "Characterize social functions",
 					completed: true,
-					disabled: true
+					disabled: false,
+					route: "/community-function"
 				},
 				{
 					key: "2-4",
 					label: "Characterize built environment",
 					completed: false,
 					disabled: false,
-					route: "/set-built-environment"
+					route: "/community-environment"
 				},
 				{
 					key: "2-5",
 					label: "Link social functions & built environment",
 					completed: true,
-					disabled: true
+					disabled: false,
+					route: "/community-link"
 				},
 			],
 		},
@@ -295,35 +303,36 @@ const HeaderWithMenu = ({dispatch, isAuthenticated}) => {
 					key: "3-1",
 					label: "Identify long-term community goals",
 					completed: true,
-					disabled: true,
-					route: "/define-community-hazards"
+					disabled: false,
+					route: "/goal-objective-long"
 				},
 				{
 					key: "3-2",
 					label: "Establish performance goals",
 					completed: true,
-					disabled: true,
-					route: "/define-community-hazards"
+					disabled: false,
+					route: "/goal-objective-desired"
 				},
 				{
 					key: "3-3",
 					label: "Define community hazards",
 					completed: false,
 					disabled: false,
-					route: "/define-community-hazards"
+					route: "/goal-objective-hazard"
 				},
 				{
 					key: "3-4",
 					label: "Determine anticipated performance",
 					completed: false,
-					route: "/determine-anticipated-performance"
+					disabled: false,
+					route: "/goal-objective-performance"
 				},
 				{
 					key: "3-5",
 					label: "Summarize the results",
 					completed: true,
-					disabled: true,
-					route: "/define-community-hazards"
+					disabled: false,
+					route: "/goal-objective-result"
 				},
 			],
 		},
@@ -335,19 +344,22 @@ const HeaderWithMenu = ({dispatch, isAuthenticated}) => {
 					key: "4-1",
 					label: "Evaluate Gaps",
 					completed: true,
-					disabled: true
+					disabled: false,
+					route: "/plan-development-gap"
 				},
 				{
 					key: "4-2",
 					label: "Identify Solutions",
 					completed: true,
-					disabled: true
+					disabled: false,
+					route: "/plan-development-solution"
 				},
 				{
 					key: "4-3",
 					label: "Prioritize implementation strategy",
 					completed: true,
-					disabled: true
+					disabled: false,
+					route: "/plan-development-strategy"
 				},
 			]
 		},
@@ -359,19 +371,22 @@ const HeaderWithMenu = ({dispatch, isAuthenticated}) => {
 					key: "5-1",
 					label: "Document Plans & Strategy",
 					completed: true,
-					disabled: true
+					disabled: true,
+					route: "/review-strategy"
 				},
 				{
 					key: "5-2",
 					label: "Obtain Feedback & Approval",
 					completed: true,
-					disabled: true
+					disabled: true,
+					route: "/review-approval"
 				},
 				{
 					key: "5-3",
 					label: "Finalize & Approve The Plan",
 					completed: true,
-					disabled: true
+					disabled: true,
+					route: "/review-final"
 				},
 			]
 		},
@@ -383,19 +398,22 @@ const HeaderWithMenu = ({dispatch, isAuthenticated}) => {
 					key: "6-1",
 					label: "Execute approved solutions",
 					completed: true,
-					disabled: true
+					disabled: true,
+					route: "/implementation-execute"
 				},
 				{
 					key: "6-2",
 					label: "Evaluate & Update",
 					completed: true,
-					disabled: true
+					disabled: true,
+					route: "/implementation-update"
 				},
 				{
 					key: "6-3",
 					label: "Modify Strategy (as needed)",
 					completed: true,
-					disabled: true
+					disabled: true,
+					route: "/implementation-modify"
 				},
 			]
 		}
