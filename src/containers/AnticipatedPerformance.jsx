@@ -11,7 +11,8 @@ const mapStateToProps = (state) => {
 		attributes: state.attribute.attributes,
 		executions: state.execution.executions,
 		tornadoes: state.tornado.tornadoes,
-		datasets: state.dataset.datasets
+		buildings: state.dataset.buildings,
+		epfs: state.dataset.epfs
 	};
 };
 
@@ -26,8 +27,8 @@ const mapDispatchToProps = (dispatch) => {
 		listTornadoes: (limit, offset) => {
 			dispatch(fetchTornadoes(limit, offset));
 		},
-		listDatasets: (limit, offset) => {
-			dispatch(fetchDatasets(limit, offset));
+		listDatasets: (limit, offset, type) => {
+			dispatch(fetchDatasets(limit, offset, type));
 		}
 	};
 };
