@@ -242,6 +242,7 @@ class CommunityHazards extends React.Component {
 						childStep="Define Community Hazards" taskNo="3" subtaskNo="3-3"/>
 					<Box className="outerBox">
 						<StepInfo fullHtml={fullHtml} />
+						<br />
 						{/*List created tornadoes*/}
 						<Container className="entryTableContainer">
 							<Box className="entryTableTitle">
