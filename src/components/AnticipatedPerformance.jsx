@@ -5,6 +5,8 @@ import Layout from "../containers/Layout";
 import ViewResult from "./ViewResult";
 import RunAnalysis from "./RunAnalysis";
 import PageBanner from "./Banner";
+import fullHtml from "../public/steps/3-4.html";
+import StepInfo from "./StepInfo";
 
 
 const styles = {};
@@ -37,6 +39,7 @@ class AnticipatedPerformance extends React.Component {
 					<PageBanner parentStep="Determine Goals & Objectives"
 						childStep="Determine Anticipated Performance" taskNo="3" subtaskNo="3-4"/>
 					<Box className="outerBox">
+						<StepInfo fullHtml={fullHtml} />
 						<Grid container spacing={3} className="innerBox">
 							<Grid item>
 								<Tabs aria-label="determine anticipated performance tabs" value={this.state.currTabIndex} className={classes.tabs}

@@ -26,6 +26,8 @@ import FilterListIcon from "@material-ui/icons/FilterList";
 
 import {EntryTable} from "./EntryTable";
 import PageBanner from "./Banner";
+import fullHtml from "../public/steps/3-3.html";
+import StepInfo from "./StepInfo";
 
 const styles = {
 	tabDiv: {
@@ -239,6 +241,7 @@ class CommunityHazards extends React.Component {
 					<PageBanner parentStep="Determine Goals & Objectives"
 						childStep="Define Community Hazards" taskNo="3" subtaskNo="3-3"/>
 					<Box className="outerBox">
+						<StepInfo fullHtml={fullHtml} />
 						{/*List created tornadoes*/}
 						<Container className="entryTableContainer">
 							<Box className="entryTableTitle">

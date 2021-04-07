@@ -4,9 +4,8 @@ import {Box, Container, Grid, IconButton} from "@material-ui/core";
 
 import Layout from "../containers/Layout";
 import PageBanner from "./Banner";
+import StepInfo from "./StepInfo";
 import StepStatus from "./StepStatus";
-import StepDescription from "./StepDescription";
-import {stepInfo} from "../app.messages";
 import FileUploadDrop from "./FileUploadDrop";
 import {IncoreInputLabel} from "./styledComponents/IncoreInputLabel";
 import {IncoreTextField} from "./styledComponents/IncoreInput";
@@ -17,6 +16,7 @@ import {EntryTable} from "./EntryTable";
 
 import FilterListIcon from "@material-ui/icons/FilterList";
 import LoadingOverlay from "react-loading-overlay";
+import fullHtml from "../public/steps/2-4.html";
 
 export default function BuiltEnvironment(props) {
 	const { listDatasets, datasets } = props;
@@ -146,13 +146,11 @@ export default function BuiltEnvironment(props) {
 						</Grid>
 						<Grid item className="gridItem">
 							<StepStatus />
-							<StepDescription stepInfo={stepInfo[1]} />
+							<StepInfo fullHtml={fullHtml} />
 						</Grid>
 					</Grid>
 				</Box>
 			</div>
-
-
 
 		</Layout>
 	);
