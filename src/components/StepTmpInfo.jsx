@@ -45,7 +45,7 @@ const useStyles = makeStyles({
 });
 
 
-const StepTmpInfo = ({menu}: string) => {
+const StepTmpInfo = ({menu}) => {
 	const classes = useStyles();
 
 	let fullHtml = fullHtml00;

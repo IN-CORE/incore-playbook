@@ -28,7 +28,7 @@ const useStyles = makeStyles({
 });
 
 
-const Introduction = ({menu}: string) => {
+const Introduction = ({menu}) => {
 	const classes = useStyles();
 
 	let fullHtml = fullHtml00;

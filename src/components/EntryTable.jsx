@@ -39,7 +39,8 @@ const useStyles = makeStyles({
 		color: "#2E384D",
 		fontSize: "15px",
 		letterSpacing: 0,
-		lineHeight: "22px"
+		lineHeight: "22px",
+		wordBreak:"break-word"
 	},
 	firstTableBodyCell:{
 		width: "250px",

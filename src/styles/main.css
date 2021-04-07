@@ -17,6 +17,7 @@ body {
 }
 
 .firstDivInContent {
+	width:100%;
 	margin-left: auto;
 	margin-right: auto;
 }
@@ -48,7 +49,7 @@ body {
 
 .gridItem {
 	margin: 36px 15px;
-	width: 500px;
+	min-width: 500px;
 }
 
 .inputGroup {

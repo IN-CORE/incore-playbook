@@ -244,7 +244,7 @@ class CommunityHazards extends React.Component {
 						<StepInfo fullHtml={fullHtml} />
 						<br />
 						{/*List created tornadoes*/}
-						<Container className="entryTableContainer">
+						<Box className="entryTableContainer">
 							<Box className="entryTableTitle">
 								<IncoreInputLabel>Created Hazard</IncoreInputLabel>
 								<Box style={{float:"right"}}>
@@ -256,9 +256,9 @@ class CommunityHazards extends React.Component {
 							<Box className="entryTable">
 								<EntryTable fieldNames={this.fieldNames} fields={this.props.tornadoes}/>
 							</Box>
-						</Container>
+						</Box>
 						<Grid container spacing={3} className="innerBox">
-							<Grid item className="gridItem">
+							<Grid item xl={5} lg={5} md={5} sm={5} xs={12} className="gridItem">
 								{/*Select*/}
 								<Box>
 									<IncoreInputLabel>Select Hazard Type</IncoreInputLabel>
@@ -289,7 +289,7 @@ class CommunityHazards extends React.Component {
 												   handleListUpdate={this.props.listTornadoes}/>
 								</Box>
 							</Grid>
-							<Grid item className="gridItem">
+							<Grid item xl={7} lg={7} md={7} sm={7} xs={12} className="gridItem">
 								<Container className={classes.mapContainer} disableGutters>
 									<Map
 										className="fillContainer"

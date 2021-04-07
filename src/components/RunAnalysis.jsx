@@ -12,9 +12,6 @@ import {
 import {IncoreInputLabel} from "./styledComponents/IncoreInputLabel";
 import {IncoreSelectBox, IncoreMenuItem} from "./styledComponents/IncoreSelect";
 
-import StepDescription from "./StepDescription";
-
-import {stepInfo} from "../app.messages";
 import {IncoreTextField} from "./styledComponents/IncoreInput";
 
 import {submitExecution} from "../utils/datawolf";
@@ -112,7 +109,7 @@ export default function ViewResult(props) {
 			 {...other}
 		>
 			<Grid container spacing={3}>
-				<Grid item style={{width: "500px"}}>
+				<Grid item xl={5} lg={5} md={5} sm={5} xs={12}>
 					<div className="inputGroup" style={{height: "auto", marginTop:"55px"}}>
 						<IncoreInputLabel>Title</IncoreInputLabel>
 						<IncoreTextField value={title} variant="outlined" onChange={(e) => setTitle(e.target.value)}/>
@@ -122,12 +119,12 @@ export default function ViewResult(props) {
 						<IncoreTextField value={description} variant="outlined" onChange={(e) => setDescription(e.target.value)}/>
 					</div>
 				</Grid>
-				<Grid item className="gridItem">
+				<Grid item xl={7} lg={7} md={7} sm={7} xs={12} className="gridItem">
 					<StepInfo fullHtml={fullHtml} />
 				</Grid>
 			</Grid>
 			<Grid container spacing={3}>
-				<Grid item className="gridItem">
+				<Grid item xl={5} lg={5} md={5} sm={5} xs={12} className="gridItem">
 					<Box className="inputGroup" style={{height: "auto"}}>
 						<IncoreInputLabel>Select a Building, Building Cluster
 						</IncoreInputLabel>
@@ -181,7 +178,7 @@ export default function ViewResult(props) {
 				</Grid>
 			</Grid>
 			<Grid container spacing={3}>
-				<Grid item className="gridItem">
+				<Grid item xl={5} lg={5} md={5} sm={5} xs={12} className="gridItem">
 					<Box className="inputGroup">
 						<IncoreInputLabel>Select a Hazard</IncoreInputLabel>
 						<IncoreSelectBox labelId="label" id="select" variant="outlined"
@@ -202,7 +199,7 @@ export default function ViewResult(props) {
 				</Grid>
 			</Grid>
 			<Grid container spacing={3}>
-				<Grid item className="gridItem">
+				<Grid item xl={5} lg={5} md={5} sm={5} xs={12} className="gridItem">
 					<Box className="inputGroup">
 						<IncoreInputLabel>Run the Analysis</IncoreInputLabel>
 						<Button variant="contained" color="primary" onClick={handleRunButtonClick}

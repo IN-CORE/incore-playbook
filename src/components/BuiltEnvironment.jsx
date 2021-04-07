@@ -6,8 +6,6 @@ import Layout from "../containers/Layout";
 import PageBanner from "./Banner";
 import StepInfo from "./StepInfo";
 import StepStatus from "./StepStatus";
-import StepDescription from "./StepDescription";
-import {stepInfo} from "../app.messages";
 import {IncoreInputLabel} from "./styledComponents/IncoreInputLabel";
 import {IncoreTextField} from "./styledComponents/IncoreInput";
 import {IncoreButton} from "./styledComponents/IncoreButton";
@@ -139,7 +137,7 @@ export default function BuiltEnvironment(props) {
 					childStep="Identify & Characterize the Built Environment" taskNo="2" subtaskNo="2-4"/>
 				<Box className="outerBox">
 					<Grid container spacing={3} className="innerBox">
-						<Grid item className="gridItem">
+						<Grid item xl={5} lg={5} md={5} sm={5} xs={12} className="gridItem">
 							<LoadingOverlay
 								active={loading}
 								spinner
@@ -185,7 +183,7 @@ export default function BuiltEnvironment(props) {
 								</Container>
 							</LoadingOverlay>
 						</Grid>
-						<Grid item className="gridItem">
+						<Grid item xl={7} lg={7} md={7} sm={7} xs={12} className="gridItem">
 							<StepStatus />
 							<StepInfo fullHtml={fullHtml} />
 						</Grid>
