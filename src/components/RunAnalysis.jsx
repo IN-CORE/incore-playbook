@@ -59,36 +59,43 @@ const useStyles = makeStyles({
 });
 
 export default function ViewResult(props) {
-	const {value, index, listTornadoes, tornadoes, listDatasets, datasets,
+	const {value, index, listTornadoes, tornadoes, listDatasets, buildings, epfs,
 		getExecutionList, gotoViewResultTab, ...other} = props;
 
 	const [title, setTitle] = useState("");
 	const [description, setDescription] = useState("");
-	const [selectedDatasetId, setDatasetId] = useState("");
+	const [selectedBldgId, setBldgId] = useState("");
+	const [selectedSubstationId, setSubstationId] = useState("");
+	const [selectedPoleId, setPoleId] = useState("");
 	const [selectedTornadoId, setTornadoId] = useState("");
 	const [disabled, setDisabled] = useState(true);
 
 
 	// load datasets and tornadoes
 	useEffect(() =>{
-		listDatasets();
+		listDatasets(20, 0, "ergo:buildingInventoryVer6");
+		listDatasets(20, 0, "incore:epf");
 		listTornadoes();}, []);
 
 	// form check
 	useEffect(() => {
-		if (selectedDatasetId !== "" && selectedDatasetId !== "" && title !== "" && description !== "") setDisabled(false);
+		if (selectedBldgId !== "" && selectedSubstationId !== ""  && selectedPoleId !== ""
+			&& title !== "" && description !== "") setDisabled(false);
 		else setDisabled(true);
-	}, [selectedDatasetId, selectedDatasetId, title, description]);
+	}, [selectedBldgId, selectedSubstationId, selectedPoleId, title, description]);
 
 
 	const classes = useStyles();
 
 	const handleRunButtonClick = async () =>{
-		const datawolfJson = await submitExecution(title, description, selectedDatasetId,selectedTornadoId);
+		const datawolfJson = await submitExecution(title, description, selectedBldgId, selectedSubstationId,
+			selectedPoleId, selectedTornadoId);
 		if (datawolfJson && datawolfJson !== "") {
 			setTitle("");
 			setDescription("");
-			setDatasetId("");
+			setBldgId("");
+			setSubstationId("");
+			setPoleId("");
 			setTornadoId("");
 
 			// update execution list and then jump to view result tab
@@ -116,17 +123,49 @@ export default function ViewResult(props) {
 			</Grid>
 			<Grid container spacing={3}>
 				<Grid item className="gridItem">
-					<Box className="inputGroup">
-						<IncoreInputLabel>Select a Building, Building Cluster, or Infrastructure Entity
+					<Box className="inputGroup" style={{height: "auto"}}>
+						<IncoreInputLabel>Select a Building, Building Cluster
 						</IncoreInputLabel>
 						<IncoreSelectBox labelId="label" id="select" variant="outlined"
-										 onChange={(e)=>{ setDatasetId(e.target.value); }}
-										 value={selectedDatasetId}>
+										 onChange={(e)=>{ setBldgId(e.target.value); }}
+										 value={selectedBldgId}>
 							{
-								datasets.map((dataset) => {
+								buildings.map((building) => {
 									return (
-										<IncoreMenuItem value={dataset["id"]} key={dataset["id"]}>
-											{dataset["title"]}</IncoreMenuItem>
+										<IncoreMenuItem value={building["id"]} key={building["id"]}>
+											{building["title"]}</IncoreMenuItem>
+									);
+								})
+							}
+						</IncoreSelectBox>
+					</Box>
+					<Box className="inputGroup" style={{height: "auto"}}>
+						<IncoreInputLabel>Select Electric Power Facilities (Poles)
+						</IncoreInputLabel>
+						<IncoreSelectBox labelId="label" id="select" variant="outlined"
+										 onChange={(e)=>{ setPoleId(e.target.value); }}
+										 value={selectedPoleId}>
+							{
+								epfs.map((epf) => {
+									return (
+										<IncoreMenuItem value={epf["id"]} key={epf["id"]}>
+											{epf["title"]}</IncoreMenuItem>
+									);
+								})
+							}
+						</IncoreSelectBox>
+					</Box>
+					<Box className="inputGroup" style={{height: "auto"}}>
+						<IncoreInputLabel>Select Electric Power Facilities (Substation)
+						</IncoreInputLabel>
+						<IncoreSelectBox labelId="label" id="select" variant="outlined"
+										 onChange={(e)=>{ setSubstationId(e.target.value); }}
+										 value={selectedSubstationId}>
+							{
+								epfs.map((epf) => {
+									return (
+										<IncoreMenuItem value={epf["id"]} key={epf["id"]}>
+											{epf["title"]}</IncoreMenuItem>
 									);
 								})
 							}

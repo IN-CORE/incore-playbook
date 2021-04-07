@@ -51,7 +51,8 @@ class AnticipatedPerformance extends React.Component {
 											 listTornadoes={this.props.listTornadoes}
 											 tornadoes={this.props.tornadoes}
 											 listDatasets={this.props.listDatasets}
-											 datasets={this.props.datasets}
+											 buildings={this.props.buildings}
+											 epfs={this.props.epfs}
 											 getExecutionList={this.props.getExecutionList}
 											 gotoViewResultTab={this.gotoViewResultTab}
 								/>

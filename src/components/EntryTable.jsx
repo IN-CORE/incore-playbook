@@ -87,6 +87,10 @@ function stableSort(array, comparator) {
 	return stabilizedThis.map((el) => el[0]);
 }
 
+function prettifyDate(date){
+	return date.slice(0, 10);
+}
+
 export function EntryTable(props) {
 
 	const { fieldNames, fields } = props;
@@ -141,18 +145,25 @@ export function EntryTable(props) {
 											if (fieldName["handleClick"] !== undefined){
 												let handleClick = fieldName["handleClick"];
 												return (
-													<TableCell key={idx} className={idx ===0 ?classes.firstTableBodyCell:classes.tableBodyCell}>
+													<TableCell key={idx} className={classes.tableBodyCell}>
 														<Link color="primary" onClick={() => {handleClick(field);}}
 															  className={field["finalStatus"] === undefined || field["finalStatus"] === "FINISHED" ?
 																  classes.clickableLink:classes.clickableLinkDisabled}>
-															{field[fieldName["columnName"]]}
+															{
+																field[fieldName["columnName"]]
+															}
 														</Link>
 													</TableCell>
 												);
 											}
 											return (
-												<TableCell key={idx} className={idx ===0 ?classes.firstTableBodyCell:classes.tableBodyCell}>
-													{field[fieldName["columnName"]]}</TableCell>
+												<TableCell key={idx} className={classes.tableBodyCell}>
+													{
+														fieldName["columnName"] === "date"?
+															prettifyDate(field[fieldName["columnName"]]) :
+															field[fieldName["columnName"]]
+													}
+												</TableCell>
 											);
 										})
 									}
