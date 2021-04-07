@@ -19,6 +19,8 @@ import {IncoreTextField} from "./styledComponents/IncoreInput";
 
 import {submitExecution} from "../utils/datawolf";
 import PoweredBy from "../public/powered-by-incore.svg";
+import fullHtml from "../public/steps/3-4.html";
+import StepInfo from "./StepInfo";
 
 const useStyles = makeStyles({
 	runButton:{
@@ -120,6 +122,9 @@ export default function ViewResult(props) {
 						<IncoreTextField value={description} variant="outlined" onChange={(e) => setDescription(e.target.value)}/>
 					</div>
 				</Grid>
+				<Grid item className="gridItem">
+					<StepInfo fullHtml={fullHtml} />
+				</Grid>
 			</Grid>
 			<Grid container spacing={3}>
 				<Grid item className="gridItem">
@@ -174,9 +179,6 @@ export default function ViewResult(props) {
 							<Link href="/set-built-environment" className={classes.explanationLink}>click here</Link>.</Typography>
 					</Box>
 				</Grid>
-				<Grid item className="gridItem">
-					<StepDescription stepInfo={stepInfo[2]} />
-				</Grid>
 			</Grid>
 			<Grid container spacing={3}>
 				<Grid item className="gridItem">
@@ -198,9 +200,6 @@ export default function ViewResult(props) {
 							<Link href="/define-community-hazards" className={classes.explanationLink}>click here</Link>.</Typography>
 					</Box>
 				</Grid>
-				<Grid item className="gridItem">
-					<StepDescription stepInfo={stepInfo[3]} />
-				</Grid>
 			</Grid>
 			<Grid container spacing={3}>
 				<Grid item className="gridItem">
@@ -214,9 +213,6 @@ export default function ViewResult(props) {
 							CALCULATE THE HAZARD RISK
 						</Button>
 					</Box>
-				</Grid>
-				<Grid item className="gridItem">
-					<StepDescription stepInfo={stepInfo[4]} />
 				</Grid>
 			</Grid>
 		</div>
