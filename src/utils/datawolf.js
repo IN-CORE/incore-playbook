@@ -50,8 +50,6 @@ export async function getOutputFileJson(datasetId, outputFileName = null) {
 }
 
 export async function submitExecution(title, description, bldgId, substationId, poleId, hazardId,){
-	// TODO - now include more input datasets of EPF
-	// TODO - need to rewrite this function!
 	let incoreTokenDatasetId = await postDataset();
 	if (incoreTokenDatasetId === null) {
 		console.log("Fail to post incoretoken. Abort exeuction submission!");
@@ -74,24 +72,27 @@ export async function submitExecution(title, description, bldgId, substationId, 
 			"datasets": {}
 		};
 
-		requestBody["parameters"][datawolfParams["hazardTypeId"]] = "tornado";
-		requestBody["parameters"][datawolfParams["damageRatioId"]] = "5a284f2ec7d30d13bc08209a";
-		requestBody["parameters"][datawolfParams["mappingId"]] = "5e8e3a21eaa8b80001f04f1c";
-		requestBody["parameters"][datawolfParams["damageIntervalKeysId"]] = "insignific moderate heavy complete";
-		requestBody["parameters"][datawolfParams["numCpuId1"]] = 4;
-		requestBody["parameters"][datawolfParams["serviceUrlId1"]] = appConfig.apiUrl;
-		requestBody["parameters"][datawolfParams["damageTypeId"]] = "ergo:buildingDamageVer4";
-		requestBody["parameters"][datawolfParams["resultNameId1"]] = "joplin_bldg_dmg";
-		requestBody["parameters"][datawolfParams["resultNameId2"]] = "joplin_bldg_mean_dmg";
+		requestBody["parameters"][datawolfParams["incoreUserNameId"]] = "";
+		requestBody["parameters"][datawolfParams["interdependencyId"]] = "5dcf4a34b9219ca5e4118312";
+		requestBody["parameters"][datawolfParams["useUncertaintyId"]] = "";
+		requestBody["parameters"][datawolfParams["numCpuId"]] = 8;
+		requestBody["parameters"][datawolfParams["useLiquefactionId"]] = "";
+		requestBody["parameters"][datawolfParams["mcsSamplesId"]] = 500;
+		requestBody["parameters"][datawolfParams["bldgDamageRatioId"]] = "5a284f2ec7d30d13bc08209a";
+		requestBody["parameters"][datawolfParams["epfPoleId"]] = poleId;
 		requestBody["parameters"][datawolfParams["hazardId"]] = hazardId;
-		requestBody["parameters"][datawolfParams["serviceUrlId2"]] = appConfig.apiUrl;
-		requestBody["parameters"][datawolfParams["sourceId"]] = bldgId;
+		requestBody["parameters"][datawolfParams["damageIntervalKeysId"]] = "DS_0 DS_1 DS_2 DS_3";
+		requestBody["parameters"][datawolfParams["hazardTypeId"]] = "tornado";
+		requestBody["parameters"][datawolfParams["bldgMappingId"]] = "5d8942dfb9219c068ea795ea";
+		requestBody["parameters"][datawolfParams["epfMappingId"]] = "5d8a326fb9219c068ea798e7";
+		requestBody["parameters"][datawolfParams["bldgFragilityKeyId"]] = "";
+		requestBody["parameters"][datawolfParams["serviceUrlId"]] = appConfig["apiUrl"];
+		requestBody["parameters"][datawolfParams["epfSubstationId"]] = substationId;
 		requestBody["parameters"][datawolfParams["buildingId"]] = bldgId;
-		requestBody["parameters"][datawolfParams["numCpuId2"]] = 4;
+		requestBody["parameters"][datawolfParams["resultNameId"]] = "Joplin";
 
-		// these two ids need to change since token will expire
-		requestBody["datasets"][datawolfDatasets["incoreTokenId1"]] = incoreTokenDatasetId;
-		requestBody["datasets"][datawolfDatasets["incoreTokenId2"]] = incoreTokenDatasetId;
+		// token will expire
+		requestBody["datasets"][datawolfDatasets["incoreTokenId"]] = incoreTokenDatasetId;
 
 		let datawolfResponse = await fetch(`${datawolfConfig["executionPostURL"]}`, {
 			method: "POST",

@@ -144,25 +144,25 @@ export default function ViewResult(props) {
 		let finalStatus = extractStatus(executionItem);
 		if (finalStatus === "FINISHED") {
 			// file that has incore dataset ID in it that's what i need to generate the map
-			let bldgMaxDamageStateId = executionItem["datasets"][datawolfConfig["bldgMaxDamageStateId"]];
+			let bldgMaxDamageStateId = executionItem["datasets"][datawolfConfig["datasets"]["bldgMaxDamageStateId"]];
 			let bldgMaxDamageStateINCOREId = await getOutputFileJson(bldgMaxDamageStateId);
 			let hazardId = executionItem["parameters"][datawolfConfig["parameters"]["hazardId"]];
 			let hazardMetadata = await getTornadoMetadata(hazardId);
 			let hazardDatasetId = hazardMetadata["datasetId"];
 			handleLayerUpdate(hazardDatasetId, bldgMaxDamageStateINCOREId);
 
-			let summaryTableId = executionItem["datasets"][datawolfConfig["summaryTableId"]];
-			let summaryTable = await getOutputFileJson(summaryTableId);
-			let sumaryTableContent = JSON.parse(summaryTable);
+			let bldgDmgSummaryTableId = executionItem["datasets"][datawolfConfig["datasets"]["bldgDmgSummaryTableId"]];
+			let bldgDmgSummaryTable = await getOutputFileJson(bldgDmgSummaryTableId);
+			let bldgDmgSummaryTableContent = JSON.parse(bldgDmgSummaryTable);
 
 			// for summary table on the top
 			setRuntime(executionItem["date"].slice(0,10));
 
 			// for table
-			setSummaryTableFields(sumaryTableContent);
+			setSummaryTableFields(bldgDmgSummaryTableContent);
 
 			// for chart
-			setBarChartFields(sumaryTableContent["by_category"]);
+			setBarChartFields(bldgDmgSummaryTableContent["by_category"]);
 
 			// open preview
 			setMode("preview");
@@ -242,7 +242,7 @@ export default function ViewResult(props) {
 			 {...other}
 		>
 			{/*for analysis list*/}
-			<Container>
+			<Box>
 				<Box className={classes.statTitle}>
 					<IncoreInputLabel>{`Completed Analysis (${numCompleted})`}</IncoreInputLabel>
 					<Box style={{float:"right"}}>
@@ -253,7 +253,7 @@ export default function ViewResult(props) {
 				<Box>
 					<EntryTable fieldNames={fieldNames} fields={executionEntries}/>
 				</Box>
-			</Container>
+			</Box>
 
 			{/*for individual analysis result preview*/}
 			<Dialog open={mode==="preview"} onClose={handlePreviewClose} maxWidth="lg" fullWidth scroll="paper">

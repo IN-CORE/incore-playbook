@@ -1,5 +1,4 @@
 import React from "react";
-import {makeStyles} from "@material-ui/core/styles";
 import {Box, Grid} from "@material-ui/core";
 import PageBanner from "./Banner";
 import Layout from "../containers/Layout";
@@ -12,25 +11,7 @@ import fullHtml40 from "../public/steps/4-0.html";
 import fullHtml50 from "../public/steps/5-0.html";
 import fullHtml60 from "../public/steps/6-0.html";
 
-const useStyles = makeStyles({
-	firstDivInContent: {
-		marginLeft: "30px"
-	},
-	innerBox: {
-		backgroundColor: "#F8F9FF"
-	},
-	outerBox: {
-		backgroundColor: "#F8F9FF"
-	},
-	gridItem: {
-		width: "900px"
-	},
-});
-
-
 const Introduction = ({menu}) => {
-	const classes = useStyles();
-
 	let fullHtml = fullHtml00;
 	let pageBanner = null;
 	if (menu === "1") {
@@ -61,11 +42,11 @@ const Introduction = ({menu}) => {
 
 	return (
 		<Layout>
-			<div className={classes.firstDivInContent}>
+			<div className="firstDivInContent">
 				{pageBanner}
-				<Box  className={classes.outerBox}>
-					<Grid container spacing={12} className={classes.innerBox}>
-						<Grid item className={classes.gridItem}>
+				<Box className="outerBox">
+					<Grid container spacing={3} className="innerBox">
+						<Grid item className="gridItem">
 							<StepInfo fullHtml={fullHtml}/>
 						</Grid>
 					</Grid>

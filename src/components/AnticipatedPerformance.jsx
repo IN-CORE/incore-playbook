@@ -38,7 +38,7 @@ class AnticipatedPerformance extends React.Component {
 						childStep="Determine Anticipated Performance" taskNo="3" subtaskNo="3-4"/>
 					<Box className="outerBox">
 						<Grid container spacing={3} className="innerBox">
-							<Grid item>
+							<Grid item className="gridItem">
 								<Tabs aria-label="determine anticipated performance tabs" value={this.state.currTabIndex} className={classes.tabs}
 									  onChange={(e, value) => {this.setState({ currTabIndex: value});}}>
 									<Tab label="run analysis" className={classes.tab}/>

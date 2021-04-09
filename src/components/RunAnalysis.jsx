@@ -118,13 +118,6 @@ export default function ViewResult(props) {
 						<IncoreInputLabel>Description</IncoreInputLabel>
 						<IncoreTextField value={description} variant="outlined" onChange={(e) => setDescription(e.target.value)}/>
 					</div>
-				</Grid>
-				<Grid item xl={7} lg={7} md={7} sm={7} xs={12} className="gridItem">
-					<StepInfo fullHtml={fullHtml} />
-				</Grid>
-			</Grid>
-			<Grid container spacing={3}>
-				<Grid item xl={5} lg={5} md={5} sm={5} xs={12} className="gridItem">
 					<Box className="inputGroup" style={{height: "auto"}}>
 						<IncoreInputLabel>Select a Building, Building Cluster
 						</IncoreInputLabel>
@@ -173,13 +166,9 @@ export default function ViewResult(props) {
 							}
 						</IncoreSelectBox>
 						<Typography className={classes.explanation}>If you need to add entities to your built environment&nbsp;
-							<Link href="/set-built-environment" className={classes.explanationLink}>click here</Link>.</Typography>
+							<Link href="/playbook/set-built-environment" className={classes.explanationLink}>click here</Link>.</Typography>
 					</Box>
-				</Grid>
-			</Grid>
-			<Grid container spacing={3}>
-				<Grid item xl={5} lg={5} md={5} sm={5} xs={12} className="gridItem">
-					<Box className="inputGroup">
+					<Box className="inputGroup" style={{height: "auto"}}>
 						<IncoreInputLabel>Select a Hazard</IncoreInputLabel>
 						<IncoreSelectBox labelId="label" id="select" variant="outlined"
 										 onChange={(e)=>{ setTornadoId(e.target.value); }}
@@ -194,22 +183,21 @@ export default function ViewResult(props) {
 							}
 						</IncoreSelectBox>
 						<Typography className={classes.explanation}>If you need to add new hazards to your community hazards list&nbsp;
-							<Link href="/define-community-hazards" className={classes.explanationLink}>click here</Link>.</Typography>
+							<Link href="/playbook/define-community-hazards" className={classes.explanationLink}>click here</Link>.</Typography>
 					</Box>
-				</Grid>
-			</Grid>
-			<Grid container spacing={3}>
-				<Grid item xl={5} lg={5} md={5} sm={5} xs={12} className="gridItem">
-					<Box className="inputGroup">
+					<Box className="inputGroup" style={{height: "auto"}}>
 						<IncoreInputLabel>Run the Analysis</IncoreInputLabel>
 						<Button variant="contained" color="primary" onClick={handleRunButtonClick}
-									  disabled={disabled}
-									  endIcon={<Avatar src={PoweredBy} className={classes.avatarStyle}/>}
-									  classes={{ root: classes.runButton, endIcon: classes.endIconStyle}}
+							disabled={disabled}
+							endIcon={<Avatar src={PoweredBy} className={classes.avatarStyle}/>}
+							classes={{ root: classes.runButton, endIcon: classes.endIconStyle}}
 						>
 							CALCULATE THE HAZARD RISK
 						</Button>
 					</Box>
+				</Grid>
+				<Grid item xl={7} lg={7} md={7} sm={7} xs={12} className="gridItem">
+					<StepInfo fullHtml={fullHtml} />
 				</Grid>
 			</Grid>
 		</div>

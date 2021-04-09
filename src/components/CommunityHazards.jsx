@@ -241,17 +241,17 @@ class CommunityHazards extends React.Component {
 					<PageBanner parentStep="Determine Goals & Objectives"
 						childStep="Define Community Hazards" taskNo="3" subtaskNo="3-3"/>
 					<Box className="outerBox">
-						<StepInfo fullHtml={fullHtml} />
-						<br />
 						{/*List created tornadoes*/}
 						<Box className="entryTableContainer">
+							<StepInfo fullHtml={fullHtml} />
+							<br />
 							<Box className="entryTableTitle">
 								<IncoreInputLabel>Created Hazard</IncoreInputLabel>
-								<Box style={{float:"right"}}>
-									<IconButton>
-										<FilterListIcon/>
-									</IconButton>
-								</Box>
+								{/*<Box style={{float:"right"}}>*/}
+								{/*	<IconButton>*/}
+								{/*		<FilterListIcon/>*/}
+								{/*	</IconButton>*/}
+								{/*</Box>*/}
 							</Box>
 							<Box className="entryTable">
 								<EntryTable fieldNames={this.fieldNames} fields={this.props.tornadoes}/>

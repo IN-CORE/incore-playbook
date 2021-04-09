@@ -1,23 +1,18 @@
 import React from "react";
-import {makeStyles} from "@material-ui/core/styles";
 import {Box, Grid} from "@material-ui/core";
 import PageBanner from "./Banner";
 import Layout from "../containers/Layout";
 import StepInfo from "./StepInfo";
 import fullHtml00 from "../public/steps/0-0.html";
-import fullHtml11 from "../public/steps/1-1.html";
 import fullHtml12 from "../public/steps/1-2.html";
 import fullHtml13 from "../public/steps/1-3.html";
 import fullHtml14 from "../public/steps/1-4.html";
 import fullHtml21 from "../public/steps/2-1.html";
 import fullHtml22 from "../public/steps/2-2.html";
 import fullHtml23 from "../public/steps/2-3.html";
-import fullHtml24 from "../public/steps/2-4.html";
 import fullHtml25 from "../public/steps/2-5.html";
 import fullHtml31 from "../public/steps/3-1.html";
 import fullHtml32 from "../public/steps/3-2.html";
-import fullHtml33 from "../public/steps/3-3.html";
-import fullHtml34 from "../public/steps/3-4.html";
 import fullHtml35 from "../public/steps/3-5.html";
 import fullHtml41 from "../public/steps/4-1.html";
 import fullHtml42 from "../public/steps/4-2.html";
@@ -29,25 +24,8 @@ import fullHtml61 from "../public/steps/6-1.html";
 import fullHtml62 from "../public/steps/6-2.html";
 import fullHtml63 from "../public/steps/6-3.html";
 
-const useStyles = makeStyles({
-	firstDivInContent: {
-		marginLeft: "30px"
-	},
-	innerBox: {
-		backgroundColor: "#F8F9FF"
-	},
-	outerBox: {
-		backgroundColor: "#F8F9FF"
-	},
-	gridItem: {
-		width: "900px"
-	},
-});
-
 
 const StepTmpInfo = ({menu}) => {
-	const classes = useStyles();
-
 	let fullHtml = fullHtml00;
 	let pageBanner = null;
 	// if (menu === "1-1") {
@@ -146,11 +124,11 @@ const StepTmpInfo = ({menu}) => {
 
 	return (
 		<Layout>
-			<div className={classes.firstDivInContent}>
+			<div className="firstDivInContent">
 				{pageBanner}
-				<Box  className={classes.outerBox}>
-					<Grid container spacing={12} className={classes.innerBox}>
-						<Grid item className={classes.gridItem}>
+				<Box  className="outerBox">
+					<Grid container spacing={3} className="innerBox">
+						<Grid item className="gridItem">
 							<StepInfo fullHtml={fullHtml}/>
 						</Grid>
 					</Grid>
