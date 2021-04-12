@@ -27,6 +27,7 @@ import {StackedResult} from "./StackedResult";
 
 import CloseIcon from "@material-ui/icons/Close";
 import {ResultSummaryTable} from "./ResultSummaryTable";
+import {ViewFunctionalityResults} from "./ViewFunctionalityResults";
 
 const useStyles = makeStyles({
 	statTitle:{
@@ -236,6 +237,32 @@ export default function ViewResult(props) {
 		setRuntime("");
 	};
 
+	let execs = [
+		{
+			"title": "abc abc abc aaasasas",
+			"description": "abcd",
+			"hazardType": "tornado",
+			"date": "08/19/1987 23:34",
+			"finalStatus": "FINISHED",
+			"datasets": {
+				"func_res_csv":  "func_res_dw_dataset_id",
+				"dmg_res_csv": "dmg_res_dw_dataset_id",
+				"func_summary": "func_cluster_dw_dataset_id",
+				"dmg_summary": "dmg_cluster_dw_dataset_id",
+			},
+			"parameters": {
+				"hazardId": "hazard_incore_id"
+			}
+		},
+		{
+			"title": "abc abc abc aaasasas",
+			"description": "abcd",
+			"hazardType": "tornado",
+			"date": "08/19/1987 23:34",
+			"finalStatus": "FINISHED"
+		}
+	];
+
 	return (
 		<div role="tabpanel" hidden={value !== index} id={`simple-tabpanel-${index}`}
 			 aria-labelledby={`simple-tab-${index}`}
@@ -251,7 +278,8 @@ export default function ViewResult(props) {
 					</Box>
 				</Box>
 				<Box>
-					<EntryTable fieldNames={fieldNames} fields={executionEntries}/>
+					{/*<EntryTable fieldNames={fieldNames} fields={executionEntries}/>*/}
+					<ViewFunctionalityResults fieldNames={fieldNames} fields={execs}/>
 				</Box>
 			</Container>
 
