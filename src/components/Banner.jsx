@@ -28,12 +28,12 @@ const useStyles = makeStyles({
 		fontWeight: 500,
 		fontSize: "18px"
 	},
-	chipParent: {
+	chipLabel: {
 		borderRadius: "5px",
 		height: "18px",
 		marginRight: "6px",
 	},
-	chipChild: {
+	chipLabelColored: {
 		borderRadius: "5px",
 		height: "18px",
 		marginRight: "6px",
@@ -45,16 +45,29 @@ const useStyles = makeStyles({
 
 export default function Banner(props) {
 	const classes = useStyles();
-	return (
-		<Box className={classes.banner}>
-			<Typography className={classes.bannerText}>
-				<Chip label={props.taskNo} className={classes.chipParent}/>
-				{props.parentStep}
-			</Typography>
-			<Typography className={classes.bannerTextColored}>
-				&nbsp; > &nbsp; <Chip label={props.subtaskNo} className={classes.chipChild}/>
-				{props.childStep}
-			</Typography>
-		</Box>
-	);
+
+	if (props.subtaskNo && props.childStep) {
+		return (
+			<Box className={classes.banner}>
+				<Typography className={classes.bannerText}>
+					<Chip label={props.taskNo} className={classes.chipLabel}/>
+					{props.parentStep}
+				</Typography>
+				<Typography className={classes.bannerTextColored}>
+					&nbsp; > &nbsp; <Chip label={props.subtaskNo} className={classes.chipLabelColored}/>
+					{props.childStep}
+				</Typography>
+			</Box>
+		);
+	}
+	else {
+		return (
+			<Box className={classes.banner}>
+				<Typography className={classes.bannerTextColored}>
+					<Chip label={props.taskNo} className={classes.chipLabelColored}/>
+					{props.parentStep}
+				</Typography>
+			</Box>
+		);
+	}
 }

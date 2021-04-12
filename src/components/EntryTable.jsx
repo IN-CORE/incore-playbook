@@ -39,7 +39,8 @@ const useStyles = makeStyles({
 		color: "#2E384D",
 		fontSize: "15px",
 		letterSpacing: 0,
-		lineHeight: "22px"
+		lineHeight: "22px",
+		wordBreak:"break-word"
 	},
 	firstTableBodyCell:{
 		width: "250px",
@@ -85,6 +86,10 @@ function stableSort(array, comparator) {
 		return a[1] - b[1];
 	});
 	return stabilizedThis.map((el) => el[0]);
+}
+
+function prettifyDate(date){
+	return date.slice(0, 10);
 }
 
 export function EntryTable(props) {
@@ -141,18 +146,25 @@ export function EntryTable(props) {
 											if (fieldName["handleClick"] !== undefined){
 												let handleClick = fieldName["handleClick"];
 												return (
-													<TableCell key={idx} className={idx ===0 ?classes.firstTableBodyCell:classes.tableBodyCell}>
+													<TableCell key={idx} className={classes.tableBodyCell}>
 														<Link color="primary" onClick={() => {handleClick(field);}}
 															  className={field["finalStatus"] === undefined || field["finalStatus"] === "FINISHED" ?
 																  classes.clickableLink:classes.clickableLinkDisabled}>
-															{field[fieldName["columnName"]]}
+															{
+																field[fieldName["columnName"]]
+															}
 														</Link>
 													</TableCell>
 												);
 											}
 											return (
-												<TableCell key={idx} className={idx ===0 ?classes.firstTableBodyCell:classes.tableBodyCell}>
-													{field[fieldName["columnName"]]}</TableCell>
+												<TableCell key={idx} className={classes.tableBodyCell}>
+													{
+														fieldName["columnName"] === "date"?
+															prettifyDate(field[fieldName["columnName"]]) :
+															field[fieldName["columnName"]]
+													}
+												</TableCell>
 											);
 										})
 									}

@@ -1,14 +1,14 @@
 import config from "../app.config";
 import {getHeader} from "./common";
 
-export async function createDataset(title, description, files){
+export async function createDataset(title, description, dataType, files){
 	const datasetEndpoint = `${config.dataServiceBase}datasets`;
 	let datasetFormData = new FormData();
 	let datasetMetadata = {
 		"title": title,
 		"description": description,
 		"contributors":[],
-		"dataType": "ergo:buildingInventoryVer6",
+		"dataType": dataType,
 		"storedUrl": "",
 		"format": "shapefile",
 		"sourceDataset": "",

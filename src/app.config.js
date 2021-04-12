@@ -46,7 +46,7 @@ if (process.env.DEPLOY_ENV === "production") {
 	};
 }
 config["apiUrl"] = apiurl;
-config["dataWolf"] = "https://incore2-datawolf.ncsa.illinois.edu/datawolf/";
+config["dataWolf"] = "https://incore-tst.ncsa.illinois.edu/datawolf/";
 config["client_id"] = "react-auth";
 config["authService"] = `${apiurl}/auth/realms/In-core/protocol/openid-connect/token`;
 config["testUserInfo"] = "commresilience";

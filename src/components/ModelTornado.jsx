@@ -19,13 +19,13 @@ const useStyles = makeStyles({
 		color: "#96B712",
 		height: "18px",
 		display: "inline-block",
-		margin: "11.25px"
+		marginLeft: "11.25px"
 	},
 	endLabel: {
 		color: "#D63649",
 		height: "18px",
 		display: "inline-block",
-		margin: "11.25px"
+		marginLeft: "11.25px"
 	},
 	coordInput: {
 		color: "#2E384D",
@@ -44,7 +44,8 @@ const useStyles = makeStyles({
 		letterSpacing: 0,
 		backgroundColor: "#FFFFFF",
 		border: "1px solid rgba(0, 0, 0, 0.23)",
-		borderRadius: "4px"
+		borderRadius: "4px",
+		textAlign:"center"
 	}
 });
 
