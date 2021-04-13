@@ -8,9 +8,10 @@ import {
 	TableContainer,
 	TableHead,
 	TableRow,
+	Typography,
 	Link
 } from "@material-ui/core";
-import MoreHorizIcon from "@material-ui/icons/MoreHoriz";
+import UnfoldMoreIcon from "@material-ui/icons/UnfoldMore";
 
 import {makeStyles} from "@material-ui/core/styles";
 
@@ -31,33 +32,58 @@ const useStyles = makeStyles({
 		lineHeight: "14px"
 	},
 	tableBodyRow:{
-		// height: "75px",
+		backgroundColor: "#FFFFFF",
+		borderBottom: "1px solid #B0BAC9",
+		minHeight: "65px"
 	},
 	tableBodyCell:{
-		height: "21px",
-		width: "68.75px",
+		minWidth: "68.75px",
 		color: "#2E384D",
 		fontSize: "15px",
 		letterSpacing: 0,
 		lineHeight: "22px"
 	},
+	statusSuccess:{
+		textTransform:"capitalize",
+		color: "#2E384D",
+		backgroundColor:"#9BD686",
+		padding:"auto 5px",
+		textAlign:"center"
+	},
+	statusUnsuccess:{
+		textTransform:"capitalize",
+		color: "#2E384D",
+		backgroundColor:"#f3b4b0",
+		padding:"auto 5px",
+		textAlign:"center"
+	},
 	firstTableBodyCell:{
-		width: "250px",
-		height: "21px",
+		minWidth: "250px",
 		color: "#2E384D",
 		fontSize: "15px",
 		letterSpacing: 0,
-		lineHeight: "22px"
+		lineHeight: "22px",
+		fontWeight: 500
+	},
+	subBodyRow:{
+		backgroundColor: "rgba(255,255,255,0.6)",
+		borderBottom: "1px solid #B0BAC9",
+		minHeight:"34px",
 	},
 	clickableLink:{
 		"&:hover":{
 			cursor: "pointer"
-		}
+		},
+		color:"#00619D",
+		fontWeight:500,
+		margin: "auto 0px auto 20px",
 	},
 	clickableLinkDisabled:{
 		pointerEvents: "none",
 		textDecoration: "none",
 		color: "#9E9E9E",
+		fontWeight:500,
+		margin: "auto 0px auto 20px",
 	}
 });
 
@@ -89,7 +115,7 @@ function stableSort(array, comparator) {
 
 export function ViewFunctionalityResults(props) {
 
-	const { fieldNames, fields } = props;
+	const { fieldNames, fields, previewBldgDmg, previewEpfDmg, previewBldgFunc, previewInterd, } = props;
 
 	const [order, setOrder] = useState("desc");
 	const [orderBy, setOrderBy] = React.useState("date");
@@ -139,50 +165,108 @@ export function ViewFunctionalityResults(props) {
 									<TableRow className={classes.tableBodyRow} key={field["id"]}>
 										{
 											fieldNames.map((fieldName, idx) =>{
-												if (fieldName["handleClick"] !== undefined){
-													let handleClick = fieldName["handleClick"];
+												if (fieldName["columnName"] === "finalStatus"){
 													return (
-														<TableCell key={idx} className={idx ===0 ?classes.firstTableBodyCell:classes.tableBodyCell}>
-															<Link color="primary" onClick={() => {handleClick(field);}}
-																className={field["finalStatus"] === undefined || field["finalStatus"] === "FINISHED" ?
-																	classes.clickableLink:classes.clickableLinkDisabled}>
-																{field[fieldName["columnName"]]}
-															</Link>
+														<TableCell key={idx}>
+															<p className={
+																field["finalStatus"].toLowerCase() === "finished"?
+																	classes.statusSuccess:
+																	classes.statusUnsuccess
+															}>
+																{field[fieldName["columnName"]].toLowerCase()}</p>
 														</TableCell>
 													);
 												}
-												return (
-													<TableCell key={idx} className={idx ===0 ?classes.firstTableBodyCell:classes.tableBodyCell}>
-														{field[fieldName["columnName"]]}</TableCell>
-												);
+												else{
+													return (
+														<TableCell key={idx} className={idx===0? classes.firstTableBodyCell: classes.tableBodyCell}>
+															{field[fieldName["columnName"]]}</TableCell>
+													);
+												}
 											})
 										}
 										{/*TODO implement expending*/}
-										<TableCell className={classes.tableBodyCell} key="dot"><MoreHorizIcon /></TableCell>
+										<TableCell className={classes.tableBodyCell} key="unfold"><UnfoldMoreIcon /></TableCell>
 									</TableRow>
-									<TableRow>
-										<TableCell colSpan={4}>Building Damage Result</TableCell>
-										<TableCell><Link>View</Link></TableCell>
+									<TableRow className={classes.subBodyRow}>
+										<TableCell>Interdependency</TableCell>
+										<TableCell colSpan={3} />
+										<TableCell colSpan={2}>
+											<Link color="primary" onClick={() => {previewInterd();}}
+												  className={field["finalStatus"] === undefined ||
+												  field["finalStatus"] === "FINISHED" ?
+													  classes.clickableLink:classes.clickableLinkDisabled}>
+												View
+											</Link>
+											<Link color="primary"
+												  className={field["finalStatus"] === undefined ||
+												  field["finalStatus"] === "FINISHED" ?
+													  classes.clickableLink:classes.clickableLinkDisabled}>Download
+											</Link>
+										</TableCell>
 									</TableRow>
-									<TableRow>
-										<TableCell colSpan={4}>Building and EPF Interdependency</TableCell>
-										<TableCell><Link>View</Link></TableCell>
+									<TableRow className={classes.subBodyRow}>
+										<TableCell>Building Damage Result</TableCell>
+										<TableCell colSpan={3} />
+										<TableCell colSpan={2}>
+											<Link color="primary" onClick={() => {previewBldgDmg();}}
+												  className={field["finalStatus"] === undefined ||
+												  field["finalStatus"] === "FINISHED" ?
+													  classes.clickableLink:classes.clickableLinkDisabled}>
+											View
+											</Link>
+											<Link color="primary" className={field["finalStatus"] === undefined ||
+											field["finalStatus"] === "FINISHED" ?
+												classes.clickableLink:classes.clickableLinkDisabled}>Download</Link>
+										</TableCell>
 									</TableRow>
-									<TableRow>
-										<TableCell colSpan={4}>EPF Pole Damage Result</TableCell>
-										<TableCell><Link>View</Link></TableCell>
+									<TableRow className={classes.subBodyRow}>
+										<TableCell>EPF Pole Damage Result</TableCell>
+										<TableCell colSpan={3} />
+										<TableCell colSpan={2}>
+											<Link color="primary" onClick={() => {previewEpfDmg();}}
+												  className={field["finalStatus"] === undefined ||
+												  field["finalStatus"] === "FINISHED" ?
+													  classes.clickableLink:classes.clickableLinkDisabled}>
+												View
+											</Link>
+											<Link color="primary" className={field["finalStatus"] === undefined ||
+											field["finalStatus"] === "FINISHED" ?
+												classes.clickableLink:classes.clickableLinkDisabled}>Download</Link>
+										</TableCell>
 									</TableRow>
-									<TableRow>
-										<TableCell colSpan={4}>EPF Substation Damage Result</TableCell>
-										<TableCell><Link>View</Link></TableCell>
+									<TableRow className={classes.subBodyRow}>
+										<TableCell>EPF Substation Damage Result</TableCell>
+										<TableCell colSpan={3} />
+										<TableCell colSpan={2}>
+											<Link color="primary" onClick={() => {previewEpfDmg();}}
+												  className={field["finalStatus"] === undefined ||
+												  field["finalStatus"] === "FINISHED" ?
+													  classes.clickableLink:classes.clickableLinkDisabled}>
+												View
+											</Link>
+											<Link color="primary" className={field["finalStatus"] === undefined ||
+											field["finalStatus"] === "FINISHED" ?
+												classes.clickableLink:classes.clickableLinkDisabled}>Download</Link>
+										</TableCell>
 									</TableRow>
-									<TableRow>
-										<TableCell colSpan={4}>Building Functionality Result</TableCell>
-										<TableCell><Link>View</Link></TableCell>
+									<TableRow className={classes.subBodyRow}>
+										<TableCell>Building Functionality Result</TableCell>
+										<TableCell colSpan={3} />
+										<TableCell colSpan={2}>
+											<Link color="primary" onClick={() => {previewBldgFunc();}}
+												  className={field["finalStatus"] === undefined ||
+												  field["finalStatus"] === "FINISHED" ?
+													  classes.clickableLink:classes.clickableLinkDisabled}>
+												View
+											</Link>
+											<Link color="primary" className={field["finalStatus"] === undefined ||
+											field["finalStatus"] === "FINISHED" ?
+												classes.clickableLink:classes.clickableLinkDisabled}>Download</Link>
+										</TableCell>
 									</TableRow>
 								</>
 							);
-
 						})
 					}
 				</TableBody>
