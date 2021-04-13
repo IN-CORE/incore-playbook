@@ -254,20 +254,14 @@ export default function ViewResult(props) {
 				"layerId":"joplin-bldg-subs",
 				"layerStyles": null,//"incore:bldg-dmg-summary", //incore:tornado
 				"title":"Interdependency Network",
-				"opacity": 1
+				"opacity": 0.7
 			},
 			{
 				"layerId":"606287dc01f93d1b9f22320e",
-				"layerStyles": null,//"incore:bldg-dmg-summary", //incore:tornado
+				"layerStyles": "incore:joplin-substations-label",//"incore:bldg-dmg-summary", //incore:tornado
 				"title":"EPF Substations",
-				"opacity": 0.5
-			},
-			{
-				"layerId":"606b65f83729e42e958b26cd",
-				"layerStyles": null,//"incore:bldg-dmg-summary", //incore:tornado
-				"title":"EPF Poles",
-				"opacity": 0.5
-			},
+				"opacity": 1
+			}
 		];
 		handleLayerUpdate(layerDef);
 
