@@ -35,6 +35,9 @@ const useStyles = makeStyles({
 	mapContainer: {
 		height: "366px",
 	},
+	mapContainerFull:{
+		height:"800px"
+	},
 	previewModal: {
 		padding: "50px",
 	},
@@ -192,36 +195,31 @@ export default function ViewResult(props) {
 	];
 
 	// for map
-	const handleLayerUpdate = (hazardDatasetId, layerId) => {
-		const damageSource = new TileWMS({
-			url: `${config.geoServerWMS}`,
-			params: {LAYERS: layerId, STYLES: "incore:bldg-dmg-summary"},
-			ratio: 1,
-			serverType: "geoserver"
-		});
-		let damageMapLayer = new TileLayer({
-			title: "Building Damage",
-			source: damageSource,
-			zIndex: 1,
-			opacity: 1
-		});
+	const handleLayerUpdate = (layerDef) => {
+		const inputLayers = [];
 
-		const hazardSource = new TileWMS({
-			url: `${config.geoServerWMS}`,
-			params: {LAYERS: hazardDatasetId, STYLES: "incore:tornado"},
-			ratio: 1,
-			serverType: "geoserver"
-		});
-		let hazardMapLayer = new TileLayer({
-			title: "Tornado Hazard",
-			source: hazardSource,
-			zIndex: 1,
-			opacity: 0.5
+		layerDef.map((layerDefinition) =>{
+			const source = new TileWMS({
+				url: `${config.geoServerWMS}`,
+				params: {
+					LAYERS: layerDefinition["layerId"],
+					STYLES: layerDefinition["layerStyles"]
+				},
+				ratio: 1,
+				serverType: "geoserver"
+			});
+			let mapLayer = new TileLayer({
+				title: layerDefinition["title"],
+				source: source,
+				zIndex: 1,
+				opacity: layerDefinition["opacity"]
+			});
+			inputLayers.push(mapLayer);
 		});
 
 		layers["tilelayer"] = new GroupLayer({
-			title: "Damage",
-			layers: [damageMapLayer, hazardMapLayer]
+			title: "Preview",
+			layers: inputLayers,
 		});
 	};
 
@@ -232,6 +230,54 @@ export default function ViewResult(props) {
 		setBarChartFields([]);
 		setMap();
 		setRuntime("");
+	};
+
+	const previewBldgDmg = (executionItemId) =>{
+		// TODO placeholder
+		console.log(executionItemId);
+	};
+
+	const previewBldgFunc = (executionItemId) =>{
+		// TODO placeholder
+		console.log(executionItemId);
+	};
+
+	const previewEpfDmg = (executionItemId) =>{
+		// TODO placeholder
+		console.log(executionItemId);
+	};
+
+	const previewInterd = () =>{
+
+		const layerDef = [
+			{
+				"layerId":"joplin-bldg-subs",
+				"layerStyles": null,//"incore:bldg-dmg-summary", //incore:tornado
+				"title":"Interdependency Network",
+				"opacity": 1
+			},
+			{
+				"layerId":"606287dc01f93d1b9f22320e",
+				"layerStyles": null,//"incore:bldg-dmg-summary", //incore:tornado
+				"title":"EPF Substations",
+				"opacity": 0.5
+			},
+			{
+				"layerId":"606b65f83729e42e958b26cd",
+				"layerStyles": null,//"incore:bldg-dmg-summary", //incore:tornado
+				"title":"EPF Poles",
+				"opacity": 0.5
+			},
+		];
+		handleLayerUpdate(layerDef);
+
+		// disable other components of map
+		setRuntime(null);
+		setSummaryTableFields(null);
+		setBarChartFields(null);
+
+		// open preview
+		setMode("preview");
 	};
 
 	return (
@@ -251,7 +297,13 @@ export default function ViewResult(props) {
 				</Box>
 				<Box>
 					{/*<EntryTable fieldNames={fieldNames} fields={executionEntries}/>*/}
-					<ViewFunctionalityResults fieldNames={fieldNames} fields={executionEntries}/>
+					<ViewFunctionalityResults fieldNames={fieldNames}
+											  fields={executionEntries}
+											  previewBldgDmg={previewBldgDmg}
+											  previewEpfDmg={previewEpfDmg}
+											  previewBldgFunc={previewBldgFunc}
+											  previewInterd={previewInterd}
+					/>
 				</Box>
 			</Box>
 
@@ -263,26 +315,36 @@ export default function ViewResult(props) {
 					</IconButton>
 					<>
 						{/*for chart*/}
-						<Box className={classes.chartContainer}>
-							<Grid container spacing={3} justify="center">
-								<Grid item>
-									<Typography className={classes.previewTitle}>Analysis Result View</Typography>
-									<ResultSummaryTable runtime={runtime}/>
-								</Grid>
-								<Divider orientation="vertical" flexItem/>
-								<Grid item style={{minWidth: "804px"}}>
-									<Typography className={classes.previewTitle}>
+						{
+							runtime && barChartFields?
+								(
+									<Box className={classes.chartContainer}>
+										<Grid container spacing={3} justify="center">
+											<Grid item>
+												<Typography className={classes.previewTitle}>
+													Analysis Result View</Typography>
+												<ResultSummaryTable runtime={runtime}/>
+											</Grid>
+											<Divider orientation="vertical" flexItem/>
+											<Grid item style={{minWidth: "804px"}}>
+												<Typography className={classes.previewTitle}>
 										Anticipated Performance - Building Clusters</Typography>
-									<Box style={{marginTop: "38px"}}>
-										<StackedResult categorySummary={barChartFields}/>
+												<Box style={{marginTop: "38px"}}>
+													<StackedResult categorySummary={barChartFields}/>
+												</Box>
+											</Grid>
+										</Grid>
+										<Divider orientation="horizontal"/>
 									</Box>
-								</Grid>
-							</Grid>
-							<Divider orientation="horizontal"/>
-						</Box>
+								)
+								:
+								null
+						}
 
 						{/*for map*/}
-						<Container className={classes.mapContainer} disableGutters>
+						<Container className={((runtime && barChartFields) || summaryTableFields) ?
+							classes.mapContainer : classes.mapContainerFull}
+								   disableGutters>
 							<Map
 								className="fillContainer"
 								zoom={12}
@@ -296,9 +358,14 @@ export default function ViewResult(props) {
 							/>
 						</Container>
 						{/*for table*/}
-						<Box>
-							<ResultTable fields={summaryTableFields}/>
-						</Box>
+						{
+							summaryTableFields ?
+								(<Box>
+									<ResultTable fields={summaryTableFields}/>
+								</Box>)
+								:
+								null
+						}
 					</>
 				</DialogContent>
 			</Dialog>

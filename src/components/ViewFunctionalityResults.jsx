@@ -221,7 +221,7 @@ export function ViewFunctionalityResults(props) {
 													<TableCell>Interdependency</TableCell>
 													<TableCell colSpan={3}/>
 													<TableCell colSpan={2}>
-														<Link color="primary" onClick={() => {previewInterd();}}
+														<Link color="primary" onClick={() => {previewInterd(field["id"]);}}
 															  className={field["finalStatus"] === undefined ||
 															  field["finalStatus"] === "FINISHED" ?
 																  classes.clickableLink : classes.clickableLinkDisabled}>
@@ -238,7 +238,7 @@ export function ViewFunctionalityResults(props) {
 													<TableCell>Building Damage Result</TableCell>
 													<TableCell colSpan={3}/>
 													<TableCell colSpan={2}>
-														<Link color="primary" onClick={() => {previewBldgDmg();}}
+														<Link color="primary" onClick={() => {previewBldgDmg(field["id"]);}}
 															  className={field["finalStatus"] === undefined ||
 															  field["finalStatus"] === "FINISHED" ?
 																  classes.clickableLink : classes.clickableLinkDisabled}>
@@ -256,7 +256,7 @@ export function ViewFunctionalityResults(props) {
 													<TableCell>EPF Pole Damage Result</TableCell>
 													<TableCell colSpan={3}/>
 													<TableCell colSpan={2}>
-														<Link color="primary" onClick={() => {previewEpfDmg();}}
+														<Link color="primary" onClick={() => {previewEpfDmg(field["id"]);}}
 															  className={field["finalStatus"] === undefined ||
 															  field["finalStatus"] === "FINISHED" ?
 																  classes.clickableLink : classes.clickableLinkDisabled}>
@@ -272,7 +272,7 @@ export function ViewFunctionalityResults(props) {
 													<TableCell>EPF Substation Damage Result</TableCell>
 													<TableCell colSpan={3}/>
 													<TableCell colSpan={2}>
-														<Link color="primary" onClick={() => {previewEpfDmg();}}
+														<Link color="primary" onClick={() => {previewEpfDmg(field["id"]);}}
 															  className={field["finalStatus"] === undefined ||
 															  field["finalStatus"] === "FINISHED" ?
 																  classes.clickableLink : classes.clickableLinkDisabled}>
@@ -288,7 +288,7 @@ export function ViewFunctionalityResults(props) {
 													<TableCell>Building Functionality Result</TableCell>
 													<TableCell colSpan={3}/>
 													<TableCell colSpan={2}>
-														<Link color="primary" onClick={() => {previewBldgFunc();}}
+														<Link color="primary" onClick={() => {previewBldgFunc(field["id"]);}}
 															  className={field["finalStatus"] === undefined ||
 															  field["finalStatus"] === "FINISHED" ?
 																  classes.clickableLink : classes.clickableLinkDisabled}>
