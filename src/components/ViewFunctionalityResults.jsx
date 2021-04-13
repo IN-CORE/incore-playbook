@@ -135,30 +135,52 @@ export function ViewFunctionalityResults(props) {
 					{
 						stableSort(fields, getComparator(order, orderBy)).map((field) => {
 							return (
-								<TableRow className={classes.tableBodyRow} key={field["id"]}>
-									{
-										fieldNames.map((fieldName, idx) =>{
-											if (fieldName["handleClick"] !== undefined){
-												let handleClick = fieldName["handleClick"];
+								<>
+									<TableRow className={classes.tableBodyRow} key={field["id"]}>
+										{
+											fieldNames.map((fieldName, idx) =>{
+												if (fieldName["handleClick"] !== undefined){
+													let handleClick = fieldName["handleClick"];
+													return (
+														<TableCell key={idx} className={idx ===0 ?classes.firstTableBodyCell:classes.tableBodyCell}>
+															<Link color="primary" onClick={() => {handleClick(field);}}
+																className={field["finalStatus"] === undefined || field["finalStatus"] === "FINISHED" ?
+																	classes.clickableLink:classes.clickableLinkDisabled}>
+																{field[fieldName["columnName"]]}
+															</Link>
+														</TableCell>
+													);
+												}
 												return (
 													<TableCell key={idx} className={idx ===0 ?classes.firstTableBodyCell:classes.tableBodyCell}>
-														<Link color="primary" onClick={() => {handleClick(field);}}
-															className={field["finalStatus"] === undefined || field["finalStatus"] === "FINISHED" ?
-																classes.clickableLink:classes.clickableLinkDisabled}>
-															{field[fieldName["columnName"]]}
-														</Link>
-													</TableCell>
+														{field[fieldName["columnName"]]}</TableCell>
 												);
-											}
-											return (
-												<TableCell key={idx} className={idx ===0 ?classes.firstTableBodyCell:classes.tableBodyCell}>
-													{field[fieldName["columnName"]]}</TableCell>
-											);
-										})
-									}
-									{/*TODO implement expending*/}
-									<TableCell className={classes.tableBodyCell} key="dot"><MoreHorizIcon /></TableCell>
-								</TableRow>
+											})
+										}
+										{/*TODO implement expending*/}
+										<TableCell className={classes.tableBodyCell} key="dot"><MoreHorizIcon /></TableCell>
+									</TableRow>
+									<TableRow>
+										<TableCell colSpan={4}>Building Damage Result</TableCell>
+										<TableCell><Link>View</Link></TableCell>
+									</TableRow>
+									<TableRow>
+										<TableCell colSpan={4}>Building and EPF Interdependency</TableCell>
+										<TableCell><Link>View</Link></TableCell>
+									</TableRow>
+									<TableRow>
+										<TableCell colSpan={4}>EPF Pole Damage Result</TableCell>
+										<TableCell><Link>View</Link></TableCell>
+									</TableRow>
+									<TableRow>
+										<TableCell colSpan={4}>EPF Substation Damage Result</TableCell>
+										<TableCell><Link>View</Link></TableCell>
+									</TableRow>
+									<TableRow>
+										<TableCell colSpan={4}>Building Functionality Result</TableCell>
+										<TableCell><Link>View</Link></TableCell>
+									</TableRow>
+								</>
 							);
 
 						})
