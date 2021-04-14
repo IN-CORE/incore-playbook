@@ -291,7 +291,7 @@ export default function ViewResult(props) {
 				</Box>
 				<Box>
 					<ViewFunctionalityResults fieldNames={fieldNames}
-											  fields={executionEntries}
+											  executions={executionEntries}
 											  previewBldgDmg={previewBldgDmg}
 											  previewEpfDmg={previewEpfDmg}
 											  previewBldgFunc={previewBldgFunc}

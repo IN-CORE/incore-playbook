@@ -119,7 +119,7 @@ function stableSort(array, comparator) {
 
 export function ViewFunctionalityResults(props) {
 
-	const {fieldNames, fields, previewBldgDmg, previewEpfDmg, previewBldgFunc, previewInterd,} = props;
+	const {fieldNames, executions, previewBldgDmg, previewEpfDmg, previewBldgFunc, previewInterd,} = props;
 
 	const [expandId, setExpandId] = useState("");
 	const [collapseId, setCollapseId] = useState("");
@@ -166,21 +166,21 @@ export function ViewFunctionalityResults(props) {
 				</TableHead>
 				<TableBody>
 					{
-						stableSort(fields, getComparator(order, orderBy)).map((field) => {
+						stableSort(executions, getComparator(order, orderBy)).map((execution) => {
 							return (
 								<>
-									<TableRow className={classes.tableBodyRow} key={field["id"]}>
+									<TableRow className={classes.tableBodyRow} key={execution["id"]}>
 										{
 											fieldNames.map((fieldName, idx) => {
 												if (fieldName["columnName"] === "finalStatus") {
 													return (
 														<TableCell key={idx}>
 															<p className={
-																field["finalStatus"].toLowerCase() === "finished" ?
+																execution["finalStatus"].toLowerCase() === "finished" ?
 																	classes.statusSuccess :
 																	classes.statusUnsuccess
 															}>
-																{field[fieldName["columnName"]].toLowerCase()}</p>
+																{execution[fieldName["columnName"]].toLowerCase()}</p>
 														</TableCell>
 													);
 												} else {
@@ -188,7 +188,7 @@ export function ViewFunctionalityResults(props) {
 														<TableCell key={idx}
 																   className={idx === 0 ? classes.firstTableBodyCell :
 																	   classes.tableBodyCell}>
-															{field[fieldName["columnName"]]}</TableCell>
+															{execution[fieldName["columnName"]]}</TableCell>
 													);
 												}
 											})
@@ -196,16 +196,16 @@ export function ViewFunctionalityResults(props) {
 										{/*TODO implement expending*/}
 										<TableCell className={classes.tableBodyCell} key="unfold">
 											{
-												field["id"] === expandId && field["id"] !== collapseId ?
+												execution["id"] === expandId && execution["id"] !== collapseId ?
 													<IconButton aria-label="unfold" onClick={() => {
-														setCollapseId(field["id"]);
+														setCollapseId(execution["id"]);
 														setExpandId("");
 													}}>
 														<UnfoldLess/>
 													</IconButton>
 													:
 													<IconButton aria-label="unfold" onClick={() => {
-														setExpandId(field["id"]);
+														setExpandId(execution["id"]);
 														setCollapseId("");
 													}}>
 														<UnfoldMoreIcon/>
@@ -215,21 +215,21 @@ export function ViewFunctionalityResults(props) {
 										</TableCell>
 									</TableRow>
 									{
-										(field["id"] === expandId && field["id"] !== collapseId) ?
+										(execution["id"] === expandId && execution["id"] !== collapseId) ?
 											<>
 												<TableRow className={classes.subBodyRow}>
 													<TableCell>Interdependency</TableCell>
 													<TableCell colSpan={3}/>
 													<TableCell colSpan={2}>
-														<Link color="primary" onClick={() => {previewInterd(field["id"]);}}
-															  className={field["finalStatus"] === undefined ||
-															  field["finalStatus"] === "FINISHED" ?
+														<Link color="primary" onClick={() => {previewInterd(execution["id"]);}}
+															  className={execution["finalStatus"] === undefined ||
+															  execution["finalStatus"] === "FINISHED" ?
 																  classes.clickableLink : classes.clickableLinkDisabled}>
 															View
 														</Link>
 														<Link color="primary"
-															  className={field["finalStatus"] === undefined ||
-															  field["finalStatus"] === "FINISHED" ?
+															  className={execution["finalStatus"] === undefined ||
+															  execution["finalStatus"] === "FINISHED" ?
 																  classes.clickableLink : classes.clickableLinkDisabled}>Download
 														</Link>
 													</TableCell>
@@ -238,15 +238,15 @@ export function ViewFunctionalityResults(props) {
 													<TableCell>Building Damage Result</TableCell>
 													<TableCell colSpan={3}/>
 													<TableCell colSpan={2}>
-														<Link color="primary" onClick={() => {previewBldgDmg(field["id"]);}}
-															  className={field["finalStatus"] === undefined ||
-															  field["finalStatus"] === "FINISHED" ?
+														<Link color="primary" onClick={() => {previewBldgDmg(execution["id"]);}}
+															  className={execution["finalStatus"] === undefined ||
+															  execution["finalStatus"] === "FINISHED" ?
 																  classes.clickableLink : classes.clickableLinkDisabled}>
 															View
 														</Link>
 														<Link color="primary"
-															  className={field["finalStatus"] === undefined ||
-															  field["finalStatus"] === "FINISHED" ?
+															  className={execution["finalStatus"] === undefined ||
+															  execution["finalStatus"] === "FINISHED" ?
 																  classes.clickableLink : classes.clickableLinkDisabled}>
 															Download
 														</Link>
@@ -256,15 +256,15 @@ export function ViewFunctionalityResults(props) {
 													<TableCell>EPF Pole Damage Result</TableCell>
 													<TableCell colSpan={3}/>
 													<TableCell colSpan={2}>
-														<Link color="primary" onClick={() => {previewEpfDmg(field["id"]);}}
-															  className={field["finalStatus"] === undefined ||
-															  field["finalStatus"] === "FINISHED" ?
+														<Link color="primary" onClick={() => {previewEpfDmg(execution["id"]);}}
+															  className={execution["finalStatus"] === undefined ||
+															  execution["finalStatus"] === "FINISHED" ?
 																  classes.clickableLink : classes.clickableLinkDisabled}>
 															View
 														</Link>
 														<Link color="primary"
-															  className={field["finalStatus"] === undefined ||
-															  field["finalStatus"] === "FINISHED" ?
+															  className={execution["finalStatus"] === undefined ||
+															  execution["finalStatus"] === "FINISHED" ?
 																  classes.clickableLink : classes.clickableLinkDisabled}>Download</Link>
 													</TableCell>
 												</TableRow>
@@ -272,15 +272,15 @@ export function ViewFunctionalityResults(props) {
 													<TableCell>EPF Substation Damage Result</TableCell>
 													<TableCell colSpan={3}/>
 													<TableCell colSpan={2}>
-														<Link color="primary" onClick={() => {previewEpfDmg(field["id"]);}}
-															  className={field["finalStatus"] === undefined ||
-															  field["finalStatus"] === "FINISHED" ?
+														<Link color="primary" onClick={() => {previewEpfDmg(execution["id"]);}}
+															  className={execution["finalStatus"] === undefined ||
+															  execution["finalStatus"] === "FINISHED" ?
 																  classes.clickableLink : classes.clickableLinkDisabled}>
 															View
 														</Link>
 														<Link color="primary"
-															  className={field["finalStatus"] === undefined ||
-															  field["finalStatus"] === "FINISHED" ?
+															  className={execution["finalStatus"] === undefined ||
+															  execution["finalStatus"] === "FINISHED" ?
 																  classes.clickableLink : classes.clickableLinkDisabled}>Download</Link>
 													</TableCell>
 												</TableRow>
@@ -288,15 +288,15 @@ export function ViewFunctionalityResults(props) {
 													<TableCell>Building Functionality Result</TableCell>
 													<TableCell colSpan={3}/>
 													<TableCell colSpan={2}>
-														<Link color="primary" onClick={() => {previewBldgFunc(field["id"]);}}
-															  className={field["finalStatus"] === undefined ||
-															  field["finalStatus"] === "FINISHED" ?
+														<Link color="primary" onClick={() => {previewBldgFunc(execution["id"]);}}
+															  className={execution["finalStatus"] === undefined ||
+															  execution["finalStatus"] === "FINISHED" ?
 																  classes.clickableLink : classes.clickableLinkDisabled}>
 															View
 														</Link>
 														<Link color="primary"
-															  className={field["finalStatus"] === undefined ||
-															  field["finalStatus"] === "FINISHED" ?
+															  className={execution["finalStatus"] === undefined ||
+															  execution["finalStatus"] === "FINISHED" ?
 																  classes.clickableLink : classes.clickableLinkDisabled}>Download</Link>
 													</TableCell>
 												</TableRow>
