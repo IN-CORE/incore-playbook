@@ -21,11 +21,13 @@ import OSM, {ATTRIBUTION as OSM_ATTRIBUTION} from "ol/source/OSM";
 import TileWMS from "ol/source/TileWMS";
 import config from "../app.config";
 import {ResultTable} from "./ResultTable";
-import {StackedResult} from "./StackedResult";
 
 import CloseIcon from "@material-ui/icons/Close";
 import {ResultSummaryTable} from "./ResultSummaryTable";
+import {StackedResult} from "./StackedResult";
+import {FunctionalityGraph} from "./FunctionalityGraph";
 import {ViewFunctionalityResults} from "./ViewFunctionalityResults";
+import {FunctionalityTable} from "./FunctionalityTable";
 
 const useStyles = makeStyles({
 	statTitle: {
@@ -35,8 +37,8 @@ const useStyles = makeStyles({
 	mapContainer: {
 		height: "366px",
 	},
-	mapContainerFull:{
-		height:"800px"
+	mapContainerFull: {
+		height: "800px"
 	},
 	previewModal: {
 		padding: "50px",
@@ -97,6 +99,7 @@ export default function ViewResult(props) {
 	// states
 	const [numCompleted, setNumCompleted] = useState(0);
 	const [executionEntries, setExecutionEntries] = useState([]);
+	const [resultType, setResultType] = useState("bldgDmg"); // bldgFunc, bldgDmg, epfDmg, interD
 	const [summaryTableFields, setSummaryTableFields] = useState({"by_cluster": [], "by_category": []});
 	const [barChartFields, setBarChartFields] = useState([]);
 	const [map, setMap] = useState();
@@ -139,42 +142,10 @@ export default function ViewResult(props) {
 		setExecutionEntries(entries);
 	};
 
-	// show preview
-	const executionIdClick = async (executionItem) => {
-		// see the status of executionItem
-		let finalStatus = extractStatus(executionItem);
-		if (finalStatus === "FINISHED") {
-			// file that has incore dataset ID in it that's what i need to generate the map
-			let bldgMaxDamageStateId = executionItem["datasets"][datawolfConfig["datasets"]["bldgMaxDamageStateId"]];
-			let bldgMaxDamageStateINCOREId = await getOutputFileJson(bldgMaxDamageStateId);
-			let hazardId = executionItem["parameters"][datawolfConfig["parameters"]["hazardId"]];
-			let hazardMetadata = await getTornadoMetadata(hazardId);
-			let hazardDatasetId = hazardMetadata["datasetId"];
-			handleLayerUpdate(hazardDatasetId, bldgMaxDamageStateINCOREId);
-
-			let bldgDmgSummaryTableId = executionItem["datasets"][datawolfConfig["datasets"]["bldgDmgSummaryTableId"]];
-			let bldgDmgSummaryTable = await getOutputFileJson(bldgDmgSummaryTableId);
-			let bldgDmgSummaryTableContent = JSON.parse(bldgDmgSummaryTable);
-
-			// for summary table on the top
-			setRuntime(executionItem["date"].slice(0, 10));
-
-			// for table
-			setSummaryTableFields(bldgDmgSummaryTableContent);
-
-			// for chart
-			setBarChartFields(bldgDmgSummaryTableContent["by_category"]);
-
-			// open preview
-			setMode("preview");
-		}
-	};
-
 	const fieldNames = [
 		{
 			"prettyName": "TITLE",
 			"columnName": "title",
-			"handleClick": executionIdClick
 		},
 		{
 			"prettyName": "DESCRIPTION",
@@ -198,7 +169,7 @@ export default function ViewResult(props) {
 	const handleLayerUpdate = (layerDef) => {
 		const inputLayers = [];
 
-		layerDef.map((layerDefinition) =>{
+		layerDef.map((layerDefinition) => {
 			const source = new TileWMS({
 				url: `${config.geoServerWMS}`,
 				params: {
@@ -232,34 +203,123 @@ export default function ViewResult(props) {
 		setRuntime("");
 	};
 
-	const previewBldgDmg = (executionItemId) =>{
-		// TODO placeholder
+	const getExecution = (executionItemId) => {
+		let item = executions.filter((executionItem) => {
+			return executionItem.id === executionItemId;
+		});
+
+		return item[0];
+	};
+
+	const previewBldgDmg = async (executionItemId) => {
+		let executionItem = getExecution(executionItemId);
+
+		// map
+		let bldgMaxDamageStateId = executionItem["datasets"][datawolfConfig["datasets"]["bldgMaxDamageStateId"]];
+		let bldgMaxDamageStateINCOREId = await getOutputFileJson(bldgMaxDamageStateId);
+		let hazardId = executionItem["parameters"][datawolfConfig["parameters"]["hazardId"]];
+		let hazardMetadata = await getTornadoMetadata(hazardId);
+		let hazardDatasetId = hazardMetadata["datasetId"];
+		const layerDef = [
+			{
+				"layerId": bldgMaxDamageStateINCOREId,
+				"layerStyles": "incore:bldg-dmg-summary",
+				"title": "Building Damage",
+				"opacity": 1
+			},
+			{
+				"layerId": hazardDatasetId,
+				"layerStyles": "incore:tornado",
+				"title": "Tornado",
+				"opacity": 0.5
+			}
+		];
+		handleLayerUpdate(layerDef);
+
+		let bldgDmgSummaryTableId = executionItem["datasets"][datawolfConfig["datasets"]["bldgDmgSummaryTableId"]];
+		let bldgDmgSummaryTable = await getOutputFileJson(bldgDmgSummaryTableId);
+		let bldgDmgSummaryTableContent = JSON.parse(bldgDmgSummaryTable);
+
+		// for summary table on the top
+		setRuntime(executionItem["date"].slice(0, 10));
+
+		// for table
+		setSummaryTableFields(bldgDmgSummaryTableContent);
+
+		// for chart
+		setBarChartFields(bldgDmgSummaryTableContent["by_category"]);
+
+		// set preview type
+		setResultType("bldgDmg");
+
+		// open preview
+		setMode("preview");
+	};
+
+	const previewBldgFunc = async (executionItemId) => {
+		const executionItem = await getExecution(executionItemId);
+
+		// map
+		let bldgFuncProbId = executionItem["datasets"][datawolfConfig["datasets"]["bldgFuncProbId"]];
+		let bldgFuncProbINCOREId = await getOutputFileJson(bldgFuncProbId);
+		let hazardId = executionItem["parameters"][datawolfConfig["parameters"]["hazardId"]];
+		let hazardMetadata = await getTornadoMetadata(hazardId);
+		let hazardDatasetId = hazardMetadata["datasetId"];
+		const layerDef = [
+			{
+				"layerId": bldgFuncProbINCOREId,
+				"layerStyles": "incore:joplin-bldg-func",
+				"title": "Building Functionality Probability",
+				"opacity": 1
+			},
+			{
+				"layerId": hazardDatasetId,
+				"layerStyles": "incore:tornado",
+				"title": "Tornado",
+				"opacity": 0.5
+			}
+		];
+		handleLayerUpdate(layerDef);
+
+		// bar chart & table
+		let bldgFuncSummaryTableId = executionItem["datasets"][datawolfConfig["datasets"]["bldgFuncSummaryTableId"]];
+		let bldgFuncSummaryTable = await getOutputFileJson(bldgFuncSummaryTableId);
+		let bldgFuncSummaryTableContent = JSON.parse(bldgFuncSummaryTable);
+
+		// for runtime table on the top
+		setRuntime(executionItem["date"].slice(0, 10));
+
+		// for table
+		setSummaryTableFields(bldgFuncSummaryTableContent);
+
+		// for chart
+		setBarChartFields(bldgFuncSummaryTableContent["by_category"]);
+
+		// set preview type
+		setResultType("bldgFunc");
+
+		// open preview
+		setMode("preview");
+	};
+
+	const previewEpfDmg = (executionItemId) => {
+	// TODO placeholder
 		console.log(executionItemId);
 	};
 
-	const previewBldgFunc = (executionItemId) =>{
-		// TODO placeholder
-		console.log(executionItemId);
-	};
-
-	const previewEpfDmg = (executionItemId) =>{
-		// TODO placeholder
-		console.log(executionItemId);
-	};
-
-	const previewInterd = () =>{
+	const previewInterd = () => {
 
 		const layerDef = [
 			{
-				"layerId":"joplin-bldg-subs",
-				"layerStyles": null,//"incore:bldg-dmg-summary", //incore:tornado
-				"title":"Interdependency Network",
+				"layerId": "joplin-bldg-subs",
+				"layerStyles": null,
+				"title": "Interdependency Network",
 				"opacity": 0.7
 			},
 			{
-				"layerId":"606287dc01f93d1b9f22320e",
-				"layerStyles": "incore:joplin-substations-label",//"incore:bldg-dmg-summary", //incore:tornado
-				"title":"EPF Substations",
+				"layerId": "606287dc01f93d1b9f22320e",
+				"layerStyles": "incore:joplin-substations-label",
+				"title": "EPF Substations",
 				"opacity": 1
 			}
 		];
@@ -270,14 +330,17 @@ export default function ViewResult(props) {
 		setSummaryTableFields(null);
 		setBarChartFields(null);
 
+		// set preview type
+		setResultType("interD");
+
 		// open preview
 		setMode("preview");
 	};
 
 	return (
 		<div role="tabpanel" hidden={value !== index} id={`simple-tabpanel-${index}`}
-			 aria-labelledby={`simple-tab-${index}`}
-			 {...other}
+		 aria-labelledby={`simple-tab-${index}`}
+		 {...other}
 		>
 			{/*for analysis list*/}
 			<Box>
@@ -291,11 +354,11 @@ export default function ViewResult(props) {
 				</Box>
 				<Box>
 					<ViewFunctionalityResults fieldNames={fieldNames}
-											  executions={executionEntries}
-											  previewBldgDmg={previewBldgDmg}
-											  previewEpfDmg={previewEpfDmg}
-											  previewBldgFunc={previewBldgFunc}
-											  previewInterd={previewInterd}
+										  executions={executionEntries}
+										  previewBldgDmg={previewBldgDmg}
+										  previewEpfDmg={previewEpfDmg}
+										  previewBldgFunc={previewBldgFunc}
+										  previewInterd={previewInterd}
 					/>
 				</Box>
 			</Box>
@@ -308,36 +371,52 @@ export default function ViewResult(props) {
 					</IconButton>
 					<>
 						{/*for chart*/}
-						{
-							runtime && barChartFields?
-								(
-									<Box className={classes.chartContainer}>
-										<Grid container spacing={3} justify="center">
+						<Box className={classes.chartContainer}>
+							<Grid container spacing={3} justify="center">
+								{
+									runtime ?
+										(<>
 											<Grid item>
 												<Typography className={classes.previewTitle}>
-													Analysis Result View</Typography>
+														Analysis Result View</Typography>
 												<ResultSummaryTable runtime={runtime}/>
 											</Grid>
 											<Divider orientation="vertical" flexItem/>
+										</>
+										):
+										null
+								}
+
+								{/*barchart*/}
+								{
+									barChartFields?
+										(
 											<Grid item style={{minWidth: "804px"}}>
 												<Typography className={classes.previewTitle}>
-										Anticipated Performance - Building Clusters</Typography>
+												Anticipated Performance - Building Clusters</Typography>
 												<Box style={{marginTop: "38px"}}>
-													<StackedResult categorySummary={barChartFields}/>
+													{
+														resultType === "bldgDmg" ?
+															<StackedResult categorySummary={barChartFields}/>
+															:
+															<FunctionalityGraph categorySummary={barChartFields}/>
+													}
+
 												</Box>
 											</Grid>
-										</Grid>
-										<Divider orientation="horizontal"/>
-									</Box>
-								)
-								:
-								null
-						}
+										)
+										:
+										null
+								}
+
+							</Grid>
+							<Divider orientation="horizontal"/>
+						</Box>
 
 						{/*for map*/}
 						<Container className={((runtime && barChartFields) || summaryTableFields) ?
 							classes.mapContainer : classes.mapContainerFull}
-								   disableGutters>
+							   disableGutters>
 							<Map
 								className="fillContainer"
 								zoom={12}
@@ -354,7 +433,12 @@ export default function ViewResult(props) {
 						{
 							summaryTableFields ?
 								(<Box>
-									<ResultTable fields={summaryTableFields}/>
+									{
+										resultType === "bldgDmg" ?
+											<ResultTable fields={summaryTableFields}/>
+											:
+											<FunctionalityTable funcResults={summaryTableFields}/>
+									}
 								</Box>)
 								:
 								null

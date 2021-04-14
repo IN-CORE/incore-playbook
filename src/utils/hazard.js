@@ -76,6 +76,7 @@ export async function getTornadoMetadata(tornadoId) {
 	let tornadoRequest = await fetch(endpoint, {mode: "cors", headers: getHeader()});
 	if (tornadoRequest.status === 200) {
 		return tornadoRequest.json();
+
 	} else if (tornadoRequest.status === 401) {
 		// TODO handle error
 		return {};

@@ -13,17 +13,17 @@ export function StackedResult(props) {
 
 	let categories = [];
 	let totals = [];
-	let insignific = [];
-	let moderate = [];
-	let extensive = [];
-	let complete = [];
+	let DS_0 = [];
+	let DS_1 = [];
+	let DS_2 = [];
+	let DS_3 = [];
 
 	categorySummary.map((entry, idx) => {
-		insignific.push(entry.insignific < 0 ? 0 : entry.insignific);
-		moderate.push(entry.moderate < 0 ? 0 : entry.moderate);
-		extensive.push(entry.heavy < 0 ? 0 : entry.heavy);
-		complete.push(entry.complete < 0 ? 0 : entry.complete);
-		totals.push(insignific[idx] + moderate[idx] + extensive[idx] + complete[idx]);
+		DS_0.push(entry.DS_0 < 0 ? 0 : entry.DS_0);
+		DS_1.push(entry.DS_1 < 0 ? 0 : entry.DS_1);
+		DS_2.push(entry.DS_2 < 0 ? 0 : entry.DS_2);
+		DS_3.push(entry.DS_3 < 0 ? 0 : entry.DS_3);
+		totals.push(DS_0[idx] + DS_1[idx] + DS_2[idx] + DS_3[idx]);
 		categories.push([entry.category.trim(), `(total: ${  totals[idx]  })`]);
 	});
 
@@ -31,24 +31,24 @@ export function StackedResult(props) {
 		labels: categories,
 		datasets: [
 			{
-				label: "Insignificant",
+				label: "DS_0",
 				backgroundColor: "#96B712",
-				data: insignific
+				data: DS_0
 			},
 			{
-				label: "Moderate",
+				label: "DS_1",
 				backgroundColor: "#F7C137",
-				data: moderate
+				data: DS_1
 			},
 			{
-				label: "Extensive",
+				label: "DS_2",
 				backgroundColor: "#ED8036",
-				data: extensive
+				data: DS_2
 			},
 			{
-				label: "Complete",
+				label: "DS_3",
 				backgroundColor: "#D63649",
-				data: complete
+				data: DS_3
 			}
 		]
 	};

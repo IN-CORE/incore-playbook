@@ -256,10 +256,14 @@ export function ViewFunctionalityResults(props) {
 													<TableCell>EPF Pole Damage Result</TableCell>
 													<TableCell colSpan={3}/>
 													<TableCell colSpan={2}>
+														{/*<Link color="primary" onClick={() => {previewEpfDmg(execution["id"]);}}*/}
+														{/*	  className={execution["finalStatus"] === undefined ||*/}
+														{/*	  execution["finalStatus"] === "FINISHED" ?*/}
+														{/*		  classes.clickableLink : classes.clickableLinkDisabled}>*/}
+														{/*	View*/}
+														{/*</Link>*/}
 														<Link color="primary" onClick={() => {previewEpfDmg(execution["id"]);}}
-															  className={execution["finalStatus"] === undefined ||
-															  execution["finalStatus"] === "FINISHED" ?
-																  classes.clickableLink : classes.clickableLinkDisabled}>
+															  className={classes.clickableLinkDisabled}>
 															View
 														</Link>
 														<Link color="primary"
@@ -272,10 +276,14 @@ export function ViewFunctionalityResults(props) {
 													<TableCell>EPF Substation Damage Result</TableCell>
 													<TableCell colSpan={3}/>
 													<TableCell colSpan={2}>
+														{/*<Link color="primary" onClick={() => {previewEpfDmg(execution["id"]);}}*/}
+														{/*	  className={execution["finalStatus"] === undefined ||*/}
+														{/*	  execution["finalStatus"] === "FINISHED" ?*/}
+														{/*		  classes.clickableLink : classes.clickableLinkDisabled}>*/}
+														{/*	View*/}
+														{/*</Link>*/}
 														<Link color="primary" onClick={() => {previewEpfDmg(execution["id"]);}}
-															  className={execution["finalStatus"] === undefined ||
-															  execution["finalStatus"] === "FINISHED" ?
-																  classes.clickableLink : classes.clickableLinkDisabled}>
+															  className={classes.clickableLinkDisabled}>
 															View
 														</Link>
 														<Link color="primary"

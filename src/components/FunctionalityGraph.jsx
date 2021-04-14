@@ -5,9 +5,7 @@ import {Button} from "@material-ui/core";
 import {round} from "../utils/common";
 
 export function FunctionalityGraph(props) {
-	// let {categorySummary} = props;
-
-	let categorySummary = [{"category":"Critical Facilities","percent_functional":0.8148888889,"percent_non_functional":0.1851111111,"num_functional":22,"num_non_functional":5},{"category":"Emergency Housing","percent_functional":-1,"percent_non_functional":-1,"num_functional":-1,"num_non_functional":-1},{"category":"Housing / Neighborhood","percent_functional":0.0653139899,"percent_non_functional":0.9346860101,"num_functional":542,"num_non_functional":7764},{"category":"Community Recovery","percent_functional":0.4254016173,"percent_non_functional":0.5745983827,"num_functional":473,"num_non_functional":640}];
+	let {categorySummary} = props;
 
 	const ref = React.useRef();
 

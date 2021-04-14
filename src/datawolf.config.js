@@ -38,10 +38,10 @@ config["datasets"] = {
 	"bldgMaxDamageStateId":"8160a6e2-4edc-4e66-b1b3-4fc891c7b62f", // preview
 
 	// pole dmg
-	"epfPoleDmgId":"e6355ef9-3602-41ae-aa3c-91fef9d2b723",
+	"epfPoleMaxDmgStateId":"e6355ef9-3602-41ae-aa3c-91fef9d2b723",
 
 	// substation dmg
-	"epfSubstationDmgId":"8a73c2fc-01d6-4878-dc05-c0abafa5b15c",
+	"epfSubstationMaxDmgStateId":"8a73c2fc-01d6-4878-dc05-c0abafa5b15c",
 
 	// mcs
 	"mcsBldgFailureStateId":"7fcbdcc6-7bf7-4f5f-add2-b2bfa4ece62b",
@@ -52,7 +52,7 @@ config["datasets"] = {
 	"mcsSubstationFailureProbId":"b2ff2fbb-0a83-4934-ae58-cef0cbbc4cca",
 
 	// bldg func
-	"bldgFuncSampleId":"2d54aa60-3173-4427-a32e-196abe884cad",
+	"bldgFuncSummaryTableId":"2d54aa60-3173-4427-a32e-196abe884cad",
 	"bldgFuncProbId":"6049880b-4441-4079-bba3-dc1a714a45d5",
 
 	"stdout":"cca6d88a-0c86-484f-ec51-4f21dbc911ce",

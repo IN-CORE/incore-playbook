@@ -103,7 +103,7 @@ export function ResultTable(props) {
 		<TableContainer>
 			<Table className={classes.table} size="small" aria-label="a dense table">
 				<TableHead>
-					{/*["playbook builidng clusters", "insiginificant", "moderate", "extensive", "complete"];*/}
+					{/*["playbook builidng clusters", "DS_0", "DS_1", "DS_2", "DS_3"];*/}
 					<TableRow className={classes.tableHeaderRow} key="hdrRow">
 						<TableCell style={{width: "647px", backgroundColor: "#EFF2FF", color:"#69707F"}}
 								   colSpan={2}
@@ -111,16 +111,16 @@ export function ResultTable(props) {
 								   key="playbook-building-clusters">playbook builidng clusters</TableCell>
 						<TableCell style={{width: "121px", backgroundColor: "#96B712"}}
 								   className={classes.tableHeaderCell}
-								   key="insiginificant">insiginificant</TableCell>
+								   key="DS_0">Insignificant</TableCell>
 						<TableCell style={{width: "121px", backgroundColor: "#F7C137"}}
 								   className={classes.tableHeaderCell}
-								   key="moderate">moderate</TableCell>
+								   key="DS_1">Moderate</TableCell>
 						<TableCell style={{width: "121px", backgroundColor: "#ED8036"}}
 								   className={classes.tableHeaderCell}
-								   key="extensive">extensive</TableCell>
+								   key="DS_2">Extensive</TableCell>
 						<TableCell style={{width: "121px", backgroundColor: "#D63649"}}
 								   className={classes.tableHeaderCell}
-								   key="complete">complete</TableCell>
+								   key="DS_3">Complete</TableCell>
 					</TableRow>
 				</TableHead>
 				<TableBody>
@@ -148,16 +148,16 @@ export function ResultTable(props) {
 															{clusterItem["cluster"]}
 														</TableCell>
 														<TableCell key={`${idxx}-insig`} className={classes.tableBodyCell}>
-															{clusterItem["insignific"] === NA_value? "-" : clusterItem["insignific"]}
+															{clusterItem["DS_0"] === NA_value? "-" : clusterItem["DS_0"]}
 														</TableCell>
 														<TableCell key={`${idxx}-mod`} className={classes.tableBodyCell}>
-															{clusterItem["moderate"] === NA_value? "-" : clusterItem["moderate"]}
+															{clusterItem["DS_1"] === NA_value? "-" : clusterItem["DS_1"]}
 														</TableCell>
 														<TableCell key={`${idxx}-extensi`} className={classes.tableBodyCell}>
-															{clusterItem["heavy"] === NA_value? "-": clusterItem["heavy"]}
+															{clusterItem["DS_2"] === NA_value? "-": clusterItem["DS_2"]}
 														</TableCell>
 														<TableCell key={`${idxx}-comp`} className={classes.tableBodyCell}>
-															{clusterItem["complete"] === NA_value? "-": clusterItem["complete"]}
+															{clusterItem["DS_3"] === NA_value? "-": clusterItem["DS_3"]}
 														</TableCell>
 													</TableRow>
 												);
@@ -170,19 +170,19 @@ export function ResultTable(props) {
 													   backgroundColor: "#EEF3F5"}}>TOTAL</TableCell>
 										<TableCell key="total-insig" className={classes.tableBodyCell}
 												   style={{fontWeight:500, backgroundColor: "#EEF3F5"}}>
-											{categoryItem["insignific"] === NA_value ? "-" : categoryItem["insignific"]}
+											{categoryItem["DS_0"] === NA_value ? "-" : categoryItem["DS_0"]}
 										</TableCell>
 										<TableCell key="total-mod" className={classes.tableBodyCell}
 												   style={{fontWeight:500, backgroundColor: "#EEF3F5"}}>
-											{categoryItem["moderate"] === NA_value ? "-" : categoryItem["moderate"]}
+											{categoryItem["DS_1"] === NA_value ? "-" : categoryItem["DS_1"]}
 										</TableCell>
 										<TableCell key="total-extensi" className={classes.tableBodyCell}
 												   style={{fontWeight:500, backgroundColor: "#EEF3F5"}}>
-											{categoryItem["heavy"] === NA_value ? "-" : categoryItem["heavy"]}
+											{categoryItem["DS_2"] === NA_value ? "-" : categoryItem["DS_2"]}
 										</TableCell>
 										<TableCell key="total-comp" className={classes.tableBodyCell}
 												   style={{fontWeight:500, backgroundColor: "#EEF3F5"}}>
-											{categoryItem["complete"] === NA_value ? "-" : categoryItem["complete"]}
+											{categoryItem["DS_3"] === NA_value ? "-" : categoryItem["DS_3"]}
 										</TableCell>
 									</TableRow>
 								</>

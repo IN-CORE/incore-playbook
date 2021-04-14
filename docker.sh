@@ -14,10 +14,11 @@ if [ "$BRANCH" = "master" ]; then
     DEPLOY_ENV=production
     VERSION="latest"
 elif [ "${BRANCH}" = "develop" ]; then
-    DEPLOY_ENV=develop
+    DEPLOY_ENV=development
     VERSION="develop"
 else
-    exit 0
+		DEPLOY_ENV=test
+    VERSION="test"
 fi
 
 # Build docker image
