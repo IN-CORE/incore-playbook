@@ -89,3 +89,20 @@ export function getShortHTML(html){
 	let htmlSoup = new JSSoup(html);
 	return htmlSoup.find("div", "shortDescription");
 }
+
+export function round(val, n){
+	if (n === undefined || n === 0) {
+		return Math.round(val);
+	}
+	else {
+		return Number(val).toFixed(n);
+	}
+}
+
+export function formatPercent(val, n = 1){
+	return `${round(val, n)  }%`;
+}
+
+export function formatProbToPercent(val, n = 1){
+	return formatPercent(val*100, n);
+}

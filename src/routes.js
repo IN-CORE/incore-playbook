@@ -9,6 +9,8 @@ import CommunityHazards from "./containers/CommunityHazards";
 import BuiltEnvironment from "./containers/BuiltEnvironment";
 import Login from "./containers/Login";
 import {NotFound} from "./containers/NotFound";
+import {FunctionalityTable} from "./components/FunctionalityTable";
+import {FunctionalityGraph} from "./components/FunctionalityGraph";
 
 
 export default (
@@ -21,6 +23,17 @@ export default (
 			sessionStorage.setItem("menu", "1");
 			return (<Introduction menu={"1"}/>);
 		}}/>
+
+		{/*TODO: remove - only for testing*/}
+		<Route path="/f" render={() => {
+			return (
+				<div>
+					<FunctionalityGraph/>
+					<FunctionalityTable/>
+				</div>
+			);
+		}}/>
+
 		<Route path="/create-team-leader" render={() => {
 			sessionStorage.setItem("menu", "1-1");
 			return (<TeamLeader/>);
