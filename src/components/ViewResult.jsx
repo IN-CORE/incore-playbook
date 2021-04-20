@@ -29,6 +29,8 @@ import {FunctionalityGraph} from "./FunctionalityGraph";
 import {ViewFunctionalityResults} from "./ViewFunctionalityResults";
 import {FunctionalityTable} from "./FunctionalityTable";
 
+import {downloadDataset} from "../utils/dataset";
+
 const useStyles = makeStyles({
 	statTitle: {
 		margin: "55px auto",
@@ -44,6 +46,14 @@ const useStyles = makeStyles({
 		padding: "50px",
 	},
 	previewTitle: {
+		height: "20px",
+		color: "#000000",
+		fontSize: "18px",
+		fontWeight: 500,
+		letterSpacing: 0,
+		lineHeight: "20px"
+	},
+	previewSubTitle: {
 		height: "18px",
 		color: "#69707F",
 		fontSize: "15px",
@@ -99,7 +109,7 @@ export default function ViewResult(props) {
 	// states
 	const [numCompleted, setNumCompleted] = useState(0);
 	const [executionEntries, setExecutionEntries] = useState([]);
-	const [resultType, setResultType] = useState("bldgDmg"); // bldgFunc, bldgDmg, epfDmg, interD
+	const [resultType, setResultType] = useState("bldgDmg"); // bldgFunc, bldgDmg, epfDmg, bldgMCS, interD
 	const [summaryTableFields, setSummaryTableFields] = useState({"by_cluster": [], "by_category": []});
 	const [barChartFields, setBarChartFields] = useState([]);
 	const [map, setMap] = useState();
@@ -231,7 +241,7 @@ export default function ViewResult(props) {
 				"layerId": hazardDatasetId,
 				"layerStyles": "incore:tornado",
 				"title": "Tornado",
-				"opacity": 0.5
+				"opacity": 0.3
 			}
 		];
 		handleLayerUpdate(layerDef);
@@ -255,6 +265,12 @@ export default function ViewResult(props) {
 		// open preview
 		setMode("preview");
 	};
+	const downloadBldgDmg = async (executionItemId) =>{
+		let executionItem = getExecution(executionItemId);
+		let bldgMaxDamageStateId = executionItem["datasets"][datawolfConfig["datasets"]["bldgMaxDamageStateId"]];
+		let bldgMaxDamageStateINCOREId = await getOutputFileJson(bldgMaxDamageStateId);
+		await downloadDataset(bldgMaxDamageStateINCOREId, "bldg-dmg");
+	};
 
 	const previewBldgFunc = async (executionItemId) => {
 		const executionItem = await getExecution(executionItemId);
@@ -276,7 +292,7 @@ export default function ViewResult(props) {
 				"layerId": hazardDatasetId,
 				"layerStyles": "incore:tornado",
 				"title": "Tornado",
-				"opacity": 0.5
+				"opacity": 0.3
 			}
 		];
 		handleLayerUpdate(layerDef);
@@ -301,10 +317,119 @@ export default function ViewResult(props) {
 		// open preview
 		setMode("preview");
 	};
+	const downloadBldgFunc = async (executionItemId) =>{
+		let executionItem = getExecution(executionItemId);
+		let bldgFuncProbId = executionItem["datasets"][datawolfConfig["datasets"]["bldgFuncProbId"]];
+		let bldgFuncProbINCOREId = await getOutputFileJson(bldgFuncProbId);
+		await downloadDataset(bldgFuncProbINCOREId, "bldg-func");
+	};
 
-	const previewEpfDmg = (executionItemId) => {
-	// TODO placeholder
-		console.log(executionItemId);
+	const previewBldgMCS = async (executionItemId) =>{
+		const executionItem = await getExecution(executionItemId);
+
+		// map
+		let mcsBldgFailureProbId = executionItem["datasets"][datawolfConfig["datasets"]["mcsBldgFailureProbId"]];
+		let mcsBldgFailureProbINCOREId = await getOutputFileJson(mcsBldgFailureProbId);
+		let hazardId = executionItem["parameters"][datawolfConfig["parameters"]["hazardId"]];
+		let hazardMetadata = await getTornadoMetadata(hazardId);
+		let hazardDatasetId = hazardMetadata["datasetId"];
+		const layerDef = [
+			{
+				"layerId": mcsBldgFailureProbINCOREId,
+				"layerStyles": "incore:joplin-bldg-func",
+				"title": "Building Functionality Probability without Interdependency",
+				"opacity": 1
+			},
+			{
+				"layerId": hazardDatasetId,
+				"layerStyles": "incore:tornado",
+				"title": "Tornado",
+				"opacity": 0.3
+			}
+		];
+		handleLayerUpdate(layerDef);
+
+		// bar chart & table
+		let mcsBldgSummaryTableId = executionItem["datasets"][datawolfConfig["datasets"]["mcsBldgSummaryTableId"]];
+		let mcsBldgSummaryTable = await getOutputFileJson(mcsBldgSummaryTableId);
+		let mcsBldgSummaryTableContent = JSON.parse(mcsBldgSummaryTable);
+
+		// for runtime table on the top
+		setRuntime(executionItem["date"].slice(0, 10));
+		setSummaryTableFields(mcsBldgSummaryTableContent);
+		setBarChartFields(mcsBldgSummaryTableContent["by_category"]);
+		setResultType("bldgMCS");
+
+		// open preview
+		setMode("preview");
+	};
+	const downloadBldgMCS = async (executionItemId) =>{
+		let executionItem = getExecution(executionItemId);
+		let mcsBldgFailureProbId = executionItem["datasets"][datawolfConfig["datasets"]["mcsBldgFailureProbId"]];
+		let mcsBldgFailureProbINCOREId = await getOutputFileJson(mcsBldgFailureProbId);
+		await downloadDataset(mcsBldgFailureProbINCOREId, "bldg-mcs");
+	};
+
+	const previewEpfDmg = async (executionItemId, type) => {
+		let executionItem = getExecution(executionItemId);
+		let epfMaxDmgStateId;
+
+		if (type === "pole"){
+			epfMaxDmgStateId = executionItem["datasets"][datawolfConfig["datasets"]["epfPoleMaxDmgStateId"]];
+			setResultType("epfPoleDmg");
+		}
+		else if (type === "substation"){
+			epfMaxDmgStateId = executionItem["datasets"][datawolfConfig["datasets"]["epfSubstationMaxDmgStateId"]];
+			setResultType("epfSubstationDmg");
+		}
+		else{
+			console.log("unmatching EPF type", executionItemId);
+		}
+
+		// map
+		let epfMaxDmgStateINCOREId = await getOutputFileJson(epfMaxDmgStateId);
+		let hazardId = executionItem["parameters"][datawolfConfig["parameters"]["hazardId"]];
+		let hazardMetadata = await getTornadoMetadata(hazardId);
+		let hazardDatasetId = hazardMetadata["datasetId"];
+		const layerDef = [
+			{
+				"layerId": epfMaxDmgStateINCOREId,
+				"layerStyles": "incore:epf-dmg-summary",
+				"title": `EPF Damage (${type})`,
+				"opacity": 1
+			},
+			{
+				"layerId": hazardDatasetId,
+				"layerStyles": "incore:tornado",
+				"title": "Tornado",
+				"opacity": 0.3
+			}
+		];
+		handleLayerUpdate(layerDef);
+		// disable other components of map
+		setRuntime(null);
+		setSummaryTableFields(null);
+		setBarChartFields(null);
+
+		// open preview
+		setMode("preview");
+	};
+	const downloadEpfDmg= async (executionItemId, type) =>{
+		let executionItem = getExecution(executionItemId);
+		let epfMaxDmgStateId;
+		if (type === "pole"){
+			epfMaxDmgStateId = executionItem["datasets"][datawolfConfig["datasets"]["epfPoleMaxDmgStateId"]];
+			setResultType("epfPoleDmg");
+		}
+		else if (type === "substation"){
+			epfMaxDmgStateId = executionItem["datasets"][datawolfConfig["datasets"]["epfSubstationMaxDmgStateId"]];
+			setResultType("epfSubstationDmg");
+		}
+		else{
+			console.log("unmatching EPF type", executionItemId);
+		}
+		let epfMaxDmgStateINCOREId = await getOutputFileJson(epfMaxDmgStateId);
+		await downloadDataset(epfMaxDmgStateINCOREId, `epf-${type}`);
 	};
 
 	const previewInterd = () => {
@@ -355,10 +480,11 @@ export default function ViewResult(props) {
 				<Box>
 					<ViewFunctionalityResults fieldNames={fieldNames}
 										  executions={executionEntries}
-										  previewBldgDmg={previewBldgDmg}
-										  previewEpfDmg={previewEpfDmg}
-										  previewBldgFunc={previewBldgFunc}
+										  previewBldgDmg={previewBldgDmg} downloadBldgDmg={downloadBldgDmg}
+										  previewEpfDmg={previewEpfDmg} downloadEpfDmg={downloadEpfDmg}
+										  previewBldgFunc={previewBldgFunc} downloadBldgFunc={downloadBldgFunc}
 										  previewInterd={previewInterd}
+										  previewBldgMCS={previewBldgMCS} downloadBldgMCS={downloadBldgMCS}
 					/>
 				</Box>
 			</Box>
@@ -370,14 +496,37 @@ export default function ViewResult(props) {
 						<CloseIcon fontSize="small"/>
 					</IconButton>
 					<>
+						{/*title*/}
+						{
+							(() => {
+								if (resultType === "interD") {
+									return <Typography className={classes.previewTitle}>Interdependent Network of Building and Electric Power Facility</Typography>;
+								}
+								else if (resultType === "bldgDmg") {
+									return <Typography className={classes.previewTitle}>Building Damage</Typography>;
+								}
+								else if(resultType === "epfPoleDmg") {
+									return <Typography className={classes.previewTitle}>EPF Pole Damage</Typography>;
+								}
+								else if(resultType === "epfSubstationDmg") {
+									return <Typography className={classes.previewTitle}>EPF Substation Damage</Typography>;
+								}
+								else if(resultType === "bldgMCS") {
+									return <Typography className={classes.previewTitle}>Building Functionality without Interdependency</Typography>;
+								}
+								else if(resultType === "bldgFunc") {
+									return <Typography className={classes.previewTitle}>Building Functionality with Interdependency</Typography>;
+								}
+							}) ()
+						}
 						{/*for chart*/}
 						<Box className={classes.chartContainer}>
-							<Grid container spacing={3} justify="center">
+							<Grid container spacing={3} justify="left">
 								{
 									runtime ?
 										(<>
 											<Grid item>
-												<Typography className={classes.previewTitle}>
+												<Typography className={classes.previewSubTitle}>
 														Analysis Result View</Typography>
 												<ResultSummaryTable runtime={runtime}/>
 											</Grid>
@@ -392,7 +541,7 @@ export default function ViewResult(props) {
 									barChartFields?
 										(
 											<Grid item style={{minWidth: "804px"}}>
-												<Typography className={classes.previewTitle}>
+												<Typography className={classes.previewSubTitle}>
 												Anticipated Performance - Building Clusters</Typography>
 												<Box style={{marginTop: "38px"}}>
 													{

@@ -180,7 +180,7 @@ export function FunctionalityTable(props) {
 															</TableCell>
 															: null
 														}
-														<TableCell key={idxx} className={[classes.tableBodyClusterCell]}
+														<TableCell key={idxx} className={classes.tableBodyClusterCell}
 																			 // style={style}
 														>
 															{clusterItem["cluster"]}

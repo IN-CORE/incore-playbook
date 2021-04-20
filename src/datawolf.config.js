@@ -44,8 +44,10 @@ config["datasets"] = {
 	"epfSubstationMaxDmgStateId":"8a73c2fc-01d6-4878-dc05-c0abafa5b15c",
 
 	// mcs
-	"mcsBldgFailureStateId":"7fcbdcc6-7bf7-4f5f-add2-b2bfa4ece62b",
+	// "mcsBldgFailureStateId":"7fcbdcc6-7bf7-4f5f-add2-b2bfa4ece62b",
+	"mcsBldgSummaryTableId":"7fcbdcc6-7bf7-4f5f-add2-b2bfa4ece62b",
 	"mcsBldgFailureProbId":"847756a7-2daa-4b8d-96b5-3b1a4833a08f",
+
 	"mcsPoleFailureStateId":"a8f93a4d-32c2-4a11-d42f-b01769b059c9",
 	"mcsPoleFailureProbId":"67f34ab0-914b-4034-84ce-356f546af96d",
 	"mcsSubstationFailureStateId":"24277a0e-8dd7-48c6-b291-7f3acd96b9c0",

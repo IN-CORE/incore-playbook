@@ -61,7 +61,7 @@ const useStyles = makeStyles({
 		textAlign: "center"
 	},
 	firstTableBodyCell: {
-		minWidth: "250px",
+		minWidth: "300px",
 		color: "#2E384D",
 		fontSize: "15px",
 		letterSpacing: 0,
@@ -119,7 +119,8 @@ function stableSort(array, comparator) {
 
 export function ViewFunctionalityResults(props) {
 
-	const {fieldNames, executions, previewBldgDmg, previewEpfDmg, previewBldgFunc, previewInterd,} = props;
+	const {fieldNames, executions, previewBldgDmg, downloadBldgDmg, previewEpfDmg, downloadEpfDmg,
+		previewBldgFunc, downloadBldgFunc, previewInterd, previewBldgMCS, downloadBldgMCS} = props;
 
 	const [expandId, setExpandId] = useState("");
 	const [collapseId, setCollapseId] = useState("");
@@ -227,15 +228,13 @@ export function ViewFunctionalityResults(props) {
 																  classes.clickableLink : classes.clickableLinkDisabled}>
 															View
 														</Link>
-														<Link color="primary"
-															  className={execution["finalStatus"] === undefined ||
-															  execution["finalStatus"] === "FINISHED" ?
-																  classes.clickableLink : classes.clickableLinkDisabled}>Download
+														<Link color="primary" className={classes.clickableLinkDisabled}>
+															Download
 														</Link>
 													</TableCell>
 												</TableRow>
 												<TableRow className={classes.subBodyRow}>
-													<TableCell>Building Damage Result</TableCell>
+													<TableCell>Building Damage</TableCell>
 													<TableCell colSpan={3}/>
 													<TableCell colSpan={2}>
 														<Link color="primary" onClick={() => {previewBldgDmg(execution["id"]);}}
@@ -244,7 +243,7 @@ export function ViewFunctionalityResults(props) {
 																  classes.clickableLink : classes.clickableLinkDisabled}>
 															View
 														</Link>
-														<Link color="primary"
+														<Link color="primary" onClick={() => {downloadBldgDmg(execution["id"]);}}
 															  className={execution["finalStatus"] === undefined ||
 															  execution["finalStatus"] === "FINISHED" ?
 																  classes.clickableLink : classes.clickableLinkDisabled}>
@@ -253,47 +252,57 @@ export function ViewFunctionalityResults(props) {
 													</TableCell>
 												</TableRow>
 												<TableRow className={classes.subBodyRow}>
-													<TableCell>EPF Pole Damage Result</TableCell>
+													<TableCell>EPF Pole Damage</TableCell>
 													<TableCell colSpan={3}/>
 													<TableCell colSpan={2}>
-														{/*<Link color="primary" onClick={() => {previewEpfDmg(execution["id"]);}}*/}
-														{/*	  className={execution["finalStatus"] === undefined ||*/}
-														{/*	  execution["finalStatus"] === "FINISHED" ?*/}
-														{/*		  classes.clickableLink : classes.clickableLinkDisabled}>*/}
-														{/*	View*/}
-														{/*</Link>*/}
-														<Link color="primary" onClick={() => {previewEpfDmg(execution["id"]);}}
-															  className={classes.clickableLinkDisabled}>
+														<Link color="primary" onClick={() =>
+														{previewEpfDmg(execution["id"], "pole");}}
+															  className={execution["finalStatus"] === undefined ||
+															  execution["finalStatus"] === "FINISHED" ?
+																  classes.clickableLink : classes.clickableLinkDisabled}>
 															View
 														</Link>
-														<Link color="primary"
+														<Link color="primary" onClick={() => {downloadEpfDmg(execution["id"], "pole");}}
 															  className={execution["finalStatus"] === undefined ||
 															  execution["finalStatus"] === "FINISHED" ?
 																  classes.clickableLink : classes.clickableLinkDisabled}>Download</Link>
 													</TableCell>
 												</TableRow>
 												<TableRow className={classes.subBodyRow}>
-													<TableCell>EPF Substation Damage Result</TableCell>
+													<TableCell>EPF Substation Damage</TableCell>
 													<TableCell colSpan={3}/>
 													<TableCell colSpan={2}>
-														{/*<Link color="primary" onClick={() => {previewEpfDmg(execution["id"]);}}*/}
-														{/*	  className={execution["finalStatus"] === undefined ||*/}
-														{/*	  execution["finalStatus"] === "FINISHED" ?*/}
-														{/*		  classes.clickableLink : classes.clickableLinkDisabled}>*/}
-														{/*	View*/}
-														{/*</Link>*/}
-														<Link color="primary" onClick={() => {previewEpfDmg(execution["id"]);}}
-															  className={classes.clickableLinkDisabled}>
+														<Link color="primary" onClick={() =>
+														{previewEpfDmg(execution["id"], "substation");}}
+															  className={execution["finalStatus"] === undefined ||
+															  execution["finalStatus"] === "FINISHED" ?
+																  classes.clickableLink : classes.clickableLinkDisabled}>
 															View
 														</Link>
-														<Link color="primary"
+														<Link color="primary" onClick={() => {downloadEpfDmg(execution["id"], "substation");}}
 															  className={execution["finalStatus"] === undefined ||
 															  execution["finalStatus"] === "FINISHED" ?
 																  classes.clickableLink : classes.clickableLinkDisabled}>Download</Link>
 													</TableCell>
 												</TableRow>
 												<TableRow className={classes.subBodyRow}>
-													<TableCell>Building Functionality Result</TableCell>
+													<TableCell>Building Functionality (without interdependency)</TableCell>
+													<TableCell colSpan={3}/>
+													<TableCell colSpan={2}>
+														<Link color="primary" onClick={() => {previewBldgMCS(execution["id"]);}}
+															  className={execution["finalStatus"] === undefined ||
+															  execution["finalStatus"] === "FINISHED" ?
+																  classes.clickableLink : classes.clickableLinkDisabled}>
+															View
+														</Link>
+														<Link color="primary" onClick={() => {downloadBldgMCS(execution["id"]);}}
+															  className={execution["finalStatus"] === undefined ||
+															  execution["finalStatus"] === "FINISHED" ?
+																  classes.clickableLink : classes.clickableLinkDisabled}>Download</Link>
+													</TableCell>
+												</TableRow>
+												<TableRow className={classes.subBodyRow}>
+													<TableCell>Building Functionality (with interdependency)</TableCell>
 													<TableCell colSpan={3}/>
 													<TableCell colSpan={2}>
 														<Link color="primary" onClick={() => {previewBldgFunc(execution["id"]);}}
@@ -302,7 +311,7 @@ export function ViewFunctionalityResults(props) {
 																  classes.clickableLink : classes.clickableLinkDisabled}>
 															View
 														</Link>
-														<Link color="primary"
+														<Link color="primary" onClick={() => {downloadBldgFunc(execution["id"]);}}
 															  className={execution["finalStatus"] === undefined ||
 															  execution["finalStatus"] === "FINISHED" ?
 																  classes.clickableLink : classes.clickableLinkDisabled}>Download</Link>

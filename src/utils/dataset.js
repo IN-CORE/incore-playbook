@@ -60,3 +60,39 @@ export async function createDataset(title, description, dataType, files){
 		return {};
 	}
 }
+
+export async function downloadDataset(datasetId, title=null) {
+	let filename = `${datasetId}.zip`;
+	if (title) filename = `${title}-${filename}`;
+
+	let url = `${config.dataServiceBase}datasets/${datasetId}/blob`;
+	let authHeader = getHeader();
+	let response = await fetch(url, {
+		method: "GET",
+		mode: "cors",
+		headers: authHeader,
+	});
+
+	if (response.status  === 200){
+		let blob = await response.blob();
+		if (window.navigator.msSaveOrOpenBlob) {
+			window.navigator.msSaveBlob(blob, filename);
+		} else {
+			let anchor = window.document.createElement("a");
+			anchor.href = window.URL.createObjectURL(blob);
+			anchor.download = filename;
+			document.body.appendChild(anchor);
+			anchor.click();
+			document.body.removeChild(anchor);
+		}
+	}
+	else if  (response.status  === 401){
+		// TODO handle error
+		return {};
+	}
+	else {
+		// TODO handle error
+		return {};
+	}
+
+}
