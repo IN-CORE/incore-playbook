@@ -3,6 +3,7 @@ import {getHeader, getCurrUsername} from "../utils/common";
 
 export const RECEIVE_BLDGS = "RECEIVE_BLDGS";
 export const RECEIVE_EPFS = "RECEIVE_EPFS";
+export const RECEIVE_INTERD = "RECEIVE_INTERD";
 export const LOGIN_ERROR = "LOGIN_ERROR";
 
 export function receiveDatasets(type, json){
@@ -33,6 +34,9 @@ export function fetchDatasets(limit=20, offset=0, type="ergo:buildingInventoryVe
 						else if (type === "incore:epf"){
 							dispatch(receiveDatasets(RECEIVE_EPFS, json));
 						}
+						else if (type === "incore:buildingInterdependencyDict"){
+							dispatch(receiveDatasets(RECEIVE_INTERD, json));
+						}
 					});
 				}
 				else if (response.status === 401) {
@@ -43,6 +47,7 @@ export function fetchDatasets(limit=20, offset=0, type="ergo:buildingInventoryVe
 					// TODO Request Failed
 					dispatch(receiveDatasets(RECEIVE_BLDGS, []));
 					dispatch(receiveDatasets(RECEIVE_EPFS, []));
+					dispatch(receiveDatasets(RECEIVE_INTERD, []));
 				}
 			});
 	};

@@ -1,9 +1,9 @@
 import React, {useState, useEffect} from "react";
+import {NavLink} from "react-router-dom";
 import {makeStyles} from "@material-ui/core/styles";
 import {
 	Box,
 	Avatar,
-	Link,
 	Button,
 	Grid,
 	Typography,
@@ -15,6 +15,9 @@ import {IncoreSelectBox, IncoreMenuItem} from "./styledComponents/IncoreSelect";
 import {IncoreTextField} from "./styledComponents/IncoreInput";
 
 import {submitExecution} from "../utils/datawolf";
+
+import appConfig from "../app.config";
+
 import PoweredBy from "../public/powered-by-incore.svg";
 import fullHtml from "../public/steps/3-4.html";
 import StepInfo from "./StepInfo";
@@ -58,7 +61,7 @@ const useStyles = makeStyles({
 });
 
 export default function ViewResult(props) {
-	const {value, index, listTornadoes, tornadoes, listDatasets, buildings, epfs,
+	const {value, index, listTornadoes, tornadoes, listDatasets, buildings, epfs, interdNetworks,
 		getExecutionList, gotoViewResultTab, ...other} = props;
 
 	const [title, setTitle] = useState("");
@@ -66,6 +69,7 @@ export default function ViewResult(props) {
 	const [selectedBldgId, setBldgId] = useState("");
 	const [selectedSubstationId, setSubstationId] = useState("");
 	const [selectedPoleId, setPoleId] = useState("");
+	const [selectedInterdNetworkId, setInterdNetworkId] = useState("");
 	const [selectedTornadoId, setTornadoId] = useState("");
 	const [disabled, setDisabled] = useState(true);
 
@@ -74,27 +78,30 @@ export default function ViewResult(props) {
 	useEffect(() =>{
 		listDatasets(20, 0, "ergo:buildingInventoryVer6");
 		listDatasets(20, 0, "incore:epf");
-		listTornadoes();}, []);
+		listDatasets(20, 0, "incore:buildingInterdependencyDict");
+		listTornadoes();
+	}, []);
 
 	// form check
 	useEffect(() => {
 		if (selectedBldgId !== "" && selectedSubstationId !== ""  && selectedPoleId !== ""
-			&& title !== "" && description !== "") setDisabled(false);
+			&& selectedInterdNetworkId !== "" && title !== "" && description !== "") setDisabled(false);
 		else setDisabled(true);
-	}, [selectedBldgId, selectedSubstationId, selectedPoleId, title, description]);
+	}, [selectedBldgId, selectedSubstationId, selectedPoleId, selectedInterdNetworkId, title, description]);
 
 
 	const classes = useStyles();
 
 	const handleRunButtonClick = async () =>{
 		const datawolfJson = await submitExecution(title, description, selectedBldgId, selectedSubstationId,
-			selectedPoleId, selectedTornadoId);
+			selectedPoleId, selectedInterdNetworkId, selectedTornadoId);
 		if (datawolfJson && datawolfJson !== "") {
 			setTitle("");
 			setDescription("");
 			setBldgId("");
 			setSubstationId("");
 			setPoleId("");
+			setInterdNetworkId("");
 			setTornadoId("");
 
 			// update execution list and then jump to view result tab
@@ -165,8 +172,25 @@ export default function ViewResult(props) {
 								})
 							}
 						</IncoreSelectBox>
+					</Box>
+					<Box className="inputGroup" style={{height: "auto"}}>
+						<IncoreInputLabel>Select Interdependency Network
+						</IncoreInputLabel>
+						<IncoreSelectBox labelId="label" id="select" variant="outlined"
+										 onChange={(e)=>{ setInterdNetworkId(e.target.value); }}
+										 value={selectedInterdNetworkId}>
+							{
+								interdNetworks.map((interdNetwork) => {
+									return (
+										<IncoreMenuItem value={interdNetwork["id"]} interdNetwork={interdNetwork["id"]}>
+											{interdNetwork["title"]}</IncoreMenuItem>
+									);
+								})
+							}
+						</IncoreSelectBox>
 						<Typography className={classes.explanation}>If you need to add entities to your built environment&nbsp;
-							<Link href="/playbook/set-built-environment" className={classes.explanationLink}>click here</Link>.</Typography>
+							<NavLink to="/community-environment"
+								  className={classes.explanationLink}>click here</NavLink>.</Typography>
 					</Box>
 					<Box className="inputGroup" style={{height: "auto"}}>
 						<IncoreInputLabel>Select a Hazard</IncoreInputLabel>
@@ -183,7 +207,8 @@ export default function ViewResult(props) {
 							}
 						</IncoreSelectBox>
 						<Typography className={classes.explanation}>If you need to add new hazards to your community hazards list&nbsp;
-							<Link href="/playbook/define-community-hazards" className={classes.explanationLink}>click here</Link>.</Typography>
+							<NavLink to="/goal-objective-hazard"
+								  className={classes.explanationLink}>click here</NavLink>.</Typography>
 					</Box>
 					<Box className="inputGroup" style={{height: "auto"}}>
 						<IncoreInputLabel>Run the Analysis</IncoreInputLabel>

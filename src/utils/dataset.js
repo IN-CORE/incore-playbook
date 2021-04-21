@@ -1,7 +1,7 @@
 import config from "../app.config";
 import {getHeader} from "./common";
 
-export async function createDataset(title, description, dataType, files){
+export async function createDataset(title, description, dataType, files, format="shapefile"){
 	const datasetEndpoint = `${config.dataServiceBase}datasets`;
 	let datasetFormData = new FormData();
 	let datasetMetadata = {
@@ -10,7 +10,7 @@ export async function createDataset(title, description, dataType, files){
 		"contributors":[],
 		"dataType": dataType,
 		"storedUrl": "",
-		"format": "shapefile",
+		"format": format,
 		"sourceDataset": "",
 		"networkDataset": null
 	};

@@ -12,7 +12,8 @@ const mapStateToProps = (state) => {
 		executions: state.execution.executions,
 		tornadoes: state.tornado.tornadoes,
 		buildings: state.dataset.buildings,
-		epfs: state.dataset.epfs
+		epfs: state.dataset.epfs,
+		interdNetworks: state.dataset.interdNetworks
 	};
 };
 

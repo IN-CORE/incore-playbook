@@ -49,7 +49,7 @@ export async function getOutputFileJson(datasetId, outputFileName = null) {
 	}
 }
 
-export async function submitExecution(title, description, bldgId, substationId, poleId, hazardId,){
+export async function submitExecution(title, description, bldgId, substationId, poleId, interdNetworkId, hazardId,){
 	let incoreTokenDatasetId = await postDataset();
 	if (incoreTokenDatasetId === null) {
 		console.log("Fail to post incoretoken. Abort exeuction submission!");
@@ -73,7 +73,7 @@ export async function submitExecution(title, description, bldgId, substationId, 
 		};
 
 		requestBody["parameters"][datawolfParams["incoreUserNameId"]] = "";
-		requestBody["parameters"][datawolfParams["interdependencyId"]] = "5dcf4a34b9219ca5e4118312";
+		requestBody["parameters"][datawolfParams["interdependencyId"]] = interdNetworkId;
 		requestBody["parameters"][datawolfParams["useUncertaintyId"]] = "";
 		requestBody["parameters"][datawolfParams["numCpuId"]] = 8;
 		requestBody["parameters"][datawolfParams["useLiquefactionId"]] = "";

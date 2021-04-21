@@ -57,7 +57,7 @@ const useStyles = makeStyles({
 export default function BuiltEnvironment(props) {
 	const classes = useStyles();
 
-	const {listDatasets, buildings, epfs} = props;
+	const {listDatasets, buildings, epfs, interdNetworks} = props;
 	const fileInputRef = useRef(null);
 	const [files, setFile] = useState([]);
 	const [title, setTitle] = useState("");
@@ -71,6 +71,7 @@ export default function BuiltEnvironment(props) {
 	useEffect(() => {
 		listDatasets(20, 0, "ergo:buildingInventoryVer6");
 		listDatasets(20, 0, "incore:epf");
+		listDatasets(20, 0, "incore:buildingInterdependencyDict");
 	}, []);
 
 	// form check
@@ -94,12 +95,16 @@ export default function BuiltEnvironment(props) {
 
 	const onSave = async () => {
 		setLoading(true);
-		const datasetJson = await createDataset(title, description, dataType, files);
+
+		let format = "shapefile";
+		if (dataType === "incore:buildingInterdependencyDict") format="json";
+		const datasetJson = await createDataset(title, description, dataType, files, format);
 		if (datasetJson !== {}) {
 
 			// update table to show uploaded data
 			listDatasets(20, 0, "ergo:buildingInventoryVer6");
 			listDatasets(20, 0, "incore:epf");
+			listDatasets(20, 0, "incore:buildingInterdependencyDict");
 
 			setFile([]);
 			setTitle("");
@@ -177,6 +182,22 @@ export default function BuiltEnvironment(props) {
 											</Box>
 											<Box className="entryTable">
 												<EntryTable fieldNames={fieldNames} fields={epfs}/>
+											</Box>
+										</Box>
+										{/*list of uploaded interdependency network*/}
+										<Box className={classes.subUploadSection}>
+											<Box className={classes.subTitleRow}>
+												<IncoreInputLabel className={classes.subTitle}>Interdependency Network</IncoreInputLabel>
+												<IconButton className={classes.plusButton} onClick={() => {
+													setUploadModalStatus(true);
+													setDataType("incore:buildingInterdependencyDict");
+												}}>
+													<AddCircleOutlineIcon/>
+												</IconButton>
+												<Divider orientation="horizontal" className={classes.subDivider} flexItem />
+											</Box>
+											<Box className="entryTable">
+												<EntryTable fieldNames={fieldNames} fields={interdNetworks}/>
 											</Box>
 										</Box>
 									</Box>

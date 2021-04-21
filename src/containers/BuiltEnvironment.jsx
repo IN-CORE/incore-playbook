@@ -6,7 +6,8 @@ import {fetchDatasets} from "../actions/datasets";
 const mapStateToProps = (state) => {
 	return {
 		buildings: state.dataset.buildings,
-		epfs: state.dataset.epfs
+		epfs: state.dataset.epfs,
+		interdNetworks: state.dataset.interdNetworks
 	};
 };
 
