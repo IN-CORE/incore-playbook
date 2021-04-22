@@ -116,7 +116,7 @@ export default function ViewResult(props) {
 			 {...other}
 		>
 			<Grid container spacing={3}>
-				<Grid item xl={5} lg={5} md={5} sm={5} xs={12}>
+				<Grid item xl={6} lg={6} md={6} sm={6} xs={12}>
 					<div className="inputGroup" style={{height: "auto", marginTop:"55px"}}>
 						<IncoreInputLabel>Title</IncoreInputLabel>
 						<IncoreTextField value={title} variant="outlined" onChange={(e) => setTitle(e.target.value)}/>
@@ -221,7 +221,7 @@ export default function ViewResult(props) {
 						</Button>
 					</Box>
 				</Grid>
-				<Grid item xl={7} lg={7} md={7} sm={7} xs={12} className="gridItem">
+				<Grid item xl={6} lg={6} md={6} sm={6} xs={12} className="gridItem">
 					<StepInfo fullHtml={fullHtml} />
 				</Grid>
 			</Grid>

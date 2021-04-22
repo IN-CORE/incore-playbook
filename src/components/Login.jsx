@@ -117,7 +117,7 @@ const Login = ({dispatch}) => {
 		const tokenJson = await tokenRequest.json();
 
 		if (tokenJson["access_token"] !== undefined) {
-			cookies.set("Authorization", `bearer ${tokenJson["access_token"]}`, {maxAge: tokenJson["expires_in"]});
+			cookies.set("Authorization", `bearer ${tokenJson["access_token"]}`, {maxAge: tokenJson["expires_in"], path: "/"});
 			setAuthFail(false);
 			dispatch(setMenuState(true));
 			history.push("/");

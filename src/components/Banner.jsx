@@ -15,7 +15,7 @@ const useStyles = makeStyles({
 		letterSpacing: 0,
 		lineHeight: "22px",
 		display: "inline-block",
-		margin: "19px 17px 39px 17px"
+		margin: "19px 17px 25px 17px"
 	},
 	bannerText:{
 		display:"inline",

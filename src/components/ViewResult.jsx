@@ -432,7 +432,10 @@ export default function ViewResult(props) {
 		await downloadDataset(epfMaxDmgStateINCOREId, `epf-${type}`);
 	};
 
-	const previewInterd = () => {
+	const previewInterd = async (executionItemId) => {
+		let executionItem = getExecution(executionItemId);
+		let epfMaxDmgStateId = executionItem["datasets"][datawolfConfig["datasets"]["epfSubstationMaxDmgStateId"]];
+		let epfMaxDmgStateINCOREId = await getOutputFileJson(epfMaxDmgStateId);
 
 		const layerDef = [
 			{
@@ -442,7 +445,7 @@ export default function ViewResult(props) {
 				"opacity": 0.7
 			},
 			{
-				"layerId": "606287dc01f93d1b9f22320e",
+				"layerId": epfMaxDmgStateINCOREId,
 				"layerStyles": "incore:joplin-substations-label",
 				"title": "EPF Substations",
 				"opacity": 1

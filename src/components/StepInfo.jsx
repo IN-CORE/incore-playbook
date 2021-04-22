@@ -39,7 +39,7 @@ const StepInfo = (props) => {
 	};
 
 	return (
-		<div>
+		<div style={{paddingLeft: 6}}>
 			<div dangerouslySetInnerHTML={{__html: shortHtml}} />
 
 			{showMoreLink ?

@@ -1,5 +1,5 @@
 import * as React from "react";
-import {Box, Container, Grid, IconButton, Tab, Tabs, withStyles} from "@material-ui/core";
+import {Box, Container, Grid, Tab, Tabs, withStyles} from "@material-ui/core";
 import GroupLayer from "ol/layer/Group";
 import TileLayer from "ol/layer/Tile";
 import TileWMS from "ol/source/TileWMS";
@@ -258,7 +258,7 @@ class CommunityHazards extends React.Component {
 							</Box>
 						</Box>
 						<Grid container spacing={3} className="innerBox">
-							<Grid item xl={5} lg={5} md={5} sm={5} xs={12} className="gridItem">
+							<Grid item xl={6} lg={6} md={6} sm={6} xs={12} className="gridItem">
 								{/*Select*/}
 								<Box>
 									<IncoreInputLabel>Select Hazard Type</IncoreInputLabel>
@@ -289,7 +289,7 @@ class CommunityHazards extends React.Component {
 												   handleListUpdate={this.props.listTornadoes}/>
 								</Box>
 							</Grid>
-							<Grid item xl={7} lg={7} md={7} sm={7} xs={12} className="gridItem">
+							<Grid item xl={6} lg={6} md={6} sm={6} xs={12} className="gridItem">
 								<Container className={classes.mapContainer} disableGutters>
 									<Map
 										className="fillContainer"

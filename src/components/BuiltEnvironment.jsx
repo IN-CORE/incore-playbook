@@ -1,6 +1,6 @@
 import React, {useEffect, useRef, useState} from "react";
 
-import {Box, Container, Dialog, DialogContent, Divider, Grid, IconButton} from "@material-ui/core";
+import {Box, Dialog, DialogContent, Divider, Grid, IconButton} from "@material-ui/core";
 
 import Layout from "../containers/Layout";
 import PageBanner from "./Banner";
@@ -30,7 +30,7 @@ const useStyles = makeStyles({
 		width: "100%"
 	},
 	uploadSection:{
-		padding:"20px",
+		padding:"20px 0px 20px 0px",
 	},
 	subUploadSection:{
 		marginTop:"20px",
@@ -130,6 +130,10 @@ export default function BuiltEnvironment(props) {
 			"columnName": "title",
 		},
 		{
+			"prettyName": "DESCRIPTION",
+			"columnName": "description",
+		},
+		{
 			"prettyName": "DATE ADDED",
 			"columnName": "date",
 		}
@@ -142,13 +146,13 @@ export default function BuiltEnvironment(props) {
 					childStep="Identify & Characterize the Built Environment" taskNo="2" subtaskNo="2-4"/>
 				<Box className="outerBox">
 					<Grid container spacing={3} className="innerBox">
-						<Grid item xl={5} lg={5} md={5} sm={5} xs={12} className="gridItem">
+						<Grid item xl={6} lg={6} md={6} sm={6} xs={12} className="gridItem">
 							<LoadingOverlay
 								active={loading}
 								spinner
 								text="Saving..."
 							>
-								<Container>
+								<div>
 									<IncoreInputLabel className={classes.title}>Uploaded Data</IncoreInputLabel>
 									<Divider orientation="horizontal" className={classes.divider} flexItem />
 									<Box className={classes.uploadSection}>
@@ -201,10 +205,10 @@ export default function BuiltEnvironment(props) {
 											</Box>
 										</Box>
 									</Box>
-								</Container>
+								</div>
 							</LoadingOverlay>
 						</Grid>
-						<Grid item xl={7} lg={7} md={7} sm={7} xs={12} className="gridItem">
+						<Grid item xl={6} lg={6} md={6} sm={6} xs={12} className="gridItem">
 							<StepStatus />
 							<StepInfo fullHtml={fullHtml} />
 						</Grid>
