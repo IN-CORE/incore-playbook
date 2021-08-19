@@ -30,6 +30,10 @@ import {ViewFunctionalityResults} from "./ViewFunctionalityResults";
 import {FunctionalityTable} from "./FunctionalityTable";
 
 import {downloadDataset} from "../utils/dataset";
+import VectorSource from "ol/source/Vector";
+import Heatmap from "ol/layer/Heatmap";
+import {GeoJSON, WFS} from "ol/format";
+import {Vector} from "ol/source";
 
 const useStyles = makeStyles({
 	statTitle: {
@@ -85,7 +89,7 @@ const layers = {
 				visible: false,
 				title: "OSM",
 				source: new OSM()
-			})
+			}),
 		]
 	}),
 	tilelayer: new GroupLayer({
@@ -202,6 +206,47 @@ export default function ViewResult(props) {
 			title: "Preview",
 			layers: inputLayers,
 		});
+	};
+
+	const handleHeatmapUpdate = async () => {
+		const inputLayers = [];
+
+		// test heatmap layer
+		let vectorSource = new VectorSource();
+		let featureBody = {
+			srsName: "EPSG:3857",
+			featureNS: "http://openstreemap.org",
+			featurePrefix: "incore",
+			featureTypes: ["611e80877c858b73bdff219e"],
+			outputFormat: "application/json",
+		};
+		let featureRequest = new WFS().writeGetFeature(featureBody);
+		let featureResponse = await fetch("https://incore-tst.ncsa.illinois.edu/geoserver/incore/ows", {
+			method: "POST",
+			body: new XMLSerializer().serializeToString(featureRequest),
+		});
+
+		if (featureResponse.status === 200){
+			let json = await featureResponse.json();
+			let features = new GeoJSON().readFeatures(json);
+			vectorSource.clear();
+			vectorSource.addFeatures(features);
+			inputLayers.push(
+				new Heatmap({
+					title:"heatmap",
+					source: vectorSource,
+					blur: 10,
+					radius: 7,
+					weight: function (feature) {
+						return feature.get("numprec");
+					},
+				})
+			);
+			layers["tilelayer"] = new GroupLayer({
+				title: "Preview",
+				layers: inputLayers,
+			});
+		}
 	};
 
 	// empty preview and close the model
@@ -465,6 +510,22 @@ export default function ViewResult(props) {
 		setMode("preview");
 	};
 
+	const previewHeatmap = async () => {
+		// TODO hard code this for now
+		await handleHeatmapUpdate();
+
+		// disable other components of map
+		setRuntime(null);
+		setSummaryTableFields(null);
+		setBarChartFields(null);
+
+		// set preview type
+		setResultType("heatmap");
+
+		// open preview
+		setMode("preview");
+	};
+
 	return (
 		<div role="tabpanel" hidden={value !== index} id={`simple-tabpanel-${index}`}
 		 aria-labelledby={`simple-tab-${index}`}
@@ -482,12 +543,13 @@ export default function ViewResult(props) {
 				</Box>
 				<Box>
 					<ViewFunctionalityResults fieldNames={fieldNames}
-										  executions={executionEntries}
-										  previewBldgDmg={previewBldgDmg} downloadBldgDmg={downloadBldgDmg}
-										  previewEpfDmg={previewEpfDmg} downloadEpfDmg={downloadEpfDmg}
-										  previewBldgFunc={previewBldgFunc} downloadBldgFunc={downloadBldgFunc}
-										  previewInterd={previewInterd}
-										  previewBldgMCS={previewBldgMCS} downloadBldgMCS={downloadBldgMCS}
+											  executions={executionEntries}
+											  previewBldgDmg={previewBldgDmg} downloadBldgDmg={downloadBldgDmg}
+											  previewEpfDmg={previewEpfDmg} downloadEpfDmg={downloadEpfDmg}
+											  previewBldgFunc={previewBldgFunc} downloadBldgFunc={downloadBldgFunc}
+											  previewInterd={previewInterd}
+											  previewBldgMCS={previewBldgMCS} downloadBldgMCS={downloadBldgMCS}
+											  previewHeatmap={previewHeatmap}
 					/>
 				</Box>
 			</Box>
