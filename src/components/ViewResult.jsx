@@ -217,7 +217,7 @@ export default function ViewResult(props) {
 			srsName: "EPSG:3857",
 			featureNS: "http://openstreemap.org",
 			featurePrefix: "incore",
-			featureTypes: ["611e80877c858b73bdff219e"],
+			featureTypes: ["612fb2251874c753f3acf12c"], //only contains dislocation
 			outputFormat: "application/json",
 		};
 		let featureRequest = new WFS().writeGetFeature(featureBody);
@@ -235,8 +235,9 @@ export default function ViewResult(props) {
 				new Heatmap({
 					title:"heatmap",
 					source: vectorSource,
-					blur: 10,
-					radius: 7,
+					blur: 5,
+					radius: 3,
+					opacity:0.8,
 					weight: function (feature) {
 						return feature.get("numprec");
 					},
