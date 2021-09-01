@@ -321,7 +321,7 @@ export function ViewFunctionalityResults(props) {
 													<TableCell>Heatmap</TableCell>
 													<TableCell colSpan={3}/>
 													<TableCell colSpan={2}>
-														<Link color="primary" onClick={() => {previewHeatmap();}}
+														<Link color="primary" onClick={() => {previewHeatmap(execution["id"]);}}
 															  className={execution["finalStatus"] === undefined ||
 															  execution["finalStatus"] === "FINISHED" ?
 																  classes.clickableLink : classes.clickableLinkDisabled}>

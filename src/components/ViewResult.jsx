@@ -208,8 +208,28 @@ export default function ViewResult(props) {
 		});
 	};
 
-	const handleHeatmapUpdate = async () => {
+	const handleHeatmapUpdate = async (layerDef) => {
 		const inputLayers = [];
+
+		// add tornado path and building damage layer
+		layerDef.map((layerDefinition) => {
+			const source = new TileWMS({
+				url: `${config.geoServerWMS}`,
+				params: {
+					LAYERS: layerDefinition["layerId"],
+					STYLES: layerDefinition["layerStyles"]
+				},
+				ratio: 1,
+				serverType: "geoserver"
+			});
+			let mapLayer = new TileLayer({
+				title: layerDefinition["title"],
+				source: source,
+				zIndex: 1,
+				opacity: layerDefinition["opacity"]
+			});
+			inputLayers.push(mapLayer);
+		});
 
 		// test heatmap layer
 		let vectorSource = new VectorSource();
@@ -225,7 +245,6 @@ export default function ViewResult(props) {
 			method: "POST",
 			body: new XMLSerializer().serializeToString(featureRequest),
 		});
-
 		if (featureResponse.status === 200){
 			let json = await featureResponse.json();
 			let features = new GeoJSON().readFeatures(json);
@@ -243,11 +262,12 @@ export default function ViewResult(props) {
 					},
 				})
 			);
-			layers["tilelayer"] = new GroupLayer({
-				title: "Preview",
-				layers: inputLayers,
-			});
 		}
+
+		layers["tilelayer"] = new GroupLayer({
+			title: "Preview",
+			layers: inputLayers,
+		});
 	};
 
 	// empty preview and close the model
@@ -511,9 +531,33 @@ export default function ViewResult(props) {
 		setMode("preview");
 	};
 
-	const previewHeatmap = async () => {
+	const previewHeatmap = async (executionItemId) => {
+
+		let executionItem = getExecution(executionItemId);
+
+		// map
+		let bldgMaxDamageStateId = executionItem["datasets"][datawolfConfig["datasets"]["bldgMaxDamageStateId"]];
+		let bldgMaxDamageStateINCOREId = await getOutputFileJson(bldgMaxDamageStateId);
+		let hazardId = executionItem["parameters"][datawolfConfig["parameters"]["hazardId"]];
+		let hazardMetadata = await getTornadoMetadata(hazardId);
+		let hazardDatasetId = hazardMetadata["datasetId"];
+		const layerDef = [
+			{
+				"layerId": hazardDatasetId,
+				"layerStyles": "incore:tornado",
+				"title": "Tornado",
+				"opacity": 0.3
+			},
+			{
+				"layerId": bldgMaxDamageStateINCOREId,
+				"layerStyles": "incore:building",
+				"title": "Building Inventory",
+				"opacity": 0.8
+			},
+		];
+
 		// TODO hard code this for now
-		await handleHeatmapUpdate();
+		await handleHeatmapUpdate(layerDef);
 
 		// disable other components of map
 		setRuntime(null);
