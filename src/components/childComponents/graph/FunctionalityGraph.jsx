@@ -2,7 +2,7 @@ import React from "react";
 import {Bar} from "react-chartjs-2";
 import "chartjs-plugin-zoom";
 import {Button} from "@material-ui/core";
-import {round} from "../utils/common";
+import {round} from "../../../utils/common";
 
 export function FunctionalityGraph(props) {
 	let {categorySummary} = props;

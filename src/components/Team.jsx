@@ -3,9 +3,9 @@ import {
 	Box,
 	Grid,
 } from "@material-ui/core";
-import UserInfo from "./UserInfo";
-import StepStatus from "./StepStatus";
-import PageBanner from "./Banner";
+import UserInfo from "./childComponents/UserInfo";
+import StepStatus from "./childComponents/step/StepStatus";
+import PageBanner from "./childComponents/navigation/Banner";
 import Layout from "../containers/Layout";
 import StepInfo from "./StepInfo";
 import fullHtml from "../public/steps/1-1.html";

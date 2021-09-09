@@ -3,53 +3,55 @@ import React, {useEffect, useRef, useState} from "react";
 import {Box, Dialog, DialogContent, Divider, Grid, IconButton} from "@material-ui/core";
 
 import Layout from "../containers/Layout";
-import PageBanner from "./Banner";
+import PageBanner from "./childComponents/navigation/Banner";
 import StepInfo from "./StepInfo";
-import StepStatus from "./StepStatus";
+import StepStatus from "./childComponents/step/StepStatus";
 import {IncoreInputLabel} from "./styledComponents/IncoreInputLabel";
 import {IncoreTextField} from "./styledComponents/IncoreInput";
 import {IncoreButton} from "./styledComponents/IncoreButton";
 
 import {createDataset} from "../utils/dataset";
-import {EntryTable} from "./EntryTable";
+import {EntryTable} from "./childComponents/table/EntryTable";
 
 import AddCircleOutlineIcon from "@material-ui/icons/AddCircleOutline";
 import LoadingOverlay from "react-loading-overlay";
 import fullHtml from "../public/steps/2-4.html";
 import CloseIcon from "@material-ui/icons/Close";
-import FileUploadDrop from "./FileUploadDrop";
+import FileUploadDrop from "./childComponents/form/FileUploadDrop";
 import {makeStyles} from "@material-ui/core/styles";
+import {inputDatasetTypes} from "../globals";
+import {IncoreMenuItem, IncoreSelectBox} from "./styledComponents/IncoreSelect";
 
 const useStyles = makeStyles({
-	title:{
-		fontSize:"20px",
+	title: {
+		fontSize: "20px",
 	},
-	divider:{
-		color:"red",
-		border:"solid 1px",
+	divider: {
+		color: "red",
+		border: "solid 1px",
 		width: "100%"
 	},
-	uploadSection:{
-		padding:"20px 0px 20px 0px",
+	uploadSection: {
+		padding: "20px 0px 20px 0px",
 	},
-	subUploadSection:{
-		marginTop:"20px",
-		marginBottom:"80px",
+	subUploadSection: {
+		marginTop: "20px",
+		marginBottom: "80px",
 	},
-	subTitleRow:{
-		height:"50px"
+	subTitleRow: {
+		height: "50px"
 	},
-	subTitle:{
-		display:"inline"
+	subTitle: {
+		display: "inline"
 	},
-	plusButton:{
-		display:"inline",
-		float:"right",
-		padding:0
+	plusButton: {
+		display: "inline",
+		float: "right",
+		padding: 0
 	},
-	subDivider:{
-		color:"#00619d",
-		border:"solid 1px",
+	subDivider: {
+		color: "#00619d",
+		border: "solid 1px",
 		width: "100%"
 	}
 });
@@ -57,28 +59,34 @@ const useStyles = makeStyles({
 export default function BuiltEnvironment(props) {
 	const classes = useStyles();
 
-	const {listDatasets, buildings, epfs, interdNetworks} = props;
+	const {listDatasets, buildings, epfs, interdNetworks, sectorShocks, cgeSams, cgeBbs, cgeIouts, cgeMiscs, cgeMischs,
+		cgeLandcaps, cgeEmploys, cgeIgtds, cgeTauffs, cgeJobcrs, cgeOutcrs, huas, blockGroups, valueLosses} = props;
 	const fileInputRef = useRef(null);
 	const [files, setFile] = useState([]);
 	const [title, setTitle] = useState("");
 	const [description, setDescription] = useState("");
-	const [dataType, setDataType] = useState("");
+	const [datasetType, setDatasetType] = useState("");
+	// use to display dataset type menus
+	// social ecnomic datasets are a collection of various dataset types
+	const [category, setCategory] = useState("buildings");  // building, EPF, interdependency network, socioeconomics input
 	const [disabled, setDisabled] = useState(true);
 	const [loading, setLoading] = useState(false);
 	const [uploadModalStatus, setUploadModalStatus] = useState(false);
 
 	// load uploaded dataset
 	useEffect(() => {
-		listDatasets(20, 0, "ergo:buildingInventoryVer6");
-		listDatasets(20, 0, "incore:epf");
-		listDatasets(20, 0, "incore:buildingInterdependencyDict");
+		Object.keys(inputDatasetTypes).map((key) => {
+			inputDatasetTypes[key].map((inputDatasetType) => {
+				listDatasets(inputDatasetType["num"], 0, inputDatasetType["type"]);
+			});
+		});
 	}, []);
 
 	// form check
 	useEffect(() => {
-		if (title !== "" && description !== "" && dataType !== "" && files.length > 0) setDisabled(false);
+		if (title !== "" && description !== "" && datasetType !== "" && files.length > 0) setDisabled(false);
 		else setDisabled(true);
-	}, [title, description, dataType, files]);
+	}, [title, description, datasetType, files]);
 
 	const onFileInputChange = (event) => {
 		const fileList = Array.from(event.target.files);
@@ -97,19 +105,23 @@ export default function BuiltEnvironment(props) {
 		setLoading(true);
 
 		let format = "shapefile";
-		if (dataType === "incore:buildingInterdependencyDict") format="json";
-		const datasetJson = await createDataset(title, description, dataType, files, format);
+		// determine format based on datasetTypes
+		Object.keys(inputDatasetTypes).map((key) => {
+			inputDatasetTypes[key].map((inputDatasetType) => {
+				if (inputDatasetType["type"] === datasetType) format=inputDatasetType["format"];
+			});
+		});
+
+		const datasetJson = await createDataset(title, description, datasetType, files, format);
 		if (datasetJson !== {}) {
 
 			// update table to show uploaded data
-			listDatasets(20, 0, "ergo:buildingInventoryVer6");
-			listDatasets(20, 0, "incore:epf");
-			listDatasets(20, 0, "incore:buildingInterdependencyDict");
+			listDatasets(20, 0, datasetType);
 
 			setFile([]);
 			setTitle("");
 			setDescription("");
-			setDataType("");
+			setDatasetType("");
 			setLoading(false);
 			setUploadModalStatus(false);
 		}
@@ -121,7 +133,7 @@ export default function BuiltEnvironment(props) {
 		setTitle("");
 		setDescription("");
 		setLoading(false);
-		setDataType("");
+		setDatasetType("");
 	};
 
 	const fieldNames = [
@@ -154,19 +166,22 @@ export default function BuiltEnvironment(props) {
 							>
 								<div>
 									<IncoreInputLabel className={classes.title}>Uploaded Data</IncoreInputLabel>
-									<Divider orientation="horizontal" className={classes.divider} flexItem />
+									<Divider orientation="horizontal" className={classes.divider} flexItem/>
 									<Box className={classes.uploadSection}>
 										{/*list of uploaded building inventory*/}
 										<Box className={classes.subUploadSection}>
 											<Box className={classes.subTitleRow}>
-												<IncoreInputLabel className={classes.subTitle}>Building Inventory</IncoreInputLabel>
+												<IncoreInputLabel className={classes.subTitle}>Building
+													Inventory</IncoreInputLabel>
 												<IconButton className={classes.plusButton} onClick={() => {
 													setUploadModalStatus(true);
-													setDataType("ergo:buildingInventoryVer6");
+													setDatasetType("ergo:buildingInventoryVer6");
+													setCategory("building");
 												}}>
 													<AddCircleOutlineIcon/>
 												</IconButton>
-												<Divider orientation="horizontal" className={classes.subDivider} flexItem />
+												<Divider orientation="horizontal" className={classes.subDivider}
+														 flexItem/>
 											</Box>
 											<Box className="entryTable">
 												<EntryTable fieldNames={fieldNames} fields={buildings}/>
@@ -175,14 +190,17 @@ export default function BuiltEnvironment(props) {
 										{/*list of uploaded EPF inventory*/}
 										<Box className={classes.subUploadSection}>
 											<Box className={classes.subTitleRow}>
-												<IncoreInputLabel className={classes.subTitle}>Electric Power Facility</IncoreInputLabel>
+												<IncoreInputLabel className={classes.subTitle}>Electric Power
+													Facility</IncoreInputLabel>
 												<IconButton className={classes.plusButton} onClick={() => {
 													setUploadModalStatus(true);
-													setDataType("incore:epf");
+													setDatasetType("incore:epf");
+													setCategory("electric power facility");
 												}}>
 													<AddCircleOutlineIcon/>
 												</IconButton>
-												<Divider orientation="horizontal" className={classes.subDivider} flexItem />
+												<Divider orientation="horizontal" className={classes.subDivider}
+														 flexItem/>
 											</Box>
 											<Box className="entryTable">
 												<EntryTable fieldNames={fieldNames} fields={epfs}/>
@@ -191,17 +209,45 @@ export default function BuiltEnvironment(props) {
 										{/*list of uploaded interdependency network*/}
 										<Box className={classes.subUploadSection}>
 											<Box className={classes.subTitleRow}>
-												<IncoreInputLabel className={classes.subTitle}>Interdependency Network</IncoreInputLabel>
+												<IncoreInputLabel className={classes.subTitle}>Interdependency
+													Network</IncoreInputLabel>
 												<IconButton className={classes.plusButton} onClick={() => {
 													setUploadModalStatus(true);
-													setDataType("incore:buildingInterdependencyDict");
+													setDatasetType("incore:buildingInterdependencyDict");
+													setCategory("interdependency network");
 												}}>
 													<AddCircleOutlineIcon/>
 												</IconButton>
-												<Divider orientation="horizontal" className={classes.subDivider} flexItem />
+												<Divider orientation="horizontal" className={classes.subDivider}
+														 flexItem/>
 											</Box>
 											<Box className="entryTable">
 												<EntryTable fieldNames={fieldNames} fields={interdNetworks}/>
+											</Box>
+										</Box>
+										{/*list of socioeconomics datasets for sector shock, cge and population dislocation*/}
+										<Box className={classes.subUploadSection}>
+											<Box className={classes.subTitleRow}>
+												<IncoreInputLabel className={classes.subTitle}>Socioeconomics
+													Datasets</IncoreInputLabel>
+												<IconButton className={classes.plusButton} onClick={() => {
+													setUploadModalStatus(true);
+													// don't set types here, set the types inside the modal
+													setDatasetType("");
+													setCategory("socioeconomics input");
+												}}>
+													<AddCircleOutlineIcon/>
+												</IconButton>
+												<Divider orientation="horizontal" className={classes.subDivider}
+														 flexItem/>
+											</Box>
+											<Box className="entryTable">
+												<EntryTable fieldNames={fieldNames} fields={
+													[...sectorShocks, ...cgeSams, ...cgeBbs, ...cgeIouts, ...cgeMiscs,
+														...cgeMischs, ...cgeLandcaps, ...cgeEmploys, ...cgeIgtds,
+														...cgeTauffs, ...cgeJobcrs, ...cgeOutcrs, ...huas,
+														...blockGroups, ...valueLosses]
+												}/>
 											</Box>
 										</Box>
 									</Box>
@@ -209,8 +255,8 @@ export default function BuiltEnvironment(props) {
 							</LoadingOverlay>
 						</Grid>
 						<Grid item xl={6} lg={6} md={6} sm={6} xs={12} className="gridItem">
-							<StepStatus />
-							<StepInfo fullHtml={fullHtml} />
+							<StepStatus/>
+							<StepInfo fullHtml={fullHtml}/>
 						</Grid>
 					</Grid>
 					{/*for individual analysis result preview*/}
@@ -222,7 +268,7 @@ export default function BuiltEnvironment(props) {
 							{/*Upload Form*/}
 							<>
 								<Box className="inputGroup">
-									<IncoreInputLabel>Select Data</IncoreInputLabel>
+									<IncoreInputLabel>Select {category} Data</IncoreInputLabel>
 									<FileUploadDrop onDrop={onDrop} onFileInputChange={onFileInputChange}
 										fileInput={fileInputRef}
 										files={files} onDeleteClick={onDeleteClick}/>
@@ -237,6 +283,31 @@ export default function BuiltEnvironment(props) {
 									<IncoreTextField value={description} variant="outlined"
 													 onChange={(e) => setDescription(e.target.value)}/>
 								</Box>
+								{/*only for socioeconomic data*/}
+								{category === "socioeconomics input" ?
+									<Box className="inputGroup">
+										<IncoreInputLabel>Socioeconomic Dataset Type</IncoreInputLabel>
+										<IncoreSelectBox labelId="label" id="select" variant="outlined"
+														 onChange={(e) => { setDatasetType(e.target.value); }}
+														 value={datasetType}>
+											{
+												Object.keys(inputDatasetTypes).map(key => {
+													return inputDatasetTypes[key].map((inputDatasetType) => {
+														return inputDatasetType["isSocioeconomics"] ?
+															<IncoreMenuItem value={inputDatasetType["type"]}
+																key={inputDatasetType["type"]}>
+																{inputDatasetType["description"]}</IncoreMenuItem>
+															:
+															null;
+
+													});
+												})
+											}
+										</IncoreSelectBox>
+									</Box>
+									:
+									null
+								}
 								<Box className="inputGroup">
 									<IncoreButton variant="contained" onClick={onSave}
 												  disabled={disabled}>Save</IncoreButton>

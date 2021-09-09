@@ -13,7 +13,7 @@ const PoweredBy = ({text}) => {
 				color: "DarkGrey", padding: "5px 4px 0 4px"}}>
 				{preText}
 			</span>
-			 <img src="../public/resilience-logo.png" alt="IN-CORE" style={{maxHeight: 30}}/>
+			 <img src="../../../public/resilience-logo.png" alt="IN-CORE" style={{maxHeight: 30}}/>
 		</div>
 	);
 };

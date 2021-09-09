@@ -13,7 +13,11 @@ const mapStateToProps = (state) => {
 		tornadoes: state.tornado.tornadoes,
 		buildings: state.dataset.buildings,
 		epfs: state.dataset.epfs,
-		interdNetworks: state.dataset.interdNetworks
+		interdNetworks: state.dataset.interdNetworks,
+		sectorShocks: state.dataset.sectorShocks,
+		huas: state.dataset.huas,
+		blockGroups: state.dataset.blockGroups,
+		valueLosses: state.dataset.valueLosses
 	};
 };
 

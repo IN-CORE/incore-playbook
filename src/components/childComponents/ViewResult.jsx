@@ -4,32 +4,32 @@ import {Box, Container, Dialog, DialogContent, Divider, Grid, IconButton, Typogr
 import SyncIcon from "@material-ui/icons/Sync";
 import FilterListIcon from "@material-ui/icons/FilterList";
 
-import {IncoreInputLabel} from "./styledComponents/IncoreInputLabel";
+import {IncoreInputLabel} from "../styledComponents/IncoreInputLabel";
 
-import datawolfConfig from "../datawolf.config";
+import datawolfConfig from "../../datawolf.config";
 
-import {getOutputFileJson} from "../utils/datawolf";
-import {getTornadoMetadata} from "../utils/hazard";
+import {getOutputFileJson} from "../../utils/datawolf";
+import {getTornadoMetadata} from "../../utils/hazard";
 
-import Map from "./Map";
-import {globals} from "../globals";
+import Map from "./map/Map";
+import {globals} from "../../globals";
 import {fromLonLat} from "ol/proj";
 import GroupLayer from "ol/layer/Group";
 import TileLayer from "ol/layer/Tile";
 import XYZ from "ol/source/XYZ";
 import OSM, {ATTRIBUTION as OSM_ATTRIBUTION} from "ol/source/OSM";
 import TileWMS from "ol/source/TileWMS";
-import config from "../app.config";
-import {ResultTable} from "./ResultTable";
+import config from "../../app.config";
+import {ResultTable} from "./table/ResultTable";
 
 import CloseIcon from "@material-ui/icons/Close";
-import {ResultSummaryTable} from "./ResultSummaryTable";
-import {StackedResult} from "./StackedResult";
-import {FunctionalityGraph} from "./FunctionalityGraph";
-import {ViewFunctionalityResults} from "./ViewFunctionalityResults";
-import {FunctionalityTable} from "./FunctionalityTable";
+import {ResultSummaryTable} from "./table/ResultSummaryTable";
+import {StackedResult} from "./graph/StackedResult";
+import {FunctionalityGraph} from "./graph/FunctionalityGraph";
+import {ViewFunctionalityResults} from "./table/ViewFunctionalityResults";
+import {FunctionalityTable} from "./table/FunctionalityTable";
 
-import {downloadDataset} from "../utils/dataset";
+import {downloadDataset} from "../../utils/dataset";
 
 const useStyles = makeStyles({
 	statTitle: {

@@ -2,9 +2,9 @@ import * as React from "react";
 import {Box, withStyles, Tabs, Tab, Grid} from "@material-ui/core";
 import Layout from "../containers/Layout";
 
-import ViewResult from "./ViewResult";
-import RunAnalysis from "./RunAnalysis";
-import PageBanner from "./Banner";
+import ViewResult from "./childComponents/ViewResult";
+import RunAnalysis from "./childComponents/RunAnalysis";
+import PageBanner from "./childComponents/navigation/Banner";
 
 
 const styles = {};
@@ -51,6 +51,10 @@ class AnticipatedPerformance extends React.Component {
 											 buildings={this.props.buildings}
 											 epfs={this.props.epfs}
 											 interdNetworks={this.props.interdNetworks}
+											 sectorShocks={this.props.sectorShocks}
+											 huas={this.props.huas}
+											 blockGroups={this.props.blockGroups}
+											 valueLosses={this.props.valueLosses}
 											 getExecutionList={this.props.getExecutionList}
 											 gotoViewResultTab={this.gotoViewResultTab}
 								/>

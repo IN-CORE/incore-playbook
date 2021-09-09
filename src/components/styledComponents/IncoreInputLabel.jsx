@@ -9,4 +9,5 @@ export const IncoreInputLabel = styled(InputLabel)({
 	lineHeight: "19px",
 	marginBottom:"11px",
 	width: "100%",
+	textTransform:"capitalize"
 });
