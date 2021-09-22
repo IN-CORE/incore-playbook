@@ -9,10 +9,17 @@ import CommunityHazards from "./containers/CommunityHazards";
 import BuiltEnvironment from "./containers/BuiltEnvironment";
 import Login from "./containers/Login";
 import {NotFound} from "./containers/NotFound";
+import CgeDescription from "./components/childComponents/step/CgeDescription";
 
 
 export default (
 	<Switch>
+		{/* TODO remove later*/}
+		<Route exact path="/cge-description" render={() => {
+			return (<CgeDescription cgeMetrics="totalHouseholdIncome"/>);
+			// return (<CgeDescription cgeMetrics="domesticSupply"/>);
+			// return (<CgeDescription cgeMetrics="employment"/>);
+		}}/>
 		<Route exact path="/" render={() => {
 			sessionStorage.setItem("menu", "0");
 			return (<Introduction menu={"0"}/>);
