@@ -4,94 +4,83 @@ import {
 	Table,
 	TableBody,
 	TableCell,
-	TableContainer,
-	TableHead,
 	TableRow,
 	Typography,
-	withStyles
 } from "@material-ui/core";
-import {ExpandLess, ExpandMore} from "@material-ui/icons";
 import {makeStyles} from "@material-ui/core/styles";
 
+import {cgeInfo} from "../../../app.messages";
+
 const useStyles = makeStyles({
-	thisStepTitle: {
+	cgeDescriptionTitle: {
 		cursor: "pointer",
 		color: "#00619D",
 		fontFamily: "Rubik, sans-serif",
 		fontSize: "12px",
 		fontWeight: "500",
-		margin:"12px auto"
+		margin: "12px auto"
 	},
-	thisStepAbout: {
+	cgeDescriptionAbout: {
 		color: "#69707F",
 		fontFamily: "Rubik, sans-serif",
 		fontSize: "12px",
 	},
-	tableRowHead:{
+	tableRowHead: {
 		color: "#69707F",
 		fontFamily: "Rubik, sans-serif",
-		fontSize:"12px",
-		fontWeight:"500",
-		textAlign:"center",
-		backgroundColor:"#EAEEFF",
-		border:"solid 2px #FFFFFF",
-		width:"30%"
+		fontSize: "12px",
+		fontWeight: "500",
+		textAlign: "center",
+		backgroundColor: "#EAEEFF",
+		border: "solid 2px #FFFFFF",
+		width: "30%"
 	},
-	tableRowCell:{
+	tableRowCell: {
 		color: "#69707F",
 		fontFamily: "Rubik, sans-serif",
-		fontSize:"12px",
-		textAlign:"center",
-		border:"solid 2px #FFFFFF",
-		width:"70%"
+		fontSize: "12px",
+		textAlign: "left",
+		border: "solid 2px #FFFFFF",
+		width: "70%"
 	}
 });
 
-export default function ModelTornado(props) {
-
+export default function CgeDescription(props) {
+	const {cgeMetrics, ...others} = props;
 	const classes = useStyles();
-
-	let textTitle = "What do we mean by “Total Household Income?";
-	let textContent = "Household income is the total income accruing to a household from land, labor, capital, and government transfers for the selected timeframe. In the context of a result like \"household income by the household group\" (i.e., HH1 to HH5), this would mean the combined total income for all households in that household group.";
-	let tableTitle = "Household (HH) Groups";
-	let rows = {
-		"HH1": "Less than $15k",
-		"HH2": "15k - 35k",
-		"HH3": "35k - 70k",
-		"HH4": "70k - 120k",
-		"HH5": "More than 120k"
-	};
+	let cgeDescription = cgeInfo[cgeMetrics];
 
 	let tableContent = (
 		<Table size="small" aria-label="cge description">
 			<TableBody>
-				{Object.keys(rows).map((key) => (
+				{Object.keys(cgeDescription["rows"]).map((key) => (
 					<TableRow key={key} class>
 						<TableCell component="th" scope="row" className={classes.tableRowHead}>
 							{key}
 						</TableCell>
-						<TableCell align="left" className={classes.tableRowCell}>{rows[key]}</TableCell>
+						<TableCell align="left"
+								   className={classes.tableRowCell}>{cgeDescription["rows"][key]}</TableCell>
 					</TableRow>
 				))}
 			</TableBody>
 		</Table>
 	);
 
-	return(
+	return (
 		<Box style={{"padding": "20px 40px"}}>
 			<Box style={{"marginBottom": "30px"}}>
-				<Typography className={classes.thisStepTitle} >
-					{textTitle}
+				<Typography className={classes.cgeDescriptionTitle}>
+					{cgeDescription["textTitle"]}
 				</Typography>
-				<Typography className={classes.thisStepAbout}>
-					{textContent}
+				<Typography className={classes.cgeDescriptionAbout}>
+					{cgeDescription["textContent"]}
 				</Typography>
 			</Box>
 			<Box style={{"marginBottom": "30px"}}>
-				<Typography className={classes.thisStepTitle} >
-					{tableTitle}
+				<Typography className={classes.cgeDescriptionTitle}>
+					{cgeDescription["tableTitle"]}
 				</Typography>
-				<Box className={classes.thisStepAbout}>
+				<Box className={classes.cgeDescriptionAbout}>
 					{tableContent}
 				</Box>
 			</Box>
