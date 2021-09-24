@@ -97,7 +97,7 @@ jobs:
           GITSHA1: ${{ github.sha }}
         with:
           registry: hub.ncsa.illinois.edu
-          name: incore/frontend
+          name: incore/playbook/frontend
           #username: ${{ secrets.HUB_USERNAME }}
           #password: ${{ secrets.HUB_PASSWORD }}
           tags: "${{ env.TAGS }}"
