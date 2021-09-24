@@ -54,7 +54,7 @@ export default function CgeDescription(props) {
 		<Table size="small" aria-label="cge description">
 			<TableBody>
 				{Object.keys(cgeDescription["rows"]).map((key) => (
-					<TableRow key={key} class>
+					<TableRow key={key}>
 						<TableCell component="th" scope="row" className={classes.tableRowHead}>
 							{key}
 						</TableCell>
