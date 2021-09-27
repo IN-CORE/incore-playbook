@@ -49,7 +49,8 @@ export async function getOutputFileJson(datasetId, outputFileName = null) {
 	}
 }
 
-export async function submitExecution(title, description, bldgId, substationId, poleId, interdNetworkId, hazardId,){
+export async function submitExecution(title, description, bldgId, substationId, poleId, interdNetworkId,
+									  bldgToSectorId, huaId, blockGroupId, valueLossId, hazardId,){
 	let incoreTokenDatasetId = await postDataset();
 	if (incoreTokenDatasetId === null) {
 		console.log("Fail to post incoretoken. Abort exeuction submission!");
@@ -90,6 +91,12 @@ export async function submitExecution(title, description, bldgId, substationId, 
 		requestBody["parameters"][datawolfParams["epfSubstationId"]] = substationId;
 		requestBody["parameters"][datawolfParams["buildingId"]] = bldgId;
 		requestBody["parameters"][datawolfParams["resultNameId"]] = "Joplin";
+
+		// for cge and pop
+		// requestBody["parameters"][datawolfParams[""]] = bldgToSectorId;
+		requestBody["parameters"][datawolfParams["housingUnitAllocationId"]] = huaId;
+		requestBody["parameters"][datawolfParams["blockGroupDataId"]] = blockGroupId;
+		requestBody["parameters"][datawolfParams["valueLossParamId"]] = valueLossId;
 
 		// token will expire
 		requestBody["datasets"][datawolfDatasets["incoreTokenId"]] = incoreTokenDatasetId;
