@@ -10,6 +10,8 @@ import BuiltEnvironment from "./containers/BuiltEnvironment";
 import Login from "./containers/Login";
 import {NotFound} from "./containers/NotFound";
 import CgeDescription from "./components/childComponents/step/CgeDescription";
+import {CgeResultsTable} from "./components/childComponents/table/CgeResultsTable";
+import {DislocationResultsTable} from "./components/childComponents/table/DislocationResultsTable";
 
 
 export default (
@@ -20,6 +22,20 @@ export default (
 			// return (<CgeDescription cgeMetrics="domesticSupply"/>);
 			// return (<CgeDescription cgeMetrics="employment"/>);
 		}}/>
+
+		<Route exact path="/cge-results" render={() => {
+			return ( <div>
+					<CgeResultsTable resultsJson={null}/>
+				<br/>
+					<DislocationResultsTable resultsJson={null} headers={["UNITS", "% of UNITS"]}
+																	 title={"Housing Unit Dislocation"}/>
+				<br/>
+				<DislocationResultsTable resultsJson={null} headers={["POPULATION", "% of POPULATION"]}
+																 title={"Population Dislocation"}/>
+
+			</div>);
+		}}/>
+
 		<Route exact path="/" render={() => {
 			sessionStorage.setItem("menu", "0");
 			return (<Introduction menu={"0"}/>);
