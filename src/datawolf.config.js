@@ -54,8 +54,8 @@ config["datasets"] = {
 	"mcsBldgFailureProbId":"6d9f9b7c-9de5-45ff-d6ce-ac7ce348d429",
 
 	// bldg func
-	"bldgFuncSummaryTableId":"3f100fce-10a9-454d-cdf7-428dad7d9df0",
-	"bldgFuncProbId":"3bbd7a45-6bb6-4ebe-d068-e6115c588a40",
+	"bldgFuncProbId":"3f100fce-10a9-454d-cdf7-428dad7d9df0",
+	"bldgFuncSummaryTableId":"3bbd7a45-6bb6-4ebe-d068-e6115c588a40",
 
 	// TODO
 	"stdout":"",
