@@ -26,7 +26,7 @@ const tableRowHead = {
 	fontSize: "12px",
 	fontWeight: "500",
 	textAlign: "center",
-	backgroundColor: "#EAEEFF",
+	backgroundColor: "rgba(234, 238, 255, 0.6)",
 	borderLeft: "solid 1px #FFFFFF",
 	borderRight: "solid 1px #FFFFFF",
 	borderTop: "solid 1px #FFFFFF",
@@ -49,7 +49,7 @@ const useStyles = makeStyles({
 	tableRowHead: tableRowHead,
 	tableRowHeadRight: {
 		...tableRowHead,
-		borderRight: "solid 1px #EAEEFF",
+		borderRight: "solid 1px rgba(234, 238, 255, 0.6)",
 	},
 	tableRowTotal: {
 		...tableRowHead,
@@ -144,7 +144,7 @@ export function DislocationResultsTable(props) {
 							<TableRow>
 								<TableCell className={classes.tableColumnHeadRed}> Dislocated </TableCell>
 								<TableCell className={classes.tableDataCellDislocated}>
-									{resultsJson.dislocated.number}
+									{resultsJson.dislocated.number.toLocaleString('en-US')}
 								</TableCell>
 								<TableCell className={classes.tableDataCellDislocated}>
 									{resultsJson.dislocated.percentage * 100}%
@@ -154,7 +154,7 @@ export function DislocationResultsTable(props) {
 							<TableRow>
 								<TableCell className={classes.tableColumnHeadGreen}> Not Dislocated </TableCell>
 								<TableCell className={classes.tableDataCell}>
-									{resultsJson.not_dislocated.number}
+									{resultsJson.not_dislocated.number.toLocaleString('en-US')}
 								</TableCell>
 								<TableCell className={classes.tableDataCell}>
 									{resultsJson.not_dislocated.percentage * 100}%
@@ -164,7 +164,7 @@ export function DislocationResultsTable(props) {
 							<TableRow>
 								<TableCell className={classes.tableRowTotal}> Total </TableCell>
 								<TableCell className={classes.tableDataCell}>
-									{resultsJson.total.number}
+									{resultsJson.total.number.toLocaleString('en-US')}
 								</TableCell>
 								<TableCell className={classes.tableDataCell}>
 								</TableCell>

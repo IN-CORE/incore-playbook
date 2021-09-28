@@ -12,6 +12,7 @@ import {NotFound} from "./containers/NotFound";
 import CgeDescription from "./components/childComponents/step/CgeDescription";
 import {CgeResultsTable} from "./components/childComponents/table/CgeResultsTable";
 import {DislocationResultsTable} from "./components/childComponents/table/DislocationResultsTable";
+import {HuaResultsTable} from "./components/childComponents/table/HuaResultsTable";
 
 
 export default (
@@ -23,6 +24,7 @@ export default (
 			// return (<CgeDescription cgeMetrics="employment"/>);
 		}}/>
 
+		{/*When deleting this, also delete the json initialization of props in each of the 3 components*/}
 		<Route exact path="/cge-results" render={() => {
 			return ( <div>
 					<CgeResultsTable resultsJson={null}/>
@@ -32,6 +34,8 @@ export default (
 				<br/>
 				<DislocationResultsTable resultsJson={null} headers={["POPULATION", "% of POPULATION"]}
 																 title={"Population Dislocation"}/>
+				<br/>
+				<HuaResultsTable resultsJson={null} />
 
 			</div>);
 		}}/>
