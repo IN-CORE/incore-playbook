@@ -120,7 +120,8 @@ function stableSort(array, comparator) {
 export function ViewFunctionalityResults(props) {
 
 	const {fieldNames, executions, previewBldgDmg, downloadBldgDmg, previewEpfDmg, downloadEpfDmg,
-		previewBldgFunc, downloadBldgFunc, previewInterd, previewBldgMCS, downloadBldgMCS, previewPopDisl} = props;
+		previewBldgFunc, downloadBldgFunc, previewInterd, previewBldgMCS, downloadBldgMCS, previewPopDisl,
+		previewCGE} = props;
 
 	const [expandId, setExpandId] = useState("");
 	const [collapseId, setCollapseId] = useState("");
@@ -332,7 +333,23 @@ export function ViewFunctionalityResults(props) {
 														</Link>
 													</TableCell>
 												</TableRow>
-											</> :
+												<TableRow className={classes.subBodyRow}>
+													<TableCell>CGE</TableCell>
+													<TableCell colSpan={3}/>
+													<TableCell colSpan={2}>
+														<Link color="primary" onClick={() => {previewCGE(execution["id"]);}}
+															  className={execution["finalStatus"] === undefined ||
+															  execution["finalStatus"] === "FINISHED" ?
+																  classes.clickableLink : classes.clickableLinkDisabled}>
+															View
+														</Link>
+														<Link color="primary" className={classes.clickableLinkDisabled}>
+															Download
+														</Link>
+													</TableCell>
+												</TableRow>
+											</>
+											:
 											null
 									}
 								</>

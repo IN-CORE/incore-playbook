@@ -61,9 +61,9 @@ config["datasets"] = {
 	"stdout":"a7595336-a834-4a23-a9a2-23484bf51128",
 
 	// cge
-	"cgeDomesticSupplyId":"",
-	"cgeHouseholdIncomeId":"",
-	"cgeEmploymentId":"",
+	"cgeDomesticSupplyId":"c38e28b9-2d5e-4d11-db69-1260857de354",
+	"cgeHouseholdIncomeId":"32035bf2-eb1f-42db-e17b-d06701128632",
+	"cgeEmploymentId":"5ea9be2d-486a-48fe-c43b-7f24c95687a4",
 
 	// popdislocation
 	"popdislHeatmapId":"8f4b896f-0425-4bb4-c56d-df6fcb097740",

@@ -30,6 +30,11 @@ import {ViewFunctionalityResults} from "./table/ViewFunctionalityResults";
 import {FunctionalityTable} from "./table/FunctionalityTable";
 
 import {downloadDataset} from "../../utils/dataset";
+import {DislocationResultsTable} from "./table/DislocationResultsTable";
+import {HuaResultsTable} from "./table/HuaResultsTable";
+import {CgeResultsTable} from "./table/CgeResultsTable";
+import CgeDescription from "./step/CgeDescription";
+import CGEBarChart from "./graph/CGEBarChart";
 
 const useStyles = makeStyles({
 	statTitle: {
@@ -461,6 +466,36 @@ export default function ViewResult(props) {
 		setMode("preview");
 	};
 
+	const previewCGE = async (executionItemId) => {
+
+		let executionItem = getExecution(executionItemId);
+
+		// cge by total household income
+		let cgeHouseholdIncomeId = executionItem["datasets"][datawolfConfig["datasets"]["cgeHouseholdIncomeId"]];
+		let cgeHouseholdIncome = await getOutputFileJson(cgeHouseholdIncomeId);
+		let cgeHouseholdIncomeContent = JSON.parse(cgeHouseholdIncome);
+
+		// dislocation group by
+		let cgeDomesticSupplyId = executionItem["datasets"][datawolfConfig["datasets"]["cgeDomesticSupplyId"]];
+		let cgeDomesticSupply = await getOutputFileJson(cgeDomesticSupplyId);
+		let cgeDomesticSupplyContent = JSON.parse(cgeDomesticSupply);
+
+		let cgeEmploymentId = executionItem["datasets"][datawolfConfig["datasets"]["cgeEmploymentId"]];
+		let cgeEmployment = await getOutputFileJson(cgeEmploymentId);
+		let cgeEmploymentContent = JSON.parse(cgeEmployment);
+
+		// for runtime table on the top
+		setRuntime(null);
+
+		// TODO uncomment above and replace this with real data
+		setBarChartFields(true);
+		setSummaryTableFields(cgeHouseholdIncomeContent);
+		setResultType("cge");
+
+		// open preview
+		setMode("preview");
+	};
+
 	const previewPopDisl = async (executionItemId) => {
 
 		let executionItem = getExecution(executionItemId);
@@ -492,22 +527,41 @@ export default function ViewResult(props) {
 			{
 				"layerId": popDislINCOREId,
 				"layerStyles": "incore:heatmap",
-				"title": "Heatmap",
+				"title": "Population Dislocation Heatmap",
 				"opacity": 0.8
 			}
 		];
-
-		// TODO hard code this for now
-		// await handleHeatmapUpdate(layerDef);
 		handleLayerUpdate(layerDef);
 
-		// disable other components of map
+		// // total dislocation
+		// let totalDislTableId = executionItem["datasets"][datawolfConfig["datasets"]["totalDislocationId"]];
+		// let totalDislTable = await getOutputFileJson(totalDislTableId);
+		// let totalDislTableIdContent = JSON.parse(totalDislTable);
+		//
+		// // dislocation group by
+		// let dislocationByRaceId = executionItem["datasets"][datawolfConfig["datasets"]["dislocationByRaceId"]];
+		// let dislocationByRace = await getOutputFileJson(dislocationByRaceId);
+		// let dislocationByRaceContent = JSON.parse(dislocationByRace);
+		//
+		// let dislocationByTenureId = executionItem["datasets"][datawolfConfig["datasets"]["dislocationByTenureId"]];
+		// let dislocationByTenure = await getOutputFileJson(dislocationByTenureId);
+		// let dislocationByTenureContent = JSON.parse(dislocationByTenure);
+		//
+		// let dislocationByIncomeId = executionItem["datasets"][datawolfConfig["datasets"]["dislocationByIncomeId"]];
+		// let dislocationByIncome = await getOutputFileJson(dislocationByIncomeId);
+		// let dislocationByIncomeContent = JSON.parse(dislocationByIncome);
+		//
+		// let dislocationByHousingTypeId = executionItem["datasets"][datawolfConfig["datasets"]["dislocationByHousingTypeId"]];
+		// let dislocationByHousingType = await getOutputFileJson(dislocationByHousingTypeId);
+		// let dislocationByHousingTypeIdContent = JSON.parse(dislocationByHousingType);
+
+		// for runtime table on the top
 		setRuntime(null);
-		setSummaryTableFields(null);
 		setBarChartFields(null);
 
-		// set preview type
-		setResultType("heatmap");
+		// TODO uncomment above and replace this with real data
+		setSummaryTableFields(true);
+		setResultType("popdisl");
 
 		// open preview
 		setMode("preview");
@@ -537,6 +591,7 @@ export default function ViewResult(props) {
 											  previewInterd={previewInterd}
 											  previewBldgMCS={previewBldgMCS} downloadBldgMCS={downloadBldgMCS}
 											  previewPopDisl={previewPopDisl}
+											  previewCGE={previewCGE}
 					/>
 				</Box>
 			</Box>
@@ -567,6 +622,9 @@ export default function ViewResult(props) {
 								} else if (resultType === "bldgFunc") {
 									return (<Typography className={classes.previewTitle}>Building Functionality with
 										Interdependency</Typography>);
+								} else if (resultType === "popdisl") {
+									return (<Typography className={classes.previewTitle}>Population Dislocation
+									</Typography>);
 								}
 							})()
 						}
@@ -596,10 +654,20 @@ export default function ViewResult(props) {
 													Anticipated Performance - Building Clusters</Typography>
 												<Box style={{marginTop: "38px"}}>
 													{
-														resultType === "bldgDmg" ?
-															<StackedResult categorySummary={barChartFields}/>
-															:
-															<FunctionalityGraph categorySummary={barChartFields}/>
+														(() => {
+															if (resultType === "bldgDmg"){
+																return (<StackedResult
+																	categorySummary={barChartFields}/>);
+															}
+															else if (resultType === "cge"){
+																return (<CGEBarChart data={summaryTableFields}
+																	title="total Household Income"
+																	yAxisLegend="Millions of $"/>);
+															}
+															else{
+																return <FunctionalityGraph categorySummary={barChartFields}/>;
+															}
+														})()
 													}
 
 												</Box>
@@ -634,10 +702,35 @@ export default function ViewResult(props) {
 							summaryTableFields ?
 								(<Box>
 									{
-										resultType === "bldgDmg" ?
-											<ResultTable fields={summaryTableFields}/>
-											:
-											<FunctionalityTable funcResults={summaryTableFields}/>
+										(() => {
+											if (resultType === "bldgDmg"){
+												return <ResultTable fields={summaryTableFields}/>;
+											}
+											else if (resultType === "popdisl"){
+												return (
+													<Box>
+														<DislocationResultsTable resultsJson={null}
+																				 headers={["UNITS", "% of UNITS"]}
+																				 title={"Housing Unit Dislocation"}/>
+														<DislocationResultsTable resultsJson={null}
+																				 headers={["POPULATION", "% of POPULATION"]}
+																				 title={"Population Dislocation"}/>
+														<HuaResultsTable resultsJson={null} />
+													</Box>
+												);
+											}
+											else if (resultType === "cge"){
+												return (
+													<Box>
+														<CgeResultsTable resultsJson={null}/>
+														<CgeDescription cgeMetrics="totalHouseholdIncome"/>
+													</Box>
+												);
+											}
+											else {
+												return <FunctionalityTable funcResults={summaryTableFields}/>;
+											}
+										})()
 									}
 								</Box>)
 								:
