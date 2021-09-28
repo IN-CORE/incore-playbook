@@ -1,4 +1,4 @@
-import {getHeader, getCurrUserInfo, getCurrUserEmail, getIncoreTokenFile} from "./common";
+import {getHeader, getCurrUserInfo, getCurrUserEmail, getIncoreTokenFile, getCurrUsername} from "./common";
 import datawolfConfig from "../datawolf.config";
 import appConfig from "../app.config";
 
@@ -73,7 +73,7 @@ export async function submitExecution(title, description, bldgId, substationId, 
 			"datasets": {}
 		};
 
-		requestBody["parameters"][datawolfParams["incoreUserNameId"]] = "";
+		requestBody["parameters"][datawolfParams["incoreUserNameId"]] = getCurrUsername();
 		requestBody["parameters"][datawolfParams["interdependencyId"]] = interdNetworkId;
 		requestBody["parameters"][datawolfParams["useUncertaintyId"]] = "";
 		requestBody["parameters"][datawolfParams["numCpuId"]] = 8;
@@ -84,8 +84,9 @@ export async function submitExecution(title, description, bldgId, substationId, 
 		requestBody["parameters"][datawolfParams["hazardId"]] = hazardId;
 		requestBody["parameters"][datawolfParams["damageIntervalKeysId"]] = "DS_0 DS_1 DS_2 DS_3";
 		requestBody["parameters"][datawolfParams["hazardTypeId"]] = "tornado";
-		requestBody["parameters"][datawolfParams["bldgMappingId"]] = "5d8942dfb9219c068ea795ea";
+		requestBody["parameters"][datawolfParams["bldgMappingId"]] = "5e8e3a21eaa8b80001f04f1c";
 		requestBody["parameters"][datawolfParams["epfMappingId"]] = "5d8a326fb9219c068ea798e7";
+		requestBody["parameters"][datawolfParams["archeTypeMappingId"]] = "5fca915fb34b193f7a44059b";
 		requestBody["parameters"][datawolfParams["bldgFragilityKeyId"]] = "";
 		requestBody["parameters"][datawolfParams["serviceUrlId"]] = appConfig["apiUrl"];
 		requestBody["parameters"][datawolfParams["epfSubstationId"]] = substationId;
@@ -94,6 +95,8 @@ export async function submitExecution(title, description, bldgId, substationId, 
 
 		// for cge and pop
 		// requestBody["parameters"][datawolfParams[""]] = bldgToSectorId;
+		requestBody["parameters"][datawolfParams["modelIterationsId"]] = "1";
+		requestBody["parameters"][datawolfParams["seedId"]] = "1111";
 		requestBody["parameters"][datawolfParams["housingUnitAllocationId"]] = huaId;
 		requestBody["parameters"][datawolfParams["blockGroupDataId"]] = blockGroupId;
 		requestBody["parameters"][datawolfParams["valueLossParamId"]] = valueLossId;

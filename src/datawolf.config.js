@@ -4,7 +4,7 @@ let config = {};
 
 config["workflowId"] = "25077ac9-d7d6-45c0-880b-cd08ed35d8d0";
 // TODO how to dynamically use the current user
-config["creatorId"] = "a36fcc6a-bb7f-43ce-8eca-509fcc09cde5";
+config["creatorId"] = "ce92336c-1ca4-4989-8d6f-33cd3155b5ef"; // creatorId
 
 config["parameters"] = {
 	"incoreUserNameId": "c91efb6f-1196-45fc-e950-2a889b5c3d7b",
@@ -22,7 +22,7 @@ config["parameters"] = {
 	"epfSubstationId":"410a3e9f-2e3d-4146-8e57-4fdf84dc645a", //5d92355bb9219c06ae7e386a
 	"epfMappingId":"6f5026f3-22be-46dd-a1c4-9576a0bbf293", //5d8a326fb9219c068ea798e7
 	"mcsSamplesId":"98601c47-bce1-4c8a-99b5-3387592a128a", // 500
-	"damageIntervalKeysId":"515b4c7ca-87e5-441d-fea2-ebdbcb77388d", //DS_0 DS_1 DS_2 DS_3
+	"damageIntervalKeysId":"1515b4c7ca-87e5-441d-fea2-ebdbcb77388d", //DS_0 DS_1 DS_2 DS_3
 	"interdependencyId":"107bff9c-a35f-432a-d4ae-e89b18e1cee2", //5dcf4a34b9219ca5e4118312
 	"resultNameId":"f37d073e-a43a-4c0d-e037-efcb7c53242c", //Joplin
 
@@ -58,7 +58,7 @@ config["datasets"] = {
 	"bldgFuncSummaryTableId":"3bbd7a45-6bb6-4ebe-d068-e6115c588a40",
 
 	// TODO
-	"stdout":"",
+	"stdout":"a7595336-a834-4a23-a9a2-23484bf51128",
 
 	// cge
 	"cgeDomesticSupplyId":"",
