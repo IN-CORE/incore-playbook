@@ -622,8 +622,11 @@ export default function ViewResult(props) {
 								} else if (resultType === "bldgFunc") {
 									return (<Typography className={classes.previewTitle}>Building Functionality with
 										Interdependency</Typography>);
+								} else if (resultType === "cge") {
+									return (<Typography className={classes.previewTitle}>CGE Results
+									</Typography>);
 								} else if (resultType === "popdisl") {
-									return (<Typography className={classes.previewTitle}>Population Dislocation
+									return (<Typography className={classes.previewTitle}>Population Dislocation Results
 									</Typography>);
 								}
 							})()

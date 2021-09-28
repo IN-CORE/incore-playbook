@@ -319,10 +319,10 @@ export function ViewFunctionalityResults(props) {
 													</TableCell>
 												</TableRow>
 												<TableRow className={classes.subBodyRow}>
-													<TableCell>Population Dislocation</TableCell>
+													<TableCell>CGE</TableCell>
 													<TableCell colSpan={3}/>
 													<TableCell colSpan={2}>
-														<Link color="primary" onClick={() => {previewPopDisl(execution["id"]);}}
+														<Link color="primary" onClick={() => {previewCGE(execution["id"]);}}
 															  className={execution["finalStatus"] === undefined ||
 															  execution["finalStatus"] === "FINISHED" ?
 																  classes.clickableLink : classes.clickableLinkDisabled}>
@@ -334,10 +334,10 @@ export function ViewFunctionalityResults(props) {
 													</TableCell>
 												</TableRow>
 												<TableRow className={classes.subBodyRow}>
-													<TableCell>CGE</TableCell>
+													<TableCell>Population Dislocation</TableCell>
 													<TableCell colSpan={3}/>
 													<TableCell colSpan={2}>
-														<Link color="primary" onClick={() => {previewCGE(execution["id"]);}}
+														<Link color="primary" onClick={() => {previewPopDisl(execution["id"]);}}
 															  className={execution["finalStatus"] === undefined ||
 															  execution["finalStatus"] === "FINISHED" ?
 																  classes.clickableLink : classes.clickableLinkDisabled}>
