@@ -1,0 +1,51 @@
+import {Box, Container, Dialog, DialogContent, IconButton, Typography} from "@material-ui/core";
+import CloseIcon from "@material-ui/icons/Close";
+import Map from "../map/Map";
+import {globals} from "../../../globals";
+import {fromLonLat} from "ol/proj";
+import {DislocationResultsTable} from "../table/DislocationResultsTable";
+import {HuaResultsTable} from "../table/HuaResultsTable";
+import React from "react";
+
+export default function PopDislocation(props){
+	let {title, previewOn, handlePreviewClose, layers, map, setMap} = props;
+
+	return (
+		<Dialog open={previewOn} onClose={handlePreviewClose} maxWidth="lg" fullWidth scroll="paper">
+			<DialogContent className="previewModal">
+				<IconButton aria-label="Close" onClick={handlePreviewClose} style={{float: "right"}}>
+					<CloseIcon fontSize="small"/>
+				</IconButton>
+
+				{/*title*/}
+				<Typography className="previewTitle">{title}</Typography>
+
+				{/*for map*/}
+				<Container className="mapContainer" isableGutters>
+					<Map
+						className="fillContainer"
+						zoom={12}
+						minZoom={5}
+						maxZoom={15}
+						extent={globals.JOPLIN_MAP_BOUNDS}
+						center={fromLonLat(globals.JOPLIN_MAP_CENTER)}
+						layers={Object.values(layers)}
+						layerSwitcherOptions={{}}
+						updateMap={(map) => { setMap(map); }}
+					/>
+				</Container>
+
+				{/*for table*/}
+				<Box>
+					<DislocationResultsTable resultsJson={null}
+												 headers={["UNITS", "% of UNITS"]}
+												 title={"Housing Unit Dislocation"}/>
+					<DislocationResultsTable resultsJson={null}
+												 headers={["POPULATION", "% of POPULATION"]}
+												 title={"Population Dislocation"}/>
+					<HuaResultsTable resultsJson={null} />
+				</Box>
+			</DialogContent>
+		</Dialog>
+	);
+}
