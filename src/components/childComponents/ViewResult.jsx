@@ -85,7 +85,7 @@ const layers = {
 				visible: false,
 				title: "OSM",
 				source: new OSM()
-			})
+			}),
 		]
 	}),
 	tilelayer: new GroupLayer({
@@ -265,7 +265,7 @@ export default function ViewResult(props) {
 		// open preview
 		setMode("preview");
 	};
-	const downloadBldgDmg = async (executionItemId) =>{
+	const downloadBldgDmg = async (executionItemId) => {
 		let executionItem = getExecution(executionItemId);
 		let bldgMaxDamageStateId = executionItem["datasets"][datawolfConfig["datasets"]["bldgMaxDamageStateId"]];
 		let bldgMaxDamageStateINCOREId = await getOutputFileJson(bldgMaxDamageStateId);
@@ -317,14 +317,14 @@ export default function ViewResult(props) {
 		// open preview
 		setMode("preview");
 	};
-	const downloadBldgFunc = async (executionItemId) =>{
+	const downloadBldgFunc = async (executionItemId) => {
 		let executionItem = getExecution(executionItemId);
 		let bldgFuncProbId = executionItem["datasets"][datawolfConfig["datasets"]["bldgFuncProbId"]];
 		let bldgFuncProbINCOREId = await getOutputFileJson(bldgFuncProbId);
 		await downloadDataset(bldgFuncProbINCOREId, "bldg-func");
 	};
 
-	const previewBldgMCS = async (executionItemId) =>{
+	const previewBldgMCS = async (executionItemId) => {
 		const executionItem = await getExecution(executionItemId);
 
 		// map
@@ -363,7 +363,7 @@ export default function ViewResult(props) {
 		// open preview
 		setMode("preview");
 	};
-	const downloadBldgMCS = async (executionItemId) =>{
+	const downloadBldgMCS = async (executionItemId) => {
 		let executionItem = getExecution(executionItemId);
 		let mcsBldgFailureProbId = executionItem["datasets"][datawolfConfig["datasets"]["mcsBldgFailureProbId"]];
 		let mcsBldgFailureProbINCOREId = await getOutputFileJson(mcsBldgFailureProbId);
@@ -374,15 +374,13 @@ export default function ViewResult(props) {
 		let executionItem = getExecution(executionItemId);
 		let epfMaxDmgStateId;
 
-		if (type === "pole"){
+		if (type === "pole") {
 			epfMaxDmgStateId = executionItem["datasets"][datawolfConfig["datasets"]["epfPoleMaxDmgStateId"]];
 			setResultType("epfPoleDmg");
-		}
-		else if (type === "substation"){
+		} else if (type === "substation") {
 			epfMaxDmgStateId = executionItem["datasets"][datawolfConfig["datasets"]["epfSubstationMaxDmgStateId"]];
 			setResultType("epfSubstationDmg");
-		}
-		else{
+		} else {
 			console.log("unmatching EPF type", executionItemId);
 		}
 
@@ -414,18 +412,16 @@ export default function ViewResult(props) {
 		// open preview
 		setMode("preview");
 	};
-	const downloadEpfDmg= async (executionItemId, type) =>{
+	const downloadEpfDmg = async (executionItemId, type) => {
 		let executionItem = getExecution(executionItemId);
 		let epfMaxDmgStateId;
-		if (type === "pole"){
+		if (type === "pole") {
 			epfMaxDmgStateId = executionItem["datasets"][datawolfConfig["datasets"]["epfPoleMaxDmgStateId"]];
 			setResultType("epfPoleDmg");
-		}
-		else if (type === "substation"){
+		} else if (type === "substation") {
 			epfMaxDmgStateId = executionItem["datasets"][datawolfConfig["datasets"]["epfSubstationMaxDmgStateId"]];
 			setResultType("epfSubstationDmg");
-		}
-		else{
+		} else {
 			console.log("unmatching EPF type", executionItemId);
 		}
 		let epfMaxDmgStateINCOREId = await getOutputFileJson(epfMaxDmgStateId);
@@ -465,10 +461,58 @@ export default function ViewResult(props) {
 		setMode("preview");
 	};
 
+	const previewHeatmap = async (executionItemId) => {
+
+		let executionItem = getExecution(executionItemId);
+
+		// map
+		let bldgMaxDamageStateId = executionItem["datasets"][datawolfConfig["datasets"]["bldgMaxDamageStateId"]];
+		let bldgMaxDamageStateINCOREId = await getOutputFileJson(bldgMaxDamageStateId);
+		let hazardId = executionItem["parameters"][datawolfConfig["parameters"]["hazardId"]];
+		let hazardMetadata = await getTornadoMetadata(hazardId);
+		let hazardDatasetId = hazardMetadata["datasetId"];
+		const layerDef = [
+			{
+				"layerId": hazardDatasetId,
+				"layerStyles": "incore:tornado",
+				"title": "Tornado",
+				"opacity": 0.3
+			},
+			{
+				"layerId": bldgMaxDamageStateINCOREId,
+				"layerStyles": "incore:building",
+				"title": "Building Inventory",
+				"opacity": 0.8
+			},
+			{
+				// TODO remove hard coded layer;
+				"layerId": "612fb2251874c753f3acf12c",
+				"layerStyles": "incore:heatmap",
+				"title": "Heatmap",
+				"opacity": 0.8
+			}
+		];
+
+		// TODO hard code this for now
+		// await handleHeatmapUpdate(layerDef);
+		handleLayerUpdate(layerDef);
+
+		// disable other components of map
+		setRuntime(null);
+		setSummaryTableFields(null);
+		setBarChartFields(null);
+
+		// set preview type
+		setResultType("heatmap");
+
+		// open preview
+		setMode("preview");
+	};
+
 	return (
 		<div role="tabpanel" hidden={value !== index} id={`simple-tabpanel-${index}`}
-		 aria-labelledby={`simple-tab-${index}`}
-		 {...other}
+			 aria-labelledby={`simple-tab-${index}`}
+			 {...other}
 		>
 			{/*for analysis list*/}
 			<Box>
@@ -476,18 +520,19 @@ export default function ViewResult(props) {
 					<IncoreInputLabel>{`Completed Analysis (${numCompleted})`}</IncoreInputLabel>
 					<Box style={{float: "right"}}>
 						<IconButton aria-label="sync" onClick={getExecutionList}
-							color="secondary"><SyncIcon/></IconButton>
+									color="secondary"><SyncIcon/></IconButton>
 						<IconButton aria-label="filter"><FilterListIcon/></IconButton>
 					</Box>
 				</Box>
 				<Box>
 					<ViewFunctionalityResults fieldNames={fieldNames}
-										  executions={executionEntries}
-										  previewBldgDmg={previewBldgDmg} downloadBldgDmg={downloadBldgDmg}
-										  previewEpfDmg={previewEpfDmg} downloadEpfDmg={downloadEpfDmg}
-										  previewBldgFunc={previewBldgFunc} downloadBldgFunc={downloadBldgFunc}
-										  previewInterd={previewInterd}
-										  previewBldgMCS={previewBldgMCS} downloadBldgMCS={downloadBldgMCS}
+											  executions={executionEntries}
+											  previewBldgDmg={previewBldgDmg} downloadBldgDmg={downloadBldgDmg}
+											  previewEpfDmg={previewEpfDmg} downloadEpfDmg={downloadEpfDmg}
+											  previewBldgFunc={previewBldgFunc} downloadBldgFunc={downloadBldgFunc}
+											  previewInterd={previewInterd}
+											  previewBldgMCS={previewBldgMCS} downloadBldgMCS={downloadBldgMCS}
+											  previewHeatmap={previewHeatmap}
 					/>
 				</Box>
 			</Box>
@@ -503,24 +548,23 @@ export default function ViewResult(props) {
 						{
 							(() => {
 								if (resultType === "interD") {
-									return <Typography className={classes.previewTitle}>Interdependent Network of Building and Electric Power Facility</Typography>;
-								}
-								else if (resultType === "bldgDmg") {
+									return <Typography className={classes.previewTitle}>Interdependent Network of
+										Building and Electric Power Facility</Typography>;
+								} else if (resultType === "bldgDmg") {
 									return <Typography className={classes.previewTitle}>Building Damage</Typography>;
-								}
-								else if(resultType === "epfPoleDmg") {
+								} else if (resultType === "epfPoleDmg") {
 									return <Typography className={classes.previewTitle}>EPF Pole Damage</Typography>;
+								} else if (resultType === "epfSubstationDmg") {
+									return <Typography className={classes.previewTitle}>EPF Substation
+										Damage</Typography>;
+								} else if (resultType === "bldgMCS") {
+									return <Typography className={classes.previewTitle}>Building Functionality without
+										Interdependency</Typography>;
+								} else if (resultType === "bldgFunc") {
+									return <Typography className={classes.previewTitle}>Building Functionality with
+										Interdependency</Typography>;
 								}
-								else if(resultType === "epfSubstationDmg") {
-									return <Typography className={classes.previewTitle}>EPF Substation Damage</Typography>;
-								}
-								else if(resultType === "bldgMCS") {
-									return <Typography className={classes.previewTitle}>Building Functionality without Interdependency</Typography>;
-								}
-								else if(resultType === "bldgFunc") {
-									return <Typography className={classes.previewTitle}>Building Functionality with Interdependency</Typography>;
-								}
-							}) ()
+							})()
 						}
 						{/*for chart*/}
 						<Box className={classes.chartContainer}>
@@ -528,24 +572,24 @@ export default function ViewResult(props) {
 								{
 									runtime ?
 										(<>
-											<Grid item>
-												<Typography className={classes.previewSubTitle}>
+												<Grid item>
+													<Typography className={classes.previewSubTitle}>
 														Analysis Result View</Typography>
-												<ResultSummaryTable runtime={runtime}/>
-											</Grid>
-											<Divider orientation="vertical" flexItem/>
-										</>
-										):
+													<ResultSummaryTable runtime={runtime}/>
+												</Grid>
+												<Divider orientation="vertical" flexItem/>
+											</>
+										) :
 										null
 								}
 
 								{/*barchart*/}
 								{
-									barChartFields?
+									barChartFields ?
 										(
 											<Grid item style={{minWidth: "804px"}}>
 												<Typography className={classes.previewSubTitle}>
-												Anticipated Performance - Building Clusters</Typography>
+													Anticipated Performance - Building Clusters</Typography>
 												<Box style={{marginTop: "38px"}}>
 													{
 														resultType === "bldgDmg" ?
@@ -568,7 +612,7 @@ export default function ViewResult(props) {
 						{/*for map*/}
 						<Container className={((runtime && barChartFields) || summaryTableFields) ?
 							classes.mapContainer : classes.mapContainerFull}
-							   disableGutters>
+								   disableGutters>
 							<Map
 								className="fillContainer"
 								zoom={12}
