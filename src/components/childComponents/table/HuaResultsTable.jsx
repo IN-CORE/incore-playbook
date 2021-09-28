@@ -79,6 +79,12 @@ const useStyles = makeStyles({
 		textAlign: "center",
 		border: "solid 1px rgba(46,91,255,0.08)"
 	},
+	tableDataCellRed: {
+		width: "100px",
+		textAlign: "center",
+		border: "solid 1px rgba(46,91,255,0.08)",
+		backgroundColor: "#FEEFF1"
+	},
 	title: {
 		height: "19px",
 		width: "460px",
@@ -289,7 +295,7 @@ export function HuaResultsTable(props) {
 					className={(idx === resultsJson.length - 1) ?
 					classes.tableColumnHeadTotal : classes.tableColumnHeadCharacteristics} key={"1_" + idx.toString()}>
 				{e.housing_unit_characteristics} </TableCell>
-					<TableCell className={classes.tableDataCell} key={"2_" + idx.toString()}>
+					<TableCell className={classes.tableDataCellRed} key={"2_" + idx.toString()}>
 						{e.housing_unit_dislocation.toLocaleString('en-US')}
 					</TableCell>
 					<TableCell className={classes.tableDataCell} key={"3_" + idx.toString()} >
