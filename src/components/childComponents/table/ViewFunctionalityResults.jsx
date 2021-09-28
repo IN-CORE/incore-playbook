@@ -120,7 +120,7 @@ function stableSort(array, comparator) {
 export function ViewFunctionalityResults(props) {
 
 	const {fieldNames, executions, previewBldgDmg, downloadBldgDmg, previewEpfDmg, downloadEpfDmg,
-		previewBldgFunc, downloadBldgFunc, previewInterd, previewBldgMCS, downloadBldgMCS, previewHeatmap} = props;
+		previewBldgFunc, downloadBldgFunc, previewInterd, previewBldgMCS, downloadBldgMCS, previewPopDisl} = props;
 
 	const [expandId, setExpandId] = useState("");
 	const [collapseId, setCollapseId] = useState("");
@@ -318,10 +318,10 @@ export function ViewFunctionalityResults(props) {
 													</TableCell>
 												</TableRow>
 												<TableRow className={classes.subBodyRow}>
-													<TableCell>Heatmap</TableCell>
+													<TableCell>Population Dislocation</TableCell>
 													<TableCell colSpan={3}/>
 													<TableCell colSpan={2}>
-														<Link color="primary" onClick={() => {previewHeatmap(execution["id"]);}}
+														<Link color="primary" onClick={() => {previewPopDisl(execution["id"]);}}
 															  className={execution["finalStatus"] === undefined ||
 															  execution["finalStatus"] === "FINISHED" ?
 																  classes.clickableLink : classes.clickableLinkDisabled}>

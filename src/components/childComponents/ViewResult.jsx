@@ -461,16 +461,21 @@ export default function ViewResult(props) {
 		setMode("preview");
 	};
 
-	const previewHeatmap = async (executionItemId) => {
+	const previewPopDisl = async (executionItemId) => {
 
 		let executionItem = getExecution(executionItemId);
 
 		// map
 		let bldgMaxDamageStateId = executionItem["datasets"][datawolfConfig["datasets"]["bldgMaxDamageStateId"]];
 		let bldgMaxDamageStateINCOREId = await getOutputFileJson(bldgMaxDamageStateId);
+
+		let popDislId = executionItem["datasets"][datawolfConfig["datasets"]["popdislHeatmapId"]];
+		let popDislINCOREId = await getOutputFileJson(popDislId);
+
 		let hazardId = executionItem["parameters"][datawolfConfig["parameters"]["hazardId"]];
 		let hazardMetadata = await getTornadoMetadata(hazardId);
 		let hazardDatasetId = hazardMetadata["datasetId"];
+
 		const layerDef = [
 			{
 				"layerId": hazardDatasetId,
@@ -485,8 +490,7 @@ export default function ViewResult(props) {
 				"opacity": 0.8
 			},
 			{
-				// TODO remove hard coded layer;
-				"layerId": "612fb2251874c753f3acf12c",
+				"layerId": popDislINCOREId,
 				"layerStyles": "incore:heatmap",
 				"title": "Heatmap",
 				"opacity": 0.8
@@ -520,7 +524,7 @@ export default function ViewResult(props) {
 					<IncoreInputLabel>{`Completed Analysis (${numCompleted})`}</IncoreInputLabel>
 					<Box style={{float: "right"}}>
 						<IconButton aria-label="sync" onClick={getExecutionList}
-									color="secondary"><SyncIcon/></IconButton>
+							color="secondary"><SyncIcon/></IconButton>
 						<IconButton aria-label="filter"><FilterListIcon/></IconButton>
 					</Box>
 				</Box>
@@ -532,7 +536,7 @@ export default function ViewResult(props) {
 											  previewBldgFunc={previewBldgFunc} downloadBldgFunc={downloadBldgFunc}
 											  previewInterd={previewInterd}
 											  previewBldgMCS={previewBldgMCS} downloadBldgMCS={downloadBldgMCS}
-											  previewHeatmap={previewHeatmap}
+											  previewPopDisl={previewPopDisl}
 					/>
 				</Box>
 			</Box>
@@ -548,21 +552,21 @@ export default function ViewResult(props) {
 						{
 							(() => {
 								if (resultType === "interD") {
-									return <Typography className={classes.previewTitle}>Interdependent Network of
-										Building and Electric Power Facility</Typography>;
+									return (<Typography className={classes.previewTitle}>Interdependent Network of
+										Building and Electric Power Facility</Typography>);
 								} else if (resultType === "bldgDmg") {
 									return <Typography className={classes.previewTitle}>Building Damage</Typography>;
 								} else if (resultType === "epfPoleDmg") {
 									return <Typography className={classes.previewTitle}>EPF Pole Damage</Typography>;
 								} else if (resultType === "epfSubstationDmg") {
-									return <Typography className={classes.previewTitle}>EPF Substation
-										Damage</Typography>;
+									return (<Typography className={classes.previewTitle}>EPF Substation
+										Damage</Typography>);
 								} else if (resultType === "bldgMCS") {
-									return <Typography className={classes.previewTitle}>Building Functionality without
-										Interdependency</Typography>;
+									return (<Typography className={classes.previewTitle}>Building Functionality without
+										Interdependency</Typography>);
 								} else if (resultType === "bldgFunc") {
-									return <Typography className={classes.previewTitle}>Building Functionality with
-										Interdependency</Typography>;
+									return (<Typography className={classes.previewTitle}>Building Functionality with
+										Interdependency</Typography>);
 								}
 							})()
 						}
@@ -572,13 +576,13 @@ export default function ViewResult(props) {
 								{
 									runtime ?
 										(<>
-												<Grid item>
-													<Typography className={classes.previewSubTitle}>
+											<Grid item>
+												<Typography className={classes.previewSubTitle}>
 														Analysis Result View</Typography>
-													<ResultSummaryTable runtime={runtime}/>
-												</Grid>
-												<Divider orientation="vertical" flexItem/>
-											</>
+												<ResultSummaryTable runtime={runtime}/>
+											</Grid>
+											<Divider orientation="vertical" flexItem/>
+										</>
 										) :
 										null
 								}
