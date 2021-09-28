@@ -117,7 +117,7 @@ function stableSort(array, comparator) {
 	return stabilizedThis.map((el) => el[0]);
 }
 
-export function ViewFunctionalityResults(props) {
+export function ViewResultEntryTable(props) {
 
 	const {fieldNames, executions, previewBldgDmg, downloadBldgDmg, previewEpfDmg, downloadEpfDmg,
 		previewBldgFunc, downloadBldgFunc, previewInterd, previewBldgMCS, downloadBldgMCS, previewPopDisl,

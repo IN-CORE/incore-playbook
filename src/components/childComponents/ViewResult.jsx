@@ -26,7 +26,7 @@ import CloseIcon from "@material-ui/icons/Close";
 import {ResultSummaryTable} from "./table/ResultSummaryTable";
 import {StackedResult} from "./graph/StackedResult";
 import {FunctionalityGraph} from "./graph/FunctionalityGraph";
-import {ViewFunctionalityResults} from "./table/ViewFunctionalityResults";
+import {ViewResultEntryTable} from "./table/ViewResultEntryTable";
 import {FunctionalityTable} from "./table/FunctionalityTable";
 
 import {downloadDataset} from "../../utils/dataset";
@@ -115,11 +115,12 @@ export default function ViewResult(props) {
 	const [numCompleted, setNumCompleted] = useState(0);
 	const [executionEntries, setExecutionEntries] = useState([]);
 	const [resultType, setResultType] = useState("bldgDmg"); // bldgFunc, bldgDmg, epfDmg, bldgMCS, interD
-	const [summaryTableFields, setSummaryTableFields] = useState({"by_cluster": [], "by_category": []});
+	const [runtime, setRuntime] = useState("");
+	const [summaryTableFields, setSummaryTableFields] = useState({});
 	const [barChartFields, setBarChartFields] = useState([]);
 	const [map, setMap] = useState();
 	const [mode, setMode] = useState("list"); // list vs preview
-	const [runtime, setRuntime] = useState("");
+
 
 	// extract a sinle status from mutliple step status`
 	const extractStatus = (executionItem) => {
@@ -583,15 +584,15 @@ export default function ViewResult(props) {
 					</Box>
 				</Box>
 				<Box>
-					<ViewFunctionalityResults fieldNames={fieldNames}
-											  executions={executionEntries}
-											  previewBldgDmg={previewBldgDmg} downloadBldgDmg={downloadBldgDmg}
-											  previewEpfDmg={previewEpfDmg} downloadEpfDmg={downloadEpfDmg}
-											  previewBldgFunc={previewBldgFunc} downloadBldgFunc={downloadBldgFunc}
-											  previewInterd={previewInterd}
-											  previewBldgMCS={previewBldgMCS} downloadBldgMCS={downloadBldgMCS}
-											  previewPopDisl={previewPopDisl}
-											  previewCGE={previewCGE}
+					<ViewResultEntryTable fieldNames={fieldNames}
+										  executions={executionEntries}
+										  previewBldgDmg={previewBldgDmg} downloadBldgDmg={downloadBldgDmg}
+										  previewEpfDmg={previewEpfDmg} downloadEpfDmg={downloadEpfDmg}
+										  previewBldgFunc={previewBldgFunc} downloadBldgFunc={downloadBldgFunc}
+										  previewInterd={previewInterd}
+										  previewBldgMCS={previewBldgMCS} downloadBldgMCS={downloadBldgMCS}
+										  previewPopDisl={previewPopDisl}
+										  previewCGE={previewCGE}
 					/>
 				</Box>
 			</Box>
