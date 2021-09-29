@@ -80,7 +80,7 @@ export default function ViewResult(props) {
 	// states
 	const [numCompleted, setNumCompleted] = useState(0);
 	const [executionEntries, setExecutionEntries] = useState([]);
-	const [resultType, setResultType] = useState("bldgDmg"); // bldgFunc, bldgDmg, epfDmg, bldgMCS, interD
+	const [resultType, setResultType] = useState(""); // bldgFunc, bldgDmg, epfDmg, bldgMCS, interD
 	const [runtime, setRuntime] = useState("");
 	const [tables, setTables] = useState({});
 	const [barCharts, setBarCharts] = useState([]);
@@ -178,6 +178,7 @@ export default function ViewResult(props) {
 	// close the model
 	const handlePreviewClose = () => {
 		setPreviewOn(false);
+		setResultType("");
 		setMap();
 	};
 
@@ -796,6 +797,9 @@ export default function ViewResult(props) {
 							setMap={setMap}
 							tables={tables}
 						/>);
+					}
+					else{
+						return <></>
 					}
 				})()
 			}
