@@ -10,7 +10,7 @@ import {ResultTable} from "../table/ResultTable";
 
 export default function BldgDamage(props) {
 
-	let {title, previewOn, handlePreviewClose, runtime, barCharts, layers, tables, map, setMap} = props;
+	let {title, previewOn, handlePreviewClose, runtime, barCharts, layers, tables, setMap} = props;
 
 	return (
 		<Dialog open={previewOn} onClose={handlePreviewClose} maxWidth="lg" fullWidth scroll="paper">

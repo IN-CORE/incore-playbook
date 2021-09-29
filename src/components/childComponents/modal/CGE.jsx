@@ -4,6 +4,7 @@ import CGEBarChart from "../graph/CGEBarChart";
 import {CgeResultsTable} from "../table/CgeResultsTable";
 import CgeDescription from "../step/CgeDescription";
 import React, {useState} from "react";
+import {IncoreMenuItem, IncoreSelectBox} from "../../styledComponents/IncoreSelect";
 
 export default function CGE(props) {
 	let {
@@ -14,7 +15,7 @@ export default function CGE(props) {
 	} = props;
 
 	//"totalHouseholdIncome", "domesticSupply", "employment"
-	const [cgeDescription, setCgeDescription] = useState("totalHouseholdIncome");
+	const [cgeType, setCgeType] = useState("totalHouseholdIncome");
 
 	return (
 		<Dialog open={previewOn} onClose={handlePreviewClose} maxWidth="lg" fullWidth scroll="paper">
@@ -26,24 +27,70 @@ export default function CGE(props) {
 				{/*title*/}
 				<Typography className="previewTitle">{title}</Typography>
 
-				{/*barchart*/}
-				<Grid item style={{minWidth: "804px"}}>
-					<Typography className="previewSubTitle">
-						Anticipated Performance - Building Clusters</Typography>
-					<Box style={{marginTop: "38px"}}>
-						<CGEBarChart data={tables["totalHouseholdIncome"]} title="total Household Income"/>
-						<CGEBarChart data={tables["domesticSupply"]} title="total Household Income"/>
-						<CGEBarChart data={tables["employment"]} title="total Household Income"/>
-					</Box>
+				<Grid container spacing={3} justify="left">
+					<Grid item xs={12} sm={12} md={8} lg={8} xl={8}>
+						<Box style={{padding:"50px 25px"}}>
+							{/*dropdown*/}
+							<IncoreSelectBox labelId="label" id="select" variant="outlined"
+											 onChange={(e)=>{ setCgeType(e.target.value); }}
+											 value={cgeType}>
+								<IncoreMenuItem value="totalHouseholdIncome" key="totalHouseholdIncome">
+									Total Household Income
+								</IncoreMenuItem>
+								<IncoreMenuItem value="domesticSupply" key="domesticSupply">
+									Domestic Supply
+								</IncoreMenuItem>
+								<IncoreMenuItem value="employment" key="employment">
+									Employment
+								</IncoreMenuItem>
+							</IncoreSelectBox>
+
+							{/*table and barchart*/}
+							{/*TODO for some reason barchart unit not working*/}
+							{
+								(() =>{
+									if (cgeType === "totalHouseholdIncome"){
+										return (
+											<>
+												<Box style={{margin:"50px auto"}}>
+													<CGEBarChart data={tables["totalHouseholdIncome"]}
+																 yAxisLegend="Million of $"/>
+												</Box>
+												<Box>
+													<CgeResultsTable resultsJson={tables["totalHouseholdIncome"]}/>
+												</Box>
+											</>
+										);
+									}
+									else if (cgeType === "domesticSupply"){
+										return (<>
+											<Box style={{margin:"50px auto"}}>
+												<CGEBarChart data={tables["domesticSupply"]} yAxisLegend="Million of $"/>
+											</Box>
+											<Box>
+												<CgeResultsTable resultsJson={tables["domesticSupply"]} yAxisLegend="Person"/>
+											</Box>
+										</>);
+									}
+									else if (cgeType === "employment"){
+										return (<>
+											<Box style={{margin:"50px auto"}}>
+												<CGEBarChart data={tables["employment"]} title="Employment"/>
+											</Box>
+											<Box>
+												<CgeResultsTable resultsJson={tables["employment"]}/>
+											</Box>
+										</>);
+									}
+								})()
+							}
+						</Box>
+					</Grid>
+					<Grid item xs={12} sm={12} md={4} lg={4} xl={4}>
+						{/*description*/}
+						<CgeDescription cgeMetrics={cgeType}/>
+					</Grid>
 				</Grid>
-
-				{/*for table*/}
-				<Box>
-					<CgeResultsTable resultsJson={null}/>
-				</Box>
-
-				{/*description*/}
-				<CgeDescription cgeMetrics={cgeDescription}/>
 			</DialogContent>
 		</Dialog>
 	);

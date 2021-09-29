@@ -7,7 +7,7 @@ import React from "react";
 
 export default function Interdependency(props) {
 
-	let {previewOn, title, handlePreviewClose, layers, map, setMap} = props;
+	let {previewOn, title, handlePreviewClose, layers, setMap} = props;
 
 	return (
 		<Dialog open={previewOn} onClose={handlePreviewClose} maxWidth="lg" fullWidth scroll="paper">
