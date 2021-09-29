@@ -304,7 +304,7 @@ export default function ViewResult(props) {
 		const layerDef = [
 			{
 				"layerId": mcsBldgFailureProbINCOREId,
-				"layerStyles": "incore:joplin-bldg-func",
+				// "layerStyles": "incore:joplin-bldg-func",
 				"title": "Building Functionality Probability without Interdependency",
 				"opacity": 1
 			},
