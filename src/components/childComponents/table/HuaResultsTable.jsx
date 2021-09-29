@@ -141,7 +141,8 @@ export function HuaResultsTable(props) {
 							label = {<Typography className={classes.label}>by Race / Ethnicity</Typography>}/>
 						<FormControlLabel value="income" control={<Radio color="primary" size="small"/>}
 							label = {<Typography className={classes.label}>by Household Income Level</Typography>}/>
-
+						<FormControlLabel value="housingType" control={<Radio color="primary" size="small"/>}
+										  label = {<Typography className={classes.label}>by Housing Type</Typography>}/>
 						<FormControlLabel value="disability" control={<Radio color="primary" size="small"/>}
 							label = {<Typography className={classes.label}>by Disability</Typography>}/>
 					</RadioGroup>
