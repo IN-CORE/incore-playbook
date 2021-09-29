@@ -32,32 +32,6 @@ const useStyles = makeStyles({
 	statTitle: {
 		margin: "55px auto",
 	},
-	chartContainer: {},
-	mapContainer: {
-		height: "366px",
-	},
-	mapContainerFull: {
-		height: "800px"
-	},
-	previewModal: {
-		padding: "50px",
-	},
-	previewTitle: {
-		height: "20px",
-		color: "#000000",
-		fontSize: "18px",
-		fontWeight: 500,
-		letterSpacing: 0,
-		lineHeight: "20px"
-	},
-	previewSubTitle: {
-		height: "18px",
-		color: "#69707F",
-		fontSize: "15px",
-		fontWeight: 500,
-		letterSpacing: 0,
-		lineHeight: "18px"
-	},
 });
 
 

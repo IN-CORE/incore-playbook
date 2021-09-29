@@ -1,4 +1,4 @@
-import {Box, Container, Dialog, DialogContent, IconButton, Typography} from "@material-ui/core";
+import {Box, Container, Dialog, DialogContent, Grid, IconButton, Typography} from "@material-ui/core";
 import CloseIcon from "@material-ui/icons/Close";
 import Map from "../map/Map";
 import {globals} from "../../../globals";
@@ -36,14 +36,21 @@ export default function PopDislocation(props){
 				</Container>
 
 				{/*for table*/}
-				<Box>
-					<DislocationResultsTable resultsJson={null}
-												 headers={["UNITS", "% of UNITS"]}
-												 title={"Housing Unit Dislocation"}/>
-					<DislocationResultsTable resultsJson={null}
-												 headers={["POPULATION", "% of POPULATION"]}
-												 title={"Population Dislocation"}/>
-					<HuaResultsTable resultsJson={null} />
+				<Box style={{padding:"50px 25px"}}>
+					<Grid container spacing={2} justify="left">
+						<Grid item xs={12} sm={12} md={6} lg={6} xl={6}>
+							<DislocationResultsTable resultsJson={null}
+													 headers={["UNITS", "% of UNITS"]}
+													 title={"Housing Unit Dislocation"}/>
+							<DislocationResultsTable resultsJson={null}
+													 headers={["POPULATION", "% of POPULATION"]}
+													 title={"Population Dislocation"}/>
+						</Grid>
+						<Grid item xs={12} sm={12} md={6} lg={6} xl={6}>
+							<HuaResultsTable resultsJson={null} />
+						</Grid>
+
+					</Grid>
 				</Box>
 			</DialogContent>
 		</Dialog>
