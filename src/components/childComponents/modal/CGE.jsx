@@ -27,13 +27,14 @@ export default function CGE(props) {
 				{/*title*/}
 				<Typography className="previewTitle">{title}</Typography>
 
-				<Grid container spacing={3} justify="left">
-					<Grid item xs={12} sm={12} md={8} lg={8} xl={8}>
-						<Box style={{padding:"50px 25px"}}>
+				<Box style={{padding:"50px 25px"}}>
+					<Grid container spacing={3} justify="left">
+						<Grid item xs={12} sm={12} md={8} lg={8} xl={8}>
 							{/*dropdown*/}
 							<IncoreSelectBox labelId="label" id="select" variant="outlined"
 											 onChange={(e)=>{ setCgeType(e.target.value); }}
-											 value={cgeType}>
+											 value={cgeType}
+											 style={{maxWidth:"500px"}}>
 								<IncoreMenuItem value="totalHouseholdIncome" key="totalHouseholdIncome">
 									Total Household Income
 								</IncoreMenuItem>
@@ -52,7 +53,7 @@ export default function CGE(props) {
 									if (cgeType === "totalHouseholdIncome"){
 										return (
 											<>
-												<Box style={{margin:"50px auto"}}>
+												<Box style={{margin:"50px 0", maxWidth:"700px"}}>
 													<CGEBarChart data={tables["totalHouseholdIncome"]}
 																 yAxisLegend="Million of $"/>
 												</Box>
@@ -64,7 +65,7 @@ export default function CGE(props) {
 									}
 									else if (cgeType === "domesticSupply"){
 										return (<>
-											<Box style={{margin:"50px auto"}}>
+											<Box style={{margin:"50px 0", maxWidth:"700px"}}>
 												<CGEBarChart data={tables["domesticSupply"]} yAxisLegend="Million of $"/>
 											</Box>
 											<Box>
@@ -74,7 +75,7 @@ export default function CGE(props) {
 									}
 									else if (cgeType === "employment"){
 										return (<>
-											<Box style={{margin:"50px auto"}}>
+											<Box style={{margin:"50px 0", maxWidth:"700px"}}>
 												<CGEBarChart data={tables["employment"]} title="Employment"/>
 											</Box>
 											<Box>
@@ -84,13 +85,13 @@ export default function CGE(props) {
 									}
 								})()
 							}
-						</Box>
+						</Grid>
+						<Grid item xs={12} sm={12} md={4} lg={4} xl={4}>
+							{/*description*/}
+							<CgeDescription cgeMetrics={cgeType}/>
+						</Grid>
 					</Grid>
-					<Grid item xs={12} sm={12} md={4} lg={4} xl={4}>
-						{/*description*/}
-						<CgeDescription cgeMetrics={cgeType}/>
-					</Grid>
-				</Grid>
+				</Box>
 			</DialogContent>
 		</Dialog>
 	);
