@@ -8,7 +8,7 @@ import {HuaResultsTable} from "../table/HuaResultsTable";
 import React from "react";
 
 export default function PopDislocation(props){
-	let {title, previewOn, handlePreviewClose, layers, map, setMap} = props;
+	let {title, previewOn, handlePreviewClose, layers, tables, map, setMap} = props;
 
 	return (
 		<Dialog open={previewOn} onClose={handlePreviewClose} maxWidth="lg" fullWidth scroll="paper">
@@ -39,15 +39,15 @@ export default function PopDislocation(props){
 				<Box style={{padding:"50px 25px"}}>
 					<Grid container spacing={2} justify="left">
 						<Grid item xs={12} sm={12} md={6} lg={6} xl={6}>
-							<DislocationResultsTable resultsJson={null}
+							<DislocationResultsTable resultsJson={tables["dislocationResultsTable"]}
 													 headers={["UNITS", "% of UNITS"]}
 													 title={"Housing Unit Dislocation"}/>
-							<DislocationResultsTable resultsJson={null}
+							<DislocationResultsTable resultsJson={tables["dislocationResultsTable"]}
 													 headers={["POPULATION", "% of POPULATION"]}
 													 title={"Population Dislocation"}/>
 						</Grid>
 						<Grid item xs={12} sm={12} md={6} lg={6} xl={6}>
-							<HuaResultsTable resultsJson={null} />
+							<HuaResultsTable resultsJson={tables["huaResultsTable"]} />
 						</Grid>
 
 					</Grid>

@@ -94,24 +94,6 @@ export function DislocationResultsTable(props) {
 	let resultsJson = props.resultsJson;
 	let title = props.title;
 
-	if (resultsJson === null){
-		// to be commented out when integrated with API and prop validation can be added
-		resultsJson = {
-			"dislocated":{
-				"number":1999,
-				"percentage":0.085
-			},
-			"not_dislocated":{
-				"number":21262,
-				"percentage": 0.914
-			},
-			"total":{
-				"number": 23261,
-				"percentage": 1
-			}
-		};
-	}
-
 	let headers = [...[""], ...props.headers];
 	const headerSize = headers.length;
 
