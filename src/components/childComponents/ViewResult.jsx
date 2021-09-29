@@ -178,6 +178,7 @@ export default function ViewResult(props) {
 	// close the model
 	const handlePreviewClose = () => {
 		setPreviewOn(false);
+		setMap();
 	};
 
 	const getExecution = (executionItemId) => {
@@ -465,23 +466,23 @@ export default function ViewResult(props) {
 
 		const layerDef = [
 			{
-				"layerId": hazardDatasetId,
-				"layerStyles": "incore:tornado",
-				"title": "Tornado",
-				"opacity": 0.3
-			},
-			{
 				"layerId": bldgMaxDamageStateINCOREId,
 				"layerStyles": "incore:building",
 				"title": "Building Inventory",
-				"opacity": 0.8
+				"opacity": 1
 			},
 			{
 				"layerId": popDislINCOREId,
 				"layerStyles": "incore:heatmap",
 				"title": "Population Dislocation Heatmap",
 				"opacity": 0.8
-			}
+			},
+			{
+				"layerId": hazardDatasetId,
+				"layerStyles": "incore:tornado",
+				"title": "Tornado",
+				"opacity": 0.3
+			},
 		];
 		handleLayerUpdate(layerDef);
 
