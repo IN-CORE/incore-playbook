@@ -511,18 +511,34 @@ export default function ViewResult(props) {
 		// setTable({});
 		setTables(
 			{
-				"dislocationResultsTable":{
-					"dislocated":{
-						"number":1999,
-						"percentage":0.085
+				"totalResultsTable": {
+					"housing_unit_dislocation": {
+						"dislocated": {
+							"number": 1999,
+							"percentage": 0.085
+						},
+						"not_dislocated": {
+							"number": 21262,
+							"percentage": 0.914
+						},
+						"total": {
+							"number": 23261,
+							"percentage": 1
+						}
 					},
-					"not_dislocated":{
-						"number":21262,
-						"percentage": 0.914
-					},
-					"total":{
-						"number": 23261,
-						"percentage": 1
+					"population_dislocation": {
+						"dislocated": {
+							"number": 4197,
+							"percentage": 0.085
+						},
+						"not_dislocated": {
+							"number": 45613,
+							"percentage": 0.914
+						},
+						"total": {
+							"number": 23261,
+							"percentage": 1
+						}
 					}
 				},
 				"huaResultsTable":{"income": [
