@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from "react";
 import {makeStyles} from "@material-ui/core/styles";
-import {Box, Container, Dialog, DialogContent, Divider, Grid, IconButton, Typography} from "@material-ui/core";
+import {Box, IconButton} from "@material-ui/core";
 import SyncIcon from "@material-ui/icons/Sync";
 import FilterListIcon from "@material-ui/icons/FilterList";
 
@@ -11,30 +11,22 @@ import datawolfConfig from "../../datawolf.config";
 import {getOutputFileJson} from "../../utils/datawolf";
 import {getTornadoMetadata} from "../../utils/hazard";
 
-import Map from "./map/Map";
-import {globals} from "../../globals";
-import {fromLonLat} from "ol/proj";
 import GroupLayer from "ol/layer/Group";
 import TileLayer from "ol/layer/Tile";
 import XYZ from "ol/source/XYZ";
 import OSM, {ATTRIBUTION as OSM_ATTRIBUTION} from "ol/source/OSM";
 import TileWMS from "ol/source/TileWMS";
 import config from "../../app.config";
-import {ResultTable} from "./table/ResultTable";
 
-import CloseIcon from "@material-ui/icons/Close";
-import {ResultSummaryTable} from "./table/ResultSummaryTable";
-import {StackedResult} from "./graph/StackedResult";
-import {FunctionalityGraph} from "./graph/FunctionalityGraph";
 import {ViewResultEntryTable} from "./table/ViewResultEntryTable";
-import {FunctionalityTable} from "./table/FunctionalityTable";
 
 import {downloadDataset} from "../../utils/dataset";
-import {DislocationResultsTable} from "./table/DislocationResultsTable";
-import {HuaResultsTable} from "./table/HuaResultsTable";
-import {CgeResultsTable} from "./table/CgeResultsTable";
-import CgeDescription from "./step/CgeDescription";
-import CGEBarChart from "./graph/CGEBarChart";
+import Interdependency from "./modal/Interdependency";
+import BldgDamage from "./modal/BldgDamage";
+import EpfDamage from "./modal/EpfDamage";
+import BldgFunctionality from "./modal/BldgFunctionality";
+import CGE from "./modal/CGE";
+import PopDislocation from "./modal/PopDislocation";
 
 const useStyles = makeStyles({
 	statTitle: {
@@ -116,13 +108,12 @@ export default function ViewResult(props) {
 	const [executionEntries, setExecutionEntries] = useState([]);
 	const [resultType, setResultType] = useState("bldgDmg"); // bldgFunc, bldgDmg, epfDmg, bldgMCS, interD
 	const [runtime, setRuntime] = useState("");
-	const [summaryTableFields, setSummaryTableFields] = useState({});
-	const [barChartFields, setBarChartFields] = useState([]);
+	const [tables, setTables] = useState({});
+	const [barCharts, setBarCharts] = useState([]);
 	const [map, setMap] = useState();
-	const [mode, setMode] = useState("list"); // list vs preview
+	const [previewOn, setPreviewOn] = useState(false); // list vs preview
 
-
-	// extract a sinle status from mutliple step status`
+	// extract a single status from mutliple step status`
 	const extractStatus = (executionItem) => {
 		if (executionItem !== undefined && executionItem["stepState"] !== undefined) {
 			let statusArr = Object.values(executionItem["stepState"]);
@@ -210,13 +201,9 @@ export default function ViewResult(props) {
 		});
 	};
 
-	// empty preview and close the model
+	// close the model
 	const handlePreviewClose = () => {
-		setMode("list");
-		setSummaryTableFields({"by_cluster": [], "by_category": []});
-		setBarChartFields([]);
-		setMap();
-		setRuntime("");
+		setPreviewOn(false);
 	};
 
 	const getExecution = (executionItemId) => {
@@ -260,16 +247,16 @@ export default function ViewResult(props) {
 		setRuntime(executionItem["date"].slice(0, 10));
 
 		// for table
-		setSummaryTableFields(bldgDmgSummaryTableContent);
+		setTables(bldgDmgSummaryTableContent);
 
 		// for chart
-		setBarChartFields(bldgDmgSummaryTableContent["by_category"]);
+		setBarCharts(bldgDmgSummaryTableContent["by_category"]);
 
 		// set preview type
 		setResultType("bldgDmg");
 
 		// open preview
-		setMode("preview");
+		setPreviewOn(true);
 	};
 	const downloadBldgDmg = async (executionItemId) => {
 		let executionItem = getExecution(executionItemId);
@@ -312,16 +299,16 @@ export default function ViewResult(props) {
 		setRuntime(executionItem["date"].slice(0, 10));
 
 		// for table
-		setSummaryTableFields(bldgFuncSummaryTableContent);
+		setTables(bldgFuncSummaryTableContent);
 
 		// for chart
-		setBarChartFields(bldgFuncSummaryTableContent["by_category"]);
+		setBarCharts(bldgFuncSummaryTableContent["by_category"]);
 
 		// set preview type
 		setResultType("bldgFunc");
 
 		// open preview
-		setMode("preview");
+		setPreviewOn(true);
 	};
 	const downloadBldgFunc = async (executionItemId) => {
 		let executionItem = getExecution(executionItemId);
@@ -362,12 +349,12 @@ export default function ViewResult(props) {
 
 		// for runtime table on the top
 		setRuntime(executionItem["date"].slice(0, 10));
-		setSummaryTableFields(mcsBldgSummaryTableContent);
-		setBarChartFields(mcsBldgSummaryTableContent["by_category"]);
+		setTables(mcsBldgSummaryTableContent);
+		setBarCharts(mcsBldgSummaryTableContent["by_category"]);
 		setResultType("bldgMCS");
 
 		// open preview
-		setMode("preview");
+		setPreviewOn(true);
 	};
 	const downloadBldgMCS = async (executionItemId) => {
 		let executionItem = getExecution(executionItemId);
@@ -410,13 +397,9 @@ export default function ViewResult(props) {
 			}
 		];
 		handleLayerUpdate(layerDef);
-		// disable other components of map
-		setRuntime(null);
-		setSummaryTableFields(null);
-		setBarChartFields(null);
 
 		// open preview
-		setMode("preview");
+		setPreviewOn(true);
 	};
 	const downloadEpfDmg = async (executionItemId, type) => {
 		let executionItem = getExecution(executionItemId);
@@ -455,16 +438,11 @@ export default function ViewResult(props) {
 		];
 		handleLayerUpdate(layerDef);
 
-		// disable other components of map
-		setRuntime(null);
-		setSummaryTableFields(null);
-		setBarChartFields(null);
-
 		// set preview type
 		setResultType("interD");
 
 		// open preview
-		setMode("preview");
+		setPreviewOn(true);
 	};
 
 	const previewCGE = async (executionItemId) => {
@@ -485,16 +463,15 @@ export default function ViewResult(props) {
 		let cgeEmployment = await getOutputFileJson(cgeEmploymentId);
 		let cgeEmploymentContent = JSON.parse(cgeEmployment);
 
-		// for runtime table on the top
-		setRuntime(null);
-
-		// TODO uncomment above and replace this with real data
-		setBarChartFields(true);
-		setSummaryTableFields(cgeHouseholdIncomeContent);
+		setTables({
+			"totalHouseholdIncome":cgeHouseholdIncomeContent,
+			"domesticSupply":cgeDomesticSupplyContent,
+			"employment":cgeEmploymentContent
+		});
 		setResultType("cge");
 
 		// open preview
-		setMode("preview");
+		setPreviewOn(true);
 	};
 
 	const previewPopDisl = async (executionItemId) => {
@@ -534,6 +511,7 @@ export default function ViewResult(props) {
 		];
 		handleLayerUpdate(layerDef);
 
+		// TODO
 		// // total dislocation
 		// let totalDislTableId = executionItem["datasets"][datawolfConfig["datasets"]["totalDislocationId"]];
 		// let totalDislTable = await getOutputFileJson(totalDislTableId);
@@ -555,17 +533,11 @@ export default function ViewResult(props) {
 		// let dislocationByHousingTypeId = executionItem["datasets"][datawolfConfig["datasets"]["dislocationByHousingTypeId"]];
 		// let dislocationByHousingType = await getOutputFileJson(dislocationByHousingTypeId);
 		// let dislocationByHousingTypeIdContent = JSON.parse(dislocationByHousingType);
-
-		// for runtime table on the top
-		setRuntime(null);
-		setBarChartFields(null);
-
-		// TODO uncomment above and replace this with real data
-		setSummaryTableFields(true);
+		// setTable({});
 		setResultType("popdisl");
 
 		// open preview
-		setMode("preview");
+		setPreviewOn(true);
 	};
 
 	return (
@@ -598,150 +570,95 @@ export default function ViewResult(props) {
 			</Box>
 
 			{/*for individual analysis result preview*/}
-			<Dialog open={mode === "preview"} onClose={handlePreviewClose} maxWidth="lg" fullWidth scroll="paper">
-				<DialogContent className={classes.previewModal}>
-					<IconButton aria-label="Close" onClick={handlePreviewClose} style={{float: "right"}}>
-						<CloseIcon fontSize="small"/>
-					</IconButton>
-					<>
-						{/*title*/}
-						{
-							(() => {
-								if (resultType === "interD") {
-									return (<Typography className={classes.previewTitle}>Interdependent Network of
-										Building and Electric Power Facility</Typography>);
-								} else if (resultType === "bldgDmg") {
-									return <Typography className={classes.previewTitle}>Building Damage</Typography>;
-								} else if (resultType === "epfPoleDmg") {
-									return <Typography className={classes.previewTitle}>EPF Pole Damage</Typography>;
-								} else if (resultType === "epfSubstationDmg") {
-									return (<Typography className={classes.previewTitle}>EPF Substation
-										Damage</Typography>);
-								} else if (resultType === "bldgMCS") {
-									return (<Typography className={classes.previewTitle}>Building Functionality without
-										Interdependency</Typography>);
-								} else if (resultType === "bldgFunc") {
-									return (<Typography className={classes.previewTitle}>Building Functionality with
-										Interdependency</Typography>);
-								} else if (resultType === "cge") {
-									return (<Typography className={classes.previewTitle}>CGE Results
-									</Typography>);
-								} else if (resultType === "popdisl") {
-									return (<Typography className={classes.previewTitle}>Population Dislocation Results
-									</Typography>);
-								}
-							})()
-						}
-						{/*for chart*/}
-						<Box className={classes.chartContainer}>
-							<Grid container spacing={3} justify="left">
-								{
-									runtime ?
-										(<>
-											<Grid item>
-												<Typography className={classes.previewSubTitle}>
-														Analysis Result View</Typography>
-												<ResultSummaryTable runtime={runtime}/>
-											</Grid>
-											<Divider orientation="vertical" flexItem/>
-										</>
-										) :
-										null
-								}
-
-								{/*barchart*/}
-								{
-									barChartFields ?
-										(
-											<Grid item style={{minWidth: "804px"}}>
-												<Typography className={classes.previewSubTitle}>
-													Anticipated Performance - Building Clusters</Typography>
-												<Box style={{marginTop: "38px"}}>
-													{
-														(() => {
-															if (resultType === "bldgDmg"){
-																return (<StackedResult
-																	categorySummary={barChartFields}/>);
-															}
-															else if (resultType === "cge"){
-																return (<CGEBarChart data={summaryTableFields}
-																	title="total Household Income"
-																	yAxisLegend="Millions of $"/>);
-															}
-															else{
-																return <FunctionalityGraph categorySummary={barChartFields}/>;
-															}
-														})()
-													}
-
-												</Box>
-											</Grid>
-										)
-										:
-										null
-								}
-
-							</Grid>
-							<Divider orientation="horizontal"/>
-						</Box>
-
-						{/*for map*/}
-						<Container className={((runtime && barChartFields) || summaryTableFields) ?
-							classes.mapContainer : classes.mapContainerFull}
-								   disableGutters>
-							<Map
-								className="fillContainer"
-								zoom={12}
-								minZoom={5}
-								maxZoom={15}
-								extent={globals.JOPLIN_MAP_BOUNDS}
-								center={fromLonLat(globals.JOPLIN_MAP_CENTER)}
-								layers={Object.values(layers)}
-								layerSwitcherOptions={{}}
-								updateMap={(map) => { setMap(map); }}
-							/>
-						</Container>
-						{/*for table*/}
-						{
-							summaryTableFields ?
-								(<Box>
-									{
-										(() => {
-											if (resultType === "bldgDmg"){
-												return <ResultTable fields={summaryTableFields}/>;
-											}
-											else if (resultType === "popdisl"){
-												return (
-													<Box>
-														<DislocationResultsTable resultsJson={null}
-																				 headers={["UNITS", "% of UNITS"]}
-																				 title={"Housing Unit Dislocation"}/>
-														<DislocationResultsTable resultsJson={null}
-																				 headers={["POPULATION", "% of POPULATION"]}
-																				 title={"Population Dislocation"}/>
-														<HuaResultsTable resultsJson={null} />
-													</Box>
-												);
-											}
-											else if (resultType === "cge"){
-												return (
-													<Box>
-														<CgeResultsTable resultsJson={null}/>
-														<CgeDescription cgeMetrics="totalHouseholdIncome"/>
-													</Box>
-												);
-											}
-											else {
-												return <FunctionalityTable funcResults={summaryTableFields}/>;
-											}
-										})()
-									}
-								</Box>)
-								:
-								null
-						}
-					</>
-				</DialogContent>
-			</Dialog>
+			{
+				(()=>{
+					if (resultType === "interD") {
+						return (<Interdependency
+							title="Interdependent Network of Building and Electric Power Facility"
+							previewOn={previewOn}
+							handlePreviewClose={handlePreviewClose}
+							layers={layers}
+							map={map}
+							setMap={setMap}
+						/>);
+					}
+					else if (resultType === "bldgDmg") {
+						return (<BldgDamage
+							title="Building Damage"
+							previewOn={previewOn}
+							handlePreviewClose={handlePreviewClose}
+							runtime={runtime}
+							barCharts={barCharts}
+							layers={layers}
+							tables={tables}
+							map={map}
+							setMap={setMap}
+						/>);
+					}
+					else if (resultType === "epfPoleDmg") {
+						return (
+							<EpfDamage title="EPF Pole Damage"
+									   previewOn={previewOn}
+									   handlePreviewClose={handlePreviewClose}
+									   layers={layers}
+									   map={map}
+									   setMap={setMap}
+							/>);
+					}
+					else if (resultType === "epfSubstationDmg") {
+						return (
+							<EpfDamage title="EPF Substation Damage"
+									   previewOn={previewOn}
+									   handlePreviewClose={handlePreviewClose}
+									   layers={layers}
+									   map={map}
+									   setMap={setMap}
+							/>);
+					}
+					else if (resultType === "bldgMCS") {
+						return (<BldgFunctionality
+							title="Building Functionality without Interdependency"
+							previewOn={previewOn}
+							handlePreviewClose={handlePreviewClose}
+							runtime={runtime}
+							barCharts={barCharts}
+							layers={layers}
+							tables={tables}
+							map={map}
+							setMap={setMap}
+						/>);
+					}
+					else if (resultType === "bldgFunc") {
+						return (<BldgFunctionality
+							title="Building Functionality with Interdependency"
+							previewOn={previewOn}
+							handlePreviewClose={handlePreviewClose}
+							runtime={runtime}
+							barCharts={barCharts}
+							layers={layers}
+							tables={tables}
+							map={map}
+							setMap={setMap}
+						/>);
+					}
+					else if (resultType === "cge") {
+						return (
+							<CGE title="CGE Results"
+								previewOn={previewOn}
+								handlePreviewClose={handlePreviewClose}
+								tables={tables}/>);
+					}
+					else if (resultType === "popdisl") {
+						return (<PopDislocation
+							title="Population Dislocation Results"
+							previewOn={previewOn}
+							handlePreviewClose={handlePreviewClose}
+							layers={layers}
+							map={map}
+							setMap={setMap}
+						/>);
+					}
+				})()
+			}
 		</div>);
 }

@@ -10,7 +10,7 @@ import {ResultTable} from "../table/ResultTable";
 
 export default function BldgDamage(props) {
 
-	let {title, previewOn, handlePreviewClose, runtime, barChartFields, layers, summaryTableFields, map, setMap} = props;
+	let {title, previewOn, handlePreviewClose, runtime, barCharts, layers, tables, map, setMap} = props;
 
 	return (
 		<Dialog open={previewOn} onClose={handlePreviewClose} maxWidth="lg" fullWidth scroll="paper">
@@ -36,7 +36,7 @@ export default function BldgDamage(props) {
 							<Typography className="previewSubTitle">
 									Anticipated Performance - Building Clusters</Typography>
 							<Box style={{marginTop: "38px"}}>
-								<StackedResult categorySummary={barChartFields}/>
+								<StackedResult categorySummary={barCharts}/>
 							</Box>
 						</Grid>
 
@@ -61,7 +61,7 @@ export default function BldgDamage(props) {
 
 				{/*for table*/}
 				<Box>
-					<ResultTable fields={summaryTableFields}/>
+					<ResultTable fields={tables}/>
 				</Box>
 			</DialogContent>
 		</Dialog>

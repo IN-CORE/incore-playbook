@@ -10,7 +10,7 @@ import React from "react";
 
 export default function BldgFunctionality(props){
 
-	let {title, previewOn, handlePreviewClose, runtime, barChartFields, layers, summaryTableFields, map, setMap} = props;
+	let {title, previewOn, handlePreviewClose, runtime, barCharts, layers, tables, map, setMap} = props;
 
 	return (
 		<Dialog open={previewOn} onClose={handlePreviewClose} maxWidth="lg" fullWidth scroll="paper">
@@ -35,7 +35,7 @@ export default function BldgFunctionality(props){
 							<Typography className="previewSubTitle">
 									Anticipated Performance - Building Clusters</Typography>
 							<Box style={{marginTop: "38px"}}>
-								<FunctionalityGraph categorySummary={barChartFields}/>
+								<FunctionalityGraph categorySummary={barCharts}/>
 							</Box>
 						</Grid>
 					</Grid>
@@ -59,7 +59,7 @@ export default function BldgFunctionality(props){
 
 				{/*for table*/}
 				<Box>
-					<FunctionalityTable funcResults={summaryTableFields}/>
+					<FunctionalityTable funcResults={tables}/>
 				</Box>
 			</DialogContent>
 		</Dialog>

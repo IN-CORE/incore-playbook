@@ -3,15 +3,18 @@ import CloseIcon from "@material-ui/icons/Close";
 import CGEBarChart from "../graph/CGEBarChart";
 import {CgeResultsTable} from "../table/CgeResultsTable";
 import CgeDescription from "../step/CgeDescription";
-import React from "react";
+import React, {useState} from "react";
 
 export default function CGE(props) {
 	let {
 		title,
 		previewOn,
 		handlePreviewClose,
-		summaryTableFields,
+		tables,
 	} = props;
+
+	//"totalHouseholdIncome", "domesticSupply", "employment"
+	const [cgeDescription, setCgeDescription] = useState("totalHouseholdIncome");
 
 	return (
 		<Dialog open={previewOn} onClose={handlePreviewClose} maxWidth="lg" fullWidth scroll="paper">
@@ -28,8 +31,9 @@ export default function CGE(props) {
 					<Typography className="previewSubTitle">
 						Anticipated Performance - Building Clusters</Typography>
 					<Box style={{marginTop: "38px"}}>
-						<CGEBarChart data={summaryTableFields} title="total Household Income"
-									 yAxisLegend="Millions of $"/>
+						<CGEBarChart data={tables["totalHouseholdIncome"]} title="total Household Income"/>
+						<CGEBarChart data={tables["domesticSupply"]} title="total Household Income"/>
+						<CGEBarChart data={tables["employment"]} title="total Household Income"/>
 					</Box>
 				</Grid>
 
@@ -39,7 +43,7 @@ export default function CGE(props) {
 				</Box>
 
 				{/*description*/}
-				<CgeDescription cgeMetrics="totalHouseholdIncome"/>
+				<CgeDescription cgeMetrics={cgeDescription}/>
 			</DialogContent>
 		</Dialog>
 	);
