@@ -487,190 +487,35 @@ export default function ViewResult(props) {
 		];
 		handleLayerUpdate(layerDef);
 
-		// TODO
 		// // total dislocation
-		// let totalDislTableId = executionItem["datasets"][datawolfConfig["datasets"]["totalDislocationId"]];
-		// let totalDislTable = await getOutputFileJson(totalDislTableId);
-		// let totalDislTableIdContent = JSON.parse(totalDislTable);
-		//
-		// // dislocation group by
-		// let dislocationByRaceId = executionItem["datasets"][datawolfConfig["datasets"]["dislocationByRaceId"]];
-		// let dislocationByRace = await getOutputFileJson(dislocationByRaceId);
-		// let dislocationByRaceContent = JSON.parse(dislocationByRace);
-		//
-		// let dislocationByTenureId = executionItem["datasets"][datawolfConfig["datasets"]["dislocationByTenureId"]];
-		// let dislocationByTenure = await getOutputFileJson(dislocationByTenureId);
-		// let dislocationByTenureContent = JSON.parse(dislocationByTenure);
-		//
-		// let dislocationByIncomeId = executionItem["datasets"][datawolfConfig["datasets"]["dislocationByIncomeId"]];
-		// let dislocationByIncome = await getOutputFileJson(dislocationByIncomeId);
-		// let dislocationByIncomeContent = JSON.parse(dislocationByIncome);
-		//
-		// let dislocationByHousingTypeId = executionItem["datasets"][datawolfConfig["datasets"]["dislocationByHousingTypeId"]];
-		// let dislocationByHousingType = await getOutputFileJson(dislocationByHousingTypeId);
-		// let dislocationByHousingTypeIdContent = JSON.parse(dislocationByHousingType);
-		// setTable({});
+		let totalDislTableId = executionItem["datasets"][datawolfConfig["datasets"]["totalDislocationId"]];
+		let totalDislTable = await getOutputFileJson(totalDislTableId);
+		let totalDislTableIdContent = JSON.parse(totalDislTable);
+
+		// dislocation group by
+		let dislocationByRaceId = executionItem["datasets"][datawolfConfig["datasets"]["dislocationByRaceId"]];
+		let dislocationByRace = await getOutputFileJson(dislocationByRaceId);
+		let dislocationByRaceContent = JSON.parse(dislocationByRace);
+
+		let dislocationByTenureId = executionItem["datasets"][datawolfConfig["datasets"]["dislocationByTenureId"]];
+		let dislocationByTenure = await getOutputFileJson(dislocationByTenureId);
+		let dislocationByTenureContent = JSON.parse(dislocationByTenure);
+
+		let dislocationByIncomeId = executionItem["datasets"][datawolfConfig["datasets"]["dislocationByIncomeId"]];
+		let dislocationByIncome = await getOutputFileJson(dislocationByIncomeId);
+		let dislocationByIncomeContent = JSON.parse(dislocationByIncome);
+
+		let dislocationByHousingTypeId = executionItem["datasets"][datawolfConfig["datasets"]["dislocationByHousingTypeId"]];
+		let dislocationByHousingType = await getOutputFileJson(dislocationByHousingTypeId);
+		let dislocationByHousingTypeIdContent = JSON.parse(dislocationByHousingType);
 		setTables(
 			{
-				"totalResultsTable": {
-					"housing_unit_dislocation": {
-						"dislocated": {
-							"number": 1999,
-							"percentage": 0.085
-						},
-						"not_dislocated": {
-							"number": 21262,
-							"percentage": 0.914
-						},
-						"total": {
-							"number": 23261,
-							"percentage": 1
-						}
-					},
-					"population_dislocation": {
-						"dislocated": {
-							"number": 4197,
-							"percentage": 0.085
-						},
-						"not_dislocated": {
-							"number": 45613,
-							"percentage": 0.914
-						},
-						"total": {
-							"number": 23261,
-							"percentage": 1
-						}
-					}
-				},
+				"totalResultsTable": totalDislTableIdContent,
 				"huaResultsTable":{
-					"income":
-						[
-							{
-								"housing_unit_characteristics": "HH1 (less than $15,000)",
-								"housing_unit_dislocation": 311,
-								"housing_unit_in_total": 3252
-							},
-							{
-								"housing_unit_characteristics": "HH2 ($15,000 to $35,000)",
-								"housing_unit_dislocation": 280,
-								"housing_unit_in_total": 3133
-							},
-							{
-								"housing_unit_characteristics": "HH3 ($35,000 to $70,000)",
-								"housing_unit_dislocation": 741,
-								"housing_unit_in_total": 9272
-							},
-							{
-								"housing_unit_characteristics": "HH4 ($70,000 to $120,000)",
-								"housing_unit_dislocation": 741,
-								"housing_unit_in_total": 9252
-							},
-							{
-								"housing_unit_characteristics": "HH5 (More than $120,000)",
-								"housing_unit_dislocation": 131,
-								"housing_unit_in_total": 1887
-							},
-							{
-								"housing_unit_characteristics": "Unknown",
-								"housing_unit_dislocation": 422,
-								"housing_unit_in_total": 4210
-							},
-							{
-								"housing_unit_characteristics": "Total",
-								"housing_unit_dislocation": 1999,
-								"housing_unit_in_total": 23261
-							}
-						],
-					"race": [
-						{
-							"housing_unit_characteristics": "White alone, Not Hispanic",
-							"housing_unit_dislocation": 1521,
-							"housing_unit_in_total": 18507
-						},
-						{
-							"housing_unit_characteristics": "Black alone, Not Hispanic",
-							"housing_unit_dislocation": 76,
-							"housing_unit_in_total": 606
-						},
-						{
-							"housing_unit_characteristics": "Other race, Not Hispanic",
-							"housing_unit_dislocation": 92,
-							"housing_unit_in_total": 1110
-						},
-						{
-							"housing_unit_characteristics": "Any race, Hispanic",
-							"housing_unit_dislocation": 41,
-							"housing_unit_in_total": 556
-						},
-						{
-							"housing_unit_characteristics": "No race Ethnicity Data",
-							"housing_unit_dislocation": 269,
-							"housing_unit_in_total": 2482
-						},
-						{
-							"housing_unit_characteristics": "Total",
-							"housing_unit_dislocation": 1999,
-							"housing_unit_in_total": 23261
-						}
-					],
-					"tenure": [
-						{
-							"housing_unit_characteristics": "Owner occupied",
-							"housing_unit_dislocation": 1018,
-							"housing_unit_in_total": 11344
-						},
-						{
-							"housing_unit_characteristics": "Renter occupied",
-							"housing_unit_dislocation": 712,
-							"housing_unit_in_total": 9435
-						},
-						{
-							"housing_unit_characteristics": "Nursing facilities",
-							"housing_unit_dislocation": 0,
-							"housing_unit_in_total": 9
-						},
-						{
-							"housing_unit_characteristics": "Other group quarters",
-							"housing_unit_dislocation": 3,
-							"housing_unit_in_total": 18
-						},
-						{
-							"housing_unit_characteristics": "Vacant for rent",
-							"housing_unit_dislocation": 75,
-							"housing_unit_in_total": 984
-						},
-						{
-							"housing_unit_characteristics": "Vacant for sale",
-							"housing_unit_dislocation": 60,
-							"housing_unit_in_total": 573
-						},
-						{
-							"housing_unit_characteristics": "Vacant Other",
-							"housing_unit_dislocation": 131,
-							"housing_unit_in_total": 898
-						},
-						{
-							"housing_unit_characteristics": "Total",
-							"housing_unit_dislocation": 1999,
-							"housing_unit_in_total": 23261
-						}
-					],
-					"housingType":[{
-						"housing_unit_characteristics": "Single Family",
-						"housing_unit_dislocation": 1162,
-						"housing_unit_in_total": 837
-					},
-					{
-						"housing_unit_characteristics": "Multi Family",
-						"housing_unit_dislocation": 14317,
-						"housing_unit_in_total": 8944
-					},
-					{
-						"housing_unit_characteristics": "Total",
-						"housing_unit_dislocation": 1999,
-						"housing_unit_in_total": 23261
-					}
-					]
+					"income": dislocationByIncomeContent,
+					"race": dislocationByRaceContent,
+					"tenure": dislocationByTenureContent,
+					"housingType": dislocationByHousingTypeIdContent
 				}}
 		);
 		setResultType("popdisl");
