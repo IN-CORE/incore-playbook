@@ -112,7 +112,7 @@ export default function ViewResult(props) {
 	const [resultType, setResultType] = useState("bldgDmg"); // bldgFunc, bldgDmg, epfDmg, bldgMCS, interD
 	const [summaryTableFields, setSummaryTableFields] = useState({"by_cluster": [], "by_category": []});
 	const [barChartFields, setBarChartFields] = useState([]);
-	const [map, setMap] = useState();
+	const [_, setMap] = useState();
 	const [mode, setMode] = useState("list"); // list vs preview
 	const [runtime, setRuntime] = useState("");
 

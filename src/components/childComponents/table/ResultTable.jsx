@@ -126,7 +126,7 @@ export function ResultTable(props) {
 				<TableBody>
 					{
 						// TODO this is not working
-						fields["by_category"].map((categoryItem, idx) => {
+						fields["by_category"].map((categoryItem, _) => {
 							let firstMatchIdxx = -1;
 							return (
 								<>

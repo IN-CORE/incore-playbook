@@ -93,7 +93,7 @@ export default function BuiltEnvironment(props) {
 		setFile(fileList);
 	};
 
-	const onDrop = (fileList, event) => {
+	const onDrop = (fileList) => {
 		setFile(Array.from(fileList));
 	};
 

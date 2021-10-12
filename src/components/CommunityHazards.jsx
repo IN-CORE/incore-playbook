@@ -22,7 +22,7 @@ import Layout from "../containers/Layout";
 import {IncoreInputLabel} from "./styledComponents/IncoreInputLabel";
 import {IncoreMenuItem, IncoreSelectBox} from "./styledComponents/IncoreSelect";
 
-import FilterListIcon from "@material-ui/icons/FilterList";
+// import FilterListIcon from "@material-ui/icons/FilterList";
 
 import {EntryTable} from "./childComponents/table/EntryTable";
 import PageBanner from "./childComponents/navigation/Banner";
