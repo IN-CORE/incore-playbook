@@ -129,59 +129,59 @@ export function CgeResultsTable(props) {
 	let afterJson = resultsJson.afterEvent;
 
 	// Eliminate duplicate keys. Also, handles the case where before and after has different number of groups
-	headers = [...headers, ...new Set([...Object.keys(afterJson), ...Object.keys(beforeJson)])]
+	headers = [...headers, ...new Set([...Object.keys(afterJson), ...Object.keys(beforeJson)])];
 	const headerSize = headers.length;
 
 	const classes = useStyles();
 
 	return (
-			<div>
-				<TableContainer>
-					<Table className={classes.table} size="small" aria-label="a dense table">
-						<TableHead>
-							<TableRow >
-								{
-									headers.map( (header, idx) => {
-										let headClass = classes.tableRowHead;
-										if (idx === 0){
-											headClass = classes.tableRowHeadFirst;
-										} else if (idx === headerSize -1){
-											headClass = classes.tableRowHeadRight;
-										}
-										return (<TableCell className={headClass} key={idx}>
-											{header}
-										</TableCell>)
-									})
-								}
-							</TableRow>
-						</TableHead>
-						<TableBody>
-							<TableRow>
-								<TableCell className={classes.tableColumnHeadGreen}> Before Event </TableCell>
-								{
-									headers.slice(1).map( (header, idx) => {
-										return (<TableCell className={classes.tableDataCell} key={idx}>
-											{(beforeJson[header] !== undefined ? beforeJson[header] : "-" )}
-										</TableCell>)
-									})
-								}
-							</TableRow>
+		<div>
+			<TableContainer>
+				<Table className={classes.table} size="small" aria-label="a dense table">
+					<TableHead>
+						<TableRow >
+							{
+								headers.map( (header, idx) => {
+									let headClass = classes.tableRowHead;
+									if (idx === 0){
+										headClass = classes.tableRowHeadFirst;
+									} else if (idx === headerSize -1){
+										headClass = classes.tableRowHeadRight;
+									}
+									return (<TableCell className={headClass} key={idx}>
+										{header}
+									</TableCell>);
+								})
+							}
+						</TableRow>
+					</TableHead>
+					<TableBody>
+						<TableRow>
+							<TableCell className={classes.tableColumnHeadGreen}> Before Event </TableCell>
+							{
+								headers.slice(1).map( (header, idx) => {
+									return (<TableCell className={classes.tableDataCell} key={idx}>
+										{(beforeJson[header] !== undefined ? beforeJson[header] : "-" )}
+									</TableCell>);
+								})
+							}
+						</TableRow>
 
-							<TableRow>
-								<TableCell className={classes.tableColumnHeadRed}> After Event </TableCell>
-								{
-									headers.slice(1).map( (header, idx) => {
-										return (<TableCell className={classes.tableDataCell} key={idx}>
-											{(afterJson[header] !== undefined ? afterJson[header] : "-" )}
-										</TableCell>)
-									})
-								}
-							</TableRow>
+						<TableRow>
+							<TableCell className={classes.tableColumnHeadRed}> After Event </TableCell>
+							{
+								headers.slice(1).map( (header, idx) => {
+									return (<TableCell className={classes.tableDataCell} key={idx}>
+										{(afterJson[header] !== undefined ? afterJson[header] : "-" )}
+									</TableCell>);
+								})
+							}
+						</TableRow>
 
-						</TableBody>
-					</Table>
-				</TableContainer>
-			</div>
+					</TableBody>
+				</Table>
+			</TableContainer>
+		</div>
 
 	);
 }

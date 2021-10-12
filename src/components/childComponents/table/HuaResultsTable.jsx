@@ -10,11 +10,11 @@ import {
 	TableRow,
 } from "@material-ui/core";
 
-import Radio from '@material-ui/core/Radio';
-import RadioGroup from '@material-ui/core/RadioGroup';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import FormControl from '@material-ui/core/FormControl';
-import FormLabel from '@material-ui/core/FormLabel';
+import Radio from "@material-ui/core/Radio";
+import RadioGroup from "@material-ui/core/RadioGroup";
+import FormControlLabel from "@material-ui/core/FormControlLabel";
+import FormControl from "@material-ui/core/FormControl";
+import FormLabel from "@material-ui/core/FormLabel";
 import {makeStyles} from "@material-ui/core/styles";
 
 const tableColumnHead = {
@@ -107,7 +107,7 @@ const useStyles = makeStyles({
 
 export function HuaResultsTable(props) {
 
-	const [huaBy, setHuaBy] = React.useState('tenure');
+	const [huaBy, setHuaBy] = React.useState("tenure");
 
 	const handleChange = (event) => {
 		setHuaBy(event.target.value);
@@ -241,78 +241,78 @@ export function HuaResultsTable(props) {
 	const classes = useStyles();
 
 	return (
-			<div>
-				<div style={{paddingLeft: "6px"}}>
-					<FormLabel component="legend" className={classes.title}>
+		<div>
+			<div style={{paddingLeft: "6px"}}>
+				<FormLabel component="legend" className={classes.title}>
 						Housing Unit Dislocation
-					</FormLabel>
+				</FormLabel>
 
-					<FormControl component="fieldset">
-						<RadioGroup row aria-label="Housing Unit Dislocation" name="huaBy" value={huaBy}
-												className={classes.radio} onChange={handleChange}>
-							<FormControlLabel value="tenure" control={<Radio color="primary"/>}
-																className= {classes.label}
-																label = {<Typography className={classes.label}>by Tenure</Typography>}/>
-							<FormControlLabel value="race" control={<Radio color="primary"/>}
-																label = {<Typography className={classes.label}>by Race / Ethnicity</Typography>}/>
-							<FormControlLabel value="income" control={<Radio color="primary"/>}
-																label = {<Typography className={classes.label}>by Household Income Level</Typography>}/>
+				<FormControl component="fieldset">
+					<RadioGroup row aria-label="Housing Unit Dislocation" name="huaBy" value={huaBy}
+						className={classes.radio} onChange={handleChange}>
+						<FormControlLabel value="tenure" control={<Radio color="primary"/>}
+							className= {classes.label}
+							label = {<Typography className={classes.label}>by Tenure</Typography>}/>
+						<FormControlLabel value="race" control={<Radio color="primary"/>}
+							label = {<Typography className={classes.label}>by Race / Ethnicity</Typography>}/>
+						<FormControlLabel value="income" control={<Radio color="primary"/>}
+							label = {<Typography className={classes.label}>by Household Income Level</Typography>}/>
 
-							<FormControlLabel value="disability" control={<Radio color="primary"/>}
-																label = {<Typography className={classes.label}>by Disability</Typography>}/>
-						</RadioGroup>
-					</FormControl>
-				</div>
+						<FormControlLabel value="disability" control={<Radio color="primary"/>}
+							label = {<Typography className={classes.label}>by Disability</Typography>}/>
+					</RadioGroup>
+				</FormControl>
+			</div>
 
-				{
-					(resultsJson !== undefined) ?
+			{
+				(resultsJson !== undefined) ?
 					<TableContainer>
-					<Table className={classes.table} size="small" aria-label="a dense table">
-					<TableHead>
-					<TableRow >
-						{
-							headers.map( (header, idx) => {
-							let headClass = classes.tableRowHead;
-							if (idx === 0){
-							headClass = classes.tableRowHeadFirst;
-						} else if (idx === headerSize -1){
-							headClass = classes.tableRowHeadRight;
-						}
-							return (<TableCell className={headClass} key={idx}>
-						{header}
-							</TableCell>)
-						})
-						}
-					</TableRow>
-					</TableHead>
-					<TableBody>
+						<Table className={classes.table} size="small" aria-label="a dense table">
+							<TableHead>
+								<TableRow >
+									{
+										headers.map( (header, idx) => {
+											let headClass = classes.tableRowHead;
+											if (idx === 0){
+												headClass = classes.tableRowHeadFirst;
+											} else if (idx === headerSize -1){
+												headClass = classes.tableRowHeadRight;
+											}
+											return (<TableCell className={headClass} key={idx}>
+												{header}
+											</TableCell>);
+										})
+									}
+								</TableRow>
+							</TableHead>
+							<TableBody>
 
-				{
-					resultsJson.map((e, idx) => {
-					return (
-					<TableRow key={idx}>
-					<TableCell
-					className={(idx === resultsJson.length - 1) ?
-					classes.tableColumnHeadTotal : classes.tableColumnHeadCharacteristics} key={"1_" + idx.toString()}>
-				{e.housing_unit_characteristics} </TableCell>
-					<TableCell className={classes.tableDataCellRed} key={"2_" + idx.toString()}>
-						{e.housing_unit_dislocation.toLocaleString('en-US')}
-					</TableCell>
-					<TableCell className={classes.tableDataCell} key={"3_" + idx.toString()} >
-						{e.housing_unit_in_total.toLocaleString('en-US')}
-					</TableCell>
-					</TableRow>
-					)
-				})
-				}
-					</TableBody>
-					</Table>
+								{
+									resultsJson.map((e, idx) => {
+										return (
+											<TableRow key={idx}>
+												<TableCell
+													className={(idx === resultsJson.length - 1) ?
+														classes.tableColumnHeadTotal : classes.tableColumnHeadCharacteristics} key={`1_${  idx.toString()}`}>
+													{e.housing_unit_characteristics} </TableCell>
+												<TableCell className={classes.tableDataCellRed} key={`2_${  idx.toString()}`}>
+													{e.housing_unit_dislocation.toLocaleString("en-US")}
+												</TableCell>
+												<TableCell className={classes.tableDataCell} key={`3_${  idx.toString()}`} >
+													{e.housing_unit_in_total.toLocaleString("en-US")}
+												</TableCell>
+											</TableRow>
+										);
+									})
+								}
+							</TableBody>
+						</Table>
 					</TableContainer>
 					:
-							<div style={{padding: "10px"}}> No data available for the selection</div>
-				}
+					<div style={{padding: "10px"}}> No data available for the selection</div>
+			}
 
-			</div>
+		</div>
 
 	);
 }

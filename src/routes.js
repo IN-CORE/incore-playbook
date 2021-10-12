@@ -27,9 +27,9 @@ export default (
 		{/*When deleting this, also delete the json initialization of props in each of the 3 components*/}
 		<Route exact path="/cge-results" render={() => {
 			return ( <div>
-					<CgeResultsTable resultsJson={null}/>
+				<CgeResultsTable resultsJson={null}/>
 				<br/>
-					<DislocationResultsTable resultsJson={null} headers={["UNITS", "% of UNITS"]}
+				<DislocationResultsTable resultsJson={null} headers={["UNITS", "% of UNITS"]}
 																	 title={"Housing Unit Dislocation"}/>
 				<br/>
 				<DislocationResultsTable resultsJson={null} headers={["POPULATION", "% of POPULATION"]}

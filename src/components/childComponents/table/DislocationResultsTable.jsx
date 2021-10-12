@@ -87,7 +87,6 @@ const useStyles = makeStyles({
 	}
 });
 
-
 export function DislocationResultsTable(props) {
 
 	let resultsJson = props.resultsJson;
@@ -117,63 +116,62 @@ export function DislocationResultsTable(props) {
 	const classes = useStyles();
 
 	return (
-			<div>
+		<div>
 
-				<div className={classes.title}> {title}</div>
+			<div className={classes.title}> {title}</div>
 
-				<TableContainer>
-					<Table className={classes.table} size="small" aria-label="a dense table">
-						<TableHead>
-							<TableRow >
-								{
-									headers.map( (header, idx) => {
-										let headClass = classes.tableRowHead;
-										if (idx === 0){
-											headClass = classes.tableRowHeadFirst;
-										} else if (idx === headerSize -1){
-											headClass = classes.tableRowHeadRight;
-										}
-										return (<TableCell className={headClass} key={idx}>
-											{header}
-										</TableCell>)
-									})
-								}
-							</TableRow>
-						</TableHead>
-						<TableBody>
-							<TableRow>
-								<TableCell className={classes.tableColumnHeadRed}> Dislocated </TableCell>
-								<TableCell className={classes.tableDataCellDislocated}>
-									{resultsJson.dislocated.number.toLocaleString('en-US')}
-								</TableCell>
-								<TableCell className={classes.tableDataCellDislocated}>
-									{resultsJson.dislocated.percentage * 100}%
-								</TableCell>
-							</TableRow>
+			<TableContainer>
+				<Table className={classes.table} size="small" aria-label="a dense table">
+					<TableHead>
+						<TableRow >
+							{
+								headers.map( (header, idx) => {
+									let headClass = classes.tableRowHead;
+									if (idx === 0){
+										headClass = classes.tableRowHeadFirst;
+									} else if (idx === headerSize -1){
+										headClass = classes.tableRowHeadRight;
+									}
+									return (<TableCell className={headClass} key={idx}>
+										{header}
+									</TableCell>);
+								})
+							}
+						</TableRow>
+					</TableHead>
+					<TableBody>
+						<TableRow>
+							<TableCell className={classes.tableColumnHeadRed}> Dislocated </TableCell>
+							<TableCell className={classes.tableDataCellDislocated}>
+								{resultsJson.dislocated.number.toLocaleString("en-US")}
+							</TableCell>
+							<TableCell className={classes.tableDataCellDislocated}>
+								{resultsJson.dislocated.percentage * 100}%
+							</TableCell>
+						</TableRow>
 
-							<TableRow>
-								<TableCell className={classes.tableColumnHeadGreen}> Not Dislocated </TableCell>
-								<TableCell className={classes.tableDataCell}>
-									{resultsJson.not_dislocated.number.toLocaleString('en-US')}
-								</TableCell>
-								<TableCell className={classes.tableDataCell}>
-									{resultsJson.not_dislocated.percentage * 100}%
-								</TableCell>
-							</TableRow>
+						<TableRow>
+							<TableCell className={classes.tableColumnHeadGreen}> Not Dislocated </TableCell>
+							<TableCell className={classes.tableDataCell}>
+								{resultsJson.not_dislocated.number.toLocaleString("en-US")}
+							</TableCell>
+							<TableCell className={classes.tableDataCell}>
+								{resultsJson.not_dislocated.percentage * 100}%
+							</TableCell>
+						</TableRow>
 
-							<TableRow>
-								<TableCell className={classes.tableRowTotal}> Total </TableCell>
-								<TableCell className={classes.tableDataCell}>
-									{resultsJson.total.number.toLocaleString('en-US')}
-								</TableCell>
-								<TableCell className={classes.tableDataCell}>
-								</TableCell>
-							</TableRow>
+						<TableRow>
+							<TableCell className={classes.tableRowTotal}> Total </TableCell>
+							<TableCell className={classes.tableDataCell}>
+								{resultsJson.total.number.toLocaleString("en-US")}
+							</TableCell>
+							<TableCell className={classes.tableDataCell} />
+						</TableRow>
 
-						</TableBody>
-					</Table>
-				</TableContainer>
-			</div>
+					</TableBody>
+				</Table>
+			</TableContainer>
+		</div>
 
 	);
 }
