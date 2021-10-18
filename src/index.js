@@ -28,8 +28,8 @@ const theme = createMuiTheme({
 render(
 	<MuiThemeProvider theme={theme}>
 		<Provider store={store}>
-			{/*<BrowserRouter basename={config.baseUrlRoute}>*/}
-			<BrowserRouter>
+			<BrowserRouter basename={config.baseUrlRoute}>
+				{/*<BrowserRouter>*/}
 				{routes}
 			</BrowserRouter>
 		</Provider>
