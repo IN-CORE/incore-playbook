@@ -5,11 +5,16 @@ on:
     branches:
       - master
       - develop
+      - 'release/*'
 
     tags:
       - '*'
 
   pull_request:
+    branches:
+      - master
+      - develop
+      - 'release/*'
 
 env:
   MAIN_REPO: IN-CORE/incore-playbook
@@ -90,23 +95,12 @@ jobs:
       # build image
       - name: Build image
         uses: elgohr/Publish-Docker-Github-Action@3.04
-        env:
-          BRANCH: ${{ env.GITHUB_BRANCH }}
-          VERSION: ${{ env.VERSION }}
-          BUILDNUMBER: ${{ github.run_number }}
-          GITSHA1: ${{ github.sha }}
         with:
-          registry: hub.ncsa.illinois.edu
           name: incore/playbook/frontend
-          #username: ${{ secrets.HUB_USERNAME }}
-          #password: ${{ secrets.HUB_PASSWORD }}
-          tags: "${{ env.TAGS }}"
-          buildargs: BRANCH,VERSION,BUILDNUMBER,GITSHA1
           no_push: true
 
       # this will publish to NCSA
       - name: Publish to NCSA Hub
-        #if: github.event_name != 'pull_request' && github.repository == env.MAIN_REPO
         if: github.repository == env.MAIN_REPO
         uses: elgohr/Publish-Docker-Github-Action@3.04
         env:
