@@ -10,6 +10,7 @@ import {
 } from "@material-ui/core";
 
 import {makeStyles} from "@material-ui/core/styles";
+import {round} from "../../../utils/common";
 
 const tableColumnHead = {
 	color: "#FFFFFF",
@@ -129,7 +130,7 @@ export function DislocationResultsTable(props) {
 								{resultsJson.dislocated.number.toLocaleString("en-US")}
 							</TableCell>
 							<TableCell className={classes.tableDataCellDislocated}>
-								{resultsJson.dislocated.percentage * 100}%
+								{round(resultsJson.dislocated.percentage * 100, 1)}%
 							</TableCell>
 						</TableRow>
 
@@ -139,7 +140,7 @@ export function DislocationResultsTable(props) {
 								{resultsJson.not_dislocated.number.toLocaleString("en-US")}
 							</TableCell>
 							<TableCell className={classes.tableDataCell}>
-								{resultsJson.not_dislocated.percentage * 100}%
+								{round(resultsJson.not_dislocated.percentage * 100, 1)}%
 							</TableCell>
 						</TableRow>
 
