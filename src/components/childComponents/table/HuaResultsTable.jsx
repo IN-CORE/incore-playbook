@@ -118,7 +118,7 @@ export function HuaResultsTable(props) {
 
 	resultsJson = resultsJson[huaBy];
 
-	let headers = ["UNIT CHARACTERISTICS", "# UNITS DISLOCATED", "TOTAL UNITS"];
+	let headers = ["HOUSEHOLD CHARACTERISTICS", "# HOUSEHOLDS DISLOCATED", "TOTAL HOUSEHOLDS", "% HOUSEHOLDS DISLOCATED"];
 
 	const headerSize = headers.length;
 
@@ -128,11 +128,11 @@ export function HuaResultsTable(props) {
 		<div>
 			<div style={{paddingLeft: "6px"}}>
 				<FormLabel component="legend" className={classes.title}>
-						Housing Unit Dislocation
+						Household Dislocation
 				</FormLabel>
 
 				<FormControl component="fieldset">
-					<RadioGroup row aria-label="Housing Unit Dislocation" name="huaBy" value={huaBy}
+					<RadioGroup row aria-label="Household Dislocation" name="huaBy" value={huaBy}
 						className={classes.radio} onChange={handleChange}>
 						<FormControlLabel value="tenure" control={<Radio color="primary" size="small"/>}
 							className= {classes.label}
