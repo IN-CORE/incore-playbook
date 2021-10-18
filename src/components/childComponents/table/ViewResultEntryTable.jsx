@@ -253,7 +253,7 @@ export function ViewResultEntryTable(props) {
 													</TableCell>
 												</TableRow>
 												<TableRow className={classes.subBodyRow}>
-													<TableCell>EPF Pole Damage</TableCell>
+													<TableCell>Pole Damage (Electrical Power Network)</TableCell>
 													<TableCell colSpan={3}/>
 													<TableCell colSpan={2}>
 														<Link color="primary" onClick={() =>
@@ -270,7 +270,7 @@ export function ViewResultEntryTable(props) {
 													</TableCell>
 												</TableRow>
 												<TableRow className={classes.subBodyRow}>
-													<TableCell>EPF Substation Damage</TableCell>
+													<TableCell>Substation Damage (Electrical Power Network)</TableCell>
 													<TableCell colSpan={3}/>
 													<TableCell colSpan={2}>
 														<Link color="primary" onClick={() =>
@@ -287,7 +287,7 @@ export function ViewResultEntryTable(props) {
 													</TableCell>
 												</TableRow>
 												<TableRow className={classes.subBodyRow}>
-													<TableCell>Building Functionality (without interdependency)</TableCell>
+													<TableCell>Building Functionality (w/o Electrical Power Dependency)</TableCell>
 													<TableCell colSpan={3}/>
 													<TableCell colSpan={2}>
 														<Link color="primary" onClick={() => {previewBldgMCS(execution["id"]);}}
@@ -303,7 +303,7 @@ export function ViewResultEntryTable(props) {
 													</TableCell>
 												</TableRow>
 												<TableRow className={classes.subBodyRow}>
-													<TableCell>Building Functionality (with interdependency)</TableCell>
+													<TableCell>Building Functionality (with Electrical Power Dependency)</TableCell>
 													<TableCell colSpan={3}/>
 													<TableCell colSpan={2}>
 														<Link color="primary" onClick={() => {previewBldgFunc(execution["id"]);}}
@@ -319,7 +319,7 @@ export function ViewResultEntryTable(props) {
 													</TableCell>
 												</TableRow>
 												<TableRow className={classes.subBodyRow}>
-													<TableCell>CGE</TableCell>
+													<TableCell>Economic Prediction Model (Computable General Equilibrium)</TableCell>
 													<TableCell colSpan={3}/>
 													<TableCell colSpan={2}>
 														<Link color="primary" onClick={() => {previewCGE(execution["id"]);}}
