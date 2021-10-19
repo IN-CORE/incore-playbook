@@ -13,7 +13,7 @@ const ParseData = (data) => {
 	return chartData;
 };
 
-const CGEBarChart = (props) => {
+export default function CGEBarChart(props) {
 	const {height, width, data, title, xAxisLegend, yAxisLegend} = props;
 
 
@@ -27,6 +27,7 @@ const CGEBarChart = (props) => {
 				data={ParseData(data)}
 				options={{
 					title: title,
+					legend: {position: "none"},
 					chartArea: { width: "50%" },
 					colors: ["#A1BE2E", "#DB4F60"],
 					hAxis: {
@@ -42,6 +43,4 @@ const CGEBarChart = (props) => {
 			/>
 		</div>
 	);
-};
-
-export default CGEBarChart;
+}

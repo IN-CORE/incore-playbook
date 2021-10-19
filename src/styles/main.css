@@ -253,3 +253,38 @@ body {
 	display: inline;
 	vertical-align: super;
 }
+
+
+.statTitle{
+	margin: 55px auto;
+}
+
+.mapContainer{
+	height: 366px;
+}
+
+.mapContainerFull{
+	height: 800px;
+}
+
+.previewModal{
+	padding: 50px;
+}
+
+.previewTitle{
+	height: 20px;
+	color: #000000;
+	font-size: 18px;
+	font-weight: 500;
+	letter-spacing: 0;
+	line-height: 20px;
+}
+
+.previewSubTitle{
+	height: 18px;
+	color: #69707F;
+	font-size: 15px;
+	font-weight: 500;
+	letter-spacing: 0;
+	line-height: 18px;
+}

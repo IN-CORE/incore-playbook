@@ -117,10 +117,11 @@ function stableSort(array, comparator) {
 	return stabilizedThis.map((el) => el[0]);
 }
 
-export function ViewFunctionalityResults(props) {
+export function ViewResultEntryTable(props) {
 
 	const {fieldNames, executions, previewBldgDmg, downloadBldgDmg, previewEpfDmg, downloadEpfDmg,
-		previewBldgFunc, downloadBldgFunc, previewInterd, previewBldgMCS, downloadBldgMCS} = props;
+		previewBldgFunc, downloadBldgFunc, previewInterd, previewBldgMCS, downloadBldgMCS, previewPopDisl,
+		previewCGE} = props;
 
 	const [expandId, setExpandId] = useState("");
 	const [collapseId, setCollapseId] = useState("");
@@ -252,7 +253,7 @@ export function ViewFunctionalityResults(props) {
 													</TableCell>
 												</TableRow>
 												<TableRow className={classes.subBodyRow}>
-													<TableCell>EPF Pole Damage</TableCell>
+													<TableCell>Pole Damage (Electrical Power Network)</TableCell>
 													<TableCell colSpan={3}/>
 													<TableCell colSpan={2}>
 														<Link color="primary" onClick={() =>
@@ -269,7 +270,7 @@ export function ViewFunctionalityResults(props) {
 													</TableCell>
 												</TableRow>
 												<TableRow className={classes.subBodyRow}>
-													<TableCell>EPF Substation Damage</TableCell>
+													<TableCell>Substation Damage (Electrical Power Network)</TableCell>
 													<TableCell colSpan={3}/>
 													<TableCell colSpan={2}>
 														<Link color="primary" onClick={() =>
@@ -286,7 +287,7 @@ export function ViewFunctionalityResults(props) {
 													</TableCell>
 												</TableRow>
 												<TableRow className={classes.subBodyRow}>
-													<TableCell>Building Functionality (without interdependency)</TableCell>
+													<TableCell>Building Functionality (w/o Electrical Power Dependency)</TableCell>
 													<TableCell colSpan={3}/>
 													<TableCell colSpan={2}>
 														<Link color="primary" onClick={() => {previewBldgMCS(execution["id"]);}}
@@ -302,7 +303,7 @@ export function ViewFunctionalityResults(props) {
 													</TableCell>
 												</TableRow>
 												<TableRow className={classes.subBodyRow}>
-													<TableCell>Building Functionality (with interdependency)</TableCell>
+													<TableCell>Building Functionality (with Electrical Power Dependency)</TableCell>
 													<TableCell colSpan={3}/>
 													<TableCell colSpan={2}>
 														<Link color="primary" onClick={() => {previewBldgFunc(execution["id"]);}}
@@ -317,7 +318,38 @@ export function ViewFunctionalityResults(props) {
 																  classes.clickableLink : classes.clickableLinkDisabled}>Download</Link>
 													</TableCell>
 												</TableRow>
-											</> :
+												<TableRow className={classes.subBodyRow}>
+													<TableCell>Economic Prediction Model (Computable General Equilibrium)</TableCell>
+													<TableCell colSpan={3}/>
+													<TableCell colSpan={2}>
+														<Link color="primary" onClick={() => {previewCGE(execution["id"]);}}
+															  className={execution["finalStatus"] === undefined ||
+															  execution["finalStatus"] === "FINISHED" ?
+																  classes.clickableLink : classes.clickableLinkDisabled}>
+															View
+														</Link>
+														<Link color="primary" className={classes.clickableLinkDisabled}>
+															Download
+														</Link>
+													</TableCell>
+												</TableRow>
+												<TableRow className={classes.subBodyRow}>
+													<TableCell>Population Dislocation</TableCell>
+													<TableCell colSpan={3}/>
+													<TableCell colSpan={2}>
+														<Link color="primary" onClick={() => {previewPopDisl(execution["id"]);}}
+															  className={execution["finalStatus"] === undefined ||
+															  execution["finalStatus"] === "FINISHED" ?
+																  classes.clickableLink : classes.clickableLinkDisabled}>
+															View
+														</Link>
+														<Link color="primary" className={classes.clickableLinkDisabled}>
+															Download
+														</Link>
+													</TableCell>
+												</TableRow>
+											</>
+											:
 											null
 									}
 								</>

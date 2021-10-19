@@ -67,7 +67,7 @@ export default function CgeDescription(props) {
 	);
 
 	return (
-		<Box style={{"padding": "20px 40px"}}>
+		<Box>
 			<Box style={{"marginBottom": "30px"}}>
 				<Typography className={classes.cgeDescriptionTitle}>
 					{cgeDescription["textTitle"]}

@@ -237,7 +237,7 @@ export const inputDatasetTypes = {
 		"dispatchKey": "RECEIVE_BLOCK_GROUP"
 	}],
 	valueLosses: [{
-		"description": "value loss beta distribution parameters",
+		"description": "Value loss beta distribution parameters",
 		"type": "incore:valuLossParam",
 		"format": "table",
 		"num": 5,
