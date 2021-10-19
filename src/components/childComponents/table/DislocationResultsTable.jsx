@@ -127,27 +127,49 @@ export function DislocationResultsTable(props) {
 						<TableRow>
 							<TableCell className={classes.tableColumnHeadRed}> Dislocated </TableCell>
 							<TableCell className={classes.tableDataCellDislocated}>
-								{resultsJson.dislocated.number.toLocaleString("en-US")}
+								{
+									"households" in resultsJson.dislocated ?
+										resultsJson.dislocated["households"].toLocaleString("en-US")
+										:
+										resultsJson.dislocated["population"].toLocaleString("en-US")
+								}
 							</TableCell>
 							<TableCell className={classes.tableDataCellDislocated}>
-								{round(resultsJson.dislocated.percentage * 100, 1)}%
+								{
+									"%_of_households" in resultsJson.dislocated ?
+										round(resultsJson.dislocated["%_of_households"], 1):
+										round(resultsJson.dislocated["%_of_population"], 1)
+								}%
 							</TableCell>
 						</TableRow>
 
 						<TableRow>
 							<TableCell className={classes.tableColumnHeadGreen}> Not Dislocated </TableCell>
 							<TableCell className={classes.tableDataCell}>
-								{resultsJson.not_dislocated.number.toLocaleString("en-US")}
+								{
+									"households" in resultsJson.not_dislocated ?
+										resultsJson.not_dislocated["households"].toLocaleString("en-US")
+										:
+										resultsJson.not_dislocated["population"].toLocaleString("en-US")
+								}
 							</TableCell>
 							<TableCell className={classes.tableDataCell}>
-								{round(resultsJson.not_dislocated.percentage * 100, 1)}%
+								{
+									"%_of_households" in resultsJson.not_dislocated ?
+										round(resultsJson.not_dislocated["%_of_households"], 1):
+										round(resultsJson.not_dislocated["%_of_population"], 1)
+								}%
 							</TableCell>
 						</TableRow>
 
 						<TableRow>
 							<TableCell className={classes.tableRowTotal}> Total </TableCell>
 							<TableCell className={classes.tableDataCell}>
-								{resultsJson.total.number.toLocaleString("en-US")}
+								{
+									"households" in resultsJson.total ?
+										resultsJson.total["households"].toLocaleString("en-US") :
+										resultsJson.total["population"].toLocaleString("en-US")
+								}
 							</TableCell>
 							<TableCell className={classes.tableDataCell} />
 						</TableRow>

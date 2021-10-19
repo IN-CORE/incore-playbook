@@ -179,12 +179,12 @@ export function HuaResultsTable(props) {
 												<TableCell
 													className={(idx === resultsJson.length - 1) ?
 														classes.tableColumnHeadTotal : classes.tableColumnHeadCharacteristics} key={`1_${  idx.toString()}`}>
-													{e.housing_unit_characteristics} </TableCell>
+													{e.household_characteristics} </TableCell>
 												<TableCell className={classes.tableDataCellRed} key={`2_${  idx.toString()}`}>
-													{e.housing_unit_dislocation.toLocaleString("en-US")}
+													{e.household_dislocated.toLocaleString("en-US")}
 												</TableCell>
 												<TableCell className={classes.tableDataCell} key={`3_${  idx.toString()}`} >
-													{e.housing_unit_in_total.toLocaleString("en-US")}
+													{e.total_households.toLocaleString("en-US")}
 												</TableCell>
 											</TableRow>
 										);
