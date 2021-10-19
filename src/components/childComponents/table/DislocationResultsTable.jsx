@@ -89,7 +89,6 @@ const useStyles = makeStyles({
 	}
 });
 
-
 export function DislocationResultsTable(props) {
 
 	let resultsJson = props.resultsJson;
@@ -103,7 +102,6 @@ export function DislocationResultsTable(props) {
 	return (
 		<div>
 			<div className={classes.title}>{title}</div>
-
 			<TableContainer>
 				<Table className={classes.table} size="small" aria-label="a dense table">
 					<TableHead>

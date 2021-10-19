@@ -150,15 +150,15 @@ export function FunctionalityTable(props) {
 				</TableHead>
 				<TableBody>
 					{
-						funcResults["by_category"].map((categoryItem, idx) => {
+						funcResults["by_category"].map((categoryItem, _) => {
 							let firstMatchIdxx = -1;
 							return (
 								<>
 									{
 										funcResults["by_cluster"].map((clusterItem, idxx) =>{
-											let style = {};
+											// let style = {};
 											let funcPercent = -1;
-											let nonFuncPercent = 100;
+											// let nonFuncPercent = 100;
 
 											if (clusterItem["category"] === categoryItem["category"]) {
 												if(clusterItem["percent_functional"] > 0) {

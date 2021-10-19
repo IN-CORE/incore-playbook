@@ -19,7 +19,7 @@ export function FunctionalityGraph(props) {
 	let funcCount = [];
 	let nonFuncCount = [];
 
-	categorySummary.map((entry, idx) => {
+	categorySummary.map((entry, _) => {
 		funcPercent.push(entry.percent_functional < 0 ? 0 : round(entry.percent_functional*100, 1));
 		nonFuncPercent.push(entry.percent_non_functional < 0 ? 0 : round(entry.percent_non_functional*100, 1));
 		funcCount.push(entry.num_functional < 0 ? 0 : entry.num_functional);

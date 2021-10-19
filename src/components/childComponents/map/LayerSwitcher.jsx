@@ -1,4 +1,4 @@
-import LayerSwitcher from "ol-layerswitcher/src/ol-layerswitcher";
+import LayerSwitcher from "ol-layerswitcher";
 
 class CustomLayerSwitcher extends LayerSwitcher {
 	constructor(options) {

@@ -207,7 +207,7 @@ export default function ViewResult(props) {
 							{
 								interdNetworks.map((interdNetwork) => {
 									return (
-										<IncoreMenuItem value={interdNetwork["id"]} interdNetwork={interdNetwork["id"]}>
+										<IncoreMenuItem key={interdNetwork["id"]} value={interdNetwork["id"]} interdNetwork={interdNetwork["id"]}>
 											{interdNetwork["title"]}</IncoreMenuItem>
 									);
 								})
@@ -231,7 +231,7 @@ export default function ViewResult(props) {
 										{
 											sectorShocks.map((item) => {
 												return (
-													<IncoreMenuItem value={item["id"]} sectorShock={item["id"]}>
+													<IncoreMenuItem key={item["id"]} value={item["id"]} sectorShock={item["id"]}>
 														{item["title"]}</IncoreMenuItem>
 												);
 											})
@@ -248,7 +248,7 @@ export default function ViewResult(props) {
 										{
 											huas.map((item) => {
 												return (
-													<IncoreMenuItem value={item["id"]} hua={item["id"]}>
+													<IncoreMenuItem key={item["id"]} value={item["id"]} hua={item["id"]}>
 														{item["title"]}</IncoreMenuItem>
 												);
 											})
@@ -265,7 +265,7 @@ export default function ViewResult(props) {
 										{
 											blockGroups.map((item) => {
 												return (
-													<IncoreMenuItem value={item["id"]} blockGroup={item["id"]}>
+													<IncoreMenuItem key={item["id"]} value={item["id"]} blockGroup={item["id"]}>
 														{item["title"]}</IncoreMenuItem>
 												);
 											})
@@ -282,7 +282,7 @@ export default function ViewResult(props) {
 										{
 											valueLosses.map((item) => {
 												return (
-													<IncoreMenuItem value={item["id"]} valueLoss={item["id"]}>
+													<IncoreMenuItem key={item["id"]} value={item["id"]} valueLoss={item["id"]}>
 														{item["title"]}</IncoreMenuItem>
 												);
 											})
