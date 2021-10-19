@@ -16,6 +16,7 @@ import FormControlLabel from "@material-ui/core/FormControlLabel";
 import FormControl from "@material-ui/core/FormControl";
 import FormLabel from "@material-ui/core/FormLabel";
 import {makeStyles} from "@material-ui/core/styles";
+import {round} from "../../../utils/common";
 
 const tableColumnHead = {
 	color: "#69707F",
@@ -160,7 +161,7 @@ export function HuaResultsTable(props) {
 											let headClass = classes.tableRowHead;
 											if (idx === 0){
 												headClass = classes.tableRowHeadFirst;
-											} else if (idx === headerSize -1){
+											} else if (header !== "# HOUSEHOLDS DISLOCATED"){
 												headClass = classes.tableRowHeadRight;
 											}
 											return (<TableCell className={headClass} key={idx}>
@@ -179,12 +180,15 @@ export function HuaResultsTable(props) {
 												<TableCell
 													className={(idx === resultsJson.length - 1) ?
 														classes.tableColumnHeadTotal : classes.tableColumnHeadCharacteristics} key={`1_${  idx.toString()}`}>
-													{e.household_characteristics} </TableCell>
+													{e["household_characteristics"]} </TableCell>
 												<TableCell className={classes.tableDataCellRed} key={`2_${  idx.toString()}`}>
-													{e.household_dislocated.toLocaleString("en-US")}
+													{e["household_dislocated"].toLocaleString("en-US")}
 												</TableCell>
 												<TableCell className={classes.tableDataCell} key={`3_${  idx.toString()}`} >
-													{e.total_households.toLocaleString("en-US")}
+													{e["total_households"].toLocaleString("en-US")}
+												</TableCell>
+												<TableCell className={classes.tableDataCell} key={`3_${  idx.toString()}`} >
+													{round(e["%_household_dislocated"], 1)}%
 												</TableCell>
 											</TableRow>
 										);
