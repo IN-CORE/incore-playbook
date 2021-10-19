@@ -114,7 +114,8 @@ export default function ViewResult(props) {
 
 	const handleRunButtonClick = async () =>{
 		const datawolfJson = await submitExecution(title, description, selectedBldgId, selectedSubstationId,
-			selectedPoleId, selectedInterdNetworkId, selectedTornadoId);
+			selectedPoleId, selectedInterdNetworkId, selectedBldgToSectorId, selectedHuaId, selectedBlockGroupId,
+			selectedValueLossId, selectedTornadoId);
 		if (datawolfJson && datawolfJson !== "") {
 			setTitle("");
 			setDescription("");
@@ -122,6 +123,10 @@ export default function ViewResult(props) {
 			setSubstationId("");
 			setPoleId("");
 			setInterdNetworkId("");
+			setBldgToSectorId("");
+			setHuaId("");
+			setBlockGroupId("");
+			setValueLossId("");
 			setTornadoId("");
 
 			// update execution list and then jump to view result tab
