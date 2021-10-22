@@ -487,298 +487,38 @@ export default function ViewResult(props) {
 		];
 		handleLayerUpdate(layerDef);
 
-		// TODO uncomment those to work with datawolf output
-		// // // total dislocation
-		// let totalDislTableId = executionItem["datasets"][datawolfConfig["datasets"]["totalDislocationId"]];
-		// let totalDislTable = await getOutputFileJson(totalDislTableId);
-		// let totalDislTableIdContent = JSON.parse(totalDislTable);
-		//
-		// // dislocation group by
-		// let dislocationByRaceId = executionItem["datasets"][datawolfConfig["datasets"]["dislocationByRaceId"]];
-		// let dislocationByRace = await getOutputFileJson(dislocationByRaceId);
-		// let dislocationByRaceContent = JSON.parse(dislocationByRace);
-		//
-		// let dislocationByTenureId = executionItem["datasets"][datawolfConfig["datasets"]["dislocationByTenureId"]];
-		// let dislocationByTenure = await getOutputFileJson(dislocationByTenureId);
-		// let dislocationByTenureContent = JSON.parse(dislocationByTenure);
-		//
-		// let dislocationByIncomeId = executionItem["datasets"][datawolfConfig["datasets"]["dislocationByIncomeId"]];
-		// let dislocationByIncome = await getOutputFileJson(dislocationByIncomeId);
-		// let dislocationByIncomeContent = JSON.parse(dislocationByIncome);
-		//
-		// let dislocationByHousingTypeId = executionItem["datasets"][datawolfConfig["datasets"]["dislocationByHousingTypeId"]];
-		// let dislocationByHousingType = await getOutputFileJson(dislocationByHousingTypeId);
-		// let dislocationByHousingTypeIdContent = JSON.parse(dislocationByHousingType);
-		// setTables(
-		// 	{
-		// 		"totalResultsTable": totalDislTableIdContent,
-		// 		"huaResultsTable":{
-		// 			"income": dislocationByIncomeContent,
-		// 			"race": dislocationByRaceContent,
-		// 			"tenure": dislocationByTenureContent,
-		// 			"housingType": dislocationByHousingTypeIdContent
-		// 		}}
-		// );
+		// total dislocation
+		let totalDislTableId = executionItem["datasets"][datawolfConfig["datasets"]["totalDislocationId"]];
+		let totalDislTable = await getOutputFileJson(totalDislTableId);
+		let totalDislTableIdContent = JSON.parse(totalDislTable);
 
+		// dislocation group by
+		let dislocationByRaceId = executionItem["datasets"][datawolfConfig["datasets"]["dislocationByRaceId"]];
+		let dislocationByRace = await getOutputFileJson(dislocationByRaceId);
+		let dislocationByRaceContent = JSON.parse(dislocationByRace);
+
+		let dislocationByTenureId = executionItem["datasets"][datawolfConfig["datasets"]["dislocationByTenureId"]];
+		let dislocationByTenure = await getOutputFileJson(dislocationByTenureId);
+		let dislocationByTenureContent = JSON.parse(dislocationByTenure);
+
+		let dislocationByIncomeId = executionItem["datasets"][datawolfConfig["datasets"]["dislocationByIncomeId"]];
+		let dislocationByIncome = await getOutputFileJson(dislocationByIncomeId);
+		let dislocationByIncomeContent = JSON.parse(dislocationByIncome);
+
+		let dislocationByHousingTypeId = executionItem["datasets"][datawolfConfig["datasets"]["dislocationByHousingTypeId"]];
+		let dislocationByHousingType = await getOutputFileJson(dislocationByHousingTypeId);
+		let dislocationByHousingTypeIdContent = JSON.parse(dislocationByHousingType);
 		setTables(
 			{
-				"totalResultsTable": {
-					"household_dislocation_in_total":{
-						"dislocated":{
-							"households":4990,
-							"%_of_households":19.14371211539937
-						},
-						"not_dislocated":{
-							"households":21076,
-							"%_of_households":80.85628788460063
-						},
-						"total":{
-							"households":26066,
-							"%_of_households":100
-						}
-					},
-					"population_dislocation_in_total":{
-						"dislocated":{
-							"population":10726,
-							"%_of_population":19.115681417190924
-						},
-						"not_dislocated":{
-							"population":45385,
-							"%_of_population":80.88431858280907
-						},
-						"total":{
-							"population":56111,
-							"%_of_population":100
-						}
-					}
-				},
+				"totalResultsTable": totalDislTableIdContent,
 				"huaResultsTable":{
-					"income": [
-						{
-							"household_characteristics":"HH1 (less than $15,000)",
-							"household_dislocated":647,
-							"total_households":3552,
-							"%_household_dislocated":18.21509009009009,
-							"population_dislocated":1197,
-							"total_population":5884,
-							"%_population_dislocated":20.343303874915023
-						},
-						{
-							"household_characteristics":"HH2 ($15,000 to $35,000)",
-							"household_dislocated":631,
-							"total_households":3391,
-							"%_household_dislocated":18.608080212326747,
-							"population_dislocated":1191,
-							"total_population":6341,
-							"%_population_dislocated":18.782526415391896
-						},
-						{
-							"household_characteristics":"HH3 ($35,000 to $70,000)",
-							"household_dislocated":2127,
-							"total_households":10461,
-							"%_household_dislocated":20.332664181244624,
-							"population_dislocated":4960,
-							"total_population":25368,
-							"%_population_dislocated":19.552191737622202
-						},
-						{
-							"household_characteristics":"HH4 ($70,000 to $120,000)",
-							"household_dislocated":292,
-							"total_households":1796,
-							"%_household_dislocated":16.258351893095767,
-							"population_dislocated":820,
-							"total_population":5092,
-							"%_population_dislocated":16.10369206598586
-						},
-						{
-							"household_characteristics":"HH5 (More than $120,000)",
-							"household_dislocated":323,
-							"total_households":2248,
-							"%_household_dislocated":14.36832740213523,
-							"population_dislocated":876,
-							"total_population":6416,
-							"%_population_dislocated":13.653366583541146
-						},
-						{
-							"household_characteristics":"Unknown",
-							"household_dislocated":970,
-							"total_households":4618,
-							"%_household_dislocated":21.004763967085317,
-							"population_dislocated":1682,
-							"total_population":7010,
-							"%_population_dislocated":23.99429386590585
-						},
-						{
-							"household_characteristics":"Total",
-							"household_dislocated":4990,
-							"total_households":26066,
-							"%_household_dislocated":19.14371211539937,
-							"population_dislocated":10726,
-							"total_population":56111,
-							"%_population_dislocated":19.115681417190924
-						}
-					],
-					"race": [
-						{
-							"household_characteristics":"Not Hispanic/White",
-							"household_dislocated":4127,
-							"total_households":20889,
-							"%_household_dislocated":19.75680980420317,
-							"population_dislocated":9238,
-							"total_population":47637,
-							"%_population_dislocated":19.392489031635073
-						},
-						{
-							"household_characteristics":"Not Hispanic/Black",
-							"household_dislocated":96,
-							"total_households":638,
-							"%_household_dislocated":15.047021943573668,
-							"population_dislocated":258,
-							"total_population":1540,
-							"%_population_dislocated":16.753246753246753
-						},
-						{
-							"household_characteristics":"Not Hispanic/Other Race",
-							"household_dislocated":216,
-							"total_households":1224,
-							"%_household_dislocated":17.647058823529413,
-							"population_dislocated":524,
-							"total_population":2986,
-							"%_population_dislocated":17.54855994641661
-						},
-						{
-							"household_characteristics":"Hispanic",
-							"household_dislocated":113,
-							"total_households":605,
-							"%_household_dislocated":18.677685950413224,
-							"population_dislocated":368,
-							"total_population":1916,
-							"%_population_dislocated":19.206680584551147
-						},
-						{
-							"household_characteristics":"No Race or Ethnicity Data",
-							"household_dislocated":6,
-							"total_households":29,
-							"%_household_dislocated":20.689655172413794,
-							"population_dislocated":338,
-							"total_population":2032,
-							"%_population_dislocated":16.633858267716537
-						},
-						{
-							"household_characteristics":"Total",
-							"household_dislocated":4558,
-							"total_households":23385,
-							"%_household_dislocated":19.491126790677786,
-							"population_dislocated":10726,
-							"total_population":56111,
-							"%_population_dislocated":19.115681417190924
-						}
-					],
-					"tenure": [
-						{
-							"household_characteristics":"Owner occupied",
-							"household_dislocated":2464,
-							"total_households":13065,
-							"%_household_dislocated":18.859548411787216,
-							"population_dislocated":5767,
-							"total_population":31111,
-							"%_population_dislocated":18.536851917328274
-						},
-						{
-							"household_characteristics":"Renter occupied",
-							"household_dislocated":2088,
-							"total_households":10291,
-							"%_household_dislocated":20.289573413662424,
-							"population_dislocated":4621,
-							"total_population":22968,
-							"%_population_dislocated":20.119296412399862
-						},
-						{
-							"household_characteristics":"Nursing facilities",
-							"household_dislocated":5,
-							"total_households":10,
-							"%_household_dislocated":50.0,
-							"population_dislocated":329,
-							"total_population":688,
-							"%_population_dislocated":47.81976744186046
-						},
-						{
-							"household_characteristics":"Other group quarters",
-							"household_dislocated":1,
-							"total_households":19,
-							"%_household_dislocated":5.263157894736842,
-							"population_dislocated":9,
-							"total_population":1344,
-							"%_population_dislocated":0.6696428571428571
-						},
-						{
-							"household_characteristics":"Vacant for rent",
-							"household_dislocated":174,
-							"total_households":1084,
-							"%_household_dislocated":16.051660516605164,
-							"population_dislocated":0,
-							"total_population":0,
-							"%_population_dislocated":null
-						},
-						{
-							"household_characteristics":"Vacant for sale",
-							"household_dislocated":113,
-							"total_households":608,
-							"%_household_dislocated":18.585526315789476,
-							"population_dislocated":0,
-							"total_population":0,
-							"%_population_dislocated":null
-						},
-						{
-							"household_characteristics":"Vacant other",
-							"household_dislocated":145,
-							"total_households":989,
-							"%_household_dislocated":14.661274014155712,
-							"population_dislocated":0,
-							"total_population":0,
-							"%_population_dislocated":null
-						},
-						{
-							"household_characteristics":"Total",
-							"household_dislocated":4990,
-							"total_households":26066,
-							"%_household_dislocated":19.14371211539937,
-							"population_dislocated":10726,
-							"total_population":56111,
-							"%_population_dislocated":19.115681417190924
-						}
-					],
-					"housingType": [
-						{
-							"household_characteristics":"Single Family",
-							"household_dislocated":2108,
-							"total_households":9359,
-							"%_household_dislocated":22.523773907468748,
-							"population_dislocated":4735,
-							"total_population":21720,
-							"%_population_dislocated":21.800184162062617
-						},
-						{
-							"household_characteristics":"Multi Family",
-							"household_dislocated":2882,
-							"total_households":16707,
-							"%_household_dislocated":17.250254384389777,
-							"population_dislocated":5991,
-							"total_population":34391,
-							"%_population_dislocated":17.420255299351574
-						},
-						{
-							"household_characteristics":"Total",
-							"household_dislocated":4990,
-							"total_households":26066,
-							"%_household_dislocated":19.14371211539937,
-							"population_dislocated":10726,
-							"total_population":56111,
-							"%_population_dislocated":19.115681417190924
-						}
-					]
+					"income": dislocationByIncomeContent,
+					"race": dislocationByRaceContent,
+					"tenure": dislocationByTenureContent,
+					"housingType": dislocationByHousingTypeIdContent
 				}}
 		);
+
 		setResultType("popdisl");
 
 		// open preview
