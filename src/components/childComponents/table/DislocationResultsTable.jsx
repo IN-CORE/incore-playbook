@@ -38,6 +38,8 @@ const tableRowHead = {
 const useStyles = makeStyles({
 	table: {
 		maxWidth: 550,
+		display: "block",
+		margin: "auto"
 	},
 	tableRowHeadFirst: {
 		color: "#69707F",
@@ -85,7 +87,8 @@ const useStyles = makeStyles({
 		letterSpacing: "0.6px",
 		lineHeight: "19px",
 		padding: "12px 8px",
-		marginBottom: "17px"
+		marginBottom: "17px",
+		display:"block",
 	}
 });
 

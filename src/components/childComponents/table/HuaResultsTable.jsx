@@ -45,6 +45,8 @@ const tableRowHead = {
 const useStyles = makeStyles({
 	table: {
 		maxWidth: 700,
+		display:"block",
+		margin:"auto"
 	},
 	tableRowHeadFirst: {
 		color: "#69707F",
@@ -95,7 +97,8 @@ const useStyles = makeStyles({
 		letterSpacing: "0.6px",
 		lineHeight: "19px",
 		padding: "12px 8px",
-		marginBottom: "25px"
+		marginBottom: "25px",
+		display:"block"
 	},
 	radio: {
 		color: "#69707F",
