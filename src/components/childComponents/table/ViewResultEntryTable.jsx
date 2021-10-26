@@ -119,7 +119,7 @@ function stableSort(array, comparator) {
 
 export function ViewResultEntryTable(props) {
 
-	const {fieldNames, executions, previewBldgDmg, downloadBldgDmg, previewEpfDmg, downloadEpfDmg,
+	const {fieldNames, executions, previewMetrics, previewBldgDmg, downloadBldgDmg, previewEpfDmg, downloadEpfDmg,
 		previewBldgFunc, downloadBldgFunc, previewInterd, previewBldgMCS, downloadBldgMCS, previewPopDisl,
 		previewCGE} = props;
 
@@ -222,7 +222,7 @@ export function ViewResultEntryTable(props) {
 													<TableCell>Resilience Metrics</TableCell>
 													<TableCell colSpan={3}/>
 													<TableCell colSpan={2}>
-														<Link color="primary" onClick={() => {(execution["id"]);}}
+														<Link color="primary" onClick={() => {previewMetrics(execution["id"]);}}
 															  className={execution["finalStatus"] === undefined ||
 															  execution["finalStatus"] === "FINISHED" ?
 																  classes.clickableLink : classes.clickableLinkDisabled}>

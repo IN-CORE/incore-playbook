@@ -6,7 +6,7 @@ import {HuaResultsTable} from "../table/HuaResultsTable";
 import React, {useState} from "react";
 
 export default function Metrics(props){
-	let {title, previewOn, handlePreviewClose, tables, setMap} = props;
+	let {title, previewOn, handlePreviewClose, tables} = props;
 
 	const [currTabIndex, setCurrTabIndex] = useState(0);
 

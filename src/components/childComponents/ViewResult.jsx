@@ -192,7 +192,19 @@ export default function ViewResult(props) {
 	};
 
 	const previewMetrics = async (executionItemId) =>{
+		// need to fetch ALL the tables here... going to be ugly
+		let executionItem = getExecution(executionItemId);
 
+		// let bldgDmgSummaryTableId = executionItem["datasets"][datawolfConfig["datasets"]["bldgDmgSummaryTableId"]];
+		// let bldgDmgSummaryTable = await getOutputFileJson(bldgDmgSummaryTableId);
+		// let bldgDmgSummaryTableContent = JSON.parse(bldgDmgSummaryTable);
+
+		// for table
+		setTables();
+
+		// open preview
+		setResultType("metrics");
+		setPreviewOn(true);
 	};
 
 	const previewBldgDmg = async (executionItemId) => {
@@ -564,7 +576,8 @@ export default function ViewResult(props) {
 			{
 				(()=>{
 					if (resultType === "metrics"){
-						return <Metrics />;
+						return <Metrics title="Resilience Metrics" previewOn={previewOn}
+										handlePreviewClose={handlePreviewClose}/>;
 					}
 					else if (resultType === "interD") {
 						return (<Interdependency
