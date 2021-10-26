@@ -8,6 +8,7 @@ import {IncoreMenuItem, IncoreSelectBox} from "../../styledComponents/IncoreSele
 
 export default function CGE(props) {
 	let {
+		executionName,
 		title,
 		previewOn,
 		handlePreviewClose,
@@ -25,7 +26,11 @@ export default function CGE(props) {
 				</IconButton>
 
 				{/*title*/}
-				<Typography className="previewTitle">{title}</Typography>
+				{/*TODO wrap into a component*/}
+				<Box className="previewTitleSection">
+					<Typography className="previewTitle">{executionName}</Typography>
+					<Typography className="previewTitle">Select Data: {title}</Typography>
+				</Box>
 
 				<Box style={{padding:"50px 25px"}}>
 					<Grid container spacing={3} justify="left">

@@ -10,7 +10,7 @@ import React from "react";
 
 export default function BldgFunctionality(props){
 
-	let {title, previewOn, handlePreviewClose, runtime, barCharts, layers, tables, map, setMap} = props;
+	let {executionName, title, previewOn, handlePreviewClose, runtime, barCharts, layers, tables, map, setMap} = props;
 
 	return (
 		<Dialog open={previewOn} onClose={handlePreviewClose} maxWidth="lg" fullWidth scroll="paper">
@@ -18,8 +18,13 @@ export default function BldgFunctionality(props){
 				<IconButton aria-label="Close" onClick={handlePreviewClose} style={{float: "right"}}>
 					<CloseIcon fontSize="small"/>
 				</IconButton>
+
 				{/*title*/}
-				<Typography className="previewTitle">{title}</Typography>
+				{/*TODO wrap into a component*/}
+				<Box className="previewTitleSection">
+					<Typography className="previewTitle">{executionName}</Typography>
+					<Typography className="previewTitle">Select Data: {title}</Typography>
+				</Box>
 
 				{/*for chart*/}
 				<Box className="chartContainer">

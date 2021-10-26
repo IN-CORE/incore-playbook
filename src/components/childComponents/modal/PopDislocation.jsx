@@ -8,7 +8,7 @@ import {HuaResultsTable} from "../table/HuaResultsTable";
 import React from "react";
 
 export default function PopDislocation(props){
-	let {title, previewOn, handlePreviewClose, layers, tables, setMap} = props;
+	let {executionName, title, previewOn, handlePreviewClose, layers, tables, setMap} = props;
 
 	return (
 		<Dialog open={previewOn} onClose={handlePreviewClose} maxWidth="lg" fullWidth scroll="paper">
@@ -18,7 +18,11 @@ export default function PopDislocation(props){
 				</IconButton>
 
 				{/*title*/}
-				<Typography className="previewTitle">{title}</Typography>
+				{/*TODO wrap into a component*/}
+				<Box className="previewTitleSection">
+					<Typography className="previewTitle">{executionName}</Typography>
+					<Typography className="previewTitle">Select Data: {title}</Typography>
+				</Box>
 
 				{/*for map*/}
 				<Container className="mapContainer" isableGutters>

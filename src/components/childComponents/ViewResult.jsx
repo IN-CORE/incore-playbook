@@ -81,6 +81,7 @@ export default function ViewResult(props) {
 	// states
 	const [numCompleted, setNumCompleted] = useState(0);
 	const [executionEntries, setExecutionEntries] = useState([]);
+	const [selectedExecutionName, setSelectedExecutionName] = useState("");
 	const [resultType, setResultType] = useState(""); // bldgFunc, bldgDmg, epfDmg, bldgMCS, interD
 	const [runtime, setRuntime] = useState("");
 	const [tables, setTables] = useState({});
@@ -196,6 +197,8 @@ export default function ViewResult(props) {
 		// need to fetch ALL the tables here... going to be ugly
 		let executionItem = getExecution(executionItemId);
 
+		setSelectedExecutionName(executionItem["title"]);
+
 		// total dislocation
 		let totalDislTableId = executionItem["datasets"][datawolfConfig["datasets"]["totalDislocationId"]];
 		let totalDislTable = await getOutputFileJson(totalDislTableId);
@@ -263,6 +266,7 @@ export default function ViewResult(props) {
 
 	const previewBldgDmg = async (executionItemId) => {
 		let executionItem = getExecution(executionItemId);
+		setSelectedExecutionName(executionItem["title"]);
 
 		// map
 		let bldgMaxDamageStateId = executionItem["datasets"][datawolfConfig["datasets"]["bldgMaxDamageStateId"]];
@@ -314,6 +318,7 @@ export default function ViewResult(props) {
 
 	const previewBldgFunc = async (executionItemId) => {
 		const executionItem = await getExecution(executionItemId);
+		setSelectedExecutionName(executionItem["title"]);
 
 		// map
 		let bldgFuncProbId = executionItem["datasets"][datawolfConfig["datasets"]["bldgFuncProbId"]];
@@ -366,6 +371,7 @@ export default function ViewResult(props) {
 
 	const previewBldgMCS = async (executionItemId) => {
 		const executionItem = await getExecution(executionItemId);
+		setSelectedExecutionName(await executionItem["title"]);
 
 		// map
 		let mcsBldgFailureProbId = executionItem["datasets"][datawolfConfig["datasets"]["mcsBldgFailureProbId"]];
@@ -412,6 +418,8 @@ export default function ViewResult(props) {
 
 	const previewEpfDmg = async (executionItemId, type) => {
 		let executionItem = getExecution(executionItemId);
+		setSelectedExecutionName(executionItem["title"]);
+
 		let epfMaxDmgStateId;
 
 		if (type === "pole") {
@@ -450,6 +458,8 @@ export default function ViewResult(props) {
 	};
 	const downloadEpfDmg = async (executionItemId, type) => {
 		let executionItem = getExecution(executionItemId);
+		setSelectedExecutionName(executionItem["title"]);
+
 		let epfMaxDmgStateId;
 		if (type === "pole") {
 			epfMaxDmgStateId = executionItem["datasets"][datawolfConfig["datasets"]["epfPoleMaxDmgStateId"]];
@@ -466,6 +476,8 @@ export default function ViewResult(props) {
 
 	const previewInterd = async (executionItemId) => {
 		let executionItem = getExecution(executionItemId);
+		setSelectedExecutionName(executionItem["title"]);
+
 		let epfMaxDmgStateId = executionItem["datasets"][datawolfConfig["datasets"]["epfSubstationMaxDmgStateId"]];
 		let epfMaxDmgStateINCOREId = await getOutputFileJson(epfMaxDmgStateId);
 
@@ -495,6 +507,8 @@ export default function ViewResult(props) {
 	const previewCGE = async (executionItemId) => {
 
 		let executionItem = getExecution(executionItemId);
+		setSelectedExecutionName(executionItem["title"]);
+
 
 		// cge by total household income
 		let cgeHouseholdIncomeId = executionItem["datasets"][datawolfConfig["datasets"]["cgeHouseholdIncomeId"]];
@@ -524,6 +538,7 @@ export default function ViewResult(props) {
 	const previewPopDisl = async (executionItemId) => {
 
 		let executionItem = getExecution(executionItemId);
+		setSelectedExecutionName(executionItem["title"]);
 
 		// map
 		let bldgMaxDamageStateId = executionItem["datasets"][datawolfConfig["datasets"]["bldgMaxDamageStateId"]];
@@ -630,14 +645,14 @@ export default function ViewResult(props) {
 			{
 				(()=>{
 					if (resultType === "metrics"){
-						return (<Metrics title="Resilience Metrics"
+						return (<Metrics executionName={selectedExecutionName} title="Resilience Metrics"
 										 previewOn={previewOn}
 										 handlePreviewClose={handlePreviewClose}
 										 tables={tables}
 						/>);
 					}
 					else if (resultType === "interD") {
-						return (<Interdependency
+						return (<Interdependency executionName={selectedExecutionName}
 							title="Interdependent Network of Building and Electric Power Facility"
 							previewOn={previewOn}
 							handlePreviewClose={handlePreviewClose}
@@ -647,7 +662,7 @@ export default function ViewResult(props) {
 						/>);
 					}
 					else if (resultType === "bldgDmg") {
-						return (<BldgDamage
+						return (<BldgDamage executionName={selectedExecutionName}
 							title="Building Damage"
 							previewOn={previewOn}
 							handlePreviewClose={handlePreviewClose}
@@ -661,7 +676,7 @@ export default function ViewResult(props) {
 					}
 					else if (resultType === "epfPoleDmg") {
 						return (
-							<EpfDamage title="EPF Pole Damage"
+							<EpfDamage title="EPF Pole Damage" executionName={selectedExecutionName}
 									   previewOn={previewOn}
 									   handlePreviewClose={handlePreviewClose}
 									   layers={layers}
@@ -671,7 +686,7 @@ export default function ViewResult(props) {
 					}
 					else if (resultType === "epfSubstationDmg") {
 						return (
-							<EpfDamage title="EPF Substation Damage"
+							<EpfDamage title="EPF Substation Damage" executionName={selectedExecutionName}
 									   previewOn={previewOn}
 									   handlePreviewClose={handlePreviewClose}
 									   layers={layers}
@@ -680,7 +695,7 @@ export default function ViewResult(props) {
 							/>);
 					}
 					else if (resultType === "bldgMCS") {
-						return (<BldgFunctionality
+						return (<BldgFunctionality executionName={selectedExecutionName}
 							title="Building Functionality without Interdependency"
 							previewOn={previewOn}
 							handlePreviewClose={handlePreviewClose}
@@ -693,7 +708,7 @@ export default function ViewResult(props) {
 						/>);
 					}
 					else if (resultType === "bldgFunc") {
-						return (<BldgFunctionality
+						return (<BldgFunctionality executionName={selectedExecutionName}
 							title="Building Functionality with Interdependency"
 							previewOn={previewOn}
 							handlePreviewClose={handlePreviewClose}
@@ -707,13 +722,13 @@ export default function ViewResult(props) {
 					}
 					else if (resultType === "cge") {
 						return (
-							<CGE title="CGE Results"
+							<CGE title="CGE Results" executionName={selectedExecutionName}
 								previewOn={previewOn}
 								handlePreviewClose={handlePreviewClose}
 								tables={tables}/>);
 					}
 					else if (resultType === "popdisl") {
-						return (<PopDislocation
+						return (<PopDislocation executionName={selectedExecutionName}
 							title="Population Dislocation Results"
 							previewOn={previewOn}
 							handlePreviewClose={handlePreviewClose}

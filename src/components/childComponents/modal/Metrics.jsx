@@ -39,7 +39,7 @@ const useStyles = makeStyles({
 export default function Metrics(props){
 	const classes = useStyles();
 
-	let {title, previewOn, handlePreviewClose, tables} = props;
+	let {executionName, title, previewOn, handlePreviewClose, tables} = props;
 
 	const [currTabIndex, setCurrTabIndex] = useState(0);
 
@@ -51,7 +51,11 @@ export default function Metrics(props){
 				</IconButton>
 
 				{/*title*/}
-				<Typography className="previewTitle">{title}</Typography>
+				{/*TODO wrap into a component*/}
+				<Box className="previewTitleSection">
+					<Typography className="previewTitle">{executionName}</Typography>
+					<Typography className="previewTitle">Select Data: {title}</Typography>
+				</Box>
 
 				{/*tabs*/}
 				<Tabs aria-label="metrics tabs" value={currTabIndex}
