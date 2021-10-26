@@ -24,6 +24,16 @@ const useStyles = makeStyles({
 		marginBottom: "25px",
 		display:"block"
 	},
+	tab: {
+		height: "22px",
+		color: "#69707F",
+		fontSize: "16px",
+		fontWeight: "500",
+		letterSpacing: 0,
+		lineHeight: "22px",
+		textAlign: "center",
+		textTransform:"capitalize"
+	},
 });
 
 export default function Metrics(props){
@@ -45,10 +55,14 @@ export default function Metrics(props){
 
 				{/*tabs*/}
 				<Tabs aria-label="metrics tabs" value={currTabIndex}
+					  TabIndicatorProps={{style: {background: "#00619D", color: "#00619D"}}}
 					  onChange={(e, value) => {setCurrTabIndex(value);}}>
-					<Tab label="Population Stability"/>
-					<Tab label="Economic Stability"/>
-					<Tab label="Physical Services Stability"/>
+					<Tab className={classes.tab} label="Population Stability"
+						 style={currTabIndex === 0? {color: "#00619D"}: {}}/>
+					<Tab className={classes.tab} label="Economic Stability"
+						 style={currTabIndex === 1? {color: "#00619D"}: {}}/>
+					<Tab className={classes.tab} label="Physical Services Stability"
+						 style={currTabIndex === 2? {color: "#00619D"}: {}}/>
 				</Tabs>
 				{/*population stability*/}
 				<div role="tabpanel" hidden={currTabIndex !== 0} id="tabpanel-population-stability"
