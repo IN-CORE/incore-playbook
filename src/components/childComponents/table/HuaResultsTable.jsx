@@ -39,8 +39,9 @@ const tableRowHead = {
 	borderRight: "solid 1px #FFFFFF",
 	borderTop: "solid 1px #FFFFFF",
 	borderBottom: "solid 1px #FFFFFF",
-	letterSpacing: "1.13px"
+	letterSpacing: "1.13px",
 };
+
 
 const useStyles = makeStyles({
 	table: {
@@ -128,8 +129,6 @@ export function HuaResultsTable(props) {
 
 	let headers = ["HOUSEHOLD CHARACTERISTICS", "# HOUSEHOLDS DISLOCATED", "TOTAL HOUSEHOLDS", "% HOUSEHOLDS DISLOCATED"];
 
-	const headerSize = headers.length;
-
 	const classes = useStyles();
 
 	return (
@@ -171,7 +170,8 @@ export function HuaResultsTable(props) {
 											} else if (header !== "# HOUSEHOLDS DISLOCATED"){
 												headClass = classes.tableRowHeadRight;
 											}
-											return (<TableCell className={headClass} key={idx}>
+											return (<TableCell className={headClass} key={idx}
+															   style={ isMetrics ? {"minWidth":"200px"} : {}}>
 												{header}
 											</TableCell>);
 										})
