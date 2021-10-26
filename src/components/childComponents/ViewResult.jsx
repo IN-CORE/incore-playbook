@@ -192,15 +192,69 @@ export default function ViewResult(props) {
 	};
 
 	const previewMetrics = async (executionItemId) =>{
+		// TODO need to think of a better way of fetching files; this is too slow and too repeatative
 		// need to fetch ALL the tables here... going to be ugly
 		let executionItem = getExecution(executionItemId);
 
-		// let bldgDmgSummaryTableId = executionItem["datasets"][datawolfConfig["datasets"]["bldgDmgSummaryTableId"]];
-		// let bldgDmgSummaryTable = await getOutputFileJson(bldgDmgSummaryTableId);
-		// let bldgDmgSummaryTableContent = JSON.parse(bldgDmgSummaryTable);
+		// total dislocation
+		let totalDislTableId = executionItem["datasets"][datawolfConfig["datasets"]["totalDislocationId"]];
+		let totalDislTable = await getOutputFileJson(totalDislTableId);
+		let totalDislTableIdContent = JSON.parse(totalDislTable);
 
-		// for table
-		setTables();
+		// dislocation group by
+		let dislocationByRaceId = executionItem["datasets"][datawolfConfig["datasets"]["dislocationByRaceId"]];
+		let dislocationByRace = await getOutputFileJson(dislocationByRaceId);
+		let dislocationByRaceContent = JSON.parse(dislocationByRace);
+
+		let dislocationByTenureId = executionItem["datasets"][datawolfConfig["datasets"]["dislocationByTenureId"]];
+		let dislocationByTenure = await getOutputFileJson(dislocationByTenureId);
+		let dislocationByTenureContent = JSON.parse(dislocationByTenure);
+
+		let dislocationByIncomeId = executionItem["datasets"][datawolfConfig["datasets"]["dislocationByIncomeId"]];
+		let dislocationByIncome = await getOutputFileJson(dislocationByIncomeId);
+		let dislocationByIncomeContent = JSON.parse(dislocationByIncome);
+
+		let dislocationByHousingTypeId = executionItem["datasets"][datawolfConfig["datasets"]["dislocationByHousingTypeId"]];
+		let dislocationByHousingType = await getOutputFileJson(dislocationByHousingTypeId);
+		let dislocationByHousingTypeIdContent = JSON.parse(dislocationByHousingType);
+
+		// cge by total household income
+		let cgeHouseholdIncomeId = executionItem["datasets"][datawolfConfig["datasets"]["cgeHouseholdIncomeId"]];
+		let cgeHouseholdIncome = await getOutputFileJson(cgeHouseholdIncomeId);
+		let cgeHouseholdIncomeContent = JSON.parse(cgeHouseholdIncome);
+
+		// dislocation group by
+		let cgeDomesticSupplyId = executionItem["datasets"][datawolfConfig["datasets"]["cgeDomesticSupplyId"]];
+		let cgeDomesticSupply = await getOutputFileJson(cgeDomesticSupplyId);
+		let cgeDomesticSupplyContent = JSON.parse(cgeDomesticSupply);
+
+		let cgeEmploymentId = executionItem["datasets"][datawolfConfig["datasets"]["cgeEmploymentId"]];
+		let cgeEmployment = await getOutputFileJson(cgeEmploymentId);
+		let cgeEmploymentContent = JSON.parse(cgeEmployment);
+
+		// bldgFunc
+		let bldgFuncSummaryTableId = executionItem["datasets"][datawolfConfig["datasets"]["bldgFuncSummaryTableId"]];
+		let bldgFuncSummaryTable = await getOutputFileJson(bldgFuncSummaryTableId);
+		let bldgFuncSummaryTableContent = JSON.parse(bldgFuncSummaryTable);
+
+		setTables(
+			{
+				// populationdislocation
+				"totalResultsTable": totalDislTableIdContent,
+				"huaResultsTable": {
+					"income": dislocationByIncomeContent,
+					"race": dislocationByRaceContent,
+					"tenure": dislocationByTenureContent,
+					"housingType": dislocationByHousingTypeIdContent
+				},
+				// cge
+				"totalHouseholdIncome":cgeHouseholdIncomeContent,
+				"domesticSupply":cgeDomesticSupplyContent,
+				"employment":cgeEmploymentContent,
+				// bldgfunc
+				"bldgFunc": bldgFuncSummaryTableContent,
+			}
+		);
 
 		// open preview
 		setResultType("metrics");
@@ -576,8 +630,11 @@ export default function ViewResult(props) {
 			{
 				(()=>{
 					if (resultType === "metrics"){
-						return <Metrics title="Resilience Metrics" previewOn={previewOn}
-										handlePreviewClose={handlePreviewClose}/>;
+						return (<Metrics title="Resilience Metrics"
+										 previewOn={previewOn}
+										 handlePreviewClose={handlePreviewClose}
+										 tables={tables}
+						/>);
 					}
 					else if (resultType === "interD") {
 						return (<Interdependency
