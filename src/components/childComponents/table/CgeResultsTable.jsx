@@ -38,7 +38,11 @@ const useStyles = makeStyles({
 	table: {
 		maxWidth: 700,
 		display: "block",
-		margin: "auto"
+	},
+	metricsTable:{
+		display:"block",
+		maxWidth: "fit-content",
+		margin:"auto auto"
 	},
 	tableRowHeadFirst: {
 		color: "#69707F",
@@ -71,7 +75,7 @@ const useStyles = makeStyles({
 
 export function CgeResultsTable(props) {
 
-	let resultsJson = props.resultsJson;
+	let {resultsJson, isMetrics, ...others} = props;
 
 	if (resultsJson === null){
 		// to be commented out when integrated with API and prop validation can be added
@@ -92,7 +96,7 @@ export function CgeResultsTable(props) {
 	return (
 		<div>
 			<TableContainer>
-				<Table className={classes.table} size="small" aria-label="a dense table">
+				<Table className={isMetrics ? classes.metricsTable: classes.table} size="small" aria-label="a dense table">
 					<TableHead>
 						<TableRow >
 							{

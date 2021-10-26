@@ -11,8 +11,19 @@ const useStyles = makeStyles({
 	tableEntry:{
 		display: "block",
 		margin:"50px auto",
-		textAlign:"center",
-	}
+		textAlign: "center",
+	},
+	title: {
+		height: "19px",
+		color: "#2E384D",
+		fontSize: "16px",
+		fontWeight: "500",
+		letterSpacing: "0.6px",
+		lineHeight: "19px",
+		padding: "12px 8px",
+		marginBottom: "25px",
+		display:"block"
+	},
 });
 
 export default function Metrics(props){
@@ -44,33 +55,37 @@ export default function Metrics(props){
 					 aria-labelledby="population stability"
 				>
 					<Box className={classes.tableEntry}>
-						<HuaResultsTable resultsJson={tables["huaResultsTable"]} />
+						<HuaResultsTable resultsJson={tables["huaResultsTable"]} isMetrics={true}/>
 					</Box>
 					<Box className={classes.tableEntry}>
 						<DislocationResultsTable resultsJson={tables["totalResultsTable"]["population_dislocation_in_total"]}
 												 headers={["POPULATION", "% of POPULATION"]}
-												 title={"Population Dislocation - in Total"}/>
+												 title={"Population Dislocation - in Total"}
+												 isMetrics={true}
+						/>
 					</Box>
 					<Box className={classes.tableEntry}>
 						<DislocationResultsTable resultsJson={tables["totalResultsTable"]["household_dislocation_in_total"]}
 												 headers={["HOUSEHOLD", "% of HOUSEHOLD"]}
-												 title={"Household Dislocation - in Total"}/>
+												 title={"Household Dislocation - in Total"}
+												 isMetrics={true}
+						/>
 					</Box>
 				</div>
 				<div role="tabpanel" hidden={currTabIndex !== 1} id="tabpanel-economic-stability"
 					 aria-labelledby="economic stability"
 				>
 					<Box className={classes.tableEntry}>
-						<Typography className="previewTitle">Household Income</Typography>
-						<CgeResultsTable resultsJson={tables["totalHouseholdIncome"]}/>
+						<Typography className={classes.title}>Household Income</Typography>
+						<CgeResultsTable resultsJson={tables["totalHouseholdIncome"]} isMetrics={true}/>
 					</Box>
 					<Box className={classes.tableEntry}>
-						<Typography className="previewTitle">Employment</Typography>
-						<CgeResultsTable resultsJson={tables["employment"]}/>
+						<Typography className={classes.title}>Employment</Typography>
+						<CgeResultsTable resultsJson={tables["employment"]} isMetrics={true}/>
 					</Box>
 					<Box className={classes.tableEntry}>
-						<Typography className="previewTitle">Community-level GDP</Typography>
-						<CgeResultsTable resultsJson={tables["domesticSupply"]} yAxisLegend="Person"/>
+						<Typography className={classes.title}>Community-level GDP</Typography>
+						<CgeResultsTable resultsJson={tables["domesticSupply"]} yAxisLegend="Person" isMetrics={true}/>
 					</Box>
 				</div>
 
@@ -78,7 +93,7 @@ export default function Metrics(props){
 					 aria-labelledby="physical services stability"
 				>
 					<Box className={classes.tableEntry}>
-						<Typography className="previewTitle">Count of Functional Buildings</Typography>
+						<Typography className={classes.title}>Count of Functional Buildings</Typography>
 						<FunctionalityTable funcResults={tables["bldgFunc"]}/>
 					</Box>
 				</div>

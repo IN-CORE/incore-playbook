@@ -39,7 +39,11 @@ const useStyles = makeStyles({
 	table: {
 		maxWidth: 550,
 		display: "block",
-		margin: "auto"
+	},
+	metricsTable:{
+		display:"block",
+		maxWidth: "fit-content",
+		margin:"auto auto"
 	},
 	tableRowHeadFirst: {
 		color: "#69707F",
@@ -80,7 +84,7 @@ const useStyles = makeStyles({
 	},
 	title: {
 		height: "19px",
-		width: "460px",
+		// width: "460px",
 		color: "#2E384D",
 		fontSize: "16px",
 		fontWeight: "500",
@@ -94,7 +98,7 @@ const useStyles = makeStyles({
 
 export function DislocationResultsTable(props) {
 
-	let resultsJson = props.resultsJson;
+	let { resultsJson, isMetrics } = props;
 	let title = props.title;
 
 	let headers = [...[""], ...props.headers];
@@ -106,7 +110,7 @@ export function DislocationResultsTable(props) {
 		<div>
 			<div className={classes.title}>{title}</div>
 			<TableContainer>
-				<Table className={classes.table} size="small" aria-label="a dense table">
+				<Table className={isMetrics ? classes.metricsTable: classes.table} size="small" aria-label="a dense table">
 					<TableHead>
 						<TableRow >
 							{
