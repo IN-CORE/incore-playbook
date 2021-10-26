@@ -27,6 +27,7 @@ import EpfDamage from "./modal/EpfDamage";
 import BldgFunctionality from "./modal/BldgFunctionality";
 import CGE from "./modal/CGE";
 import PopDislocation from "./modal/PopDislocation";
+import Metrics from "./modal/Metrics";
 
 const useStyles = makeStyles({
 	statTitle: {
@@ -188,6 +189,10 @@ export default function ViewResult(props) {
 		});
 
 		return item[0];
+	};
+
+	const previewMetrics = async (executionItemId) =>{
+
 	};
 
 	const previewBldgDmg = async (executionItemId) => {
@@ -543,6 +548,7 @@ export default function ViewResult(props) {
 				<Box>
 					<ViewResultEntryTable fieldNames={fieldNames}
 										  executions={executionEntries}
+										  previewMetrics={previewMetrics}
 										  previewBldgDmg={previewBldgDmg} downloadBldgDmg={downloadBldgDmg}
 										  previewEpfDmg={previewEpfDmg} downloadEpfDmg={downloadEpfDmg}
 										  previewBldgFunc={previewBldgFunc} downloadBldgFunc={downloadBldgFunc}
@@ -557,7 +563,10 @@ export default function ViewResult(props) {
 			{/*for individual analysis result preview*/}
 			{
 				(()=>{
-					if (resultType === "interD") {
+					if (resultType === "metrics"){
+						return <Metrics />;
+					}
+					else if (resultType === "interD") {
 						return (<Interdependency
 							title="Interdependent Network of Building and Electric Power Facility"
 							previewOn={previewOn}
@@ -645,7 +654,7 @@ export default function ViewResult(props) {
 						/>);
 					}
 					else{
-						return <></>
+						return <></>;
 					}
 				})()
 			}

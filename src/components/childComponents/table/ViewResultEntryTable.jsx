@@ -195,7 +195,6 @@ export function ViewResultEntryTable(props) {
 												}
 											})
 										}
-										{/*TODO implement expending*/}
 										<TableCell className={classes.tableBodyCell} key="unfold">
 											{
 												execution["id"] === expandId && execution["id"] !== collapseId ?
@@ -219,6 +218,21 @@ export function ViewResultEntryTable(props) {
 									{
 										(execution["id"] === expandId && execution["id"] !== collapseId) ?
 											<>
+												<TableRow className={classes.subBodyRow}>
+													<TableCell>Resilience Metrics</TableCell>
+													<TableCell colSpan={3}/>
+													<TableCell colSpan={2}>
+														<Link color="primary" onClick={() => {(execution["id"]);}}
+															  className={execution["finalStatus"] === undefined ||
+															  execution["finalStatus"] === "FINISHED" ?
+																  classes.clickableLink : classes.clickableLinkDisabled}>
+															View
+														</Link>
+														<Link color="primary" className={classes.clickableLinkDisabled}>
+															Download
+														</Link>
+													</TableCell>
+												</TableRow>
 												<TableRow className={classes.subBodyRow}>
 													<TableCell>Interdependency</TableCell>
 													<TableCell colSpan={3}/>
