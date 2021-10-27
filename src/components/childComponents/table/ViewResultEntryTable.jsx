@@ -342,7 +342,9 @@ export function ViewResultEntryTable(props) {
 																  classes.clickableLink : classes.clickableLinkDisabled}>
 															View
 														</Link>
-														<Link color="primary" className={classes.clickableLinkDisabled}>
+														<Link color="primary" className={execution["finalStatus"] === undefined ||
+														execution["finalStatus"] === "FINISHED" ?
+															classes.clickableLink : classes.clickableLinkDisabled}>
 															Download
 														</Link>
 													</TableCell>
@@ -357,7 +359,9 @@ export function ViewResultEntryTable(props) {
 																  classes.clickableLink : classes.clickableLinkDisabled}>
 															View
 														</Link>
-														<Link color="primary" className={classes.clickableLinkDisabled}>
+														<Link color="primary" className={execution["finalStatus"] === undefined ||
+														execution["finalStatus"] === "FINISHED" ?
+															classes.clickableLink : classes.clickableLinkDisabled}>
 															Download
 														</Link>
 													</TableCell>
