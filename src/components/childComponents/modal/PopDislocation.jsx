@@ -41,7 +41,7 @@ export default function PopDislocation(props){
 
 				{/*for table*/}
 				<Box style={{padding:"50px 25px"}}>
-					<Grid container spacing={2} justify="left">
+					<Grid container spacing={2} justify="center">
 						<Grid item xs={12} sm={12} md={5} lg={5} xl={5}>
 							<DislocationResultsTable resultsJson={tables["totalResultsTable"]["household_dislocation_in_total"]}
 													 headers={["HOUSEHOLD", "% of HOUSEHOLD"]}

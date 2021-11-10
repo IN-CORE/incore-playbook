@@ -33,7 +33,7 @@ export default function CGE(props) {
 				</Box>
 
 				<Box style={{padding:"50px 25px"}}>
-					<Grid container spacing={3} justify="left">
+					<Grid container spacing={3} justify="center">
 						<Grid item xs={12} sm={12} md={8} lg={8} xl={8}>
 							{/*dropdown*/}
 							<IncoreSelectBox labelId="label" id="select" variant="outlined"

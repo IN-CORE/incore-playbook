@@ -28,7 +28,7 @@ export default function BldgFunctionality(props){
 
 				{/*for chart*/}
 				<Box className="chartContainer">
-					<Grid container spacing={3} justify="left">
+					<Grid container spacing={3} justify="center">
 						<Grid item>
 							<Typography className="previewSubTitle">
 									Analysis Result View</Typography>
