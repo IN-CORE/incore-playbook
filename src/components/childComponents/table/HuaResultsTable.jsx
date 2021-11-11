@@ -39,12 +39,19 @@ const tableRowHead = {
 	borderRight: "solid 1px #FFFFFF",
 	borderTop: "solid 1px #FFFFFF",
 	borderBottom: "solid 1px #FFFFFF",
-	letterSpacing: "1.13px"
+	letterSpacing: "1.13px",
 };
+
 
 const useStyles = makeStyles({
 	table: {
 		maxWidth: 700,
+		display:"block",
+	},
+	metricsTable:{
+		display:"block",
+		maxWidth: "fit-content",
+		margin:"auto auto"
 	},
 	tableRowHeadFirst: {
 		color: "#69707F",
@@ -88,14 +95,15 @@ const useStyles = makeStyles({
 	},
 	title: {
 		height: "19px",
-		width: "460px",
+		// width: "460px",
 		color: "#2E384D",
 		fontSize: "16px",
 		fontWeight: "500",
 		letterSpacing: "0.6px",
 		lineHeight: "19px",
 		padding: "12px 8px",
-		marginBottom: "25px"
+		marginBottom: "25px",
+		display:"block"
 	},
 	radio: {
 		color: "#69707F",
@@ -115,13 +123,11 @@ export function HuaResultsTable(props) {
 		setHuaBy(event.target.value);
 	};
 
-	let resultsJson = props.resultsJson;
+	let { resultsJson, isMetrics } = props;
 
 	resultsJson = resultsJson[huaBy];
 
 	let headers = ["HOUSEHOLD CHARACTERISTICS", "# HOUSEHOLDS DISLOCATED", "TOTAL HOUSEHOLDS", "% HOUSEHOLDS DISLOCATED"];
-
-	const headerSize = headers.length;
 
 	const classes = useStyles();
 
@@ -153,7 +159,7 @@ export function HuaResultsTable(props) {
 			{
 				(resultsJson !== undefined) ?
 					<TableContainer>
-						<Table className={classes.table} size="small" aria-label="a dense table">
+						<Table className={isMetrics ? classes.metricsTable: classes.table} size="small" aria-label="a dense table">
 							<TableHead>
 								<TableRow >
 									{
@@ -164,7 +170,8 @@ export function HuaResultsTable(props) {
 											} else if (header !== "# HOUSEHOLDS DISLOCATED"){
 												headClass = classes.tableRowHeadRight;
 											}
-											return (<TableCell className={headClass} key={idx}>
+											return (<TableCell className={headClass} key={idx}
+															   style={ isMetrics ? {"minWidth":"200px"} : {}}>
 												{header}
 											</TableCell>);
 										})
@@ -187,7 +194,7 @@ export function HuaResultsTable(props) {
 												<TableCell className={classes.tableDataCell} key={`3_${  idx.toString()}`} >
 													{e["total_households"].toLocaleString("en-US")}
 												</TableCell>
-												<TableCell className={classes.tableDataCell} key={`3_${  idx.toString()}`} >
+												<TableCell className={classes.tableDataCell} key={`4_${  idx.toString()}`} >
 													{round(e["%_household_dislocated"], 1)}%
 												</TableCell>
 											</TableRow>

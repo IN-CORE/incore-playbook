@@ -8,7 +8,7 @@ import {HuaResultsTable} from "../table/HuaResultsTable";
 import React from "react";
 
 export default function PopDislocation(props){
-	let {title, previewOn, handlePreviewClose, layers, tables, setMap} = props;
+	let {executionName, title, previewOn, handlePreviewClose, layers, tables, setMap} = props;
 
 	return (
 		<Dialog open={previewOn} onClose={handlePreviewClose} maxWidth="lg" fullWidth scroll="paper">
@@ -18,7 +18,11 @@ export default function PopDislocation(props){
 				</IconButton>
 
 				{/*title*/}
-				<Typography className="previewTitle">{title}</Typography>
+				{/*TODO wrap into a component*/}
+				<Box className="previewTitleSection">
+					<Typography className="previewTitle">{executionName}</Typography>
+					<Typography className="previewTitle">Select Data: {title}</Typography>
+				</Box>
 
 				{/*for map*/}
 				<Container className="mapContainer" isableGutters>
@@ -37,7 +41,7 @@ export default function PopDislocation(props){
 
 				{/*for table*/}
 				<Box style={{padding:"50px 25px"}}>
-					<Grid container spacing={2} justify="left">
+					<Grid container spacing={2} justify="center">
 						<Grid item xs={12} sm={12} md={5} lg={5} xl={5}>
 							<DislocationResultsTable resultsJson={tables["totalResultsTable"]["household_dislocation_in_total"]}
 													 headers={["HOUSEHOLD", "% of HOUSEHOLD"]}

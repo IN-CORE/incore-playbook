@@ -38,6 +38,12 @@ const tableRowHead = {
 const useStyles = makeStyles({
 	table: {
 		maxWidth: 550,
+		display: "block",
+	},
+	metricsTable:{
+		display:"block",
+		maxWidth: "fit-content",
+		margin:"auto auto"
 	},
 	tableRowHeadFirst: {
 		color: "#69707F",
@@ -78,20 +84,21 @@ const useStyles = makeStyles({
 	},
 	title: {
 		height: "19px",
-		width: "460px",
+		// width: "460px",
 		color: "#2E384D",
 		fontSize: "16px",
 		fontWeight: "500",
 		letterSpacing: "0.6px",
 		lineHeight: "19px",
 		padding: "12px 8px",
-		marginBottom: "17px"
+		marginBottom: "17px",
+		display:"block",
 	}
 });
 
 export function DislocationResultsTable(props) {
 
-	let resultsJson = props.resultsJson;
+	let { resultsJson, isMetrics } = props;
 	let title = props.title;
 
 	let headers = [...[""], ...props.headers];
@@ -103,7 +110,7 @@ export function DislocationResultsTable(props) {
 		<div>
 			<div className={classes.title}>{title}</div>
 			<TableContainer>
-				<Table className={classes.table} size="small" aria-label="a dense table">
+				<Table className={isMetrics ? classes.metricsTable: classes.table} size="small" aria-label="a dense table">
 					<TableHead>
 						<TableRow >
 							{
@@ -114,7 +121,8 @@ export function DislocationResultsTable(props) {
 									} else if (idx === headerSize -1){
 										headClass = classes.tableRowHeadRight;
 									}
-									return (<TableCell className={headClass} key={idx}>
+									return (<TableCell className={headClass} key={idx}
+													   style={ isMetrics ? {"minWidth":"200px"} : {}}>
 										{header}
 									</TableCell>);
 								})
@@ -126,17 +134,16 @@ export function DislocationResultsTable(props) {
 							<TableCell className={classes.tableColumnHeadRed}> Dislocated </TableCell>
 							<TableCell className={classes.tableDataCellDislocated}>
 								{
-									"households" in resultsJson.dislocated ?
-										resultsJson.dislocated["households"].toLocaleString("en-US")
-										:
-										resultsJson.dislocated["population"].toLocaleString("en-US")
+									"households" in resultsJson["dislocated"] ?
+										resultsJson["dislocated"]["households"].toLocaleString("en-US") :
+										resultsJson["dislocated"]["population"].toLocaleString("en-US")
 								}
 							</TableCell>
 							<TableCell className={classes.tableDataCellDislocated}>
 								{
-									"%_of_households" in resultsJson.dislocated ?
-										round(resultsJson.dislocated["%_of_households"], 1):
-										round(resultsJson.dislocated["%_of_population"], 1)
+									"%_of_households" in resultsJson["dislocated"] ?
+										round(resultsJson["dislocated"]["%_of_households"], 1) :
+										round(resultsJson["dislocated"]["%_of_population"], 1)
 								}%
 							</TableCell>
 						</TableRow>
@@ -145,17 +152,16 @@ export function DislocationResultsTable(props) {
 							<TableCell className={classes.tableColumnHeadGreen}> Not Dislocated </TableCell>
 							<TableCell className={classes.tableDataCell}>
 								{
-									"households" in resultsJson.not_dislocated ?
-										resultsJson.not_dislocated["households"].toLocaleString("en-US")
-										:
-										resultsJson.not_dislocated["population"].toLocaleString("en-US")
+									"households" in resultsJson["not_dislocated"] ?
+										resultsJson["not_dislocated"]["households"].toLocaleString("en-US") :
+										resultsJson["not_dislocated"]["population"].toLocaleString("en-US")
 								}
 							</TableCell>
 							<TableCell className={classes.tableDataCell}>
 								{
-									"%_of_households" in resultsJson.not_dislocated ?
-										round(resultsJson.not_dislocated["%_of_households"], 1):
-										round(resultsJson.not_dislocated["%_of_population"], 1)
+									"%_of_households" in resultsJson["not_dislocated"] ?
+										round(resultsJson["not_dislocated"]["%_of_households"], 1) :
+										round(resultsJson["not_dislocated"]["%_of_population"], 1)
 								}%
 							</TableCell>
 						</TableRow>
@@ -164,9 +170,9 @@ export function DislocationResultsTable(props) {
 							<TableCell className={classes.tableRowTotal}> Total </TableCell>
 							<TableCell className={classes.tableDataCell}>
 								{
-									"households" in resultsJson.total ?
-										resultsJson.total["households"].toLocaleString("en-US") :
-										resultsJson.total["population"].toLocaleString("en-US")
+									"households" in resultsJson["total"] ?
+										resultsJson["total"]["households"].toLocaleString("en-US") :
+										resultsJson["total"]["population"].toLocaleString("en-US")
 								}
 							</TableCell>
 							<TableCell className={classes.tableDataCell} />

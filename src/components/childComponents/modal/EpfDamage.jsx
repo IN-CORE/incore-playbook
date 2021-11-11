@@ -1,4 +1,4 @@
-import {Container, Dialog, DialogContent, IconButton, Typography} from "@material-ui/core";
+import {Box, Container, Dialog, DialogContent, IconButton, Typography} from "@material-ui/core";
 import CloseIcon from "@material-ui/icons/Close";
 import Map from "../map/Map";
 import {globals} from "../../../globals";
@@ -8,7 +8,7 @@ import React from "react";
 
 export default function EpfDamage(props){
 
-	let {title, previewOn, handlePreviewClose, layers, setMap} = props;
+	let {executionName, title, previewOn, handlePreviewClose, layers, setMap} = props;
 
 	return (
 		<Dialog open={previewOn} onClose={handlePreviewClose} maxWidth="lg" fullWidth scroll="paper">
@@ -16,8 +16,13 @@ export default function EpfDamage(props){
 				<IconButton aria-label="Close" onClick={handlePreviewClose} style={{float: "right"}}>
 					<CloseIcon fontSize="small"/>
 				</IconButton>
+
 				{/*title*/}
-				<Typography className="previewTitle">{title}</Typography>
+				{/*TODO wrap into a component*/}
+				<Box className="previewTitleSection">
+					<Typography className="previewTitle">{executionName}</Typography>
+					<Typography className="previewTitle">Select Data: {title}</Typography>
+				</Box>
 
 				{/*map*/}
 				<Container className="mapContainerFull" disableGutters>

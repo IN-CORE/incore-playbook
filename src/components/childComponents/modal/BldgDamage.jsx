@@ -10,7 +10,7 @@ import {ResultTable} from "../table/ResultTable";
 
 export default function BldgDamage(props) {
 
-	let {title, previewOn, handlePreviewClose, runtime, barCharts, layers, tables, setMap} = props;
+	let {executionName, title, previewOn, handlePreviewClose, runtime, barCharts, layers, tables, setMap} = props;
 
 	return (
 		<Dialog open={previewOn} onClose={handlePreviewClose} maxWidth="lg" fullWidth scroll="paper">
@@ -18,12 +18,17 @@ export default function BldgDamage(props) {
 				<IconButton aria-label="Close" onClick={handlePreviewClose} style={{float: "right"}}>
 					<CloseIcon fontSize="small"/>
 				</IconButton>
+
 				{/*title*/}
-				<Typography className="previewTitle">{title}</Typography>;
+				{/*TODO wrap into a component*/}
+				<Box className="previewTitleSection">
+					<Typography className="previewTitle">{executionName}</Typography>
+					<Typography className="previewTitle">Select Data: {title}</Typography>
+				</Box>
 
 				{/*for chart*/}
 				<Box className="chartContainer">
-					<Grid container spacing={3} justify="left">
+					<Grid container spacing={3} justify="center">
 						<Grid item>
 							<Typography className="previewSubTitle">
 									Analysis Result View</Typography>

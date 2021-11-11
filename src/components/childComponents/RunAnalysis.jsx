@@ -102,8 +102,17 @@ export default function ViewResult(props) {
 
 	// form check
 	useEffect(() => {
-		if (selectedBldgId !== "" && selectedSubstationId !== ""  && selectedPoleId !== ""
-			&& selectedInterdNetworkId !== "" && title !== "" && description !== "") setDisabled(false);
+		if (selectedBldgId !== ""
+			&& selectedSubstationId !== ""
+			&& selectedPoleId !== ""
+			&& selectedInterdNetworkId !== ""
+			&& title !== ""
+			&& description !== ""
+			&& selectedBldgToSectorId !== ""
+			&& selectedHuaId !== ""
+			&& selectedBlockGroupId !== ""
+			&& selectedValueLossId !== ""
+			&& selectedTornadoId !== "") setDisabled(false);
 		else setDisabled(true);
 	}, [selectedBldgId, selectedSubstationId, selectedPoleId, selectedInterdNetworkId, title, description,
 		selectedBldgToSectorId, selectedHuaId, selectedBlockGroupId, selectedValueLossId,
