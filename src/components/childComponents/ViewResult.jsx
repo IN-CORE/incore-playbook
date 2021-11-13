@@ -28,6 +28,7 @@ import BldgFunctionality from "./modal/BldgFunctionality";
 import CGE from "./modal/CGE";
 import PopDislocation from "./modal/PopDislocation";
 import Metrics from "./modal/Metrics";
+import {exportJson} from "../../utils/common";
 
 const useStyles = makeStyles({
 	statTitle: {
@@ -504,11 +505,10 @@ export default function ViewResult(props) {
 		setPreviewOn(true);
 	};
 
-	const previewCGE = async (executionItemId) => {
+	const getCGEJson = async (executionItemId) => {
 
 		let executionItem = getExecution(executionItemId);
 		setSelectedExecutionName(executionItem["title"]);
-
 
 		// cge by total household income
 		let cgeHouseholdIncomeId = executionItem["datasets"][datawolfConfig["datasets"]["cgeHouseholdIncomeId"]];
@@ -524,15 +524,60 @@ export default function ViewResult(props) {
 		let cgeEmployment = await getOutputFileJson(cgeEmploymentId);
 		let cgeEmploymentContent = JSON.parse(cgeEmployment);
 
-		setTables({
-			"totalHouseholdIncome":cgeHouseholdIncomeContent,
-			"domesticSupply":cgeDomesticSupplyContent,
-			"employment":cgeEmploymentContent
-		});
-		setResultType("cge");
+		return {
+			"totalHouseholdIncome": cgeHouseholdIncomeContent,
+			"domesticSupply": cgeDomesticSupplyContent,
+			"employment": cgeEmploymentContent
+		};
+	};
 
-		// open preview
-		setPreviewOn(true);
+	const previewCGE = async (executionItemId) => {
+
+		let cgeJson = await getCGEJson(executionItemId);
+		setTables(cgeJson);
+		setResultType("cge");
+		setPreviewOn(true); // open preview
+	};
+
+	const downloadCGE = async (executionItemId) => {
+		let cgeJson = await getCGEJson(executionItemId);
+		exportJson(cgeJson, "cge");
+	};
+
+	const getPopDislJson = async (executionItemId) => {
+		let executionItem = getExecution(executionItemId);
+
+		// total dislocation
+		let totalDislTableId = executionItem["datasets"][datawolfConfig["datasets"]["totalDislocationId"]];
+		let totalDislTable = await getOutputFileJson(totalDislTableId);
+		let totalDislTableIdContent = JSON.parse(totalDislTable);
+
+		// dislocation group by
+		let dislocationByRaceId = executionItem["datasets"][datawolfConfig["datasets"]["dislocationByRaceId"]];
+		let dislocationByRace = await getOutputFileJson(dislocationByRaceId);
+		let dislocationByRaceContent = JSON.parse(dislocationByRace);
+
+		let dislocationByTenureId = executionItem["datasets"][datawolfConfig["datasets"]["dislocationByTenureId"]];
+		let dislocationByTenure = await getOutputFileJson(dislocationByTenureId);
+		let dislocationByTenureContent = JSON.parse(dislocationByTenure);
+
+		let dislocationByIncomeId = executionItem["datasets"][datawolfConfig["datasets"]["dislocationByIncomeId"]];
+		let dislocationByIncome = await getOutputFileJson(dislocationByIncomeId);
+		let dislocationByIncomeContent = JSON.parse(dislocationByIncome);
+
+		let dislocationByHousingTypeId = executionItem["datasets"][datawolfConfig["datasets"]["dislocationByHousingTypeId"]];
+		let dislocationByHousingType = await getOutputFileJson(dislocationByHousingTypeId);
+		let dislocationByHousingTypeIdContent = JSON.parse(dislocationByHousingType);
+
+		return {
+			"totalResultsTable": totalDislTableIdContent,
+			"huaResultsTable":{
+				"income": dislocationByIncomeContent,
+				"race": dislocationByRaceContent,
+				"tenure": dislocationByTenureContent,
+				"housingType": dislocationByHousingTypeIdContent
+			}
+		};
 	};
 
 	const previewPopDisl = async (executionItemId) => {
@@ -573,42 +618,15 @@ export default function ViewResult(props) {
 		];
 		handleLayerUpdate(layerDef);
 
-		// total dislocation
-		let totalDislTableId = executionItem["datasets"][datawolfConfig["datasets"]["totalDislocationId"]];
-		let totalDislTable = await getOutputFileJson(totalDislTableId);
-		let totalDislTableIdContent = JSON.parse(totalDislTable);
-
-		// dislocation group by
-		let dislocationByRaceId = executionItem["datasets"][datawolfConfig["datasets"]["dislocationByRaceId"]];
-		let dislocationByRace = await getOutputFileJson(dislocationByRaceId);
-		let dislocationByRaceContent = JSON.parse(dislocationByRace);
-
-		let dislocationByTenureId = executionItem["datasets"][datawolfConfig["datasets"]["dislocationByTenureId"]];
-		let dislocationByTenure = await getOutputFileJson(dislocationByTenureId);
-		let dislocationByTenureContent = JSON.parse(dislocationByTenure);
-
-		let dislocationByIncomeId = executionItem["datasets"][datawolfConfig["datasets"]["dislocationByIncomeId"]];
-		let dislocationByIncome = await getOutputFileJson(dislocationByIncomeId);
-		let dislocationByIncomeContent = JSON.parse(dislocationByIncome);
-
-		let dislocationByHousingTypeId = executionItem["datasets"][datawolfConfig["datasets"]["dislocationByHousingTypeId"]];
-		let dislocationByHousingType = await getOutputFileJson(dislocationByHousingTypeId);
-		let dislocationByHousingTypeIdContent = JSON.parse(dislocationByHousingType);
-		setTables(
-			{
-				"totalResultsTable": totalDislTableIdContent,
-				"huaResultsTable":{
-					"income": dislocationByIncomeContent,
-					"race": dislocationByRaceContent,
-					"tenure": dislocationByTenureContent,
-					"housingType": dislocationByHousingTypeIdContent
-				}}
-		);
-
+		let popDislJson = await getPopDislJson(executionItemId);
+		setTables(popDislJson);
 		setResultType("popdisl");
+		setPreviewOn(true);  //open preview
+	};
 
-		// open preview
-		setPreviewOn(true);
+	const downloadPopDisl = async (executionItemId) => {
+		let popDislJson = await getPopDislJson(executionItemId);
+		exportJson(popDislJson, "population_dislocation");
 	};
 
 	return (
@@ -635,8 +653,8 @@ export default function ViewResult(props) {
 										  previewBldgFunc={previewBldgFunc} downloadBldgFunc={downloadBldgFunc}
 										  previewInterd={previewInterd}
 										  previewBldgMCS={previewBldgMCS} downloadBldgMCS={downloadBldgMCS}
-										  previewPopDisl={previewPopDisl}
-										  previewCGE={previewCGE}
+										  previewPopDisl={previewPopDisl} downloadPopDisl={downloadPopDisl}
+										  previewCGE={previewCGE} downloadCGE={downloadCGE}
 					/>
 				</Box>
 			</Box>
