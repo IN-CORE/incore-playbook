@@ -32,7 +32,7 @@ export default function CGE(props) {
 					<Typography className="previewTitle">Select Data: {title}</Typography>
 				</Box>
 
-				<Box style={{padding:"50px 25px"}}>
+				<Box style={{padding:"5px 25px 25px 25px"}}>
 					<Grid container spacing={3} justify="center">
 						<Grid item xs={12} sm={12} md={8} lg={8} xl={8}>
 							{/*dropdown*/}

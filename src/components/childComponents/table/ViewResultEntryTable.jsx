@@ -121,7 +121,7 @@ export function ViewResultEntryTable(props) {
 
 	const {fieldNames, executions, previewMetrics, previewBldgDmg, downloadBldgDmg, previewEpfDmg, downloadEpfDmg,
 		previewBldgFunc, downloadBldgFunc, previewInterd, previewBldgMCS, downloadBldgMCS, previewPopDisl,
-		previewCGE} = props;
+		previewCGE, downloadCGE, downloadPopDisl} = props;
 
 	const [expandId, setExpandId] = useState("");
 	const [collapseId, setCollapseId] = useState("");
@@ -348,9 +348,10 @@ export function ViewResultEntryTable(props) {
 																  classes.clickableLink : classes.clickableLinkDisabled}>
 															View
 														</Link>
-														<Link color="primary" className={execution["finalStatus"] === undefined ||
-														execution["finalStatus"] === "FINISHED" ?
-															classes.clickableLink : classes.clickableLinkDisabled}>
+														<Link color="primary" className={
+															execution["finalStatus"] === undefined || execution["finalStatus"] === "FINISHED" ?
+																classes.clickableLink : classes.clickableLinkDisabled
+														} onClick={() => downloadCGE(execution["id"])}>
 															Download
 														</Link>
 													</TableCell>
@@ -366,9 +367,10 @@ export function ViewResultEntryTable(props) {
 																  classes.clickableLink : classes.clickableLinkDisabled}>
 															View
 														</Link>
-														<Link color="primary" className={execution["finalStatus"] === undefined ||
-														execution["finalStatus"] === "FINISHED" ?
-															classes.clickableLink : classes.clickableLinkDisabled}>
+														<Link color="primary" className={
+															execution["finalStatus"] === undefined || execution["finalStatus"] === "FINISHED" ?
+																classes.clickableLink : classes.clickableLinkDisabled
+														} onClick={() => downloadPopDisl(execution["id"])}>
 															Download
 														</Link>
 													</TableCell>
