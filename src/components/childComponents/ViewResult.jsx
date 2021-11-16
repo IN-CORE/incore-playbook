@@ -541,7 +541,7 @@ export default function ViewResult(props) {
 
 	const downloadCGE = async (executionItemId) => {
 		let cgeJson = await getCGEJson(executionItemId);
-		exportJson(cgeJson, "cge");
+		exportJson(cgeJson, `cge-${executionItemId}`);
 	};
 
 	const getPopDislJson = async (executionItemId) => {
@@ -626,7 +626,7 @@ export default function ViewResult(props) {
 
 	const downloadPopDisl = async (executionItemId) => {
 		let popDislJson = await getPopDislJson(executionItemId);
-		exportJson(popDislJson, "population_dislocation");
+		exportJson(popDislJson, `population-dislocation-${executionItemId}`);
 	};
 
 	return (
