@@ -17,29 +17,6 @@ import {HuaResultsTable} from "./components/childComponents/table/HuaResultsTabl
 
 export default (
 	<Switch>
-		{/* TODO remove later*/}
-		<Route exact path="/cge-description" render={() => {
-			return (<CgeDescription cgeMetrics="totalHouseholdIncome"/>);
-			// return (<CgeDescription cgeMetrics="domesticSupply"/>);
-			// return (<CgeDescription cgeMetrics="employment"/>);
-		}}/>
-
-		{/*When deleting this, also delete the json initialization of props in each of the 3 components*/}
-		<Route exact path="/cge-results" render={() => {
-			return ( <div>
-				<CgeResultsTable resultsJson={null}/>
-				<br/>
-				<DislocationResultsTable resultsJson={null} headers={["UNITS", "% of UNITS"]}
-																	 title={"Housing Unit Dislocation"}/>
-				<br/>
-				<DislocationResultsTable resultsJson={null} headers={["POPULATION", "% of POPULATION"]}
-																 title={"Population Dislocation"}/>
-				<br/>
-				<HuaResultsTable resultsJson={null} />
-
-			</div>);
-		}}/>
-
 		<Route exact path="/" render={() => {
 			sessionStorage.setItem("menu", "0");
 			return (<Introduction menu={"0"}/>);
