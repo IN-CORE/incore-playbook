@@ -9,6 +9,10 @@ import CommunityHazards from "./containers/CommunityHazards";
 import BuiltEnvironment from "./containers/BuiltEnvironment";
 import Login from "./containers/Login";
 import {NotFound} from "./containers/NotFound";
+import CgeDescription from "./components/childComponents/step/CgeDescription";
+import {CgeResultsTable} from "./components/childComponents/table/CgeResultsTable";
+import {DislocationResultsTable} from "./components/childComponents/table/DislocationResultsTable";
+import {HuaResultsTable} from "./components/childComponents/table/HuaResultsTable";
 
 
 export default (

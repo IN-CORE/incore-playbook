@@ -74,7 +74,7 @@ export const stepInfo = [
 	{
 		"stepTitle": "About this Step",
 		"stepAbout": [
-			"In-CORE uses sophisticated analysis techniques to analyze your specific community data with the latest data available on a variety of hazard threats to produce actional information on your community’s resiliance."
+			"In-CORE uses sophisticated analysis techniques to analyze your specific community data with the latest data available on a variety of hazard threats to produce actional information on your community’s resilience."
 		],
 		"stepLink": {
 			uri: "https://incore.ncsa.illinois.edu",
@@ -82,3 +82,39 @@ export const stepInfo = [
 		}
 	},
 ];
+
+export const cgeInfo = {
+	"totalHouseholdIncome": {
+		"textTitle": "What do we mean by \"Total Household Income\"?",
+		"textContent": "Household income is the total income accruing to a household from land, labor, capital, and government transfers for the selected timeframe. In the context of a result like \"household income by the household group\" (i.e., HH1 to HH5), this would mean the combined total income for all households in that household group.",
+		"tableTitle": "Household (HH) Groups",
+		"rows":
+			{
+				"HH1": "Less than $15k",
+				"HH2": "15k - 35k",
+				"HH3": "35k - 70k",
+				"HH4": "70k - 120k",
+				"HH5": "More than 120k"
+			}
+	},
+	"domesticSupply":{
+		"textTitle": "What do we mean by \"Domestic Supply\"?",
+		"textContent": "Domestic supply is the total value of commodities produced by that sector (i.e., Goods, Trade, Other) valued at producers’ prices available for domestic consumption or investment. It is calculated as total domestic production plus imports minus exports and minus change in inventories. Another way to consider this definition would be GDP (Gross Domestic Product) for the given sector.",
+		"tableTitle": "Sectors",
+		"rows":
+			{
+				"Goods": "Large manufacturing industries (e.g., heavy industrial buildings)",
+				"Trade": "Retail (e.g. Shopping center)",
+				"Other": "A combination of industries including services, health and finance (e.g., high schools, hospitals)",
+				"HS1": "Lower-value homes",
+				"HS2": "Higher-value homes",
+				"HS3": "Rented residential buildings",
+			}
+	},
+	"employment":{
+		"textTitle": "What do we mean by \"Employment\"?",
+		"textContent": "As a standard definition, employment is the total number of workers employed at a given time. In the context of the figures, employment is the total number of workers employed in the given sector. Another way to look at this would be to say that employment is the total number of laborers employed in that sector.",
+		"tableTitle": "",
+		"rows":{}
+	}
+};

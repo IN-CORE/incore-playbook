@@ -9,18 +9,17 @@ import {
 	Typography,
 } from "@material-ui/core";
 
-import {IncoreInputLabel} from "./styledComponents/IncoreInputLabel";
-import {IncoreSelectBox, IncoreMenuItem} from "./styledComponents/IncoreSelect";
+import {IncoreInputLabel} from "../styledComponents/IncoreInputLabel";
+import {IncoreSelectBox, IncoreMenuItem} from "../styledComponents/IncoreSelect";
 
-import {IncoreTextField} from "./styledComponents/IncoreInput";
+import {IncoreTextField} from "../styledComponents/IncoreInput";
 
-import {submitExecution} from "../utils/datawolf";
+import {submitExecution} from "../../utils/datawolf";
 
-import appConfig from "../app.config";
-
-import PoweredBy from "../public/powered-by-incore.svg";
-import fullHtml from "../public/steps/3-4.html";
-import StepInfo from "./StepInfo";
+import PoweredBy from "../../public/powered-by-incore.svg";
+import fullHtml from "../../public/steps/3-4.html";
+import StepInfo from "../StepInfo";
+import {inputDatasetTypes} from "../../globals";
 
 const useStyles = makeStyles({
 	runButton:{
@@ -57,12 +56,22 @@ const useStyles = makeStyles({
 	explanationLink:{
 		textDecoration:"underline",
 		color: "#00619D"
+	},
+	socioeconomicsBlock:{
+		margin: "30px auto",
+	},
+	socioeconomics:{
+		padding: "0 30px",
+		border: "dashed 2px #00619D",
+		maxHeight:"300px",
+		overflow:"auto",
+		backgroundColor:"#FFFFFF"
 	}
 });
 
 export default function ViewResult(props) {
 	const {value, index, listTornadoes, tornadoes, listDatasets, buildings, epfs, interdNetworks,
-		getExecutionList, gotoViewResultTab, ...other} = props;
+		sectorShocks, huas, blockGroups, valueLosses, getExecutionList, gotoViewResultTab, ...other} = props;
 
 	const [title, setTitle] = useState("");
 	const [description, setDescription] = useState("");
@@ -70,31 +79,52 @@ export default function ViewResult(props) {
 	const [selectedSubstationId, setSubstationId] = useState("");
 	const [selectedPoleId, setPoleId] = useState("");
 	const [selectedInterdNetworkId, setInterdNetworkId] = useState("");
+	const [selectedBldgToSectorId, setBldgToSectorId] = useState("");
+	const [selectedHuaId, setHuaId] = useState("");
+	const [selectedBlockGroupId, setBlockGroupId] = useState("");
+	const [selectedValueLossId, setValueLossId] = useState("");
 	const [selectedTornadoId, setTornadoId] = useState("");
 	const [disabled, setDisabled] = useState(true);
 
-
 	// load datasets and tornadoes
 	useEffect(() =>{
-		listDatasets(20, 0, "ergo:buildingInventoryVer6");
-		listDatasets(20, 0, "incore:epf");
-		listDatasets(20, 0, "incore:buildingInterdependencyDict");
+
+		// dataset
+		Object.keys(inputDatasetTypes).map((key) => {
+			inputDatasetTypes[key].map((inputDatasetType) => {
+				listDatasets(inputDatasetType["num"], 0, inputDatasetType["type"]);
+			});
+		});
+
+		// hazard
 		listTornadoes();
 	}, []);
 
 	// form check
 	useEffect(() => {
-		if (selectedBldgId !== "" && selectedSubstationId !== ""  && selectedPoleId !== ""
-			&& selectedInterdNetworkId !== "" && title !== "" && description !== "") setDisabled(false);
+		if (selectedBldgId !== ""
+			&& selectedSubstationId !== ""
+			&& selectedPoleId !== ""
+			&& selectedInterdNetworkId !== ""
+			&& title !== ""
+			&& description !== ""
+			&& selectedBldgToSectorId !== ""
+			&& selectedHuaId !== ""
+			&& selectedBlockGroupId !== ""
+			&& selectedValueLossId !== ""
+			&& selectedTornadoId !== "") setDisabled(false);
 		else setDisabled(true);
-	}, [selectedBldgId, selectedSubstationId, selectedPoleId, selectedInterdNetworkId, title, description]);
+	}, [selectedBldgId, selectedSubstationId, selectedPoleId, selectedInterdNetworkId, title, description,
+		selectedBldgToSectorId, selectedHuaId, selectedBlockGroupId, selectedValueLossId,
+		selectedTornadoId]);
 
 
 	const classes = useStyles();
 
 	const handleRunButtonClick = async () =>{
 		const datawolfJson = await submitExecution(title, description, selectedBldgId, selectedSubstationId,
-			selectedPoleId, selectedInterdNetworkId, selectedTornadoId);
+			selectedPoleId, selectedInterdNetworkId, selectedBldgToSectorId, selectedHuaId, selectedBlockGroupId,
+			selectedValueLossId, selectedTornadoId);
 		if (datawolfJson && datawolfJson !== "") {
 			setTitle("");
 			setDescription("");
@@ -102,6 +132,10 @@ export default function ViewResult(props) {
 			setSubstationId("");
 			setPoleId("");
 			setInterdNetworkId("");
+			setBldgToSectorId("");
+			setHuaId("");
+			setBlockGroupId("");
+			setValueLossId("");
 			setTornadoId("");
 
 			// update execution list and then jump to view result tab
@@ -126,7 +160,7 @@ export default function ViewResult(props) {
 						<IncoreTextField value={description} variant="outlined" onChange={(e) => setDescription(e.target.value)}/>
 					</div>
 					<Box className="inputGroup" style={{height: "auto"}}>
-						<IncoreInputLabel>Select a Building, Building Cluster
+						<IncoreInputLabel>Select a Building Cluster
 						</IncoreInputLabel>
 						<IncoreSelectBox labelId="label" id="select" variant="outlined"
 										 onChange={(e)=>{ setBldgId(e.target.value); }}
@@ -182,12 +216,92 @@ export default function ViewResult(props) {
 							{
 								interdNetworks.map((interdNetwork) => {
 									return (
-										<IncoreMenuItem value={interdNetwork["id"]} interdNetwork={interdNetwork["id"]}>
+										<IncoreMenuItem key={interdNetwork["id"]} value={interdNetwork["id"]} interdNetwork={interdNetwork["id"]}>
 											{interdNetwork["title"]}</IncoreMenuItem>
 									);
 								})
 							}
 						</IncoreSelectBox>
+
+						{/*socioecnomic input*/}
+						<Box className={classes.socioeconomicsBlock}>
+							<Typography className={classes.explanation} style={{margin: "5px 0", color:"#00619D"}}>
+								Select Socioeconomical Inputs
+							</Typography>
+							<Box className={classes.socioeconomics}>
+
+								<Box className="inputGroup" style={{height: "auto"}}>
+									<IncoreInputLabel>Select Building to Sector Mapping
+									</IncoreInputLabel>
+									<IncoreSelectBox labelId="label" id="select" variant="outlined"
+													 onChange={(e)=>{ setBldgToSectorId(e.target.value); }}
+													 value={selectedBldgToSectorId}>
+										>
+										{
+											sectorShocks.map((item) => {
+												return (
+													<IncoreMenuItem key={item["id"]} value={item["id"]} sectorShock={item["id"]}>
+														{item["title"]}</IncoreMenuItem>
+												);
+											})
+										}
+									</IncoreSelectBox>
+								</Box>
+								<Box className="inputGroup" style={{height: "auto"}}>
+									<IncoreInputLabel>Select Housing Unit Allocation Table
+									</IncoreInputLabel>
+									<IncoreSelectBox labelId="label" id="select" variant="outlined"
+													 onChange={(e)=>{ setHuaId(e.target.value); }}
+													 value={selectedHuaId}>
+										>
+										{
+											huas.map((item) => {
+												return (
+													<IncoreMenuItem key={item["id"]} value={item["id"]} hua={item["id"]}>
+														{item["title"]}</IncoreMenuItem>
+												);
+											})
+										}
+									</IncoreSelectBox>
+								</Box>
+								<Box className="inputGroup" style={{height: "auto"}}>
+									<IncoreInputLabel>Select Block Group Census
+									</IncoreInputLabel>
+									<IncoreSelectBox labelId="label" id="select" variant="outlined"
+													 onChange={(e)=>{ setBlockGroupId(e.target.value); }}
+													 value={selectedBlockGroupId}>
+										>
+										{
+											blockGroups.map((item) => {
+												return (
+													<IncoreMenuItem key={item["id"]} value={item["id"]} blockGroup={item["id"]}>
+														{item["title"]}</IncoreMenuItem>
+												);
+											})
+										}
+									</IncoreSelectBox>
+								</Box>
+								<Box className="inputGroup" style={{height: "auto"}}>
+									<IncoreInputLabel>Select Value Loss Distribution
+									</IncoreInputLabel>
+									<IncoreSelectBox labelId="label" id="select" variant="outlined"
+													 onChange={(e)=>{ setValueLossId(e.target.value); }}
+													 value={selectedValueLossId}>
+										>
+										{
+											valueLosses.map((item) => {
+												return (
+													<IncoreMenuItem key={item["id"]} value={item["id"]} valueLoss={item["id"]}>
+														{item["title"]}</IncoreMenuItem>
+												);
+											})
+										}
+									</IncoreSelectBox>
+								</Box>
+
+							</Box>
+						</Box>
+
 						<Typography className={classes.explanation}>If you need to add entities to your built environment&nbsp;
 							<NavLink to="/community-environment"
 								  className={classes.explanationLink}>click here</NavLink>.</Typography>

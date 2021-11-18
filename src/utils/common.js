@@ -106,3 +106,21 @@ export function formatPercent(val, n = 1){
 export function formatProbToPercent(val, n = 1){
 	return formatPercent(val*100, n);
 }
+
+export function exportJson(json, file_name) {
+	let formattedJson = JSON.stringify(json, null, 4);
+	let blob = new Blob([formattedJson], {type: "application/json"});
+
+	const filename = `${file_name}.json`;
+
+	if (window.navigator.msSaveOrOpenBlob) {
+		window.navigator.msSaveBlob(blob, filename);
+	} else {
+		let anchor = window.document.createElement("a");
+		anchor.href = window.URL.createObjectURL(blob);
+		anchor.download = filename;
+		document.body.appendChild(anchor);
+		anchor.click();
+		document.body.removeChild(anchor);
+	}
+}

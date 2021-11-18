@@ -10,7 +10,6 @@ if (process.env.DEPLOY_ENV === "production") {
 	config = {
 		baseUrlRoute: "playbook",
 		geoServerWMS: "https://incore-geoserver.ncsa.illinois.edu/geoserver/incore/wms",
-		geoServerWFS: "https://incore-geoserver.ncsa.illinois.edu/geoserver/incore/ows",
 	};
 } else if (process.env.DEPLOY_ENV === "test") {
 	apihost = "incore-tst.ncsa.illinois.edu";
@@ -18,7 +17,6 @@ if (process.env.DEPLOY_ENV === "production") {
 	config = {
 		baseUrlRoute: "playbook",
 		geoServerWMS: "https://incore-tst.ncsa.illinois.edu/geoserver/incore/wms",
-		geoServerWFS: "https://incore-tst.ncsa.illinois.edu/geoserver/incore/ows",
 	};
 } else if (process.env.DEPLOY_ENV === "local") {
 	apihost = "localhost:8080";
@@ -26,7 +24,6 @@ if (process.env.DEPLOY_ENV === "production") {
 	config = {
 		baseUrlRoute: "",
 		geoServerWMS: "https://incore-tst.ncsa.illinois.edu/geoserver/incore/wms",
-		geoServerWFS: "https://incore-tst.ncsa.illinois.edu/geoserver/incore/ows",
 	};
 } else if (process.env.DEPLOY_ENV === "development") {
 	apihost = "incore-dev.ncsa.illinois.edu";
@@ -34,7 +31,6 @@ if (process.env.DEPLOY_ENV === "production") {
 	config = {
 		baseUrlRoute: "playbook",
 		geoServerWMS: "https://incore-dev.ncsa.illinois.edu/geoserver/incore/wms",
-		geoServerWFS: "https://incore-dev.ncsa.illinois.edu/geoserver/incore/ows",
 	};
 } else { // default case that used dev environment
 	apihost = "";
@@ -42,7 +38,6 @@ if (process.env.DEPLOY_ENV === "production") {
 	config = {
 		baseUrlRoute: "playbook",
 		geoServerWMS: "/geoserver/incore/wms",
-		geoServerWFS: "https://incore-geoserver.ncsa.illinois.edu/geoserver/incore/ows",
 	};
 }
 config["apiUrl"] = apiurl;

@@ -20,10 +20,10 @@ import Divider from "@material-ui/core/Divider";
 import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
 import ChevronRightIcon from "@material-ui/icons/ChevronRight";
 
-import {setMenuState} from "../actions/layout";
+import {setMenuState} from "../../../actions/layout";
 
-import Logo from "../public/cr-logo.png";
-import {globals} from "../globals";
+import Logo from "../../../public/cr-logo.png";
+import {globals} from "../../../globals";
 import Cookies from "universal-cookie";
 
 import List from "@material-ui/core/List";

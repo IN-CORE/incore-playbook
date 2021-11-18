@@ -1,27 +1,27 @@
 export const globals = {
 	menuWidth: 300,
 	ARCHETYPE: {
-		"1":"Wood Residential Building - small rectangular plan, garble roof, 1 story",
-		"2":"Wood Residential Building - small rectangular plan, garble roof, 2 story",
-		"3":"Wood Residential Building - medium rectangular plan, hip roof, 2 story",
-		"4":"Wood Residential Building - medium rectangular plan, garble roof, 2 story",
-		"5":"Wood Residential Building - large rectangular plan, garble roof, 2 story",
-		"6":"Business and Retail Building",
-		"7":"Light Industrial Building",
-		"8":"Heavy Industrial Building",
-		"9":"Elementary/Middle School",
-		"10":"High School",
-		"11":"Fire-police station",
-		"12":"Hospital",
-		"13":"Community Center/Church",
-		"14":"Government Building",
-		"15":"Large big-box",
-		"16":"Small big-box",
-		"17":"Mobile Home",
-		"18":"Shopping Center",
-		"19":"Office Building"
+		"1": "Wood Residential Building - small rectangular plan, garble roof, 1 story",
+		"2": "Wood Residential Building - small rectangular plan, garble roof, 2 story",
+		"3": "Wood Residential Building - medium rectangular plan, hip roof, 2 story",
+		"4": "Wood Residential Building - medium rectangular plan, garble roof, 2 story",
+		"5": "Wood Residential Building - large rectangular plan, garble roof, 2 story",
+		"6": "Business and Retail Building",
+		"7": "Light Industrial Building",
+		"8": "Heavy Industrial Building",
+		"9": "Elementary/Middle School",
+		"10": "High School",
+		"11": "Fire-police station",
+		"12": "Hospital",
+		"13": "Community Center/Church",
+		"14": "Government Building",
+		"15": "Large big-box",
+		"16": "Small big-box",
+		"17": "Mobile Home",
+		"18": "Shopping Center",
+		"19": "Office Building"
 	},
-	JOPLIN_MAP_BOUNDS:[
+	JOPLIN_MAP_BOUNDS: [
 		-12792231.63426164,
 		3246498.818343048,
 		-8436000.174951272,
@@ -100,3 +100,148 @@ export const usersList = [
 		"email": "vnarah2@illinois.edu"
 	}
 ];
+
+// might have multiple versions in the future
+export const inputDatasetTypes = {
+	buildings: [{
+		"type": "ergo:buildingInventoryVer6",
+		"format": "shapefile",
+		"num": 20,
+		"isSocioeconomics":false,
+		"dispatchKey":"RECEIVE_BLDGS"
+	}],
+	epfs: [{
+		"type": "incore:epf",
+		"format": "shapefile",
+		"num": 20,
+		"isSocioeconomics":false,
+		"dispatchKey":"RECEIVE_EPFS"
+	}],
+	interdNetworks: [{
+		"type": "incore:buildingInterdependencyDict",
+		"format": "json",
+		"num": 20,
+		"isSocioeconomics":false,
+		"dispatchKey":"RECEIVE_INTERD"
+	}],
+	sectorShocks: [{
+		"description": "Buildings to sectors mapping",
+		"type": "incore:buildingsToSectors",
+		"format": "table",
+		"num": 5,
+		"isSocioeconomics":true,
+		"dispatchKey":"RECEIVE_SECTOR_SHOCKS"
+	}],
+	cgeSams: [{
+		"description": "Joplin CGE sam",
+		"type": "incore:JoplinCGEsam",
+		"format": "table",
+		"num": 5,
+		"isSocioeconomics":false, // not allow user to upload
+		"dispatchKey":"RECEIVE_CGE_SAM"
+	}],
+	cgeBbs: [{
+		"description": "Joplin CGE bb",
+		"type": "incore:JoplinCGEbb",
+		"format": "table",
+		"num": 5,
+		"isSocioeconomics":false,
+		"dispatchKey":"RECEIVE_CGE_BB"
+	}],
+	cgeIouts: [{
+		"description": "Joplin CGE iout",
+		"type": "incore:JoplinCGEiout",
+		"format": "table",
+		"num": 5,
+		"isSocioeconomics":false,
+		"dispatchKey":"RECEIVE_CGE_IOUTS"
+	}],
+	cgeMiscs: [{
+		"description": "Joplin CGE misc",
+		"type": "incore:JoplinCGEmisc",
+		"format": "table",
+		"num": 5,
+		"isSocioeconomics":false,
+		"dispatchKey":"RECEIVE_CGE_MISC"
+	}],
+	cgeMischs: [{
+		"description": "Joplin CGE misch",
+		"type": "incore:JoplinCGEmisch",
+		"format": "table",
+		"num": 5,
+		"isSocioeconomics":false,
+		"dispatchKey":"RECEIVE_CGE_MISCH"
+	}],
+	cgeLandcaps: [{
+		"description": "Joplin CGE landcap",
+		"type": "incore:JoplinCGElandcap",
+		"format": "table",
+		"num": 5,
+		"isSocioeconomics":false,
+		"dispatchKey": "RECEIVE_CGE_LANDCAP"
+	}],
+	cgeEmploys: [{
+		"description": "Joplin CGE employ",
+		"type": "incore:JoplinCGEemploy",
+		"format": "table",
+		"num": 5,
+		"isSocioeconomics":false,
+		"dispatchKey": "RECEIVE_CGE_EMPLOY"
+	}],
+	cgeIgtds: [{
+		"description": "Joplin CGE igtd",
+		"type": "incore:JoplinCGEigtd",
+		"format": "table",
+		"num": 5,
+		"isSocioeconomics":false,
+		"dispatchKey": "RECEIVE_CGE_IGTD"
+	}],
+	cgeTauffs: [{
+		"description": "Joplin CGE tauff",
+		"type": "incore:JoplinCGEtauff",
+		"format": "table",
+		"num": 5,
+		"isSocioeconomics":false,
+		"dispatchKey": "RECEIVE_CGE_TAUFF"
+	}],
+	cgeJobcrs: [{
+		"description": "Joplin CGE jobcr",
+		"type": "incore:JoplinCGEjobcr",
+		"format": "table",
+		"num": 5,
+		"isSocioeconomics":false,
+		"dispatchKey":"RECEIVE_CGE_JOBCR"
+	}],
+	cgeOutcrs: [{
+		"description": "Joplin CGE outcr",
+		"type": "incore:JoplinCGEoutcr",
+		"format": "table",
+		"num": 5,
+		"isSocioeconomics":false,
+		"dispatchKey": "RECEIVE_CGE_OUTCR"
+	}],
+	huas: [{
+		"description": "Housing unit allocation",
+		"type": "incore:housingUnitAllocation",
+		"format": "table",
+		"num": 5,
+		"isSocioeconomics":true,
+		"dispatchKey": "RECEIVE_HUA"
+	}],
+	blockGroups: [{
+		"description": "Block group census of racial and ethnic distribution",
+		"type": "incore:blockGroupData",
+		"format": "table",
+		"num": 5,
+		"isSocioeconomics":true,
+		"dispatchKey": "RECEIVE_BLOCK_GROUP"
+	}],
+	valueLosses: [{
+		"description": "Value loss beta distribution parameters",
+		"type": "incore:valuLossParam",
+		"format": "table",
+		"num": 5,
+		"isSocioeconomics":true,
+		"dispatchKey": "RECEIVE_VALUE_LOSS"
+	}]
+};

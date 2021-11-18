@@ -2,11 +2,11 @@ import React from "react";
 
 import {Box, Button, Container, Grid, Link, withStyles,} from "@material-ui/core";
 
-import DefaultProfileImage from "../public/default-profile-img.png";
-import {IncoreInputLabel} from "./styledComponents/IncoreInputLabel";
-import {IncoreButton} from "./styledComponents/IncoreButton";
-import {IncoreMenuItem, IncoreSelectBox} from "./styledComponents/IncoreSelect";
-import {IncoreTextField} from "./styledComponents/IncoreInput";
+import DefaultProfileImage from "../../public/default-profile-img.png";
+import {IncoreInputLabel} from "../styledComponents/IncoreInputLabel";
+import {IncoreButton} from "../styledComponents/IncoreButton";
+import {IncoreMenuItem, IncoreSelectBox} from "../styledComponents/IncoreSelect";
+import {IncoreTextField} from "../styledComponents/IncoreInput";
 
 const styles = {
 	inputGroupProfile: {

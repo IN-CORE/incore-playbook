@@ -1,17 +1,16 @@
 import React from "react";
+
 import {
 	Table,
 	TableBody,
 	TableCell,
 	TableContainer,
 	TableHead,
-	TableRow,
-	withStyles
+	TableRow
 } from "@material-ui/core";
 
+
 import {makeStyles} from "@material-ui/core/styles";
-import {formatProbToPercent, round} from "../utils/common";
-import LinearProgress from "@material-ui/core/LinearProgress";
 
 const useStyles = makeStyles({
 	table: {
@@ -20,12 +19,6 @@ const useStyles = makeStyles({
 	},
 	tableHeaderRow: {
 		height: "34px",
-	},
-	tableTopHeaderRow:{
-		textAlign: "center",
-		border: "1px solid rgba(46,91,255,0.08)",
-		height: "15px",
-		textTransform:"uppercase"
 	},
 	tableHeaderCell: {
 		height: "14px",
@@ -69,8 +62,6 @@ const useStyles = makeStyles({
 		letterSpacing: 0,
 		lineHeight: "18px",
 		border: "1px solid rgba(46,91,255,0.08)",
-		// display: "flex",
-		// width: "100%"
 	},
 
 });
@@ -86,36 +77,25 @@ function calcClusterNumInCategory(fields){
 				count[categoryItem["category"]] += 1;
 			}
 		});
+
 	});
+
 	return count;
 }
 
-const BorderLinearProgress = withStyles((theme) => ({
-	root: {
-		height: 4,
-		borderRadius: 5,
-	},
-	colorPrimary: {
-		backgroundColor: theme.palette.grey[theme.palette.type === "light" ? 200 : 700],
-	},
-	barColorPrimary: {
-		backgroundColor: "red",
-	},
-	bar: {
-		borderRadius: 5,
-		backgroundColor: "rgba(150, 183, 18, 1)"
-		// backgroundColor: "#1a90ff",
-	},
-}))(LinearProgress);
 
+export function ResultTable(props) {
 
-export function FunctionalityTable(props) {
+	const { fields } = props;
 
-	const { funcResults } = props;
+	const NA_value = -1; // TODO need to change to -1
 
-	const NA_value = -1;
-
-	let clusterNumInCategory = calcClusterNumInCategory(funcResults);
+	// e.g.
+	// Community Recovery: 5
+	// Critical Facilities: 4
+	// "Emergency Housing ": 3
+	// Housing / Neighborhood: 7
+	let clusterNumInCategory = calcClusterNumInCategory(fields);
 
 	const classes = useStyles();
 
@@ -123,12 +103,7 @@ export function FunctionalityTable(props) {
 		<TableContainer>
 			<Table className={classes.table} size="small" aria-label="a dense table">
 				<TableHead>
-					<TableRow>
-						<TableCell colSpan={2}>  </TableCell>
-						<TableCell colSpan={2} className={classes.tableTopHeaderRow}> Percent (%) </TableCell>
-						<TableCell colSpan={2} className={classes.tableTopHeaderRow}> No. of Buildings </TableCell>
-					</TableRow>
-
+					{/*["playbook builidng clusters", "DS_0", "DS_1", "DS_2", "DS_3"];*/}
 					<TableRow className={classes.tableHeaderRow} key="hdrRow">
 						<TableCell style={{width: "647px", backgroundColor: "#EFF2FF", color:"#69707F"}}
 								   colSpan={2}
@@ -136,38 +111,28 @@ export function FunctionalityTable(props) {
 								   key="playbook-building-clusters">playbook builidng clusters</TableCell>
 						<TableCell style={{width: "121px", backgroundColor: "#96B712"}}
 								   className={classes.tableHeaderCell}
-								   key="funcPercent">Functional</TableCell>
+								   key="DS_0">Insignificant</TableCell>
+						<TableCell style={{width: "121px", backgroundColor: "#F7C137"}}
+								   className={classes.tableHeaderCell}
+								   key="DS_1">Moderate</TableCell>
+						<TableCell style={{width: "121px", backgroundColor: "#ED8036"}}
+								   className={classes.tableHeaderCell}
+								   key="DS_2">Extensive</TableCell>
 						<TableCell style={{width: "121px", backgroundColor: "#D63649"}}
 								   className={classes.tableHeaderCell}
-								   key="nonFunctPercent">Non-Functional</TableCell>
-						<TableCell style={{width: "121px", backgroundColor: "#96B712"}}
-								   className={classes.tableHeaderCell}
-								   key="FuncNum">Functional</TableCell>
-						<TableCell style={{width: "121px", backgroundColor: "#D63649"}}
-								   className={classes.tableHeaderCell}
-								   key="nonFuncNum">Non-Functional</TableCell>
+								   key="DS_3">Complete</TableCell>
 					</TableRow>
 				</TableHead>
 				<TableBody>
 					{
-						funcResults["by_category"].map((categoryItem, idx) => {
+						// TODO this is not working
+						fields["by_category"].map((categoryItem, _) => {
 							let firstMatchIdxx = -1;
 							return (
 								<>
 									{
-										funcResults["by_cluster"].map((clusterItem, idxx) =>{
-											let style = {};
-											let funcPercent = -1;
-											let nonFuncPercent = 100;
-
+										fields["by_cluster"].map((clusterItem, idxx) =>{
 											if (clusterItem["category"] === categoryItem["category"]) {
-												if(clusterItem["percent_functional"] > 0) {
-													funcPercent = round(clusterItem["percent_functional"] * 100, 1);
-													// uncomment this if we want to style it by using the background instead of progress bar
-													// nonFuncPercent = round(100 - funcPercent, 1);
-													// style = {background: `linear-gradient(90deg, rgba(150, 183, 18, 0.15) ${funcPercent}%, rgba(214,54,73, 0.15) ${funcPercent}% ${nonFuncPercent}%)`};
-												}
-
 												if (firstMatchIdxx < 0)	firstMatchIdxx = idxx;
 												return (
 													<TableRow className={classes.tableBodyRow} key={clusterItem["cluster"]}>
@@ -176,29 +141,23 @@ export function FunctionalityTable(props) {
 															   align="center"
 															   className={classes.tableBodyCategoryCell}
 															   style={{fontWeight:500,  textAlign:"left"}}>{categoryItem["category"]}
-
 															</TableCell>
 															: null
 														}
-														<TableCell key={idxx} className={classes.tableBodyClusterCell}
-																			 // style={style}
-														>
+														<TableCell key={idxx} className={classes.tableBodyClusterCell}>
 															{clusterItem["cluster"]}
-															<BorderLinearProgress variant="determinate" value={funcPercent === NA_value ? 0 : funcPercent}
-																style={funcPercent === NA_value ? {} : {backgroundColor: "#D63649"}}/>
-
 														</TableCell>
-														<TableCell key={`${idxx}-f1`} className={classes.tableBodyCell}>
-															{clusterItem["percent_functional"] === NA_value? "-" : formatProbToPercent(clusterItem["percent_functional"], 1)}
+														<TableCell key={`${idxx}-insig`} className={classes.tableBodyCell}>
+															{clusterItem["DS_0"] === NA_value? "-" : clusterItem["DS_0"]}
 														</TableCell>
-														<TableCell key={`${idxx}-nf1`} className={classes.tableBodyCell}>
-															{clusterItem["percent_non_functional"] === NA_value? "-" : formatProbToPercent(clusterItem["percent_non_functional"])}
+														<TableCell key={`${idxx}-mod`} className={classes.tableBodyCell}>
+															{clusterItem["DS_1"] === NA_value? "-" : clusterItem["DS_1"]}
 														</TableCell>
-														<TableCell key={`${idxx}-f2`} className={classes.tableBodyCell}>
-															{clusterItem["num_functional"] === NA_value? "-": clusterItem["num_functional"]}
+														<TableCell key={`${idxx}-extensi`} className={classes.tableBodyCell}>
+															{clusterItem["DS_2"] === NA_value? "-": clusterItem["DS_2"]}
 														</TableCell>
-														<TableCell key={`${idxx}-nf2`} className={classes.tableBodyCell}>
-															{clusterItem["num_non_functional"] === NA_value? "-": clusterItem["num_non_functional"]}
+														<TableCell key={`${idxx}-comp`} className={classes.tableBodyCell}>
+															{clusterItem["DS_3"] === NA_value? "-": clusterItem["DS_3"]}
 														</TableCell>
 													</TableRow>
 												);
@@ -209,21 +168,21 @@ export function FunctionalityTable(props) {
 										<TableCell key="total" className={classes.tableBodyClusterCell}
 												   style={{fontWeight:500, textAlign:"right",
 													   backgroundColor: "#EEF3F5"}}>TOTAL</TableCell>
-										<TableCell key="percent-func" className={classes.tableBodyCell}
+										<TableCell key="total-insig" className={classes.tableBodyCell}
 												   style={{fontWeight:500, backgroundColor: "#EEF3F5"}}>
-											{categoryItem["percent_functional"] === NA_value ? "-" : formatProbToPercent(categoryItem["percent_functional"])}
+											{categoryItem["DS_0"] === NA_value ? "-" : categoryItem["DS_0"]}
 										</TableCell>
-										<TableCell key="percent-nonfunc" className={classes.tableBodyCell}
+										<TableCell key="total-mod" className={classes.tableBodyCell}
 												   style={{fontWeight:500, backgroundColor: "#EEF3F5"}}>
-											{categoryItem["percent_non_functional"] === NA_value ? "-" : formatProbToPercent(categoryItem["percent_non_functional"])}
+											{categoryItem["DS_1"] === NA_value ? "-" : categoryItem["DS_1"]}
 										</TableCell>
-										<TableCell key="num-func" className={classes.tableBodyCell}
+										<TableCell key="total-extensi" className={classes.tableBodyCell}
 												   style={{fontWeight:500, backgroundColor: "#EEF3F5"}}>
-											{categoryItem["num_functional"] === NA_value ? "-" : categoryItem["num_functional"]}
+											{categoryItem["DS_2"] === NA_value ? "-" : categoryItem["DS_2"]}
 										</TableCell>
-										<TableCell key="num-nonfunc" className={classes.tableBodyCell}
+										<TableCell key="total-comp" className={classes.tableBodyCell}
 												   style={{fontWeight:500, backgroundColor: "#EEF3F5"}}>
-											{categoryItem["num_non_functional"] === NA_value ? "-" : categoryItem["num_non_functional"]}
+											{categoryItem["DS_3"] === NA_value ? "-" : categoryItem["DS_3"]}
 										</TableCell>
 									</TableRow>
 								</>

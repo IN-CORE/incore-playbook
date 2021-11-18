@@ -1,8 +1,8 @@
 import React, {useState} from "react";
-import "../styles/step-status.css";
-import { processStatus } from "../globals";
+import "../../../styles/step-status.css";
+import { processStatus } from "../../../globals";
 
-export default function StepStatus(props){
+export default function StepStatus(_){
 
 	const [activeKey, setActiveKey] = useState("inprogress");
 

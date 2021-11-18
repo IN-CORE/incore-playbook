@@ -4,7 +4,7 @@ import LoginComponent from "../components/Login";
 import {withStyles} from "@material-ui/core";
 import LoginBg from "../public/login-background.jpg";
 import Powered from "../public/powered-by-incore.svg";
-import HeaderWithMenu from "../components/HeaderWithMenu";
+import HeaderWithMenu from "../components/childComponents/navigation/HeaderWithMenu";
 import {isAuthorized} from "../utils/common";
 import Grid from "@material-ui/core/Grid";
 

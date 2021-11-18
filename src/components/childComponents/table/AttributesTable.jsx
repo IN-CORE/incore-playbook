@@ -9,7 +9,7 @@ import {
 	TableRow,
 	withStyles
 } from "@material-ui/core";
-import {globals} from "../globals";
+import {globals} from "../../../globals";
 
 const styles = {
 	table: {

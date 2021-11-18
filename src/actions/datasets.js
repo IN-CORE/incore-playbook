@@ -1,9 +1,7 @@
 import config from "../app.config";
 import {getHeader, getCurrUsername} from "../utils/common";
+import {inputDatasetTypes} from "../globals";
 
-export const RECEIVE_BLDGS = "RECEIVE_BLDGS";
-export const RECEIVE_EPFS = "RECEIVE_EPFS";
-export const RECEIVE_INTERD = "RECEIVE_INTERD";
 export const LOGIN_ERROR = "LOGIN_ERROR";
 
 export function receiveDatasets(type, json){
@@ -16,7 +14,7 @@ export function receiveDatasets(type, json){
 	};
 }
 
-export function fetchDatasets(limit=20, offset=0, type="ergo:buildingInventoryVer6"){
+export function fetchDatasets(limit=20, offset=0, type){
 	let endpoint = `${config.dataServiceBase}datasets?limit=${limit}&skip=${offset}&type=${type}`;
 
 	// default to current user's space
@@ -28,15 +26,13 @@ export function fetchDatasets(limit=20, offset=0, type="ergo:buildingInventoryVe
 			.then(response => {
 				if (response.status === 200) {
 					response.json().then(json => {
-						if (type === "ergo:buildingInventoryVer6"){
-							dispatch(receiveDatasets(RECEIVE_BLDGS, json));
-						}
-						else if (type === "incore:epf"){
-							dispatch(receiveDatasets(RECEIVE_EPFS, json));
-						}
-						else if (type === "incore:buildingInterdependencyDict"){
-							dispatch(receiveDatasets(RECEIVE_INTERD, json));
-						}
+						Object.keys(inputDatasetTypes).map((key) => {
+							inputDatasetTypes[key].map((inputDatasetType) => {
+								if (inputDatasetType["type"] === type){
+									dispatch(receiveDatasets(inputDatasetType["dispatchKey"], json));
+								}
+							});
+						});
 					});
 				}
 				else if (response.status === 401) {
@@ -44,10 +40,13 @@ export function fetchDatasets(limit=20, offset=0, type="ergo:buildingInventoryVe
 					dispatch(receiveDatasets(LOGIN_ERROR, []));
 				}
 				else {
-					// TODO Request Failed
-					dispatch(receiveDatasets(RECEIVE_BLDGS, []));
-					dispatch(receiveDatasets(RECEIVE_EPFS, []));
-					dispatch(receiveDatasets(RECEIVE_INTERD, []));
+					Object.keys(inputDatasetTypes).map((key) => {
+						inputDatasetTypes[key].map((inputDatasetType) => {
+							if (inputDatasetType["type"] === type){
+								dispatch(receiveDatasets(inputDatasetType["dispatchKey"], []));
+							}
+						});
+					});
 				}
 			});
 	};

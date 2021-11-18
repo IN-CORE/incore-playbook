@@ -2,7 +2,7 @@ import React from "react";
 import {Bar} from "react-chartjs-2";
 import "chartjs-plugin-zoom";
 import {Button} from "@material-ui/core";
-import {round} from "../utils/common";
+import {round} from "../../../utils/common";
 
 export function FunctionalityGraph(props) {
 	let {categorySummary} = props;
@@ -19,7 +19,7 @@ export function FunctionalityGraph(props) {
 	let funcCount = [];
 	let nonFuncCount = [];
 
-	categorySummary.map((entry, idx) => {
+	categorySummary.map((entry, _) => {
 		funcPercent.push(entry.percent_functional < 0 ? 0 : round(entry.percent_functional*100, 1));
 		nonFuncPercent.push(entry.percent_non_functional < 0 ? 0 : round(entry.percent_non_functional*100, 1));
 		funcCount.push(entry.num_functional < 0 ? 0 : entry.num_functional);

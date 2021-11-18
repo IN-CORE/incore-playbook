@@ -5,6 +5,23 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [0.3.0] - 2021-11-16
+
+### Added
+- Description component for CGE data [#2](https://github.com/IN-CORE/incore-playbook/issues/2)
+- CGE and Population Dislocation table components [#1](https://github.com/IN-CORE/incore-playbook/issues/1)
+- Connect "run analysis" with datawolf workflow [#7](https://github.com/IN-CORE/incore-playbook/issues/7)
+- Github action to auto build [#4](https://github.com/IN-CORE/incore-playbook/issues/4)
+- Component to display resilience metrics [#14](https://github.com/IN-CORE/incore-playbook/issues/14)
+- Enable Download of CGE and Population Dislocation outputs [#16](https://github.com/IN-CORE/incore-playbook/issues/16)
+
+### Fixed
+- Fix ESlint warnings and errors [#10](https://github.com/IN-CORE/incore-playbook/issues/10)
+
+### Changed
+- CGE and Population Dislocation table with additional column and rows [#13](https://github.com/IN-CORE/incore-playbook/issues/13)
+
+
 ## [0.2.0] - 2021-04-22
 
 ### Added
