@@ -65,7 +65,8 @@ export function getCurrUserEmail(){
 		let cookie = cookies.get("Authorization");
 		if (cookie !== "" && cookie.split(" ").length > 0){
 			let userInfo = jwt_decode(cookie.split(" ")[1]);
-			return userInfo["email"];
+			// return userInfo["email"];
+			return userInfo["preferred_username"];
 		}
 	}
 }
