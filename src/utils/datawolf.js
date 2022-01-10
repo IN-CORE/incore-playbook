@@ -1,11 +1,9 @@
-import {getHeader, getCurrUserInfo, getCurrUserEmail, getIncoreTokenFile, getCurrUsername} from "./common";
+import {getHeader, getCurrUserEmail, getIncoreTokenFile, getCurrUsername} from "./common";
 import datawolfConfig from "../datawolf.config";
 import appConfig from "../app.config";
 
 export async function getOutputFileJson(datasetId, outputFileName = null) {
 	let authHeader = getHeader();
-	let userInfoString = getCurrUserInfo();
-	authHeader.append("X-Userinfo", userInfoString);
 
 	// Get - Result Dataset
 	const datasetResponse = await
@@ -57,8 +55,6 @@ export async function submitExecution(title, description, bldgId, substationId, 
 	}
 	else{
 		let authHeader = getHeader();
-		let userInfoString = getCurrUserInfo();
-		authHeader.append("X-Userinfo", userInfoString);
 		authHeader.append("Content-Type", "application/json");
 
 		const datawolfDatasets = datawolfConfig["datasets"];
@@ -128,8 +124,6 @@ export async function submitExecution(title, description, bldgId, substationId, 
 export async function postDataset(title="incoretoken", description="incoretoken"){
 
 	let authHeader = getHeader();
-	let userInfoString = getCurrUserInfo();
-	authHeader.append("X-Userinfo", userInfoString);
 	// authHeader.append("Content-Type", "multipart/form-data");
 
 	let formData = new FormData();
