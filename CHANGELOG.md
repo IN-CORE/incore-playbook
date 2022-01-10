@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [0.4.0] - 2022-01-10
+
+### Changed
+- Remove references to X-Userinfo and update datawolf dataset endpoint [#24](https://github.com/IN-CORE/incore-playbook/issues/24)
+
+
 ## [0.3.0] - 2021-11-16
 
 ### Added
