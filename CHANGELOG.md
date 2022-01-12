@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Changed
 - Remove references to X-Userinfo and update datawolf dataset endpoint [#24](https://github.com/IN-CORE/incore-playbook/issues/24)
+- Renamed master branch to main [#28](https://github.com/IN-CORE/incore-playbook/issues/28)
 
 
 ## [0.3.0] - 2021-11-16
