@@ -195,7 +195,7 @@ export function HuaResultsTable(props) {
 													{e["total_households"].toLocaleString("en-US")}
 												</TableCell>
 												<TableCell className={classes.tableDataCell} key={`4_${  idx.toString()}`} >
-													{round(e["%_household_dislocated"], 1)}%
+													{round(e["percent_household_dislocated"], 1)}%
 												</TableCell>
 											</TableRow>
 										);

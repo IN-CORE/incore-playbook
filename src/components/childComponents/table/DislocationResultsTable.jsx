@@ -141,9 +141,9 @@ export function DislocationResultsTable(props) {
 							</TableCell>
 							<TableCell className={classes.tableDataCellDislocated}>
 								{
-									"%_of_households" in resultsJson["dislocated"] ?
-										round(resultsJson["dislocated"]["%_of_households"], 1) :
-										round(resultsJson["dislocated"]["%_of_population"], 1)
+									"percent_of_households" in resultsJson["dislocated"] ?
+										round(resultsJson["dislocated"]["percent_of_households"], 1) :
+										round(resultsJson["dislocated"]["percent_of_population"], 1)
 								}%
 							</TableCell>
 						</TableRow>
@@ -159,9 +159,9 @@ export function DislocationResultsTable(props) {
 							</TableCell>
 							<TableCell className={classes.tableDataCell}>
 								{
-									"%_of_households" in resultsJson["not_dislocated"] ?
-										round(resultsJson["not_dislocated"]["%_of_households"], 1) :
-										round(resultsJson["not_dislocated"]["%_of_population"], 1)
+									"percent_of_households" in resultsJson["not_dislocated"] ?
+										round(resultsJson["not_dislocated"]["percent_of_households"], 1) :
+										round(resultsJson["not_dislocated"]["percent_of_population"], 1)
 								}%
 							</TableCell>
 						</TableRow>
