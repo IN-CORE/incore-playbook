@@ -46,21 +46,6 @@ export function getCurrUsername(){
 	}
 }
 
-// get current user's encoded email address for datawolf use
-export function getCurrUserInfo(){
-	if (process.env.DEPLOY_ENV === "local"){
-		return config.testUserInfo;
-	}
-	else{
-		let cookie = cookies.get("Authorization");
-		if (cookie !== "" && cookie.split(" ").length > 0){
-			let userInfo = jwt_decode(cookie.split(" ")[1]);
-			let email = userInfo["email"];
-			return btoa(`{"email":"${email}"}`);
-		}
-	}
-}
-
 // get incore token and write to a file
 export function getIncoreTokenFile(){
 	if (process.env.DEPLOY_ENV !== "local"){
@@ -80,7 +65,8 @@ export function getCurrUserEmail(){
 		let cookie = cookies.get("Authorization");
 		if (cookie !== "" && cookie.split(" ").length > 0){
 			let userInfo = jwt_decode(cookie.split(" ")[1]);
-			return userInfo["email"];
+			// return userInfo["email"];
+			return userInfo["preferred_username"];
 		}
 	}
 }
