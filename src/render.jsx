@@ -20,7 +20,7 @@ const baseTheme = createMuiTheme({
 	}
 });
 
-const render = (reducers = baseReducer, routes = baseRoutes, theme=baseTheme, storeCallback) => {
+const render = (reducers={}, routes = baseRoutes, theme=baseTheme, storeCallback) => {
 	// create stores
 	const middlewares = [
 		// Add other middleware on this line...
@@ -35,11 +35,10 @@ const render = (reducers = baseReducer, routes = baseRoutes, theme=baseTheme, st
 
 	// adds support for Redux dev tools
 	const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
-	const store = createStore(reducers, composeEnhancers(
+	// combine old reducer with new ones
+	const store = createStore(combineReducers({...reducers, ...baseReducer}), composeEnhancers(
 		applyMiddleware(...middlewares)
-	),
-		// window.devToolsExtension ? window.devToolsExtension() : f => f
-	);
+	));
 
 	if (module.hot) {
 		// Enable Webpack hot module replacement for reducers
