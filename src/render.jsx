@@ -5,32 +5,49 @@ import {BrowserRouter} from "react-router-dom";
 import { createStore, combineReducers, applyMiddleware, compose } from "redux";
 import thunk from "redux-thunk";
 
-import rootReducer from "./reducers";
+import baseReducer from "./reducers";
+import baseRoutes from "./routes";
 import {createMuiTheme, MuiThemeProvider} from "@material-ui/core/styles";
 import config from "./app.config";
-import routes from "./routes";
+import reduxImmutableStateInvariant from "redux-immutable-state-invariant";
 
-const theme = createMuiTheme({
-
+const baseTheme = createMuiTheme({
 	typography: {
 		fontFamily: "Rubik"
 	},
 	palette:{
 		fontFamily: "Rubik"
 	}
-
 });
 
-const render = (reducers = rootReducer, routes = routes, storeCallback, theme=theme,) => {
-	const composeEnhancers = (
-		(window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__) || compose
+const render = (reducers = baseReducer, routes = baseRoutes, theme=baseTheme, storeCallback) => {
+	// create stores
+	const middlewares = [
+		// Add other middleware on this line...
+
+		// Redux middleware that spits an error on you when you try to mutate your state either inside a dispatch or between dispatches.
+		reduxImmutableStateInvariant(),
+
+		// thunk middleware can also accept an extra argument to be passed to each thunk action
+		// https://github.com/gaearon/redux-thunk#injecting-a-custom-argument
+		thunk,
+	];
+
+	// adds support for Redux dev tools
+	const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+	const store = createStore(reducers, composeEnhancers(
+		applyMiddleware(...middlewares)
+	),
+		// window.devToolsExtension ? window.devToolsExtension() : f => f
 	);
-	const store = createStore(
-		combineReducers(reducers),
-		composeEnhancers(applyMiddleware(
-			thunk
-		))
-	);
+
+	if (module.hot) {
+		// Enable Webpack hot module replacement for reducers
+		module.hot.accept("./reducers", () => {
+			const nextReducer = require("./reducers").default; // eslint-disable-line global-require
+			store.replaceReducer(nextReducer);
+		});
+	}
 
 	if (storeCallback) {
 		storeCallback(store);
