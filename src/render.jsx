@@ -20,7 +20,7 @@ const baseTheme = createMuiTheme({
 	}
 });
 
-const render = (reducers={}, routes = baseRoutes, theme=baseTheme, storeCallback) => {
+const render = (reducers=baseReducer, routes = baseRoutes, theme=baseTheme, storeCallback) => {
 	// create stores
 	const middlewares = [
 		// Add other middleware on this line...
@@ -36,7 +36,7 @@ const render = (reducers={}, routes = baseRoutes, theme=baseTheme, storeCallback
 	// adds support for Redux dev tools
 	const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 	// combine old reducer with new ones
-	const store = createStore(combineReducers({...reducers, ...baseReducer}), composeEnhancers(
+	const store = createStore(combineReducers(reducers), composeEnhancers(
 		applyMiddleware(...middlewares)
 	));
 
