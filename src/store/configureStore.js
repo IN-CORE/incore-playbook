@@ -3,7 +3,7 @@ import reduxImmutableStateInvariant from "redux-immutable-state-invariant";
 import thunk from "redux-thunk";
 import rootReducer from "../reducers";
 
-function configureStoreProd() {
+export function configureStoreProd() {
 	const middlewares = [
 		// Add other middleware on this line...
 
@@ -18,7 +18,7 @@ function configureStoreProd() {
 	);
 }
 
-function configureStoreDev() {
+export function configureStoreDev() {
 	const middlewares = [
 		// Add other middleware on this line...
 
