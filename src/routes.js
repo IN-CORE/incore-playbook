@@ -224,8 +224,8 @@ const routes = {
 			return (<StepTmpInfo menu={"6-3"}/>);
 		}
 	},
-	// fallback
-	"*": {exact: false, component: NotFound},
+	// // fallback
+	// "*": {exact: false, component: NotFound},
 };
 
 export default routes;
