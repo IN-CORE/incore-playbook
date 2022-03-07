@@ -4,8 +4,8 @@
 import React from "react";
 import { render } from "react-dom";
 import { Provider } from "react-redux";
-import { BrowserRouter } from "react-router-dom";
-import routes from "./routes";
+import {BrowserRouter, Route, Switch} from "react-router-dom";
+import routes from "./routes.js";
 import configureStore from "./store/configureStore";
 import {createMuiTheme, MuiThemeProvider} from "@material-ui/core/styles";
 import config from "./app.config";
@@ -28,8 +28,21 @@ const theme = createMuiTheme({
 render(
 	<MuiThemeProvider theme={theme}>
 		<Provider store={store}>
-			<BrowserRouter basename={config.baseUrlRoute}>
-				{routes}
+			{/*<BrowserRouter basename={config.baseUrlRoute}>*/}
+			<BrowserRouter>
+				<Switch>
+					{
+						Object.keys(routes).map((key, ) => {
+							let path = key;
+							let exact = routes[key]["exact"];
+							let component = routes[key]["component"];
+
+							return (
+								<Route path={path} exact={exact} component={component} key={path}/>
+							);
+						})
+					}
+				</Switch>
 			</BrowserRouter>
 		</Provider>
 
