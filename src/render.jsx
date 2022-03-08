@@ -20,7 +20,7 @@ const baseTheme = createMuiTheme({
 	}
 });
 
-const render = (reducers=baseReducer, routes = baseRoutes, theme=baseTheme, storeCallback) => {
+const render = (reducers, routes , theme=baseTheme, storeCallback) => {
 	// create stores
 	const middlewares = [
 		// Add other middleware on this line...
@@ -53,8 +53,8 @@ const render = (reducers=baseReducer, routes = baseRoutes, theme=baseTheme, stor
 	}
 
 	ReactDOM.render(
-		<MuiThemeProvider theme={theme}>
-			<Provider store={store}>
+		<Provider store={store}>
+			<MuiThemeProvider theme={theme}>
 				<BrowserRouter basename={config.baseUrlRoute || "/"}>
 					<Switch>
 						{
@@ -70,8 +70,9 @@ const render = (reducers=baseReducer, routes = baseRoutes, theme=baseTheme, stor
 						}
 					</Switch>
 				</BrowserRouter>
-			</Provider>
-		</MuiThemeProvider>,
+			</MuiThemeProvider>
+		</Provider>
+		,
 		document.getElementById("app")
 	);
 
