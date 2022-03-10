@@ -52,9 +52,13 @@ jobs:
       - name: build
         run: npm run build
 
-      # compile UI
+      # publish
       - name: publish
-        run: npm publish
+        uses: JS-DevTools/npm-publish@v1
+        with:
+          registry: https://npm.pkg.github.com
+          tag: testing
+          token: ${{secrets.GITHUB_TOKEN}}
 
   # ----------------------------------------------------------------------
   # DOCKER BUILD
