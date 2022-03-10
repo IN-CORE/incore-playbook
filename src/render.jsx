@@ -4,9 +4,6 @@ import { Provider } from "react-redux";
 import {BrowserRouter, Route, Switch} from "react-router-dom";
 import { createStore, combineReducers, applyMiddleware, compose } from "redux";
 import thunk from "redux-thunk";
-
-import baseReducer from "./reducers";
-import baseRoutes from "./routes";
 import {createMuiTheme, MuiThemeProvider} from "@material-ui/core/styles";
 import config from "./app.config";
 import reduxImmutableStateInvariant from "redux-immutable-state-invariant";
