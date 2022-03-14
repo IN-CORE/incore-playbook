@@ -4,7 +4,7 @@ import TeamLeader from "./containers/TeamLeader";
 import StepTmpInfo from "./containers/StepTmpInfo";
 import BuiltEnvironment from "./containers/BuiltEnvironment";
 import CommunityHazards from "./containers/CommunityHazards";
-import AnticipatedPerformance from "./containers/AnticipatedPerformance";
+import {AnticipatedPerformance} from "./components/AnticipatedPerformance";
 import Login from "./containers/Login";
 
 
