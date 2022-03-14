@@ -5,7 +5,6 @@ import StepTmpInfo from "./containers/StepTmpInfo";
 import BuiltEnvironment from "./containers/BuiltEnvironment";
 import CommunityHazards from "./containers/CommunityHazards";
 import AnticipatedPerformance from "./containers/AnticipatedPerformance";
-import {NotFound} from "./containers/NotFound";
 import Login from "./containers/Login";
 
 
@@ -224,8 +223,6 @@ const routes = {
 			return (<StepTmpInfo menu={"6-3"}/>);
 		}
 	},
-	// // fallback
-	// "*": {exact: false, component: NotFound},
 };
 
 export default routes;

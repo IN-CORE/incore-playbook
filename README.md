@@ -15,7 +15,7 @@ Build: `yarn run build` or `npm run build`
 
 **Example of use this repository in child repositories**
 
-```angular2html
+```
 import render from "incore-playbook/src/render";
 import baseReducer from "incore-playbook/src/reducers";
 import baseRoutes from "incore-playbook/src/routes";
