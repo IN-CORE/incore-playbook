@@ -15,6 +15,9 @@ COPY package*.json /usr/src/app/
 COPY tools/ /usr/src/app/tools/
 RUN npm install
 
+# install peer dependencies yourself
+RUN npm install react@~16.14.0 react-dom@~16.14.0 react-redux@~7.1.0 redux-thunk@~2.3.0 redux@~4.0.1 react-router-dom@~5.2.0 @material-ui/core@^4.11.0 @material-ui/icons@^4.9.1 babel-polyfill@^6.26.0
+
 # copy rest of application
 COPY .babelrc .eslintrc .istanbul.yml *.js /usr/src/app/
 COPY src /usr/src/app/src/

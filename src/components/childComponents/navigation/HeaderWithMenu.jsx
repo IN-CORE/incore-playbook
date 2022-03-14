@@ -119,7 +119,8 @@ const useStyles = makeStyles((theme) => ({
 
 
 
-const HeaderWithMenu = ({dispatch, isAuthenticated, menuItem}) => {
+const HeaderWithMenu = ({dispatch, isAuthenticated, menuItem, headerTitle="Playbook Interactive Guide for",
+	headerSubTitle="Community Resilience Planning"}) => {
 	const classes = useStyles();
 	const theme = useTheme();
 	const history = useHistory();
@@ -476,10 +477,10 @@ const HeaderWithMenu = ({dispatch, isAuthenticated, menuItem}) => {
 							<Grid item style={{display: "flex", marginTop: "6px"}}>
 								<div >
 									<div className="titleSmall">
-										Playbook Interactive Guide for
+										{headerTitle}
 									</div>
 									<div className="titleLarge">
-										Community Resilience Planning
+										{headerSubTitle}
 									</div>
 								</div>
 							</Grid>

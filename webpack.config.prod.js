@@ -20,7 +20,7 @@ export default {
 	entry: [
 		"babel-polyfill",
 		"whatwg-fetch",
-		path.resolve(__dirname, "src/index.js"),
+		path.resolve(__dirname, "src/index.jsx"),
 		"ol/ol.css",
 		"ol-layerswitcher/src/ol-layerswitcher.css",
 	],
