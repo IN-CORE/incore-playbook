@@ -1,12 +1,11 @@
 import React, {useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
-import {makeStyles, Box, Tabs, Tab, Grid} from "@material-ui/core";
+import {Box, Grid, makeStyles, Tab, Tabs} from "@material-ui/core";
 import Layout from "../containers/Layout";
 
 import ViewResult from "./childComponents/ViewResult";
 import RunAnalysis from "./childComponents/RunAnalysis";
 import PageBanner from "./childComponents/navigation/Banner";
-import {fetchAttributes} from "../actions/attributes";
 import {fetchExecutions} from "../actions/datawolf";
 import {fetchTornadoes} from "../actions/hazards";
 import {fetchDatasets} from "../actions/datasets";
@@ -33,12 +32,10 @@ export const AnticipatedPerformance = () => {
 
 	// Redux connect equivalent
 	const dispatch = useDispatch();
-	const getTopAttributes = (id, sortColumnName) => dispatch(fetchAttributes(id, sortColumnName));
 	const getExecutionList = () => dispatch(fetchExecutions());
 	const listTornadoes =  (limit, offset) => dispatch(fetchTornadoes(limit, offset));
 	const listDatasets = (limit, offset, type) => dispatch(fetchDatasets(limit, offset, type));
 
-	const attributes = useSelector((state) => state.attribute.attributes);
 	const executions = useSelector((state) => state.execution.executions);
 	const tornadoes = useSelector((state) => state.tornado.tornadoes);
 	const buildings = useSelector((state) => state.dataset.buildings);

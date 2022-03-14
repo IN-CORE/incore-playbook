@@ -21,6 +21,8 @@ import FileUploadDrop from "./childComponents/form/FileUploadDrop";
 import {makeStyles} from "@material-ui/core/styles";
 import {inputDatasetTypes} from "../globals";
 import {IncoreMenuItem, IncoreSelectBox} from "./styledComponents/IncoreSelect";
+import {useDispatch, useSelector} from "react-redux";
+import {fetchDatasets} from "../actions/datasets";
 
 const useStyles = makeStyles({
 	title: {
@@ -56,11 +58,9 @@ const useStyles = makeStyles({
 	}
 });
 
-export default function BuiltEnvironment(props) {
+export const BuiltEnvironment = () => {
 	const classes = useStyles();
 
-	const {listDatasets, buildings, epfs, interdNetworks, sectorShocks, cgeSams, cgeBbs, cgeIouts, cgeMiscs, cgeMischs,
-		cgeLandcaps, cgeEmploys, cgeIgtds, cgeTauffs, cgeJobcrs, cgeOutcrs, huas, blockGroups, valueLosses} = props;
 	const fileInputRef = useRef(null);
 	const [files, setFile] = useState([]);
 	const [title, setTitle] = useState("");
@@ -72,6 +72,28 @@ export default function BuiltEnvironment(props) {
 	const [disabled, setDisabled] = useState(true);
 	const [loading, setLoading] = useState(false);
 	const [uploadModalStatus, setUploadModalStatus] = useState(false);
+
+	const dispatch = useDispatch();
+	const listDatasets = (limit, offset, type) => dispatch(fetchDatasets(limit, offset, type));
+
+	const buildings = useSelector((state) => state.dataset.buildings);
+	const epfs = useSelector((state) => state.dataset.epfs);
+	const interdNetworks = useSelector((state) => state.dataset.interdNetworks);
+	const sectorShocks = useSelector((state) => state.dataset.sectorShocks);
+	const cgeSams = useSelector((state) => state.dataset.cgeSams);
+	const cgeBbs = useSelector((state) => state.dataset.cgeBbs);
+	const cgeIouts = useSelector((state) => state.dataset.cgeIouts);
+	const cgeMiscs = useSelector((state) => state.dataset.cgeMiscs);
+	const cgeMischs = useSelector((state) => state.dataset.cgeMischs);
+	const cgeLandcaps = useSelector((state) => state.dataset.cgeLandcaps);
+	const cgeEmploys = useSelector((state) => state.dataset.cgeEmploys);
+	const cgeIgtds = useSelector((state) => state.dataset.cgeIgtds);
+	const cgeTauffs = useSelector((state) => state.dataset.cgeTauffs);
+	const cgeJobcrs = useSelector((state) => state.dataset.cgeJobcrs);
+	const cgeOutcrs = useSelector((state) => state.dataset.cgeOutcrs);
+	const huas = useSelector((state) => state.dataset.huas);
+	const blockGroups = useSelector((state) => state.dataset.blockGroups);
+	const valueLosses = useSelector((state) => state.dataset.valueLosses);
 
 	// load uploaded dataset
 	useEffect(() => {
@@ -108,7 +130,7 @@ export default function BuiltEnvironment(props) {
 		// determine format based on datasetTypes
 		Object.keys(inputDatasetTypes).map((key) => {
 			inputDatasetTypes[key].map((inputDatasetType) => {
-				if (inputDatasetType["type"] === datasetType) format=inputDatasetType["format"];
+				if (inputDatasetType["type"] === datasetType) format = inputDatasetType["format"];
 			});
 		});
 
@@ -155,7 +177,7 @@ export default function BuiltEnvironment(props) {
 		<Layout>
 			<div className="firstDivInContent">
 				<PageBanner parentStep="Understand the Situation"
-					childStep="Identify & Characterize the Built Environment" taskNo="2" subtaskNo="2-4"/>
+							childStep="Identify & Characterize the Built Environment" taskNo="2" subtaskNo="2-4"/>
 				<Box className="outerBox">
 					<Grid container spacing={3} className="innerBox">
 						<Grid item xl={6} lg={6} md={6} sm={6} xs={12} className="gridItem">
@@ -270,8 +292,8 @@ export default function BuiltEnvironment(props) {
 								<Box className="inputGroup">
 									<IncoreInputLabel>Select {category} Data</IncoreInputLabel>
 									<FileUploadDrop onDrop={onDrop} onFileInputChange={onFileInputChange}
-										fileInput={fileInputRef}
-										files={files} onDeleteClick={onDeleteClick}/>
+													fileInput={fileInputRef}
+													files={files} onDeleteClick={onDeleteClick}/>
 								</Box>
 								<Box className="inputGroup">
 									<IncoreInputLabel>Name</IncoreInputLabel>
@@ -295,7 +317,7 @@ export default function BuiltEnvironment(props) {
 													return inputDatasetTypes[key].map((inputDatasetType) => {
 														return inputDatasetType["isSocioeconomics"] ?
 															<IncoreMenuItem value={inputDatasetType["type"]}
-																key={inputDatasetType["type"]}>
+																			key={inputDatasetType["type"]}>
 																{inputDatasetType["description"]}</IncoreMenuItem>
 															:
 															null;
