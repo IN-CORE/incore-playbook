@@ -1,5 +1,6 @@
-import * as React from "react";
-import {Box, Container, Grid, Tab, Tabs, withStyles} from "@material-ui/core";
+import React, {useEffect, useState} from "react";
+import {useDispatch, useSelector} from "react-redux";
+import {Box, Container, Grid, Tab, Tabs, makeStyles} from "@material-ui/core";
 import GroupLayer from "ol/layer/Group";
 import TileLayer from "ol/layer/Tile";
 import TileWMS from "ol/source/TileWMS";
@@ -28,8 +29,9 @@ import {EntryTable} from "./childComponents/table/EntryTable";
 import PageBanner from "./childComponents/navigation/Banner";
 import fullHtml from "../public/steps/3-3.html";
 import StepInfo from "./StepInfo";
+import {fetchTornadoes} from "../actions/hazards";
 
-const styles = {
+const useStyles = makeStyles({
 	tabDiv: {
 		margin: "48px 0 0 0",
 		width: "100%",
@@ -50,23 +52,20 @@ const styles = {
 	mapContainer: {
 		height: "700px",
 	}
-};
+});
 
-class CommunityHazards extends React.Component {
-	constructor(props) {
-		super(props);
+export const CommunityHazards = () => {
+	const classes = useStyles();
 
-		this.state = {
-			currTabIndex: 0,
-			startCoord: [],
-			endCoord: [],
-		};
+	const [currTabIndex, setCurrTabIndex] = useState(0);
+	const [startCoord, setStartCoord] = useState([]);
+	const [endCoord, setEndCoord] = useState([]);
 
-		this.handleLayerUpdate = this.handleLayerUpdate.bind(this);
-		this.drawLine = this.drawLine.bind(this);
-		this.handleMapClick = this.handleMapClick.bind(this);
-		this.hazardIdClick = this.hazardIdClick.bind(this);
+	const dispatch = useDispatch();
+	const listTornadoes = (limit, offset) => dispatch(fetchTornadoes(limit, offset));
+	const tornadoes = useSelector((state) => state.tornado.tornadoes);
 
+	const constructor = () => {
 		this.drawSource = new VectorSource({wrapX: false});
 		this.lineSource = new VectorSource({wrapX: false});
 
@@ -155,26 +154,12 @@ class CommunityHazards extends React.Component {
 		];
 	}
 
-	componentDidMount() {
-		this.props.listTornadoes();
-	}
+	// component did mount
+	useEffect(()=> { listTornadoes() }, []);
 
 	map;
 
-	async hazardIdClick(hazard) {
-		this.handleLayerUpdate(hazard);
-	}
-
-	drawLine() {
-		let lineString = new LineString([this.state.startCoord, this.state.endCoord]);
-		let lineFeature = new Feature({
-			geometry: lineString,
-			name: "Line"
-		});
-		this.lineSource.addFeature(lineFeature);
-	}
-
-	handleLayerUpdate(json) {
+	const handleLayerUpdate = (json) => {
 
 		let layerId = json["datasetId"];
 		let layerTitle = json["name"];
@@ -196,7 +181,20 @@ class CommunityHazards extends React.Component {
 		this.layers["tilelayer"].getLayers().push(HazardMapLayer);
 	}
 
-	handleMapClick(event) {
+	const hazardIdClick = async (hazard) => {
+		handleLayerUpdate(hazard);
+	}
+
+	const drawLine = () => {
+		let lineString = new LineString([startCoord, endCoord]);
+		let lineFeature = new Feature({
+			geometry: lineString,
+			name: "Line"
+		});
+		this.lineSource.addFeature(lineFeature);
+	}
+
+	const handleMapClick = (event) => {
 		// Important: need to clear previous draw interaction first
 		let map = event.map;
 		map.getInteractions().forEach((interaction) => {
@@ -212,107 +210,102 @@ class CommunityHazards extends React.Component {
 		drawPointInteraction.on("drawend", (event) => {
 			let coords = event.feature.getGeometry().getFlatCoordinates();
 
-			if (this.state.startCoord.length === 0 && this.state.endCoord.length === 0) {
+			if (startCoord.length === 0 && endCoord.length === 0) {
 				// draw start
 				event.feature.setStyle(this.startStyle);
-				this.setState({startCoord: coords});
-			} else if (this.state.startCoord.length > 0 && this.state.endCoord.length === 0) {
+				setStartCoord(coords);
+			} else if (startCoord.length > 0 && endCoord.length === 0) {
 				// draw endpoint
 				event.feature.setStyle(this.endStyle);
 				this.setState({endCoord: coords}, this.drawLine);
-			} else if (this.state.startCoord.length > 0 && this.state.endCoord.length > 0) {
+			} else if (startCoord.length > 0 && endCoord.length > 0) {
 				// restart
 				this.drawSource.clear();
 				this.lineSource.clear();
 				event.feature.setStyle(this.startStyle);
-				this.setState({startCoord: coords, endCoord: []});
+				setStartCoord(coords);
+				setEndCoord([]);
 			}
 		});
 
 		map.addInteraction(drawPointInteraction);
 	}
 
-	render() {
-		const {classes} = this.props;
-
-		return (
-			<Layout>
-				<div className="firstDivInContent">
-					<PageBanner parentStep="Determine Goals & Objectives"
-						childStep="Define Community Hazards" taskNo="3" subtaskNo="3-3"/>
-					<Box className="outerBox">
-						{/*List created tornadoes*/}
-						<Box className="entryTableContainer">
-							<StepInfo fullHtml={fullHtml} />
-							<br />
-							<Box className="entryTableTitle">
-								<IncoreInputLabel>Created Hazard</IncoreInputLabel>
-								{/*<Box style={{float:"right"}}>*/}
-								{/*	<IconButton>*/}
-								{/*		<FilterListIcon/>*/}
-								{/*	</IconButton>*/}
-								{/*</Box>*/}
-							</Box>
-							<Box className="entryTable">
-								<EntryTable fieldNames={this.fieldNames} fields={this.props.tornadoes}/>
-							</Box>
+	return (
+		<Layout>
+			<div className="firstDivInContent">
+				<PageBanner parentStep="Determine Goals & Objectives"
+					childStep="Define Community Hazards" taskNo="3" subtaskNo="3-3"/>
+				<Box className="outerBox">
+					{/*List created tornadoes*/}
+					<Box className="entryTableContainer">
+						<StepInfo fullHtml={fullHtml} />
+						<br />
+						<Box className="entryTableTitle">
+							<IncoreInputLabel>Created Hazard</IncoreInputLabel>
+							{/*<Box style={{float:"right"}}>*/}
+							{/*	<IconButton>*/}
+							{/*		<FilterListIcon/>*/}
+							{/*	</IconButton>*/}
+							{/*</Box>*/}
 						</Box>
-						<Grid container spacing={3} className="innerBox">
-							<Grid item xl={6} lg={6} md={6} sm={6} xs={12} className="gridItem">
-								{/*Select*/}
-								<Box>
-									<IncoreInputLabel>Select Hazard Type</IncoreInputLabel>
-									<IncoreSelectBox labelId="label" id="select" variant="outlined"
-													 defaultValue="tornado">
-										<IncoreMenuItem value="earthquake" key="earthquake">Earthquake</IncoreMenuItem>
-										<IncoreMenuItem value="tsunami" key="tsunami">Tsunami</IncoreMenuItem>
-										<IncoreMenuItem value="tornado" key="tornado">Tornado</IncoreMenuItem>
-										<IncoreMenuItem value="hurricane" key="hurricane">Hurricane</IncoreMenuItem>
-										<IncoreMenuItem value="flood" key="flood">Flood</IncoreMenuItem>
-									</IncoreSelectBox>
-								</Box>
-								{/*Tabs*/}
-								<Box className={classes.tabDiv}>
-									<Tabs aria-label="create tornado tabs" value={this.state.currTabIndex}
-										  className={classes.tabs}
-										  onChange={(e, value) => {this.setState({currTabIndex: value});}}>
-										<Tab label="Create a Hazard" className={classes.tab}/>
-										<Tab label="Upload a Hazard Dataset" className={classes.tab}/>
-									</Tabs>
-									<ModelTornado value={this.state.currTabIndex} index={0}
-												  handleLayerUpdate={this.handleLayerUpdate}
-												  handleListUpdate={this.props.listTornadoes}
-												  startCoordProps={this.state.startCoord}
-												  endCoordProps={this.state.endCoord}/>
-									<RasterTornado value={this.state.currTabIndex} index={1}
-												   handleLayerUpdate={this.handleLayerUpdate}
-												   handleListUpdate={this.props.listTornadoes}/>
-								</Box>
-							</Grid>
-							<Grid item xl={6} lg={6} md={6} sm={6} xs={12} className="gridItem">
-								<Container className={classes.mapContainer} disableGutters>
-									<Map
-										className="fillContainer"
-										zoom={10}
-										minZoom={5}
-										maxZoom={15}
-										extent={globals.JOPLIN_MAP_BOUNDS}
-										center={fromLonLat(globals.JOPLIN_MAP_CENTER)}
-										layers={Object.values(this.layers)}
-										layerSwitcherOptions={{}}
-										updateMap={(map) => { this.map = map; }}
-										events={{
-											"click": this.handleMapClick
-										}}
-									/>
-								</Container>
-							</Grid>
-						</Grid>
+						<Box className="entryTable">
+							<EntryTable fieldNames={this.fieldNames} fields={tornadoes}/>
+						</Box>
 					</Box>
-				</div>
-			</Layout>
-		);
-	}
+					<Grid container spacing={3} className="innerBox">
+						<Grid item xl={6} lg={6} md={6} sm={6} xs={12} className="gridItem">
+							{/*Select*/}
+							<Box>
+								<IncoreInputLabel>Select Hazard Type</IncoreInputLabel>
+								<IncoreSelectBox labelId="label" id="select" variant="outlined"
+												 defaultValue="tornado">
+									<IncoreMenuItem value="earthquake" key="earthquake">Earthquake</IncoreMenuItem>
+									<IncoreMenuItem value="tsunami" key="tsunami">Tsunami</IncoreMenuItem>
+									<IncoreMenuItem value="tornado" key="tornado">Tornado</IncoreMenuItem>
+									<IncoreMenuItem value="hurricane" key="hurricane">Hurricane</IncoreMenuItem>
+									<IncoreMenuItem value="flood" key="flood">Flood</IncoreMenuItem>
+								</IncoreSelectBox>
+							</Box>
+							{/*Tabs*/}
+							<Box className={classes.tabDiv}>
+								<Tabs aria-label="create tornado tabs" value={currTabIndex}
+									  className={classes.tabs}
+									  onChange={(e, value) => {setCurrTabIndex(value);}}>
+									<Tab label="Create a Hazard" className={classes.tab}/>
+									<Tab label="Upload a Hazard Dataset" className={classes.tab}/>
+								</Tabs>
+								<ModelTornado value={currTabIndex} index={0}
+											  handleLayerUpdate={this.handleLayerUpdate}
+											  handleListUpdate={listTornadoes}
+											  startCoordProps={startCoord}
+											  endCoordProps={endCoord}/>
+								<RasterTornado value={currTabIndex} index={1}
+											   handleLayerUpdate={this.handleLayerUpdate}
+											   handleListUpdate={listTornadoes}/>
+							</Box>
+						</Grid>
+						<Grid item xl={6} lg={6} md={6} sm={6} xs={12} className="gridItem">
+							<Container className={classes.mapContainer} disableGutters>
+								<Map
+									className="fillContainer"
+									zoom={10}
+									minZoom={5}
+									maxZoom={15}
+									extent={globals.JOPLIN_MAP_BOUNDS}
+									center={fromLonLat(globals.JOPLIN_MAP_CENTER)}
+									layers={Object.values(this.layers)}
+									layerSwitcherOptions={{}}
+									updateMap={(map) => { this.map = map; }}
+									events={{
+										"click": this.handleMapClick
+									}}
+								/>
+							</Container>
+						</Grid>
+					</Grid>
+				</Box>
+			</div>
+		</Layout>
+	);
 }
-
-export default withStyles(styles)(CommunityHazards);

@@ -177,7 +177,7 @@ export const BuiltEnvironment = () => {
 		<Layout>
 			<div className="firstDivInContent">
 				<PageBanner parentStep="Understand the Situation"
-							childStep="Identify & Characterize the Built Environment" taskNo="2" subtaskNo="2-4"/>
+					childStep="Identify & Characterize the Built Environment" taskNo="2" subtaskNo="2-4"/>
 				<Box className="outerBox">
 					<Grid container spacing={3} className="innerBox">
 						<Grid item xl={6} lg={6} md={6} sm={6} xs={12} className="gridItem">
@@ -292,8 +292,8 @@ export const BuiltEnvironment = () => {
 								<Box className="inputGroup">
 									<IncoreInputLabel>Select {category} Data</IncoreInputLabel>
 									<FileUploadDrop onDrop={onDrop} onFileInputChange={onFileInputChange}
-													fileInput={fileInputRef}
-													files={files} onDeleteClick={onDeleteClick}/>
+										fileInput={fileInputRef}
+										files={files} onDeleteClick={onDeleteClick}/>
 								</Box>
 								<Box className="inputGroup">
 									<IncoreInputLabel>Name</IncoreInputLabel>
@@ -317,7 +317,7 @@ export const BuiltEnvironment = () => {
 													return inputDatasetTypes[key].map((inputDatasetType) => {
 														return inputDatasetType["isSocioeconomics"] ?
 															<IncoreMenuItem value={inputDatasetType["type"]}
-																			key={inputDatasetType["type"]}>
+																key={inputDatasetType["type"]}>
 																{inputDatasetType["description"]}</IncoreMenuItem>
 															:
 															null;
@@ -342,4 +342,4 @@ export const BuiltEnvironment = () => {
 
 		</Layout>
 	);
-}
+};
