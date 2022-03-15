@@ -65,17 +65,18 @@ export const CommunityHazards = () => {
 	const listTornadoes = (limit, offset) => dispatch(fetchTornadoes(limit, offset));
 	const tornadoes = useSelector((state) => state.tornado.tornadoes);
 
+	const drawSourceRef = React.useRef(new VectorSource({wrapX: false}));
+	const lineSourceRef = React.useRef(new VectorSource({wrapX: false}));
+	const lineStyleRef = React.useRef(new Style({
+		stroke: new Stroke({
+			color: "#979797",
+			width: 3,
+			lineDash: [.1, 5] //or other combinations
+		})
+	}));
+
 	// Caches the control
 	const cacheRef = React.useRef({
-		drawSource: new VectorSource({wrapX: false}),
-		lineSource: new VectorSource({wrapX: false}),
-		lineStyle: new Style({
-			stroke: new Stroke({
-				color: "#979797",
-				width: 3,
-				lineDash: [.1, 5] //or other combinations
-			})
-		}),
 		startStyle: new Style({
 			image: new Circle({
 				radius: 8,
@@ -118,16 +119,10 @@ export const CommunityHazards = () => {
 		drawlayer: new GroupLayer({
 			title: "Draw Layer",
 			layers: [
-				new VectorLayer({source: new VectorSource({wrapX: false})}),
+				new VectorLayer({source: drawSourceRef.current}),
 				new VectorLayer({
-					source: new VectorSource({wrapX: false}),
-					style: [new Style({
-						stroke: new Stroke({
-							color: "#979797",
-							width: 3,
-							lineDash: [.1, 5] //or other combinations
-						})
-					})]})
+					source: lineSourceRef.current,
+					style: [lineStyleRef.current]})
 			]
 		}),
 		tilelayer: new GroupLayer({
@@ -180,13 +175,12 @@ export const CommunityHazards = () => {
 			geometry: lineString,
 			name: "Line"
 		});
-		cacheRef.current.lineSource.addFeature(lineFeature);
+		lineSourceRef.current.addFeature(lineFeature);
 	};
 
 	const handleMapClick = (event) => {
 		// Important: need to clear previous draw interaction first
-		// let map = event.map;
-		const map = mapRef.current;
+		let map = event.map;
 		map.getInteractions().forEach((interaction) => {
 			if (interaction instanceof Draw) {
 				map.removeInteraction(interaction);
@@ -194,29 +188,28 @@ export const CommunityHazards = () => {
 		});
 
 		let drawPointInteraction = new Draw({
-			source: cacheRef.current.drawSource,
+			source: drawSourceRef.current,
 			type: "Point",
 		});
 		drawPointInteraction.on("drawend", (event) => {
 			let coords = event.feature.getGeometry().getFlatCoordinates();
 			event.feature.setStyle(cacheRef.current.startStyle);
-			setStartCoord(coords);
-			// if (startCoord.length === 0 && endCoord.length === 0) {
-			// 	// draw start
-			// 	event.feature.setStyle(cacheRef.current.startStyle);
-			// 	setStartCoord(coords);
-			// } else if (startCoord.length > 0 && endCoord.length === 0) {
-			// 	// draw endpoint
-			// 	event.feature.setStyle(cacheRef.current.endStyle);
-			// 	setEndCoord(coords);
-			// } else if (startCoord.length > 0 && endCoord.length > 0) {
-			// 	// restart
-			// 	cacheRef.current.drawSource.clear();
-			// 	cacheRef.current.lineSource.clear();
-			// 	event.feature.setStyle(cacheRef.current.startStyle);
-			// 	setStartCoord(coords);
-			// 	setEndCoord([]);
-			// }
+			if (startCoord.length === 0 && endCoord.length === 0) {
+				// draw start
+				event.feature.setStyle(cacheRef.current.startStyle);
+				setStartCoord(coords);
+			} else if (startCoord.length > 0 && endCoord.length === 0) {
+				// draw endpoint
+				event.feature.setStyle(cacheRef.current.endStyle);
+				setEndCoord(coords);
+			} else if (startCoord.length > 0 && endCoord.length > 0) {
+				// restart
+				drawSourceRef.current.clear();
+				lineSourceRef.current.clear();
+				event.feature.setStyle(cacheRef.current.startStyle);
+				setStartCoord(coords);
+				setEndCoord([]);
+			}
 		});
 
 		map.addInteraction(drawPointInteraction);
