@@ -2,7 +2,7 @@ import React, {useEffect, useRef, useState} from "react";
 
 import {Box, Dialog, DialogContent, Divider, Grid, IconButton} from "@material-ui/core";
 
-import Layout from "../containers/Layout";
+import {Layout} from "./Layout";
 import PageBanner from "./childComponents/navigation/Banner";
 import StepInfo from "./StepInfo";
 import StepStatus from "./childComponents/step/StepStatus";

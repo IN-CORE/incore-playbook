@@ -6,7 +6,7 @@ import {
 import UserInfo from "./childComponents/UserInfo";
 import StepStatus from "./childComponents/step/StepStatus";
 import PageBanner from "./childComponents/navigation/Banner";
-import Layout from "../containers/Layout";
+import {Layout} from "./Layout";
 import StepInfo from "./StepInfo";
 import fullHtml from "../public/steps/1-1.html";
 import {useDispatch, useSelector} from "react-redux";

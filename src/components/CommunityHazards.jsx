@@ -19,7 +19,7 @@ import ModelTornado from "./childComponents/ModelTornado";
 import Map from "./childComponents/map/Map";
 import config from "../app.config";
 import {globals} from "../globals";
-import Layout from "../containers/Layout";
+import {Layout} from "./Layout";
 import {IncoreInputLabel} from "./styledComponents/IncoreInputLabel";
 import {IncoreMenuItem, IncoreSelectBox} from "./styledComponents/IncoreSelect";
 

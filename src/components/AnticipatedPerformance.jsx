@@ -1,7 +1,7 @@
 import React, {useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {Box, Grid, makeStyles, Tab, Tabs} from "@material-ui/core";
-import Layout from "../containers/Layout";
+import {Layout} from "./Layout";
 
 import ViewResult from "./childComponents/ViewResult";
 import RunAnalysis from "./childComponents/RunAnalysis";
