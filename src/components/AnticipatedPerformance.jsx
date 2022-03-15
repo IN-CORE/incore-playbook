@@ -28,7 +28,7 @@ export const AnticipatedPerformance = () => {
 
 	const classes = useStyles();
 
-	const [currTabIndex, setCurrTabIndex] = useState("0");
+	const [currTabIndex, setCurrTabIndex] = useState(0);
 
 	// Redux connect equivalent
 	const dispatch = useDispatch();
