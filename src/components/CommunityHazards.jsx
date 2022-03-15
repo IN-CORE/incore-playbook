@@ -9,7 +9,7 @@ import VectorLayer from "ol/layer/Vector";
 import VectorSource from "ol/source/Vector";
 import OSM, {ATTRIBUTION as OSM_ATTRIBUTION} from "ol/source/OSM";
 import Draw from "ol/interaction/Draw";
-import LineString from "ol/geom/LineString";
+import Point from "ol/geom/Point";
 import {Circle, Fill, Stroke, Style} from "ol/style";
 import {fromLonLat} from "ol/proj";
 import Feature from "ol/Feature";
@@ -30,6 +30,7 @@ import PageBanner from "./childComponents/navigation/Banner";
 import fullHtml from "../public/steps/3-3.html";
 import StepInfo from "./StepInfo";
 import {fetchTornadoes} from "../actions/hazards";
+import Icon from "ol/style/Icon";
 
 const useStyles = makeStyles({
 	tabDiv: {
@@ -66,7 +67,7 @@ export const CommunityHazards = () => {
 	const tornadoes = useSelector((state) => state.tornado.tornadoes);
 
 	const drawSourceRef = React.useRef(new VectorSource({wrapX: false}));
-	const lineSourceRef = React.useRef(new VectorSource({wrapX: false}));
+	const pointSourceRef = React.useRef(new VectorSource({wrapX: false}));
 	const lineStyleRef = React.useRef(new Style({
 		stroke: new Stroke({
 			color: "#979797",
@@ -119,10 +120,13 @@ export const CommunityHazards = () => {
 		drawlayer: new GroupLayer({
 			title: "Draw Layer",
 			layers: [
-				new VectorLayer({source: drawSourceRef.current}),
 				new VectorLayer({
-					source: lineSourceRef.current,
-					style: [lineStyleRef.current]})
+					source: drawSourceRef.current,
+					style: [lineStyleRef.current]
+				}),
+				new VectorLayer({
+					source: pointSourceRef.current
+				})
 			]
 		}),
 		tilelayer: new GroupLayer({
@@ -139,9 +143,12 @@ export const CommunityHazards = () => {
 
 	// draw the line
 	useEffect(() => {
-		if (startCoord.length > 0 && endCoord.length === 0) {
-			drawLine();
-		}}, [endCoord]);
+		drawPoints(startCoord, true);
+	}, [startCoord]);
+
+	useEffect(() => {
+		drawPoints(endCoord, false);
+	}, [endCoord]);
 
 	const handleLayerUpdate = (json) => {
 
@@ -169,50 +176,44 @@ export const CommunityHazards = () => {
 		handleLayerUpdate(hazard);
 	};
 
-	const drawLine = () => {
-		let lineString = new LineString([startCoord, endCoord]);
-		let lineFeature = new Feature({
-			geometry: lineString,
-			name: "Line"
+	const drawPoints = (coord, isStart=true) => {
+		let point = new Point(coord);
+		let pointFeature = new Feature({
+			geometry: point,
+			name: "point",
 		});
-		lineSourceRef.current.addFeature(lineFeature);
+		isStart ? pointFeature.setStyle(cacheRef.current.startStyle)
+			:
+			pointFeature.setStyle(cacheRef.current.endStyle);
+		pointSourceRef.current.addFeature(pointFeature);
 	};
 
 	const handleMapClick = (event) => {
 		// Important: need to clear previous draw interaction first
 		let map = event.map;
-		map.getInteractions().forEach((interaction) => {
-			if (interaction instanceof Draw) {
-				map.removeInteraction(interaction);
-			}
-		});
 
-		let drawPointInteraction = new Draw({
+		/* Add your draw interaction here */
+		let drawLineInteraction = new Draw({
 			source: drawSourceRef.current,
-			type: "Point",
-		});
-		drawPointInteraction.on("drawend", (event) => {
-			let coords = event.feature.getGeometry().getFlatCoordinates();
-			event.feature.setStyle(cacheRef.current.startStyle);
-			if (startCoord.length === 0 && endCoord.length === 0) {
-				// draw start
-				event.feature.setStyle(cacheRef.current.startStyle);
-				setStartCoord(coords);
-			} else if (startCoord.length > 0 && endCoord.length === 0) {
-				// draw endpoint
-				event.feature.setStyle(cacheRef.current.endStyle);
-				setEndCoord(coords);
-			} else if (startCoord.length > 0 && endCoord.length > 0) {
-				// restart
-				drawSourceRef.current.clear();
-				lineSourceRef.current.clear();
-				event.feature.setStyle(cacheRef.current.startStyle);
-				setStartCoord(coords);
-				setEndCoord([]);
-			}
+			type: "LineString",
+			stopClick: true,
+			maxPoints: 2
 		});
 
-		map.addInteraction(drawPointInteraction);
+		drawLineInteraction.on("drawstart", () => {
+			drawSourceRef.current.clear();
+			pointSourceRef.current.clear();
+		});
+		drawLineInteraction.on("drawend", (event) => {
+			// drawSourceRef.current.clear();
+			const geometry = event.feature.getGeometry();
+			setStartCoord(geometry.getFirstCoordinate());
+			setEndCoord(geometry.getLastCoordinate());
+		});
+
+		// Start the draw interaction...
+		map.addInteraction(drawLineInteraction);
+
 	};
 
 	const fieldNames = [
