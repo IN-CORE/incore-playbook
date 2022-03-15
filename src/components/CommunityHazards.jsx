@@ -60,12 +60,16 @@ export const CommunityHazards = () => {
 	const [currTabIndex, setCurrTabIndex] = useState(0);
 	const [startCoord, setStartCoord] = useState([]);
 	const [endCoord, setEndCoord] = useState([]);
+	const [constructorHasRun, setConstructorHasRun] = useState(false);
 
 	const dispatch = useDispatch();
 	const listTornadoes = (limit, offset) => dispatch(fetchTornadoes(limit, offset));
 	const tornadoes = useSelector((state) => state.tornado.tornadoes);
 
+	// mimic constructor
 	const constructor = () => {
+		if (constructorHasRun) return;
+
 		this.drawSource = new VectorSource({wrapX: false});
 		this.lineSource = new VectorSource({wrapX: false});
 
@@ -137,7 +141,7 @@ export const CommunityHazards = () => {
 			{
 				"prettyName": "NAME",
 				"columnName": "name",
-				"handleClick": this.hazardIdClick
+				"handleClick": hazardIdClick
 			},
 			{
 				"prettyName": "DESCRIPTION",
@@ -152,10 +156,19 @@ export const CommunityHazards = () => {
 				"columnName": "creator",
 			}
 		];
-	}
+
+		setConstructorHasRun(true);
+	};
+	constructor();
 
 	// component did mount
-	useEffect(()=> { listTornadoes() }, []);
+	useEffect(()=> {listTornadoes();}, []);
+
+	// draw the line
+	useEffect(() => {
+		if (startCoord.length > 0 && endCoord.length === 0) {
+			drawLine();
+		}}, [endCoord]);
 
 	map;
 
@@ -179,11 +192,11 @@ export const CommunityHazards = () => {
 
 		// add created hazard to this created group layer
 		this.layers["tilelayer"].getLayers().push(HazardMapLayer);
-	}
+	};
 
 	const hazardIdClick = async (hazard) => {
 		handleLayerUpdate(hazard);
-	}
+	};
 
 	const drawLine = () => {
 		let lineString = new LineString([startCoord, endCoord]);
@@ -192,7 +205,7 @@ export const CommunityHazards = () => {
 			name: "Line"
 		});
 		this.lineSource.addFeature(lineFeature);
-	}
+	};
 
 	const handleMapClick = (event) => {
 		// Important: need to clear previous draw interaction first
@@ -217,7 +230,7 @@ export const CommunityHazards = () => {
 			} else if (startCoord.length > 0 && endCoord.length === 0) {
 				// draw endpoint
 				event.feature.setStyle(this.endStyle);
-				this.setState({endCoord: coords}, this.drawLine);
+				setEndCoord(coords);
 			} else if (startCoord.length > 0 && endCoord.length > 0) {
 				// restart
 				this.drawSource.clear();
@@ -229,7 +242,7 @@ export const CommunityHazards = () => {
 		});
 
 		map.addInteraction(drawPointInteraction);
-	}
+	};
 
 	return (
 		<Layout>
@@ -298,7 +311,7 @@ export const CommunityHazards = () => {
 									layerSwitcherOptions={{}}
 									updateMap={(map) => { this.map = map; }}
 									events={{
-										"click": this.handleMapClick
+										"click": handleMapClick
 									}}
 								/>
 							</Container>
