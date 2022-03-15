@@ -16,7 +16,7 @@ import Feature from "ol/Feature";
 
 import RasterTornado from "./childComponents/RasterTornado";
 import ModelTornado from "./childComponents/ModelTornado";
-import Map from "./childComponents/map/Map";
+import Map, {MapContext} from "./childComponents/map/Map";
 import config from "../app.config";
 import {globals} from "../globals";
 import Layout from "../containers/Layout";
@@ -66,39 +66,40 @@ export const CommunityHazards = () => {
 	const listTornadoes = (limit, offset) => dispatch(fetchTornadoes(limit, offset));
 	const tornadoes = useSelector((state) => state.tornado.tornadoes);
 
-	// mimic constructor
-	const constructor = () => {
-		if (constructorHasRun) return;
+	const { map } = React.useContext(MapContext);
 
-		this.drawSource = new VectorSource({wrapX: false});
-		this.lineSource = new VectorSource({wrapX: false});
-
-		this.lineStyle = new Style({
+	// Caches the control
+	const cacheRef = React.useRef({
+		drawSource: new VectorSource({wrapX: false}),
+		lineSource: new VectorSource({wrapX: false}),
+		lineStyle: new Style({
 			stroke: new Stroke({
 				color: "#979797",
 				width: 3,
 				lineDash: [.1, 5] //or other combinations
 			})
-		});
-
-		this.startStyle = new Style({
+		}),
+		startStyle: new Style({
 			image: new Circle({
 				radius: 8,
 				fill: new Fill({
 					color: "#96B712"
 				})
 			})
-		});
-
-		this.endStyle = new Style({
+		}),
+		endStyle: new Style({
 			image: new Circle({
 				radius: 8,
 				fill: new Fill({
 					color: "#D63649"
 				})
 			})
-		});
+		}),
+	});
 
+	// mimic constructor
+	const constructor = () => {
+		if (constructorHasRun) return;
 
 		this.layers = {
 			basemaps: new GroupLayer({
@@ -127,8 +128,8 @@ export const CommunityHazards = () => {
 			drawlayer: new GroupLayer({
 				title: "Draw Layer",
 				layers: [
-					new VectorLayer({source: this.drawSource}),
-					new VectorLayer({source: this.lineSource, style: [this.lineStyle]})
+					new VectorLayer({source: cacheRef.current.drawSource}),
+					new VectorLayer({source: cacheRef.current.lineSource, style: [cacheRef.current.lineStyle]})
 				]
 			}),
 			tilelayer: new GroupLayer({
@@ -204,7 +205,7 @@ export const CommunityHazards = () => {
 			geometry: lineString,
 			name: "Line"
 		});
-		this.lineSource.addFeature(lineFeature);
+		cacheRef.current.lineSource.addFeature(lineFeature);
 	};
 
 	const handleMapClick = (event) => {
@@ -217,7 +218,7 @@ export const CommunityHazards = () => {
 		});
 
 		let drawPointInteraction = new Draw({
-			source: this.drawSource,
+			source: cacheRef.current.drawSource,
 			type: "Point",
 		});
 		drawPointInteraction.on("drawend", (event) => {
@@ -225,17 +226,17 @@ export const CommunityHazards = () => {
 
 			if (startCoord.length === 0 && endCoord.length === 0) {
 				// draw start
-				event.feature.setStyle(this.startStyle);
+				event.feature.setStyle(cacheRef.current.startStyle);
 				setStartCoord(coords);
 			} else if (startCoord.length > 0 && endCoord.length === 0) {
 				// draw endpoint
-				event.feature.setStyle(this.endStyle);
+				event.feature.setStyle(cacheRef.current.endStyle);
 				setEndCoord(coords);
 			} else if (startCoord.length > 0 && endCoord.length > 0) {
 				// restart
-				this.drawSource.clear();
-				this.lineSource.clear();
-				event.feature.setStyle(this.startStyle);
+				cacheRef.current.drawSource.clear();
+				cacheRef.current.lineSource.clear();
+				event.feature.setStyle(cacheRef.current.startStyle);
 				setStartCoord(coords);
 				setEndCoord([]);
 			}
@@ -321,4 +322,4 @@ export const CommunityHazards = () => {
 			</div>
 		</Layout>
 	);
-}
+};
