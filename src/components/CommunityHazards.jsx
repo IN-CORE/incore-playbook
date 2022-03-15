@@ -16,7 +16,7 @@ import Feature from "ol/Feature";
 
 import RasterTornado from "./childComponents/RasterTornado";
 import ModelTornado from "./childComponents/ModelTornado";
-import Map, {MapContext} from "./childComponents/map/Map";
+import Map from "./childComponents/map/Map";
 import config from "../app.config";
 import {globals} from "../globals";
 import Layout from "../containers/Layout";
@@ -64,8 +64,6 @@ export const CommunityHazards = () => {
 	const dispatch = useDispatch();
 	const listTornadoes = (limit, offset) => dispatch(fetchTornadoes(limit, offset));
 	const tornadoes = useSelector((state) => state.tornado.tornadoes);
-
-	const { map } = React.useContext(MapContext);
 
 	// Caches the control
 	const cacheRef = React.useRef({
@@ -138,6 +136,9 @@ export const CommunityHazards = () => {
 		})
 	});
 
+	// Holds an instance of Map component
+	const mapRef = React.useRef();
+
 	// component did mount
 	useEffect(()=> {listTornadoes();}, []);
 
@@ -146,8 +147,6 @@ export const CommunityHazards = () => {
 		if (startCoord.length > 0 && endCoord.length === 0) {
 			drawLine();
 		}}, [endCoord]);
-
-	map;
 
 	const handleLayerUpdate = (json) => {
 
@@ -186,7 +185,8 @@ export const CommunityHazards = () => {
 
 	const handleMapClick = (event) => {
 		// Important: need to clear previous draw interaction first
-		let map = event.map;
+		// let map = event.map;
+		const map = mapRef.current;
 		map.getInteractions().forEach((interaction) => {
 			if (interaction instanceof Draw) {
 				map.removeInteraction(interaction);
@@ -199,23 +199,24 @@ export const CommunityHazards = () => {
 		});
 		drawPointInteraction.on("drawend", (event) => {
 			let coords = event.feature.getGeometry().getFlatCoordinates();
-
-			if (startCoord.length === 0 && endCoord.length === 0) {
-				// draw start
-				event.feature.setStyle(cacheRef.current.startStyle);
-				setStartCoord(coords);
-			} else if (startCoord.length > 0 && endCoord.length === 0) {
-				// draw endpoint
-				event.feature.setStyle(cacheRef.current.endStyle);
-				setEndCoord(coords);
-			} else if (startCoord.length > 0 && endCoord.length > 0) {
-				// restart
-				cacheRef.current.drawSource.clear();
-				cacheRef.current.lineSource.clear();
-				event.feature.setStyle(cacheRef.current.startStyle);
-				setStartCoord(coords);
-				setEndCoord([]);
-			}
+			event.feature.setStyle(cacheRef.current.startStyle);
+			setStartCoord(coords);
+			// if (startCoord.length === 0 && endCoord.length === 0) {
+			// 	// draw start
+			// 	event.feature.setStyle(cacheRef.current.startStyle);
+			// 	setStartCoord(coords);
+			// } else if (startCoord.length > 0 && endCoord.length === 0) {
+			// 	// draw endpoint
+			// 	event.feature.setStyle(cacheRef.current.endStyle);
+			// 	setEndCoord(coords);
+			// } else if (startCoord.length > 0 && endCoord.length > 0) {
+			// 	// restart
+			// 	cacheRef.current.drawSource.clear();
+			// 	cacheRef.current.lineSource.clear();
+			// 	event.feature.setStyle(cacheRef.current.startStyle);
+			// 	setStartCoord(coords);
+			// 	setEndCoord([]);
+			// }
 		});
 
 		map.addInteraction(drawPointInteraction);
@@ -310,7 +311,9 @@ export const CommunityHazards = () => {
 										cacheRef.current.tilelayer
 									]}
 									layerSwitcherOptions={{}}
-									updateMap={(map) => { map = map; }}
+									updateMap={(map) => {
+										mapRef.current = map;
+									}}
 									events={{
 										"click": handleMapClick
 									}}

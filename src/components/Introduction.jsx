@@ -11,7 +11,8 @@ import fullHtml40 from "../public/steps/4-0.html";
 import fullHtml50 from "../public/steps/5-0.html";
 import fullHtml60 from "../public/steps/6-0.html";
 
-const Introduction = ({menu}) => {
+export const Introduction = ({menu}) => {
+
 	let fullHtml = fullHtml00;
 	let pageBanner = null;
 	if (menu === "1") {
@@ -55,5 +56,3 @@ const Introduction = ({menu}) => {
 		</Layout>
 	);
 };
-
-export default Introduction;
