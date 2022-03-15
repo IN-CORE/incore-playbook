@@ -1,7 +1,7 @@
 import * as React from "react";
 import {Introduction} from "./components/Introduction";
 import {TeamLeader} from "./components/TeamLeader";
-import StepTmpInfo from "./containers/StepTmpInfo";
+import {StepTmpInfo} from "./components/StepTmpInfo";
 import {BuiltEnvironment} from "./components/BuiltEnvironment";
 import {CommunityHazards} from "./components/CommunityHazards";
 import {AnticipatedPerformance} from "./components/AnticipatedPerformance";

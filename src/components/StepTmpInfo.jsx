@@ -25,7 +25,7 @@ import fullHtml62 from "../public/steps/6-2.html";
 import fullHtml63 from "../public/steps/6-3.html";
 
 
-const StepTmpInfo = ({menu}) => {
+export const StepTmpInfo = ({menu}) => {
 	let fullHtml = fullHtml00;
 	let pageBanner = null;
 	// if (menu === "1-1") {
@@ -137,5 +137,3 @@ const StepTmpInfo = ({menu}) => {
 		</Layout>
 	);
 };
-
-export default StepTmpInfo;
