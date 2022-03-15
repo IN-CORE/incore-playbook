@@ -60,7 +60,6 @@ export const CommunityHazards = () => {
 	const [currTabIndex, setCurrTabIndex] = useState(0);
 	const [startCoord, setStartCoord] = useState([]);
 	const [endCoord, setEndCoord] = useState([]);
-	const [constructorHasRun, setConstructorHasRun] = useState(false);
 
 	const dispatch = useDispatch();
 	const listTornadoes = (limit, offset) => dispatch(fetchTornadoes(limit, offset));
@@ -95,72 +94,49 @@ export const CommunityHazards = () => {
 				})
 			})
 		}),
-	});
-
-	// mimic constructor
-	const constructor = () => {
-		if (constructorHasRun) return;
-
-		this.layers = {
-			basemaps: new GroupLayer({
-				title: "Base Maps",
-				layers: [
-					new TileLayer({
-						type: "base",
-						visible: true,
-						title: "Carto",
-						source: new XYZ({
-							url: "https://{a-d}.basemaps.cartocdn.com/rastertiles/light_all/{z}/{x}/{y}.png",
-							attributions: [
-								"&#169; <a href=\"https://www.carto.com\">Carto</a>,",
-								OSM_ATTRIBUTION
-							]
-						})
-					}),
-					new TileLayer({
-						type: "base",
-						visible: false,
-						title: "OSM",
-						source: new OSM()
+		basemaps: new GroupLayer({
+			title: "Base Maps",
+			layers: [
+				new TileLayer({
+					type: "base",
+					visible: true,
+					title: "Carto",
+					source: new XYZ({
+						url: "https://{a-d}.basemaps.cartocdn.com/rastertiles/light_all/{z}/{x}/{y}.png",
+						attributions: [
+							"&#169; <a href=\"https://www.carto.com\">Carto</a>,",
+							OSM_ATTRIBUTION
+						]
 					})
-				]
-			}),
-			drawlayer: new GroupLayer({
-				title: "Draw Layer",
-				layers: [
-					new VectorLayer({source: cacheRef.current.drawSource}),
-					new VectorLayer({source: cacheRef.current.lineSource, style: [cacheRef.current.lineStyle]})
-				]
-			}),
-			tilelayer: new GroupLayer({
-				title: "Hazards",
-				layers: []
-			})
-		};
-
-		this.fieldNames = [
-			{
-				"prettyName": "NAME",
-				"columnName": "name",
-				"handleClick": hazardIdClick
-			},
-			{
-				"prettyName": "DESCRIPTION",
-				"columnName": "description"
-			},
-			{
-				"prettyName": "DATE ADDED",
-				"columnName": "date",
-			},
-			{
-				"prettyName": "SUBMITTED BY",
-				"columnName": "creator",
-			}
-		];
-
-		setConstructorHasRun(true);
-	};
-	constructor();
+				}),
+				new TileLayer({
+					type: "base",
+					visible: false,
+					title: "OSM",
+					source: new OSM()
+				})
+			]
+		}),
+		drawlayer: new GroupLayer({
+			title: "Draw Layer",
+			layers: [
+				new VectorLayer({source: new VectorSource({wrapX: false})}),
+				new VectorLayer({
+					source: new VectorSource({wrapX: false}),
+					style: [new Style({
+						stroke: new Stroke({
+							color: "#979797",
+							width: 3,
+							lineDash: [.1, 5] //or other combinations
+						})
+					})]})
+			]
+		}),
+		tilelayer: new GroupLayer({
+			title: "Hazards",
+			layers: []
+		})
+	});
 
 	// component did mount
 	useEffect(()=> {listTornadoes();}, []);
@@ -192,7 +168,7 @@ export const CommunityHazards = () => {
 		});
 
 		// add created hazard to this created group layer
-		this.layers["tilelayer"].getLayers().push(HazardMapLayer);
+		cacheRef.current.tilelayer.getLayers().push(HazardMapLayer);
 	};
 
 	const hazardIdClick = async (hazard) => {
@@ -245,6 +221,26 @@ export const CommunityHazards = () => {
 		map.addInteraction(drawPointInteraction);
 	};
 
+	const fieldNames = [
+		{
+			"prettyName": "NAME",
+			"columnName": "name",
+			"handleClick": hazardIdClick
+		},
+		{
+			"prettyName": "DESCRIPTION",
+			"columnName": "description"
+		},
+		{
+			"prettyName": "DATE ADDED",
+			"columnName": "date",
+		},
+		{
+			"prettyName": "SUBMITTED BY",
+			"columnName": "creator",
+		}
+	];
+
 	return (
 		<Layout>
 			<div className="firstDivInContent">
@@ -264,7 +260,7 @@ export const CommunityHazards = () => {
 							{/*</Box>*/}
 						</Box>
 						<Box className="entryTable">
-							<EntryTable fieldNames={this.fieldNames} fields={tornadoes}/>
+							<EntryTable fieldNames={fieldNames} fields={tornadoes}/>
 						</Box>
 					</Box>
 					<Grid container spacing={3} className="innerBox">
@@ -290,12 +286,12 @@ export const CommunityHazards = () => {
 									<Tab label="Upload a Hazard Dataset" className={classes.tab}/>
 								</Tabs>
 								<ModelTornado value={currTabIndex} index={0}
-											  handleLayerUpdate={this.handleLayerUpdate}
+											  handleLayerUpdate={handleLayerUpdate}
 											  handleListUpdate={listTornadoes}
 											  startCoordProps={startCoord}
 											  endCoordProps={endCoord}/>
 								<RasterTornado value={currTabIndex} index={1}
-											   handleLayerUpdate={this.handleLayerUpdate}
+											   handleLayerUpdate={handleLayerUpdate}
 											   handleListUpdate={listTornadoes}/>
 							</Box>
 						</Grid>
@@ -308,9 +304,13 @@ export const CommunityHazards = () => {
 									maxZoom={15}
 									extent={globals.JOPLIN_MAP_BOUNDS}
 									center={fromLonLat(globals.JOPLIN_MAP_CENTER)}
-									layers={Object.values(this.layers)}
+									layers={[
+										cacheRef.current.basemaps,
+										cacheRef.current.drawlayer,
+										cacheRef.current.tilelayer
+									]}
 									layerSwitcherOptions={{}}
-									updateMap={(map) => { this.map = map; }}
+									updateMap={(map) => { map = map; }}
 									events={{
 										"click": handleMapClick
 									}}

@@ -3,7 +3,7 @@ import Introduction from "./containers/Introduction";
 import TeamLeader from "./containers/TeamLeader";
 import StepTmpInfo from "./containers/StepTmpInfo";
 import {BuiltEnvironment} from "./components/BuiltEnvironment";
-import CommunityHazards from "./containers/CommunityHazards";
+import {CommunityHazards} from "./components/CommunityHazards";
 import {AnticipatedPerformance} from "./components/AnticipatedPerformance";
 import Login from "./containers/Login";
 

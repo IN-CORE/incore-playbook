@@ -8,7 +8,6 @@ import {BrowserRouter, Route, Switch} from "react-router-dom";
 import routes from "./routes.js";
 import configureStore from "./store/configureStore";
 import {createMuiTheme, MuiThemeProvider} from "@material-ui/core/styles";
-import config from "./app.config";
 
 require("./public/favicon.ico");
 
@@ -28,7 +27,8 @@ const theme = createMuiTheme({
 render(
 	<MuiThemeProvider theme={theme}>
 		<Provider store={store}>
-			<BrowserRouter basename={config.baseUrlRoute}>
+			{/*<BrowserRouter basename={config.baseUrlRoute}>*/}
+			<BrowserRouter>
 				<Switch>
 					{
 						Object.keys(routes).map((key, ) => {
