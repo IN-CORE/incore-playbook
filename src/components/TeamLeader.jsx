@@ -3,7 +3,7 @@ import {
 	Box,
 	Grid,
 } from "@material-ui/core";
-import UserInfo from "./childComponents/UserInfo";
+import {UserInfo} from "./childComponents/UserInfo";
 import StepStatus from "./childComponents/step/StepStatus";
 import PageBanner from "./childComponents/navigation/Banner";
 import {Layout} from "./Layout";

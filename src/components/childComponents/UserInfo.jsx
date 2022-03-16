@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState} from "react";
 
 import {Box, Button, Container, Grid, Link, withStyles,} from "@material-ui/core";
 
@@ -7,8 +7,9 @@ import {IncoreInputLabel} from "../styledComponents/IncoreInputLabel";
 import {IncoreButton} from "../styledComponents/IncoreButton";
 import {IncoreMenuItem, IncoreSelectBox} from "../styledComponents/IncoreSelect";
 import {IncoreTextField} from "../styledComponents/IncoreInput";
+import {makeStyles} from "@material-ui/core/styles";
 
-const styles = {
+const useStyles = makeStyles({
 	inputGroupProfile: {
 		height: "196px",
 		width: "481px"
@@ -43,117 +44,97 @@ const styles = {
 		display: "block",
 		marginTop: "12px",
 	}
-};
+});
 
 /**
  * Generate a user info form
  */
-class UserInfo extends React.Component {
+export const UserInfo = (props) => {
 
-	constructor(props) {
-		super(props);
+	const classes = useStyles();
 
-		this.state = {
-			firstName: "",
-			lastName: "",
-			username: "",
-			role: "",
-			email: "",
-			profileImageURL: DefaultProfileImage
-		};
+	const {userList, handleStepStatusChange} = props;
 
-		this.handleUserSelection = this.handleUserSelection.bind(this);
-		this.handleProfileImageUpload = this.handleProfileImageUpload.bind(this);
-		this.handleProfileImageRemove = this.handleProfileImageRemove.bind(this);
-		this.handleLeaderSave = this.handleLeaderSave.bind(this);
-	}
+	const [firstName, setFirstName] = useState("");
+	const [lastName, setLastName] = useState("");
+	const [username, setUsername] = useState("");
+	const [role, setRole] = useState("");
+	const [email, setEmail] = useState("");
+	const [profileImageURL, setProfileImageURL] = useState(DefaultProfileImage);
 
-	handleUserSelection(event) {
+	const handleUserSelection = (event) => {
 		let index = event.target.value;
-		this.setState({
-			firstName: this.props.userList[index]["firstName"],
-			lastName: this.props.userList[index]["lastName"],
-			username: this.props.userList[index]["username"],
-			role: "Resilience Leader",
-			email: this.props.userList[index]["email"],
-		});
-	}
+		setFirstName(userList[index]["firstName"]);
+		setLastName(userList[index]["lastName"]);
+		setUsername(userList[index]["username"]);
+		setRole("Resilience Leader");
+		setEmail(userList[index]["email"]);
+	};
 
-	handleProfileImageUpload(event) {
-		this.setState({
-			profileImageURL: URL.createObjectURL(event.target.files[0])
-		});
-	}
+	const handleProfileImageUpload = (event) => {
+		setProfileImageURL(URL.createObjectURL(event.target.files[0]));
+	};
 
-	handleProfileImageRemove(event) {
-		this.setState({
-			profileImageURL: DefaultProfileImage
-		});
-	}
+	const handleProfileImageRemove = () => {
+		setProfileImageURL(DefaultProfileImage);
+	};
 
-	handleLeaderSave() {
-		this.props.handleStepStatusChange("complete");
-	}
+	const handleLeaderSave = () => {
+		handleStepStatusChange("complete");
+	};
 
-
-	render() {
-		const {classes} = this.props;
-
-		return (
-			<Container>
-				<Box className="inputGroup">
-					<IncoreInputLabel>Select from user list</IncoreInputLabel>
-					<IncoreSelectBox labelId="label" id="select" variant="outlined" defaultValue=""
-									 onChange={this.handleUserSelection}>
-						{
-							this.props.userList.map((user, index) => {
-								return (
-									<IncoreMenuItem value={index}
-										key={user["username"]}>{user["username"]}</IncoreMenuItem>
-								);
-							})
-						}
-					</IncoreSelectBox>
-				</Box>
-				<Box className={classes.inputGroupProfile}>
-					<IncoreInputLabel>Profile Photo</IncoreInputLabel>
-					<Grid container spacing={3}>
-						<Grid item lg={3} md={3} sm={3} xs={12}>
-							<img src={this.state.profileImageURL} alt="" className={classes.profileImage}/>
-						</Grid>
-						<Grid item lg={6} md={6} sm={6} xs={12}>
-							<Button variant="outlined" component="label" className={classes.uploadButton}>
-								Upload an Image
-								<input type="file" onChange={this.handleProfileImageUpload} style={{display: "none"}}/>
-							</Button>
-							<Link href="#" onClick={this.handleProfileImageRemove} className={classes.removeLink}>Remove
-								Photo</Link>
-						</Grid>
+	return (
+		<Container>
+			<Box className="inputGroup">
+				<IncoreInputLabel>Select from user list</IncoreInputLabel>
+				<IncoreSelectBox labelId="label" id="select" variant="outlined" defaultValue=""
+									 onChange={handleUserSelection}>
+					{
+						userList.map((user, index) => {
+							return (
+								<IncoreMenuItem value={index}
+									key={user["username"]}>{user["username"]}</IncoreMenuItem>
+							);
+						})
+					}
+				</IncoreSelectBox>
+			</Box>
+			<Box className={classes.inputGroupProfile}>
+				<IncoreInputLabel>Profile Photo</IncoreInputLabel>
+				<Grid container spacing={3}>
+					<Grid item lg={3} md={3} sm={3} xs={12}>
+						<img src={profileImageURL} alt="" className={classes.profileImage}/>
 					</Grid>
-				</Box>
-				<Box className="inputGroup">
-					<IncoreInputLabel>Full name</IncoreInputLabel>
-					<IncoreTextField value={`${this.state.firstName} ${this.state.lastName}`} variant="outlined"/>
-				</Box>
-				<Box className="inputGroup">
-					<IncoreInputLabel>Display name</IncoreInputLabel>
-					<IncoreTextField value={this.state.username} variant="outlined"/>
-				</Box>
-				<Box className="inputGroup">
-					<IncoreInputLabel>Role</IncoreInputLabel>
-					<IncoreTextField value={this.state.role} variant="outlined"/>
-				</Box>
-				<Box className="inputGroup">
-					<IncoreInputLabel>Email</IncoreInputLabel>
-					<IncoreTextField value={this.state.email} variant="outlined"/>
-				</Box>
-				<Box className="inputGroup">
-					<IncoreButton variant="contained" color="primary"
-								  onClick={this.handleLeaderSave}>Save</IncoreButton>
-				</Box>
-			</Container>
-		);
-	}
-}
-
-export default withStyles(styles)(UserInfo);
+					<Grid item lg={6} md={6} sm={6} xs={12}>
+						<Button variant="outlined" component="label" className={classes.uploadButton}>
+								Upload an Image
+							<input type="file" onChange={handleProfileImageUpload} style={{display: "none"}}/>
+						</Button>
+						<Link href="#" onClick={handleProfileImageRemove} className={classes.removeLink}>Remove
+								Photo</Link>
+					</Grid>
+				</Grid>
+			</Box>
+			<Box className="inputGroup">
+				<IncoreInputLabel>Full name</IncoreInputLabel>
+				<IncoreTextField value={`${firstName} ${lastName}`} variant="outlined"/>
+			</Box>
+			<Box className="inputGroup">
+				<IncoreInputLabel>Display name</IncoreInputLabel>
+				<IncoreTextField value={username} variant="outlined"/>
+			</Box>
+			<Box className="inputGroup">
+				<IncoreInputLabel>Role</IncoreInputLabel>
+				<IncoreTextField value={role} variant="outlined"/>
+			</Box>
+			<Box className="inputGroup">
+				<IncoreInputLabel>Email</IncoreInputLabel>
+				<IncoreTextField value={email} variant="outlined"/>
+			</Box>
+			<Box className="inputGroup">
+				<IncoreButton variant="contained" color="primary"
+								  onClick={handleLeaderSave}>Save</IncoreButton>
+			</Box>
+		</Container>
+	);
+};
