@@ -5,7 +5,7 @@ import {StepTmpInfo} from "./components/StepTmpInfo";
 import {BuiltEnvironment} from "./components/BuiltEnvironment";
 import {CommunityHazards} from "./components/CommunityHazards";
 import {AnticipatedPerformance} from "./components/AnticipatedPerformance";
-import Login from "./containers/Login";
+import {Login} from "./components/Login";
 
 
 const routes = {
@@ -17,8 +17,10 @@ const routes = {
 		}
 	},
 	"/login": {
-		exact: false,
-		component: Login
+		exact: true,
+		component: () => {
+			return (<Login/>);
+		}
 	},
 	"/create-team": {
 		exact: false,
