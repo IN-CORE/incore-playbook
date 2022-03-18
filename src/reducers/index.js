@@ -2,7 +2,7 @@ import userList from "./userList";
 import attributes from "./attributes";
 import layout from "./layout";
 import {executions} from "./datawolf";
-import tornadoes from "./tornadoes";
+import hazardss from "./hazards";
 import datasets from "./dataset";
 
 const rootReducer = {
@@ -10,7 +10,7 @@ const rootReducer = {
 	attribute: attributes,
 	layout: layout,
 	execution: executions,
-	tornado: tornadoes,
+	hazard: hazards,
 	dataset:datasets
 };
 

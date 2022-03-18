@@ -7,7 +7,7 @@ import ViewResult from "./childComponents/ViewResult";
 import RunAnalysis from "./childComponents/RunAnalysis";
 import PageBanner from "./childComponents/navigation/Banner";
 import {fetchExecutions} from "../actions/datawolf";
-import {fetchTornadoes} from "../actions/hazards";
+import {fetchHazards} from "../actions/hazards";
 import {fetchDatasets} from "../actions/datasets";
 
 
@@ -33,7 +33,7 @@ export const AnticipatedPerformance = () => {
 	// Redux connect equivalent
 	const dispatch = useDispatch();
 	const getExecutionList = () => dispatch(fetchExecutions());
-	const listTornadoes =  (limit, offset) => dispatch(fetchTornadoes(limit, offset));
+	const listTornadoes =  (limit, offset) => dispatch(fetchHazards(limit, offset));
 	const listDatasets = (limit, offset, type) => dispatch(fetchDatasets(limit, offset, type));
 
 	const executions = useSelector((state) => state.execution.executions);

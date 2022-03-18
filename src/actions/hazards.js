@@ -1,21 +1,21 @@
 import config from "../app.config";
 import {getHeader, getCurrUsername} from "../utils/common";
 
-export const RECEIVE_TORNADOES = "RECEIVE_TORNADOES";
 export const LOGIN_ERROR = "LOGIN_ERROR";
 
-export function receiveTornadoes(type, json){
+export function receiveHazards(type, json){
 	return (dispatch) => {
 		dispatch({
 			type: type,
 			tornadoes: json,
+			hazards: json,
 			receivedAt: Date.now(),
 		});
 	};
 }
 
-export function fetchTornadoes(limit=20, offset=0){
-	let endpoint = `${config.hazardServiceBase}tornadoes?limit=${limit}&skip=${offset}`;
+export function fetchHazards(hazardType="hurricanes", limit=20, offset=0){
+	let endpoint = `${config.hazardServiceBase}${hazardType}?limit=${limit}&skip=${offset}`;
 
 	// default to current user's space
 	let space = getCurrUsername();
@@ -26,16 +26,16 @@ export function fetchTornadoes(limit=20, offset=0){
 			.then(response => {
 				if (response.status === 200) {
 					response.json().then(json => {
-						dispatch(receiveTornadoes(RECEIVE_TORNADOES, json));
+						dispatch(receiveHazards(`RECEIVE_${hazardType.toUpperCase()}`, json));
 					});
 				}
 				else if (response.status === 401) {
 				// TODO Auth Failed
-					dispatch(receiveTornadoes(LOGIN_ERROR, []));
+					dispatch(receiveHazards(LOGIN_ERROR, []));
 				}
 				else {
 				// TODO Request Failed
-					dispatch(receiveTornadoes(RECEIVE_TORNADOES, []));
+					dispatch(receiveHazards(`RECEIVE_${hazardType.toUpperCase()}`, []));
 				}
 			});
 	};

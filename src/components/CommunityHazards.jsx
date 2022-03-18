@@ -29,7 +29,7 @@ import {EntryTable} from "./childComponents/table/EntryTable";
 import PageBanner from "./childComponents/navigation/Banner";
 import fullHtml from "../public/steps/3-3.html";
 import StepInfo from "./StepInfo";
-import {fetchTornadoes} from "../actions/hazards";
+import {fetchHazards} from "../actions/hazards";
 import Icon from "ol/style/Icon";
 
 const useStyles = makeStyles({
@@ -63,7 +63,7 @@ export const CommunityHazards = () => {
 	const [endCoord, setEndCoord] = useState([]);
 
 	const dispatch = useDispatch();
-	const listTornadoes = (limit, offset) => dispatch(fetchTornadoes(limit, offset));
+	const listTornadoes = (limit, offset) => dispatch(fetchHazards(limit, offset));
 	const tornadoes = useSelector((state) => state.tornado.tornadoes);
 
 	const drawSourceRef = React.useRef(new VectorSource({wrapX: false}));

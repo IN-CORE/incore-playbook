@@ -110,3 +110,15 @@ export function exportJson(json, file_name) {
 		document.body.removeChild(anchor);
 	}
 }
+
+export function dataURItoFile(dataURI, filename="") {
+	if (filename === undefined || filename === "" || filename === null) filename = "hurricane-raster.tif";
+	let mime = dataURI.split(",")[0].match(/:(.*?);/)[1];
+	let binary = atob(dataURI.split(",")[1]);
+	let array = [];
+	for (let i = 0; i < binary.length; i++) {
+		array.push(binary.charCodeAt(i));
+	}
+	const blob = new Blob([new Uint8Array(array)], {type: mime});
+	return new File([blob], filename, {type: mime, lastModified: new Date()});
+}
