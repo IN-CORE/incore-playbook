@@ -6,8 +6,8 @@ import {IncoreButton} from "../../styledComponents/IncoreButton";
 import LoadingOverlay from "react-loading-overlay";
 import {CustomSelectWidget} from "../../styledComponents/CustomSelectWidget";
 import {CustomTextInput} from "../../styledComponents/CustomTextWidget";
-import DatasetHurricaneSchema from "../../../schema/earthquake/datasetEarthquake.json";
-import DatasetHurricaneUiSchema from "../../../schema/earthquake/datasetEarthquakeUi.json";
+import DatasetEqSchema from "../../../schema/earthquake/datasetEarthquake.json";
+import DatasetEqUiSchema from "../../../schema/earthquake/datasetEarthquakeUi.json";
 import {createDatasetEarthquake} from "../../../utils/hazard";
 
 import Form from "@rjsf/material-ui";
@@ -24,7 +24,7 @@ export default function DatasetEarthquake(props) {
 
 	const onSave = async (formData) => {
 		setLoading(true);
-		const hurricaneJson = await createDatasetHurricane(formData);
+		const hurricaneJson = await createDatasetEarthquake(formData);
 		if (hurricaneJson !== {}){
 			handleLayerUpdate(hurricaneJson);
 			handleListUpdate();
@@ -45,9 +45,9 @@ export default function DatasetEarthquake(props) {
 						spinner
 						text="Saving..."
 					>
-						<Form schema={DatasetHurricaneSchema}
-							  uiSchema={DatasetHurricaneUiSchema}
-							  widgets={widgets}
+						<Form schema={DatasetEqSchema}
+							  uiSchema={DatasetEqUiSchema}
+					z		  widgets={widgets}
 							  onSubmit={({formData}, e) => {onSave(formData);}}>
 							<Box className="inputGroup">
 								<IncoreButton variant="contained" type="submit">Save</IncoreButton>

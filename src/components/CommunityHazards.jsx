@@ -31,6 +31,7 @@ import fullHtml from "../public/steps/3-3.html";
 import StepInfo from "./StepInfo";
 import {fetchHazards} from "../actions/hazards";
 import DatasetHurricane from "./childComponents/hurricane/datasetHurricane";
+import DatasetEarthquake from "./childComponents/earthquake/datasetEarthquake";
 
 const useStyles = makeStyles({
 	tabDiv: {
@@ -329,7 +330,19 @@ export const CommunityHazards = () => {
 								{
 									// different hazard type will have different UI
 									(() => {
-										if (selectedHazardType === "tornadoes") {
+										if (selectedHazardType === "earthquakes") {
+											return (<>
+												<DatasetEarthquake value={currTabIndex} index={0}
+															   handleLayerUpdate={handleLayerUpdate}
+															   handleListUpdate={listHazards}/>
+												{/*<ModelTornado value={currTabIndex} index={1}*/}
+												{/*			  handleLayerUpdate={handleLayerUpdate}*/}
+												{/*			  handleListUpdate={listHazards}*/}
+												{/*			  startCoordProps={startCoord}*/}
+												{/*			  endCoordProps={endCoord}/>*/}
+											</>);
+										}
+										else if (selectedHazardType === "tornadoes") {
 											return (<>
 												<RasterTornado value={currTabIndex} index={0}
 															   handleLayerUpdate={handleLayerUpdate}
