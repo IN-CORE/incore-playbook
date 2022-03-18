@@ -32,6 +32,7 @@ import StepInfo from "./StepInfo";
 import {fetchHazards} from "../actions/hazards";
 import DatasetHurricane from "./childComponents/hurricane/datasetHurricane";
 import DatasetEarthquake from "./childComponents/earthquake/datasetEarthquake";
+import DatasetFlood from "./childComponents/flood/datasetFlood";
 
 const useStyles = makeStyles({
 	tabDiv: {
@@ -356,6 +357,11 @@ export const CommunityHazards = () => {
 										}
 										else if (selectedHazardType === "hurricanes"){
 											return (<DatasetHurricane value={currTabIndex} index={0}
+																	  handleLayerUpdate={handleLayerUpdate}
+																	  handleListUpdate={listHazards}/>);
+										}
+										else if (selectedHazardType === "flood"){
+											return (<DatasetFlood value={currTabIndex} index={0}
 																	  handleLayerUpdate={handleLayerUpdate}
 																	  handleListUpdate={listHazards}/>);
 										}

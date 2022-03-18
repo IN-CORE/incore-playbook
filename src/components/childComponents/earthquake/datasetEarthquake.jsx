@@ -47,7 +47,7 @@ export default function DatasetEarthquake(props) {
 					>
 						<Form schema={DatasetEqSchema}
 							  uiSchema={DatasetEqUiSchema}
-					z		  widgets={widgets}
+							  widgets={widgets}
 							  onSubmit={({formData}, e) => {onSave(formData);}}>
 							<Box className="inputGroup">
 								<IncoreButton variant="contained" type="submit">Save</IncoreButton>
