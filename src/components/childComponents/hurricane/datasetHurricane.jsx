@@ -8,7 +8,7 @@ import {CustomSelectWidget} from "../../styledComponents/CustomSelectWidget";
 import {CustomTextInput} from "../../styledComponents/CustomTextWidget";
 import DatasetHurricaneSchema from "../../../schema/hurricane/datasetHurricane.json";
 import DatasetHurricaneUiSchema from "../../../schema/hurricane/datasetHurricaneUi.json";
-import {createDatasetHurricane} from "../../../utils/hurricane";
+import {createDatasetHurricane} from "../../../utils/hazard";
 
 import Form from "@rjsf/material-ui";
 

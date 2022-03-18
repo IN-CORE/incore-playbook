@@ -9,7 +9,7 @@ import {IncoreInputLabel} from "../styledComponents/IncoreInputLabel";
 import datawolfConfig from "../../datawolf.config";
 
 import {getOutputFileJson} from "../../utils/datawolf";
-import {getTornadoMetadata} from "../../utils/tornado";
+import {getTornadoMetadata} from "../../utils/hazard";
 
 import GroupLayer from "ol/layer/Group";
 import TileLayer from "ol/layer/Tile";

@@ -11,7 +11,7 @@ import {IncoreInputLabel} from "../../styledComponents/IncoreInputLabel";
 
 import {toLonLat} from "ol/proj";
 
-import {createModelTornado} from "../../../utils/tornado";
+import {createModelTornado} from "../../../utils/hazard";
 import LoadingOverlay from "react-loading-overlay";
 
 const useStyles = makeStyles({

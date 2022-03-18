@@ -8,7 +8,7 @@ import {IncoreInputLabel} from "../../styledComponents/IncoreInputLabel";
 
 import FileUploadDrop from "../form/FileUploadDrop";
 
-import {createRasterTornado} from "../../../utils/tornado";
+import {createRasterTornado} from "../../../utils/hazard";
 import LoadingOverlay from "react-loading-overlay";
 
 export default function RasterTornado(props) {

@@ -49,8 +49,8 @@
 		"redux-thunk": "^2.3.0",
 		"universal-cookie": "~4.0.4",
 		"whatwg-fetch": "2.0.2",
-		"@rjsf/core": "^4.1.0",
-		"@rjsf/material-ui": "^4.1.0"
+		"@rjsf/core": "^3.2.1",
+		"@rjsf/material-ui": "^3.2.1"
 	},
 	"peerDependencies": {
 		"react": "~16.14.0",
