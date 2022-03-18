@@ -42,7 +42,7 @@ export default function RasterTornado(props) {
 		const tornadoJson = await createRasterTornado(name, description, files);
 		if (tornadoJson !== {}) {
 			handleLayerUpdate(tornadoJson);
-			handleListUpdate();
+			handleListUpdate("tornadoes");
 			setFile([]);
 			setName("");
 			setDescription("");

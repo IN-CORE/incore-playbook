@@ -93,7 +93,7 @@ export default function ModelTornado(props) {
 		const tornadoJson = await createModelTornado(name, description, rating, startLat, startLon, endLat, endLon);
 		if (tornadoJson !== {}){
 			handleLayerUpdate(tornadoJson);
-			handleListUpdate();
+			handleListUpdate("tornadoes");
 			setName("");
 			setDescription("");
 			setStartCoord("");

@@ -7,14 +7,13 @@ export function receiveHazards(type, json){
 	return (dispatch) => {
 		dispatch({
 			type: type,
-			tornadoes: json,
 			hazards: json,
 			receivedAt: Date.now(),
 		});
 	};
 }
 
-export function fetchHazards(hazardType="hurricanes", limit=20, offset=0){
+export function fetchHazards(hazardType="tornadoes", limit=20, offset=0){
 	let endpoint = `${config.hazardServiceBase}${hazardType}?limit=${limit}&skip=${offset}`;
 
 	// default to current user's space

@@ -30,7 +30,6 @@ import PageBanner from "./childComponents/navigation/Banner";
 import fullHtml from "../public/steps/3-3.html";
 import StepInfo from "./StepInfo";
 import {fetchHazards} from "../actions/hazards";
-import Icon from "ol/style/Icon";
 
 const useStyles = makeStyles({
 	tabDiv: {
@@ -58,13 +57,18 @@ const useStyles = makeStyles({
 export const CommunityHazards = () => {
 	const classes = useStyles();
 
+	const [selectedHazardType, setSelectedHazardType] = useState("earthquakes");
 	const [currTabIndex, setCurrTabIndex] = useState(0);
 	const [startCoord, setStartCoord] = useState([]);
 	const [endCoord, setEndCoord] = useState([]);
 
 	const dispatch = useDispatch();
-	const listTornadoes = (limit, offset) => dispatch(fetchHazards(limit, offset));
-	const tornadoes = useSelector((state) => state.tornado.tornadoes);
+	const listHazards = (hazardType, limit, offset) => dispatch(fetchHazards(hazardType, limit, offset));
+	const earthquakes = useSelector((state) => state.hazard.earthquakes);
+	const tornadoes = useSelector((state) => state.hazard.tornadoes);
+	const tsunamis = useSelector((state) => state.hazard.tsunamis);
+	const floods = useSelector((state) => state.hazard.floods);
+	const hurricanes = useSelector((state) => state.hazard.hurricanes);
 
 	const drawSourceRef = React.useRef(new VectorSource({wrapX: false}));
 	const pointSourceRef = React.useRef(new VectorSource({wrapX: false}));
@@ -139,7 +143,13 @@ export const CommunityHazards = () => {
 	const mapRef = React.useRef();
 
 	// component did mount
-	useEffect(()=> {listTornadoes();}, []);
+	useEffect(()=> {
+		listHazards(selectedHazardType);}, []
+	);
+
+	useEffect(() => {
+		listHazards(selectedHazardType);
+	}, [selectedHazardType]);
 
 	// draw the line
 	useEffect(() => {
@@ -242,21 +252,50 @@ export const CommunityHazards = () => {
 				<PageBanner parentStep="Determine Goals & Objectives"
 					childStep="Define Community Hazards" taskNo="3" subtaskNo="3-3"/>
 				<Box className="outerBox">
-					{/*List created tornadoes*/}
+					{/*List created hazards*/}
 					<Box className="entryTableContainer">
 						<StepInfo fullHtml={fullHtml} />
 						<br />
 						<Box className="entryTableTitle">
-							<IncoreInputLabel>Created Hazard</IncoreInputLabel>
-							{/*<Box style={{float:"right"}}>*/}
-							{/*	<IconButton>*/}
-							{/*		<FilterListIcon/>*/}
-							{/*	</IconButton>*/}
-							{/*</Box>*/}
+							<IncoreInputLabel>
+								Created {selectedHazardType.charAt(0).toUpperCase()}{selectedHazardType.slice(1)}
+							</IncoreInputLabel>
 						</Box>
-						<Box className="entryTable">
-							<EntryTable fieldNames={fieldNames} fields={tornadoes}/>
-						</Box>
+						{
+							(() => {
+								if (selectedHazardType === "earthquakes"){
+									return (
+										<Box className="entryTable">
+											<EntryTable fieldNames={fieldNames} fields={earthquakes}/>
+										</Box>);
+								}
+								else if (selectedHazardType === "tsunamis"){
+									return (
+										<Box className="entryTable">
+											<EntryTable fieldNames={fieldNames} fields={tsunamis}/>
+										</Box>);
+								}
+								else if (selectedHazardType === "tornadoes"){
+									return (
+										<Box className="entryTable">
+											<EntryTable fieldNames={fieldNames} fields={tornadoes}/>
+										</Box>);
+								}
+								else if (selectedHazardType === "floods"){
+									return (
+										<Box className="entryTable">
+											<EntryTable fieldNames={fieldNames} fields={floods}/>
+										</Box>);
+								}
+								else if (selectedHazardType === "hurricanes"){
+									return (
+										<Box className="entryTable">
+											<EntryTable fieldNames={fieldNames} fields={hurricanes}/>
+										</Box>);
+								}
+							})()
+						}
+
 					</Box>
 					<Grid container spacing={3} className="innerBox">
 						<Grid item xl={6} lg={6} md={6} sm={6} xs={12} className="gridItem">
@@ -264,12 +303,13 @@ export const CommunityHazards = () => {
 							<Box>
 								<IncoreInputLabel>Select Hazard Type</IncoreInputLabel>
 								<IncoreSelectBox labelId="label" id="select" variant="outlined"
-												 defaultValue="tornado">
-									<IncoreMenuItem value="earthquake" key="earthquake">Earthquake</IncoreMenuItem>
-									<IncoreMenuItem value="tsunami" key="tsunami">Tsunami</IncoreMenuItem>
-									<IncoreMenuItem value="tornado" key="tornado">Tornado</IncoreMenuItem>
-									<IncoreMenuItem value="hurricane" key="hurricane">Hurricane</IncoreMenuItem>
-									<IncoreMenuItem value="flood" key="flood">Flood</IncoreMenuItem>
+												 defaultValue="earthquakes"
+												 onChange={(e) => { setSelectedHazardType(e.target.value);}}>
+									<IncoreMenuItem value="earthquakes" key="earthquakes">Earthquake</IncoreMenuItem>
+									<IncoreMenuItem value="tsunamis" key="tsunamis">Tsunami</IncoreMenuItem>
+									<IncoreMenuItem value="tornadoes" key="tornadoes">Tornado</IncoreMenuItem>
+									<IncoreMenuItem value="hurricanes" key="hurricanes">Hurricane</IncoreMenuItem>
+									<IncoreMenuItem value="floods" key="floods">Flood</IncoreMenuItem>
 								</IncoreSelectBox>
 							</Box>
 							{/*Tabs*/}
@@ -282,12 +322,12 @@ export const CommunityHazards = () => {
 								</Tabs>
 								<ModelTornado value={currTabIndex} index={0}
 											  handleLayerUpdate={handleLayerUpdate}
-											  handleListUpdate={listTornadoes}
+											  handleListUpdate={listHazards}
 											  startCoordProps={startCoord}
 											  endCoordProps={endCoord}/>
 								<RasterTornado value={currTabIndex} index={1}
 											   handleLayerUpdate={handleLayerUpdate}
-											   handleListUpdate={listTornadoes}/>
+											   handleListUpdate={listHazards}/>
 							</Box>
 						</Grid>
 						<Grid item xl={6} lg={6} md={6} sm={6} xs={12} className="gridItem">
