@@ -110,7 +110,7 @@ export default {
 					{ loader: "sass-loader", options: { sourceMap: true } }
 				]
 			},
-			{test: /\.json$/, loader: "json-loader"}
+			// {test: /\.json$/, loader: "json-loader"}
 		]
 	},
 	optimization:{

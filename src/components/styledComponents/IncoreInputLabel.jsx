@@ -1,7 +1,7 @@
 import {styled} from "@material-ui/core/styles";
-import {InputLabel} from "@material-ui/core";
+import {Typography} from "@material-ui/core";
 
-export const IncoreInputLabel = styled(InputLabel)({
+export const IncoreInputLabel = styled(Typography)({
 	color: "#2E384D",
 	fontSize: "16px",
 	fontWeight: 500,
@@ -9,5 +9,6 @@ export const IncoreInputLabel = styled(InputLabel)({
 	lineHeight: "19px",
 	marginBottom:"11px",
 	width: "100%",
-	textTransform:"capitalize"
+	textTransform:"capitalize",
+	position:"inherit"
 });

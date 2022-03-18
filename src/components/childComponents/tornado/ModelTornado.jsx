@@ -4,14 +4,14 @@ import {Box, Container, InputLabel} from "@material-ui/core";
 
 import {makeStyles} from "@material-ui/core/styles";
 
-import {IncoreButton} from "../styledComponents/IncoreButton";
-import {IncoreMenuItem, IncoreSelectBox} from "../styledComponents/IncoreSelect";
-import {IncoreTextField} from "../styledComponents/IncoreInput";
-import {IncoreInputLabel} from "../styledComponents/IncoreInputLabel";
+import {IncoreButton} from "../../styledComponents/IncoreButton";
+import {IncoreMenuItem, IncoreSelectBox} from "../../styledComponents/IncoreSelect";
+import {IncoreTextField} from "../../styledComponents/IncoreInput";
+import {IncoreInputLabel} from "../../styledComponents/IncoreInputLabel";
 
 import {toLonLat} from "ol/proj";
 
-import {createModelTornado} from "../../utils/tornado";
+import {createModelTornado} from "../../../utils/tornado";
 import LoadingOverlay from "react-loading-overlay";
 
 const useStyles = makeStyles({

@@ -14,8 +14,8 @@ import {Circle, Fill, Stroke, Style} from "ol/style";
 import {fromLonLat} from "ol/proj";
 import Feature from "ol/Feature";
 
-import RasterTornado from "./childComponents/RasterTornado";
-import ModelTornado from "./childComponents/ModelTornado";
+import RasterTornado from "./childComponents/tornado/RasterTornado";
+import ModelTornado from "./childComponents/tornado/ModelTornado";
 import Map from "./childComponents/map/Map";
 import config from "../app.config";
 import {globals} from "../globals";
@@ -30,6 +30,7 @@ import PageBanner from "./childComponents/navigation/Banner";
 import fullHtml from "../public/steps/3-3.html";
 import StepInfo from "./StepInfo";
 import {fetchHazards} from "../actions/hazards";
+import DatasetHurricane from "./childComponents/hurricane/datasetHurricane";
 
 const useStyles = makeStyles({
 	tabDiv: {
@@ -317,17 +318,39 @@ export const CommunityHazards = () => {
 								<Tabs aria-label="create tornado tabs" value={currTabIndex}
 									  className={classes.tabs}
 									  onChange={(e, value) => {setCurrTabIndex(value);}}>
-									<Tab label="Create a Hazard" className={classes.tab}/>
+									{/*only certain hazard type has model based creation*/}
 									<Tab label="Upload a Hazard Dataset" className={classes.tab}/>
+									{selectedHazardType === "tornadoes" || selectedHazardType === "tsunamis"
+									|| selectedHazardType === "earthquakes"?
+										<Tab label="Create a Hazard" className={classes.tab}/> :
+										<></>
+									}
 								</Tabs>
-								<ModelTornado value={currTabIndex} index={0}
-											  handleLayerUpdate={handleLayerUpdate}
-											  handleListUpdate={listHazards}
-											  startCoordProps={startCoord}
-											  endCoordProps={endCoord}/>
-								<RasterTornado value={currTabIndex} index={1}
-											   handleLayerUpdate={handleLayerUpdate}
-											   handleListUpdate={listHazards}/>
+								{
+									// different hazard type will have different UI
+									(() => {
+										if (selectedHazardType === "tornadoes") {
+											return (<>
+												<RasterTornado value={currTabIndex} index={0}
+															   handleLayerUpdate={handleLayerUpdate}
+															   handleListUpdate={listHazards}/>
+												<ModelTornado value={currTabIndex} index={1}
+															  handleLayerUpdate={handleLayerUpdate}
+															  handleListUpdate={listHazards}
+															  startCoordProps={startCoord}
+															  endCoordProps={endCoord}/>
+											</>);
+										}
+										else if (selectedHazardType === "hurricanes"){
+											return (<DatasetHurricane value={currTabIndex} index={0}
+																	  handleLayerUpdate={handleLayerUpdate}
+																	  handleListUpdate={listHazards}/>);
+										}
+										else{
+											return (<></>);
+										}
+									})()
+								}
 							</Box>
 						</Grid>
 						<Grid item xl={6} lg={6} md={6} sm={6} xs={12} className="gridItem">

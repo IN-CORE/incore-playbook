@@ -2,13 +2,13 @@ import React, {useEffect, useRef, useState} from "react";
 
 import {Box, Container} from "@material-ui/core";
 
-import {IncoreButton} from "../styledComponents/IncoreButton";
-import {IncoreTextField} from "../styledComponents/IncoreInput";
-import {IncoreInputLabel} from "../styledComponents/IncoreInputLabel";
+import {IncoreButton} from "../../styledComponents/IncoreButton";
+import {IncoreTextField} from "../../styledComponents/IncoreInput";
+import {IncoreInputLabel} from "../../styledComponents/IncoreInputLabel";
 
-import FileUploadDrop from "./form/FileUploadDrop";
+import FileUploadDrop from "../form/FileUploadDrop";
 
-import {createRasterTornado} from "../../utils/tornado";
+import {createRasterTornado} from "../../../utils/tornado";
 import LoadingOverlay from "react-loading-overlay";
 
 export default function RasterTornado(props) {
