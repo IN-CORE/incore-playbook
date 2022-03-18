@@ -360,7 +360,7 @@ export const CommunityHazards = () => {
 																	  handleLayerUpdate={handleLayerUpdate}
 																	  handleListUpdate={listHazards}/>);
 										}
-										else if (selectedHazardType === "flood"){
+										else if (selectedHazardType === "floods"){
 											return (<DatasetFlood value={currTabIndex} index={0}
 																	  handleLayerUpdate={handleLayerUpdate}
 																	  handleListUpdate={listHazards}/>);
