@@ -7,11 +7,11 @@ import {
 	TableContainer,
 	TableHead,
 	TableRow,
-	withStyles
 } from "@material-ui/core";
 import {globals} from "../../../globals";
+import {makeStyles} from "@material-ui/core/styles";
 
-const styles = {
+const useStyles = makeStyles({
 	table: {
 		minWidth: 650,
 	},
@@ -24,7 +24,7 @@ const styles = {
 		height: "34px",
 		width: "1134px",
 	},
-	tableHeaderCell:{
+	tableHeaderCell: {
 		height: "14px",
 		width: "37px",
 		color: "#69707F",
@@ -33,11 +33,11 @@ const styles = {
 		letterSpacing: "1.13px",
 		lineHeight: "14px"
 	},
-	tableBodyRow:{
+	tableBodyRow: {
 		height: "75px",
 		width: "1134px",
 	},
-	tableBodyCell:{
+	tableBodyCell: {
 		height: "21px",
 		width: "68.75px",
 		color: "#2E384D",
@@ -54,77 +54,70 @@ const styles = {
 		letterSpacing: 0,
 		lineHeight: "18px"
 	}
-};
+});
 
 /**
  * Generate a attributes table
  * props.attributeName = {"prettyName":"", "columnName":""}
  * props.attributes = [ features returned from WFS query ]
  */
-class AttributesTable extends React.Component {
-	constructor(props) {
-		super(props);
-	}
+export const AttributesTable = (props) => {
+	const {attributes, attributeNames} = props;
+	const classes = useStyles();
 
-	render() {
-		const {classes} = this.props;
-
-		return (
-			<TableContainer component={Paper}>
-				<Table className={classes.table} size="small" aria-label="a dense table">
-					<TableHead>
-						<TableRow className={classes.tableHeaderRow} key="hdrRow">
-							{
-								this.props.attributeNames.map((attributeName) =>{
-									return (
-										<TableCell className={classes.tableHeaderCell} key={attributeName["prettyName"]} >
-											{attributeName["prettyName"]}
-										</TableCell>
-									);
-								})
-							}
-						</TableRow>
-					</TableHead>
-					<TableBody>
+	return (
+		<TableContainer component={Paper}>
+			<Table className={classes.table} size="small" aria-label="a dense table">
+				<TableHead>
+					<TableRow className={classes.tableHeaderRow} key="hdrRow">
 						{
-							this.props.attributes.map((attribute) => {
-
+							attributeNames.map((attributeName) =>{
 								return (
-									<TableRow className={classes.tableBodyRow} key={attribute["id"]}>
-										{
-											this.props.attributeNames.map((attributeName, idx) =>{
-												if (attributeName["prettyName"] === "MEAN DAMAGE"){
-													return (
-														<TableCell key={idx} className={classes.tableBodyCell}>
-															{parseFloat(attribute["properties"][attributeName["columnName"]]).toFixed(4)}</TableCell>
-													);
-												}
-												else if (attributeName["prettyName"] === "BUILDING DESCRIPTION"){
-													return (
-														<TableCell key={idx} className={classes.tableBodyCell}>
-															{globals.ARCHETYPE[attribute["properties"][attributeName["columnName"]]]}</TableCell>
-													);
-												}
-												else{
-													return (
-														<TableCell key={idx} className={classes.tableBodyCell}>
-															{attribute["properties"][attributeName["columnName"]]}</TableCell>
-													);
-												}
-
-											})
-										}
-									</TableRow>
+									<TableCell className={classes.tableHeaderCell} key={attributeName["prettyName"]} >
+										{attributeName["prettyName"]}
+									</TableCell>
 								);
-
 							})
 						}
+					</TableRow>
+				</TableHead>
+				<TableBody>
+					{
+						attributes.map((attribute) => {
 
-					</TableBody>
-				</Table>
-			</TableContainer>
-		);
-	}
-}
+							return (
+								<TableRow className={classes.tableBodyRow} key={attribute["id"]}>
+									{
+										attributeNames.map((attributeName, idx) =>{
+											if (attributeName["prettyName"] === "MEAN DAMAGE"){
+												return (
+													<TableCell key={idx} className={classes.tableBodyCell}>
+														{parseFloat(attribute["properties"][attributeName["columnName"]]).toFixed(4)}</TableCell>
+												);
+											}
+											else if (attributeName["prettyName"] === "BUILDING DESCRIPTION"){
+												return (
+													<TableCell key={idx} className={classes.tableBodyCell}>
+														{globals.ARCHETYPE[attribute["properties"][attributeName["columnName"]]]}</TableCell>
+												);
+											}
+											else{
+												return (
+													<TableCell key={idx} className={classes.tableBodyCell}>
+														{attribute["properties"][attributeName["columnName"]]}</TableCell>
+												);
+											}
 
-export default withStyles(styles)(AttributesTable);
+										})
+									}
+								</TableRow>
+							);
+
+						})
+					}
+
+				</TableBody>
+			</Table>
+		</TableContainer>
+	);
+};

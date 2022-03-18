@@ -1,7 +1,7 @@
 import React from "react";
 import {Box, Grid} from "@material-ui/core";
 import PageBanner from "./childComponents/navigation/Banner";
-import Layout from "../containers/Layout";
+import {Layout} from "./Layout";
 import StepInfo from "./StepInfo";
 import fullHtml00 from "../public/steps/0-0.html";
 import fullHtml12 from "../public/steps/1-2.html";
@@ -25,7 +25,7 @@ import fullHtml62 from "../public/steps/6-2.html";
 import fullHtml63 from "../public/steps/6-3.html";
 
 
-const StepTmpInfo = ({menu}) => {
+export const StepTmpInfo = ({menu}) => {
 	let fullHtml = fullHtml00;
 	let pageBanner = null;
 	// if (menu === "1-1") {
@@ -137,5 +137,3 @@ const StepTmpInfo = ({menu}) => {
 		</Layout>
 	);
 };
-
-export default StepTmpInfo;

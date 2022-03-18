@@ -1,4 +1,6 @@
-import React, {useState} from "react";
+import "../styles/main.css";
+
+import React, {useState, useEffect} from "react";
 import {Box, Container, InputLabel, TextField, Grid} from "@material-ui/core";
 import {useHistory} from "react-router-dom";
 import {makeStyles } from "@material-ui/core/styles";
@@ -6,11 +8,34 @@ import {IncoreButton} from "./styledComponents/IncoreButton";
 import Cookies from "universal-cookie";
 import config from "../app.config";
 import {setMenuState} from "../actions/layout";
-import {connect} from "react-redux";
+
+import LoginBg from "../public/login-background.jpg";
+import Powered from "../public/powered-by-incore.svg";
+import HeaderWithMenu from "../components/childComponents/navigation/HeaderWithMenu";
+import {isAuthorized} from "../utils/common";
+
+import {useDispatch} from "react-redux";
 
 const cookies = new Cookies();
 
 const useStyles = makeStyles((theme) => ({
+	leftGrid:{
+		height: "100vh",
+		width: "45vw",
+		backgroundColor: "White"
+	},
+	rightGrid:{
+		height: "100vh",
+		width: "55vw",
+		backgroundImage:  `url(${LoginBg})`,
+		backgroundSize: "cover",
+		backgroundPosition: "0 -150px"
+	},
+	loginComponent:{
+		margin: "auto",
+		height: "calc(100vh - 64px)",
+		display: "flex"
+	},
 	outerBox: {
 		margin: "auto",
 		backgroundColor: "White",
@@ -74,13 +99,19 @@ const useStyles = makeStyles((theme) => ({
 	},
 }));
 
-const Login = ({dispatch}) => {
+export const Login = () => {
 	const classes = useStyles();
 	const history = useHistory();
+
+	useEffect(() => {
+		if (isAuthorized()) { history.push("/");}
+	}, []);
 
 	const [username, setUsername] = useState("");
 	const [password, setPassword] = useState("");
 	const [isAuthFail, setAuthFail] = useState(null);
+
+	const dispatch = useDispatch();
 
 	const handleUsernameChange = (e) => {
 		setUsername(e.target.value);
@@ -137,54 +168,63 @@ const Login = ({dispatch}) => {
 	}
 
 	return(
-		<div className={classes.loginContainer} >
-			<div className={classes.title}>
-						Sign In
-			</div>
+		<Grid container>
+			<Grid item className={classes.leftGrid}>
+				<HeaderWithMenu isAuthenticated={false}/>
+				<div className={classes.loginComponent}>
+					<div className={classes.loginContainer} >
+						<div className={classes.title}>
+							Sign In
+						</div>
 
-			<div className={classes.userMsg}>
-				{userMessageContent}
-			</div>
-			<Container className={classes.loginFieldsContainer}>
-				<Box className="inputGroup">
-					<InputLabel className={classes.loginLabel}>USERNAME</InputLabel>
-					<TextField className={classes.loginTextField} value={username} size="small" placeholder="incoreuser"
-										 variant="outlined" onChange={handleUsernameChange}/>
-				</Box>
+						<div className={classes.userMsg}>
+							{userMessageContent}
+						</div>
+						<Container className={classes.loginFieldsContainer}>
+							<Box className="inputGroup">
+								<InputLabel className={classes.loginLabel}>USERNAME</InputLabel>
+								<TextField className={classes.loginTextField} value={username} size="small" placeholder="incoreuser"
+										   variant="outlined" onChange={handleUsernameChange}/>
+							</Box>
 
-				<Box className="inputGroup">
-					<Grid container>
-						<Grid item xs={4}>
-							<InputLabel className={classes.loginLabel}>PASSWORD</InputLabel>
-						</Grid>
-						<Grid item xs={8} style={{textAlign: "right"}}>
-							<InputLabel className={classes.loginLinks}>Forgot Password?</InputLabel>
-						</Grid>
-					</Grid>
-					<TextField type="password" className={classes.loginTextField} value={password} size="small" placeholder="Password"
-										 variant="outlined" onChange={handlePasswordChange} onKeyPress={handleKeyPressed}/>
-				</Box>
+							<Box className="inputGroup">
+								<Grid container>
+									<Grid item xs={4}>
+										<InputLabel className={classes.loginLabel}>PASSWORD</InputLabel>
+									</Grid>
+									<Grid item xs={8} style={{textAlign: "right"}}>
+										<InputLabel className={classes.loginLinks}>Forgot Password?</InputLabel>
+									</Grid>
+								</Grid>
+								<TextField type="password" className={classes.loginTextField} value={password} size="small" placeholder="Password"
+										   variant="outlined" onChange={handlePasswordChange} onKeyPress={handleKeyPressed}/>
+							</Box>
 
-				<Box className="inputGroup">
-					<IncoreButton variant="contained" color="primary"
-						onClick={handleLogin}>
-						Sign In
-					</IncoreButton>
-				</Box>
+							<Box className="inputGroup">
+								<IncoreButton variant="contained" color="primary"
+											  onClick={handleLogin}>
+									Sign In
+								</IncoreButton>
+							</Box>
 
-				<Grid container>
-					<Grid item xs={8} style={{textAlign: "right"}}>
-						<InputLabel className={classes.signupMsg}>Don't have an account? </InputLabel>
-					</Grid>
-					<Grid item xs={4} style={{textAlign: "left"}}>
-						<InputLabel className={classes.loginLinks}>Sign up</InputLabel>
-					</Grid>
-				</Grid>
+							<Grid container>
+								<Grid item xs={8} style={{textAlign: "right"}}>
+									<InputLabel className={classes.signupMsg}>Don't have an account? </InputLabel>
+								</Grid>
+								<Grid item xs={4} style={{textAlign: "left"}}>
+									<InputLabel className={classes.loginLinks}>Sign up</InputLabel>
+								</Grid>
+							</Grid>
 
-			</Container>
+						</Container>
 
-		</div>
+					</div>
+				</div>
+			</Grid>
+
+			<Grid item className={classes.rightGrid} >
+				<img src={Powered} alt="" style={{margin: "40px"}}/>
+			</Grid>
+		</Grid>
 	);
 };
-
-export default connect()(Login);

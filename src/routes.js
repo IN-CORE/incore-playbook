@@ -1,11 +1,11 @@
 import * as React from "react";
-import Introduction from "./containers/Introduction";
-import TeamLeader from "./containers/TeamLeader";
-import StepTmpInfo from "./containers/StepTmpInfo";
-import BuiltEnvironment from "./containers/BuiltEnvironment";
-import CommunityHazards from "./containers/CommunityHazards";
-import AnticipatedPerformance from "./containers/AnticipatedPerformance";
-import Login from "./containers/Login";
+import {Introduction} from "./components/Introduction";
+import {TeamLeader} from "./components/TeamLeader";
+import {StepTmpInfo} from "./components/StepTmpInfo";
+import {BuiltEnvironment} from "./components/BuiltEnvironment";
+import {CommunityHazards} from "./components/CommunityHazards";
+import {AnticipatedPerformance} from "./components/AnticipatedPerformance";
+import {Login} from "./components/Login";
 
 
 const routes = {
@@ -17,8 +17,10 @@ const routes = {
 		}
 	},
 	"/login": {
-		exact: false,
-		component: Login
+		exact: true,
+		component: () => {
+			return (<Login/>);
+		}
 	},
 	"/create-team": {
 		exact: false,

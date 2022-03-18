@@ -2,8 +2,7 @@ import React, {useState} from "react";
 import "../../../styles/step-status.css";
 import { processStatus } from "../../../globals";
 
-export default function StepStatus(_){
-
+export default function StepStatus(){
 	const [activeKey, setActiveKey] = useState("inprogress");
 
 	return (

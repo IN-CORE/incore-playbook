@@ -1,7 +1,7 @@
 import React from "react";
 import {Box, Grid} from "@material-ui/core";
 import PageBanner from "./childComponents/navigation/Banner";
-import Layout from "../containers/Layout";
+import {Layout} from "./Layout";
 import StepInfo from "./StepInfo";
 import fullHtml00 from "../public/steps/0-0.html";
 import fullHtml10 from "../public/steps/1-0.html";
@@ -11,7 +11,8 @@ import fullHtml40 from "../public/steps/4-0.html";
 import fullHtml50 from "../public/steps/5-0.html";
 import fullHtml60 from "../public/steps/6-0.html";
 
-const Introduction = ({menu}) => {
+export const Introduction = ({menu}) => {
+
 	let fullHtml = fullHtml00;
 	let pageBanner = null;
 	if (menu === "1") {
@@ -55,5 +56,3 @@ const Introduction = ({menu}) => {
 		</Layout>
 	);
 };
-
-export default Introduction;

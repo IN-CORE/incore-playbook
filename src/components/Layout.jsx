@@ -1,13 +1,15 @@
 import React, {useEffect} from "react";
-import {connect} from "react-redux";
-import Header from "../components/childComponents/navigation/HeaderWithMenu";
+import {useSelector} from "react-redux";
+import Header from "./childComponents/navigation/HeaderWithMenu";
 // import Footer from "../components/Footer";
 import {globals} from "../globals";
 import { useHistory } from "react-router-dom";
 
 import {isAuthorized} from "../utils/common";
 
-const Layout = (props) => {
+export const Layout = (props) => {
+	const {children} = props;
+	const layout = useSelector(state => state.layout);
 
 	const history = useHistory();
 
@@ -18,7 +20,7 @@ const Layout = (props) => {
 	}, []);
 
 	let mLeft = 0;
-	if(props.layout.isMenuOpen){
+	if(layout.isMenuOpen){
 		mLeft = globals.menuWidth;
 	}
 
@@ -28,7 +30,7 @@ const Layout = (props) => {
 			<Header isAuthenticated={isAuthorized()} menuItem={menuItem}/>
 			<div className="masterContent" style={{marginLeft: mLeft, padding: 8,
 				backgroundColor: "rgba(248, 249, 255, 0.5)"}}>
-				{props.children}
+				{children}
 			</div>
 			{/*<div style={{marginLeft: mLeft}}>*/}
 			{/*	<Footer />*/}
@@ -37,11 +39,3 @@ const Layout = (props) => {
 		</div>
 	);
 };
-
-const mapStateToProps = state => {
-	return {
-		layout: state.layout
-	};
-};
-
-export default connect(mapStateToProps)(Layout);

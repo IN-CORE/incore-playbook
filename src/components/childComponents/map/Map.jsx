@@ -3,7 +3,7 @@ import {Map as OLMap, View} from "ol";
 import {defaults as defaultControls} from "ol/control";
 import LayerSwitcher from "./LayerSwitcher";
 
-export const MapContext = React.createContext(null);
+export const MapContext = React.createContext({});
 
 class Map extends React.Component {
 	fallbackContainer = React.createRef();

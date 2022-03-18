@@ -1,8 +1,8 @@
-import * as React from "react";
-import {withStyles} from "@material-ui/core";
+import React, {useState} from "react";
+import {makeStyles} from "@material-ui/core";
 import {ExpandLess, ExpandMore} from "@material-ui/icons";
 
-const styles = {
+const useStyles = makeStyles({
 	thisStepTitle: {
 		cursor: "pointer",
 		height: "14px",
@@ -29,47 +29,36 @@ const styles = {
 		color: "#00619D",
 		lineHeight: "14px"
 	}
-};
+});
 
-class StepDescription extends React.Component {
+export const StepDescription = (props) => {
+	const classes = useStyles();
 
-	constructor(props) {
-		super(props);
-		this.state = {
-			open: true
-		};
-		this.togglePanel = this.togglePanel.bind(this);
-	}
+	const {stepInfo} = props;
 
-	componentDidMount() {
+	const [open, setOpen] = useState(true);
 
-	}
+	const togglePanel = () => {
+		setOpen(!open);
+	};
 
-	togglePanel(){
-		this.setState({open: !this.state.open});
-	}
-
-	render() {
-		const title = this.props.stepInfo.stepTitle;
-		const about = this.props.stepInfo.stepAbout.map((paragraph, index) =>
-			<p key={index} className="secondary-color">{paragraph}</p>);
-		const link = this.props.stepInfo.stepLink;
+	const title = stepInfo.stepTitle;
+	const about = stepInfo.stepAbout.map((paragraph, index) =>
+		<p key={index} className="secondary-color">{paragraph}</p>);
+	const link = stepInfo.stepLink;
 
 
-		return (
-			<div>
-				<div onClick={(e)=>this.togglePanel(e)} style={styles.thisStepTitle} >
-					{title} {this.state.open ? (<ExpandLess style={{fontSize: "small"}} />) : <ExpandMore style={{fontSize: "small"}} />}
-				</div>
-				{this.state.open ? (
-					<div style={styles.thisStepAbout}>
-						{about}
-						<a style={styles.learnMoreLink} href={link.uri}>{link.text}</a>
-					</div>
-				) : null}
+	return (
+		<div>
+			<div onClick={()=>togglePanel()} className={classes.thisStepTitle} >
+				{title} {open ? (<ExpandLess style={{fontSize: "small"}} />) : <ExpandMore style={{fontSize: "small"}} />}
 			</div>
-		);
-	}
-}
-
-export default withStyles(styles)(StepDescription);
+			{open ? (
+				<div className={classes.thisStepAbout}>
+					{about}
+					<a className={classes.learnMoreLink} href={link.uri}>{link.text}</a>
+				</div>
+			) : null}
+		</div>
+	);
+};
