@@ -404,9 +404,9 @@ export const CommunityHazards = () => {
 							<Container className={classes.mapContainer} disableGutters>
 								<Map
 									className="fillContainer"
-									zoom={10}
-									minZoom={4}
-									maxZoom={15}
+									zoom={mapConfig.ZOOM}
+									minZoom={mapConfig.MIN_ZOOM}
+									maxZoom={mapConfig.MAX_ZOOM}
 									extent={applyTransform(mapConfig.MAP_BOUNDS, getTransform("EPSG:4326", "EPSG:3857"))}
 									center={fromLonLat(mapConfig.MAP_CENTER)}
 									layers={[

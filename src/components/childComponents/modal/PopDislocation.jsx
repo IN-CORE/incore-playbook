@@ -30,9 +30,9 @@ export default function PopDislocation(props){
 				<Container className="mapContainer" isableGutters>
 					<Map
 						className="fillContainer"
-						zoom={12}
-						minZoom={5}
-						maxZoom={15}
+						zoom={mapConfig.ZOOM}
+						minZoom={mapConfig.MIN_ZOOM}
+						maxZoom={mapConfig.MAX_ZOOM}
 						extent={applyTransform(mapConfig.MAP_BOUNDS, getTransform("EPSG:4326", "EPSG:3857"))}
 						center={fromLonLat(mapConfig.MAP_CENTER)}
 						layers={Object.values(layers)}

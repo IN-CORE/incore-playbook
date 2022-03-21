@@ -5,5 +5,8 @@ export const defaultMapConfig = {
 		-94.20895,
 		29.93175
 	],
-	MAP_CENTER: [-94.4980, 37.0672]
+	MAP_CENTER: [-94.4980, 37.0672],
+	ZOOM: 10,
+	MIN_ZOOM: 4,
+	MAX_ZOOM: 15,
 };
