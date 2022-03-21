@@ -11,8 +11,9 @@ import OSM, {ATTRIBUTION as OSM_ATTRIBUTION} from "ol/source/OSM";
 import Draw from "ol/interaction/Draw";
 import Point from "ol/geom/Point";
 import {Circle, Fill, Stroke, Style} from "ol/style";
-import {fromLonLat} from "ol/proj";
+import {fromLonLat, getTransform} from "ol/proj";
 import Feature from "ol/Feature";
+import {applyTransform} from "ol/extent";
 
 import RasterTornado from "./childComponents/tornado/RasterTornado";
 import ModelTornado from "./childComponents/tornado/ModelTornado";
@@ -383,10 +384,10 @@ export const CommunityHazards = () => {
 								<Map
 									className="fillContainer"
 									zoom={10}
-									minZoom={5}
+									minZoom={4}
 									maxZoom={15}
-									extent={globals.JOPLIN_MAP_BOUNDS}
-									center={fromLonLat(globals.JOPLIN_MAP_CENTER)}
+									extent={applyTransform(globals.MAP_BOUNDS, getTransform("EPSG:4326", "EPSG:3857"))}
+									center={fromLonLat(globals.MAP_CENTER)}
 									layers={[
 										cacheRef.current.basemaps,
 										cacheRef.current.drawlayer,

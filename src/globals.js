@@ -21,13 +21,14 @@ export const globals = {
 		"18": "Shopping Center",
 		"19": "Office Building"
 	},
-	JOPLIN_MAP_BOUNDS: [
-		-12792231.63426164,
-		3246498.818343048,
-		-8436000.174951272,
-		6512287.786512453
+	// Galveston
+	MAP_BOUNDS:[
+		-95.63105,
+		28.57895,
+		-94.20895,
+		29.93175
 	],
-	JOPLIN_MAP_CENTER: [-94.4980, 37.0672],
+	MAP_CENTER: [-94.4980, 37.0672],
 };
 
 export const processStatus = [
