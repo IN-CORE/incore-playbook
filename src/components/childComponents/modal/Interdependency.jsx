@@ -1,7 +1,6 @@
 import {Box, Container, Dialog, DialogContent, IconButton, Typography} from "@material-ui/core";
 import CloseIcon from "@material-ui/icons/Close";
 import Map from "../map/Map";
-import {globals} from "../../../globals";
 import {fromLonLat} from "ol/proj";
 import React from "react";
 

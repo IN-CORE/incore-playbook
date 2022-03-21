@@ -1,6 +1,6 @@
 import Cookies from "universal-cookie";
 import jwt_decode from "jwt-decode";
-import config from "../app.config";
+import appConfig from "../globals";
 import JSSoup from "jssoup";
 
 const cookies = new Cookies();
@@ -18,7 +18,7 @@ export const isAuthorized = () => {
 export function getHeader() {
 	if (process.env.DEPLOY_ENV === "local"){
 		const headers = new Headers({
-			"x-auth-userinfo": `{"preferred_username":"${config.testUserInfo}"}`,
+			"x-auth-userinfo": `{"preferred_username":"${appConfig.testUserInfo}"}`,
 		});
 
 		return headers;
@@ -35,7 +35,7 @@ export function getHeader() {
 // get current username
 export function getCurrUsername(){
 	if (process.env.DEPLOY_ENV === "local"){
-		return config.testUserInfo;
+		return appConfig.testUserInfo;
 	}
 	else{
 		let cookie = cookies.get("Authorization");
@@ -59,7 +59,7 @@ export function getIncoreTokenFile(){
 // get current user's encoded email address for datawolf use
 export function getCurrUserEmail(){
 	if (process.env.DEPLOY_ENV === "local"){
-		return config.testUserInfo;
+		return appConfig.testUserInfo;
 	}
 	else{
 		let cookie = cookies.get("Authorization");

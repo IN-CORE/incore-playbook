@@ -18,8 +18,7 @@ import {applyTransform} from "ol/extent";
 import RasterTornado from "./childComponents/tornado/RasterTornado";
 import ModelTornado from "./childComponents/tornado/ModelTornado";
 import Map from "./childComponents/map/Map";
-import config from "../app.config";
-import {globals} from "../globals";
+import appConfig from "../globals";
 import {Layout} from "./Layout";
 import {IncoreInputLabel} from "./styledComponents/IncoreInputLabel";
 import {IncoreMenuItem, IncoreSelectBox} from "./styledComponents/IncoreSelect";
@@ -172,7 +171,7 @@ export const CommunityHazards = () => {
 				let layerId = hazardDataset["datasetId"];
 				let layerTitle = hazardDataset["demandType"];
 				const source = new TileWMS({
-					url: `${config.geoServerWMS}`,
+					url: `${appConfig.geoServerWMS}`,
 					params: {LAYERS: layerId},
 					ratio: 1,
 					serverType: "geoserver"
@@ -192,7 +191,7 @@ export const CommunityHazards = () => {
 			let layerId = json["datasetId"];
 			let layerTitle = json["name"];
 			const source = new TileWMS({
-				url: `${config.geoServerWMS}`,
+				url: `${appConfig.geoServerWMS}`,
 				params: {LAYERS: layerId, STYLES: "incore:tornado"},
 				ratio: 1,
 				serverType: "geoserver"

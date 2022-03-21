@@ -1,7 +1,6 @@
 import {Box, Container, Dialog, DialogContent, Grid, IconButton, Typography} from "@material-ui/core";
 import CloseIcon from "@material-ui/icons/Close";
 import Map from "../map/Map";
-import {globals} from "../../../globals";
 import {fromLonLat} from "ol/proj";
 import {DislocationResultsTable} from "../table/DislocationResultsTable";
 import {HuaResultsTable} from "../table/HuaResultsTable";

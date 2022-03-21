@@ -4,6 +4,7 @@ import layout from "./layout";
 import {executions} from "./datawolf";
 import hazards from "./hazards";
 import datasets from "./dataset";
+import config from "./config";
 
 const rootReducer = {
 	userList: userList,
@@ -11,7 +12,8 @@ const rootReducer = {
 	layout: layout,
 	execution: executions,
 	hazard: hazards,
-	dataset:datasets
+	dataset:datasets,
+	config: config,
 };
 
 export default rootReducer;

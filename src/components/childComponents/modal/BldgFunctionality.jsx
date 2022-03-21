@@ -3,7 +3,7 @@ import CloseIcon from "@material-ui/icons/Close";
 import {ResultSummaryTable} from "../table/ResultSummaryTable";
 import {FunctionalityGraph} from "../graph/FunctionalityGraph";
 import Map from "../map/Map";
-import {globals} from "../../../globals";
+import appConfig from "../../../globals";
 import {fromLonLat} from "ol/proj";
 import {FunctionalityTable} from "../table/FunctionalityTable";
 import React from "react";

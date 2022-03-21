@@ -1,4 +1,4 @@
-import config from "../app.config";
+import appConfig from "../globals";
 import {getHeader, getCurrUsername} from "../utils/common";
 import {inputDatasetTypes} from "../globals";
 
@@ -15,7 +15,7 @@ export function receiveDatasets(type, json){
 }
 
 export function fetchDatasets(limit=20, offset=0, type){
-	let endpoint = `${config.dataServiceBase}datasets?limit=${limit}&skip=${offset}&type=${type}`;
+	let endpoint = `${appConfig.dataServiceBase}datasets?limit=${limit}&skip=${offset}&type=${type}`;
 
 	// default to current user's space
 	let space = getCurrUsername();

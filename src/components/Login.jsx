@@ -6,7 +6,7 @@ import {useHistory} from "react-router-dom";
 import {makeStyles } from "@material-ui/core/styles";
 import {IncoreButton} from "./styledComponents/IncoreButton";
 import Cookies from "universal-cookie";
-import config from "../app.config";
+import appConfig from "../globals";
 import {setMenuState} from "../actions/layout";
 
 import LoginBg from "../public/login-background.jpg";
@@ -128,13 +128,13 @@ export const Login = () => {
 	};
 
 	const handleLogin = async () => {
-		const endpoint = config.authService;
+		const endpoint = appConfig.authService;
 
 		let formData = [
 			`${encodeURIComponent("grant_type")  }=${  encodeURIComponent("password")}`,
 			`${encodeURIComponent("username")  }=${  encodeURIComponent(username)}`,
 			`${encodeURIComponent("password")  }=${  encodeURIComponent(password)}`,
-			`${encodeURIComponent("client_id")  }=${  encodeURIComponent(config.client_id)}`,
+			`${encodeURIComponent("client_id")  }=${  encodeURIComponent(appConfig.client_id)}`,
 		];
 
 		const tokenRequest = await fetch(endpoint, {

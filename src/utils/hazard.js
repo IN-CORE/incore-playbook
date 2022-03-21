@@ -1,8 +1,8 @@
-import config from "../app.config";
+import appConfig from "../globals";
 import {dataURItoFile, getHeader} from "./common";
 
 export async function createModelTornado(name, description, rating, startLat, startLon, endLat, endLon) {
-	const endpoint = `${config.hazardServiceBase}tornadoes`;
+	const endpoint = `${appConfig.hazardServiceBase}tornadoes`;
 	let formData = new FormData();
 	let tornadoMetadata = {
 		"tornadoType": "model",
@@ -39,7 +39,7 @@ export async function createModelTornado(name, description, rating, startLat, st
 }
 
 export async function createRasterTornado(name, description, files) {
-	const endpoint = `${config.hazardServiceBase}tornadoes`;
+	const endpoint = `${appConfig.hazardServiceBase}tornadoes`;
 	let formData = new FormData();
 
 	let tornadoMetadata = {
@@ -72,7 +72,7 @@ export async function createRasterTornado(name, description, files) {
 }
 
 export async function getTornadoMetadata(tornadoId) {
-	let endpoint = `${config.hazardServiceBase}tornadoes/${tornadoId}`;
+	let endpoint = `${appConfig.hazardServiceBase}tornadoes/${tornadoId}`;
 	let tornadoRequest = await fetch(endpoint, {mode: "cors", headers: getHeader()});
 	if (tornadoRequest.status === 200) {
 		return tornadoRequest.json();
@@ -87,7 +87,7 @@ export async function getTornadoMetadata(tornadoId) {
 }
 
 export async function createRjfsDatasetHazards(formData, hazardType) {
-	const endpoint = `${config.hazardServiceBase}${hazardType}`;
+	const endpoint = `${appConfig.hazardServiceBase}${hazardType}`;
 	let dataurls = [];
 	let payload = new FormData();
 

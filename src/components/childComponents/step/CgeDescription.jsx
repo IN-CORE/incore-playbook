@@ -9,7 +9,7 @@ import {
 } from "@material-ui/core";
 import {makeStyles} from "@material-ui/core/styles";
 
-import {cgeInfo} from "../../../app.messages";
+import {cgeInfo} from "../../../messages.config";
 
 const useStyles = makeStyles({
 	cgeDescriptionTitle: {

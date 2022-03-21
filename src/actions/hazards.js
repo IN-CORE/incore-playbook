@@ -1,4 +1,4 @@
-import config from "../app.config";
+import appConfig from "../globals";
 import {getHeader, getCurrUsername} from "../utils/common";
 
 export const LOGIN_ERROR = "LOGIN_ERROR";
@@ -14,7 +14,7 @@ export function receiveHazards(type, json){
 }
 
 export function fetchHazards(hazardType="tornadoes", limit=20, offset=0){
-	let endpoint = `${config.hazardServiceBase}${hazardType}?limit=${limit}&skip=${offset}`;
+	let endpoint = `${appConfig.hazardServiceBase}${hazardType}?limit=${limit}&skip=${offset}`;
 
 	// default to current user's space
 	let space = getCurrUsername();

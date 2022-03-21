@@ -16,7 +16,7 @@ import TileLayer from "ol/layer/Tile";
 import XYZ from "ol/source/XYZ";
 import OSM, {ATTRIBUTION as OSM_ATTRIBUTION} from "ol/source/OSM";
 import TileWMS from "ol/source/TileWMS";
-import config from "../../app.config";
+import appConfig from "../../globals";
 
 import {ViewResultEntryTable} from "./table/ViewResultEntryTable";
 
@@ -155,7 +155,7 @@ export default function ViewResult(props) {
 
 		layerDef.map((layerDefinition) => {
 			const source = new TileWMS({
-				url: `${config.geoServerWMS}`,
+				url: `${appConfig.geoServerWMS}`,
 				params: {
 					LAYERS: layerDefinition["layerId"],
 					STYLES: layerDefinition["layerStyles"]

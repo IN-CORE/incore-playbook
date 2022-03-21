@@ -1,8 +1,8 @@
-import config from "../app.config";
+import appConfig from "../globals";
 import {getHeader} from "./common";
 
 export async function createDataset(title, description, dataType, files, format="shapefile"){
-	const datasetEndpoint = `${config.dataServiceBase}datasets`;
+	const datasetEndpoint = `${appConfig.dataServiceBase}datasets`;
 	let datasetFormData = new FormData();
 	let datasetMetadata = {
 		"title": title,
@@ -29,7 +29,7 @@ export async function createDataset(title, description, dataType, files, format=
 
 		// attach files to that dataset
 		let datasetId = datasetJson["id"];
-		const fileEndpoint = `${config.dataServiceBase}datasets/${datasetId}/files`;
+		const fileEndpoint = `${appConfig.dataServiceBase}datasets/${datasetId}/files`;
 		let fileFormData = new FormData();
 		files.map((file) => {
 			fileFormData.append("file", file);
@@ -65,7 +65,7 @@ export async function downloadDataset(datasetId, title=null) {
 	let filename = `${datasetId}.zip`;
 	if (title) filename = `${title}-${filename}`;
 
-	let url = `${config.dataServiceBase}datasets/${datasetId}/blob`;
+	let url = `${appConfig.dataServiceBase}datasets/${datasetId}/blob`;
 	let authHeader = getHeader();
 	let response = await fetch(url, {
 		method: "GET",

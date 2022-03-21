@@ -1,6 +1,6 @@
 import {getHeader, getCurrUserEmail, getIncoreTokenFile, getCurrUsername} from "./common";
 import datawolfConfig from "../datawolf.config";
-import appConfig from "../app.config";
+import appConfig from "../globals";
 
 export async function getOutputFileJson(datasetId, outputFileName = null) {
 	let authHeader = getHeader();
