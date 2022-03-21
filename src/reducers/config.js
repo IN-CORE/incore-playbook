@@ -1,5 +1,5 @@
 import {UPDATE_MAP_CONFIG, SET_ALLOWED_HAZARD_TYPES} from "../actions/config";
-import {defaultMapConfig} from "../map.config";
+import {mapConfig as defaultMapConfig} from "../map.config";
 
 const defaultConfig = {
 	mapConfig:defaultMapConfig,
