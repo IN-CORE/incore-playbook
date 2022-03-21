@@ -14,8 +14,6 @@ import {updateMapConfig} from "./actions/config";
 require("./public/favicon.ico");
 
 const store = configureStore();
-
-// update app config with default
 store.dispatch(updateMapConfig(defaultMapConfig));
 
 const theme = createMuiTheme({

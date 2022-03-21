@@ -5,7 +5,7 @@ const defaultConfig = {
 	mapConfig:defaultMapConfig
 };
 
-export default (state = defaultConfig, action) => {
+const config =  (state = defaultConfig, action) => {
 	switch (action.type) {
 	case UPDATE_MAP_CONFIG:
 		return Object.assign({}, state, {mapConfig: action.mapConfig});
@@ -13,3 +13,5 @@ export default (state = defaultConfig, action) => {
 		return state;
 	}
 };
+
+export default config;
