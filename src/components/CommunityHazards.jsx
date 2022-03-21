@@ -61,7 +61,6 @@ const useStyles = makeStyles({
 export const CommunityHazards = () => {
 	const classes = useStyles();
 
-	const [selectedHazardType, setSelectedHazardType] = useState("earthquakes");
 	const [currTabIndex, setCurrTabIndex] = useState(0);
 	const [startCoord, setStartCoord] = useState([]);
 	const [endCoord, setEndCoord] = useState([]);
@@ -74,6 +73,9 @@ export const CommunityHazards = () => {
 	const floods = useSelector((state) => state.hazard.floods);
 	const hurricanes = useSelector((state) => state.hazard.hurricanes);
 	const mapConfig = useSelector((state) => state.config.mapConfig);
+	const allowedHazardTypes = useSelector((state) => state.config.allowedHazardTypes);
+
+	const [selectedHazardType, setSelectedHazardType] = useState(allowedHazardTypes[0]);
 
 	const drawSourceRef = React.useRef(new VectorSource({wrapX: false}));
 	const pointSourceRef = React.useRef(new VectorSource({wrapX: false}));
@@ -321,7 +323,6 @@ export const CommunityHazards = () => {
 								}
 							})()
 						}
-
 					</Box>
 					<Grid container spacing={3} className="innerBox">
 						<Grid item xl={6} lg={6} md={6} sm={6} xs={12} className="gridItem">
@@ -329,13 +330,14 @@ export const CommunityHazards = () => {
 							<Box>
 								<IncoreInputLabel>Select Hazard Type</IncoreInputLabel>
 								<IncoreSelectBox labelId="label" id="select" variant="outlined"
-												 defaultValue="earthquakes"
+												 defaultValue={allowedHazardTypes[0]}
 												 onChange={(e) => { setSelectedHazardType(e.target.value);}}>
-									<IncoreMenuItem value="earthquakes" key="earthquakes">Earthquake</IncoreMenuItem>
-									<IncoreMenuItem value="tsunamis" key="tsunamis">Tsunami</IncoreMenuItem>
-									<IncoreMenuItem value="tornadoes" key="tornadoes">Tornado</IncoreMenuItem>
-									<IncoreMenuItem value="hurricanes" key="hurricanes">Hurricane</IncoreMenuItem>
-									<IncoreMenuItem value="floods" key="floods">Flood</IncoreMenuItem>
+									{
+										(allowedHazardTypes).map((hazardType) => {
+											return (<IncoreMenuItem value={hazardType} key={hazardType}>
+												{hazardType}</IncoreMenuItem>);
+										})
+									}
 								</IncoreSelectBox>
 							</Box>
 							{/*Tabs*/}
@@ -345,10 +347,9 @@ export const CommunityHazards = () => {
 									  onChange={(e, value) => {setCurrTabIndex(value);}}>
 									{/*only certain hazard type has model based creation*/}
 									<Tab label="Upload a Hazard Dataset" className={classes.tab}/>
-									{selectedHazardType === "tornadoes" || selectedHazardType === "tsunamis"
-									|| selectedHazardType === "earthquakes"?
+									{selectedHazardType === "tornadoes" ?
 										<Tab label="Create a Hazard" className={classes.tab}/> :
-										<></>
+										null
 									}
 								</Tabs>
 								{
@@ -359,11 +360,6 @@ export const CommunityHazards = () => {
 												<DatasetEarthquake value={currTabIndex} index={0}
 															   handleLayerUpdate={handleLayerUpdate}
 															   handleListUpdate={listHazards}/>
-												{/*<ModelTornado value={currTabIndex} index={1}*/}
-												{/*			  handleLayerUpdate={handleLayerUpdate}*/}
-												{/*			  handleListUpdate={listHazards}*/}
-												{/*			  startCoordProps={startCoord}*/}
-												{/*			  endCoordProps={endCoord}/>*/}
 											</>);
 										}
 										else if (selectedHazardType === "tornadoes") {

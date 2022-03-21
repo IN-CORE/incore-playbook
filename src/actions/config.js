@@ -4,3 +4,10 @@ export const updateMapConfig = (config) => ({
 	mapConfig: config,
 	receivedAt: Date.now(),
 });
+
+export const SET_ALLOWED_HAZARD_TYPES = "SET_ALLOWED_HAZARD_TYPES";
+export const setAllowedHazardTypes = (hazardTypes) => ({
+	type: SET_ALLOWED_HAZARD_TYPES,
+	allowedHazardTypes: hazardTypes,
+	receivedAt: Date.now(),
+});
