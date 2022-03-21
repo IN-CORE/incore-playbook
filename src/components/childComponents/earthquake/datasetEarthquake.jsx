@@ -24,9 +24,9 @@ export default function DatasetEarthquake(props) {
 
 	const onSave = async (formData) => {
 		setLoading(true);
-		const hurricaneJson = await createDatasetEarthquake(formData);
-		if (hurricaneJson !== {}){
-			handleLayerUpdate(hurricaneJson);
+		const eqJson = await createDatasetEarthquake(formData);
+		if (eqJson !== {}){
+			handleLayerUpdate(eqJson);
 			handleListUpdate();
 		}
 		setLoading(false);

@@ -8,7 +8,7 @@ import {CustomSelectWidget} from "../../styledComponents/CustomSelectWidget";
 import {CustomTextInput} from "../../styledComponents/CustomTextWidget";
 import DatasetFloodSchema from "../../../schema/flood/datasetFlood.json";
 import DatasetFloodUiSchema from "../../../schema/flood/datasetFloodUi.json";
-import {createDatasetEarthquake} from "../../../utils/hazard";
+import {createDatasetFlood} from "../../../utils/hazard";
 
 import Form from "@rjsf/material-ui";
 
@@ -24,9 +24,9 @@ export default function DatasetFlood(props) {
 
 	const onSave = async (formData) => {
 		setLoading(true);
-		const hurricaneJson = await createDatasetEarthquake(formData);
-		if (hurricaneJson !== {}){
-			handleLayerUpdate(hurricaneJson);
+		const floodJson = await createDatasetFlood(formData);
+		if (floodJson !== {}){
+			handleLayerUpdate(floodJson);
 			handleListUpdate();
 		}
 		setLoading(false);
