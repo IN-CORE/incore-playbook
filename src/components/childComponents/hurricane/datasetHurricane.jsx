@@ -8,7 +8,7 @@ import {CustomSelectWidget} from "../../styledComponents/CustomSelectWidget";
 import {CustomTextInput} from "../../styledComponents/CustomTextWidget";
 import DatasetHurricaneSchema from "../../../schema/hurricane/datasetHurricane.json";
 import DatasetHurricaneUiSchema from "../../../schema/hurricane/datasetHurricaneUi.json";
-import {createDatasetHurricane} from "../../../utils/hazard";
+import {createRjfsDatasetHazards} from "../../../utils/hazard";
 
 import Form from "@rjsf/material-ui";
 
@@ -24,10 +24,10 @@ export default function DatasetHurricane(props) {
 
 	const onSave = async (formData) => {
 		setLoading(true);
-		const hurricaneJson = await createDatasetHurricane(formData);
+		const hurricaneJson = await createRjfsDatasetHazards(formData, "hurricanes");
 		if (hurricaneJson !== {}){
 			handleLayerUpdate(hurricaneJson);
-			handleListUpdate();
+			handleListUpdate("hurricanes");
 		}
 		setLoading(false);
 	};

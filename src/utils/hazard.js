@@ -1,5 +1,5 @@
 import config from "../app.config";
-import {getHeader} from "./common";
+import {dataURItoFile, getHeader} from "./common";
 
 export async function createModelTornado(name, description, rating, startLat, startLon, endLat, endLon) {
 	const endpoint = `${config.hazardServiceBase}tornadoes`;
@@ -86,8 +86,8 @@ export async function getTornadoMetadata(tornadoId) {
 	}
 }
 
-export async function createDatasetHurricane(formData) {
-	const endpoint = `${config.hazardServiceBase}hurricanes`;
+export async function createRjfsDatasetHazards(formData, hazardType) {
+	const endpoint = `${config.hazardServiceBase}${hazardType}`;
 	let dataurls = [];
 	let payload = new FormData();
 
@@ -106,18 +106,18 @@ export async function createDatasetHurricane(formData) {
 		payload.append("file", dataURItoFile(dataurl["dataurl"], dataurl["filename"]));
 	});
 
-	payload.append("hurricane", JSON.stringify(formData));
+	payload.append(hazardType.slice(0, -1), JSON.stringify(formData));
 	let authHeader = getHeader();
-	let hurricaneRequest = await fetch(endpoint, {
+	let request = await fetch(endpoint, {
 		method: "POST",
 		mode: "cors",
 		headers: authHeader,
 		body: payload,
 	});
 
-	if (hurricaneRequest.status === 200) {
-		return hurricaneRequest.json();
-	} else if (hurricaneRequest.status === 401) {
+	if (request.status === 200) {
+		return request.json();
+	} else if (request.status === 401) {
 		// TODO handle error
 		return {};
 	} else {

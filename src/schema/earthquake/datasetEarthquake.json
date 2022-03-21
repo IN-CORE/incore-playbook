@@ -57,7 +57,7 @@
 			"title":"",
 			"type": "object",
 			"required": [
-			  "srcLatitude", "srcLongitude", "magnitude", "depth"
+			  "magnitude", "depth"
 			],
 			"properties":{
 			  "magnitude": {

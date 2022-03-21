@@ -8,7 +8,7 @@ import {CustomSelectWidget} from "../../styledComponents/CustomSelectWidget";
 import {CustomTextInput} from "../../styledComponents/CustomTextWidget";
 import DatasetTsunamiSchema from "../../../schema/tsunami/datasetTsunami.json";
 import DatasetTsunamiUiSchema from "../../../schema/tsunami/datasetTsunamiUi.json";
-import {createDatasetTsunami} from "../../../utils/hazard";
+import {createRjfsDatasetHazards} from "../../../utils/hazard";
 
 import Form from "@rjsf/material-ui";
 
@@ -24,10 +24,10 @@ export default function DatasetTsunami(props) {
 
 	const onSave = async (formData) => {
 		setLoading(true);
-		const floodJson = await createDatasetTsunami(formData);
-		if (floodJson !== {}){
-			handleLayerUpdate(floodJson);
-			handleListUpdate();
+		const tsunamiJson = await createRjfsDatasetHazards(formData, "tsunamis");
+		if (tsunamiJson !== {}){
+			handleLayerUpdate(tsunamiJson);
+			handleListUpdate("tsunamis");
 		}
 		setLoading(false);
 	};

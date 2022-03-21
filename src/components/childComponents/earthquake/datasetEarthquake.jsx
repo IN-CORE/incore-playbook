@@ -8,7 +8,7 @@ import {CustomSelectWidget} from "../../styledComponents/CustomSelectWidget";
 import {CustomTextInput} from "../../styledComponents/CustomTextWidget";
 import DatasetEqSchema from "../../../schema/earthquake/datasetEarthquake.json";
 import DatasetEqUiSchema from "../../../schema/earthquake/datasetEarthquakeUi.json";
-import {createDatasetEarthquake} from "../../../utils/hazard";
+import {createRjfsDatasetHazards} from "../../../utils/hazard";
 
 import Form from "@rjsf/material-ui";
 
@@ -24,10 +24,10 @@ export default function DatasetEarthquake(props) {
 
 	const onSave = async (formData) => {
 		setLoading(true);
-		const eqJson = await createDatasetEarthquake(formData);
+		const eqJson = await createRjfsDatasetHazards(formData, "earthquakes");
 		if (eqJson !== {}){
 			handleLayerUpdate(eqJson);
-			handleListUpdate();
+			handleListUpdate("earthquakes");
 		}
 		setLoading(false);
 	};

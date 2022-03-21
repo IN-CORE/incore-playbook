@@ -35,8 +35,8 @@
 		  "demandUnits":{
 			"type": "string",
 			"title": "Demand Unit",
-			"enumNames": ["ft","m", "mph", "kph", "ft/sec", "m/sec", "m^3/s^2", "ft^3/s^2"],
-			"enum": ["ft","m", "mph", "kph", "ft/sec", "m/sec", "m^3/s^2", "ft^3/s^2"],
+			"enumNames": ["ft","m", "mph", "kph", "ft/s", "m/s", "m^3/s^2", "ft^3/s^2"],
+			"enum": ["ft","m", "mph", "kph", "ft/s", "m/s", "m^3/s^2", "ft^3/s^2"],
 			"default":"ft"
 		  },
 		  "recurrenceInterval": {
@@ -58,7 +58,7 @@
 		  },
 		  "hazardType":{
 			"type":"string",
-			"default":"deterministic"
+			"default":"probabilistic"
 		  }
 		}
 	  }
