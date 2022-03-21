@@ -166,25 +166,46 @@ export const CommunityHazards = () => {
 	}, [endCoord]);
 
 	const handleLayerUpdate = (json) => {
-
-		let layerId = json["datasetId"];
-		let layerTitle = json["name"];
-
-		const source = new TileWMS({
-			url: `${config.geoServerWMS}`,
-			params: {LAYERS: layerId, STYLES: "incore:tornado"},
-			ratio: 1,
-			serverType: "geoserver"
-		});
-		let HazardMapLayer = new TileLayer({
-			title: layerTitle,
-			source: source,
-			zIndex: 1,
-			opacity: 1
-		});
-
-		// add created hazard to this created group layer
-		cacheRef.current.tilelayer.getLayers().push(HazardMapLayer);
+		// tsunami, hurricane, flood, earthquake all has multiple layers
+		if ( "hazardDatasets" in json && json["hazardDatasets"].length > 0){
+			json["hazardDatasets"].map((hazardDataset) =>{
+				let layerId = hazardDataset["datasetId"];
+				let layerTitle = hazardDataset["demandType"];
+				const source = new TileWMS({
+					url: `${config.geoServerWMS}`,
+					params: {LAYERS: layerId},
+					ratio: 1,
+					serverType: "geoserver"
+				});
+				let HazardMapLayer = new TileLayer({
+					title: layerTitle,
+					source: source,
+					zIndex: 1,
+					opacity: 1
+				});
+				// add created hazard to this created group layer
+				cacheRef.current.tilelayer.getLayers().push(HazardMapLayer);
+			});
+		}
+		// tornado has single layer
+		else {
+			let layerId = json["datasetId"];
+			let layerTitle = json["name"];
+			const source = new TileWMS({
+				url: `${config.geoServerWMS}`,
+				params: {LAYERS: layerId, STYLES: "incore:tornado"},
+				ratio: 1,
+				serverType: "geoserver"
+			});
+			let HazardMapLayer = new TileLayer({
+				title: layerTitle,
+				source: source,
+				zIndex: 1,
+				opacity: 1
+			});
+			// add created hazard to this created group layer
+			cacheRef.current.tilelayer.getLayers().push(HazardMapLayer);
+		}
 	};
 
 	const hazardIdClick = async (hazard) => {
