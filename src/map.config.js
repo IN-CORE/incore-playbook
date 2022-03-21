@@ -1,4 +1,4 @@
-export const mapConfigs = {
+export const defaultMapConfig = {
 	MAP_BOUNDS:[
 		-95.63105,
 		28.57895,

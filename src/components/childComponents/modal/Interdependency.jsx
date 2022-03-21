@@ -1,12 +1,15 @@
 import {Box, Container, Dialog, DialogContent, IconButton, Typography} from "@material-ui/core";
 import CloseIcon from "@material-ui/icons/Close";
 import Map from "../map/Map";
-import {fromLonLat} from "ol/proj";
+import {fromLonLat, getTransform} from "ol/proj";
 import React from "react";
+import {useSelector} from "react-redux";
+import {applyTransform} from "ol/extent";
 
 export default function Interdependency(props) {
 
 	let {executionName, previewOn, title, handlePreviewClose, layers, setMap} = props;
+	const mapConfig = useSelector((state) => state.config.mapConfig);
 
 	return (
 		<Dialog open={previewOn} onClose={handlePreviewClose} maxWidth="lg" fullWidth scroll="paper">
@@ -28,8 +31,8 @@ export default function Interdependency(props) {
 						zoom={12}
 						minZoom={5}
 						maxZoom={15}
-						extent={globals.JOPLIN_MAP_BOUNDS}
-						center={fromLonLat(globals.JOPLIN_MAP_CENTER)}
+						extent={applyTransform(mapConfig.MAP_BOUNDS, getTransform("EPSG:4326", "EPSG:3857"))}
+						center={fromLonLat(mapConfig.MAP_CENTER)}
 						layers={Object.values(layers)}
 						layerSwitcherOptions={{}}
 						updateMap={(map) => { setMap(map); }}

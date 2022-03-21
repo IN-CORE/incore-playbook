@@ -73,6 +73,7 @@ export const CommunityHazards = () => {
 	const tsunamis = useSelector((state) => state.hazard.tsunamis);
 	const floods = useSelector((state) => state.hazard.floods);
 	const hurricanes = useSelector((state) => state.hazard.hurricanes);
+	const mapConfig = useSelector((state) => state.config.mapConfig);
 
 	const drawSourceRef = React.useRef(new VectorSource({wrapX: false}));
 	const pointSourceRef = React.useRef(new VectorSource({wrapX: false}));
@@ -406,8 +407,8 @@ export const CommunityHazards = () => {
 									zoom={10}
 									minZoom={4}
 									maxZoom={15}
-									extent={applyTransform(globals.MAP_BOUNDS, getTransform("EPSG:4326", "EPSG:3857"))}
-									center={fromLonLat(globals.MAP_CENTER)}
+									extent={applyTransform(mapConfig.MAP_BOUNDS, getTransform("EPSG:4326", "EPSG:3857"))}
+									center={fromLonLat(mapConfig.MAP_CENTER)}
 									layers={[
 										cacheRef.current.basemaps,
 										cacheRef.current.drawlayer,

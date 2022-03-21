@@ -8,10 +8,15 @@ import {BrowserRouter, Route, Switch} from "react-router-dom";
 import routes from "./routes.js";
 import configureStore from "./store/configureStore";
 import {createMuiTheme, MuiThemeProvider} from "@material-ui/core/styles";
+import {defaultMapConfig} from "./map.config";
+import {updateMapConfig} from "./actions/config";
 
 require("./public/favicon.ico");
 
 const store = configureStore();
+
+// update app config with default
+store.dispatch(updateMapConfig(defaultMapConfig));
 
 const theme = createMuiTheme({
 

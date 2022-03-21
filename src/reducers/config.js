@@ -1,5 +1,5 @@
 import {UPDATE_MAP_CONFIG} from "../actions/config";
-import {mapConfigs as defaultMapConfig} from "../map.config";
+import {defaultMapConfig} from "../map.config";
 
 const defaultConfig = {
 	mapConfig:defaultMapConfig
