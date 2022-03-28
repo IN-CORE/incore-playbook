@@ -194,11 +194,21 @@ export const CommunityHazards = () => {
 				drawDisplaySourceRef.current.clear();
 			});
 			drawInteractionRef.current.on("drawend", (event) => {
-				// drawSourceRef.current.clear();
 				const geometry = event.feature.getGeometry();
 				setSrcCoord(geometry.getFlatCoordinates());
 			});
 		}
+
+		// Important: need to clear previous draw interaction first
+		drawDisplaySourceRef.current.clear();
+		mapRef.current.getInteractions().forEach((interaction) => {
+			if (interaction instanceof Draw) {
+				mapRef.current.removeInteraction(interaction);
+			}
+		});
+		// Start the draw interaction...
+		mapRef.current.addInteraction(drawInteractionRef.current);
+
 	}, [selectedHazardType]);
 
 	// display the line
@@ -280,13 +290,6 @@ export const CommunityHazards = () => {
 		});
 		lineFeature.setStyle(lineStyleRef.current);
 		drawDisplaySourceRef.current.addFeature(lineFeature);
-	}
-
-	const handleMapClick = (event) => {
-		// Important: need to clear previous draw interaction first
-		let map = event.map;
-		// Start the draw interaction...
-		map.addInteraction(drawInteractionRef.current);
 	};
 
 	const fieldNames = [
@@ -452,9 +455,6 @@ export const CommunityHazards = () => {
 									layerSwitcherOptions={{}}
 									updateMap={(map) => {
 										mapRef.current = map;
-									}}
-									events={{
-										"click": handleMapClick
 									}}
 								/>
 							</Container>
