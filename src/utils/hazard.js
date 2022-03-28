@@ -86,6 +86,51 @@ export async function getTornadoMetadata(tornadoId) {
 	}
 }
 
+export async function createModelEarthquake(name, description, attenuations, lat, lon, magnitude, depth, demandType, demandUnits, minLat, maxLat, minLon, maxLon) {
+	const endpoint = `${appConfig.hazardServiceBase}earthquakes`;
+	let formData = new FormData();
+	let tornadoMetadata = {
+		"name": name,
+		"description": description,
+		"eqType": "model",
+		"attenuations": {attenuations : "1.0"},
+		"eqParameters": {
+			"srcLatitude": lat,
+			"srcLongitude": lon,
+			"magnitude": magnitude,
+			"depth": depth
+		},
+		"visualizationParameters":{
+			"demandType": demandType,
+			"demandUnits": demandUnits,
+			"minX": lat - 0.3,
+			"minY": lon - 0.3,
+			"maxX": lat + 0.3,
+			"maxY": lon + 0.3,
+			"numPoints": "1025",
+			"amplifyHazard": "true"
+		}
+	};
+	formData.append("tornado", JSON.stringify(tornadoMetadata));
+	let authHeader = getHeader();
+	let tornadoRequest = await fetch(endpoint, {
+		method: "POST",
+		mode: "cors",
+		headers: authHeader,
+		body: formData,
+	});
+
+	if (tornadoRequest.status === 200) {
+		return tornadoRequest.json();
+	} else if (tornadoRequest.status === 401) {
+		// TODO handle error
+		return {};
+	} else {
+		// TODO handle error
+		return {};
+	}
+}
+
 export async function createRjfsDatasetHazards(formData, hazardType) {
 	const endpoint = `${appConfig.hazardServiceBase}${hazardType}`;
 	let dataurls = [];

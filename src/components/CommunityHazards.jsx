@@ -32,6 +32,7 @@ import StepInfo from "./StepInfo";
 import {fetchHazards} from "../actions/hazards";
 import DatasetHurricane from "./childComponents/hurricane/datasetHurricane";
 import DatasetEarthquake from "./childComponents/earthquake/datasetEarthquake";
+import ModelEarthquake from "./childComponents/earthquake/modelEarthquake";
 import DatasetFlood from "./childComponents/flood/datasetFlood";
 import DatasetTsunami from "./childComponents/tsuanmi/datasetTsunami";
 
@@ -62,8 +63,12 @@ export const CommunityHazards = () => {
 	const classes = useStyles();
 
 	const [currTabIndex, setCurrTabIndex] = useState(0);
+	// for drawing tornado path
 	const [startCoord, setStartCoord] = useState([]);
 	const [endCoord, setEndCoord] = useState([]);
+
+	// for draw eq epicenter
+	const [srcCoord, setSrcCoord] = useState([]);
 
 	const dispatch = useDispatch();
 	const listHazards = (hazardType, limit, offset) => dispatch(fetchHazards(hazardType, limit, offset));
@@ -347,7 +352,7 @@ export const CommunityHazards = () => {
 									  onChange={(e, value) => {setCurrTabIndex(value);}}>
 									{/*only certain hazard type has model based creation*/}
 									<Tab label="Upload a Hazard Dataset" className={classes.tab}/>
-									{selectedHazardType === "tornadoes" ?
+									{selectedHazardType === "tornadoes"  || selectedHazardType === "earthquakes" ?
 										<Tab label="Create a Hazard" className={classes.tab}/> :
 										null
 									}
@@ -360,6 +365,10 @@ export const CommunityHazards = () => {
 												<DatasetEarthquake value={currTabIndex} index={0}
 															   handleLayerUpdate={handleLayerUpdate}
 															   handleListUpdate={listHazards}/>
+												<ModelEarthquake value={currTabIndex} index={1}
+																 handleLayerUpdate={handleLayerUpdate}
+																 handleListUpdate={listHazards}
+																 srcCoordProps={srcCoord}/>
 											</>);
 										}
 										else if (selectedHazardType === "tornadoes") {

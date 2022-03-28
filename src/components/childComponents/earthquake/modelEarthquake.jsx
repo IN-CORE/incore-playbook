@@ -49,73 +49,47 @@ const useStyles = makeStyles({
 });
 
 export default function ModelEarthquake(props) {
-	const {value, index, startCoordProps, endCoordProps, handleLayerUpdate, handleListUpdate, ...other} = props;
+	const {value, index, srcCoordProps, handleLayerUpdate, handleListUpdate, ...other} = props;
 	const classes = useStyles();
 
-	//{
-	//   "eqType": "model",
-	//   "attenuations": {
-	//     "AtkinsonBoore1995": "1.0"
-	//   },
-	//   "eqParameters": {
-	//     "srcLatitude": "35.927",
-	//     "srcLongitude": "-89.919",
-	//     "magnitude": "7.9",
-	//     "depth": "10.0"
-	//   },
-	//   "visualizationParameters": {
-	//     "demandType": "PGA",
-	//     "demandUnits": "g",
-	//     "minX": "-90.3099",
-	//     "minY": "34.9942",
-	//     "maxX": "-89.6231",
-	//     "maxY": "35.4129",
-	//     "numPoints": "1025",
-	//     "amplifyHazard": "true"
-	//   }
-	// }
 	const [name, setName] = useState("");
 	const [description, setDescription] = useState("");
 	const [coord, setCoord] = useState("");
 	const [magnitude, setMagnitude] = useState(7.9);
 	const [depth, setDepth] = useState(10);
-	const [demandType, setDemandtype] = useState("PGA");
+	const [attenuations, setAttenuations] = useState("AtkinsonBoore1995");
+	const [demandType, setDemandType] = useState("PGA");
 	const [demandUnits, setDemandUnits] = useState("g");
 	const [disabled, setDisabled] = useState(true);
 	const [loading, setLoading] = useState(false);
 
 	// form check
 	useEffect(() => {
-		if (name !== "" && description !== "" && startCoord !== "" && endCoord !== "" && rating!== "") setDisabled(false);
+		if (name !== "" && description !== "" && coord !== "" && coord.includes(",")
+			&& magnitude !== "" && depth !== "") setDisabled(false);
 		else setDisabled(true);
-	}, [name, description, startCoord, endCoord, rating]);
+	}, [name, description, coord]);
 
 
 	// update start and end based on map click (parent prop change)
 	useEffect(() => {
-		if (startCoordProps.length > 0) {
-			setStartCoord(`${FlatCoordToLonLat(startCoordProps)[1].toFixed(4)},${FlatCoordToLonLat(startCoordProps)[0].toFixed(4)}`);
+		if (srcCoordProps.length > 0) {
+			setCoord(`${FlatCoordToLonLat(srcCoordProps)[1].toFixed(4)},${FlatCoordToLonLat(srcCoordProps)[0].toFixed(4)}`);
 		}
-		if (endCoordProps.length > 0) {
-			setEndCoord(`${FlatCoordToLonLat(endCoordProps)[1].toFixed(4)},${FlatCoordToLonLat(endCoordProps)[0].toFixed(4)}`);
-		}
-	}, [startCoordProps, endCoordProps]);
+	}, [srcCoordProps]);
 
 	const onSave = async () => {
 		setLoading(true);
-		let startLat = startCoord.split(",")[0];
-		let startLon = startCoord.split(",")[1];
-		let endLat = endCoord.split(",")[0];
-		let endLon = endCoord.split(",")[1];
+		let lat = coord.split(",")[0];
+		let lon = coord.split(",")[1];
 
-		const tornadoJson = await createModelEarthquake(name, description, rating, startLat, startLon, endLat, endLon);
-		if (tornadoJson !== {}){
-			handleLayerUpdate(tornadoJson);
-			handleListUpdate("tornadoes");
+		const eqJson = await createModelEarthquake(name, description, attenuations, lat, lon, magnitude, depth, demandType, demandUnits, minLat, maxLat, minLon, maxLon);
+		if (eqJson !== {}){
+			handleLayerUpdate(eqJson);
+			handleListUpdate("earthquakes");
 			setName("");
 			setDescription("");
-			setStartCoord("");
-			setEndCoord("");
+			setCoord("");
 		}
 		setLoading(false);
 	};
@@ -152,9 +126,25 @@ export default function ModelEarthquake(props) {
 											 onChange={(e) => setDepth(e.target.value)}/>
 						</Box>
 						<Box className="inputGroup">
+							<IncoreInputLabel>Attenuation Model</IncoreInputLabel>
+							<IncoreSelectBox labelId="label" id="select" variant="outlined" defaultValue={attenuations}
+											 onChange={(e) => setAttenuations(e.target.value)}>
+								<IncoreMenuItem value="Toro1997" key="Toro1997">Toro 1997</IncoreMenuItem>
+								<IncoreMenuItem value="AtkinsonBoore1995" key="AtkinsonBoore1995">
+									AtkinsonBoore 1995</IncoreMenuItem>
+								<IncoreMenuItem value="CampbellBozorgnia2014" key="CampbellBozorgnia2014">
+									CampbellBozorgnia 2014</IncoreMenuItem>
+								<IncoreMenuItem value="AbrahamsonSilvaKamai2014" key="AbrahamsonSilvaKamai2014">
+									AbrahamsonSilvaKamai 2014</IncoreMenuItem>
+								<IncoreMenuItem value="ChiouYoungs2014" key="ChiouYoungs2014">
+									ChiouYoungs 2014</IncoreMenuItem>
+							</IncoreSelectBox>
+						</Box>
+						<Box className="inputGroup">
 							<IncoreInputLabel>Demand Type</IncoreInputLabel>
 							<IncoreSelectBox labelId="label" id="select" variant="outlined" defaultValue={demandType}
-											 onChange={(e) => setRating(e.target.value)}>
+											 onChange={(e) => setDemandType(e.target.value)}>
+								<IncoreMenuItem value="PGA" key="PGA">PGA</IncoreMenuItem>
 								<IncoreMenuItem value="PGV" key="PGV">PGV</IncoreMenuItem>
 								<IncoreMenuItem value="0.1 Sec SA" key="0.1 Sec SA">0.1 Sec SA</IncoreMenuItem>
 								<IncoreMenuItem value="0.2 Sec SA" key="0.2 Sec SA">0.2 Sec SA</IncoreMenuItem>
@@ -167,18 +157,19 @@ export default function ModelEarthquake(props) {
 							<IncoreInputLabel>Demand Units</IncoreInputLabel>
 							<IncoreSelectBox labelId="label" id="select" variant="outlined" defaultValue={demandUnits}
 											 onChange={(e) => setDemandUnits(e.target.value)}>
+								<IncoreMenuItem value="g" key="g">g</IncoreMenuItem>
 								<IncoreMenuItem value="in/s" key="in/s">in/s</IncoreMenuItem>
 								<IncoreMenuItem value="cm/s" key="cm/s">cm/s</IncoreMenuItem>
 								<IncoreMenuItem value="in" key="in">in</IncoreMenuItem>
 								<IncoreMenuItem value="ft" key="ft">ft</IncoreMenuItem>
-								<IncoreMenuItem value="m" key="m">in, ft, m</IncoreMenuItem>
+								<IncoreMenuItem value="m" key="m">m</IncoreMenuItem>
 							</IncoreSelectBox>
 						</Box>
 						<Box className="inputGroup">
-							<IncoreInputLabel>Start and End Points</IncoreInputLabel>
+							<IncoreInputLabel>Earthquake Source</IncoreInputLabel>
 							<Box className={classes.coordBox}>
-								<InputLabel className={classes.startLabel}>Start: </InputLabel>
-								<input placeholder="set start on map" className={classes.coordInput}
+								<InputLabel className={classes.startLabel}>Source: </InputLabel>
+								<input placeholder="draw epicenter on map" className={classes.coordInput}
 									   value={coord}
 									   onChange={(e) => setCoord(e.target.value)}/>
 							</Box>
