@@ -52,11 +52,35 @@ export default function ModelEarthquake(props) {
 	const {value, index, startCoordProps, endCoordProps, handleLayerUpdate, handleListUpdate, ...other} = props;
 	const classes = useStyles();
 
+	//{
+	//   "eqType": "model",
+	//   "attenuations": {
+	//     "AtkinsonBoore1995": "1.0"
+	//   },
+	//   "eqParameters": {
+	//     "srcLatitude": "35.927",
+	//     "srcLongitude": "-89.919",
+	//     "magnitude": "7.9",
+	//     "depth": "10.0"
+	//   },
+	//   "visualizationParameters": {
+	//     "demandType": "PGA",
+	//     "demandUnits": "g",
+	//     "minX": "-90.3099",
+	//     "minY": "34.9942",
+	//     "maxX": "-89.6231",
+	//     "maxY": "35.4129",
+	//     "numPoints": "1025",
+	//     "amplifyHazard": "true"
+	//   }
+	// }
 	const [name, setName] = useState("");
 	const [description, setDescription] = useState("");
-	const [rating, setRating] = useState("EF3");
-	const [startCoord, setStartCoord] = useState("");
-	const [endCoord, setEndCoord] = useState("");
+	const [coord, setCoord] = useState("");
+	const [magnitude, setMagnitude] = useState(7.9);
+	const [depth, setDepth] = useState(10);
+	const [demandType, setDemandtype] = useState("PGA");
+	const [demandUnits, setDemandUnits] = useState("g");
 	const [disabled, setDisabled] = useState(true);
 	const [loading, setLoading] = useState(false);
 
@@ -118,15 +142,36 @@ export default function ModelEarthquake(props) {
 											 onChange={(e) => setDescription(e.target.value)}/>
 						</Box>
 						<Box className="inputGroup">
-							<IncoreInputLabel>Rating</IncoreInputLabel>
-							<IncoreSelectBox labelId="label" id="select" variant="outlined" defaultValue={rating}
+							<IncoreInputLabel>Magnitude</IncoreInputLabel>
+							<IncoreTextField value={magnitude} variant="outlined"
+											 onChange={(e) => setMagnitude(e.target.value)}/>
+						</Box>
+						<Box className="inputGroup">
+							<IncoreInputLabel>Depth</IncoreInputLabel>
+							<IncoreTextField value={depth} variant="outlined"
+											 onChange={(e) => setDepth(e.target.value)}/>
+						</Box>
+						<Box className="inputGroup">
+							<IncoreInputLabel>Demand Type</IncoreInputLabel>
+							<IncoreSelectBox labelId="label" id="select" variant="outlined" defaultValue={demandType}
 											 onChange={(e) => setRating(e.target.value)}>
-								<IncoreMenuItem value="EF0" key="EF0">EF0</IncoreMenuItem>
-								<IncoreMenuItem value="EF1" key="EF1">EF1</IncoreMenuItem>
-								<IncoreMenuItem value="EF2" key="EF2">EF2</IncoreMenuItem>
-								<IncoreMenuItem value="EF3" key="EF3">EF3</IncoreMenuItem>
-								<IncoreMenuItem value="EF4" key="EF4">EF4</IncoreMenuItem>
-								<IncoreMenuItem value="EF5" key="EF5">EF5</IncoreMenuItem>
+								<IncoreMenuItem value="PGV" key="PGV">PGV</IncoreMenuItem>
+								<IncoreMenuItem value="0.1 Sec SA" key="0.1 Sec SA">0.1 Sec SA</IncoreMenuItem>
+								<IncoreMenuItem value="0.2 Sec SA" key="0.2 Sec SA">0.2 Sec SA</IncoreMenuItem>
+								<IncoreMenuItem value="0.3 Sec SA" key="0.3 Sec SA">0.3 Sec SA</IncoreMenuItem>
+								<IncoreMenuItem value="SD" key="SD">SD</IncoreMenuItem>
+								<IncoreMenuItem value="SV" key="SV">SV</IncoreMenuItem>
+							</IncoreSelectBox>
+						</Box>
+						<Box className="inputGroup">
+							<IncoreInputLabel>Demand Units</IncoreInputLabel>
+							<IncoreSelectBox labelId="label" id="select" variant="outlined" defaultValue={demandUnits}
+											 onChange={(e) => setDemandUnits(e.target.value)}>
+								<IncoreMenuItem value="in/s" key="in/s">in/s</IncoreMenuItem>
+								<IncoreMenuItem value="cm/s" key="cm/s">cm/s</IncoreMenuItem>
+								<IncoreMenuItem value="in" key="in">in</IncoreMenuItem>
+								<IncoreMenuItem value="ft" key="ft">ft</IncoreMenuItem>
+								<IncoreMenuItem value="m" key="m">in, ft, m</IncoreMenuItem>
 							</IncoreSelectBox>
 						</Box>
 						<Box className="inputGroup">
@@ -134,12 +179,8 @@ export default function ModelEarthquake(props) {
 							<Box className={classes.coordBox}>
 								<InputLabel className={classes.startLabel}>Start: </InputLabel>
 								<input placeholder="set start on map" className={classes.coordInput}
-									   value={startCoord}
-									   onChange={(e) => setStartCoord(e.target.value)}/>
-								<InputLabel className={classes.endLabel}>End: </InputLabel>
-								<input placeholder="set end on map" className={classes.coordInput}
-									   value={endCoord}
-									   onChange={(e) => setEndCoord(e.target.value)}/>
+									   value={coord}
+									   onChange={(e) => setCoord(e.target.value)}/>
 							</Box>
 						</Box>
 						<Box className="inputGroup">
