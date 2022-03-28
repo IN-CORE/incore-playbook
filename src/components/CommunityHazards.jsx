@@ -83,7 +83,7 @@ export const CommunityHazards = () => {
 	const [selectedHazardType, setSelectedHazardType] = useState(allowedHazardTypes[0]);
 
 	const drawSourceRef = React.useRef(new VectorSource({wrapX: false}));
-	const pointSourceRef = React.useRef(new VectorSource({wrapX: false}));
+	const drawDisplaySourceRef = React.useRef(new VectorSource({wrapX: false}));
 	const lineStyleRef = React.useRef(new Style({
 		stroke: new Stroke({
 			color: "#979797",
@@ -136,12 +136,14 @@ export const CommunityHazards = () => {
 		drawlayer: new GroupLayer({
 			title: "Draw Layer",
 			layers: [
+				// line
 				new VectorLayer({
 					source: drawSourceRef.current,
 					style: [lineStyleRef.current]
 				}),
+				// point
 				new VectorLayer({
-					source: pointSourceRef.current
+					source: drawDisplaySourceRef.current
 				})
 			]
 		}),
@@ -165,12 +167,16 @@ export const CommunityHazards = () => {
 
 	// draw the line
 	useEffect(() => {
-		drawPoints(startCoord, true);
+		syntheticDrawPoints(startCoord, true);
 	}, [startCoord]);
 
 	useEffect(() => {
-		drawPoints(endCoord, false);
+		syntheticDrawPoints(endCoord, false);
 	}, [endCoord]);
+
+	useEffect(() =>{
+		syntheticDrawPoints(srcCoord, true);
+	}, [srcCoord]);
 
 	const handleLayerUpdate = (json) => {
 		// tsunami, hurricane, flood, earthquake all has multiple layers
@@ -219,7 +225,7 @@ export const CommunityHazards = () => {
 		handleLayerUpdate(hazard);
 	};
 
-	const drawPoints = (coord, isStart=true) => {
+	const syntheticDrawPoints = (coord, isStart=true) => {
 		let point = new Point(coord);
 		let pointFeature = new Feature({
 			geometry: point,
@@ -228,35 +234,49 @@ export const CommunityHazards = () => {
 		isStart ? pointFeature.setStyle(cacheRef.current.startStyle)
 			:
 			pointFeature.setStyle(cacheRef.current.endStyle);
-		pointSourceRef.current.addFeature(pointFeature);
+		drawDisplaySourceRef.current.addFeature(pointFeature);
 	};
 
 	const handleMapClick = (event) => {
 		// Important: need to clear previous draw interaction first
 		let map = event.map;
 
+		let drawInteraction;
 		/* Add your draw interaction here */
-		let drawLineInteraction = new Draw({
-			source: drawSourceRef.current,
-			type: "LineString",
-			stopClick: true,
-			maxPoints: 2
-		});
-
-		drawLineInteraction.on("drawstart", () => {
-			drawSourceRef.current.clear();
-			pointSourceRef.current.clear();
-		});
-		drawLineInteraction.on("drawend", (event) => {
-			// drawSourceRef.current.clear();
-			const geometry = event.feature.getGeometry();
-			setStartCoord(geometry.getFirstCoordinate());
-			setEndCoord(geometry.getLastCoordinate());
-		});
-
+		if (selectedHazardType === "tornadoes"){
+			drawInteraction = new Draw({
+				source: drawSourceRef.current,
+				type: "LineString",
+				stopClick: true,
+				maxPoints: 2
+			});
+			drawInteraction.on("drawstart", () => {
+				drawSourceRef.current.clear();
+				drawDisplaySourceRef.current.clear();
+			});
+			drawInteraction.on("drawend", (event) => {
+				const geometry = event.feature.getGeometry();
+				setStartCoord(geometry.getFirstCoordinate());
+				setEndCoord(geometry.getLastCoordinate());
+			});
+		}
+		else if (selectedHazardType === "earthquakes"){
+			drawInteraction = new Draw({
+				source: drawSourceRef.current,
+				type: "Point",
+			});
+			drawInteraction.on("drawstart", () => {
+				drawSourceRef.current.clear();
+				drawDisplaySourceRef.current.clear();
+			});
+			drawInteraction.on("drawend", (event) => {
+				// drawSourceRef.current.clear();
+				const geometry = event.feature.getGeometry();
+				setSrcCoord(geometry.getFlatCoordinates());
+			});
+		}
 		// Start the draw interaction...
-		map.addInteraction(drawLineInteraction);
-
+		map.addInteraction(drawInteraction);
 	};
 
 	const fieldNames = [
