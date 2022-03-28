@@ -9,8 +9,7 @@ import {IncoreMenuItem, IncoreSelectBox} from "../../styledComponents/IncoreSele
 import {IncoreTextField} from "../../styledComponents/IncoreInput";
 import {IncoreInputLabel} from "../../styledComponents/IncoreInputLabel";
 
-import {toLonLat} from "ol/proj";
-
+import {FlatCoordToLonLat} from "../../../utils/common";
 import {createModelTornado} from "../../../utils/hazard";
 import LoadingOverlay from "react-loading-overlay";
 
@@ -48,11 +47,6 @@ const useStyles = makeStyles({
 		textAlign:"center"
 	}
 });
-
-function FlatCoordToLonLat(flatCoord) {
-	let LonLat = toLonLat(flatCoord);
-	return LonLat;
-}
 
 export default function ModelTornado(props) {
 	const {value, index, startCoordProps, endCoordProps, handleLayerUpdate, handleListUpdate, ...other} = props;
