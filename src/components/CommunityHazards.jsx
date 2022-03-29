@@ -161,15 +161,20 @@ export const CommunityHazards = () => {
 
 	// component did mount
 	useEffect(()=> {
-		listHazards(selectedHazardType);}, []
+		listHazards(selectedHazardType);}, [selectedHazardType]
 	);
 
 	useEffect(() => {
-		// refresh list of created
-		listHazards(selectedHazardType);
+		// Important: need to clear previous draw interaction first
+		drawDisplaySourceRef.current.clear();
+		mapRef.current.getInteractions().forEach((interaction) => {
+			if (interaction instanceof Draw) {
+				mapRef.current.removeInteraction(interaction);
+			}
+		});
 
 		// construct different draw interactions
-		if (selectedHazardType === "tornadoes"){
+		if (selectedHazardType === "tornadoes" && currTabIndex === 1){
 			drawInteractionRef.current = new Draw({
 				source: drawSourceRef.current,
 				type: "LineString",
@@ -186,7 +191,7 @@ export const CommunityHazards = () => {
 				setEndCoord(geometry.getLastCoordinate());
 			});
 		}
-		else if (selectedHazardType === "earthquakes"){
+		else if (selectedHazardType === "earthquakes" && currTabIndex === 1){
 			drawInteractionRef.current = new Draw({
 				source: drawSourceRef.current,
 				type: "Point",
@@ -200,18 +205,16 @@ export const CommunityHazards = () => {
 				setSrcCoord(geometry.getFlatCoordinates());
 			});
 		}
+		else{
+			drawInteractionRef.current = null;
+		}
 
-		// Important: need to clear previous draw interaction first
-		drawDisplaySourceRef.current.clear();
-		mapRef.current.getInteractions().forEach((interaction) => {
-			if (interaction instanceof Draw) {
-				mapRef.current.removeInteraction(interaction);
-			}
-		});
 		// Start the draw interaction...
-		mapRef.current.addInteraction(drawInteractionRef.current);
+		if (drawInteractionRef.current !== null) {
+			mapRef.current.addInteraction(drawInteractionRef.current);
+		}
 
-	}, [selectedHazardType]);
+	}, [selectedHazardType, currTabIndex]);
 
 	// display the line
 	useEffectAllDepsChange(() => {
@@ -225,7 +228,7 @@ export const CommunityHazards = () => {
 
 	// display the dot
 	useEffect(() =>{
-		if (srcCoord.length > 0) syntheticDrawPoints(srcCoord, true);
+		if (srcCoord.length > 0) syntheticDrawPoints(srcCoord, false);
 	}, [srcCoord]);
 
 	const handleLayerUpdate = (json) => {

@@ -14,13 +14,7 @@ import { FlatCoordToLonLat } from "../../../utils/common";
 import LoadingOverlay from "react-loading-overlay";
 
 const useStyles = makeStyles({
-	startLabel: {
-		color: "#96B712",
-		height: "18px",
-		display: "inline-block",
-		marginLeft: "11.25px"
-	},
-	endLabel: {
+	srcLabel: {
 		color: "#D63649",
 		height: "18px",
 		display: "inline-block",
@@ -168,7 +162,7 @@ export default function ModelEarthquake(props) {
 						<Box className="inputGroup">
 							<IncoreInputLabel>Earthquake Source</IncoreInputLabel>
 							<Box className={classes.coordBox}>
-								<InputLabel className={classes.startLabel}>Source: </InputLabel>
+								<InputLabel className={classes.srcLabel}>Source: </InputLabel>
 								<input placeholder="draw epicenter on map" className={classes.coordInput}
 									   value={coord}
 									   onChange={(e) => setCoord(e.target.value)}/>
