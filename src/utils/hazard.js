@@ -86,14 +86,20 @@ export async function getTornadoMetadata(tornadoId) {
 	}
 }
 
-export async function createModelEarthquake(name, description, attenuations, lat, lon, magnitude, depth, demandType, demandUnits, minLat, maxLat, minLon, maxLon) {
+export async function createModelEarthquake(name, description, attenuationModel, lat, lon, magnitude, depth, demandType, demandUnits) {
 	const endpoint = `${appConfig.hazardServiceBase}earthquakes`;
 	let formData = new FormData();
-	let tornadoMetadata = {
+
+	let minX = lat - 0.3;
+	let maxX = lat + 0.3;
+	let minY = lon - 0.3;
+	let maxY = lon + 0.3;
+
+	let eqMetadata = {
 		"name": name,
 		"description": description,
 		"eqType": "model",
-		"attenuations": {attenuations : "1.0"},
+		"attenuations": {},
 		"eqParameters": {
 			"srcLatitude": lat,
 			"srcLongitude": lon,
@@ -103,15 +109,17 @@ export async function createModelEarthquake(name, description, attenuations, lat
 		"visualizationParameters":{
 			"demandType": demandType,
 			"demandUnits": demandUnits,
-			"minX": lat - 0.3,
-			"minY": lon - 0.3,
-			"maxX": lat + 0.3,
-			"maxY": lon + 0.3,
+			"minX": minX,
+			"minY": minY,
+			"maxX": maxX,
+			"maxY": maxY,
 			"numPoints": "1025",
 			"amplifyHazard": "true"
 		}
 	};
-	formData.append("tornado", JSON.stringify(tornadoMetadata));
+	eqMetadata["attenuations"] = {attenuationModel: "1.0"};
+
+	formData.append("earthquake", JSON.stringify(eqMetadata));
 	let authHeader = getHeader();
 	let tornadoRequest = await fetch(endpoint, {
 		method: "POST",

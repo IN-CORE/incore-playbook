@@ -82,7 +82,7 @@ export function round(val, n){
 		return Math.round(val);
 	}
 	else {
-		return Number(val).toFixed(n);
+		return +(Math.round(val + `e+${n}`)  + `e-${n}`);
 	}
 }
 

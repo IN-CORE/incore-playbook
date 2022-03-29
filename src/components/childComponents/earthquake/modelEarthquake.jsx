@@ -10,7 +10,7 @@ import {IncoreTextField} from "../../styledComponents/IncoreInput";
 import {IncoreInputLabel} from "../../styledComponents/IncoreInputLabel";
 
 import {createModelEarthquake} from "../../../utils/hazard";
-import { FlatCoordToLonLat } from "../../../utils/common";
+import {FlatCoordToLonLat, round} from "../../../utils/common";
 import LoadingOverlay from "react-loading-overlay";
 
 const useStyles = makeStyles({
@@ -51,7 +51,7 @@ export default function ModelEarthquake(props) {
 	const [coord, setCoord] = useState("");
 	const [magnitude, setMagnitude] = useState(7.9);
 	const [depth, setDepth] = useState(10);
-	const [attenuations, setAttenuations] = useState("AtkinsonBoore1995");
+	const [attenuationModel, setAttenuationModel] = useState("AtkinsonBoore1995");
 	const [demandType, setDemandType] = useState("PGA");
 	const [demandUnits, setDemandUnits] = useState("g");
 	const [disabled, setDisabled] = useState(true);
@@ -68,16 +68,16 @@ export default function ModelEarthquake(props) {
 	// update start and end based on map click (parent prop change)
 	useEffect(() => {
 		if (srcCoordProps.length > 0) {
-			setCoord(`${FlatCoordToLonLat(srcCoordProps)[1].toFixed(4)},${FlatCoordToLonLat(srcCoordProps)[0].toFixed(4)}`);
+			setCoord(`${round(FlatCoordToLonLat(srcCoordProps)[1], 4)},${round(FlatCoordToLonLat(srcCoordProps)[0], 4)}`);
 		}
 	}, [srcCoordProps]);
 
 	const onSave = async () => {
 		setLoading(true);
-		let lat = coord.split(",")[0];
-		let lon = coord.split(",")[1];
+		let lat = round(FlatCoordToLonLat(srcCoordProps)[1], 4);
+		let lon = round(FlatCoordToLonLat(srcCoordProps)[0], (4));
 
-		const eqJson = await createModelEarthquake(name, description, attenuations, lat, lon, magnitude, depth, demandType, demandUnits, minLat, maxLat, minLon, maxLon);
+		const eqJson = await createModelEarthquake(name, description, attenuationModel, lat, lon, magnitude, depth, demandType, demandUnits);
 		if (eqJson !== {}){
 			handleLayerUpdate(eqJson);
 			handleListUpdate("earthquakes");
@@ -121,8 +121,8 @@ export default function ModelEarthquake(props) {
 						</Box>
 						<Box className="inputGroup">
 							<IncoreInputLabel>Attenuation Model</IncoreInputLabel>
-							<IncoreSelectBox labelId="label" id="select" variant="outlined" defaultValue={attenuations}
-											 onChange={(e) => setAttenuations(e.target.value)}>
+							<IncoreSelectBox labelId="label" id="select" variant="outlined" defaultValue={attenuationModel}
+											 onChange={(e) => setAttenuationModel(e.target.value)}>
 								<IncoreMenuItem value="Toro1997" key="Toro1997">Toro 1997</IncoreMenuItem>
 								<IncoreMenuItem value="AtkinsonBoore1995" key="AtkinsonBoore1995">
 									AtkinsonBoore 1995</IncoreMenuItem>
