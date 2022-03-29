@@ -88,17 +88,15 @@ export const CommunityHazards = () => {
 	const drawSourceRef = React.useRef(new VectorSource({wrapX: false}));
 	const drawDisplaySourceRef = React.useRef(new VectorSource({wrapX: false}));
 	const drawInteractionRef = React.useRef();
-	const lineStyleRef = React.useRef(new Style({
-		stroke: new Stroke({
-			color: "#979797",
-			width: 3,
-			lineDash: [.1, 5] //or other combinations
-		})
-	}));
-
-	// Caches the control
-	const layerRef = React.useRef({
-		startStyle: new Style({
+	const styleRef = React.useRef({
+		lineStyle: new Style({
+			stroke: new Stroke({
+				color: "#979797",
+				width: 3,
+				lineDash: [.1, 5] //or other combinations
+			})
+		}),
+		startPointStyle: new Style({
 			image: new Circle({
 				radius: 8,
 				fill: new Fill({
@@ -106,7 +104,7 @@ export const CommunityHazards = () => {
 				})
 			})
 		}),
-		endStyle: new Style({
+		endPointStyle:new Style({
 			image: new Circle({
 				radius: 8,
 				fill: new Fill({
@@ -114,6 +112,13 @@ export const CommunityHazards = () => {
 				})
 			})
 		}),
+		invisibleStyle: new Style({
+			visibility: "hidden"
+		}),
+	});
+
+	// Caches the control
+	const layerRef = React.useRef({
 		basemaps: new GroupLayer({
 			title: "Base Maps",
 			layers: [
@@ -140,11 +145,12 @@ export const CommunityHazards = () => {
 		drawlayer: new GroupLayer({
 			title: "Draw Layer",
 			layers: [
-				// line
+				// interaction layer
 				new VectorLayer({
+					style: styleRef.current.invisibleStyle,
 					source: drawSourceRef.current
 				}),
-				// point
+				// display layer
 				new VectorLayer({
 					source: drawDisplaySourceRef.current
 				})
@@ -189,6 +195,8 @@ export const CommunityHazards = () => {
 				const geometry = event.feature.getGeometry();
 				setStartCoord(geometry.getFirstCoordinate());
 				setEndCoord(geometry.getLastCoordinate());
+				// delete default draw feature
+				// drawSourceRef.current.removeFeature(event.feature);
 			});
 		}
 		else if (selectedHazardType === "earthquakes" && currTabIndex === 1){
@@ -203,6 +211,8 @@ export const CommunityHazards = () => {
 			drawInteractionRef.current.on("drawend", (event) => {
 				const geometry = event.feature.getGeometry();
 				setSrcCoord(geometry.getFlatCoordinates());
+				// delete default draw feature
+				// drawSourceRef.current.removeFeature(event.feature);
 			});
 		}
 		else{
@@ -284,9 +294,9 @@ export const CommunityHazards = () => {
 			geometry: point,
 			name: "point",
 		});
-		isStart ? pointFeature.setStyle(layerRef.current.startStyle)
+		isStart ? pointFeature.setStyle(styleRef.current.startPointStyle)
 			:
-			pointFeature.setStyle(layerRef.current.endStyle);
+			pointFeature.setStyle(styleRef.current.endPointStyle);
 		drawDisplaySourceRef.current.addFeature(pointFeature);
 	};
 
@@ -296,7 +306,7 @@ export const CommunityHazards = () => {
 			geometry: lineString,
 			name: "Line"
 		});
-		lineFeature.setStyle(lineStyleRef.current);
+		lineFeature.setStyle(styleRef.current.lineStyle);
 		drawDisplaySourceRef.current.addFeature(lineFeature);
 	};
 
