@@ -36,6 +36,7 @@ import ModelEarthquake from "./childComponents/earthquake/modelEarthquake";
 import DatasetFlood from "./childComponents/flood/datasetFlood";
 import DatasetTsunami from "./childComponents/tsuanmi/datasetTsunami";
 import {LineString} from "ol/geom";
+import {useEffectAllDepsChange} from "./customHooks/useEffectAllDeps";
 
 const useStyles = makeStyles({
 	tabDiv: {
@@ -83,6 +84,7 @@ export const CommunityHazards = () => {
 
 	const [selectedHazardType, setSelectedHazardType] = useState(allowedHazardTypes[0]);
 
+	// Cache the drawing
 	const drawSourceRef = React.useRef(new VectorSource({wrapX: false}));
 	const drawDisplaySourceRef = React.useRef(new VectorSource({wrapX: false}));
 	const drawInteractionRef = React.useRef();
@@ -95,7 +97,7 @@ export const CommunityHazards = () => {
 	}));
 
 	// Caches the control
-	const cacheRef = React.useRef({
+	const layerRef = React.useRef({
 		startStyle: new Style({
 			image: new Circle({
 				radius: 8,
@@ -212,15 +214,18 @@ export const CommunityHazards = () => {
 	}, [selectedHazardType]);
 
 	// display the line
-	useEffect(() => {
-		syntheticDrawPoints(startCoord, true);
-		syntheticDrawPoints(endCoord, false);
-		syntheticDrawLine(startCoord, endCoord);
-	}, [startCoord, endCoord]);
+	useEffectAllDepsChange(() => {
+		if (startCoord.length > 0 && endCoord.length > 0){
+			syntheticDrawPoints(startCoord, true);
+			syntheticDrawPoints(endCoord, false);
+			syntheticDrawLine(startCoord, endCoord);
+		}
+
+	}, [startCoord, endCoord]); // this is triggered by any of it changes
 
 	// display the dot
 	useEffect(() =>{
-		syntheticDrawPoints(srcCoord, true);
+		if (srcCoord.length > 0) syntheticDrawPoints(srcCoord, true);
 	}, [srcCoord]);
 
 	const handleLayerUpdate = (json) => {
@@ -242,7 +247,7 @@ export const CommunityHazards = () => {
 					opacity: 1
 				});
 				// add created hazard to this created group layer
-				cacheRef.current.tilelayer.getLayers().push(HazardMapLayer);
+				layerRef.current.tilelayer.getLayers().push(HazardMapLayer);
 			});
 		}
 		// tornado has single layer
@@ -262,7 +267,7 @@ export const CommunityHazards = () => {
 				opacity: 1
 			});
 			// add created hazard to this created group layer
-			cacheRef.current.tilelayer.getLayers().push(HazardMapLayer);
+			layerRef.current.tilelayer.getLayers().push(HazardMapLayer);
 		}
 	};
 
@@ -276,9 +281,9 @@ export const CommunityHazards = () => {
 			geometry: point,
 			name: "point",
 		});
-		isStart ? pointFeature.setStyle(cacheRef.current.startStyle)
+		isStart ? pointFeature.setStyle(layerRef.current.startStyle)
 			:
-			pointFeature.setStyle(cacheRef.current.endStyle);
+			pointFeature.setStyle(layerRef.current.endStyle);
 		drawDisplaySourceRef.current.addFeature(pointFeature);
 	};
 
@@ -448,9 +453,9 @@ export const CommunityHazards = () => {
 									extent={applyTransform(mapConfig.MAP_BOUNDS, getTransform("EPSG:4326", "EPSG:3857"))}
 									center={fromLonLat(mapConfig.MAP_CENTER)}
 									layers={[
-										cacheRef.current.basemaps,
-										cacheRef.current.drawlayer,
-										cacheRef.current.tilelayer
+										layerRef.current.basemaps,
+										layerRef.current.drawlayer,
+										layerRef.current.tilelayer
 									]}
 									layerSwitcherOptions={{}}
 									updateMap={(map) => {
