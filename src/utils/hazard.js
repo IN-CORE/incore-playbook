@@ -104,10 +104,10 @@ export async function createModelEarthquake(name, description, attenuationModel,
 		"visualizationParameters":{
 			"demandType": demandType,
 			"demandUnits": demandUnits,
-			"minX": round(lon-0.3, 4),
-			"minY": round(lat-0.3, 4),
-			"maxX": round(lon+0.3, 4),
-			"maxY": round(lat-0.3, 4),
+			"minX": round(lon-0.1, 4),
+			"minY": round(lat-0.1, 4),
+			"maxX": round(lon+0.1, 4),
+			"maxY": round(lat+0.1, 4),
 			"numPoints": "1025",
 			"amplifyHazard": "true"
 		}
