@@ -86,7 +86,7 @@ export async function getTornadoMetadata(tornadoId) {
 	}
 }
 
-export async function createModelEarthquake(name, description, attenuationModel, lat, lon, magnitude, depth, demandType, demandUnits) {
+export async function createModelEarthquake(name, description, lat, lon, magnitude, depth, demandType, demandUnits) {
 	const endpoint = `${appConfig.hazardServiceBase}earthquakes`;
 	let formData = new FormData();
 
@@ -94,7 +94,7 @@ export async function createModelEarthquake(name, description, attenuationModel,
 		"name": name,
 		"description": description,
 		"eqType": "model",
-		"attenuations": {},
+		"attenuations": {"AtkinsonBoore1995": 1.0},
 		"eqParameters": {
 			"srcLatitude": lat,
 			"srcLongitude": lon,
@@ -112,7 +112,6 @@ export async function createModelEarthquake(name, description, attenuationModel,
 			"amplifyHazard": "true"
 		}
 	};
-	eqMetadata["attenuations"][attenuationModel] = "1.0";
 
 	formData.append("earthquake", JSON.stringify(eqMetadata));
 	let authHeader = getHeader();

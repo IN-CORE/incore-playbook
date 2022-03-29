@@ -244,6 +244,7 @@ export const CommunityHazards = () => {
 	const handleLayerUpdate = (json) => {
 		let layerId;
 		let layerTitle;
+		let style;
 		if ( "rasterDataset" in json && json["rasterDataset"]["datasetId"] !== undefined){
 			layerId = json["rasterDataset"]["datasetId"];
 			layerTitle = `${json["name"]} - ${json["rasterDataset"]["demandType"]}`;
@@ -259,11 +260,12 @@ export const CommunityHazards = () => {
 		else {
 			layerId = json["datasetId"];
 			layerTitle = json["name"];
+			style = "incore:tornado";
 		}
 		if (layerId && layerTitle) {
 			const source = new TileWMS({
 				url: `${appConfig.geoServerWMS}`,
-				params: {LAYERS: layerId},
+				params: {LAYERS: layerId, STYLES: style},
 				ratio: 1,
 				serverType: "geoserver"
 			});

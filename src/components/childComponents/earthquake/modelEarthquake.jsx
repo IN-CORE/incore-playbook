@@ -51,7 +51,6 @@ export default function ModelEarthquake(props) {
 	const [coord, setCoord] = useState("");
 	const [magnitude, setMagnitude] = useState(7.9);
 	const [depth, setDepth] = useState(10);
-	const [attenuationModel, setAttenuationModel] = useState("AtkinsonBoore1995");
 	const [demandType, setDemandType] = useState("PGA");
 	const [demandUnits, setDemandUnits] = useState("g");
 	const [disabled, setDisabled] = useState(true);
@@ -77,7 +76,7 @@ export default function ModelEarthquake(props) {
 		let lat = round(FlatCoordToLonLat(srcCoordProps)[1], 4);
 		let lon = round(FlatCoordToLonLat(srcCoordProps)[0], (4));
 
-		const eqJson = await createModelEarthquake(name, description, attenuationModel, lat, lon, magnitude, depth, demandType, demandUnits);
+		const eqJson = await createModelEarthquake(name, description, lat, lon, magnitude, depth, demandType, demandUnits);
 		if (eqJson !== {}){
 			handleLayerUpdate(eqJson);
 			handleListUpdate("earthquakes");
@@ -118,21 +117,6 @@ export default function ModelEarthquake(props) {
 							<IncoreInputLabel>Depth</IncoreInputLabel>
 							<IncoreTextField value={depth} variant="outlined"
 											 onChange={(e) => setDepth(e.target.value)}/>
-						</Box>
-						<Box className="inputGroup">
-							<IncoreInputLabel>Attenuation Model</IncoreInputLabel>
-							<IncoreSelectBox labelId="label" id="select" variant="outlined" defaultValue={attenuationModel}
-											 onChange={(e) => setAttenuationModel(e.target.value)}>
-								<IncoreMenuItem value="Toro1997" key="Toro1997">Toro 1997</IncoreMenuItem>
-								<IncoreMenuItem value="AtkinsonBoore1995" key="AtkinsonBoore1995">
-									AtkinsonBoore 1995</IncoreMenuItem>
-								<IncoreMenuItem value="CampbellBozorgnia2014" key="CampbellBozorgnia2014">
-									CampbellBozorgnia 2014</IncoreMenuItem>
-								<IncoreMenuItem value="AbrahamsonSilvaKamai2014" key="AbrahamsonSilvaKamai2014">
-									AbrahamsonSilvaKamai 2014</IncoreMenuItem>
-								<IncoreMenuItem value="ChiouYoungs2014" key="ChiouYoungs2014">
-									ChiouYoungs 2014</IncoreMenuItem>
-							</IncoreSelectBox>
 						</Box>
 						<Box className="inputGroup">
 							<IncoreInputLabel>Demand Type</IncoreInputLabel>
