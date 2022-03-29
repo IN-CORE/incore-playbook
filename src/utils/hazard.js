@@ -1,5 +1,5 @@
 import appConfig from "../globals";
-import {dataURItoFile, getHeader} from "./common";
+import {dataURItoFile, getHeader, round} from "./common";
 
 export async function createModelTornado(name, description, rating, startLat, startLon, endLat, endLon) {
 	const endpoint = `${appConfig.hazardServiceBase}tornadoes`;
@@ -90,11 +90,6 @@ export async function createModelEarthquake(name, description, attenuationModel,
 	const endpoint = `${appConfig.hazardServiceBase}earthquakes`;
 	let formData = new FormData();
 
-	let minX = lat - 0.3;
-	let maxX = lat + 0.3;
-	let minY = lon - 0.3;
-	let maxY = lon + 0.3;
-
 	let eqMetadata = {
 		"name": name,
 		"description": description,
@@ -109,15 +104,15 @@ export async function createModelEarthquake(name, description, attenuationModel,
 		"visualizationParameters":{
 			"demandType": demandType,
 			"demandUnits": demandUnits,
-			"minX": minX,
-			"minY": minY,
-			"maxX": maxX,
-			"maxY": maxY,
+			"minX": round(lon-0.3, 4),
+			"minY": round(lat-0.3, 4),
+			"maxX": round(lon+0.3, 4),
+			"maxY": round(lat-0.3, 4),
 			"numPoints": "1025",
 			"amplifyHazard": "true"
 		}
 	};
-	eqMetadata["attenuations"] = {attenuationModel: "1.0"};
+	eqMetadata["attenuations"][attenuationModel] = "1.0";
 
 	formData.append("earthquake", JSON.stringify(eqMetadata));
 	let authHeader = getHeader();
