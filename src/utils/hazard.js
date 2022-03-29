@@ -1,5 +1,5 @@
 import appConfig from "../globals";
-import {dataURItoFile, getHeader} from "./common";
+import {dataURItoFile, getHeader, round} from "./common";
 
 export async function createModelTornado(name, description, rating, startLat, startLon, endLat, endLon) {
 	const endpoint = `${appConfig.hazardServiceBase}tornadoes`;
@@ -77,6 +77,53 @@ export async function getTornadoMetadata(tornadoId) {
 	if (tornadoRequest.status === 200) {
 		return tornadoRequest.json();
 
+	} else if (tornadoRequest.status === 401) {
+		// TODO handle error
+		return {};
+	} else {
+		// TODO handle error
+		return {};
+	}
+}
+
+export async function createModelEarthquake(name, description, lat, lon, magnitude, depth, demandType, demandUnits) {
+	const endpoint = `${appConfig.hazardServiceBase}earthquakes`;
+	let formData = new FormData();
+
+	let eqMetadata = {
+		"name": name,
+		"description": description,
+		"eqType": "model",
+		"attenuations": {"AtkinsonBoore1995": 1.0},
+		"eqParameters": {
+			"srcLatitude": lat,
+			"srcLongitude": lon,
+			"magnitude": magnitude,
+			"depth": depth
+		},
+		"visualizationParameters":{
+			"demandType": demandType,
+			"demandUnits": demandUnits,
+			"minX": round(lon-0.1, 4),
+			"minY": round(lat-0.1, 4),
+			"maxX": round(lon+0.1, 4),
+			"maxY": round(lat+0.1, 4),
+			"numPoints": "1025",
+			"amplifyHazard": "true"
+		}
+	};
+
+	formData.append("earthquake", JSON.stringify(eqMetadata));
+	let authHeader = getHeader();
+	let tornadoRequest = await fetch(endpoint, {
+		method: "POST",
+		mode: "cors",
+		headers: authHeader,
+		body: formData,
+	});
+
+	if (tornadoRequest.status === 200) {
+		return tornadoRequest.json();
 	} else if (tornadoRequest.status === 401) {
 		// TODO handle error
 		return {};

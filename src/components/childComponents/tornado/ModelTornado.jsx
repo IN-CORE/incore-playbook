@@ -9,8 +9,7 @@ import {IncoreMenuItem, IncoreSelectBox} from "../../styledComponents/IncoreSele
 import {IncoreTextField} from "../../styledComponents/IncoreInput";
 import {IncoreInputLabel} from "../../styledComponents/IncoreInputLabel";
 
-import {toLonLat} from "ol/proj";
-
+import {FlatCoordToLonLat, round} from "../../../utils/common";
 import {createModelTornado} from "../../../utils/hazard";
 import LoadingOverlay from "react-loading-overlay";
 
@@ -49,11 +48,6 @@ const useStyles = makeStyles({
 	}
 });
 
-function FlatCoordToLonLat(flatCoord) {
-	let LonLat = toLonLat(flatCoord);
-	return LonLat;
-}
-
 export default function ModelTornado(props) {
 	const {value, index, startCoordProps, endCoordProps, handleLayerUpdate, handleListUpdate, ...other} = props;
 	const classes = useStyles();
@@ -76,10 +70,10 @@ export default function ModelTornado(props) {
 	// update start and end based on map click (parent prop change)
 	useEffect(() => {
 		if (startCoordProps.length > 0) {
-			setStartCoord(`${FlatCoordToLonLat(startCoordProps)[1].toFixed(4)},${FlatCoordToLonLat(startCoordProps)[0].toFixed(4)}`);
+			setStartCoord(`${round(FlatCoordToLonLat(startCoordProps)[1], 4)}, ${round(FlatCoordToLonLat(startCoordProps)[0], 4)}`);
 		}
 		if (endCoordProps.length > 0) {
-			setEndCoord(`${FlatCoordToLonLat(endCoordProps)[1].toFixed(4)},${FlatCoordToLonLat(endCoordProps)[0].toFixed(4)}`);
+			setEndCoord(`${round(FlatCoordToLonLat(endCoordProps)[1], 4)},${round(FlatCoordToLonLat(endCoordProps)[0], 4)}`);
 		}
 	}, [startCoordProps, endCoordProps]);
 

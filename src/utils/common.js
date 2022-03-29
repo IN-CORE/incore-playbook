@@ -2,6 +2,7 @@ import Cookies from "universal-cookie";
 import jwt_decode from "jwt-decode";
 import appConfig from "../globals";
 import JSSoup from "jssoup";
+import {toLonLat} from "ol/proj";
 
 const cookies = new Cookies();
 
@@ -81,7 +82,7 @@ export function round(val, n){
 		return Math.round(val);
 	}
 	else {
-		return Number(val).toFixed(n);
+		return +(Math.round(val + `e+${n}`)  + `e-${n}`);
 	}
 }
 
@@ -121,4 +122,10 @@ export function dataURItoFile(dataURI, filename="") {
 	}
 	const blob = new Blob([new Uint8Array(array)], {type: mime});
 	return new File([blob], filename, {type: mime, lastModified: new Date()});
+}
+
+
+export function FlatCoordToLonLat(flatCoord) {
+	let LonLat = toLonLat(flatCoord);
+	return LonLat;
 }

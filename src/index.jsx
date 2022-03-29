@@ -15,7 +15,7 @@ require("./public/favicon.ico");
 
 const store = configureStore();
 store.dispatch(updateMapConfig(defaultMapConfig));
-store.dispatch(setAllowedHazardTypes(["earthquakes", "tornadoes"]));
+store.dispatch(setAllowedHazardTypes(["earthquakes", "tornadoes", "tsunamis", "hurricanes", "floods"]));
 
 const theme = createMuiTheme({
 

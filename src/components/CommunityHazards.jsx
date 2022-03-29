@@ -32,8 +32,11 @@ import StepInfo from "./StepInfo";
 import {fetchHazards} from "../actions/hazards";
 import DatasetHurricane from "./childComponents/hurricane/datasetHurricane";
 import DatasetEarthquake from "./childComponents/earthquake/datasetEarthquake";
+import ModelEarthquake from "./childComponents/earthquake/modelEarthquake";
 import DatasetFlood from "./childComponents/flood/datasetFlood";
 import DatasetTsunami from "./childComponents/tsuanmi/datasetTsunami";
+import {LineString} from "ol/geom";
+import {useEffectAllDepsChange} from "./customHooks/useEffectAllDeps";
 
 const useStyles = makeStyles({
 	tabDiv: {
@@ -62,8 +65,12 @@ export const CommunityHazards = () => {
 	const classes = useStyles();
 
 	const [currTabIndex, setCurrTabIndex] = useState(0);
+	// for drawing tornado path
 	const [startCoord, setStartCoord] = useState([]);
 	const [endCoord, setEndCoord] = useState([]);
+
+	// for draw eq epicenter
+	const [srcCoord, setSrcCoord] = useState([]);
 
 	const dispatch = useDispatch();
 	const listHazards = (hazardType, limit, offset) => dispatch(fetchHazards(hazardType, limit, offset));
@@ -77,19 +84,19 @@ export const CommunityHazards = () => {
 
 	const [selectedHazardType, setSelectedHazardType] = useState(allowedHazardTypes[0]);
 
+	// Cache the drawing
 	const drawSourceRef = React.useRef(new VectorSource({wrapX: false}));
-	const pointSourceRef = React.useRef(new VectorSource({wrapX: false}));
-	const lineStyleRef = React.useRef(new Style({
-		stroke: new Stroke({
-			color: "#979797",
-			width: 3,
-			lineDash: [.1, 5] //or other combinations
-		})
-	}));
-
-	// Caches the control
-	const cacheRef = React.useRef({
-		startStyle: new Style({
+	const drawDisplaySourceRef = React.useRef(new VectorSource({wrapX: false}));
+	const drawInteractionRef = React.useRef();
+	const styleRef = React.useRef({
+		lineStyle: new Style({
+			stroke: new Stroke({
+				color: "#979797",
+				width: 3,
+				lineDash: [.1, 5] //or other combinations
+			})
+		}),
+		startPointStyle: new Style({
 			image: new Circle({
 				radius: 8,
 				fill: new Fill({
@@ -97,7 +104,7 @@ export const CommunityHazards = () => {
 				})
 			})
 		}),
-		endStyle: new Style({
+		endPointStyle:new Style({
 			image: new Circle({
 				radius: 8,
 				fill: new Fill({
@@ -105,6 +112,13 @@ export const CommunityHazards = () => {
 				})
 			})
 		}),
+		invisibleStyle: new Style({
+			visibility: "hidden"
+		}),
+	});
+
+	// Caches the control
+	const layerRef = React.useRef({
 		basemaps: new GroupLayer({
 			title: "Base Maps",
 			layers: [
@@ -131,12 +145,14 @@ export const CommunityHazards = () => {
 		drawlayer: new GroupLayer({
 			title: "Draw Layer",
 			layers: [
+				// interaction layer
 				new VectorLayer({
-					source: drawSourceRef.current,
-					style: [lineStyleRef.current]
+					style: styleRef.current.invisibleStyle,
+					source: drawSourceRef.current
 				}),
+				// display layer
 				new VectorLayer({
-					source: pointSourceRef.current
+					source: drawDisplaySourceRef.current
 				})
 			]
 		}),
@@ -151,51 +167,105 @@ export const CommunityHazards = () => {
 
 	// component did mount
 	useEffect(()=> {
-		listHazards(selectedHazardType);}, []
+		listHazards(selectedHazardType);}, [selectedHazardType]
 	);
 
 	useEffect(() => {
-		listHazards(selectedHazardType);
-	}, [selectedHazardType]);
+		// Important: need to clear previous draw interaction first
+		drawDisplaySourceRef.current.clear();
+		mapRef.current.getInteractions().forEach((interaction) => {
+			if (interaction instanceof Draw) {
+				mapRef.current.removeInteraction(interaction);
+			}
+		});
 
-	// draw the line
-	useEffect(() => {
-		drawPoints(startCoord, true);
-	}, [startCoord]);
+		// construct different draw interactions
+		if (selectedHazardType === "tornadoes" && currTabIndex === 1){
+			drawInteractionRef.current = new Draw({
+				source: drawSourceRef.current,
+				type: "LineString",
+				stopClick: true,
+				maxPoints: 2
+			});
+			drawInteractionRef.current.on("drawstart", () => {
+				drawSourceRef.current.clear();
+				drawDisplaySourceRef.current.clear();
+			});
+			drawInteractionRef.current.on("drawend", (event) => {
+				const geometry = event.feature.getGeometry();
+				setStartCoord(geometry.getFirstCoordinate());
+				setEndCoord(geometry.getLastCoordinate());
+				// delete default draw feature
+				// drawSourceRef.current.removeFeature(event.feature);
+			});
+		}
+		else if (selectedHazardType === "earthquakes" && currTabIndex === 1){
+			drawInteractionRef.current = new Draw({
+				source: drawSourceRef.current,
+				type: "Point",
+			});
+			drawInteractionRef.current.on("drawstart", () => {
+				drawSourceRef.current.clear();
+				drawDisplaySourceRef.current.clear();
+			});
+			drawInteractionRef.current.on("drawend", (event) => {
+				const geometry = event.feature.getGeometry();
+				setSrcCoord(geometry.getFlatCoordinates());
+				// delete default draw feature
+				// drawSourceRef.current.removeFeature(event.feature);
+			});
+		}
+		else{
+			drawInteractionRef.current = null;
+		}
 
-	useEffect(() => {
-		drawPoints(endCoord, false);
-	}, [endCoord]);
+		// Start the draw interaction...
+		if (drawInteractionRef.current !== null) {
+			mapRef.current.addInteraction(drawInteractionRef.current);
+		}
+
+	}, [selectedHazardType, currTabIndex]);
+
+	// display the line
+	useEffectAllDepsChange(() => {
+		if (startCoord.length > 0 && endCoord.length > 0){
+			syntheticDrawPoints(startCoord, true);
+			syntheticDrawPoints(endCoord, false);
+			syntheticDrawLine(startCoord, endCoord);
+		}
+
+	}, [startCoord, endCoord]); // this is triggered by any of it changes
+
+	// display the dot
+	useEffect(() =>{
+		if (srcCoord.length > 0) syntheticDrawPoints(srcCoord, false);
+	}, [srcCoord]);
 
 	const handleLayerUpdate = (json) => {
+		let layerId;
+		let layerTitle;
+		let style;
+		if ( "rasterDataset" in json && json["rasterDataset"]["datasetId"] !== undefined){
+			layerId = json["rasterDataset"]["datasetId"];
+			layerTitle = `${json["name"]} - ${json["rasterDataset"]["demandType"]}`;
+		}
 		// tsunami, hurricane, flood, earthquake all has multiple layers
-		if ( "hazardDatasets" in json && json["hazardDatasets"].length > 0){
+		else if ( "hazardDatasets" in json && json["hazardDatasets"].length > 0){
 			json["hazardDatasets"].map((hazardDataset) =>{
-				let layerId = hazardDataset["datasetId"];
-				let layerTitle = hazardDataset["demandType"];
-				const source = new TileWMS({
-					url: `${appConfig.geoServerWMS}`,
-					params: {LAYERS: layerId},
-					ratio: 1,
-					serverType: "geoserver"
-				});
-				let HazardMapLayer = new TileLayer({
-					title: layerTitle,
-					source: source,
-					zIndex: 1,
-					opacity: 1
-				});
-				// add created hazard to this created group layer
-				cacheRef.current.tilelayer.getLayers().push(HazardMapLayer);
+				layerId = hazardDataset["datasetId"];
+				layerTitle = `${json["name"]} - ${hazardDataset["demandType"]}`;
 			});
 		}
 		// tornado has single layer
 		else {
-			let layerId = json["datasetId"];
-			let layerTitle = json["name"];
+			layerId = json["datasetId"];
+			layerTitle = json["name"];
+			style = "incore:tornado";
+		}
+		if (layerId && layerTitle) {
 			const source = new TileWMS({
 				url: `${appConfig.geoServerWMS}`,
-				params: {LAYERS: layerId, STYLES: "incore:tornado"},
+				params: {LAYERS: layerId, STYLES: style},
 				ratio: 1,
 				serverType: "geoserver"
 			});
@@ -206,7 +276,7 @@ export const CommunityHazards = () => {
 				opacity: 1
 			});
 			// add created hazard to this created group layer
-			cacheRef.current.tilelayer.getLayers().push(HazardMapLayer);
+			layerRef.current.tilelayer.getLayers().push(HazardMapLayer);
 		}
 	};
 
@@ -214,44 +284,26 @@ export const CommunityHazards = () => {
 		handleLayerUpdate(hazard);
 	};
 
-	const drawPoints = (coord, isStart=true) => {
+	const syntheticDrawPoints = (coord, isStart=true) => {
 		let point = new Point(coord);
 		let pointFeature = new Feature({
 			geometry: point,
 			name: "point",
 		});
-		isStart ? pointFeature.setStyle(cacheRef.current.startStyle)
+		isStart ? pointFeature.setStyle(styleRef.current.startPointStyle)
 			:
-			pointFeature.setStyle(cacheRef.current.endStyle);
-		pointSourceRef.current.addFeature(pointFeature);
+			pointFeature.setStyle(styleRef.current.endPointStyle);
+		drawDisplaySourceRef.current.addFeature(pointFeature);
 	};
 
-	const handleMapClick = (event) => {
-		// Important: need to clear previous draw interaction first
-		let map = event.map;
-
-		/* Add your draw interaction here */
-		let drawLineInteraction = new Draw({
-			source: drawSourceRef.current,
-			type: "LineString",
-			stopClick: true,
-			maxPoints: 2
+	const syntheticDrawLine = (start, end ) => {
+		let lineString = new LineString([start, end]);
+		let lineFeature = new Feature({
+			geometry: lineString,
+			name: "Line"
 		});
-
-		drawLineInteraction.on("drawstart", () => {
-			drawSourceRef.current.clear();
-			pointSourceRef.current.clear();
-		});
-		drawLineInteraction.on("drawend", (event) => {
-			// drawSourceRef.current.clear();
-			const geometry = event.feature.getGeometry();
-			setStartCoord(geometry.getFirstCoordinate());
-			setEndCoord(geometry.getLastCoordinate());
-		});
-
-		// Start the draw interaction...
-		map.addInteraction(drawLineInteraction);
-
+		lineFeature.setStyle(styleRef.current.lineStyle);
+		drawDisplaySourceRef.current.addFeature(lineFeature);
 	};
 
 	const fieldNames = [
@@ -347,7 +399,7 @@ export const CommunityHazards = () => {
 									  onChange={(e, value) => {setCurrTabIndex(value);}}>
 									{/*only certain hazard type has model based creation*/}
 									<Tab label="Upload a Hazard Dataset" className={classes.tab}/>
-									{selectedHazardType === "tornadoes" ?
+									{selectedHazardType === "tornadoes"  || selectedHazardType === "earthquakes" ?
 										<Tab label="Create a Hazard" className={classes.tab}/> :
 										null
 									}
@@ -360,6 +412,10 @@ export const CommunityHazards = () => {
 												<DatasetEarthquake value={currTabIndex} index={0}
 															   handleLayerUpdate={handleLayerUpdate}
 															   handleListUpdate={listHazards}/>
+												<ModelEarthquake value={currTabIndex} index={1}
+																 handleLayerUpdate={handleLayerUpdate}
+																 handleListUpdate={listHazards}
+																 srcCoordProps={srcCoord}/>
 											</>);
 										}
 										else if (selectedHazardType === "tornadoes") {
@@ -406,16 +462,13 @@ export const CommunityHazards = () => {
 									extent={applyTransform(mapConfig.MAP_BOUNDS, getTransform("EPSG:4326", "EPSG:3857"))}
 									center={fromLonLat(mapConfig.MAP_CENTER)}
 									layers={[
-										cacheRef.current.basemaps,
-										cacheRef.current.drawlayer,
-										cacheRef.current.tilelayer
+										layerRef.current.basemaps,
+										layerRef.current.drawlayer,
+										layerRef.current.tilelayer
 									]}
 									layerSwitcherOptions={{}}
 									updateMap={(map) => {
 										mapRef.current = map;
-									}}
-									events={{
-										"click": handleMapClick
 									}}
 								/>
 							</Container>
