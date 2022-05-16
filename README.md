@@ -15,6 +15,12 @@ Build: `yarn run build` or `npm run build`
 
 **Example of use this repository in child repositories**
 
+1. `yarn link` to register the incore-playbook
+2. Go to the child repository
+3. `npm install` in child repository and link it by `yarn link incore-playbook`
+4. `export DEPLOY_ENV=development` and `npm start`
+5. Note: you should be able to set map configuration and allowed hazard types here: https://github.com/IN-CORE/Joplin-Playbook/blob/main/src/index.jsx
+
 ```
 import render from "incore-playbook/src/render";
 import baseReducer from "incore-playbook/src/reducers";
