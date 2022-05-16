@@ -68,7 +68,7 @@ export const BuiltEnvironment = () => {
 	const [datasetType, setDatasetType] = useState("");
 	// use to display dataset type menus
 	// social ecnomic datasets are a collection of various dataset types
-	const [category, setCategory] = useState("buildings");  // building, EPF, interdependency network, socioeconomics input
+	const [category, setCategory] = useState("");  // building, EPF, interdependency network, socioeconomics input
 	const [disabled, setDisabled] = useState(true);
 	const [loading, setLoading] = useState(false);
 	const [uploadModalStatus, setUploadModalStatus] = useState(false);

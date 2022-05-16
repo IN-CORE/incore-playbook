@@ -70,10 +70,14 @@ const useStyles = makeStyles({
 });
 
 export default function ViewResult(props) {
-	const {value, index, listHazards, tornadoes, listDatasets, buildings, epfs, interdNetworks,
-		sectorShocks, huas, blockGroups, valueLosses, getExecutionList, gotoViewResultTab, ...other} = props;
+	const {value, index, listHazards, listDatasets,
+		tornadoes, earthquakes, hurricanes, tsunamis, floods,
+		buildings, epfs, interdNetworks, sectorShocks, huas, blockGroups, valueLosses,
+		getExecutionList, gotoViewResultTab, ...other} = props;
 
 	const assetConfig = useSelector((state) => state.config.assetConfig);
+	const alllowedHazardTypes = useSelector((state) => state.config.allowedHazardTypes);
+	const allowedDataTypes = useSelector((state) => state.config.allowedDataTypes);
 
 	const [title, setTitle] = useState("");
 	const [description, setDescription] = useState("");
@@ -85,7 +89,10 @@ export default function ViewResult(props) {
 	const [selectedHuaId, setHuaId] = useState("");
 	const [selectedBlockGroupId, setBlockGroupId] = useState("");
 	const [selectedValueLossId, setValueLossId] = useState("");
+
+	// fixme
 	const [selectedTornadoId, setTornadoId] = useState("");
+
 	const [disabled, setDisabled] = useState(true);
 
 	// load datasets and tornadoes
@@ -99,7 +106,9 @@ export default function ViewResult(props) {
 		});
 
 		// hazard
-		listHazards("tornadoes");
+		alllowedHazardTypes.map((hazardType) =>{
+			listHazards(hazardType);
+		});
 	}, []);
 
 	// form check
@@ -308,24 +317,65 @@ export default function ViewResult(props) {
 							<NavLink to="/community-environment"
 								  className={classes.explanationLink}>click here</NavLink>.</Typography>
 					</Box>
-					<Box className="inputGroup" style={{height: "auto"}}>
-						<IncoreInputLabel>Select Tornado Scenario</IncoreInputLabel>
-						<IncoreSelectBox labelId="label" id="select" variant="outlined"
-										 onChange={(e)=>{ setTornadoId(e.target.value); }}
-										 value={selectedTornadoId}>
-							{
-								tornadoes.map((tornado) => {
-									return (
-										<IncoreMenuItem value={tornado["id"]} key={tornado["id"]}>
-											{tornado["name"]}</IncoreMenuItem>
-									);
-								})
-							}
-						</IncoreSelectBox>
-						<Typography className={classes.explanation}>If you need to add new hazards to your community hazards list&nbsp;
-							<NavLink to="/goal-objective-hazard"
-								  className={classes.explanationLink}>click here</NavLink>.</Typography>
-					</Box>
+					{
+						alllowedHazardTypes.map((hazardType) =>{
+							return (<Box className="inputGroup" style={{height: "auto"}}>
+								<IncoreInputLabel>Select {hazardType.charAt(0).toUpperCase() + hazardType.slice(1)} Scenario</IncoreInputLabel>
+								<IncoreSelectBox labelId="label" id="select" variant="outlined"
+												 onChange={(e)=>{ setTornadoId(e.target.value); }}
+												 value={selectedTornadoId}>
+									{
+										(() => {
+											if (hazardType === "earthquakes") {
+												(earthquakes).map((hazard) => {
+													return (
+														<IncoreMenuItem value={hazard["id"]} key={hazard["id"]}>
+															{hazard["name"]}</IncoreMenuItem>
+													);
+												});
+											}
+											else if (hazardType === "tornadoes") {
+												(tornadoes).map((hazard) => {
+													return (
+														<IncoreMenuItem value={hazard["id"]} key={hazard["id"]}>
+															{hazard["name"]}</IncoreMenuItem>
+													);
+												});
+											}
+											else if (hazardType === "hurricanes") {
+												(hurricanes).map((hazard) => {
+													return (
+														<IncoreMenuItem value={hazard["id"]} key={hazard["id"]}>
+															{hazard["name"]}</IncoreMenuItem>
+													);
+												});
+											}
+											else if (hazardType === "floods") {
+												(floods).map((hazard) => {
+													return (
+														<IncoreMenuItem value={hazard["id"]} key={hazard["id"]}>
+															{hazard["name"]}</IncoreMenuItem>
+													);
+												});
+											}
+											else if (hazardType === "tsunamis") {
+												(tsunamis).map((hazard) => {
+													return (
+														<IncoreMenuItem value={hazard["id"]} key={hazard["id"]}>
+															{hazard["name"]}</IncoreMenuItem>
+													);
+												});
+											}
+										})()
+									}
+								</IncoreSelectBox>
+								<Typography className={classes.explanation}>If you need to add new hazards to your community hazards list&nbsp;
+									<NavLink to="/goal-objective-hazard"
+											 className={classes.explanationLink}>click here</NavLink>.</Typography>
+							</Box>);
+						})
+					}
+
 					<Box className="inputGroup" style={{height: "auto"}}>
 						<IncoreInputLabel>Run the Analysis</IncoreInputLabel>
 						<Button variant="contained" color="primary" onClick={handleRunButtonClick}

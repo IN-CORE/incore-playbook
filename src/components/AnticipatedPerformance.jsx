@@ -34,9 +34,12 @@ export const AnticipatedPerformance = () => {
 	const dispatch = useDispatch();
 	const getExecutionList = () => dispatch(fetchExecutions());
 	const listHazards = (hazardType, limit, offset) => dispatch(fetchHazards(hazardType, limit, offset));
-	const tornadoes = useSelector((state) => state.hazard.tornadoes);
 	const listDatasets = (limit, offset, type) => dispatch(fetchDatasets(limit, offset, type));
-
+	const tornadoes = useSelector((state) => state.hazard.tornadoes);
+	const earthquakes = useSelector((state) => state.hazard.earthquakes);
+	const hurricanes = useSelector((state) => state.hazard.hurricanes);
+	const tsunamis = useSelector((state) => state.hazard.tsunamis);
+	const floods = useSelector((state) => state.hazard.floods);
 	const executions = useSelector((state) => state.execution.executions);
 	const buildings = useSelector((state) => state.dataset.buildings);
 	const epfs = useSelector((state) => state.dataset.epfs);
@@ -67,6 +70,10 @@ export const AnticipatedPerformance = () => {
 							<RunAnalysis value={currTabIndex} index={0}
 										 listHazards={listHazards}
 										 tornadoes={tornadoes}
+										 earthquakes={earthquakes}
+										 hurricanes={hurricanes}
+										 floods={floods}
+										 tsunamis={tsunamis}
 										 listDatasets={listDatasets}
 										 buildings={buildings}
 										 epfs={epfs}

@@ -22,7 +22,7 @@ export const setAllowedHazardTypes = (hazardTypes) => ({
 export const SET_ALLOWED_DATA_TYPES = "SET_ALLOWED_DATA_TYPES";
 export const setAllowedDataTypes = (dataTypes) => ({
 	type: SET_ALLOWED_DATA_TYPES,
-	allowedInventoryTypes: dataTypes,
+	allowedDataTypes: dataTypes,
 	receivedAt: Date.now(),
 });
 
