@@ -8,10 +8,14 @@ import {BrowserRouter, Route, Switch} from "react-router-dom";
 import routes from "./routes.js";
 import configureStore from "./store/configureStore";
 import {createMuiTheme, MuiThemeProvider} from "@material-ui/core/styles";
+import {mapConfig as defaultMapConfig} from "./map.config";
+import {setAllowedHazardTypes, updateMapConfig} from "./actions/config";
 
 require("./public/favicon.ico");
 
 const store = configureStore();
+store.dispatch(updateMapConfig(defaultMapConfig));
+store.dispatch(setAllowedHazardTypes(["earthquakes", "tornadoes", "tsunamis", "hurricanes", "floods"]));
 
 const theme = createMuiTheme({
 

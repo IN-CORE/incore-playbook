@@ -1,0 +1,30 @@
+{
+  "eqType" : {
+	"ui:widget": "hidden",
+	"classNames": "hidden-widget"
+  },
+  "hazardDatasets":{
+	"ui:options":{
+	  "orderable":false
+	},
+	"items":{
+	  "hazardType": {
+		"ui:widget": "hidden",
+		"classNames": "hidden-widget"
+	  },
+	  "file": {
+		"ui:options": { "accept": [".tif", ".tiff"]}
+	  },
+	  "eqParameters": {
+		"magnitude":{
+		  "ui:widget":"hidden",
+		  "classNames": "hidden-widget"
+		},
+		"depth":{
+		  "ui:widget":"hidden",
+		  "classNames": "hidden-widget"
+		}
+	  }
+	}
+  }
+}

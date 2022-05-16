@@ -7,7 +7,7 @@ import ViewResult from "./childComponents/ViewResult";
 import RunAnalysis from "./childComponents/RunAnalysis";
 import PageBanner from "./childComponents/navigation/Banner";
 import {fetchExecutions} from "../actions/datawolf";
-import {fetchTornadoes} from "../actions/hazards";
+import {fetchHazards} from "../actions/hazards";
 import {fetchDatasets} from "../actions/datasets";
 
 
@@ -33,11 +33,11 @@ export const AnticipatedPerformance = () => {
 	// Redux connect equivalent
 	const dispatch = useDispatch();
 	const getExecutionList = () => dispatch(fetchExecutions());
-	const listTornadoes =  (limit, offset) => dispatch(fetchTornadoes(limit, offset));
+	const listHazards = (hazardType, limit, offset) => dispatch(fetchHazards(hazardType, limit, offset));
+	const tornadoes = useSelector((state) => state.hazard.tornadoes);
 	const listDatasets = (limit, offset, type) => dispatch(fetchDatasets(limit, offset, type));
 
 	const executions = useSelector((state) => state.execution.executions);
-	const tornadoes = useSelector((state) => state.tornado.tornadoes);
 	const buildings = useSelector((state) => state.dataset.buildings);
 	const epfs = useSelector((state) => state.dataset.epfs);
 	const interdNetworks= useSelector((state) => state.dataset.interdNetworks);
@@ -65,7 +65,7 @@ export const AnticipatedPerformance = () => {
 									 style={currTabIndex === 1? {color: "#00619D"}: {}}/>
 							</Tabs>
 							<RunAnalysis value={currTabIndex} index={0}
-										 listTornadoes={listTornadoes}
+										 listHazards={listHazards}
 										 tornadoes={tornadoes}
 										 listDatasets={listDatasets}
 										 buildings={buildings}

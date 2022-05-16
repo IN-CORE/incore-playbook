@@ -45,7 +45,6 @@ export function configureStoreDev() {
 			store.replaceReducer(nextReducer);
 		});
 	}
-
 	return store;
 }
 

@@ -1,16 +1,18 @@
 import {Box, Container, Dialog, DialogContent, Divider, Grid, IconButton, Typography} from "@material-ui/core";
 import CloseIcon from "@material-ui/icons/Close";
 import Map from "../map/Map";
-import {globals} from "../../../globals";
-import {fromLonLat} from "ol/proj";
+import {fromLonLat, getTransform} from "ol/proj";
 import React from "react";
 import {ResultSummaryTable} from "../table/ResultSummaryTable";
 import {StackedResult} from "../graph/StackedResult";
 import {ResultTable} from "../table/ResultTable";
+import {useSelector} from "react-redux";
+import {applyTransform} from "ol/extent";
 
 export default function BldgDamage(props) {
 
 	let {executionName, title, previewOn, handlePreviewClose, runtime, barCharts, layers, tables, setMap} = props;
+	const mapConfig = useSelector((state) => state.config.mapConfig);
 
 	return (
 		<Dialog open={previewOn} onClose={handlePreviewClose} maxWidth="lg" fullWidth scroll="paper">
@@ -53,11 +55,11 @@ export default function BldgDamage(props) {
 				<Container className="mapContainer" disableGutters>
 					<Map
 						className="fillContainer"
-						zoom={12}
-						minZoom={5}
-						maxZoom={15}
-						extent={globals.JOPLIN_MAP_BOUNDS}
-						center={fromLonLat(globals.JOPLIN_MAP_CENTER)}
+						zoom={mapConfig.ZOOM}
+						minZoom={mapConfig.MIN_ZOOM}
+						maxZoom={mapConfig.MAX_ZOOM}
+						extent={applyTransform(mapConfig.MAP_BOUNDS, getTransform("EPSG:4326", "EPSG:3857"))}
+						center={fromLonLat(mapConfig.MAP_CENTER)}
 						layers={Object.values(layers)}
 						layerSwitcherOptions={{}}
 						updateMap={(map) => { setMap(map); }}

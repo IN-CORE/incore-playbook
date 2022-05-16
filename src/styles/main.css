@@ -291,3 +291,38 @@ body {
 	letter-spacing: 0;
 	line-height: 18px;
 }
+
+/*for rjsf form*/
+.MuiFormControl-root .MuiGrid-item{
+	padding:0!important;
+	margin:0!important;
+}
+
+.MuiFormControl-root .MuiPaper-root{
+	box-shadow: none;
+	background-color:#FFFFFF;
+}
+
+.MuiFormControl-root .MuiPaper-root h5{
+	color: #2E384D;
+	font-size: 16px;
+	font-weight: 500;
+	letter-spacing: 0.6px;
+	line-height: 19px;
+	margin-bottom: 11px;
+	width: 100%;
+	position: inherit;
+}
+
+.MuiButton-textSecondary {
+	color: #00619D!important;
+}
+.MuiButton-textSecondary:hover,
+.MuiButton-textSecondary:focus,
+.MuiButton-textSecondary:active{
+	background-color:#e5eff5!important;
+}
+
+.file-info{
+	display:none!important;
+}

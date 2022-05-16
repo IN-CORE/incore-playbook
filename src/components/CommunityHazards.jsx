@@ -11,14 +11,14 @@ import OSM, {ATTRIBUTION as OSM_ATTRIBUTION} from "ol/source/OSM";
 import Draw from "ol/interaction/Draw";
 import Point from "ol/geom/Point";
 import {Circle, Fill, Stroke, Style} from "ol/style";
-import {fromLonLat} from "ol/proj";
+import {fromLonLat, getTransform} from "ol/proj";
 import Feature from "ol/Feature";
+import {applyTransform} from "ol/extent";
 
-import RasterTornado from "./childComponents/RasterTornado";
-import ModelTornado from "./childComponents/ModelTornado";
+import RasterTornado from "./childComponents/tornado/RasterTornado";
+import ModelTornado from "./childComponents/tornado/ModelTornado";
 import Map from "./childComponents/map/Map";
-import config from "../app.config";
-import {globals} from "../globals";
+import appConfig from "../globals";
 import {Layout} from "./Layout";
 import {IncoreInputLabel} from "./styledComponents/IncoreInputLabel";
 import {IncoreMenuItem, IncoreSelectBox} from "./styledComponents/IncoreSelect";
@@ -29,8 +29,14 @@ import {EntryTable} from "./childComponents/table/EntryTable";
 import PageBanner from "./childComponents/navigation/Banner";
 import fullHtml from "../public/steps/3-3.html";
 import StepInfo from "./StepInfo";
-import {fetchTornadoes} from "../actions/hazards";
-import Icon from "ol/style/Icon";
+import {fetchHazards} from "../actions/hazards";
+import DatasetHurricane from "./childComponents/hurricane/datasetHurricane";
+import DatasetEarthquake from "./childComponents/earthquake/datasetEarthquake";
+import ModelEarthquake from "./childComponents/earthquake/modelEarthquake";
+import DatasetFlood from "./childComponents/flood/datasetFlood";
+import DatasetTsunami from "./childComponents/tsuanmi/datasetTsunami";
+import {LineString} from "ol/geom";
+import {useEffectAllDepsChange} from "./customHooks/useEffectAllDeps";
 
 const useStyles = makeStyles({
 	tabDiv: {
@@ -59,26 +65,38 @@ export const CommunityHazards = () => {
 	const classes = useStyles();
 
 	const [currTabIndex, setCurrTabIndex] = useState(0);
+	// for drawing tornado path
 	const [startCoord, setStartCoord] = useState([]);
 	const [endCoord, setEndCoord] = useState([]);
 
+	// for draw eq epicenter
+	const [srcCoord, setSrcCoord] = useState([]);
+
 	const dispatch = useDispatch();
-	const listTornadoes = (limit, offset) => dispatch(fetchTornadoes(limit, offset));
-	const tornadoes = useSelector((state) => state.tornado.tornadoes);
+	const listHazards = (hazardType, limit, offset) => dispatch(fetchHazards(hazardType, limit, offset));
+	const earthquakes = useSelector((state) => state.hazard.earthquakes);
+	const tornadoes = useSelector((state) => state.hazard.tornadoes);
+	const tsunamis = useSelector((state) => state.hazard.tsunamis);
+	const floods = useSelector((state) => state.hazard.floods);
+	const hurricanes = useSelector((state) => state.hazard.hurricanes);
+	const mapConfig = useSelector((state) => state.config.mapConfig);
+	const allowedHazardTypes = useSelector((state) => state.config.allowedHazardTypes);
 
+	const [selectedHazardType, setSelectedHazardType] = useState(allowedHazardTypes[0]);
+
+	// Cache the drawing
 	const drawSourceRef = React.useRef(new VectorSource({wrapX: false}));
-	const pointSourceRef = React.useRef(new VectorSource({wrapX: false}));
-	const lineStyleRef = React.useRef(new Style({
-		stroke: new Stroke({
-			color: "#979797",
-			width: 3,
-			lineDash: [.1, 5] //or other combinations
-		})
-	}));
-
-	// Caches the control
-	const cacheRef = React.useRef({
-		startStyle: new Style({
+	const drawDisplaySourceRef = React.useRef(new VectorSource({wrapX: false}));
+	const drawInteractionRef = React.useRef();
+	const styleRef = React.useRef({
+		lineStyle: new Style({
+			stroke: new Stroke({
+				color: "#979797",
+				width: 3,
+				lineDash: [.1, 5] //or other combinations
+			})
+		}),
+		startPointStyle: new Style({
 			image: new Circle({
 				radius: 8,
 				fill: new Fill({
@@ -86,7 +104,7 @@ export const CommunityHazards = () => {
 				})
 			})
 		}),
-		endStyle: new Style({
+		endPointStyle:new Style({
 			image: new Circle({
 				radius: 8,
 				fill: new Fill({
@@ -94,6 +112,13 @@ export const CommunityHazards = () => {
 				})
 			})
 		}),
+		invisibleStyle: new Style({
+			visibility: "hidden"
+		}),
+	});
+
+	// Caches the control
+	const layerRef = React.useRef({
 		basemaps: new GroupLayer({
 			title: "Base Maps",
 			layers: [
@@ -120,12 +145,14 @@ export const CommunityHazards = () => {
 		drawlayer: new GroupLayer({
 			title: "Draw Layer",
 			layers: [
+				// interaction layer
 				new VectorLayer({
-					source: drawSourceRef.current,
-					style: [lineStyleRef.current]
+					style: styleRef.current.invisibleStyle,
+					source: drawSourceRef.current
 				}),
+				// display layer
 				new VectorLayer({
-					source: pointSourceRef.current
+					source: drawDisplaySourceRef.current
 				})
 			]
 		}),
@@ -139,81 +166,144 @@ export const CommunityHazards = () => {
 	const mapRef = React.useRef();
 
 	// component did mount
-	useEffect(()=> {listTornadoes();}, []);
-
-	// draw the line
-	useEffect(() => {
-		drawPoints(startCoord, true);
-	}, [startCoord]);
+	useEffect(()=> {
+		listHazards(selectedHazardType);}, [selectedHazardType]
+	);
 
 	useEffect(() => {
-		drawPoints(endCoord, false);
-	}, [endCoord]);
+		// Important: need to clear previous draw interaction first
+		drawDisplaySourceRef.current.clear();
+		mapRef.current.getInteractions().forEach((interaction) => {
+			if (interaction instanceof Draw) {
+				mapRef.current.removeInteraction(interaction);
+			}
+		});
+
+		// construct different draw interactions
+		if (selectedHazardType === "tornadoes" && currTabIndex === 1){
+			drawInteractionRef.current = new Draw({
+				source: drawSourceRef.current,
+				type: "LineString",
+				stopClick: true,
+				maxPoints: 2
+			});
+			drawInteractionRef.current.on("drawstart", () => {
+				drawSourceRef.current.clear();
+				drawDisplaySourceRef.current.clear();
+			});
+			drawInteractionRef.current.on("drawend", (event) => {
+				const geometry = event.feature.getGeometry();
+				setStartCoord(geometry.getFirstCoordinate());
+				setEndCoord(geometry.getLastCoordinate());
+				// delete default draw feature
+				// drawSourceRef.current.removeFeature(event.feature);
+			});
+		}
+		else if (selectedHazardType === "earthquakes" && currTabIndex === 1){
+			drawInteractionRef.current = new Draw({
+				source: drawSourceRef.current,
+				type: "Point",
+			});
+			drawInteractionRef.current.on("drawstart", () => {
+				drawSourceRef.current.clear();
+				drawDisplaySourceRef.current.clear();
+			});
+			drawInteractionRef.current.on("drawend", (event) => {
+				const geometry = event.feature.getGeometry();
+				setSrcCoord(geometry.getFlatCoordinates());
+				// delete default draw feature
+				// drawSourceRef.current.removeFeature(event.feature);
+			});
+		}
+		else{
+			drawInteractionRef.current = null;
+		}
+
+		// Start the draw interaction...
+		if (drawInteractionRef.current !== null) {
+			mapRef.current.addInteraction(drawInteractionRef.current);
+		}
+
+	}, [selectedHazardType, currTabIndex]);
+
+	// display the line
+	useEffectAllDepsChange(() => {
+		if (startCoord.length > 0 && endCoord.length > 0){
+			syntheticDrawPoints(startCoord, true);
+			syntheticDrawPoints(endCoord, false);
+			syntheticDrawLine(startCoord, endCoord);
+		}
+
+	}, [startCoord, endCoord]); // this is triggered by any of it changes
+
+	// display the dot
+	useEffect(() =>{
+		if (srcCoord.length > 0) syntheticDrawPoints(srcCoord, false);
+	}, [srcCoord]);
 
 	const handleLayerUpdate = (json) => {
-
-		let layerId = json["datasetId"];
-		let layerTitle = json["name"];
-
-		const source = new TileWMS({
-			url: `${config.geoServerWMS}`,
-			params: {LAYERS: layerId, STYLES: "incore:tornado"},
-			ratio: 1,
-			serverType: "geoserver"
-		});
-		let HazardMapLayer = new TileLayer({
-			title: layerTitle,
-			source: source,
-			zIndex: 1,
-			opacity: 1
-		});
-
-		// add created hazard to this created group layer
-		cacheRef.current.tilelayer.getLayers().push(HazardMapLayer);
+		let layerId;
+		let layerTitle;
+		let style;
+		if ( "rasterDataset" in json && json["rasterDataset"]["datasetId"] !== undefined){
+			layerId = json["rasterDataset"]["datasetId"];
+			layerTitle = `${json["name"]} - ${json["rasterDataset"]["demandType"]}`;
+		}
+		// tsunami, hurricane, flood, earthquake all has multiple layers
+		else if ( "hazardDatasets" in json && json["hazardDatasets"].length > 0){
+			json["hazardDatasets"].map((hazardDataset) =>{
+				layerId = hazardDataset["datasetId"];
+				layerTitle = `${json["name"]} - ${hazardDataset["demandType"]}`;
+			});
+		}
+		// tornado has single layer
+		else {
+			layerId = json["datasetId"];
+			layerTitle = json["name"];
+			style = "incore:tornado";
+		}
+		if (layerId && layerTitle) {
+			const source = new TileWMS({
+				url: `${appConfig.geoServerWMS}`,
+				params: {LAYERS: layerId, STYLES: style},
+				ratio: 1,
+				serverType: "geoserver"
+			});
+			let HazardMapLayer = new TileLayer({
+				title: layerTitle,
+				source: source,
+				zIndex: 1,
+				opacity: 1
+			});
+			// add created hazard to this created group layer
+			layerRef.current.tilelayer.getLayers().push(HazardMapLayer);
+		}
 	};
 
 	const hazardIdClick = async (hazard) => {
 		handleLayerUpdate(hazard);
 	};
 
-	const drawPoints = (coord, isStart=true) => {
+	const syntheticDrawPoints = (coord, isStart=true) => {
 		let point = new Point(coord);
 		let pointFeature = new Feature({
 			geometry: point,
 			name: "point",
 		});
-		isStart ? pointFeature.setStyle(cacheRef.current.startStyle)
+		isStart ? pointFeature.setStyle(styleRef.current.startPointStyle)
 			:
-			pointFeature.setStyle(cacheRef.current.endStyle);
-		pointSourceRef.current.addFeature(pointFeature);
+			pointFeature.setStyle(styleRef.current.endPointStyle);
+		drawDisplaySourceRef.current.addFeature(pointFeature);
 	};
 
-	const handleMapClick = (event) => {
-		// Important: need to clear previous draw interaction first
-		let map = event.map;
-
-		/* Add your draw interaction here */
-		let drawLineInteraction = new Draw({
-			source: drawSourceRef.current,
-			type: "LineString",
-			stopClick: true,
-			maxPoints: 2
+	const syntheticDrawLine = (start, end ) => {
+		let lineString = new LineString([start, end]);
+		let lineFeature = new Feature({
+			geometry: lineString,
+			name: "Line"
 		});
-
-		drawLineInteraction.on("drawstart", () => {
-			drawSourceRef.current.clear();
-			pointSourceRef.current.clear();
-		});
-		drawLineInteraction.on("drawend", (event) => {
-			// drawSourceRef.current.clear();
-			const geometry = event.feature.getGeometry();
-			setStartCoord(geometry.getFirstCoordinate());
-			setEndCoord(geometry.getLastCoordinate());
-		});
-
-		// Start the draw interaction...
-		map.addInteraction(drawLineInteraction);
-
+		lineFeature.setStyle(styleRef.current.lineStyle);
+		drawDisplaySourceRef.current.addFeature(lineFeature);
 	};
 
 	const fieldNames = [
@@ -242,21 +332,49 @@ export const CommunityHazards = () => {
 				<PageBanner parentStep="Determine Goals & Objectives"
 					childStep="Define Community Hazards" taskNo="3" subtaskNo="3-3"/>
 				<Box className="outerBox">
-					{/*List created tornadoes*/}
+					{/*List created hazards*/}
 					<Box className="entryTableContainer">
 						<StepInfo fullHtml={fullHtml} />
 						<br />
 						<Box className="entryTableTitle">
-							<IncoreInputLabel>Created Hazard</IncoreInputLabel>
-							{/*<Box style={{float:"right"}}>*/}
-							{/*	<IconButton>*/}
-							{/*		<FilterListIcon/>*/}
-							{/*	</IconButton>*/}
-							{/*</Box>*/}
+							<IncoreInputLabel>
+								Created {selectedHazardType.charAt(0).toUpperCase()}{selectedHazardType.slice(1)}
+							</IncoreInputLabel>
 						</Box>
-						<Box className="entryTable">
-							<EntryTable fieldNames={fieldNames} fields={tornadoes}/>
-						</Box>
+						{
+							(() => {
+								if (selectedHazardType === "earthquakes"){
+									return (
+										<Box className="entryTable">
+											<EntryTable fieldNames={fieldNames} fields={earthquakes}/>
+										</Box>);
+								}
+								else if (selectedHazardType === "tsunamis"){
+									return (
+										<Box className="entryTable">
+											<EntryTable fieldNames={fieldNames} fields={tsunamis}/>
+										</Box>);
+								}
+								else if (selectedHazardType === "tornadoes"){
+									return (
+										<Box className="entryTable">
+											<EntryTable fieldNames={fieldNames} fields={tornadoes}/>
+										</Box>);
+								}
+								else if (selectedHazardType === "floods"){
+									return (
+										<Box className="entryTable">
+											<EntryTable fieldNames={fieldNames} fields={floods}/>
+										</Box>);
+								}
+								else if (selectedHazardType === "hurricanes"){
+									return (
+										<Box className="entryTable">
+											<EntryTable fieldNames={fieldNames} fields={hurricanes}/>
+										</Box>);
+								}
+							})()
+						}
 					</Box>
 					<Grid container spacing={3} className="innerBox">
 						<Grid item xl={6} lg={6} md={6} sm={6} xs={12} className="gridItem">
@@ -264,12 +382,14 @@ export const CommunityHazards = () => {
 							<Box>
 								<IncoreInputLabel>Select Hazard Type</IncoreInputLabel>
 								<IncoreSelectBox labelId="label" id="select" variant="outlined"
-												 defaultValue="tornado">
-									<IncoreMenuItem value="earthquake" key="earthquake">Earthquake</IncoreMenuItem>
-									<IncoreMenuItem value="tsunami" key="tsunami">Tsunami</IncoreMenuItem>
-									<IncoreMenuItem value="tornado" key="tornado">Tornado</IncoreMenuItem>
-									<IncoreMenuItem value="hurricane" key="hurricane">Hurricane</IncoreMenuItem>
-									<IncoreMenuItem value="flood" key="flood">Flood</IncoreMenuItem>
+												 defaultValue={allowedHazardTypes[0]}
+												 onChange={(e) => { setSelectedHazardType(e.target.value);}}>
+									{
+										(allowedHazardTypes).map((hazardType) => {
+											return (<IncoreMenuItem value={hazardType} key={hazardType}>
+												{hazardType}</IncoreMenuItem>);
+										})
+									}
 								</IncoreSelectBox>
 							</Box>
 							{/*Tabs*/}
@@ -277,39 +397,78 @@ export const CommunityHazards = () => {
 								<Tabs aria-label="create tornado tabs" value={currTabIndex}
 									  className={classes.tabs}
 									  onChange={(e, value) => {setCurrTabIndex(value);}}>
-									<Tab label="Create a Hazard" className={classes.tab}/>
+									{/*only certain hazard type has model based creation*/}
 									<Tab label="Upload a Hazard Dataset" className={classes.tab}/>
+									{selectedHazardType === "tornadoes"  || selectedHazardType === "earthquakes" ?
+										<Tab label="Create a Hazard" className={classes.tab}/> :
+										null
+									}
 								</Tabs>
-								<ModelTornado value={currTabIndex} index={0}
-											  handleLayerUpdate={handleLayerUpdate}
-											  handleListUpdate={listTornadoes}
-											  startCoordProps={startCoord}
-											  endCoordProps={endCoord}/>
-								<RasterTornado value={currTabIndex} index={1}
-											   handleLayerUpdate={handleLayerUpdate}
-											   handleListUpdate={listTornadoes}/>
+								{
+									// different hazard type will have different UI
+									(() => {
+										if (selectedHazardType === "earthquakes") {
+											return (<>
+												<DatasetEarthquake value={currTabIndex} index={0}
+															   handleLayerUpdate={handleLayerUpdate}
+															   handleListUpdate={listHazards}/>
+												<ModelEarthquake value={currTabIndex} index={1}
+																 handleLayerUpdate={handleLayerUpdate}
+																 handleListUpdate={listHazards}
+																 srcCoordProps={srcCoord}/>
+											</>);
+										}
+										else if (selectedHazardType === "tornadoes") {
+											return (<>
+												<RasterTornado value={currTabIndex} index={0}
+															   handleLayerUpdate={handleLayerUpdate}
+															   handleListUpdate={listHazards}/>
+												<ModelTornado value={currTabIndex} index={1}
+															  handleLayerUpdate={handleLayerUpdate}
+															  handleListUpdate={listHazards}
+															  startCoordProps={startCoord}
+															  endCoordProps={endCoord}/>
+											</>);
+										}
+										else if (selectedHazardType === "hurricanes"){
+											return (<DatasetHurricane value={currTabIndex} index={0}
+																	  handleLayerUpdate={handleLayerUpdate}
+																	  handleListUpdate={listHazards}/>);
+										}
+										else if (selectedHazardType === "floods"){
+											return (<DatasetFlood value={currTabIndex} index={0}
+																	  handleLayerUpdate={handleLayerUpdate}
+																	  handleListUpdate={listHazards}/>);
+										}
+										else if (selectedHazardType === "tsunamis"){
+											return (<DatasetTsunami value={currTabIndex} index={0}
+																   handleLayerUpdate={handleLayerUpdate}
+																   handleListUpdate={listHazards}/>);
+										}
+										else{
+											return (<></>);
+										}
+									})()
+								}
 							</Box>
 						</Grid>
 						<Grid item xl={6} lg={6} md={6} sm={6} xs={12} className="gridItem">
 							<Container className={classes.mapContainer} disableGutters>
 								<Map
 									className="fillContainer"
-									zoom={10}
-									minZoom={5}
-									maxZoom={15}
-									extent={globals.JOPLIN_MAP_BOUNDS}
-									center={fromLonLat(globals.JOPLIN_MAP_CENTER)}
+									zoom={mapConfig.ZOOM}
+									minZoom={mapConfig.MIN_ZOOM}
+									maxZoom={mapConfig.MAX_ZOOM}
+									extent={applyTransform(mapConfig.MAP_BOUNDS, getTransform("EPSG:4326", "EPSG:3857"))}
+									center={fromLonLat(mapConfig.MAP_CENTER)}
 									layers={[
-										cacheRef.current.basemaps,
-										cacheRef.current.drawlayer,
-										cacheRef.current.tilelayer
+										layerRef.current.basemaps,
+										layerRef.current.drawlayer,
+										layerRef.current.tilelayer
 									]}
 									layerSwitcherOptions={{}}
 									updateMap={(map) => {
 										mapRef.current = map;
-									}}
-									events={{
-										"click": handleMapClick
 									}}
 								/>
 							</Container>

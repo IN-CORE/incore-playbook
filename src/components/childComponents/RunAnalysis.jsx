@@ -70,7 +70,7 @@ const useStyles = makeStyles({
 });
 
 export default function ViewResult(props) {
-	const {value, index, listTornadoes, tornadoes, listDatasets, buildings, epfs, interdNetworks,
+	const {value, index, listHazards, tornadoes, listDatasets, buildings, epfs, interdNetworks,
 		sectorShocks, huas, blockGroups, valueLosses, getExecutionList, gotoViewResultTab, ...other} = props;
 
 	const [title, setTitle] = useState("");
@@ -97,7 +97,7 @@ export default function ViewResult(props) {
 		});
 
 		// hazard
-		listTornadoes();
+		listHazards("tornadoes");
 	}, []);
 
 	// form check
@@ -307,7 +307,7 @@ export default function ViewResult(props) {
 								  className={classes.explanationLink}>click here</NavLink>.</Typography>
 					</Box>
 					<Box className="inputGroup" style={{height: "auto"}}>
-						<IncoreInputLabel>Select a Hazard</IncoreInputLabel>
+						<IncoreInputLabel>Select Tornado Scenario</IncoreInputLabel>
 						<IncoreSelectBox labelId="label" id="select" variant="outlined"
 										 onChange={(e)=>{ setTornadoId(e.target.value); }}
 										 value={selectedTornadoId}>

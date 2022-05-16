@@ -1,4 +1,4 @@
-import config from "../app.config";
+import appConfig from "../globals";
 
 export const RECEIVE_ATTRIBUTES = "RECEIVE_ATTRIBUTES";
 
@@ -13,7 +13,7 @@ export function receiveAttributes(type, json){
 }
 
 export function fetchAttributes(id, sortColumnName){
-	let url = `${config.geoServerWFS}?service=WFS&version=1.0.0&request=GetFeature&outputFormat=JSON`;
+	let url = `${appConfig.geoServerWFS}?service=WFS&version=1.0.0&request=GetFeature&outputFormat=JSON`;
 	url = `${url}&typename=${id}&sortBy=${sortColumnName}+D`;
 	return (dispatch) => {
 		return fetch(url, {mode:"cors"})

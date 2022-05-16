@@ -8,7 +8,7 @@ import {
 	TableHead,
 	TableRow,
 } from "@material-ui/core";
-import {globals} from "../../../globals";
+import appConfig from "../../../globals";
 import {makeStyles} from "@material-ui/core/styles";
 
 const useStyles = makeStyles({
@@ -98,7 +98,7 @@ export const AttributesTable = (props) => {
 											else if (attributeName["prettyName"] === "BUILDING DESCRIPTION"){
 												return (
 													<TableCell key={idx} className={classes.tableBodyCell}>
-														{globals.ARCHETYPE[attribute["properties"][attributeName["columnName"]]]}</TableCell>
+														{appConfig.ARCHETYPE[attribute["properties"][attributeName["columnName"]]]}</TableCell>
 												);
 											}
 											else{

@@ -2,13 +2,13 @@ import React, {useEffect, useRef, useState} from "react";
 
 import {Box, Container} from "@material-ui/core";
 
-import {IncoreButton} from "../styledComponents/IncoreButton";
-import {IncoreTextField} from "../styledComponents/IncoreInput";
-import {IncoreInputLabel} from "../styledComponents/IncoreInputLabel";
+import {IncoreButton} from "../../styledComponents/IncoreButton";
+import {IncoreTextField} from "../../styledComponents/IncoreInput";
+import {IncoreInputLabel} from "../../styledComponents/IncoreInputLabel";
 
-import FileUploadDrop from "./form/FileUploadDrop";
+import FileUploadDrop from "../form/FileUploadDrop";
 
-import {createRasterTornado} from "../../utils/hazard";
+import {createRasterTornado} from "../../../utils/hazard";
 import LoadingOverlay from "react-loading-overlay";
 
 export default function RasterTornado(props) {
@@ -42,7 +42,7 @@ export default function RasterTornado(props) {
 		const tornadoJson = await createRasterTornado(name, description, files);
 		if (tornadoJson !== {}) {
 			handleLayerUpdate(tornadoJson);
-			handleListUpdate();
+			handleListUpdate("tornadoes");
 			setFile([]);
 			setName("");
 			setDescription("");

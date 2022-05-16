@@ -1,4 +1,8 @@
-export const globals = {
+let apiprotocol = "https";
+let apihost;
+let apiurl;
+
+const globals = {
 	menuWidth: 300,
 	ARCHETYPE: {
 		"1": "Wood Residential Building - small rectangular plan, garble roof, 1 story",
@@ -20,15 +24,49 @@ export const globals = {
 		"17": "Mobile Home",
 		"18": "Shopping Center",
 		"19": "Office Building"
-	},
-	JOPLIN_MAP_BOUNDS: [
-		-12792231.63426164,
-		3246498.818343048,
-		-8436000.174951272,
-		6512287.786512453
-	],
-	JOPLIN_MAP_CENTER: [-94.4980, 37.0672],
+	}
 };
+
+if (process.env.DEPLOY_ENV === "production") {
+	apihost = "incore.ncsa.illinois.edu";
+	apiurl = `${apiprotocol}://${apihost}`;
+	globals["baseUrlRoute"] = "playbook";
+	globals["geoServerWMS"] = "https://incore-geoserver.ncsa.illinois.edu/geoserver/incore/wms"
+}
+else if (process.env.DEPLOY_ENV === "test") {
+	apihost = "incore-tst.ncsa.illinois.edu";
+	apiurl = `${apiprotocol}://${apihost}`;
+	globals["baseUrlRoute"] = "playbook";
+	globals["geoServerWMS"] ="https://incore-tst.ncsa.illinois.edu/geoserver/incore/wms";
+}
+else if (process.env.DEPLOY_ENV === "local") {
+	apihost = "localhost:8080";
+	apiurl = `http://${apihost}`;
+	globals["baseUrlRoute"] = "";
+	globals["geoServerWMS"] ="https://incore-dev.ncsa.illinois.edu/geoserver/incore/wms";
+}
+else if (process.env.DEPLOY_ENV === "development") {
+	apihost = "incore-dev.ncsa.illinois.edu";
+	apiurl = `${apiprotocol}://${apihost}`;
+	globals["baseUrlRoute"] = "playbook";
+	globals["geoServerWMS"] ="https://incore-dev.ncsa.illinois.edu/geoserver/incore/wms";
+}
+else { // default case that used dev environment
+	apihost = "";
+	apiurl = "";
+	globals["baseUrlRoute"] = "playbook";
+	globals["geoServerWMS"] = "/geoserver/incore/wms";
+}
+
+globals["apiUrl"] = apiurl;
+globals["dataWolf"] = "https://incore-tst.ncsa.illinois.edu/datawolf/";
+globals["client_id"] = "react-auth";
+globals["authService"] = `${apiurl}/auth/realms/In-core/protocol/openid-connect/token`;
+globals["testUserInfo"] = "commresilience";
+globals["hazardServiceBase"] = `${apiurl}/hazard/api/`;
+globals["dataServiceBase"] = `${apiurl}/data/api/`;
+
+export default globals;
 
 export const processStatus = [
 	{name: "PENDING", key: "pending"},

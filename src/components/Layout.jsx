@@ -2,7 +2,7 @@ import React, {useEffect} from "react";
 import {useSelector} from "react-redux";
 import Header from "./childComponents/navigation/HeaderWithMenu";
 // import Footer from "../components/Footer";
-import {globals} from "../globals";
+import appConfig from "../globals";
 import { useHistory } from "react-router-dom";
 
 import {isAuthorized} from "../utils/common";
@@ -21,7 +21,7 @@ export const Layout = (props) => {
 
 	let mLeft = 0;
 	if(layout.isMenuOpen){
-		mLeft = globals.menuWidth;
+		mLeft = appConfig.menuWidth;
 	}
 
 	let menuItem = sessionStorage.getItem("menu");

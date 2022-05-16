@@ -11,6 +11,7 @@ export const IncoreTextField = styled(TextField)({
 		fontWeight: 500,
 		letterSpacing: 0,
 		lineHeight: "18px",
-		backgroundColor: "#FFFFFF"
+		backgroundColor: "#FFFFFF",
+		position:"relative",
 	}
 });
