@@ -1,10 +1,7 @@
 import React from "react";
 import {Container} from "@material-ui/core";
 import {makeStyles } from "@material-ui/core/styles";
-import "../../../public/CSU-logo.png";
-import "../../../public/CSU-logo.png";
-import "../../../public/resilience-logo.png";
-import "../../../public/NCSA-logo.png";
+import {useSelector} from "react-redux";
 
 const useStyles = makeStyles((theme) => ({
 
@@ -34,29 +31,13 @@ const useStyles = makeStyles((theme) => ({
 
 const Footer = () => {
 	const classes = useStyles();
-	const footerLogos = [
-		{
-			name: "CSU",
-			image: "/CSU-logo.png",
-			url: "https://www.colostate.edu/"
-		},
-		{
-			name: "IN-CORE",
-			image: "/resilience-logo.png",
-			url: "http://resilience.colostate.edu/"
-		},
-		{
-			name: "NCSA",
-			image: "/NCSA-logo.png",
-			url: "http://www.ncsa.illinois.edu/"
-		}
-	];
+	const assetConfig = useSelector((state) => state.config.assetConfig);
 
 	return(
 		<div className="footerDiv">
 			<Container className={classes.footerContainer}>
 				{
-					footerLogos.map((footerLogo, idx) =>
+					assetConfig.footerLogos.map((footerLogo, idx) =>
 						(
 							<a href={footerLogo.url} target="_blank" className={classes.iconContainerLink} key={idx}>
 								<img src={footerLogo.image} className={classes.icon} key={idx} alt={footerLogo.name}/>
