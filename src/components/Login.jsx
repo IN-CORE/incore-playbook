@@ -9,7 +9,6 @@ import Cookies from "universal-cookie";
 import appConfig from "../globals";
 import {setMenuState} from "../actions/layout";
 
-import LoginBg from "../public/login-background.jpg";
 import HeaderWithMenu from "../components/childComponents/navigation/HeaderWithMenu";
 import {isAuthorized} from "../utils/common";
 

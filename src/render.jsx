@@ -52,7 +52,9 @@ const render = (reducers, routes , theme=baseTheme, storeCallback) => {
 	ReactDOM.render(
 		<Provider store={store}>
 			<MuiThemeProvider theme={theme}>
-				<BrowserRouter basename={appConfig.baseUrlRoute || "/"}>
+				{/*TODO base route does not work out; */}
+				{/*<BrowserRouter basename={appConfig.baseUrlRoute || "/"}>*/}
+				<BrowserRouter basename="/">
 					<Switch>
 						{
 							Object.keys(routes).map((key, ) => {

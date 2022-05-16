@@ -10,7 +10,7 @@ import configureStore from "./store/configureStore";
 import {createMuiTheme, MuiThemeProvider} from "@material-ui/core/styles";
 import {mapConfig as defaultMapConfig} from "./map.config";
 import {assetConfig as defaultAssetConfig} from "./asset.config";
-import {setAllowedHazardTypes, updateMapConfig} from "./actions/config";
+import {setAllowedHazardTypes, updateAssetConfig, updateMapConfig} from "./actions/config";
 
 require("./public/favicon.ico");
 
