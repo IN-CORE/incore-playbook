@@ -20,6 +20,5 @@ export const assetConfig = {
 			image: "./public/NCSA-logo.png",
 			url: "http://www.ncsa.illinois.edu/"
 		}
-	],
-	stepsFolder:"./public/steps",
+	]
 };
