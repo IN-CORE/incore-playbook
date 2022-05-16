@@ -16,10 +16,10 @@ import {IncoreTextField} from "../styledComponents/IncoreInput";
 
 import {submitExecution} from "../../utils/datawolf";
 
-import PoweredBy from "../../public/powered-by-incore.svg";
 import fullHtml from "../../public/steps/3-4.html";
 import StepInfo from "../StepInfo";
 import {inputDatasetTypes} from "../../globals";
+import {useSelector} from "react-redux";
 
 const useStyles = makeStyles({
 	runButton:{
@@ -72,6 +72,8 @@ const useStyles = makeStyles({
 export default function ViewResult(props) {
 	const {value, index, listHazards, tornadoes, listDatasets, buildings, epfs, interdNetworks,
 		sectorShocks, huas, blockGroups, valueLosses, getExecutionList, gotoViewResultTab, ...other} = props;
+
+	const assetConfig = useSelector((state) => state.config.assetConfig);
 
 	const [title, setTitle] = useState("");
 	const [description, setDescription] = useState("");
@@ -328,7 +330,7 @@ export default function ViewResult(props) {
 						<IncoreInputLabel>Run the Analysis</IncoreInputLabel>
 						<Button variant="contained" color="primary" onClick={handleRunButtonClick}
 							disabled={disabled}
-							endIcon={<Avatar src={PoweredBy} className={classes.avatarStyle}/>}
+							endIcon={<Avatar src={assetConfig.poweredByLogo} className={classes.avatarStyle}/>}
 							classes={{ root: classes.runButton, endIcon: classes.endIconStyle}}
 						>
 							CALCULATE THE HAZARD RISK

@@ -2,6 +2,7 @@ export const assetConfig = {
 	loginBackgroundImg: "./public/login-background.jpg",
 	poweredByLogo: "./public/powered-by-incore.svg",
 	communityResilienceLogo: "./public/cr-logo.png",
+	defaultProfileImg: "./public/default-profile-img.png",
 	favicon:"./public/favicon.ico",
 	footerLogos: [
 		{
