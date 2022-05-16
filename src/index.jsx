@@ -3,20 +3,26 @@
 
 import React from "react";
 import { render } from "react-dom";
-import { Provider } from "react-redux";
+import {Provider} from "react-redux";
 import {BrowserRouter, Route, Switch} from "react-router-dom";
 import routes from "./routes.js";
 import configureStore from "./store/configureStore";
 import {createMuiTheme, MuiThemeProvider} from "@material-ui/core/styles";
 import {mapConfig as defaultMapConfig} from "./map.config";
 import {assetConfig as defaultAssetConfig} from "./asset.config";
-import {setAllowedHazardTypes, updateAssetConfig, updateMapConfig} from "./actions/config";
+import {setAllowedHazardTypes, setAllowedDataTypes, updateAssetConfig, updateMapConfig} from "./actions/config";
 
 require("./public/favicon.ico");
 
 const store = configureStore();
 store.dispatch(updateMapConfig(defaultMapConfig));
 store.dispatch(updateAssetConfig(defaultAssetConfig));
+store.dispatch(setAllowedDataTypes({
+	building: true,
+	epf: true,
+	network: true,
+	socioeconomics: true
+}));
 store.dispatch(setAllowedHazardTypes(["earthquakes", "tornadoes", "tsunamis", "hurricanes", "floods"]));
 
 const theme = createMuiTheme({

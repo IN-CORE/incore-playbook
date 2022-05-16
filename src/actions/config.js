@@ -19,8 +19,11 @@ export const setAllowedHazardTypes = (hazardTypes) => ({
 	receivedAt: Date.now(),
 });
 
-export const setAllowedInventoryTypes = (inventoryTypes) => ({
-
+export const SET_ALLOWED_DATA_TYPES = "SET_ALLOWED_DATA_TYPES";
+export const setAllowedDataTypes = (dataTypes) => ({
+	type: SET_ALLOWED_DATA_TYPES,
+	allowedInventoryTypes: dataTypes,
+	receivedAt: Date.now(),
 });
 
 export const setAllowedAnalyses = (inventoryTypes) => ({
