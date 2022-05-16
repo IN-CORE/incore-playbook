@@ -10,11 +10,10 @@ import appConfig from "../globals";
 import {setMenuState} from "../actions/layout";
 
 import LoginBg from "../public/login-background.jpg";
-import Powered from "../public/powered-by-incore.svg";
 import HeaderWithMenu from "../components/childComponents/navigation/HeaderWithMenu";
 import {isAuthorized} from "../utils/common";
 
-import {useDispatch} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 
 const cookies = new Cookies();
 
@@ -27,7 +26,6 @@ const useStyles = makeStyles((theme) => ({
 	rightGrid:{
 		height: "100vh",
 		width: "55vw",
-		backgroundImage:  `url(${LoginBg})`,
 		backgroundSize: "cover",
 		backgroundPosition: "0 -150px"
 	},
@@ -106,6 +104,8 @@ export const Login = () => {
 	useEffect(() => {
 		if (isAuthorized()) { history.push("/");}
 	}, []);
+
+	const assetConfig = useSelector((state) => state.config.assetConfig);
 
 	const [username, setUsername] = useState("");
 	const [password, setPassword] = useState("");
@@ -222,8 +222,8 @@ export const Login = () => {
 				</div>
 			</Grid>
 
-			<Grid item className={classes.rightGrid} >
-				<img src={Powered} alt="" style={{margin: "40px"}}/>
+			<Grid item className={classes.rightGrid} style={{backgroundImage:  `url(${assetConfig.loginBackgroundImg})`,}}>
+				<img src={assetConfig.poweredByLogo} alt="" style={{margin: "40px"}}/>
 			</Grid>
 		</Grid>
 	);

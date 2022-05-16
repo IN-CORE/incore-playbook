@@ -1,5 +1,5 @@
 import React from "react";
-import {connect} from "react-redux";
+import {connect, useSelector} from "react-redux";
 import {Link, useHistory} from "react-router-dom";
 import {makeStyles, useTheme } from "@material-ui/core/styles";
 import clsx from "clsx";
@@ -22,7 +22,6 @@ import ChevronRightIcon from "@material-ui/icons/ChevronRight";
 
 import {setMenuState} from "../../../actions/layout";
 
-import Logo from "../../../public/cr-logo.png";
 import appConfig from "../../../globals";
 import Cookies from "universal-cookie";
 
@@ -124,6 +123,8 @@ const HeaderWithMenu = ({dispatch, isAuthenticated, menuItem, headerTitle="Playb
 	const classes = useStyles();
 	const theme = useTheme();
 	const history = useHistory();
+
+	const assetConfig = useSelector((state) => state.config.assetConfig);
 
 	const [anchorEl, setAnchorEl] = React.useState(null);
 
@@ -470,7 +471,7 @@ const HeaderWithMenu = ({dispatch, isAuthenticated, menuItem, headerTitle="Playb
 
 						<Grid container justify="center">
 							<Grid item>
-								<img src={Logo} className={classes.headerLogo} alt="Community Resilience"
+								<img src={assetConfig.communityResilienceLogo} className={classes.headerLogo} alt="Community Resilience"
 										 style={{maxHeight: 50, maxWidth: 50}}/>
 							</Grid>
 
