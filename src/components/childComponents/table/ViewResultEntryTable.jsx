@@ -15,6 +15,7 @@ import UnfoldMoreIcon from "@material-ui/icons/UnfoldMore";
 import UnfoldLess from "@material-ui/icons/UnfoldLess";
 
 import {makeStyles} from "@material-ui/core/styles";
+import {useSelector} from "react-redux";
 
 const useStyles = makeStyles({
 	table: {
@@ -123,6 +124,8 @@ export function ViewResultEntryTable(props) {
 		previewBldgFunc, downloadBldgFunc, previewInterd, previewBldgMCS, downloadBldgMCS, previewPopDisl,
 		previewCGE, downloadCGE, downloadPopDisl} = props;
 
+	const allowedDataTypes = useSelector((state) => state.config.allowedDataTypes);
+
 	const [expandId, setExpandId] = useState("");
 	const [collapseId, setCollapseId] = useState("");
 
@@ -218,163 +221,199 @@ export function ViewResultEntryTable(props) {
 									{
 										(execution["id"] === expandId && execution["id"] !== collapseId) ?
 											<>
-												<TableRow className={classes.subBodyRow}
-														  key={`${execution["id"]}-resilience-metrics`}>
-													<TableCell key={`${execution["id"]}-resilience-metrics-title`}>Resilience Metrics</TableCell>
-													<TableCell colSpan={3} key={`${execution["id"]}-resilience-metrics-1`}/>
-													<TableCell colSpan={2} key={`${execution["id"]}-resilience-metrics-2`}>
-														<Link color="primary" onClick={() => {previewMetrics(execution["id"]);}}
-															  className={execution["finalStatus"] === undefined ||
-															  execution["finalStatus"] === "FINISHED" ?
-																  classes.clickableLink : classes.clickableLinkDisabled}>
-															View
-														</Link>
-														<Link color="primary" className={classes.clickableLinkDisabled}>
-															Download
-														</Link>
-													</TableCell>
-												</TableRow>
-												<TableRow className={classes.subBodyRow}
-														  key={`${execution["id"]}-interdependency`}>
-													<TableCell key={`${execution["id"]}-interdependency-title`}>Interdependency</TableCell>
-													<TableCell colSpan={3} key={`${execution["id"]}-interdependency-1`}/>
-													<TableCell colSpan={2} key={`${execution["id"]}-interdependency-2`}>
-														<Link color="primary" onClick={() => {previewInterd(execution["id"]);}}
-															  className={execution["finalStatus"] === undefined ||
-															  execution["finalStatus"] === "FINISHED" ?
-																  classes.clickableLink : classes.clickableLinkDisabled}>
-															View
-														</Link>
-														<Link color="primary" className={classes.clickableLinkDisabled}>
-															Download
-														</Link>
-													</TableCell>
-												</TableRow>
-												<TableRow className={classes.subBodyRow}
-														  key={`${execution["id"]}-bldg-dmg`}>
-													<TableCell key={`${execution["id"]}-bldg-dmg-title`}>Building Damage</TableCell>
-													<TableCell colSpan={3} key={`${execution["id"]}-bldg-dmg-1`}/>
-													<TableCell colSpan={2} key={`${execution["id"]}-bldg-dmg-2`}>
-														<Link color="primary" onClick={() => {previewBldgDmg(execution["id"]);}}
-															  className={execution["finalStatus"] === undefined ||
-															  execution["finalStatus"] === "FINISHED" ?
-																  classes.clickableLink : classes.clickableLinkDisabled}>
-															View
-														</Link>
-														<Link color="primary" onClick={() => {downloadBldgDmg(execution["id"]);}}
-															  className={execution["finalStatus"] === undefined ||
-															  execution["finalStatus"] === "FINISHED" ?
-																  classes.clickableLink : classes.clickableLinkDisabled}>
-															Download
-														</Link>
-													</TableCell>
-												</TableRow>
-												<TableRow className={classes.subBodyRow}
-														  key={`${execution["id"]}-epf-pole`}>
-													<TableCell key={`${execution["id"]}-epf-pole-title`}>Pole Damage (Electrical Power Network)</TableCell>
-													<TableCell colSpan={3} key={`${execution["id"]}-epf-pole-1`}/>
-													<TableCell colSpan={2} key={`${execution["id"]}-epf-pole-2`}>
-														<Link color="primary" onClick={() =>
-														{previewEpfDmg(execution["id"], "pole");}}
-															  className={execution["finalStatus"] === undefined ||
-															  execution["finalStatus"] === "FINISHED" ?
-																  classes.clickableLink : classes.clickableLinkDisabled}>
-															View
-														</Link>
-														<Link color="primary" onClick={() => {downloadEpfDmg(execution["id"], "pole");}}
-															  className={execution["finalStatus"] === undefined ||
-															  execution["finalStatus"] === "FINISHED" ?
-																  classes.clickableLink : classes.clickableLinkDisabled}>Download</Link>
-													</TableCell>
-												</TableRow>
-												<TableRow className={classes.subBodyRow}
-														  key={`${execution["id"]}-epf-substation`}>
-													<TableCell key={`${execution["id"]}-epf-substation-title`}>Substation Damage (Electrical Power Network)</TableCell>
-													<TableCell colSpan={3} key={`${execution["id"]}-epf-substation-1`}/>
-													<TableCell colSpan={2} key={`${execution["id"]}-epf-substation-2`}>
-														<Link color="primary" onClick={() =>
-														{previewEpfDmg(execution["id"], "substation");}}
-															  className={execution["finalStatus"] === undefined ||
-															  execution["finalStatus"] === "FINISHED" ?
-																  classes.clickableLink : classes.clickableLinkDisabled}>
-															View
-														</Link>
-														<Link color="primary" onClick={() => {downloadEpfDmg(execution["id"], "substation");}}
-															  className={execution["finalStatus"] === undefined ||
-															  execution["finalStatus"] === "FINISHED" ?
-																  classes.clickableLink : classes.clickableLinkDisabled}>Download</Link>
-													</TableCell>
-												</TableRow>
-												<TableRow className={classes.subBodyRow} key={`${execution["id"]}-mcs`}>
-													<TableCell key={`${execution["id"]}-mcs-title`}>Building Functionality (w/o Electrical Power Dependency)</TableCell>
-													<TableCell colSpan={3} key={`${execution["id"]}-mcs-1`}/>
-													<TableCell colSpan={2}key={`${execution["id"]}-mcs-2`}>
-														<Link color="primary" onClick={() => {previewBldgMCS(execution["id"]);}}
-															  className={execution["finalStatus"] === undefined ||
-															  execution["finalStatus"] === "FINISHED" ?
-																  classes.clickableLink : classes.clickableLinkDisabled}>
-															View
-														</Link>
-														<Link color="primary" onClick={() => {downloadBldgMCS(execution["id"]);}}
-															  className={execution["finalStatus"] === undefined ||
-															  execution["finalStatus"] === "FINISHED" ?
-																  classes.clickableLink : classes.clickableLinkDisabled}>Download</Link>
-													</TableCell>
-												</TableRow>
-												<TableRow className={classes.subBodyRow}
-														  key={`${execution["id"]}-bldg-functionality`}>
-													<TableCell key={`${execution["id"]}-bldg-functionality-title`}>Building Functionality (with Electrical Power Dependency)</TableCell>
-													<TableCell colSpan={3} key={`${execution["id"]}-bldg-functionality-1`}/>
-													<TableCell colSpan={2} key={`${execution["id"]}-bldg-functionality-2`}>
-														<Link color="primary" onClick={() => {previewBldgFunc(execution["id"]);}}
-															  className={execution["finalStatus"] === undefined ||
-															  execution["finalStatus"] === "FINISHED" ?
-																  classes.clickableLink : classes.clickableLinkDisabled}>
-															View
-														</Link>
-														<Link color="primary" onClick={() => {downloadBldgFunc(execution["id"]);}}
-															  className={execution["finalStatus"] === undefined ||
-															  execution["finalStatus"] === "FINISHED" ?
-																  classes.clickableLink : classes.clickableLinkDisabled}>Download</Link>
-													</TableCell>
-												</TableRow>
-												<TableRow className={classes.subBodyRow} key={`${execution["id"]}-cge`}>
-													<TableCell key={`${execution["id"]}-cge-title`}>Economic Prediction Model (Computable General Equilibrium)</TableCell>
-													<TableCell colSpan={3} key={`${execution["id"]}-cge-1`}/>
-													<TableCell colSpan={2} key={`${execution["id"]}-cge-2`}>
-														<Link color="primary" onClick={() => {previewCGE(execution["id"]);}}
-															  className={execution["finalStatus"] === undefined ||
-															  execution["finalStatus"] === "FINISHED" ?
-																  classes.clickableLink : classes.clickableLinkDisabled}>
-															View
-														</Link>
-														<Link color="primary" className={
-															execution["finalStatus"] === undefined || execution["finalStatus"] === "FINISHED" ?
-																classes.clickableLink : classes.clickableLinkDisabled
-														} onClick={() => downloadCGE(execution["id"])}>
-															Download
-														</Link>
-													</TableCell>
-												</TableRow>
-												<TableRow className={classes.subBodyRow}
-														  key={`${execution["id"]}-popdislocation`}>
-													<TableCell key={`${execution["id"]}-popdislocation-title`}>Population Dislocation</TableCell>
-													<TableCell colSpan={3} key={`${execution["id"]}-popdislocation-1`}/>
-													<TableCell colSpan={2} key={`${execution["id"]}-popdislocation-2`}>
-														<Link color="primary" onClick={() => {previewPopDisl(execution["id"]);}}
-															  className={execution["finalStatus"] === undefined ||
-															  execution["finalStatus"] === "FINISHED" ?
-																  classes.clickableLink : classes.clickableLinkDisabled}>
-															View
-														</Link>
-														<Link color="primary" className={
-															execution["finalStatus"] === undefined || execution["finalStatus"] === "FINISHED" ?
-																classes.clickableLink : classes.clickableLinkDisabled
-														} onClick={() => downloadPopDisl(execution["id"])}>
-															Download
-														</Link>
-													</TableCell>
-												</TableRow>
+												{
+													allowedDataTypes.socioeconomics ?
+														<TableRow className={classes.subBodyRow}
+																  key={`${execution["id"]}-resilience-metrics`}>
+															<TableCell key={`${execution["id"]}-resilience-metrics-title`}>Resilience Metrics</TableCell>
+															<TableCell colSpan={3} key={`${execution["id"]}-resilience-metrics-1`}/>
+															<TableCell colSpan={2} key={`${execution["id"]}-resilience-metrics-2`}>
+																<Link color="primary" onClick={() => {previewMetrics(execution["id"]);}}
+																	  className={execution["finalStatus"] === undefined ||
+																	  execution["finalStatus"] === "FINISHED" ?
+																		  classes.clickableLink : classes.clickableLinkDisabled}>
+																	View
+																</Link>
+																<Link color="primary" className={classes.clickableLinkDisabled}>
+																	Download
+																</Link>
+															</TableCell>
+														</TableRow>
+														:
+														null
+												}
+												{
+													allowedDataTypes.network ?
+														<TableRow className={classes.subBodyRow}
+																  key={`${execution["id"]}-interdependency`}>
+															<TableCell key={`${execution["id"]}-interdependency-title`}>Interdependency</TableCell>
+															<TableCell colSpan={3} key={`${execution["id"]}-interdependency-1`}/>
+															<TableCell colSpan={2} key={`${execution["id"]}-interdependency-2`}>
+																<Link color="primary" onClick={() => {previewInterd(execution["id"]);}}
+																	  className={execution["finalStatus"] === undefined ||
+																	  execution["finalStatus"] === "FINISHED" ?
+																		  classes.clickableLink : classes.clickableLinkDisabled}>
+																	View
+																</Link>
+																<Link color="primary" className={classes.clickableLinkDisabled}>
+																	Download
+																</Link>
+															</TableCell>
+														</TableRow>
+														:
+														null
+												}
+												{
+													allowedDataTypes.building ?
+														<TableRow className={classes.subBodyRow}
+																  key={`${execution["id"]}-bldg-dmg`}>
+															<TableCell key={`${execution["id"]}-bldg-dmg-title`}>Building Damage</TableCell>
+															<TableCell colSpan={3} key={`${execution["id"]}-bldg-dmg-1`}/>
+															<TableCell colSpan={2} key={`${execution["id"]}-bldg-dmg-2`}>
+																<Link color="primary" onClick={() => {previewBldgDmg(execution["id"]);}}
+																	  className={execution["finalStatus"] === undefined ||
+																	  execution["finalStatus"] === "FINISHED" ?
+																		  classes.clickableLink : classes.clickableLinkDisabled}>
+																	View
+																</Link>
+																<Link color="primary" onClick={() => {downloadBldgDmg(execution["id"]);}}
+																	  className={execution["finalStatus"] === undefined ||
+																	  execution["finalStatus"] === "FINISHED" ?
+																		  classes.clickableLink : classes.clickableLinkDisabled}>
+																	Download
+																</Link>
+															</TableCell>
+														</TableRow>
+														:
+														null
+												}
+												{
+													allowedDataTypes.epf ?
+														<>
+															<TableRow className={classes.subBodyRow}
+																	  key={`${execution["id"]}-epf-pole`}>
+																<TableCell key={`${execution["id"]}-epf-pole-title`}>Pole Damage (Electrical Power Network)</TableCell>
+																<TableCell colSpan={3} key={`${execution["id"]}-epf-pole-1`}/>
+																<TableCell colSpan={2} key={`${execution["id"]}-epf-pole-2`}>
+																	<Link color="primary" onClick={() =>
+																	{previewEpfDmg(execution["id"], "pole");}}
+																		  className={execution["finalStatus"] === undefined ||
+																		  execution["finalStatus"] === "FINISHED" ?
+																			  classes.clickableLink : classes.clickableLinkDisabled}>
+																		View
+																	</Link>
+																	<Link color="primary" onClick={() => {downloadEpfDmg(execution["id"], "pole");}}
+																		  className={execution["finalStatus"] === undefined ||
+																		  execution["finalStatus"] === "FINISHED" ?
+																			  classes.clickableLink : classes.clickableLinkDisabled}>Download</Link>
+																</TableCell>
+															</TableRow>
+															<TableRow className={classes.subBodyRow}
+																	  key={`${execution["id"]}-epf-substation`}>
+																<TableCell key={`${execution["id"]}-epf-substation-title`}>Substation Damage (Electrical Power Network)</TableCell>
+																<TableCell colSpan={3} key={`${execution["id"]}-epf-substation-1`}/>
+																<TableCell colSpan={2} key={`${execution["id"]}-epf-substation-2`}>
+																	<Link color="primary" onClick={() =>
+																	{previewEpfDmg(execution["id"], "substation");}}
+																		  className={execution["finalStatus"] === undefined ||
+																		  execution["finalStatus"] === "FINISHED" ?
+																			  classes.clickableLink : classes.clickableLinkDisabled}>
+																		View
+																	</Link>
+																	<Link color="primary" onClick={() => {downloadEpfDmg(execution["id"], "substation");}}
+																		  className={execution["finalStatus"] === undefined ||
+																		  execution["finalStatus"] === "FINISHED" ?
+																			  classes.clickableLink : classes.clickableLinkDisabled}>Download</Link>
+																</TableCell>
+															</TableRow>
+														</>
+														:
+														null
+												}
+												{
+													allowedDataTypes.building && allowedDataTypes.epf ?
+														<>
+															<TableRow className={classes.subBodyRow} key={`${execution["id"]}-mcs`}>
+																<TableCell key={`${execution["id"]}-mcs-title`}>Building Functionality (w/o Electrical Power Dependency)</TableCell>
+																<TableCell colSpan={3} key={`${execution["id"]}-mcs-1`}/>
+																<TableCell colSpan={2}key={`${execution["id"]}-mcs-2`}>
+																	<Link color="primary" onClick={() => {previewBldgMCS(execution["id"]);}}
+																		  className={execution["finalStatus"] === undefined ||
+																		  execution["finalStatus"] === "FINISHED" ?
+																			  classes.clickableLink : classes.clickableLinkDisabled}>
+																		View
+																	</Link>
+																	<Link color="primary" onClick={() => {downloadBldgMCS(execution["id"]);}}
+																		  className={execution["finalStatus"] === undefined ||
+																		  execution["finalStatus"] === "FINISHED" ?
+																			  classes.clickableLink : classes.clickableLinkDisabled}>Download</Link>
+																</TableCell>
+															</TableRow>
+															<TableRow className={classes.subBodyRow}
+																	  key={`${execution["id"]}-bldg-functionality`}>
+																<TableCell key={`${execution["id"]}-bldg-functionality-title`}>Building Functionality (with Electrical Power Dependency)</TableCell>
+																<TableCell colSpan={3} key={`${execution["id"]}-bldg-functionality-1`}/>
+																<TableCell colSpan={2} key={`${execution["id"]}-bldg-functionality-2`}>
+																	<Link color="primary" onClick={() => {previewBldgFunc(execution["id"]);}}
+																		  className={execution["finalStatus"] === undefined ||
+																		  execution["finalStatus"] === "FINISHED" ?
+																			  classes.clickableLink : classes.clickableLinkDisabled}>
+																		View
+																	</Link>
+																	<Link color="primary" onClick={() => {downloadBldgFunc(execution["id"]);}}
+																		  className={execution["finalStatus"] === undefined ||
+																		  execution["finalStatus"] === "FINISHED" ?
+																			  classes.clickableLink : classes.clickableLinkDisabled}>Download</Link>
+																</TableCell>
+															</TableRow>
+														</>
+														:
+														null
+												}
+												{
+													allowedDataTypes.socioeconomics ?
+														<>
+															<TableRow className={classes.subBodyRow} key={`${execution["id"]}-cge`}>
+																<TableCell key={`${execution["id"]}-cge-title`}>Economic Prediction Model (Computable General Equilibrium)</TableCell>
+																<TableCell colSpan={3} key={`${execution["id"]}-cge-1`}/>
+																<TableCell colSpan={2} key={`${execution["id"]}-cge-2`}>
+																	<Link color="primary" onClick={() => {previewCGE(execution["id"]);}}
+																  className={execution["finalStatus"] === undefined ||
+																  execution["finalStatus"] === "FINISHED" ?
+																	  classes.clickableLink : classes.clickableLinkDisabled}>
+																View
+																	</Link>
+																	<Link color="primary" className={
+																		execution["finalStatus"] === undefined || execution["finalStatus"] === "FINISHED" ?
+																			classes.clickableLink : classes.clickableLinkDisabled
+																	} onClick={() => downloadCGE(execution["id"])}>
+																Download
+																	</Link>
+																</TableCell>
+															</TableRow>
+															<TableRow className={classes.subBodyRow}
+																  key={`${execution["id"]}-popdislocation`}>
+																<TableCell key={`${execution["id"]}-popdislocation-title`}>Population Dislocation</TableCell>
+																<TableCell colSpan={3} key={`${execution["id"]}-popdislocation-1`}/>
+																<TableCell colSpan={2} key={`${execution["id"]}-popdislocation-2`}>
+																	<Link color="primary" onClick={() => {previewPopDisl(execution["id"]);}}
+																	  className={execution["finalStatus"] === undefined ||
+																	  execution["finalStatus"] === "FINISHED" ?
+																		  classes.clickableLink : classes.clickableLinkDisabled}>
+																	View
+																	</Link>
+																	<Link color="primary" className={
+																		execution["finalStatus"] === undefined || execution["finalStatus"] === "FINISHED" ?
+																			classes.clickableLink : classes.clickableLinkDisabled
+																	} onClick={() => downloadPopDisl(execution["id"])}>
+																	Download
+																	</Link>
+																</TableCell>
+															</TableRow>
+														</>
+														:
+														null
+												}
 											</>
 											:
 											null
