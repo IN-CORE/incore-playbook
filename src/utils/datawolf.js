@@ -61,6 +61,7 @@ export async function submitExecution(datawolfConfig, allowedDataType, title, de
 
 		const datawolfDatasets = datawolfConfig["datasets"];
 		const datawolfParams = datawolfConfig["parameters"];
+		const defaults = datawolfConfig["defaults"];
 
 		let requestBody = {
 			"workflowId": datawolfConfig["workflowId"],
@@ -72,7 +73,7 @@ export async function submitExecution(datawolfConfig, allowedDataType, title, de
 		};
 
 		requestBody["parameters"][datawolfParams["incoreUserNameId"]] = getCurrUsername();
-		requestBody["parameters"][datawolfParams["numCpuId"]] = 8;
+		requestBody["parameters"][datawolfParams["numCpuId"]] = defaults["numCpuId"];
 		requestBody["parameters"][datawolfParams["hazardId"]] = hazardId;
 		requestBody["parameters"][datawolfParams["hazardTypeId"]] = hazardType;
 		requestBody["parameters"][datawolfParams["serviceUrlId"]] = appConfig["apiUrl"];
@@ -80,11 +81,11 @@ export async function submitExecution(datawolfConfig, allowedDataType, title, de
 
 		if (allowedDataType.building){
 			requestBody["parameters"][datawolfParams["useLiquefactionId"]] = "";
-			requestBody["parameters"][datawolfParams["mcsSamplesId"]] = 500;
-			requestBody["parameters"][datawolfParams["bldgDamageRatioId"]] = "5a284f2ec7d30d13bc08209a";
-			requestBody["parameters"][datawolfParams["archeTypeMappingId"]] = "5fca915fb34b193f7a44059b";
-			requestBody["parameters"][datawolfParams["bldgMappingId"]] = "5e8e3a21eaa8b80001f04f1c";
-			requestBody["parameters"][datawolfParams["damageIntervalKeysId"]] = "DS_0 DS_1 DS_2 DS_3";
+			requestBody["parameters"][datawolfParams["mcsSamplesId"]] = defaults["mcsSamplesId"];
+			requestBody["parameters"][datawolfParams["bldgDamageRatioId"]] = defaults["bldgDamageRatioId"];
+			requestBody["parameters"][datawolfParams["archeTypeMappingId"]] = defaults["archeTypeMappingId"];
+			requestBody["parameters"][datawolfParams["bldgMappingId"]] = defaults["bldgMappingId"];
+			requestBody["parameters"][datawolfParams["damageIntervalKeysId"]] = defaults["damageIntervalKeysId"];
 			requestBody["parameters"][datawolfParams["bldgFragilityKeyId"]] = "";
 			requestBody["parameters"][datawolfParams["buildingId"]] = bldgId;
 			requestBody["parameters"][datawolfParams["useUncertaintyId"]] = "";
@@ -92,7 +93,7 @@ export async function submitExecution(datawolfConfig, allowedDataType, title, de
 
 		if (allowedDataType.epf){
 			requestBody["parameters"][datawolfParams["epfPoleId"]] = poleId;
-			requestBody["parameters"][datawolfParams["epfMappingId"]] = "5d8a326fb9219c068ea798e7";
+			requestBody["parameters"][datawolfParams["epfMappingId"]] = defaults["epfMappingId"];
 			requestBody["parameters"][datawolfParams["epfSubstationId"]] = substationId;
 		}
 

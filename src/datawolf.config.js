@@ -70,6 +70,18 @@ let datawolfConfig = {
 		"dislocationByHousingTypeId":"7b69e147-d9ac-475c-b9f6-54a391350326",
 		"dislocationByDisabilityId":"aa3451a3-f0a9-47af-feb2-a4cdfa9250e1"
 	},
+
+	// hardcoded incore ids/parameters
+	"defaults": {
+		"bldgDamageRatioId":"5a284f2ec7d30d13bc08209a",
+		"archeTypeMappingId":"5fca915fb34b193f7a44059b",
+		"bldgMappingId":"5e8e3a21eaa8b80001f04f1c",
+		"damageIntervalKeysId":"DS_0 DS_1 DS_2 DS_3",
+		"mcsSamplesId":500,
+		"numCpuId": 8,
+		"epfMappingId": "5d8a326fb9219c068ea798e7"
+	},
+
 };
 
 datawolfConfig["executionGetURL"] = `${appConfig.apiUrl}/datawolf/workflows/${datawolfConfig["workflowId"]}/executions`;
