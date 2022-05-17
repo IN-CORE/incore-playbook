@@ -161,6 +161,23 @@ export default function ViewResult(props) {
 		}
 	};
 
+	const populateHazardDropdown = (hazards, selectedHazardId, setHazardId, ) => {
+		return (
+			<IncoreSelectBox labelId="label" id="select" variant="outlined"
+							 onChange={(e)=>{ setHazardId(e.target.value); }}
+							 value={selectedHazardId}>
+				{
+					(hazards).map((hazard) => {
+						return (
+							<IncoreMenuItem value={hazard["id"]} key={hazard["id"]}>
+								{hazard["name"]}</IncoreMenuItem>
+						);
+					})
+				}
+			</IncoreSelectBox>
+		);
+	};
+
 	return (
 		<div role="tabpanel" hidden={value !== index} id={`simple-tabpanel-${index}`}
 			 aria-labelledby={`simple-tab-${index}`}
@@ -325,92 +342,32 @@ export default function ViewResult(props) {
 					</Box>
 					{
 						alllowedHazardTypes.map((hazardType) =>{
-							return (<Box className="inputGroup" style={{height: "auto"}}>
-								<IncoreInputLabel>Select {hazardType.charAt(0).toUpperCase() + hazardType.slice(1)} Scenario</IncoreInputLabel>
-								{
-									(() => {
-										if (hazardType === "earthquakes") {
-											return (
-												<IncoreSelectBox labelId="label" id="select" variant="outlined"
-																 onChange={(e)=>{ setEqId(e.target.value); }}
-																 value={selectedEqId}>
-													{
-														(earthquakes).map((hazard) => {
-															return (
-																<IncoreMenuItem value={hazard["id"]} key={hazard["id"]}>
-																	{hazard["name"]}</IncoreMenuItem>
-															);
-														})
-													}
-												</IncoreSelectBox>
-											);
-										}
-										else if (hazardType === "tornadoes") {
-											return (
-												<IncoreSelectBox labelId="label" id="select" variant="outlined"
-															 onChange={(e)=>{ setTornadoId(e.target.value); }}
-															 value={selectedTornadoId}>
-													{
-														(tornadoes).map((hazard) => {
-															return (
-																<IncoreMenuItem value={hazard["id"]} key={hazard["id"]}>
-																	{hazard["name"]}</IncoreMenuItem>
-															);
-														})
-													}
-												</IncoreSelectBox>);
-										}
-										else if (hazardType === "hurricanes") {
-											return (
-												<IncoreSelectBox labelId="label" id="select" variant="outlined"
-																 onChange={(e)=>{ setHurricaneId(e.target.value); }}
-																 value={selectedHurricaneId}>
-													{
-														(hurricanes).map((hazard) => {
-															return (
-																<IncoreMenuItem value={hazard["id"]} key={hazard["id"]}>
-																	{hazard["name"]}</IncoreMenuItem>
-															);
-														})
-													}
-												</IncoreSelectBox>);
-										}
-										else if (hazardType === "floods") {
-											return (
-												<IncoreSelectBox labelId="label" id="select" variant="outlined"
-																 onChange={(e)=>{ setFloodId(e.target.value); }}
-																 value={selectedFloodId}>
-													{
-														(floods).map((hazard) => {
-															return (
-																<IncoreMenuItem value={hazard["id"]} key={hazard["id"]}>
-																	{hazard["name"]}</IncoreMenuItem>
-															);
-														})
-													}
-												</IncoreSelectBox>);
-										}
-										else if (hazardType === "tsunamis") {
-											return (
-												<IncoreSelectBox labelId="label" id="select" variant="outlined"
-																 onChange={(e)=>{ setTsunamiId(e.target.value); }}
-																 value={selectedTsunamiId}>
-													{
-														(tsunamis).map((hazard) => {
-															return (
-																<IncoreMenuItem value={hazard["id"]} key={hazard["id"]}>
-																	{hazard["name"]}</IncoreMenuItem>
-															);
-														})
-													}
-												</IncoreSelectBox>);
-										}
-									})()
-								}
-								<Typography className={classes.explanation}>If you need to add new hazards to your community hazards list&nbsp;
-									<NavLink to="/goal-objective-hazard"
+							return (
+								<Box className="inputGroup" style={{height: "auto"}}>
+									<IncoreInputLabel>Select {hazardType.charAt(0).toUpperCase() + hazardType.slice(1)} Scenario</IncoreInputLabel>
+									{
+										(() => {
+											if (hazardType === "earthquakes") {
+												return populateHazardDropdown(earthquakes, selectedEqId, setEqId);
+											}
+											else if (hazardType === "tornadoes") {
+												return populateHazardDropdown(tornadoes, selectedTornadoId, setTornadoId);
+											}
+											else if (hazardType === "hurricanes") {
+												return populateHazardDropdown(hurricanes, selectedHurricaneId, setHurricaneId);
+											}
+											else if (hazardType === "floods") {
+												return populateHazardDropdown(floods, selectedFloodId, setFloodId);
+											}
+											else if (hazardType === "tsunamis") {
+												return populateHazardDropdown(tsunamis, selectedTsunamiId, setTsunamiId);
+											}
+										})()
+									}
+									<Typography className={classes.explanation}>If you need to add new hazards to your community hazards list&nbsp;
+										<NavLink to="/goal-objective-hazard"
 											 className={classes.explanationLink}>click here</NavLink>.</Typography>
-							</Box>);
+								</Box>);
 						})
 					}
 
