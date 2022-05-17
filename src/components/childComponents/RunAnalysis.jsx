@@ -89,14 +89,8 @@ export default function ViewResult(props) {
 	const [selectedHuaId, setHuaId] = useState("");
 	const [selectedBlockGroupId, setBlockGroupId] = useState("");
 	const [selectedValueLossId, setValueLossId] = useState("");
-
-	// fixme
-	const [selectedTornadoId, setTornadoId] = useState("");
-	const [selectedEqId, setEqId] = useState("");
-	const [selectedFloodId, setFloodId] = useState("");
-	const [selectedTsunamiId, setTsunamiId] = useState("");
-	const [selectedHurricaneId, setHurricaneId] = useState("");
-
+	const [selectedHazardType, setHazardType] = useState("");
+	const [selectedHazardId, setHazardId] = useState("");
 	const [disabled, setDisabled] = useState(true);
 
 	// load datasets and tornadoes
@@ -127,21 +121,19 @@ export default function ViewResult(props) {
 			&& selectedHuaId !== ""
 			&& selectedBlockGroupId !== ""
 			&& selectedValueLossId !== ""
-			&& ( selectedTornadoId !== "" || selectedFloodId !== "" || selectedEqId !== ""
-				|| selectedHurricaneId !== "" || selectedTsunamiId !== "" )) setDisabled(false);
+			&& selectedHazardType !== ""
+			&& selectedHazardId !== "") setDisabled(false);
 		else setDisabled(true);
 	}, [selectedBldgId, selectedSubstationId, selectedPoleId, selectedInterdNetworkId, title, description,
 		selectedBldgToSectorId, selectedHuaId, selectedBlockGroupId, selectedValueLossId,
-		selectedTornadoId, selectedFloodId, selectedEqId, selectedHurricaneId, selectedTsunamiId]);
-
+		selectedHazardId, selectedHazardType]);
 
 	const classes = useStyles();
 
 	const handleRunButtonClick = async () =>{
-		// FIXME how to decide what hazard type to pass; maybe just a hazardId + hazardType???
 		const datawolfJson = await submitExecution(title, description, selectedBldgId, selectedSubstationId,
 			selectedPoleId, selectedInterdNetworkId, selectedBldgToSectorId, selectedHuaId, selectedBlockGroupId,
-			selectedValueLossId, selectedTornadoId);
+			selectedValueLossId, selectedHazardType, selectedHazardId);
 		if (datawolfJson && datawolfJson !== "") {
 			setTitle("");
 			setDescription("");
@@ -153,8 +145,8 @@ export default function ViewResult(props) {
 			setHuaId("");
 			setBlockGroupId("");
 			setValueLossId("");
-			setTornadoId("");
-
+			setHazardType("");
+			setHazardId("");
 			// update execution list and then jump to view result tab
 			getExecutionList();
 			gotoViewResultTab();
@@ -340,35 +332,52 @@ export default function ViewResult(props) {
 							<NavLink to="/community-environment"
 								  className={classes.explanationLink}>click here</NavLink>.</Typography>
 					</Box>
+					<Box className="inputGroup" style={{height: "auto"}}>
+						<IncoreInputLabel>
+							Select Hazard Type
+						</IncoreInputLabel>
+						<IncoreSelectBox labelId="label" id="select" variant="outlined"
+										 onChange={(e)=>{ setHazardType(e.target.value); }}
+										 value={selectedHazardType}>
+							{
+								(alllowedHazardTypes).map((hazardType) => {
+									return (
+										<IncoreMenuItem value={hazardType} key={hazardType}>
+											{hazardType}</IncoreMenuItem>
+									);
+								})
+							}
+						</IncoreSelectBox>
+					</Box>
 					{
-						alllowedHazardTypes.map((hazardType) =>{
-							return (
-								<Box className="inputGroup" style={{height: "auto"}}>
-									<IncoreInputLabel>Select {hazardType.charAt(0).toUpperCase() + hazardType.slice(1)} Scenario</IncoreInputLabel>
-									{
-										(() => {
-											if (hazardType === "earthquakes") {
-												return populateHazardDropdown(earthquakes, selectedEqId, setEqId);
-											}
-											else if (hazardType === "tornadoes") {
-												return populateHazardDropdown(tornadoes, selectedTornadoId, setTornadoId);
-											}
-											else if (hazardType === "hurricanes") {
-												return populateHazardDropdown(hurricanes, selectedHurricaneId, setHurricaneId);
-											}
-											else if (hazardType === "floods") {
-												return populateHazardDropdown(floods, selectedFloodId, setFloodId);
-											}
-											else if (hazardType === "tsunamis") {
-												return populateHazardDropdown(tsunamis, selectedTsunamiId, setTsunamiId);
-											}
-										})()
-									}
-									<Typography className={classes.explanation}>If you need to add new hazards to your community hazards list&nbsp;
-										<NavLink to="/goal-objective-hazard"
-											 className={classes.explanationLink}>click here</NavLink>.</Typography>
-								</Box>);
-						})
+						selectedHazardType !== "" ?
+							<Box className="inputGroup" style={{height: "auto"}}>
+								<IncoreInputLabel>Select {selectedHazardType.charAt(0).toUpperCase() + selectedHazardType.slice(1)} Scenario</IncoreInputLabel>
+								{
+									(() => {
+										if (selectedHazardType === "earthquakes") {
+											return populateHazardDropdown(earthquakes, selectedHazardId, setHazardId);
+										}
+										else if (selectedHazardType === "tornadoes") {
+											return populateHazardDropdown(tornadoes, selectedHazardId, setHazardId);
+										}
+										else if (selectedHazardType === "hurricanes") {
+											return populateHazardDropdown(hurricanes, selectedHazardId, setHazardId);
+										}
+										else if (selectedHazardType === "floods") {
+											return populateHazardDropdown(floods, selectedHazardId, setHazardId);
+										}
+										else if (selectedHazardType === "tsunamis") {
+											return populateHazardDropdown(tsunamis, selectedHazardId, setHazardId);
+										}
+									})()
+								}
+								<Typography className={classes.explanation}>If you need to add new hazards to your community hazards list&nbsp;
+									<NavLink to="/goal-objective-hazard"
+									 className={classes.explanationLink}>click here</NavLink>.</Typography>
+							</Box>
+							:
+							null
 					}
 
 					<Box className="inputGroup" style={{height: "auto"}}>

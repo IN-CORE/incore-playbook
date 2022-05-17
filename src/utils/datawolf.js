@@ -48,7 +48,7 @@ export async function getOutputFileJson(datasetId, outputFileName = null) {
 }
 
 export async function submitExecution(title, description, bldgId, substationId, poleId, interdNetworkId,
-									  bldgToSectorId, huaId, blockGroupId, valueLossId, hazardId,){
+									  bldgToSectorId, huaId, blockGroupId, valueLossId, hazardType, hazardId,){
 	let incoreTokenDatasetId = await postDataset();
 	if (incoreTokenDatasetId === null) {
 		console.log("Fail to post incoretoken. Abort exeuction submission!");
@@ -79,7 +79,7 @@ export async function submitExecution(title, description, bldgId, substationId, 
 		requestBody["parameters"][datawolfParams["epfPoleId"]] = poleId;
 		requestBody["parameters"][datawolfParams["hazardId"]] = hazardId;
 		requestBody["parameters"][datawolfParams["damageIntervalKeysId"]] = "DS_0 DS_1 DS_2 DS_3";
-		requestBody["parameters"][datawolfParams["hazardTypeId"]] = "tornado";
+		requestBody["parameters"][datawolfParams["hazardTypeId"]] = hazardType;
 		requestBody["parameters"][datawolfParams["bldgMappingId"]] = "5e8e3a21eaa8b80001f04f1c";
 		requestBody["parameters"][datawolfParams["epfMappingId"]] = "5d8a326fb9219c068ea798e7";
 		requestBody["parameters"][datawolfParams["archeTypeMappingId"]] = "5fca915fb34b193f7a44059b";
