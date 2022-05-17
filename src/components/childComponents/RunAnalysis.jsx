@@ -185,153 +185,169 @@ export default function ViewResult(props) {
 						<IncoreInputLabel>Description</IncoreInputLabel>
 						<IncoreTextField value={description} variant="outlined" onChange={(e) => setDescription(e.target.value)}/>
 					</div>
-					<Box className="inputGroup" style={{height: "auto"}}>
-						<IncoreInputLabel>Select a Building Cluster
-						</IncoreInputLabel>
-						<IncoreSelectBox labelId="label" id="select" variant="outlined"
-										 onChange={(e)=>{ setBldgId(e.target.value); }}
-										 value={selectedBldgId}>
-							{
-								buildings.map((building) => {
-									return (
-										<IncoreMenuItem value={building["id"]} key={building["id"]}>
-											{building["title"]}</IncoreMenuItem>
-									);
-								})
-							}
-						</IncoreSelectBox>
-					</Box>
-					<Box className="inputGroup" style={{height: "auto"}}>
-						<IncoreInputLabel>Select Electric Power Facilities (Poles)
-						</IncoreInputLabel>
-						<IncoreSelectBox labelId="label" id="select" variant="outlined"
-										 onChange={(e)=>{ setPoleId(e.target.value); }}
-										 value={selectedPoleId}>
-							{
-								epfs.map((epf) => {
-									return (
-										<IncoreMenuItem value={epf["id"]} key={epf["id"]}>
-											{epf["title"]}</IncoreMenuItem>
-									);
-								})
-							}
-						</IncoreSelectBox>
-					</Box>
-					<Box className="inputGroup" style={{height: "auto"}}>
-						<IncoreInputLabel>Select Electric Power Facilities (Substation)
-						</IncoreInputLabel>
-						<IncoreSelectBox labelId="label" id="select" variant="outlined"
-										 onChange={(e)=>{ setSubstationId(e.target.value); }}
-										 value={selectedSubstationId}>
-							{
-								epfs.map((epf) => {
-									return (
-										<IncoreMenuItem value={epf["id"]} key={epf["id"]}>
-											{epf["title"]}</IncoreMenuItem>
-									);
-								})
-							}
-						</IncoreSelectBox>
-					</Box>
-					<Box className="inputGroup" style={{height: "auto"}}>
-						<IncoreInputLabel>Select Interdependency Network
-						</IncoreInputLabel>
-						<IncoreSelectBox labelId="label" id="select" variant="outlined"
-										 onChange={(e)=>{ setInterdNetworkId(e.target.value); }}
-										 value={selectedInterdNetworkId}>
-							{
-								interdNetworks.map((interdNetwork) => {
-									return (
-										<IncoreMenuItem key={interdNetwork["id"]} value={interdNetwork["id"]} interdNetwork={interdNetwork["id"]}>
-											{interdNetwork["title"]}</IncoreMenuItem>
-									);
-								})
-							}
-						</IncoreSelectBox>
-
-						{/*socioecnomic input*/}
-						<Box className={classes.socioeconomicsBlock}>
-							<Typography className={classes.explanation} style={{margin: "5px 0", color:"#00619D"}}>
-								Select Socioeconomical Inputs
-							</Typography>
-							<Box className={classes.socioeconomics}>
-
-								<Box className="inputGroup" style={{height: "auto"}}>
-									<IncoreInputLabel>Select Building to Sector Mapping
-									</IncoreInputLabel>
-									<IncoreSelectBox labelId="label" id="select" variant="outlined"
-													 onChange={(e)=>{ setBldgToSectorId(e.target.value); }}
-													 value={selectedBldgToSectorId}>
-										>
-										{
-											sectorShocks.map((item) => {
-												return (
-													<IncoreMenuItem key={item["id"]} value={item["id"]} sectorShock={item["id"]}>
-														{item["title"]}</IncoreMenuItem>
-												);
-											})
-										}
-									</IncoreSelectBox>
-								</Box>
-								<Box className="inputGroup" style={{height: "auto"}}>
-									<IncoreInputLabel>Select Housing Unit Allocation Table
-									</IncoreInputLabel>
-									<IncoreSelectBox labelId="label" id="select" variant="outlined"
-													 onChange={(e)=>{ setHuaId(e.target.value); }}
-													 value={selectedHuaId}>
-										>
-										{
-											huas.map((item) => {
-												return (
-													<IncoreMenuItem key={item["id"]} value={item["id"]} hua={item["id"]}>
-														{item["title"]}</IncoreMenuItem>
-												);
-											})
-										}
-									</IncoreSelectBox>
-								</Box>
-								<Box className="inputGroup" style={{height: "auto"}}>
-									<IncoreInputLabel>Select Block Group Census
-									</IncoreInputLabel>
-									<IncoreSelectBox labelId="label" id="select" variant="outlined"
-													 onChange={(e)=>{ setBlockGroupId(e.target.value); }}
-													 value={selectedBlockGroupId}>
-										>
-										{
-											blockGroups.map((item) => {
-												return (
-													<IncoreMenuItem key={item["id"]} value={item["id"]} blockGroup={item["id"]}>
-														{item["title"]}</IncoreMenuItem>
-												);
-											})
-										}
-									</IncoreSelectBox>
-								</Box>
-								<Box className="inputGroup" style={{height: "auto"}}>
-									<IncoreInputLabel>Select Value Loss Distribution
-									</IncoreInputLabel>
-									<IncoreSelectBox labelId="label" id="select" variant="outlined"
-													 onChange={(e)=>{ setValueLossId(e.target.value); }}
-													 value={selectedValueLossId}>
-										>
-										{
-											valueLosses.map((item) => {
-												return (
-													<IncoreMenuItem key={item["id"]} value={item["id"]} valueLoss={item["id"]}>
-														{item["title"]}</IncoreMenuItem>
-												);
-											})
-										}
-									</IncoreSelectBox>
-								</Box>
-
+					{
+						allowedDataTypes.building ?
+							<Box className="inputGroup" style={{height: "auto"}}>
+								<IncoreInputLabel>Select a Building Cluster
+								</IncoreInputLabel>
+								<IncoreSelectBox labelId="label" id="select" variant="outlined"
+												 onChange={(e)=>{ setBldgId(e.target.value); }}
+												 value={selectedBldgId}>
+									{
+										buildings.map((building) => {
+											return (
+												<IncoreMenuItem value={building["id"]} key={building["id"]}>
+													{building["title"]}</IncoreMenuItem>
+											);
+										})
+									}
+								</IncoreSelectBox>
 							</Box>
-						</Box>
-
-						<Typography className={classes.explanation}>If you need to add entities to your built environment&nbsp;
-							<NavLink to="/community-environment"
-								  className={classes.explanationLink}>click here</NavLink>.</Typography>
-					</Box>
+							:
+							null
+					}
+					{
+						allowedDataTypes.epf ?
+							<>
+								<Box className="inputGroup" style={{height: "auto"}}>
+									<IncoreInputLabel>Select Electric Power Facilities (Poles)
+									</IncoreInputLabel>
+									<IncoreSelectBox labelId="label" id="select" variant="outlined"
+												 onChange={(e)=>{ setPoleId(e.target.value); }}
+												 value={selectedPoleId}>
+										{
+											epfs.map((epf) => {
+												return (
+													<IncoreMenuItem value={epf["id"]} key={epf["id"]}>
+														{epf["title"]}</IncoreMenuItem>
+												);
+											})
+										}
+									</IncoreSelectBox>
+								</Box>
+								<Box className="inputGroup" style={{height: "auto"}}>
+									<IncoreInputLabel>Select Electric Power Facilities (Substation)
+									</IncoreInputLabel>
+									<IncoreSelectBox labelId="label" id="select" variant="outlined"
+												 onChange={(e)=>{ setSubstationId(e.target.value); }}
+												 value={selectedSubstationId}>
+										{
+											epfs.map((epf) => {
+												return (
+													<IncoreMenuItem value={epf["id"]} key={epf["id"]}>
+														{epf["title"]}</IncoreMenuItem>
+												);
+											})
+										}
+									</IncoreSelectBox>
+								</Box>
+							</>
+							: null
+					}
+					{
+						allowedDataTypes.network ?
+							<Box className="inputGroup" style={{height: "auto"}}>
+								<IncoreInputLabel>Select Interdependency Network
+								</IncoreInputLabel>
+								<IncoreSelectBox labelId="label" id="select" variant="outlined"
+												 onChange={(e)=>{ setInterdNetworkId(e.target.value); }}
+												 value={selectedInterdNetworkId}>
+									{
+										interdNetworks.map((interdNetwork) => {
+											return (
+												<IncoreMenuItem key={interdNetwork["id"]} value={interdNetwork["id"]} interdNetwork={interdNetwork["id"]}>
+													{interdNetwork["title"]}</IncoreMenuItem>
+											);
+										})
+									}
+								</IncoreSelectBox>
+							</Box>
+							:
+							null
+					}
+					{
+						allowedDataTypes.socioeconomics ?
+							<Box className={classes.socioeconomicsBlock}>
+								<Typography className={classes.explanation} style={{margin: "5px 0", color:"#00619D"}}>
+									Select Socioeconomical Inputs
+								</Typography>
+								<Box className={classes.socioeconomics}>
+									<Box className="inputGroup" style={{height: "auto"}}>
+										<IncoreInputLabel>Select Building to Sector Mapping
+										</IncoreInputLabel>
+										<IncoreSelectBox labelId="label" id="select" variant="outlined"
+														 onChange={(e)=>{ setBldgToSectorId(e.target.value); }}
+														 value={selectedBldgToSectorId}>
+											>
+											{
+												sectorShocks.map((item) => {
+													return (
+														<IncoreMenuItem key={item["id"]} value={item["id"]} sectorShock={item["id"]}>
+															{item["title"]}</IncoreMenuItem>
+													);
+												})
+											}
+										</IncoreSelectBox>
+									</Box>
+									<Box className="inputGroup" style={{height: "auto"}}>
+										<IncoreInputLabel>Select Housing Unit Allocation Table
+										</IncoreInputLabel>
+										<IncoreSelectBox labelId="label" id="select" variant="outlined"
+														 onChange={(e)=>{ setHuaId(e.target.value); }}
+														 value={selectedHuaId}>
+											>
+											{
+												huas.map((item) => {
+													return (
+														<IncoreMenuItem key={item["id"]} value={item["id"]} hua={item["id"]}>
+															{item["title"]}</IncoreMenuItem>
+													);
+												})
+											}
+										</IncoreSelectBox>
+									</Box>
+									<Box className="inputGroup" style={{height: "auto"}}>
+										<IncoreInputLabel>Select Block Group Census
+										</IncoreInputLabel>
+										<IncoreSelectBox labelId="label" id="select" variant="outlined"
+														 onChange={(e)=>{ setBlockGroupId(e.target.value); }}
+														 value={selectedBlockGroupId}>
+											>
+											{
+												blockGroups.map((item) => {
+													return (
+														<IncoreMenuItem key={item["id"]} value={item["id"]} blockGroup={item["id"]}>
+															{item["title"]}</IncoreMenuItem>
+													);
+												})
+											}
+										</IncoreSelectBox>
+									</Box>
+									<Box className="inputGroup" style={{height: "auto"}}>
+										<IncoreInputLabel>Select Value Loss Distribution
+										</IncoreInputLabel>
+										<IncoreSelectBox labelId="label" id="select" variant="outlined"
+														 onChange={(e)=>{ setValueLossId(e.target.value); }}
+														 value={selectedValueLossId}>
+											>
+											{
+												valueLosses.map((item) => {
+													return (
+														<IncoreMenuItem key={item["id"]} value={item["id"]} valueLoss={item["id"]}>
+															{item["title"]}</IncoreMenuItem>
+													);
+												})
+											}
+										</IncoreSelectBox>
+									</Box>
+								</Box>
+								<Typography className={classes.explanation}>If you need to add entities to your built environment&nbsp;
+									<NavLink to="/community-environment"
+											 className={classes.explanationLink}>click here</NavLink>.</Typography>
+							</Box>
+							:
+							null
+					}
 					<Box className="inputGroup" style={{height: "auto"}}>
 						<IncoreInputLabel>
 							Select Hazard Type
