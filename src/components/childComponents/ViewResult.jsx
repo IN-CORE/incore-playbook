@@ -6,8 +6,6 @@ import FilterListIcon from "@material-ui/icons/FilterList";
 
 import {IncoreInputLabel} from "../styledComponents/IncoreInputLabel";
 
-import datawolfConfig from "../../datawolf.config";
-
 import {getOutputFileJson} from "../../utils/datawolf";
 import {getTornadoMetadata} from "../../utils/hazard";
 
@@ -29,6 +27,7 @@ import CGE from "./modal/CGE";
 import PopDislocation from "./modal/PopDislocation";
 import Metrics from "./modal/Metrics";
 import {exportJson} from "../../utils/common";
+import {useSelector} from "react-redux";
 
 const useStyles = makeStyles({
 	statTitle: {
@@ -71,8 +70,10 @@ export default function ViewResult(props) {
 	const {value, index, getExecutionList, executions, ...other} = props;
 	const classes = useStyles();
 
+	const datawolfConfig = useSelector((state) => state.config.datawolfConfig);
+
 	// load executions list that has status
-	useEffect(() => { getExecutionList(); }, []);
+	useEffect(() => { getExecutionList(datawolfConfig); }, []);
 
 	// update execution statuses upon changing
 	useEffect(() => {
@@ -202,43 +203,43 @@ export default function ViewResult(props) {
 
 		// total dislocation
 		let totalDislTableId = executionItem["datasets"][datawolfConfig["datasets"]["totalDislocationId"]];
-		let totalDislTable = await getOutputFileJson(totalDislTableId);
+		let totalDislTable = await getOutputFileJson(datawolfConfig, totalDislTableId);
 		let totalDislTableIdContent = JSON.parse(totalDislTable);
 
 		// dislocation group by
 		let dislocationByRaceId = executionItem["datasets"][datawolfConfig["datasets"]["dislocationByRaceId"]];
-		let dislocationByRace = await getOutputFileJson(dislocationByRaceId);
+		let dislocationByRace = await getOutputFileJson(datawolfConfig, dislocationByRaceId);
 		let dislocationByRaceContent = JSON.parse(dislocationByRace);
 
 		let dislocationByTenureId = executionItem["datasets"][datawolfConfig["datasets"]["dislocationByTenureId"]];
-		let dislocationByTenure = await getOutputFileJson(dislocationByTenureId);
+		let dislocationByTenure = await getOutputFileJson(datawolfConfig, dislocationByTenureId);
 		let dislocationByTenureContent = JSON.parse(dislocationByTenure);
 
 		let dislocationByIncomeId = executionItem["datasets"][datawolfConfig["datasets"]["dislocationByIncomeId"]];
-		let dislocationByIncome = await getOutputFileJson(dislocationByIncomeId);
+		let dislocationByIncome = await getOutputFileJson(datawolfConfig, dislocationByIncomeId);
 		let dislocationByIncomeContent = JSON.parse(dislocationByIncome);
 
 		let dislocationByHousingTypeId = executionItem["datasets"][datawolfConfig["datasets"]["dislocationByHousingTypeId"]];
-		let dislocationByHousingType = await getOutputFileJson(dislocationByHousingTypeId);
+		let dislocationByHousingType = await getOutputFileJson(datawolfConfig, dislocationByHousingTypeId);
 		let dislocationByHousingTypeIdContent = JSON.parse(dislocationByHousingType);
 
 		// cge by total household income
 		let cgeHouseholdIncomeId = executionItem["datasets"][datawolfConfig["datasets"]["cgeHouseholdIncomeId"]];
-		let cgeHouseholdIncome = await getOutputFileJson(cgeHouseholdIncomeId);
+		let cgeHouseholdIncome = await getOutputFileJson(datawolfConfig, cgeHouseholdIncomeId);
 		let cgeHouseholdIncomeContent = JSON.parse(cgeHouseholdIncome);
 
 		// dislocation group by
 		let cgeDomesticSupplyId = executionItem["datasets"][datawolfConfig["datasets"]["cgeDomesticSupplyId"]];
-		let cgeDomesticSupply = await getOutputFileJson(cgeDomesticSupplyId);
+		let cgeDomesticSupply = await getOutputFileJson(datawolfConfig, cgeDomesticSupplyId);
 		let cgeDomesticSupplyContent = JSON.parse(cgeDomesticSupply);
 
 		let cgeEmploymentId = executionItem["datasets"][datawolfConfig["datasets"]["cgeEmploymentId"]];
-		let cgeEmployment = await getOutputFileJson(cgeEmploymentId);
+		let cgeEmployment = await getOutputFileJson(datawolfConfig, cgeEmploymentId);
 		let cgeEmploymentContent = JSON.parse(cgeEmployment);
 
 		// bldgFunc
 		let bldgFuncSummaryTableId = executionItem["datasets"][datawolfConfig["datasets"]["bldgFuncSummaryTableId"]];
-		let bldgFuncSummaryTable = await getOutputFileJson(bldgFuncSummaryTableId);
+		let bldgFuncSummaryTable = await getOutputFileJson(datawolfConfig, bldgFuncSummaryTableId);
 		let bldgFuncSummaryTableContent = JSON.parse(bldgFuncSummaryTable);
 
 		setTables(
@@ -271,7 +272,7 @@ export default function ViewResult(props) {
 
 		// map
 		let bldgMaxDamageStateId = executionItem["datasets"][datawolfConfig["datasets"]["bldgMaxDamageStateId"]];
-		let bldgMaxDamageStateINCOREId = await getOutputFileJson(bldgMaxDamageStateId);
+		let bldgMaxDamageStateINCOREId = await getOutputFileJson(datawolfConfig, bldgMaxDamageStateId);
 		let hazardId = executionItem["parameters"][datawolfConfig["parameters"]["hazardId"]];
 		let hazardMetadata = await getTornadoMetadata(hazardId);
 		let hazardDatasetId = hazardMetadata["datasetId"];
@@ -292,7 +293,7 @@ export default function ViewResult(props) {
 		handleLayerUpdate(layerDef);
 
 		let bldgDmgSummaryTableId = executionItem["datasets"][datawolfConfig["datasets"]["bldgDmgSummaryTableId"]];
-		let bldgDmgSummaryTable = await getOutputFileJson(bldgDmgSummaryTableId);
+		let bldgDmgSummaryTable = await getOutputFileJson(datawolfConfig, bldgDmgSummaryTableId);
 		let bldgDmgSummaryTableContent = JSON.parse(bldgDmgSummaryTable);
 
 		// for summary table on the top
@@ -313,7 +314,7 @@ export default function ViewResult(props) {
 	const downloadBldgDmg = async (executionItemId) => {
 		let executionItem = getExecution(executionItemId);
 		let bldgMaxDamageStateId = executionItem["datasets"][datawolfConfig["datasets"]["bldgMaxDamageStateId"]];
-		let bldgMaxDamageStateINCOREId = await getOutputFileJson(bldgMaxDamageStateId);
+		let bldgMaxDamageStateINCOREId = await getOutputFileJson(datawolfConfig, bldgMaxDamageStateId);
 		await downloadDataset(bldgMaxDamageStateINCOREId, "bldg-dmg");
 	};
 
@@ -323,7 +324,7 @@ export default function ViewResult(props) {
 
 		// map
 		let bldgFuncProbId = executionItem["datasets"][datawolfConfig["datasets"]["bldgFuncProbId"]];
-		let bldgFuncProbINCOREId = await getOutputFileJson(bldgFuncProbId);
+		let bldgFuncProbINCOREId = await getOutputFileJson(datawolfConfig, bldgFuncProbId);
 		let hazardId = executionItem["parameters"][datawolfConfig["parameters"]["hazardId"]];
 		let hazardMetadata = await getTornadoMetadata(hazardId);
 		let hazardDatasetId = hazardMetadata["datasetId"];
@@ -345,7 +346,7 @@ export default function ViewResult(props) {
 
 		// bar chart & table
 		let bldgFuncSummaryTableId = executionItem["datasets"][datawolfConfig["datasets"]["bldgFuncSummaryTableId"]];
-		let bldgFuncSummaryTable = await getOutputFileJson(bldgFuncSummaryTableId);
+		let bldgFuncSummaryTable = await getOutputFileJson(datawolfConfig, bldgFuncSummaryTableId);
 		let bldgFuncSummaryTableContent = JSON.parse(bldgFuncSummaryTable);
 
 		// for runtime table on the top
@@ -366,7 +367,7 @@ export default function ViewResult(props) {
 	const downloadBldgFunc = async (executionItemId) => {
 		let executionItem = getExecution(executionItemId);
 		let bldgFuncProbId = executionItem["datasets"][datawolfConfig["datasets"]["bldgFuncProbId"]];
-		let bldgFuncProbINCOREId = await getOutputFileJson(bldgFuncProbId);
+		let bldgFuncProbINCOREId = await getOutputFileJson(datawolfConfig, bldgFuncProbId);
 		await downloadDataset(bldgFuncProbINCOREId, "bldg-func");
 	};
 
@@ -376,7 +377,7 @@ export default function ViewResult(props) {
 
 		// map
 		let mcsBldgFailureProbId = executionItem["datasets"][datawolfConfig["datasets"]["mcsBldgFailureProbId"]];
-		let mcsBldgFailureProbINCOREId = await getOutputFileJson(mcsBldgFailureProbId);
+		let mcsBldgFailureProbINCOREId = await getOutputFileJson(datawolfConfig, mcsBldgFailureProbId);
 		let hazardId = executionItem["parameters"][datawolfConfig["parameters"]["hazardId"]];
 		let hazardMetadata = await getTornadoMetadata(hazardId);
 		let hazardDatasetId = hazardMetadata["datasetId"];
@@ -398,7 +399,7 @@ export default function ViewResult(props) {
 
 		// bar chart & table
 		let mcsBldgSummaryTableId = executionItem["datasets"][datawolfConfig["datasets"]["mcsBldgSummaryTableId"]];
-		let mcsBldgSummaryTable = await getOutputFileJson(mcsBldgSummaryTableId);
+		let mcsBldgSummaryTable = await getOutputFileJson(datawolfConfig, mcsBldgSummaryTableId);
 		let mcsBldgSummaryTableContent = JSON.parse(mcsBldgSummaryTable);
 
 		// for runtime table on the top
@@ -413,7 +414,7 @@ export default function ViewResult(props) {
 	const downloadBldgMCS = async (executionItemId) => {
 		let executionItem = getExecution(executionItemId);
 		let mcsBldgFailureProbId = executionItem["datasets"][datawolfConfig["datasets"]["mcsBldgFailureProbId"]];
-		let mcsBldgFailureProbINCOREId = await getOutputFileJson(mcsBldgFailureProbId);
+		let mcsBldgFailureProbINCOREId = await getOutputFileJson(datawolfConfig, mcsBldgFailureProbId);
 		await downloadDataset(mcsBldgFailureProbINCOREId, "bldg-mcs");
 	};
 
@@ -434,7 +435,7 @@ export default function ViewResult(props) {
 		}
 
 		// map
-		let epfMaxDmgStateINCOREId = await getOutputFileJson(epfMaxDmgStateId);
+		let epfMaxDmgStateINCOREId = await getOutputFileJson(datawolfConfig, epfMaxDmgStateId);
 		let hazardId = executionItem["parameters"][datawolfConfig["parameters"]["hazardId"]];
 		let hazardMetadata = await getTornadoMetadata(hazardId);
 		let hazardDatasetId = hazardMetadata["datasetId"];
@@ -471,7 +472,7 @@ export default function ViewResult(props) {
 		} else {
 			console.log("unmatching EPF type", executionItemId);
 		}
-		let epfMaxDmgStateINCOREId = await getOutputFileJson(epfMaxDmgStateId);
+		let epfMaxDmgStateINCOREId = await getOutputFileJson(datawolfConfig, epfMaxDmgStateId);
 		await downloadDataset(epfMaxDmgStateINCOREId, `epf-${type}`);
 	};
 
@@ -480,7 +481,7 @@ export default function ViewResult(props) {
 		setSelectedExecutionName(executionItem["title"]);
 
 		let epfMaxDmgStateId = executionItem["datasets"][datawolfConfig["datasets"]["epfSubstationMaxDmgStateId"]];
-		let epfMaxDmgStateINCOREId = await getOutputFileJson(epfMaxDmgStateId);
+		let epfMaxDmgStateINCOREId = await getOutputFileJson(datawolfConfig, epfMaxDmgStateId);
 
 		const layerDef = [
 			{
@@ -512,16 +513,16 @@ export default function ViewResult(props) {
 
 		// cge by total household income
 		let cgeHouseholdIncomeId = executionItem["datasets"][datawolfConfig["datasets"]["cgeHouseholdIncomeId"]];
-		let cgeHouseholdIncome = await getOutputFileJson(cgeHouseholdIncomeId);
+		let cgeHouseholdIncome = await getOutputFileJson(datawolfConfig, cgeHouseholdIncomeId);
 		let cgeHouseholdIncomeContent = JSON.parse(cgeHouseholdIncome);
 
 		// dislocation group by
 		let cgeDomesticSupplyId = executionItem["datasets"][datawolfConfig["datasets"]["cgeDomesticSupplyId"]];
-		let cgeDomesticSupply = await getOutputFileJson(cgeDomesticSupplyId);
+		let cgeDomesticSupply = await getOutputFileJson(datawolfConfig, cgeDomesticSupplyId);
 		let cgeDomesticSupplyContent = JSON.parse(cgeDomesticSupply);
 
 		let cgeEmploymentId = executionItem["datasets"][datawolfConfig["datasets"]["cgeEmploymentId"]];
-		let cgeEmployment = await getOutputFileJson(cgeEmploymentId);
+		let cgeEmployment = await getOutputFileJson(datawolfConfig, cgeEmploymentId);
 		let cgeEmploymentContent = JSON.parse(cgeEmployment);
 
 		return {
@@ -549,24 +550,24 @@ export default function ViewResult(props) {
 
 		// total dislocation
 		let totalDislTableId = executionItem["datasets"][datawolfConfig["datasets"]["totalDislocationId"]];
-		let totalDislTable = await getOutputFileJson(totalDislTableId);
+		let totalDislTable = await getOutputFileJson(datawolfConfig, totalDislTableId);
 		let totalDislTableIdContent = JSON.parse(totalDislTable);
 
 		// dislocation group by
 		let dislocationByRaceId = executionItem["datasets"][datawolfConfig["datasets"]["dislocationByRaceId"]];
-		let dislocationByRace = await getOutputFileJson(dislocationByRaceId);
+		let dislocationByRace = await getOutputFileJson(datawolfConfig, dislocationByRaceId);
 		let dislocationByRaceContent = JSON.parse(dislocationByRace);
 
 		let dislocationByTenureId = executionItem["datasets"][datawolfConfig["datasets"]["dislocationByTenureId"]];
-		let dislocationByTenure = await getOutputFileJson(dislocationByTenureId);
+		let dislocationByTenure = await getOutputFileJson(datawolfConfig, dislocationByTenureId);
 		let dislocationByTenureContent = JSON.parse(dislocationByTenure);
 
 		let dislocationByIncomeId = executionItem["datasets"][datawolfConfig["datasets"]["dislocationByIncomeId"]];
-		let dislocationByIncome = await getOutputFileJson(dislocationByIncomeId);
+		let dislocationByIncome = await getOutputFileJson(datawolfConfig, dislocationByIncomeId);
 		let dislocationByIncomeContent = JSON.parse(dislocationByIncome);
 
 		let dislocationByHousingTypeId = executionItem["datasets"][datawolfConfig["datasets"]["dislocationByHousingTypeId"]];
-		let dislocationByHousingType = await getOutputFileJson(dislocationByHousingTypeId);
+		let dislocationByHousingType = await getOutputFileJson(datawolfConfig, dislocationByHousingTypeId);
 		let dislocationByHousingTypeIdContent = JSON.parse(dislocationByHousingType);
 
 		return {
@@ -587,10 +588,10 @@ export default function ViewResult(props) {
 
 		// map
 		let bldgMaxDamageStateId = executionItem["datasets"][datawolfConfig["datasets"]["bldgMaxDamageStateId"]];
-		let bldgMaxDamageStateINCOREId = await getOutputFileJson(bldgMaxDamageStateId);
+		let bldgMaxDamageStateINCOREId = await getOutputFileJson(datawolfConfig, bldgMaxDamageStateId);
 
 		let popDislId = executionItem["datasets"][datawolfConfig["datasets"]["popdislHeatmapId"]];
-		let popDislINCOREId = await getOutputFileJson(popDislId);
+		let popDislINCOREId = await getOutputFileJson(datawolfConfig, popDislId);
 
 		let hazardId = executionItem["parameters"][datawolfConfig["parameters"]["hazardId"]];
 		let hazardMetadata = await getTornadoMetadata(hazardId);

@@ -1,4 +1,3 @@
-import datawolfConfig from "../datawolf.config";
 import {getHeader, getCurrUserEmail} from "../utils/common";
 
 export const RECEIVE_EXECUTIONS = "RECEIVE_EXECUTIONS";
@@ -14,7 +13,7 @@ export function receiveExecutions(type, json){
 	};
 }
 
-export function fetchExecutions(){
+export function fetchExecutions(datawolfConfig){
 	let endpoint = datawolfConfig.executionGetURL;
 	// filter by current user's email
 	endpoint = `${endpoint}?email=${getCurrUserEmail()}`;

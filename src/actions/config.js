@@ -12,6 +12,13 @@ export const updateAssetConfig = (config) => ({
 	receivedAt: Date.now(),
 });
 
+export const UPDATE_DATAWOLF_CONFIG = "UPDATE_DATAWOLF_CONFIG";
+export const updateDatawolfConfig = (config) => ({
+	type: UPDATE_DATAWOLF_CONFIG,
+	datawolfConfig: config,
+	receivedAt: Date.now(),
+});
+
 export const SET_ALLOWED_HAZARD_TYPES = "SET_ALLOWED_HAZARD_TYPES";
 export const setAllowedHazardTypes = (hazardTypes) => ({
 	type: SET_ALLOWED_HAZARD_TYPES,

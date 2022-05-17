@@ -32,7 +32,7 @@ export const AnticipatedPerformance = () => {
 
 	// Redux connect equivalent
 	const dispatch = useDispatch();
-	const getExecutionList = () => dispatch(fetchExecutions());
+	const getExecutionList = (datawolfConfig) => dispatch(fetchExecutions(datawolfConfig));
 	const listHazards = (hazardType, limit, offset) => dispatch(fetchHazards(hazardType, limit, offset));
 	const listDatasets = (limit, offset, type) => dispatch(fetchDatasets(limit, offset, type));
 	const tornadoes = useSelector((state) => state.hazard.tornadoes);

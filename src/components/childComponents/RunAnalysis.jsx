@@ -76,6 +76,7 @@ export default function ViewResult(props) {
 		getExecutionList, gotoViewResultTab, ...other} = props;
 
 	const assetConfig = useSelector((state) => state.config.assetConfig);
+	const datawolfConfig = useSelector((state) => state.config.datawolfConfig);
 	const alllowedHazardTypes = useSelector((state) => state.config.allowedHazardTypes);
 	const allowedDataTypes = useSelector((state) => state.config.allowedDataTypes);
 
@@ -131,7 +132,8 @@ export default function ViewResult(props) {
 	const classes = useStyles();
 
 	const handleRunButtonClick = async () =>{
-		const datawolfJson = await submitExecution(title, description, selectedBldgId, selectedSubstationId,
+		const datawolfJson = await submitExecution(datawolfConfig, allowedDataTypes,
+			title, description, selectedBldgId, selectedSubstationId,
 			selectedPoleId, selectedInterdNetworkId, selectedBldgToSectorId, selectedHuaId, selectedBlockGroupId,
 			selectedValueLossId, selectedHazardType, selectedHazardId);
 		if (datawolfJson && datawolfJson !== "") {
@@ -148,7 +150,7 @@ export default function ViewResult(props) {
 			setHazardType("");
 			setHazardId("");
 			// update execution list and then jump to view result tab
-			getExecutionList();
+			getExecutionList(datawolfConfig);
 			gotoViewResultTab();
 		}
 	};

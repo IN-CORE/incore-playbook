@@ -1,8 +1,7 @@
 import {getHeader, getCurrUserEmail, getIncoreTokenFile, getCurrUsername} from "./common";
-import datawolfConfig from "../datawolf.config";
 import appConfig from "../globals";
 
-export async function getOutputFileJson(datasetId, outputFileName = null) {
+export async function getOutputFileJson(datawolfConfig, datasetId, outputFileName = null) {
 	let authHeader = getHeader();
 
 	// Get - Result Dataset
@@ -47,9 +46,12 @@ export async function getOutputFileJson(datasetId, outputFileName = null) {
 	}
 }
 
-export async function submitExecution(title, description, bldgId, substationId, poleId, interdNetworkId,
+export async function submitExecution(datawolfConfig, allowedDataType, title, description, bldgId, substationId, poleId, interdNetworkId,
 									  bldgToSectorId, huaId, blockGroupId, valueLossId, hazardType, hazardId,){
-	let incoreTokenDatasetId = await postDataset();
+
+	// not all the variables are needed; use allowedDataType to sift through
+
+	let incoreTokenDatasetId = await postDataset(datawolfConfig);
 	if (incoreTokenDatasetId === null) {
 		console.log("Fail to post incoretoken. Abort exeuction submission!");
 	}
@@ -70,32 +72,43 @@ export async function submitExecution(title, description, bldgId, substationId, 
 		};
 
 		requestBody["parameters"][datawolfParams["incoreUserNameId"]] = getCurrUsername();
-		requestBody["parameters"][datawolfParams["interdependencyId"]] = interdNetworkId;
-		requestBody["parameters"][datawolfParams["useUncertaintyId"]] = "";
 		requestBody["parameters"][datawolfParams["numCpuId"]] = 8;
-		requestBody["parameters"][datawolfParams["useLiquefactionId"]] = "";
-		requestBody["parameters"][datawolfParams["mcsSamplesId"]] = 500;
-		requestBody["parameters"][datawolfParams["bldgDamageRatioId"]] = "5a284f2ec7d30d13bc08209a";
-		requestBody["parameters"][datawolfParams["epfPoleId"]] = poleId;
 		requestBody["parameters"][datawolfParams["hazardId"]] = hazardId;
-		requestBody["parameters"][datawolfParams["damageIntervalKeysId"]] = "DS_0 DS_1 DS_2 DS_3";
 		requestBody["parameters"][datawolfParams["hazardTypeId"]] = hazardType;
-		requestBody["parameters"][datawolfParams["bldgMappingId"]] = "5e8e3a21eaa8b80001f04f1c";
-		requestBody["parameters"][datawolfParams["epfMappingId"]] = "5d8a326fb9219c068ea798e7";
-		requestBody["parameters"][datawolfParams["archeTypeMappingId"]] = "5fca915fb34b193f7a44059b";
-		requestBody["parameters"][datawolfParams["bldgFragilityKeyId"]] = "";
 		requestBody["parameters"][datawolfParams["serviceUrlId"]] = appConfig["apiUrl"];
-		requestBody["parameters"][datawolfParams["epfSubstationId"]] = substationId;
-		requestBody["parameters"][datawolfParams["buildingId"]] = bldgId;
-		requestBody["parameters"][datawolfParams["resultNameId"]] = "Joplin";
+		requestBody["parameters"][datawolfParams["resultNameId"]] = title;
+
+		if (allowedDataType.building){
+			requestBody["parameters"][datawolfParams["useLiquefactionId"]] = "";
+			requestBody["parameters"][datawolfParams["mcsSamplesId"]] = 500;
+			requestBody["parameters"][datawolfParams["bldgDamageRatioId"]] = "5a284f2ec7d30d13bc08209a";
+			requestBody["parameters"][datawolfParams["archeTypeMappingId"]] = "5fca915fb34b193f7a44059b";
+			requestBody["parameters"][datawolfParams["bldgMappingId"]] = "5e8e3a21eaa8b80001f04f1c";
+			requestBody["parameters"][datawolfParams["damageIntervalKeysId"]] = "DS_0 DS_1 DS_2 DS_3";
+			requestBody["parameters"][datawolfParams["bldgFragilityKeyId"]] = "";
+			requestBody["parameters"][datawolfParams["buildingId"]] = bldgId;
+			requestBody["parameters"][datawolfParams["useUncertaintyId"]] = "";
+		}
+
+		if (allowedDataType.epf){
+			requestBody["parameters"][datawolfParams["epfPoleId"]] = poleId;
+			requestBody["parameters"][datawolfParams["epfMappingId"]] = "5d8a326fb9219c068ea798e7";
+			requestBody["parameters"][datawolfParams["epfSubstationId"]] = substationId;
+		}
+
+		if (allowedDataType.network) {
+			requestBody["parameters"][datawolfParams["interdependencyId"]] = interdNetworkId;
+		}
 
 		// for cge and pop
-		// requestBody["parameters"][datawolfParams[""]] = bldgToSectorId;
-		requestBody["parameters"][datawolfParams["modelIterationsId"]] = "1";
-		requestBody["parameters"][datawolfParams["seedId"]] = "1111";
-		requestBody["parameters"][datawolfParams["housingUnitAllocationId"]] = huaId;
-		requestBody["parameters"][datawolfParams["blockGroupDataId"]] = blockGroupId;
-		requestBody["parameters"][datawolfParams["valueLossParamId"]] = valueLossId;
+		if (allowedDataType.socioeconomics){
+			// requestBody["parameters"][datawolfParams[""]] = bldgToSectorId;
+			requestBody["parameters"][datawolfParams["modelIterationsId"]] = "1";
+			requestBody["parameters"][datawolfParams["seedId"]] = "1111";
+			requestBody["parameters"][datawolfParams["housingUnitAllocationId"]] = huaId;
+			requestBody["parameters"][datawolfParams["blockGroupDataId"]] = blockGroupId;
+			requestBody["parameters"][datawolfParams["valueLossParamId"]] = valueLossId;
+		}
 
 		// token will expire
 		requestBody["datasets"][datawolfDatasets["incoreTokenId"]] = incoreTokenDatasetId;
@@ -121,7 +134,7 @@ export async function submitExecution(title, description, bldgId, substationId, 
 	}
 }
 
-export async function postDataset(title="incoretoken", description="incoretoken"){
+export async function postDataset(datawolfConfig, title="incoretoken", description="incoretoken"){
 
 	let authHeader = getHeader();
 	// authHeader.append("Content-Type", "multipart/form-data");

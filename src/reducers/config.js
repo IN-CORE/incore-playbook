@@ -1,10 +1,13 @@
-import {UPDATE_MAP_CONFIG, SET_ALLOWED_HAZARD_TYPES, UPDATE_ASSET_CONFIG, SET_ALLOWED_DATA_TYPES} from "../actions/config";
+import {UPDATE_MAP_CONFIG, SET_ALLOWED_HAZARD_TYPES, UPDATE_ASSET_CONFIG, SET_ALLOWED_DATA_TYPES,
+	UPDATE_DATAWOLF_CONFIG} from "../actions/config";
 import {mapConfig as defaultMapConfig} from "../map.config";
 import {assetConfig as defaultAssetConfig} from "../asset.config";
+import {datawolfConfig as defaultDatawolfConfig} from "../datawolf.config";
 
 const defaultConfig = {
 	mapConfig: defaultMapConfig,
 	assetConfig: defaultAssetConfig,
+	datawolfConfig: defaultDatawolfConfig,
 	allowedHazardTypes: ["earthquakes", "tornadoes", "tsunamis", "hurricanes", "floods"],
 	allowedDataTypes: {
 		building: true,
@@ -20,6 +23,8 @@ const config =  (state = defaultConfig, action) => {
 		return Object.assign({}, state, {mapConfig: action.mapConfig});
 	case UPDATE_ASSET_CONFIG:
 		return Object.assign({}, state, {assetConfig: action.assetConfig});
+	case UPDATE_DATAWOLF_CONFIG:
+		return Object.assign({}, state, {datawolfConfig: action.datawolfConfig});
 	case SET_ALLOWED_HAZARD_TYPES:
 		return Object.assign({}, state, {allowedHazardTypes: action.allowedHazardTypes});
 	case SET_ALLOWED_DATA_TYPES:
