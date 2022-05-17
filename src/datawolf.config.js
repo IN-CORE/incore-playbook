@@ -1,6 +1,6 @@
 import appConfig from "./globals";
 
-export const datawolfConfig = {
+let datawolfConfig = {
 	"workflowId": "25077ac9-d7d6-45c0-880b-cd08ed35d8d0",
 	"creatorId": "ce92336c-1ca4-4989-8d6f-33cd3155b5ef",
 	"parameters": {
@@ -70,7 +70,10 @@ export const datawolfConfig = {
 		"dislocationByHousingTypeId":"7b69e147-d9ac-475c-b9f6-54a391350326",
 		"dislocationByDisabilityId":"aa3451a3-f0a9-47af-feb2-a4cdfa9250e1"
 	},
-	"executionGetURL": `${appConfig.apiUrl}/datawolf/workflows/${datawolfConfig["workflowId"]}/executions`,
-	"executionPostURL": `${appConfig.apiUrl}/datawolf/executions`,
-	"datasetBaseURL": `${appConfig.apiUrl}/datawolf/datasets`,
 };
+
+datawolfConfig["executionGetURL"] = `${appConfig.apiUrl}/datawolf/workflows/${datawolfConfig["workflowId"]}/executions`;
+datawolfConfig["executionPostURL"] = `${appConfig.apiUrl}/datawolf/executions`;
+datawolfConfig["datasetBaseURL"] = `${appConfig.apiUrl}/datawolf/datasets`;
+
+export {datawolfConfig};
