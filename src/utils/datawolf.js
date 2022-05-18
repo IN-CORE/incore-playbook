@@ -80,15 +80,12 @@ export async function submitExecution(datawolfConfig, allowedDataType, title, de
 		requestBody["parameters"][datawolfParams["resultNameId"]] = title;
 
 		if (allowedDataType.building){
-			requestBody["parameters"][datawolfParams["useLiquefactionId"]] = "";
-			requestBody["parameters"][datawolfParams["mcsSamplesId"]] = defaults["mcsSamplesId"];
-			requestBody["parameters"][datawolfParams["bldgDamageRatioId"]] = defaults["bldgDamageRatioId"];
 			requestBody["parameters"][datawolfParams["archeTypeMappingId"]] = defaults["archeTypeMappingId"];
 			requestBody["parameters"][datawolfParams["bldgMappingId"]] = defaults["bldgMappingId"];
-			requestBody["parameters"][datawolfParams["damageIntervalKeysId"]] = defaults["damageIntervalKeysId"];
 			requestBody["parameters"][datawolfParams["bldgFragilityKeyId"]] = "";
 			requestBody["parameters"][datawolfParams["buildingId"]] = bldgId;
 			requestBody["parameters"][datawolfParams["useUncertaintyId"]] = "";
+			requestBody["parameters"][datawolfParams["useLiquefactionId"]] = "";
 		}
 
 		if (allowedDataType.epf){
@@ -99,6 +96,9 @@ export async function submitExecution(datawolfConfig, allowedDataType, title, de
 
 		if (allowedDataType.network) {
 			requestBody["parameters"][datawolfParams["interdependencyId"]] = interdNetworkId;
+			requestBody["parameters"][datawolfParams["bldgDamageRatioId"]] = defaults["bldgDamageRatioId"];
+			requestBody["parameters"][datawolfParams["mcsSamplesId"]] = defaults["mcsSamplesId"];
+			requestBody["parameters"][datawolfParams["damageIntervalKeysId"]] = defaults["damageIntervalKeysId"];
 		}
 
 		// for cge and pop
