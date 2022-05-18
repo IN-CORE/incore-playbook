@@ -12,6 +12,7 @@ import {IncoreInputLabel} from "../../styledComponents/IncoreInputLabel";
 import {FlatCoordToLonLat, round} from "../../../utils/common";
 import {createModelTornado} from "../../../utils/hazard";
 import LoadingOverlay from "react-loading-overlay";
+import {useSelector} from "react-redux";
 
 const useStyles = makeStyles({
 	startLabel: {
@@ -51,7 +52,7 @@ const useStyles = makeStyles({
 export default function ModelTornado(props) {
 	const {value, index, startCoordProps, endCoordProps, handleLayerUpdate, handleListUpdate, ...other} = props;
 	const classes = useStyles();
-
+	const globalConfig = useSelector((state) => state.config.globalConfig);
 	const [name, setName] = useState("");
 	const [description, setDescription] = useState("");
 	const [rating, setRating] = useState("EF3");
@@ -84,10 +85,10 @@ export default function ModelTornado(props) {
 		let endLat = endCoord.split(",")[0];
 		let endLon = endCoord.split(",")[1];
 
-		const tornadoJson = await createModelTornado(name, description, rating, startLat, startLon, endLat, endLon);
+		const tornadoJson = await createModelTornado(globalConfig, name, description, rating, startLat, startLon, endLat, endLon);
 		if (tornadoJson !== {}){
 			handleLayerUpdate(tornadoJson);
-			handleListUpdate("tornadoes");
+			handleListUpdate(globalConfig, "tornadoes");
 			setName("");
 			setDescription("");
 			setStartCoord("");

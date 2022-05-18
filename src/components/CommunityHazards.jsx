@@ -18,7 +18,6 @@ import {applyTransform} from "ol/extent";
 import RasterTornado from "./childComponents/tornado/RasterTornado";
 import ModelTornado from "./childComponents/tornado/ModelTornado";
 import Map from "./childComponents/map/Map";
-import appConfig from "../globals";
 import {Layout} from "./Layout";
 import {IncoreInputLabel} from "./styledComponents/IncoreInputLabel";
 import {IncoreMenuItem, IncoreSelectBox} from "./styledComponents/IncoreSelect";
@@ -73,7 +72,8 @@ export const CommunityHazards = () => {
 	const [srcCoord, setSrcCoord] = useState([]);
 
 	const dispatch = useDispatch();
-	const listHazards = (hazardType, limit, offset) => dispatch(fetchHazards(hazardType, limit, offset));
+	const listHazards = (globalConfig, hazardType, limit, offset) => dispatch(fetchHazards(globalConfig, hazardType, limit, offset));
+	const globalConfig = useSelector((state) => state.config.globalConfig);
 	const earthquakes = useSelector((state) => state.hazard.earthquakes);
 	const tornadoes = useSelector((state) => state.hazard.tornadoes);
 	const tsunamis = useSelector((state) => state.hazard.tsunamis);
@@ -167,7 +167,7 @@ export const CommunityHazards = () => {
 
 	// component did mount
 	useEffect(()=> {
-		listHazards(selectedHazardType);}, [selectedHazardType]
+		listHazards(globalConfig, selectedHazardType);}, [selectedHazardType]
 	);
 
 	useEffect(() => {
@@ -264,7 +264,7 @@ export const CommunityHazards = () => {
 		}
 		if (layerId && layerTitle) {
 			const source = new TileWMS({
-				url: `${appConfig.geoServerWMS}`,
+				url: `${globalConfig.geoServerWMS}`,
 				params: {LAYERS: layerId, STYLES: style},
 				ratio: 1,
 				serverType: "geoserver"

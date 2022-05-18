@@ -19,6 +19,13 @@ export const updateDatawolfConfig = (config) => ({
 	receivedAt: Date.now(),
 });
 
+export const UPDATE_GLOBAL_CONFIG = "UPDATE_GLOBAL_CONFIG";
+export const updateGlobalConfig = (config) => ({
+	type: UPDATE_GLOBAL_CONFIG,
+	globalConfig: config,
+	receivedAt: Date.now(),
+});
+
 export const SET_ALLOWED_HAZARD_TYPES = "SET_ALLOWED_HAZARD_TYPES";
 export const setAllowedHazardTypes = (hazardTypes) => ({
 	type: SET_ALLOWED_HAZARD_TYPES,
@@ -31,8 +38,4 @@ export const setAllowedDataTypes = (dataTypes) => ({
 	type: SET_ALLOWED_DATA_TYPES,
 	allowedDataTypes: dataTypes,
 	receivedAt: Date.now(),
-});
-
-export const setAllowedAnalyses = (inventoryTypes) => ({
-
 });

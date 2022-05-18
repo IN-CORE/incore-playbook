@@ -1,8 +1,8 @@
-import appConfig from "../globals";
+import {globals as defaultGlobalConfig} from "../globals";
 import {dataURItoFile, getHeader, round} from "./common";
 
-export async function createModelTornado(name, description, rating, startLat, startLon, endLat, endLon) {
-	const endpoint = `${appConfig.hazardServiceBase}tornadoes`;
+export async function createModelTornado(globalConfig=defaultGlobalConfig, name, description, rating, startLat, startLon, endLat, endLon) {
+	const endpoint = `${globalConfig.hazardServiceBase}tornadoes`;
 	let formData = new FormData();
 	let tornadoMetadata = {
 		"tornadoType": "model",
@@ -38,8 +38,8 @@ export async function createModelTornado(name, description, rating, startLat, st
 	}
 }
 
-export async function createRasterTornado(name, description, files) {
-	const endpoint = `${appConfig.hazardServiceBase}tornadoes`;
+export async function createRasterTornado(globalConfig=defaultGlobalConfig, name, description, files) {
+	const endpoint = `${globalConfig.hazardServiceBase}tornadoes`;
 	let formData = new FormData();
 
 	let tornadoMetadata = {
@@ -71,8 +71,8 @@ export async function createRasterTornado(name, description, files) {
 	}
 }
 
-export async function getTornadoMetadata(tornadoId) {
-	let endpoint = `${appConfig.hazardServiceBase}tornadoes/${tornadoId}`;
+export async function getTornadoMetadata(globalConfig=defaultGlobalConfig, tornadoId) {
+	let endpoint = `${globalConfig.hazardServiceBase}tornadoes/${tornadoId}`;
 	let tornadoRequest = await fetch(endpoint, {mode: "cors", headers: getHeader()});
 	if (tornadoRequest.status === 200) {
 		return tornadoRequest.json();
@@ -86,8 +86,8 @@ export async function getTornadoMetadata(tornadoId) {
 	}
 }
 
-export async function createModelEarthquake(name, description, lat, lon, magnitude, depth, demandType, demandUnits) {
-	const endpoint = `${appConfig.hazardServiceBase}earthquakes`;
+export async function createModelEarthquake(globalConfig=defaultGlobalConfig, name, description, lat, lon, magnitude, depth, demandType, demandUnits) {
+	const endpoint = `${globalConfig.hazardServiceBase}earthquakes`;
 	let formData = new FormData();
 
 	let eqMetadata = {
@@ -133,8 +133,8 @@ export async function createModelEarthquake(name, description, lat, lon, magnitu
 	}
 }
 
-export async function createRjfsDatasetHazards(formData, hazardType) {
-	const endpoint = `${appConfig.hazardServiceBase}${hazardType}`;
+export async function createRjfsDatasetHazards(globalConfig=defaultGlobalConfig, formData, hazardType) {
+	const endpoint = `${globalConfig.hazardServiceBase}${hazardType}`;
 	let dataurls = [];
 	let payload = new FormData();
 

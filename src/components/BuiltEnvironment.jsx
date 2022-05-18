@@ -74,8 +74,9 @@ export const BuiltEnvironment = () => {
 	const [uploadModalStatus, setUploadModalStatus] = useState(false);
 
 	const dispatch = useDispatch();
-	const listDatasets = (limit, offset, type) => dispatch(fetchDatasets(limit, offset, type));
+	const listDatasets = (config, limit, offset, type) => dispatch(fetchDatasets(config, limit, offset, type));
 	const allowedDataTypes = useSelector((state) => state.config.allowedDataTypes);
+	const globalConfig = useSelector((state) => state.config.globalConfig);
 
 	const buildings = useSelector((state) => state.dataset.buildings);
 	const epfs = useSelector((state) => state.dataset.epfs);
@@ -100,7 +101,7 @@ export const BuiltEnvironment = () => {
 	useEffect(() => {
 		Object.keys(inputDatasetTypes).map((key) => {
 			inputDatasetTypes[key].map((inputDatasetType) => {
-				listDatasets(inputDatasetType["num"], 0, inputDatasetType["type"]);
+				listDatasets(globalConfig, inputDatasetType["num"], 0, inputDatasetType["type"]);
 			});
 		});
 	}, []);
@@ -135,11 +136,11 @@ export const BuiltEnvironment = () => {
 			});
 		});
 
-		const datasetJson = await createDataset(title, description, datasetType, files, format);
+		const datasetJson = await createDataset(globalConfig, title, description, datasetType, files, format);
 		if (datasetJson !== {}) {
 
 			// update table to show uploaded data
-			listDatasets(20, 0, datasetType);
+			listDatasets(globalConfig, 20, 0, datasetType);
 
 			setFile([]);
 			setTitle("");

@@ -12,6 +12,7 @@ import {IncoreInputLabel} from "../../styledComponents/IncoreInputLabel";
 import {createModelEarthquake} from "../../../utils/hazard";
 import {FlatCoordToLonLat, round} from "../../../utils/common";
 import LoadingOverlay from "react-loading-overlay";
+import {useSelector} from "react-redux";
 
 const useStyles = makeStyles({
 	srcLabel: {
@@ -45,7 +46,7 @@ const useStyles = makeStyles({
 export default function ModelEarthquake(props) {
 	const {value, index, srcCoordProps, handleLayerUpdate, handleListUpdate, ...other} = props;
 	const classes = useStyles();
-
+	const globalConfig = useSelector((state) => state.config.globalConfig);
 	const [name, setName] = useState("");
 	const [description, setDescription] = useState("");
 	const [coord, setCoord] = useState("");
@@ -76,10 +77,10 @@ export default function ModelEarthquake(props) {
 		let lat = round(FlatCoordToLonLat(srcCoordProps)[1], 4);
 		let lon = round(FlatCoordToLonLat(srcCoordProps)[0], (4));
 
-		const eqJson = await createModelEarthquake(name, description, lat, lon, magnitude, depth, demandType, demandUnits);
+		const eqJson = await createModelEarthquake(globalConfig, name, description, lat, lon, magnitude, depth, demandType, demandUnits);
 		if (eqJson !== {}){
 			handleLayerUpdate(eqJson);
-			handleListUpdate("earthquakes");
+			handleListUpdate(globalConfig, "earthquakes");
 			setName("");
 			setDescription("");
 			setCoord("");

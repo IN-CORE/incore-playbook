@@ -77,6 +77,7 @@ export default function ViewResult(props) {
 
 	const assetConfig = useSelector((state) => state.config.assetConfig);
 	const datawolfConfig = useSelector((state) => state.config.datawolfConfig);
+	const globalConfig = useSelector((state) => state.config.globalConfig);
 	const alllowedHazardTypes = useSelector((state) => state.config.allowedHazardTypes);
 	const allowedDataTypes = useSelector((state) => state.config.allowedDataTypes);
 
@@ -100,13 +101,13 @@ export default function ViewResult(props) {
 		// dataset
 		Object.keys(inputDatasetTypes).map((key) => {
 			inputDatasetTypes[key].map((inputDatasetType) => {
-				listDatasets(inputDatasetType["num"], 0, inputDatasetType["type"]);
+				listDatasets(globalConfig, inputDatasetType["num"], 0, inputDatasetType["type"]);
 			});
 		});
 
 		// hazard
 		alllowedHazardTypes.map((hazardType) =>{
-			listHazards(hazardType);
+			listHazards(globalConfig, hazardType);
 		});
 	}, []);
 
@@ -132,7 +133,7 @@ export default function ViewResult(props) {
 	const classes = useStyles();
 
 	const handleRunButtonClick = async () =>{
-		const datawolfJson = await submitExecution(datawolfConfig, allowedDataTypes,
+		const datawolfJson = await submitExecution(globalConfig, datawolfConfig, allowedDataTypes,
 			title, description, selectedBldgId, selectedSubstationId,
 			selectedPoleId, selectedInterdNetworkId, selectedBldgToSectorId, selectedHuaId, selectedBlockGroupId,
 			selectedValueLossId, selectedHazardType, selectedHazardId);

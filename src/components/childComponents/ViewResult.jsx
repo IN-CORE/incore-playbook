@@ -14,7 +14,6 @@ import TileLayer from "ol/layer/Tile";
 import XYZ from "ol/source/XYZ";
 import OSM, {ATTRIBUTION as OSM_ATTRIBUTION} from "ol/source/OSM";
 import TileWMS from "ol/source/TileWMS";
-import appConfig from "../../globals";
 
 import {ViewResultEntryTable} from "./table/ViewResultEntryTable";
 
@@ -71,6 +70,7 @@ export default function ViewResult(props) {
 	const classes = useStyles();
 
 	const datawolfConfig = useSelector((state) => state.config.datawolfConfig);
+	const globalConfig = useSelector((state) => state.config.globalConfig);
 
 	// load executions list that has status
 	useEffect(() => { getExecutionList(datawolfConfig); }, []);
@@ -156,7 +156,7 @@ export default function ViewResult(props) {
 
 		layerDef.map((layerDefinition) => {
 			const source = new TileWMS({
-				url: `${appConfig.geoServerWMS}`,
+				url: `${globalConfig.geoServerWMS}`,
 				params: {
 					LAYERS: layerDefinition["layerId"],
 					STYLES: layerDefinition["layerStyles"]
@@ -274,7 +274,7 @@ export default function ViewResult(props) {
 		let bldgMaxDamageStateId = executionItem["datasets"][datawolfConfig["datasets"]["bldgMaxDamageStateId"]];
 		let bldgMaxDamageStateINCOREId = await getOutputFileJson(datawolfConfig, bldgMaxDamageStateId);
 		let hazardId = executionItem["parameters"][datawolfConfig["parameters"]["hazardId"]];
-		let hazardMetadata = await getTornadoMetadata(hazardId);
+		let hazardMetadata = await getTornadoMetadata(globalConfig, hazardId);
 		let hazardDatasetId = hazardMetadata["datasetId"];
 		const layerDef = [
 			{
@@ -315,7 +315,7 @@ export default function ViewResult(props) {
 		let executionItem = getExecution(executionItemId);
 		let bldgMaxDamageStateId = executionItem["datasets"][datawolfConfig["datasets"]["bldgMaxDamageStateId"]];
 		let bldgMaxDamageStateINCOREId = await getOutputFileJson(datawolfConfig, bldgMaxDamageStateId);
-		await downloadDataset(bldgMaxDamageStateINCOREId, "bldg-dmg");
+		await downloadDataset(globalConfig, bldgMaxDamageStateINCOREId, "bldg-dmg");
 	};
 
 	const previewBldgFunc = async (executionItemId) => {
@@ -326,7 +326,7 @@ export default function ViewResult(props) {
 		let bldgFuncProbId = executionItem["datasets"][datawolfConfig["datasets"]["bldgFuncProbId"]];
 		let bldgFuncProbINCOREId = await getOutputFileJson(datawolfConfig, bldgFuncProbId);
 		let hazardId = executionItem["parameters"][datawolfConfig["parameters"]["hazardId"]];
-		let hazardMetadata = await getTornadoMetadata(hazardId);
+		let hazardMetadata = await getTornadoMetadata(globalConfig, hazardId);
 		let hazardDatasetId = hazardMetadata["datasetId"];
 		const layerDef = [
 			{
@@ -368,7 +368,7 @@ export default function ViewResult(props) {
 		let executionItem = getExecution(executionItemId);
 		let bldgFuncProbId = executionItem["datasets"][datawolfConfig["datasets"]["bldgFuncProbId"]];
 		let bldgFuncProbINCOREId = await getOutputFileJson(datawolfConfig, bldgFuncProbId);
-		await downloadDataset(bldgFuncProbINCOREId, "bldg-func");
+		await downloadDataset(globalConfig, bldgFuncProbINCOREId, "bldg-func");
 	};
 
 	const previewBldgMCS = async (executionItemId) => {
@@ -379,7 +379,7 @@ export default function ViewResult(props) {
 		let mcsBldgFailureProbId = executionItem["datasets"][datawolfConfig["datasets"]["mcsBldgFailureProbId"]];
 		let mcsBldgFailureProbINCOREId = await getOutputFileJson(datawolfConfig, mcsBldgFailureProbId);
 		let hazardId = executionItem["parameters"][datawolfConfig["parameters"]["hazardId"]];
-		let hazardMetadata = await getTornadoMetadata(hazardId);
+		let hazardMetadata = await getTornadoMetadata(globalConfig, hazardId);
 		let hazardDatasetId = hazardMetadata["datasetId"];
 		const layerDef = [
 			{
@@ -415,7 +415,7 @@ export default function ViewResult(props) {
 		let executionItem = getExecution(executionItemId);
 		let mcsBldgFailureProbId = executionItem["datasets"][datawolfConfig["datasets"]["mcsBldgFailureProbId"]];
 		let mcsBldgFailureProbINCOREId = await getOutputFileJson(datawolfConfig, mcsBldgFailureProbId);
-		await downloadDataset(mcsBldgFailureProbINCOREId, "bldg-mcs");
+		await downloadDataset(globalConfig, mcsBldgFailureProbINCOREId, "bldg-mcs");
 	};
 
 	const previewEpfDmg = async (executionItemId, type) => {
@@ -437,7 +437,7 @@ export default function ViewResult(props) {
 		// map
 		let epfMaxDmgStateINCOREId = await getOutputFileJson(datawolfConfig, epfMaxDmgStateId);
 		let hazardId = executionItem["parameters"][datawolfConfig["parameters"]["hazardId"]];
-		let hazardMetadata = await getTornadoMetadata(hazardId);
+		let hazardMetadata = await getTornadoMetadata(globalConfig, hazardId);
 		let hazardDatasetId = hazardMetadata["datasetId"];
 		const layerDef = [
 			{
@@ -473,7 +473,7 @@ export default function ViewResult(props) {
 			console.log("unmatching EPF type", executionItemId);
 		}
 		let epfMaxDmgStateINCOREId = await getOutputFileJson(datawolfConfig, epfMaxDmgStateId);
-		await downloadDataset(epfMaxDmgStateINCOREId, `epf-${type}`);
+		await downloadDataset(globalConfig, epfMaxDmgStateINCOREId, `epf-${type}`);
 	};
 
 	const previewInterd = async (executionItemId) => {
@@ -594,7 +594,7 @@ export default function ViewResult(props) {
 		let popDislINCOREId = await getOutputFileJson(datawolfConfig, popDislId);
 
 		let hazardId = executionItem["parameters"][datawolfConfig["parameters"]["hazardId"]];
-		let hazardMetadata = await getTornadoMetadata(hazardId);
+		let hazardMetadata = await getTornadoMetadata(globalConfig, hazardId);
 		let hazardDatasetId = hazardMetadata["datasetId"];
 
 		const layerDef = [

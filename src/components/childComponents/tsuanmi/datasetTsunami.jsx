@@ -11,10 +11,11 @@ import DatasetTsunamiUiSchema from "../../../schema/tsunami/datasetTsunamiUi.jso
 import {createRjfsDatasetHazards} from "../../../utils/hazard";
 
 import Form from "@rjsf/material-ui";
+import {useSelector} from "react-redux";
 
 export default function DatasetTsunami(props) {
 	const {value, index, handleLayerUpdate, handleListUpdate, ...other} = props;
-
+	const globalConfig = useSelector((state) => state.config.globalConfig);
 	const [loading, setLoading] = useState(false);
 
 	const widgets = {
@@ -24,10 +25,10 @@ export default function DatasetTsunami(props) {
 
 	const onSave = async (formData) => {
 		setLoading(true);
-		const tsunamiJson = await createRjfsDatasetHazards(formData, "tsunamis");
+		const tsunamiJson = await createRjfsDatasetHazards(globalConfig, formData, "tsunamis");
 		if (tsunamiJson !== {}){
 			handleLayerUpdate(tsunamiJson);
-			handleListUpdate("tsunamis");
+			handleListUpdate(globalConfig, "tsunamis");
 		}
 		setLoading(false);
 	};

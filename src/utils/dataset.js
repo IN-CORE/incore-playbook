@@ -1,8 +1,8 @@
-import appConfig from "../globals";
+import {globals as defaultGlobalConfig} from "../globals";
 import {getHeader} from "./common";
 
-export async function createDataset(title, description, dataType, files, format="shapefile"){
-	const datasetEndpoint = `${appConfig.dataServiceBase}datasets`;
+export async function createDataset(globalConfig=defaultGlobalConfig, title, description, dataType, files, format="shapefile"){
+	const datasetEndpoint = `${globalConfig.dataServiceBase}datasets`;
 	let datasetFormData = new FormData();
 	let datasetMetadata = {
 		"title": title,
@@ -29,7 +29,7 @@ export async function createDataset(title, description, dataType, files, format=
 
 		// attach files to that dataset
 		let datasetId = datasetJson["id"];
-		const fileEndpoint = `${appConfig.dataServiceBase}datasets/${datasetId}/files`;
+		const fileEndpoint = `${globalConfig.dataServiceBase}datasets/${datasetId}/files`;
 		let fileFormData = new FormData();
 		files.map((file) => {
 			fileFormData.append("file", file);
@@ -61,11 +61,11 @@ export async function createDataset(title, description, dataType, files, format=
 	}
 }
 
-export async function downloadDataset(datasetId, title=null) {
+export async function downloadDataset(globalConfig=defaultGlobalConfig, datasetId, title=null) {
 	let filename = `${datasetId}.zip`;
 	if (title) filename = `${title}-${filename}`;
 
-	let url = `${appConfig.dataServiceBase}datasets/${datasetId}/blob`;
+	let url = `${globalConfig.dataServiceBase}datasets/${datasetId}/blob`;
 	let authHeader = getHeader();
 	let response = await fetch(url, {
 		method: "GET",

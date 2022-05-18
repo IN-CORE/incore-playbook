@@ -22,7 +22,7 @@ import ChevronRightIcon from "@material-ui/icons/ChevronRight";
 
 import {setMenuState} from "../../../actions/layout";
 
-import appConfig from "../../../globals";
+import {menuWidth} from "../../../globals";
 import Cookies from "universal-cookie";
 
 import List from "@material-ui/core/List";
@@ -37,7 +37,7 @@ import Grid from "@material-ui/core/Grid";
 
 const cookies = new Cookies();
 
-const drawerWidth = appConfig.menuWidth;
+const drawerWidth = menuWidth;
 
 const useStyles = makeStyles((theme) => ({
 	root: {

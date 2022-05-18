@@ -11,12 +11,14 @@ import {createMuiTheme, MuiThemeProvider} from "@material-ui/core/styles";
 import {mapConfig as defaultMapConfig} from "./map.config";
 import {assetConfig as defaultAssetConfig} from "./asset.config";
 import {datawolfConfig as defaultDatawolfConfig} from "./datawolf.config";
+import {globals as defaultGlobalConfig} from "./globals";
 import {
 	setAllowedHazardTypes,
 	setAllowedDataTypes,
 	updateAssetConfig,
 	updateMapConfig,
-	updateDatawolfConfig
+	updateDatawolfConfig,
+	updateGlobalConfig
 } from "./actions/config";
 
 require("./public/favicon.ico");
@@ -25,6 +27,7 @@ const store = configureStore();
 store.dispatch(updateMapConfig(defaultMapConfig));
 store.dispatch(updateAssetConfig(defaultAssetConfig));
 store.dispatch(updateDatawolfConfig(defaultDatawolfConfig));
+store.dispatch(updateGlobalConfig(defaultGlobalConfig));
 store.dispatch(setAllowedDataTypes({
 	building: true,
 	epf: true,

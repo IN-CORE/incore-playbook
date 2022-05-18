@@ -3,28 +3,8 @@ let apihost;
 let apiurl;
 
 const globals = {
-	menuWidth: 300,
-	ARCHETYPE: {
-		"1": "Wood Residential Building - small rectangular plan, garble roof, 1 story",
-		"2": "Wood Residential Building - small rectangular plan, garble roof, 2 story",
-		"3": "Wood Residential Building - medium rectangular plan, hip roof, 2 story",
-		"4": "Wood Residential Building - medium rectangular plan, garble roof, 2 story",
-		"5": "Wood Residential Building - large rectangular plan, garble roof, 2 story",
-		"6": "Business and Retail Building",
-		"7": "Light Industrial Building",
-		"8": "Heavy Industrial Building",
-		"9": "Elementary/Middle School",
-		"10": "High School",
-		"11": "Fire-police station",
-		"12": "Hospital",
-		"13": "Community Center/Church",
-		"14": "Government Building",
-		"15": "Large big-box",
-		"16": "Small big-box",
-		"17": "Mobile Home",
-		"18": "Shopping Center",
-		"19": "Office Building"
-	}
+
+
 };
 
 if (process.env.DEPLOY_ENV === "production") {
@@ -59,14 +39,38 @@ else { // default case that used dev environment
 }
 
 globals["apiUrl"] = apiurl;
-globals["dataWolf"] = "https://incore-tst.ncsa.illinois.edu/datawolf/";
 globals["client_id"] = "react-auth";
 globals["authService"] = `${apiurl}/auth/realms/In-core/protocol/openid-connect/token`;
-globals["testUserInfo"] = "commresilience";
 globals["hazardServiceBase"] = `${apiurl}/hazard/api/`;
 globals["dataServiceBase"] = `${apiurl}/data/api/`;
 
-export default globals;
+export {globals};
+
+export const testUserInfo = "commresilience";
+
+export const menuWidth = 300;
+
+export const ARCHETYPE = {
+	"1": "Wood Residential Building - small rectangular plan, garble roof, 1 story",
+	"2": "Wood Residential Building - small rectangular plan, garble roof, 2 story",
+	"3": "Wood Residential Building - medium rectangular plan, hip roof, 2 story",
+	"4": "Wood Residential Building - medium rectangular plan, garble roof, 2 story",
+	"5": "Wood Residential Building - large rectangular plan, garble roof, 2 story",
+	"6": "Business and Retail Building",
+	"7": "Light Industrial Building",
+	"8": "Heavy Industrial Building",
+	"9": "Elementary/Middle School",
+	"10": "High School",
+	"11": "Fire-police station",
+	"12": "Hospital",
+	"13": "Community Center/Church",
+	"14": "Government Building",
+	"15": "Large big-box",
+	"16": "Small big-box",
+	"17": "Mobile Home",
+	"18": "Shopping Center",
+	"19": "Office Building"
+};
 
 export const processStatus = [
 	{name: "PENDING", key: "pending"},

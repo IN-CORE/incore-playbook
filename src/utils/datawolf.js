@@ -1,5 +1,6 @@
 import {getHeader, getCurrUserEmail, getIncoreTokenFile, getCurrUsername} from "./common";
-import appConfig from "../globals";
+import {globals as defaultGlobalConfig} from "../globals";
+import {datawolfConfig as defaultDatawolfConfig} from "../datawolf.config";
 
 export async function getOutputFileJson(datawolfConfig, datasetId, outputFileName = null) {
 	let authHeader = getHeader();
@@ -46,7 +47,7 @@ export async function getOutputFileJson(datawolfConfig, datasetId, outputFileNam
 	}
 }
 
-export async function submitExecution(datawolfConfig, allowedDataType, title, description, bldgId, substationId, poleId, interdNetworkId,
+export async function submitExecution(globalConfig=defaultGlobalConfig, datawolfConfig=defaultDatawolfConfig, allowedDataType, title, description, bldgId, substationId, poleId, interdNetworkId,
 									  bldgToSectorId, huaId, blockGroupId, valueLossId, hazardType, hazardId,){
 
 	// not all the variables are needed; use allowedDataType to sift through
@@ -76,7 +77,7 @@ export async function submitExecution(datawolfConfig, allowedDataType, title, de
 		requestBody["parameters"][datawolfParams["numCpuId"]] = defaults["numCpuId"];
 		requestBody["parameters"][datawolfParams["hazardId"]] = hazardId;
 		requestBody["parameters"][datawolfParams["hazardTypeId"]] = hazardType;
-		requestBody["parameters"][datawolfParams["serviceUrlId"]] = appConfig["apiUrl"];
+		requestBody["parameters"][datawolfParams["serviceUrlId"]] = globalConfig["apiUrl"];
 		requestBody["parameters"][datawolfParams["resultNameId"]] = title;
 
 		if (allowedDataType.building){

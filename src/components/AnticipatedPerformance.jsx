@@ -34,7 +34,7 @@ export const AnticipatedPerformance = () => {
 	const dispatch = useDispatch();
 	const getExecutionList = (datawolfConfig) => dispatch(fetchExecutions(datawolfConfig));
 	const listHazards = (hazardType, limit, offset) => dispatch(fetchHazards(hazardType, limit, offset));
-	const listDatasets = (limit, offset, type) => dispatch(fetchDatasets(limit, offset, type));
+	const listDatasets = (config, limit, offset, type) => dispatch(fetchDatasets(config, limit, offset, type));
 	const tornadoes = useSelector((state) => state.hazard.tornadoes);
 	const earthquakes = useSelector((state) => state.hazard.earthquakes);
 	const hurricanes = useSelector((state) => state.hazard.hurricanes);

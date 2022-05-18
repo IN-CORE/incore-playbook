@@ -6,7 +6,6 @@ import {useHistory} from "react-router-dom";
 import {makeStyles } from "@material-ui/core/styles";
 import {IncoreButton} from "./styledComponents/IncoreButton";
 import Cookies from "universal-cookie";
-import appConfig from "../globals";
 import {setMenuState} from "../actions/layout";
 
 import HeaderWithMenu from "../components/childComponents/navigation/HeaderWithMenu";
@@ -100,6 +99,8 @@ export const Login = () => {
 	const classes = useStyles();
 	const history = useHistory();
 
+	const globalConfig = useSelector((state) => state.config.globalConfig);
+
 	useEffect(() => {
 		if (isAuthorized()) { history.push("/");}
 	}, []);
@@ -127,13 +128,13 @@ export const Login = () => {
 	};
 
 	const handleLogin = async () => {
-		const endpoint = appConfig.authService;
+		const endpoint = globalConfig.authService;
 
 		let formData = [
 			`${encodeURIComponent("grant_type")  }=${  encodeURIComponent("password")}`,
 			`${encodeURIComponent("username")  }=${  encodeURIComponent(username)}`,
 			`${encodeURIComponent("password")  }=${  encodeURIComponent(password)}`,
-			`${encodeURIComponent("client_id")  }=${  encodeURIComponent(appConfig.client_id)}`,
+			`${encodeURIComponent("client_id")  }=${  encodeURIComponent(globalConfig.client_id)}`,
 		];
 
 		const tokenRequest = await fetch(endpoint, {

@@ -10,9 +10,11 @@ import FileUploadDrop from "../form/FileUploadDrop";
 
 import {createRasterTornado} from "../../../utils/hazard";
 import LoadingOverlay from "react-loading-overlay";
+import {useSelector} from "react-redux";
 
 export default function RasterTornado(props) {
 	const {value, index, handleLayerUpdate, handleListUpdate, ...other} = props;
+	const globalConfig = useSelector((state) => state.config.globalConfig);
 
 	const fileInputRef = useRef(null);
 	const [files, setFile] = useState([]);
@@ -39,10 +41,10 @@ export default function RasterTornado(props) {
 	const onSave = async () => {
 		setLoading(true);
 		// check if all fields are filled:
-		const tornadoJson = await createRasterTornado(name, description, files);
+		const tornadoJson = await createRasterTornado(globalConfig, name, description, files);
 		if (tornadoJson !== {}) {
 			handleLayerUpdate(tornadoJson);
-			handleListUpdate("tornadoes");
+			handleListUpdate(globalConfig, "tornadoes");
 			setFile([]);
 			setName("");
 			setDescription("");
