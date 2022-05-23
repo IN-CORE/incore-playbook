@@ -86,7 +86,7 @@ export async function getTornadoMetadata(globalConfig=defaultGlobalConfig, torna
 	}
 }
 
-export async function createModelEarthquake(globalConfig=defaultGlobalConfig, name, description, lat, lon, magnitude, depth, demandType, demandUnits) {
+export async function createModelEarthquake(globalConfig=defaultGlobalConfig, name, description, lat, lon, magnitude, depth, demandType, demandUnits, attenuations) {
 	const endpoint = `${globalConfig.hazardServiceBase}earthquakes`;
 	let formData = new FormData();
 
@@ -94,7 +94,7 @@ export async function createModelEarthquake(globalConfig=defaultGlobalConfig, na
 		"name": name,
 		"description": description,
 		"eqType": "model",
-		"attenuations": {"AtkinsonBoore1995": 1.0},
+		"attenuations": {},
 		"eqParameters": {
 			"srcLatitude": lat,
 			"srcLongitude": lon,
@@ -112,6 +112,7 @@ export async function createModelEarthquake(globalConfig=defaultGlobalConfig, na
 			"amplifyHazard": "true"
 		}
 	};
+	eqMetadata["attenuations"][attenuations] = 1.0;
 
 	formData.append("earthquake", JSON.stringify(eqMetadata));
 	let authHeader = getHeader();

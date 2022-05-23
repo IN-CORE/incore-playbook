@@ -7,8 +7,6 @@ import ViewResult from "./childComponents/ViewResult";
 import RunAnalysis from "./childComponents/RunAnalysis";
 import PageBanner from "./childComponents/navigation/Banner";
 import {fetchExecutions} from "../actions/datawolf";
-import {fetchHazards} from "../actions/hazards";
-import {fetchDatasets} from "../actions/datasets";
 
 
 const useStyles = makeStyles({
@@ -33,21 +31,7 @@ export const AnticipatedPerformance = () => {
 	// Redux connect equivalent
 	const dispatch = useDispatch();
 	const getExecutionList = (datawolfConfig) => dispatch(fetchExecutions(datawolfConfig));
-	const listHazards = (hazardType, limit, offset) => dispatch(fetchHazards(hazardType, limit, offset));
-	const listDatasets = (config, limit, offset, type) => dispatch(fetchDatasets(config, limit, offset, type));
-	const tornadoes = useSelector((state) => state.hazard.tornadoes);
-	const earthquakes = useSelector((state) => state.hazard.earthquakes);
-	const hurricanes = useSelector((state) => state.hazard.hurricanes);
-	const tsunamis = useSelector((state) => state.hazard.tsunamis);
-	const floods = useSelector((state) => state.hazard.floods);
 	const executions = useSelector((state) => state.execution.executions);
-	const buildings = useSelector((state) => state.dataset.buildings);
-	const epfs = useSelector((state) => state.dataset.epfs);
-	const interdNetworks= useSelector((state) => state.dataset.interdNetworks);
-	const sectorShocks = useSelector((state) => state.dataset.sectorShocks);
-	const huas = useSelector((state) => state.dataset.huas);
-	const blockGroups = useSelector((state) => state.dataset.blockGroups);
-	const valueLosses = useSelector((state) => state.dataset.valueLosses);
 
 	return (
 		<Layout>
@@ -68,20 +52,6 @@ export const AnticipatedPerformance = () => {
 									 style={currTabIndex === 1? {color: "#00619D"}: {}}/>
 							</Tabs>
 							<RunAnalysis value={currTabIndex} index={0}
-										 listHazards={listHazards}
-										 tornadoes={tornadoes}
-										 earthquakes={earthquakes}
-										 hurricanes={hurricanes}
-										 floods={floods}
-										 tsunamis={tsunamis}
-										 listDatasets={listDatasets}
-										 buildings={buildings}
-										 epfs={epfs}
-										 interdNetworks={interdNetworks}
-										 sectorShocks={sectorShocks}
-										 huas={huas}
-										 blockGroups={blockGroups}
-										 valueLosses={valueLosses}
 										 getExecutionList={getExecutionList}
 										 gotoViewResultTab={()=> {setCurrTabIndex(1);}}
 							/>

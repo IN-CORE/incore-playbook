@@ -19,7 +19,9 @@ import {submitExecution} from "../../utils/datawolf";
 import fullHtml from "../../public/steps/3-4.html";
 import StepInfo from "../StepInfo";
 import {inputDatasetTypes} from "../../globals";
-import {useSelector} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
+import {fetchHazards} from "../../actions/hazards";
+import {fetchDatasets} from "../../actions/datasets";
 
 const useStyles = makeStyles({
 	runButton:{
@@ -70,29 +72,42 @@ const useStyles = makeStyles({
 });
 
 export default function ViewResult(props) {
-	const {value, index, listHazards, listDatasets,
-		tornadoes, earthquakes, hurricanes, tsunamis, floods,
-		buildings, epfs, interdNetworks, sectorShocks, huas, blockGroups, valueLosses,
-		getExecutionList, gotoViewResultTab, ...other} = props;
+	const {value, index, getExecutionList, gotoViewResultTab, ...other} = props;
 
+	const dispatch = useDispatch();
+	const listHazards = (hazardType, limit, offset) => dispatch(fetchHazards(hazardType, limit, offset));
+	const listDatasets = (config, limit, offset, type) => dispatch(fetchDatasets(config, limit, offset, type));
+	const tornadoes = useSelector((state) => state.hazard.tornadoes);
+	const earthquakes = useSelector((state) => state.hazard.earthquakes);
+	const hurricanes = useSelector((state) => state.hazard.hurricanes);
+	const tsunamis = useSelector((state) => state.hazard.tsunamis);
+	const floods = useSelector((state) => state.hazard.floods);
+	const buildings = useSelector((state) => state.dataset.buildings);
+	const epfs = useSelector((state) => state.dataset.epfs);
+	const interdNetworks= useSelector((state) => state.dataset.interdNetworks);
+	const sectorShocks = useSelector((state) => state.dataset.sectorShocks);
+	const huas = useSelector((state) => state.dataset.huas);
+	const blockGroups = useSelector((state) => state.dataset.blockGroups);
+	const valueLosses = useSelector((state) => state.dataset.valueLosses);
 	const assetConfig = useSelector((state) => state.config.assetConfig);
 	const datawolfConfig = useSelector((state) => state.config.datawolfConfig);
+	const datawolfWorkflowConfig = useSelector((state) => state.config.datawolfWorkflowConfig);
 	const globalConfig = useSelector((state) => state.config.globalConfig);
 	const alllowedHazardTypes = useSelector((state) => state.config.allowedHazardTypes);
 	const allowedDataTypes = useSelector((state) => state.config.allowedDataTypes);
 
-	const [title, setTitle] = useState("");
-	const [description, setDescription] = useState("");
-	const [selectedBldgId, setBldgId] = useState("");
-	const [selectedSubstationId, setSubstationId] = useState("");
-	const [selectedPoleId, setPoleId] = useState("");
-	const [selectedInterdNetworkId, setInterdNetworkId] = useState("");
-	const [selectedBldgToSectorId, setBldgToSectorId] = useState("");
-	const [selectedHuaId, setHuaId] = useState("");
-	const [selectedBlockGroupId, setBlockGroupId] = useState("");
-	const [selectedValueLossId, setValueLossId] = useState("");
-	const [selectedHazardType, setHazardType] = useState("");
-	const [selectedHazardId, setHazardId] = useState("");
+	let parametersMap = datawolfWorkflowConfig.inputs[0].parametersMap;
+	const [datawolfFormState, setDatawolfFormState] = useState(
+		parametersMap.reduce((state, item) => {
+			// prepopulate the default hidden fields
+			if (item.hidden) {
+				return {...state, [item.parameters.variableName]:item.parameters.defaultValue};
+			}
+			else{
+				return {...state, [item.parameters.variableName]:""};
+			}
+		}, {})
+	);
 	const [disabled, setDisabled] = useState(true);
 
 	// load datasets and tornadoes
@@ -111,45 +126,25 @@ export default function ViewResult(props) {
 		});
 	}, []);
 
-	// form check
+	// // form check
 	useEffect(() => {
-		if (selectedBldgId !== ""
-			&& selectedSubstationId !== ""
-			&& selectedPoleId !== ""
-			&& selectedInterdNetworkId !== ""
-			&& title !== ""
-			&& description !== ""
-			&& selectedBldgToSectorId !== ""
-			&& selectedHuaId !== ""
-			&& selectedBlockGroupId !== ""
-			&& selectedValueLossId !== ""
-			&& selectedHazardType !== ""
-			&& selectedHazardId !== "") setDisabled(false);
+		if (Object.keys(datawolfFormState).every((k, ) => datawolfFormState[k] !== "")) setDisabled(false);
 		else setDisabled(true);
-	}, [selectedBldgId, selectedSubstationId, selectedPoleId, selectedInterdNetworkId, title, description,
-		selectedBldgToSectorId, selectedHuaId, selectedBlockGroupId, selectedValueLossId,
-		selectedHazardId, selectedHazardType]);
+	}, [datawolfFormState]);
 
 	const classes = useStyles();
 
 	const handleRunButtonClick = async () =>{
-		const datawolfJson = await submitExecution(globalConfig, datawolfConfig, allowedDataTypes,
-			title, description, selectedBldgId, selectedSubstationId,
-			selectedPoleId, selectedInterdNetworkId, selectedBldgToSectorId, selectedHuaId, selectedBlockGroupId,
-			selectedValueLossId, selectedHazardType, selectedHazardId);
+		const datawolfJson = await submitExecution(globalConfig, datawolfConfig, allowedDataTypes, datawolfFormState);
 		if (datawolfJson && datawolfJson !== "") {
-			setTitle("");
-			setDescription("");
-			setBldgId("");
-			setSubstationId("");
-			setPoleId("");
-			setInterdNetworkId("");
-			setBldgToSectorId("");
-			setHuaId("");
-			setBlockGroupId("");
-			setValueLossId("");
-			setHazardType("");
-			setHazardId("");
+			setDatawolfFormState(parametersMap.reduce((state, item) => {
+				if (item.hidden) {
+					return {...state, [item.parameters.variableName]:item.parameters.defaultValue};
+				}
+				else{
+					return {...state, [item.parameters.variableName]:""};
+				}
+			}, {}));
 			// update execution list and then jump to view result tab
 			getExecutionList(datawolfConfig);
 			gotoViewResultTab();
@@ -180,225 +175,45 @@ export default function ViewResult(props) {
 		>
 			<Grid container spacing={3}>
 				<Grid item xl={6} lg={6} md={6} sm={6} xs={12}>
-					<div className="inputGroup" style={{height: "auto", marginTop:"55px"}}>
-						<IncoreInputLabel>Title</IncoreInputLabel>
-						<IncoreTextField value={title} variant="outlined" onChange={(e) => setTitle(e.target.value)}/>
-					</div>
-					<div className="inputGroup" style={{height: "auto"}}>
-						<IncoreInputLabel>Description</IncoreInputLabel>
-						<IncoreTextField value={description} variant="outlined" onChange={(e) => setDescription(e.target.value)}/>
-					</div>
 					{
-						allowedDataTypes.building ?
-							<Box className="inputGroup" style={{height: "auto"}}>
-								<IncoreInputLabel>Select a Building Cluster
-								</IncoreInputLabel>
-								<IncoreSelectBox labelId="label" id="select" variant="outlined"
-												 onChange={(e)=>{ setBldgId(e.target.value); }}
-												 value={selectedBldgId}>
-									{
-										buildings.map((building) => {
+						parametersMap.map(item => {
+							if (!item.hidden){
+								return (<Box className="inputGroup" style={{height: "auto"}}>
+									<IncoreInputLabel>{item.parameters.title}</IncoreInputLabel>
+									{(() => {
+										if (item.parameters.widget === "TextField") {
 											return (
-												<IncoreMenuItem value={building["id"]} key={building["id"]}>
-													{building["title"]}</IncoreMenuItem>
+												<IncoreTextField variant="outlined"
+																 value={datawolfFormState[item.parameters.variableName] ?? ""}
+																 onChange={(e) => {// e.target.value inside async doesn't perform correctly
+																	 let currentVal = e.target.value;
+																	 setDatawolfFormState(prevState =>
+																	 ({...prevState, [item.parameters.variableName]: currentVal }));}}/>
 											);
-										})
-									}
-								</IncoreSelectBox>
-							</Box>
-							:
-							null
-					}
-					{
-						allowedDataTypes.epf ?
-							<>
-								<Box className="inputGroup" style={{height: "auto"}}>
-									<IncoreInputLabel>Select Electric Power Facilities (Poles)
-									</IncoreInputLabel>
-									<IncoreSelectBox labelId="label" id="select" variant="outlined"
-												 onChange={(e)=>{ setPoleId(e.target.value); }}
-												 value={selectedPoleId}>
-										{
-											epfs.map((epf) => {
-												return (
-													<IncoreMenuItem value={epf["id"]} key={epf["id"]}>
-														{epf["title"]}</IncoreMenuItem>
-												);
-											})
-										}
-									</IncoreSelectBox>
-								</Box>
-								<Box className="inputGroup" style={{height: "auto"}}>
-									<IncoreInputLabel>Select Electric Power Facilities (Substation)
-									</IncoreInputLabel>
-									<IncoreSelectBox labelId="label" id="select" variant="outlined"
-												 onChange={(e)=>{ setSubstationId(e.target.value); }}
-												 value={selectedSubstationId}>
-										{
-											epfs.map((epf) => {
-												return (
-													<IncoreMenuItem value={epf["id"]} key={epf["id"]}>
-														{epf["title"]}</IncoreMenuItem>
-												);
-											})
-										}
-									</IncoreSelectBox>
-								</Box>
-							</>
-							: null
-					}
-					{
-						allowedDataTypes.network ?
-							<Box className="inputGroup" style={{height: "auto"}}>
-								<IncoreInputLabel>Select Interdependency Network
-								</IncoreInputLabel>
-								<IncoreSelectBox labelId="label" id="select" variant="outlined"
-												 onChange={(e)=>{ setInterdNetworkId(e.target.value); }}
-												 value={selectedInterdNetworkId}>
-									{
-										interdNetworks.map((interdNetwork) => {
+										} else if (item.parameters.widget === "SelectBox") {
 											return (
-												<IncoreMenuItem key={interdNetwork["id"]} value={interdNetwork["id"]} interdNetwork={interdNetwork["id"]}>
-													{interdNetwork["title"]}</IncoreMenuItem>
+												<IncoreSelectBox labelId="label" id="select" variant="outlined"
+																 onChange={(e) => {setDatawolfFormState(prevState =>
+																	 ({...prevState, [item.parameters.variableName]: e.target.value }));}}
+																 value={datawolfFormState[item.parameters.variableName] ?? ""}>
+													{
+														eval(item.parameters.defaultValue).map((option) => {
+															return (
+																<IncoreMenuItem value={option["id"] ?? option} key={option["id"]?? option}>
+																	{option["title"] ?? option}</IncoreMenuItem>
+															);
+														})
+													}
+												</IncoreSelectBox>
 											);
-										})
-									}
-								</IncoreSelectBox>
-							</Box>
-							:
-							null
-					}
-					{
-						allowedDataTypes.socioeconomics ?
-							<Box className={classes.socioeconomicsBlock}>
-								<Typography className={classes.explanation} style={{margin: "5px 0", color:"#00619D"}}>
-									Select Socioeconomical Inputs
-								</Typography>
-								<Box className={classes.socioeconomics}>
-									<Box className="inputGroup" style={{height: "auto"}}>
-										<IncoreInputLabel>Select Building to Sector Mapping
-										</IncoreInputLabel>
-										<IncoreSelectBox labelId="label" id="select" variant="outlined"
-														 onChange={(e)=>{ setBldgToSectorId(e.target.value); }}
-														 value={selectedBldgToSectorId}>
-											>
-											{
-												sectorShocks.map((item) => {
-													return (
-														<IncoreMenuItem key={item["id"]} value={item["id"]} sectorShock={item["id"]}>
-															{item["title"]}</IncoreMenuItem>
-													);
-												})
-											}
-										</IncoreSelectBox>
-									</Box>
-									<Box className="inputGroup" style={{height: "auto"}}>
-										<IncoreInputLabel>Select Housing Unit Allocation Table
-										</IncoreInputLabel>
-										<IncoreSelectBox labelId="label" id="select" variant="outlined"
-														 onChange={(e)=>{ setHuaId(e.target.value); }}
-														 value={selectedHuaId}>
-											>
-											{
-												huas.map((item) => {
-													return (
-														<IncoreMenuItem key={item["id"]} value={item["id"]} hua={item["id"]}>
-															{item["title"]}</IncoreMenuItem>
-													);
-												})
-											}
-										</IncoreSelectBox>
-									</Box>
-									<Box className="inputGroup" style={{height: "auto"}}>
-										<IncoreInputLabel>Select Block Group Census
-										</IncoreInputLabel>
-										<IncoreSelectBox labelId="label" id="select" variant="outlined"
-														 onChange={(e)=>{ setBlockGroupId(e.target.value); }}
-														 value={selectedBlockGroupId}>
-											>
-											{
-												blockGroups.map((item) => {
-													return (
-														<IncoreMenuItem key={item["id"]} value={item["id"]} blockGroup={item["id"]}>
-															{item["title"]}</IncoreMenuItem>
-													);
-												})
-											}
-										</IncoreSelectBox>
-									</Box>
-									<Box className="inputGroup" style={{height: "auto"}}>
-										<IncoreInputLabel>Select Value Loss Distribution
-										</IncoreInputLabel>
-										<IncoreSelectBox labelId="label" id="select" variant="outlined"
-														 onChange={(e)=>{ setValueLossId(e.target.value); }}
-														 value={selectedValueLossId}>
-											>
-											{
-												valueLosses.map((item) => {
-													return (
-														<IncoreMenuItem key={item["id"]} value={item["id"]} valueLoss={item["id"]}>
-															{item["title"]}</IncoreMenuItem>
-													);
-												})
-											}
-										</IncoreSelectBox>
-									</Box>
-								</Box>
-								<Typography className={classes.explanation}>If you need to add entities to your built environment&nbsp;
-									<NavLink to="/community-environment"
-											 className={classes.explanationLink}>click here</NavLink>.</Typography>
-							</Box>
-							:
-							null
-					}
-					<Box className="inputGroup" style={{height: "auto"}}>
-						<IncoreInputLabel>
-							Select Hazard Type
-						</IncoreInputLabel>
-						<IncoreSelectBox labelId="label" id="select" variant="outlined"
-										 onChange={(e)=>{ setHazardType(e.target.value); }}
-										 value={selectedHazardType}>
-							{
-								(alllowedHazardTypes).map((hazardType) => {
-									return (
-										<IncoreMenuItem value={hazardType} key={hazardType}>
-											{hazardType}</IncoreMenuItem>
-									);
-								})
+										} else {
+											return (<></>);
+										}
+									})()}
+								</Box>);
 							}
-						</IncoreSelectBox>
-					</Box>
-					{
-						selectedHazardType !== "" ?
-							<Box className="inputGroup" style={{height: "auto"}}>
-								<IncoreInputLabel>Select {selectedHazardType.charAt(0).toUpperCase() + selectedHazardType.slice(1)} Scenario</IncoreInputLabel>
-								{
-									(() => {
-										if (selectedHazardType === "earthquakes") {
-											return populateHazardDropdown(earthquakes, selectedHazardId, setHazardId);
-										}
-										else if (selectedHazardType === "tornadoes") {
-											return populateHazardDropdown(tornadoes, selectedHazardId, setHazardId);
-										}
-										else if (selectedHazardType === "hurricanes") {
-											return populateHazardDropdown(hurricanes, selectedHazardId, setHazardId);
-										}
-										else if (selectedHazardType === "floods") {
-											return populateHazardDropdown(floods, selectedHazardId, setHazardId);
-										}
-										else if (selectedHazardType === "tsunamis") {
-											return populateHazardDropdown(tsunamis, selectedHazardId, setHazardId);
-										}
-									})()
-								}
-								<Typography className={classes.explanation}>If you need to add new hazards to your community hazards list&nbsp;
-									<NavLink to="/goal-objective-hazard"
-									 className={classes.explanationLink}>click here</NavLink>.</Typography>
-							</Box>
-							:
-							null
+						})
 					}
-
 					<Box className="inputGroup" style={{height: "auto"}}>
 						<IncoreInputLabel>Run the Analysis</IncoreInputLabel>
 						<Button variant="contained" color="primary" onClick={handleRunButtonClick}

@@ -1,4 +1,4 @@
-import {global as defaultGlobalConfig} from "../globals";
+import {globals as defaultGlobalConfig} from "../globals";
 
 export const RECEIVE_ATTRIBUTES = "RECEIVE_ATTRIBUTES";
 

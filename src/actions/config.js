@@ -12,9 +12,18 @@ export const updateAssetConfig = (config) => ({
 	receivedAt: Date.now(),
 });
 
+// config datawolf endpoints
 export const UPDATE_DATAWOLF_CONFIG = "UPDATE_DATAWOLF_CONFIG";
 export const updateDatawolfConfig = (config) => ({
 	type: UPDATE_DATAWOLF_CONFIG,
+	datawolfConfig: config,
+	receivedAt: Date.now(),
+});
+
+// config workflows
+export const UPDATE_DATAWOLF_WORKFLOW_CONFIG ="UPDATE_DATAWOLF_WORKFLOW_CONFIG";
+export const updateDatawolfWorkflowConfig = (config) => ({
+	type: UPDATE_DATAWOLF_WORKFLOW_CONFIG,
 	datawolfConfig: config,
 	receivedAt: Date.now(),
 });
