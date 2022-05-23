@@ -103,10 +103,10 @@ export default function ViewResult(props) {
 		parametersMap.reduce((state, item) => {
 			// prepopulate the default hidden fields
 			if (item.hidden) {
-				return {...state, [item.parameters.variableName]:item.parameters.defaultValue};
+				return {...state, [item.parameters.variableName]:{[item.paramId]: item.parameters.defaultValue}};
 			}
 			else{
-				return {...state, [item.parameters.variableName]:""};
+				return {...state, [item.parameters.variableName]:{[item.paramId]: ""}};
 			}
 		}, {})
 	);
@@ -131,13 +131,13 @@ export default function ViewResult(props) {
 
 	// // form check
 	useEffect(() => {
-		if (Object.keys(datawolfFormState).every((k, ) => datawolfFormState[k] !== "")) setDisabled(false);
+		if (Object.keys(datawolfFormState).every((k, ) => Object.values(datawolfFormState[k])[0] !== "")) setDisabled(false);
 		else setDisabled(true);
 	}, [datawolfFormState]);
 
 	// hazard dropdown
 	useEffect(() => {
-		let hazardType = datawolfFormState.selectedHazardType;
+		let hazardType = Object.values(datawolfFormState.selectedHazardType)[0];
 		if (hazardType === "earthquakes"){
 			setHazards(earthquakes);
 		}
@@ -156,7 +156,7 @@ export default function ViewResult(props) {
 	}, [datawolfFormState.selectedHazardType]);
 
 	const handleRunButtonClick = async () =>{
-		const datawolfJson = await submitExecution(globalConfig, datawolfConfig, allowedDataTypes, datawolfFormState);
+		const datawolfJson = await submitExecution(globalConfig, datawolfConfig, datawolfWorkflowConfig, datawolfFormState);
 		if (datawolfJson && datawolfJson !== "") {
 			setDatawolfFormState(parametersMap.reduce((state, item) => {
 				if (item.hidden) {
@@ -170,23 +170,6 @@ export default function ViewResult(props) {
 			getExecutionList(datawolfConfig);
 			gotoViewResultTab();
 		}
-	};
-
-	const populateHazardDropdown = (hazards, selectedHazardId, setHazardId, ) => {
-		return (
-			<IncoreSelectBox labelId="label" id="select" variant="outlined"
-							 onChange={(e)=>{ setHazardId(e.target.value); }}
-							 value={selectedHazardId}>
-				{
-					(hazards).map((hazard) => {
-						return (
-							<IncoreMenuItem value={hazard["id"]} key={hazard["id"]}>
-								{hazard["name"]}</IncoreMenuItem>
-						);
-					})
-				}
-			</IncoreSelectBox>
-		);
 	};
 
 	return (
@@ -205,18 +188,20 @@ export default function ViewResult(props) {
 										if (item.parameters.widget === "TextField") {
 											return (
 												<IncoreTextField variant="outlined"
-																 value={datawolfFormState[item.parameters.variableName] ?? ""}
+																 value={datawolfFormState[item.parameters.variableName][item.paramId] ?? ""}
 																 onChange={(e) => {// e.target.value inside async doesn't perform correctly
 																	 let currentVal = e.target.value;
 																	 setDatawolfFormState(prevState =>
-																	 ({...prevState, [item.parameters.variableName]: currentVal }));}}/>
+																	 ({...prevState, [item.parameters.variableName]: {[item.paramId]: currentVal}}));}}/>
 											);
 										} else if (item.parameters.widget === "SelectBox") {
 											return (
 												<IncoreSelectBox labelId="label" id="select" variant="outlined"
-																 onChange={(e) => {setDatawolfFormState(prevState =>
-																	 ({...prevState, [item.parameters.variableName]: e.target.value }));}}
-																 value={datawolfFormState[item.parameters.variableName] ?? ""}>
+																 onChange={(e) => {
+																	let currentVal = e.target.value;
+																 	setDatawolfFormState(prevState =>
+																	 ({...prevState, [item.parameters.variableName]: {[item.paramId]: currentVal}}));}}
+																 value={datawolfFormState[item.parameters.variableName][item.paramId] ?? ""}>
 													{
 														eval(item.parameters.defaultValue).map((option) => {
 															return (

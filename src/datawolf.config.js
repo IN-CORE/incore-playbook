@@ -158,7 +158,8 @@ const datawolfWorkflowConfig =
 						"title": "Username",
 						"variableName":"incoreUserName",
 						"widget": null,
-						"defaultValue": getCurrUsername()
+						"defaultValue": "commresilience"
+						// "defaultValue": getCurrUsername()
 					}
 				},
 				{
