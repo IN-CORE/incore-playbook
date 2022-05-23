@@ -74,16 +74,16 @@ const datawolfWorkflowConfig =
 						"defaultValue": "alllowedHazardTypes"
 					}
 				},
-				// {
-				// 	"paramId": "062882da-163d-4623-df0e-2d7778ee7c72",
-				// 	"parameters": {
-				// 		"step": "Joplin VSAM Nov 2021",
-				// 		"title": "Hazard ID",
-				// 		"variableName":"selectedHazardId",
-				// 		"widget": "SelectBox",
-				// 		"defaultValue": "hazards"
-				// 	}
-				// },
+				{
+					"paramId": "062882da-163d-4623-df0e-2d7778ee7c72",
+					"parameters": {
+						"step": "Joplin VSAM Nov 2021",
+						"title": "Hazard ID",
+						"variableName":"selectedHazardId",
+						"widget": "SelectBox",
+						"defaultValue": "hazards"
+					}
+				},
 				{
 					"paramId": "c2aa45e5-1e4a-4d7c-f72b-d5e18ef5e6a5",
 					"hidden": true,

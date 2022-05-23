@@ -72,6 +72,8 @@ const useStyles = makeStyles({
 });
 
 export default function ViewResult(props) {
+	const classes = useStyles();
+
 	const {value, index, getExecutionList, gotoViewResultTab, ...other} = props;
 
 	const dispatch = useDispatch();
@@ -109,6 +111,7 @@ export default function ViewResult(props) {
 		}, {})
 	);
 	const [disabled, setDisabled] = useState(true);
+	const [hazards, setHazards] = useState([]);
 
 	// load datasets and tornadoes
 	useEffect(() =>{
@@ -132,7 +135,25 @@ export default function ViewResult(props) {
 		else setDisabled(true);
 	}, [datawolfFormState]);
 
-	const classes = useStyles();
+	// hazard dropdown
+	useEffect(() => {
+		let hazardType = datawolfFormState.selectedHazardType;
+		if (hazardType === "earthquakes"){
+			setHazards(earthquakes);
+		}
+		else if (hazardType === "tornadoes"){
+			setHazards(tornadoes);
+		}
+		else if (hazardType === "tsunamis"){
+			setHazards(tsunamis);
+		}
+		else if (hazardType === "floods"){
+			setHazards(floods);
+		}
+		else if (hazardType === "hurricanes"){
+			setHazards(hurricanes);
+		}
+	}, [datawolfFormState.selectedHazardType]);
 
 	const handleRunButtonClick = async () =>{
 		const datawolfJson = await submitExecution(globalConfig, datawolfConfig, allowedDataTypes, datawolfFormState);
@@ -200,7 +221,7 @@ export default function ViewResult(props) {
 														eval(item.parameters.defaultValue).map((option) => {
 															return (
 																<IncoreMenuItem value={option["id"] ?? option} key={option["id"]?? option}>
-																	{option["title"] ?? option}</IncoreMenuItem>
+																	{option["title"] ?? option["name"] ?? option}</IncoreMenuItem>
 															);
 														})
 													}
