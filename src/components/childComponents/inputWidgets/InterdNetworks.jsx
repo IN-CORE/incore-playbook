@@ -15,7 +15,9 @@ export default function InterdNetworks(props) {
 	const interdNetworks= useSelector((state) => state.dataset.interdNetworks);
 
 	useEffect(() =>{
-		listDatasets(globalConfig, inputDatasetTypes.interdNetworks["num"], 0, inputDatasetTypes.interdNetworks["type"]);
+		inputDatasetTypes.interdNetworks.map((inputDatasetType) => {
+			listDatasets(globalConfig, inputDatasetType["num"], 0, inputDatasetType["type"]);
+		});
 	}, []);
 
 	return (

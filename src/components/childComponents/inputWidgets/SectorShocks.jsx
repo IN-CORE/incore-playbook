@@ -5,17 +5,19 @@ import {inputDatasetTypes} from "../../../globals";
 import {fetchDatasets} from "../../../actions/datasets";
 
 
-export default function Buildings(props) {
+export default function SectorShocks(props) {
 
 	const {setDatawolfFormState, datawolfFormState, datawolfConfigItem} = props;
 
 	const dispatch = useDispatch();
 	const listDatasets = (config, limit, offset, type) => dispatch(fetchDatasets(config, limit, offset, type));
 	const globalConfig = useSelector((state) => state.config.globalConfig);
-	const buildings = useSelector((state) => state.dataset.buildings);
+	const sectorShocks = useSelector((state) => state.dataset.sectorShocks);
 
 	useEffect(() =>{
-		listDatasets(globalConfig, inputDatasetTypes.buildings["num"], 0, inputDatasetTypes.buildings["type"]);
+		inputDatasetTypes.sectorShocks.map((inputDatasetType) => {
+			listDatasets(globalConfig, inputDatasetType["num"], 0, inputDatasetType["type"]);
+		});
 	}, []);
 
 	return (
@@ -27,7 +29,7 @@ export default function Buildings(props) {
 						 }}
 						 value={datawolfFormState[datawolfConfigItem.parameters.variableName][datawolfConfigItem.paramId] ?? ""}>
 			{
-				buildings.map((option) => {
+				sectorShocks.map((option) => {
 					return (
 						<IncoreMenuItem value={option["id"]} key={option["id"]}>{option["title"]}</IncoreMenuItem>
 					);

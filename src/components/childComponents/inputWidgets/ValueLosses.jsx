@@ -5,17 +5,19 @@ import {inputDatasetTypes} from "../../../globals";
 import {fetchDatasets} from "../../../actions/datasets";
 
 
-export default function Epfs(props) {
+export default function ValueLosses(props) {
 
 	const {setDatawolfFormState, datawolfFormState, datawolfConfigItem} = props;
 
 	const dispatch = useDispatch();
 	const listDatasets = (config, limit, offset, type) => dispatch(fetchDatasets(config, limit, offset, type));
 	const globalConfig = useSelector((state) => state.config.globalConfig);
-	const epfs = useSelector((state) => state.dataset.epfs);
+	const valueLosses = useSelector((state) => state.dataset.valueLosses);
 
 	useEffect(() =>{
-		listDatasets(globalConfig, inputDatasetTypes.epfs["num"], 0, inputDatasetTypes.epfs["type"]);
+		inputDatasetTypes.valueLosses.map((inputDatasetType) => {
+			listDatasets(globalConfig, inputDatasetType["num"], 0, inputDatasetType["type"]);
+		});
 	}, []);
 
 	return (
@@ -27,7 +29,7 @@ export default function Epfs(props) {
 						 }}
 						 value={datawolfFormState[datawolfConfigItem.parameters.variableName][datawolfConfigItem.paramId] ?? ""}>
 			{
-				epfs.map((option) => {
+				valueLosses.map((option) => {
 					return (
 						<IncoreMenuItem value={option["id"]} key={option["id"]}>{option["title"]}</IncoreMenuItem>
 					);

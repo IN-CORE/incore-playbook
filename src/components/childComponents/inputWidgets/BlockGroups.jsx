@@ -5,17 +5,19 @@ import {inputDatasetTypes} from "../../../globals";
 import {fetchDatasets} from "../../../actions/datasets";
 
 
-export default function ValueLosses(props) {
+export default function BlockGroups(props) {
 
 	const {setDatawolfFormState, datawolfFormState, datawolfConfigItem} = props;
 
 	const dispatch = useDispatch();
 	const listDatasets = (config, limit, offset, type) => dispatch(fetchDatasets(config, limit, offset, type));
 	const globalConfig = useSelector((state) => state.config.globalConfig);
-	const valueLosses = useSelector((state) => state.dataset.valueLosses);
+	const blockGroups = useSelector((state) => state.dataset.blockGroups);
 
 	useEffect(() =>{
-		listDatasets(globalConfig, inputDatasetTypes.valueLosses["num"], 0, inputDatasetTypes.valueLosses["type"]);
+		inputDatasetTypes.blockGroups.map((inputDatasetType) => {
+			listDatasets(globalConfig, inputDatasetType["num"], 0, inputDatasetType["type"]);
+		});
 	}, []);
 
 	return (
@@ -27,7 +29,7 @@ export default function ValueLosses(props) {
 						 }}
 						 value={datawolfFormState[datawolfConfigItem.parameters.variableName][datawolfConfigItem.paramId] ?? ""}>
 			{
-				valueLosses.map((option) => {
+				blockGroups.map((option) => {
 					return (
 						<IncoreMenuItem value={option["id"]} key={option["id"]}>{option["title"]}</IncoreMenuItem>
 					);

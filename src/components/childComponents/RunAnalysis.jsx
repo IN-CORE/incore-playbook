@@ -13,16 +13,16 @@ import {submitExecution} from "../../utils/datawolf";
 import fullHtml from "../../public/steps/3-4.html";
 import StepInfo from "../StepInfo";
 import {useSelector} from "react-redux";
-import AllowedHazardTypes from "./inputs/AllowedHazardTypes";
-import BlockGroups from "./inputs/BlockGroups";
-import Epfs from "./inputs/Epfs";
-import Hazards from "./inputs/Hazards";
-import Huas from "./inputs/Huas";
-import InterdNetworks from "./inputs/InterdNetworks";
-import Buildings from "./inputs/Buildings";
-import SectorShocks from "./inputs/SectorShocks";
-import ValueLosses from "./inputs/ValueLosses";
-import InputTextField from "./inputs/InputTextField";
+import AllowedHazardTypes from "./inputWidgets/AllowedHazardTypes";
+import BlockGroups from "./inputWidgets/BlockGroups";
+import Epfs from "./inputWidgets/Epfs";
+import Hazards from "./inputWidgets/Hazards";
+import Huas from "./inputWidgets/Huas";
+import InterdNetworks from "./inputWidgets/InterdNetworks";
+import Buildings from "./inputWidgets/Buildings";
+import SectorShocks from "./inputWidgets/SectorShocks";
+import ValueLosses from "./inputWidgets/ValueLosses";
+import InputTextField from "./inputWidgets/InputTextField";
 
 const useStyles = makeStyles({
 	runButton:{
@@ -72,6 +72,7 @@ const useStyles = makeStyles({
 	}
 });
 
+// TODO move this registration somewhere else?
 const registeredWidgets = {
 	"AllowedHazardTypes": <AllowedHazardTypes/>,
 	"BlockGroups": <BlockGroups/>,

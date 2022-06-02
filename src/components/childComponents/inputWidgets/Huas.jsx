@@ -15,7 +15,9 @@ export default function Huas(props) {
 	const huas = useSelector((state) => state.dataset.huas);
 
 	useEffect(() =>{
-		listDatasets(globalConfig, inputDatasetTypes.huas["num"], 0, inputDatasetTypes.huas["type"]);
+		inputDatasetTypes.huas.map((inputDatasetType) => {
+			listDatasets(globalConfig, inputDatasetType["num"], 0, inputDatasetType["type"]);
+		});
 	}, []);
 
 	return (
