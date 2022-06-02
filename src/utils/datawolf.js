@@ -66,7 +66,7 @@ export async function submitExecution(datawolfConfig=defaultDatawolfConfig,
 	}, {});
 
 	let requestBody = {
-		"workflowId": datawolfConfig["wfId"],
+		"workflowId": datawolfWorkflowConfig["wfId"],
 		"creatorId": datawolfWorkflowConfig["creatorId"],
 		"title": title,
 		"description": description,
