@@ -1,27 +1,28 @@
 import React, {useState, useEffect} from "react";
-import {NavLink} from "react-router-dom";
 import {makeStyles} from "@material-ui/core/styles";
 import {
 	Box,
 	Avatar,
 	Button,
 	Grid,
-	Typography,
 } from "@material-ui/core";
 
 import {IncoreInputLabel} from "../styledComponents/IncoreInputLabel";
-import {IncoreSelectBox, IncoreMenuItem} from "../styledComponents/IncoreSelect";
-
-import {IncoreTextField} from "../styledComponents/IncoreInput";
-
 import {submitExecution} from "../../utils/datawolf";
 
 import fullHtml from "../../public/steps/3-4.html";
 import StepInfo from "../StepInfo";
-import {inputDatasetTypes} from "../../globals";
-import {useDispatch, useSelector} from "react-redux";
-import {fetchHazards} from "../../actions/hazards";
-import {fetchDatasets} from "../../actions/datasets";
+import {useSelector} from "react-redux";
+import AllowedHazardTypes from "./inputs/AllowedHazardTypes";
+import BlockGroups from "./inputs/BlockGroups";
+import Epfs from "./inputs/Epfs";
+import Hazards from "./inputs/Hazards";
+import Huas from "./inputs/Huas";
+import InterdNetworks from "./inputs/InterdNetworks";
+import Buildings from "./inputs/Buildings";
+import SectorShocks from "./inputs/SectorShocks";
+import ValueLosses from "./inputs/ValueLosses";
+import InputTextField from "./inputs/InputTextField";
 
 const useStyles = makeStyles({
 	runButton:{
@@ -71,32 +72,29 @@ const useStyles = makeStyles({
 	}
 });
 
+const registeredWidgets = {
+	"AllowedHazardTypes": <AllowedHazardTypes/>,
+	"BlockGroups": <BlockGroups/>,
+	"Buildings": <Buildings/>,
+	"Epfs": <Epfs/>,
+	"Hazards": <Hazards/>,
+	"Huas":<Huas/>,
+	"InputTextField":<InputTextField/>,
+	"InterdNetworks":<InterdNetworks/>,
+	"SectorShocks":<SectorShocks/>,
+	"ValueLosses":<ValueLosses/>
+};
+
+
 export default function ViewResult(props) {
 	const classes = useStyles();
 
 	const {value, index, getExecutionList, gotoViewResultTab, ...other} = props;
 
-	const dispatch = useDispatch();
-	const listHazards = (hazardType, limit, offset) => dispatch(fetchHazards(hazardType, limit, offset));
-	const listDatasets = (config, limit, offset, type) => dispatch(fetchDatasets(config, limit, offset, type));
-	const tornadoes = useSelector((state) => state.hazard.tornadoes);
-	const earthquakes = useSelector((state) => state.hazard.earthquakes);
-	const hurricanes = useSelector((state) => state.hazard.hurricanes);
-	const tsunamis = useSelector((state) => state.hazard.tsunamis);
-	const floods = useSelector((state) => state.hazard.floods);
-	const buildings = useSelector((state) => state.dataset.buildings);
-	const epfs = useSelector((state) => state.dataset.epfs);
-	const interdNetworks= useSelector((state) => state.dataset.interdNetworks);
-	const sectorShocks = useSelector((state) => state.dataset.sectorShocks);
-	const huas = useSelector((state) => state.dataset.huas);
-	const blockGroups = useSelector((state) => state.dataset.blockGroups);
-	const valueLosses = useSelector((state) => state.dataset.valueLosses);
 	const assetConfig = useSelector((state) => state.config.assetConfig);
 	const datawolfConfig = useSelector((state) => state.config.datawolfConfig);
 	const datawolfWorkflowConfig = useSelector((state) => state.config.datawolfWorkflowConfig);
 	const globalConfig = useSelector((state) => state.config.globalConfig);
-	const alllowedHazardTypes = useSelector((state) => state.config.allowedHazardTypes);
-	const allowedDataTypes = useSelector((state) => state.config.allowedDataTypes);
 
 	let parametersMap = datawolfWorkflowConfig.inputs[0].parametersMap;
 	const [datawolfFormState, setDatawolfFormState] = useState(
@@ -111,49 +109,12 @@ export default function ViewResult(props) {
 		}, {})
 	);
 	const [disabled, setDisabled] = useState(true);
-	const [hazards, setHazards] = useState([]);
-
-	// load datasets and tornadoes
-	useEffect(() =>{
-
-		// dataset
-		Object.keys(inputDatasetTypes).map((key) => {
-			inputDatasetTypes[key].map((inputDatasetType) => {
-				listDatasets(globalConfig, inputDatasetType["num"], 0, inputDatasetType["type"]);
-			});
-		});
-
-		// hazard
-		alllowedHazardTypes.map((hazardType) =>{
-			listHazards(globalConfig, hazardType);
-		});
-	}, []);
 
 	// // form check
 	useEffect(() => {
 		if (Object.keys(datawolfFormState).every((k, ) => Object.values(datawolfFormState[k])[0] !== "")) setDisabled(false);
 		else setDisabled(true);
 	}, [datawolfFormState]);
-
-	// hazard dropdown
-	useEffect(() => {
-		let hazardType = Object.values(datawolfFormState.selectedHazardType)[0];
-		if (hazardType === "earthquakes"){
-			setHazards(earthquakes);
-		}
-		else if (hazardType === "tornadoes"){
-			setHazards(tornadoes);
-		}
-		else if (hazardType === "tsunamis"){
-			setHazards(tsunamis);
-		}
-		else if (hazardType === "floods"){
-			setHazards(floods);
-		}
-		else if (hazardType === "hurricanes"){
-			setHazards(hurricanes);
-		}
-	}, [datawolfFormState.selectedHazardType]);
 
 	const handleRunButtonClick = async () =>{
 		const datawolfJson = await submitExecution(globalConfig, datawolfConfig, datawolfWorkflowConfig, datawolfFormState);
@@ -185,36 +146,15 @@ export default function ViewResult(props) {
 								return (<Box className="inputGroup" style={{height: "auto"}}>
 									<IncoreInputLabel>{item.parameters.title}</IncoreInputLabel>
 									{(() => {
-										if (item.parameters.widget === "TextField") {
-											return (
-												<IncoreTextField variant="outlined"
-																 value={datawolfFormState[item.parameters.variableName][item.paramId] ?? ""}
-																 onChange={(e) => {// e.target.value inside async doesn't perform correctly
-																	 let currentVal = e.target.value;
-																	 setDatawolfFormState(prevState =>
-																	 ({...prevState, [item.parameters.variableName]: {[item.paramId]: currentVal}}));}}/>
-											);
-										} else if (item.parameters.widget === "SelectBox") {
-											return (
-												<IncoreSelectBox labelId="label" id="select" variant="outlined"
-																 onChange={(e) => {
-																	let currentVal = e.target.value;
-																 	setDatawolfFormState(prevState =>
-																	 ({...prevState, [item.parameters.variableName]: {[item.paramId]: currentVal}}));}}
-																 value={datawolfFormState[item.parameters.variableName][item.paramId] ?? ""}>
-													{
-														eval(item.parameters.defaultValue).map((option) => {
-															return (
-																<IncoreMenuItem value={option["id"] ?? option} key={option["id"]?? option}>
-																	{option["title"] ?? option["name"] ?? option}</IncoreMenuItem>
-															);
-														})
-													}
-												</IncoreSelectBox>
-											);
-										} else {
-											return (<></>);
-										}
+										// instantiate widget based on definitions
+										return React.cloneElement(
+											registeredWidgets[item.parameters.widget ],
+											{
+												setDatawolfFormState: setDatawolfFormState,
+												datawolfFormState: datawolfFormState,
+												datawolfConfigItem: item
+											}
+										);
 									})()}
 								</Box>);
 							}

@@ -1,6 +1,4 @@
-import {IncoreTextField} from "./components/styledComponents/IncoreInput";
 import React from "react";
-import {getCurrUsername} from "./utils/common";
 
 let datawolfConfig = {};
 if (process.env.DEPLOY_ENV === "production") {
@@ -50,8 +48,8 @@ const datawolfWorkflowConfig =
 						"step": "Joplin VSAM Nov 2021",
 						"title": "Result Name",
 						"variableName":"title",
-						"widget": "TextField",
-						"defaultValue": ""
+						"widget": "InputTextField",
+						"defaultValue": "",
 					}
 				},
 				{
@@ -60,8 +58,8 @@ const datawolfWorkflowConfig =
 						"step": "Joplin VSAM Nov 2021",
 						"title": "Building Inventory",
 						"variableName":"selectedBldgId",
-						"widget": "SelectBox",
-						"defaultValue": "buildings"
+						"widget": "Buildings",
+						"defaultValue": ""
 					}
 				},
 				{
@@ -70,8 +68,8 @@ const datawolfWorkflowConfig =
 						"step": "Joplin VSAM Nov 2021",
 						"title": "Hazard Type",
 						"variableName":"selectedHazardType",
-						"widget": "SelectBox",
-						"defaultValue": "alllowedHazardTypes"
+						"widget": "AllowedHazardTypes",
+						"defaultValue": ""
 					}
 				},
 				{
@@ -80,8 +78,7 @@ const datawolfWorkflowConfig =
 						"step": "Joplin VSAM Nov 2021",
 						"title": "Hazard ID",
 						"variableName":"selectedHazardId",
-						"widget": "SelectBox",
-						"defaultValue": "hazards"
+						"widget": "Hazards",
 					}
 				},
 				{
@@ -159,7 +156,7 @@ const datawolfWorkflowConfig =
 						"variableName":"incoreUserName",
 						"widget": null,
 						"defaultValue": "commresilience"
-						// "defaultValue": getCurrUsername()
+						// TODO "defaultValue": getCurrUsername()
 					}
 				},
 				{
@@ -190,8 +187,8 @@ const datawolfWorkflowConfig =
 						"step": "Joplin VSAM Nov 2021",
 						"title": "EPF Substations",
 						"variableName":"selectedSubstationId",
-						"widget":"SelectBox",
-						"defaultValue":"epfs"
+						"widget":"Epfs",
+						"defaultValue":""
 					}
 				},
 				{
@@ -211,8 +208,8 @@ const datawolfWorkflowConfig =
 						"step": "Joplin VSAM Nov 2021",
 						"title": "EPF Poles",
 						"variableName": "selectedPoleId",
-						"widget":"SelectBox",
-						"defaultValue":"epfs"
+						"widget":"Epfs",
+						"defaultValue":""
 					}
 				},
 				{
@@ -232,8 +229,8 @@ const datawolfWorkflowConfig =
 						"step": "Joplin VSAM Nov 2021",
 						"title": "Interdependency",
 						"variableName": "selectedInterdNetworkId",
-						"widget": "SelectBox",
-						"defaultValue": "interdNetworks"
+						"widget": "InterdNetworks",
+						"defaultValue": ""
 					}
 				},
 				{
@@ -264,8 +261,8 @@ const datawolfWorkflowConfig =
 						"step": "Joplin VSAM Nov 2021",
 						"title": "Housing Unit Allocation",
 						"variableName": "selectedHuaId",
-						"widget": "SelectBox",
-						"defaultValue": "huas"
+						"widget": "Huas",
+						"defaultValue": ""
 					}
 				},
 				{
@@ -274,8 +271,8 @@ const datawolfWorkflowConfig =
 						"step": "Joplin VSAM Nov 2021",
 						"title": "Block Group Data",
 						"variableName": "selectedBlockGroupId",
-						"widget": "SelectBox",
-						"defaultValue": "blockGroups"
+						"widget": "BlockGroups",
+						"defaultValue": ""
 					}
 				},
 				{
@@ -284,8 +281,8 @@ const datawolfWorkflowConfig =
 						"step": "Joplin VSAM Nov 2021",
 						"title": "Value Loss Param",
 						"variableName": "selectedValueLossId",
-						"widget": "SelectBox",
-						"defaultValue": "valueLosses"
+						"widget": "ValueLosses",
+						"defaultValue": ""
 					}
 				},
 				{
@@ -313,4 +310,4 @@ const datawolfWorkflowConfig =
 };
 
 
-export {datawolfConfig, datawolfWorkflowConfig}
+export {datawolfConfig, datawolfWorkflowConfig};
