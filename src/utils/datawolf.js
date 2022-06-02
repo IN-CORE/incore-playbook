@@ -1,5 +1,4 @@
-import {getHeader, getCurrUserEmail, getIncoreTokenFile, getCurrUsername} from "./common";
-import {globals as defaultGlobalConfig} from "../globals";
+import {getHeader, getCurrUserEmail, getIncoreTokenFile} from "./common";
 import {datawolfConfig as defaultDatawolfConfig} from "../datawolf.config.js";
 import {datawolfWorkflowConfig as defaultDatawolfWorkflowConfig} from "../datawolf.config.js";
 
@@ -48,61 +47,53 @@ export async function getOutputFileJson(datawolfConfig, datasetId, outputFileNam
 	}
 }
 
-export async function submitExecution(globalConfig=defaultGlobalConfig, datawolfConfig=defaultDatawolfConfig,
+export async function submitExecution(datawolfConfig=defaultDatawolfConfig,
 									  datawolfWorkflowConfig=defaultDatawolfWorkflowConfig,
+									  title, description,
 									  datawolfFormState){
 
-	// not all the variables are needed; use allowedDataType to sift through
+	let incoreTokenDatasetId = await postDataset(datawolfConfig);
+	if (incoreTokenDatasetId === null) {
+		console.log("Fail to post incoretoken. Abort execution submission!");
+		return null;
+	}
 
-	// let incoreTokenDatasetId = await postDataset(datawolfConfig);
-	// if (incoreTokenDatasetId === null) {
-	// 	console.log("Fail to post incoretoken. Abort exeuction submission!");
-	// }
-	// else{
 	let authHeader = getHeader();
 	authHeader.append("Content-Type", "application/json");
-
-	// TODO
-	// const datawolfDatasets = datawolfConfig["datasets"];
 
 	const parameters = Object.keys(datawolfFormState).reduce((parameters, key) => {
 		return {...parameters, ...datawolfFormState[key]};
 	}, {});
-	console.log(parameters);
 
 	let requestBody = {
+		"workflowId": datawolfConfig["wfId"],
 		"creatorId": datawolfWorkflowConfig["creatorId"],
-		// TODO
-		// "title": title,
-		// "description": description,
-		"parameters": datawolfFormState,
-		"datasets": {}
+		"title": title,
+		"description": description,
+		"parameters": parameters,
+
+		// TODO right now only one input datasets; need to think in the future when we have more
+		"datasets": {[datawolfWorkflowConfig["inputs"]["datasets"][0]["datasetsMap"][0]["datasetId"]]: incoreTokenDatasetId}
 	};
 
-	// token will expire
-	// requestBody["datasets"][datawolfDatasets["incoreTokenId"]] = incoreTokenDatasetId;
+	let datawolfResponse = await fetch(`${datawolfConfig["executionPostURL"]}`, {
+		method: "POST",
+		headers: authHeader,
+		body: JSON.stringify(requestBody),
+		mode: "cors",
+	});
 
-	console.log(requestBody);
-
-	// let datawolfResponse = await fetch(`${datawolfConfig["executionPostURL"]}`, {
-	// 	method: "POST",
-	// 	headers: authHeader,
-	// 	body: JSON.stringify(requestBody),
-	// 	mode: "cors",
-	// });
-	//
-	// if (datawolfResponse.status  === 200){
-	// 	return datawolfResponse.text();
-	// }
-	// else if  (datawolfResponse.status  === 401){
-	// 	// TODO handle error
-	// 	return null;
-	// }
-	// else {
-	// 	// TODO handle error
-	// 	return null;
-	// }
-	// }
+	if (datawolfResponse.status  === 200){
+		return datawolfResponse.text();
+	}
+	else if  (datawolfResponse.status  === 401){
+		// TODO handle error
+		return null;
+	}
+	else {
+		// TODO handle error
+		return null;
+	}
 }
 
 export async function postDataset(datawolfConfig, title="incoretoken", description="incoretoken"){

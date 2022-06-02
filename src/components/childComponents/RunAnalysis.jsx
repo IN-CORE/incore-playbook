@@ -23,6 +23,7 @@ import Buildings from "./inputWidgets/Buildings";
 import SectorShocks from "./inputWidgets/SectorShocks";
 import ValueLosses from "./inputWidgets/ValueLosses";
 import InputTextField from "./inputWidgets/InputTextField";
+import {IncoreTextField} from "../styledComponents/IncoreInput";
 
 const useStyles = makeStyles({
 	runButton:{
@@ -92,12 +93,16 @@ export default function ViewResult(props) {
 
 	const {value, index, getExecutionList, gotoViewResultTab, ...other} = props;
 
+	// for execution
+	const [title, setTitle] = useState("");
+	const [description, setDescription] = useState("");
+
 	const assetConfig = useSelector((state) => state.config.assetConfig);
 	const datawolfConfig = useSelector((state) => state.config.datawolfConfig);
 	const datawolfWorkflowConfig = useSelector((state) => state.config.datawolfWorkflowConfig);
-	const globalConfig = useSelector((state) => state.config.globalConfig);
 
-	let parametersMap = datawolfWorkflowConfig.inputs[0].parametersMap;
+	// TODO assume only one step of inputs hence [0]
+	let parametersMap = datawolfWorkflowConfig.inputs.parameters[0].parametersMap;
 	const [datawolfFormState, setDatawolfFormState] = useState(
 		parametersMap.reduce((state, item) => {
 			// prepopulate the default hidden fields
@@ -118,7 +123,8 @@ export default function ViewResult(props) {
 	}, [datawolfFormState]);
 
 	const handleRunButtonClick = async () =>{
-		const datawolfJson = await submitExecution(globalConfig, datawolfConfig, datawolfWorkflowConfig, datawolfFormState);
+		const datawolfJson = await submitExecution(datawolfConfig, datawolfWorkflowConfig, title, description,
+			datawolfFormState);
 		if (datawolfJson && datawolfJson !== "") {
 			setDatawolfFormState(parametersMap.reduce((state, item) => {
 				if (item.hidden) {
@@ -141,6 +147,18 @@ export default function ViewResult(props) {
 		>
 			<Grid container spacing={3}>
 				<Grid item xl={6} lg={6} md={6} sm={6} xs={12}>
+					<Box className="inputGroup" style={{height: "auto"}}>
+						<IncoreInputLabel>Title</IncoreInputLabel>
+						<IncoreTextField variant="outlined"
+										 value={title}
+										 onChange={(e) => { setTitle(e.target.value); }} />
+					</Box>
+					<Box className="inputGroup" style={{height: "auto"}}>
+						<IncoreInputLabel>Description</IncoreInputLabel>
+						<IncoreTextField variant="outlined"
+										 value={description}
+										 onChange={(e) => { setDescription(e.target.value); }} />
+					</Box>
 					{
 						parametersMap.map(item => {
 							if (!item.hidden){

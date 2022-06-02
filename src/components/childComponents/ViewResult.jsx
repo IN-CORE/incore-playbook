@@ -640,7 +640,7 @@ export default function ViewResult(props) {
 				<Box className={classes.statTitle}>
 					<IncoreInputLabel>{`Completed Analysis (${numCompleted})`}</IncoreInputLabel>
 					<Box style={{float: "right"}}>
-						<IconButton aria-label="sync" onClick={getExecutionList}
+						<IconButton aria-label="sync" onClick={() => {getExecutionList(datawolfConfig);}}
 							color="secondary"><SyncIcon/></IconButton>
 						<IconButton aria-label="filter"><FilterListIcon/></IconButton>
 					</Box>

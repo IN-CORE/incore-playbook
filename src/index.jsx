@@ -10,7 +10,7 @@ import configureStore from "./store/configureStore";
 import {createMuiTheme, MuiThemeProvider} from "@material-ui/core/styles";
 import {mapConfig as defaultMapConfig} from "./map.config";
 import {assetConfig as defaultAssetConfig} from "./asset.config";
-import {datawolfConfig as defaultDatawolfConfig} from "./datawolf.config.js.ignore";
+import {datawolfConfig as defaultDatawolfConfig} from "./datawolf.config.js";
 import {globals as defaultGlobalConfig} from "./globals";
 import {
 	setAllowedHazardTypes,
