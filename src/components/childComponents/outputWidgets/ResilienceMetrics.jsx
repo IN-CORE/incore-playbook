@@ -2,10 +2,12 @@ import {Box, Container, Dialog, DialogContent, Grid, IconButton, Tab, Tabs, Typo
 import CloseIcon from "@material-ui/icons/Close";
 import {DislocationResultsTable} from "../table/DislocationResultsTable";
 import {HuaResultsTable} from "../table/HuaResultsTable";
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import {CgeResultsTable} from "../table/CgeResultsTable";
 import {FunctionalityTable} from "../table/FunctionalityTable";
 import {makeStyles} from "@material-ui/core/styles";
+import {getOutputFileJson} from "../../../utils/datawolf";
+import {useSelector} from "react-redux";
 
 const useStyles = makeStyles({
 	tableEntry:{
@@ -36,12 +38,59 @@ const useStyles = makeStyles({
 	},
 });
 
-export default function Metrics(props){
+export default function ResilienceMetrics(props){
 	const classes = useStyles();
 
-	let {executionName, title, previewOn, handlePreviewClose, tables} = props;
+	let {executionItemId, getExecution, selectedExecutionName, setSelectedExecutionName, title, previewOn, handlePreviewClose } = props;
+
+	const datawolfConfig = useSelector((state) => state.config.datawolfConfig);
+	const datawolfWorkflowConfig = useSelector((state) => state.config.datawolfWorkflowConfig);
 
 	const [currTabIndex, setCurrTabIndex] = useState(0);
+	const [tables, setTables] = useState({});
+
+	useEffect(()=> {
+
+		let executionItem = getExecution(executionItemId);
+		setSelectedExecutionName(executionItem["title"]);
+
+		const getOutputFileContent = async (dwDatasetId) => {
+			let incoreId = executionItem["datasets"][dwDatasetId];
+			let incoreTable = await getOutputFileJson(datawolfConfig, incoreId);
+			return JSON.parse(incoreTable);
+		};
+
+		const totalDislTableIdContent = getOutputFileContent(datawolfConfig["datasets"]["totalDislocationId"]).catch(console.error);
+		const dislocationByRaceContent = getOutputFileContent(datawolfConfig["datasets"]["dislocationByRaceId"]).catch(console.error);
+		const dislocationByTenureContent = getOutputFileContent(datawolfConfig["datasets"]["dislocationByTenureId"]).catch(console.error);
+		const dislocationByIncomeContent = getOutputFileContent(datawolfConfig["datasets"]["dislocationByIncomeId"]).catch(console.error);
+		const dislocationByHousingTypeIdContent = getOutputFileContent(datawolfConfig["datasets"]["dislocationByHousingTypeId"]).catch(console.error);
+		const cgeHouseholdIncomeContent = getOutputFileContent(datawolfConfig["datasets"]["cgeHouseholdIncomeId"]).catch(console.error);
+		const cgeDomesticSupplyContent = getOutputFileContent(datawolfConfig["datasets"]["cgeDomesticSupplyId"]).catch(console.error);
+		const cgeEmploymentContent = getOutputFileContent(datawolfConfig["datasets"]["cgeEmploymentId"]).catch(console.error);
+		const bldgFuncSummaryTableContent = getOutputFileContent(datawolfConfig["datasets"]["bldgFuncSummaryTableId"]).catch(console.error);
+
+
+		setTables(
+			{
+				// populationdislocation
+				"totalResultsTable": totalDislTableIdContent,
+				"huaResultsTable": {
+					"income": dislocationByIncomeContent,
+					"race": dislocationByRaceContent,
+					"tenure": dislocationByTenureContent,
+					"housingType": dislocationByHousingTypeIdContent
+				},
+				// cge
+				"totalHouseholdIncome":cgeHouseholdIncomeContent,
+				"domesticSupply":cgeDomesticSupplyContent,
+				"employment":cgeEmploymentContent,
+				// bldgfunc
+				"bldgFunc": bldgFuncSummaryTableContent,
+			}
+		);
+	}, []);
+
 
 	return (
 		<Dialog open={previewOn} onClose={handlePreviewClose} maxWidth="lg" fullWidth scroll="paper">
@@ -53,7 +102,7 @@ export default function Metrics(props){
 				{/*title*/}
 				{/*TODO wrap into a component*/}
 				<Box className="previewTitleSection">
-					<Typography className="previewTitle">{executionName}</Typography>
+					<Typography className="previewTitle">{selectedExecutionName}</Typography>
 					<Typography className="previewTitle">Select Data: {title}</Typography>
 				</Box>
 

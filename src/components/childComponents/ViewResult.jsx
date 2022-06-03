@@ -18,13 +18,13 @@ import TileWMS from "ol/source/TileWMS";
 import {ViewResultEntryTable} from "./table/ViewResultEntryTable";
 
 import {downloadDataset} from "../../utils/dataset";
-import Interdependency from "./modal/Interdependency";
-import BldgDamage from "./modal/BldgDamage";
-import EpfDamage from "./modal/EpfDamage";
-import BldgFunctionality from "./modal/BldgFunctionality";
-import CGE from "./modal/CGE";
-import PopDislocation from "./modal/PopDislocation";
-import Metrics from "./modal/Metrics";
+import Interdependency from "./outputWidgets/Interdependency";
+import BldgDamage from "./outputWidgets/BldgDamage";
+import EpfDamage from "./outputWidgets/EpfDamage";
+import BldgFunctionality from "./outputWidgets/BldgFunctionality";
+import CGE from "./outputWidgets/CGE";
+import PopDislocation from "./outputWidgets/PopDislocation";
+import ResillienceMetrics from "./outputWidgets/Metrics";
 import {exportJson} from "../../utils/common";
 import {useSelector} from "react-redux";
 
@@ -71,6 +71,7 @@ export default function ViewResult(props) {
 
 	const datawolfConfig = useSelector((state) => state.config.datawolfConfig);
 	const globalConfig = useSelector((state) => state.config.globalConfig);
+	const datawolfWorkflowConfig = useSelector((state) => state.config.datawolfWorkflowConfig);
 
 	// load executions list that has status
 	useEffect(() => { getExecutionList(datawolfConfig); }, []);
@@ -119,6 +120,7 @@ export default function ViewResult(props) {
 
 			// generate table
 			let entry = Object.assign({}, executionItem);
+			// TODO read hazard Tyep without hard coding
 			entry["hazardType"] = "Tornado";
 			entry["finalStatus"] = extractStatus(executionItem);
 			entries.push(entry);
@@ -664,10 +666,10 @@ export default function ViewResult(props) {
 			{
 				(()=>{
 					if (resultType === "metrics"){
-						return (<Metrics executionName={selectedExecutionName} title="Resilience Metrics"
-										 previewOn={previewOn}
-										 handlePreviewClose={handlePreviewClose}
-										 tables={tables}
+						return (<ResillienceMetrics executionName={selectedExecutionName} title="Resilience Metrics"
+							previewOn={previewOn}
+							handlePreviewClose={handlePreviewClose}
+							tables={tables}
 						/>);
 					}
 					else if (resultType === "interD") {
