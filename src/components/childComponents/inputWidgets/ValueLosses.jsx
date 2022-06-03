@@ -7,7 +7,7 @@ import {fetchDatasets} from "../../../actions/datasets";
 
 export default function ValueLosses(props) {
 
-	const {setDatawolfFormState, datawolfFormState, datawolfConfigItem} = props;
+	const {setDatawolfFormState, datawolfFormState, datawolfParamConfigItem} = props;
 
 	const dispatch = useDispatch();
 	const listDatasets = (config, limit, offset, type) => dispatch(fetchDatasets(config, limit, offset, type));
@@ -25,9 +25,9 @@ export default function ValueLosses(props) {
 						 onChange={(e) => {
 							 let currentVal = e.target.value;
 							 setDatawolfFormState(prevState =>
-								 ({...prevState, [datawolfConfigItem.parameters.variableName]: {[datawolfConfigItem.paramId]: currentVal}}));
+								 ({...prevState, [datawolfParamConfigItem.parameters.variableName]: {[datawolfParamConfigItem.paramId]: currentVal}}));
 						 }}
-						 value={datawolfFormState[datawolfConfigItem.parameters.variableName][datawolfConfigItem.paramId] ?? ""}>
+						 value={datawolfFormState[datawolfParamConfigItem.parameters.variableName][datawolfParamConfigItem.paramId] ?? ""}>
 			{
 				valueLosses.map((option) => {
 					return (

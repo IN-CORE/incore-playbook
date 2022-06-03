@@ -171,7 +171,7 @@ export default function ViewResult(props) {
 											{
 												setDatawolfFormState: setDatawolfFormState,
 												datawolfFormState: datawolfFormState,
-												datawolfConfigItem: item
+												datawolfParamConfigItem: item
 											}
 										);
 									})()}

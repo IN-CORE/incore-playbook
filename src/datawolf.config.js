@@ -298,7 +298,7 @@ const datawolfWorkflowConfig =
 						"datasets": {
 							"step": "Joplin VSAM Nov 2021",
 							"title": "Building damage summary table",
-							"variableName":"bldgDmgSummaryTableId",
+							"variableName":"bldgDmgSummaryTableContent",
 							"widget": null,
 						}
 					},
@@ -307,7 +307,7 @@ const datawolfWorkflowConfig =
 						"datasets": {
 							"step": "Joplin VSAM Nov 2021",
 							"title": "Building maximum damage state",
-							"variableName":"bldgMaxDamageStateId",
+							"variableName":"bldgMaxDamageStateContent",
 							"widget": null,
 						}
 					},
@@ -316,7 +316,7 @@ const datawolfWorkflowConfig =
 						"datasets": {
 							"step": "Joplin VSAM Nov 2021",
 							"title": "EPF pole maximum damage state",
-							"variableName":"epfPoleMaxDmgStateId",
+							"variableName":"epfPoleMaxDmgStateContent",
 							"widget": null,
 						}
 					},
@@ -325,7 +325,7 @@ const datawolfWorkflowConfig =
 						"datasets": {
 							"step": "Joplin VSAM Nov 2021",
 							"title": "EPF substation maximum damage state",
-							"variableName":"epfSubstationMaxDmgStateId",
+							"variableName":"epfSubstationMaxDmgStateContent",
 							"widget": null,
 						}
 					},
@@ -334,7 +334,7 @@ const datawolfWorkflowConfig =
 						"datasets": {
 							"step": "Joplin VSAM Nov 2021",
 							"title": "Monte Carlo building failure summary table",
-							"variableName":"mcsBldgSummaryTableId",
+							"variableName":"mcsBldgSummaryTableContent",
 							"widget": null,
 						}
 					},
@@ -343,7 +343,7 @@ const datawolfWorkflowConfig =
 						"datasets": {
 							"step": "Joplin VSAM Nov 2021",
 							"title": "Monte Carlo building failure probability",
-							"variableName":"mcsBldgFailureProbId",
+							"variableName":"mcsBldgFailureProbContent",
 							"widget": null,
 						}
 					},
@@ -352,7 +352,7 @@ const datawolfWorkflowConfig =
 						"datasets": {
 							"step": "Joplin VSAM Nov 2021",
 							"title": "Building funcionality probability",
-							"variableName":"bldgFuncProbId",
+							"variableName":"bldgFuncProbContent",
 							"widget": null,
 						}
 					},
@@ -361,7 +361,7 @@ const datawolfWorkflowConfig =
 						"datasets": {
 							"step": "Joplin VSAM Nov 2021",
 							"title": "Building funcionality summary table",
-							"variableName":"bldgFuncSummaryTableId",
+							"variableName":"bldgFuncSummaryTableContent",
 							"widget": null,
 						}
 					},
@@ -380,7 +380,7 @@ const datawolfWorkflowConfig =
 						"datasets": {
 							"step": "Joplin VSAM Nov 2021",
 							"title": "CGE Domestic Supply",
-							"variableName":"cgeDomesticSupplyId",
+							"variableName":"cgeDomesticSupplyContent",
 							"widget": null,
 						}
 					},
@@ -389,7 +389,7 @@ const datawolfWorkflowConfig =
 						"datasets": {
 							"step": "Joplin VSAM Nov 2021",
 							"title": "CGE household income",
-							"variableName":"cgeHouseholdIncomeId",
+							"variableName":"cgeHouseholdIncomeContent",
 							"widget": null,
 						}
 					},
@@ -398,7 +398,7 @@ const datawolfWorkflowConfig =
 						"datasets": {
 							"step": "Joplin VSAM Nov 2021",
 							"title": "CGE employment",
-							"variableName":"cgeEmploymentId",
+							"variableName":"cgeEmploymentContent",
 							"widget": null,
 						}
 					},
@@ -407,7 +407,7 @@ const datawolfWorkflowConfig =
 						"datasets": {
 							"step": "Joplin VSAM Nov 2021",
 							"title": "Population dislocation heatmap",
-							"variableName":"popdislHeatmapId",
+							"variableName":"popdislHeatmapContent",
 							"widget": null,
 						}
 					},
@@ -416,7 +416,7 @@ const datawolfWorkflowConfig =
 						"datasets": {
 							"step": "Joplin VSAM Nov 2021",
 							"title": "Total Population dislocation",
-							"variableName":"totalDislocationId",
+							"variableName":"totalDislocationContent",
 							"widget": null,
 						}
 					},
@@ -425,7 +425,7 @@ const datawolfWorkflowConfig =
 						"datasets": {
 							"step": "Joplin VSAM Nov 2021",
 							"title": "Population dislocation by race",
-							"variableName":"dislocationByRaceId",
+							"variableName":"dislocationByRaceContent",
 							"widget": null,
 						}
 					},
@@ -434,7 +434,7 @@ const datawolfWorkflowConfig =
 						"datasets": {
 							"step": "Joplin VSAM Nov 2021",
 							"title": "Population dislocation by tenure",
-							"variableName":"dislocationByTenureId",
+							"variableName":"dislocationByTenureContent",
 							"widget": null,
 						}
 					},
@@ -443,7 +443,7 @@ const datawolfWorkflowConfig =
 						"datasets": {
 							"step": "Joplin VSAM Nov 2021",
 							"title": "Population dislocation by income",
-							"variableName":"dislocationByIncomeId",
+							"variableName":"dislocationByIncomeContent",
 							"widget": null,
 						}
 					},
@@ -452,7 +452,7 @@ const datawolfWorkflowConfig =
 						"datasets": {
 							"step": "Joplin VSAM Nov 2021",
 							"title": "Population dislocation by housing type",
-							"variableName":"dislocationByHousingTypeId",
+							"variableName":"dislocationByHousingTypeContent",
 							"widget": null,
 						}
 					},
@@ -461,7 +461,7 @@ const datawolfWorkflowConfig =
 						"datasets": {
 							"step": "Joplin VSAM Nov 2021",
 							"title": "Population dislocation by disability",
-							"variableName":"dislocationByDisabilityId",
+							"variableName":"dislocationByDisabilityContent",
 							"widget": null,
 						}
 					},

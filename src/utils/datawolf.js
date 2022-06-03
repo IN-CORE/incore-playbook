@@ -1,6 +1,8 @@
 import {getHeader, getCurrUserEmail, getIncoreTokenFile} from "./common";
+import {globals as defaultGlobalConfig} from "../globals";
 import {datawolfConfig as defaultDatawolfConfig} from "../datawolf.config.js";
 import {datawolfWorkflowConfig as defaultDatawolfWorkflowConfig} from "../datawolf.config.js";
+import {getHazardMetadata} from "./hazard";
 
 export async function getOutputFileJson(datawolfConfig=defaultDatawolfConfig, datasetId, outputFileName = null) {
 	let authHeader = getHeader();
@@ -129,3 +131,28 @@ export async function postDataset(datawolfConfig, title="incoretoken", descripti
 		return null;
 	}
 }
+
+export const getOutputFileContentJSON = async (datawolfConfig = defaultDatawolfConfig, executionItem, dwDatasetId) => {
+	let incoreId = executionItem["datasets"][dwDatasetId];
+	let incoreTable = await getOutputFileJson(datawolfConfig, incoreId);
+	return JSON.parse(incoreTable);
+};
+
+export const getOutputFileContent = async (datawolfConfig = defaultDatawolfConfig, executionItem, dwDatasetId) => {
+	let incoreId = executionItem["datasets"][dwDatasetId];
+	return await getOutputFileJson(datawolfConfig, incoreId);
+};
+
+export const getOutputHazardMetadata = async (datawolfWorkflowConfig = defaultDatawolfWorkflowConfig, executionItem, globalConfig=defaultGlobalConfig ) => {
+	datawolfWorkflowConfig.inputs.parameters[0].parametersMap(item =>{
+		if (item.parameters.variableName === "hazardId"){
+			let hazardId = executionItem["parameters"][item.paramId];
+		}
+
+		if (item.parameters.variableName === "hazardType"){
+			let hazardType = executionItem["parameters"][item.paramId];
+		}
+	});
+
+	return await getHazardMetadata(globalConfig, hazardType, hazardId);
+};

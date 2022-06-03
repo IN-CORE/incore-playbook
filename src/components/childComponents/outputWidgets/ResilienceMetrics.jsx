@@ -6,8 +6,10 @@ import React, {useEffect, useState} from "react";
 import {CgeResultsTable} from "../table/CgeResultsTable";
 import {FunctionalityTable} from "../table/FunctionalityTable";
 import {makeStyles} from "@material-ui/core/styles";
-import {getOutputFileJson} from "../../../utils/datawolf";
+import {getOutputFileContentJSON, getOutputFileJson} from "../../../utils/datawolf";
 import {useSelector} from "react-redux";
+import {UPDATE_MAP_CONFIG} from "../../../actions/config";
+import {datawolfConfig as defaultDatawolfConfig} from "../../../datawolf.config";
 
 const useStyles = makeStyles({
 	tableEntry:{
@@ -41,36 +43,63 @@ const useStyles = makeStyles({
 export default function ResilienceMetrics(props){
 	const classes = useStyles();
 
-	let {executionItemId, getExecution, selectedExecutionName, setSelectedExecutionName, title, previewOn, handlePreviewClose } = props;
+	let {executionItemId, getExecution, selectedExecutionName, setSelectedExecutionName, title, previewOn, handlePreviewClose,
+		datawolfDatasetConfigItems
+	} = props;
 
 	const datawolfConfig = useSelector((state) => state.config.datawolfConfig);
-	const datawolfWorkflowConfig = useSelector((state) => state.config.datawolfWorkflowConfig);
 
 	const [currTabIndex, setCurrTabIndex] = useState(0);
 	const [tables, setTables] = useState({});
+
+	const [totalDislTableIdContent, setTotalDislTableIdContent] = useState();
+	const [dislocationByRaceContent, setDislocationByRaceContent] = useState();
+	const [dislocationByTenureContent, setDislocationByTenureContent] = useState();
+	const [dislocationByIncomeContent, setDislocationByIncomeContent] = useState();
+	const [dislocationByHousingTypeIdContent, setDislocationByHousingTypeIdContent] = useState();
+	const [cgeHouseholdIncomeContent, setCgeHouseholdIncomeContent] = useState();
+	const [cgeDomesticSupplyContent, setCgeDomesticSupplyContent] = useState();
+	const [cgeEmploymentContent, setCgeEmploymentContent] = useState();
+	const [bldgFuncSummaryTableContent, setBldgFuncSummaryTableContent] = useState();
 
 	useEffect(()=> {
 
 		let executionItem = getExecution(executionItemId);
 		setSelectedExecutionName(executionItem["title"]);
 
-		const getOutputFileContent = async (dwDatasetId) => {
-			let incoreId = executionItem["datasets"][dwDatasetId];
-			let incoreTable = await getOutputFileJson(datawolfConfig, incoreId);
-			return JSON.parse(incoreTable);
-		};
+		datawolfDatasetConfigItems.map((datawolfDatasetConfigItem) => {
+			const vName = datawolfDatasetConfigItem.datasets.variableName;
+			if (vName === "totalDislTableIdContent") {
+				setTotalDislTableIdContent(getOutputFileContentJSON(datawolfConfig, executionItem, datawolfDatasetConfigItem.datasetId));
+			}
+			else if (vName === "dislocationByRaceContent") {
+				setDislocationByRaceContent(getOutputFileContentJSON(datawolfDatasetConfigItem.datasetId));
+			}
+			else if (vName === "dislocationByTenureContent") {
+				setDislocationByTenureContent(getOutputFileContentJSON(datawolfDatasetConfigItem.datasetId));
+			}
+			else if (vName === "dislocationByIncomeContent") {
+				setDislocationByIncomeContent(getOutputFileContentJSON(datawolfDatasetConfigItem.datasetId));
+			}
+			else if (vName === "dislocationByHousingTypeIdContent") {
+				setDislocationByHousingTypeIdContent(getOutputFileContentJSON(datawolfDatasetConfigItem.datasetId));
+			}
+			else if (vName === "cgeHouseholdIncomeContent") {
+				setCgeHouseholdIncomeContent(getOutputFileContentJSON(datawolfDatasetConfigItem.datasetId));
+			}
+			else if (vName === "cgeDomesticSupplyContent"){
+				setCgeDomesticSupplyContent(getOutputFileContentJSON(datawolfDatasetConfigItem.datasetId));
+			}
+			else if (vName === "cgeEmploymentContent"){
+				setCgeEmploymentContent(getOutputFileContentJSON(datawolfDatasetConfigItem.datasetId));
+			}
+			else if (vName === "bldgFuncSummaryTableContent"){
+				setBldgFuncSummaryTableContent(getOutputFileContentJSON(datawolfDatasetConfigItem.datasetId));
+			}
+		});
+	}, []);
 
-		const totalDislTableIdContent = getOutputFileContent(datawolfConfig["datasets"]["totalDislocationId"]).catch(console.error);
-		const dislocationByRaceContent = getOutputFileContent(datawolfConfig["datasets"]["dislocationByRaceId"]).catch(console.error);
-		const dislocationByTenureContent = getOutputFileContent(datawolfConfig["datasets"]["dislocationByTenureId"]).catch(console.error);
-		const dislocationByIncomeContent = getOutputFileContent(datawolfConfig["datasets"]["dislocationByIncomeId"]).catch(console.error);
-		const dislocationByHousingTypeIdContent = getOutputFileContent(datawolfConfig["datasets"]["dislocationByHousingTypeId"]).catch(console.error);
-		const cgeHouseholdIncomeContent = getOutputFileContent(datawolfConfig["datasets"]["cgeHouseholdIncomeId"]).catch(console.error);
-		const cgeDomesticSupplyContent = getOutputFileContent(datawolfConfig["datasets"]["cgeDomesticSupplyId"]).catch(console.error);
-		const cgeEmploymentContent = getOutputFileContent(datawolfConfig["datasets"]["cgeEmploymentId"]).catch(console.error);
-		const bldgFuncSummaryTableContent = getOutputFileContent(datawolfConfig["datasets"]["bldgFuncSummaryTableId"]).catch(console.error);
-
-
+	useEffect(() => {
 		setTables(
 			{
 				// populationdislocation
@@ -89,8 +118,9 @@ export default function ResilienceMetrics(props){
 				"bldgFunc": bldgFuncSummaryTableContent,
 			}
 		);
-	}, []);
-
+	}, [totalDislTableIdContent, dislocationByIncomeContent, dislocationByRaceContent, dislocationByTenureContent,
+		dislocationByHousingTypeIdContent, cgeHouseholdIncomeContent, cgeDomesticSupplyContent, cgeEmploymentContent,
+		bldgFuncSummaryTableContent]);
 
 	return (
 		<Dialog open={previewOn} onClose={handlePreviewClose} maxWidth="lg" fullWidth scroll="paper">

@@ -7,7 +7,7 @@ import {fetchDatasets} from "../../../actions/datasets";
 
 export default function InterdNetworks(props) {
 
-	const {setDatawolfFormState, datawolfFormState, datawolfConfigItem} = props;
+	const {setDatawolfFormState, datawolfFormState, datawolfParamConfigItem} = props;
 
 	const dispatch = useDispatch();
 	const listDatasets = (config, limit, offset, type) => dispatch(fetchDatasets(config, limit, offset, type));
@@ -25,9 +25,9 @@ export default function InterdNetworks(props) {
 						 onChange={(e) => {
 							 let currentVal = e.target.value;
 							 setDatawolfFormState(prevState =>
-								 ({...prevState, [datawolfConfigItem.parameters.variableName]: {[datawolfConfigItem.paramId]: currentVal}}));
+								 ({...prevState, [datawolfParamConfigItem.parameters.variableName]: {[datawolfParamConfigItem.paramId]: currentVal}}));
 						 }}
-						 value={datawolfFormState[datawolfConfigItem.parameters.variableName][datawolfConfigItem.paramId] ?? ""}>
+						 value={datawolfFormState[datawolfParamConfigItem.parameters.variableName][datawolfParamConfigItem.paramId] ?? ""}>
 			{
 				interdNetworks.map((option) => {
 					return (

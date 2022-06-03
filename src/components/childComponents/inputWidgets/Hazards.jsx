@@ -6,7 +6,7 @@ import {fetchHazards} from "../../../actions/hazards";
 
 export default function Hazards(props) {
 
-	const {setDatawolfFormState, datawolfFormState, datawolfConfigItem} = props;
+	const {setDatawolfFormState, datawolfFormState, datawolfParamConfigItem} = props;
 	const alllowedHazardTypes = useSelector((state) => state.config.allowedHazardTypes);
 	const globalConfig = useSelector((state) => state.config.globalConfig);
 
@@ -52,9 +52,9 @@ export default function Hazards(props) {
 						 onChange={(e) => {
 							 let currentVal = e.target.value;
 							 setDatawolfFormState(prevState =>
-								 ({...prevState, [datawolfConfigItem.parameters.variableName]: {[datawolfConfigItem.paramId]: currentVal}}));
+								 ({...prevState, [datawolfParamConfigItem.parameters.variableName]: {[datawolfParamConfigItem.paramId]: currentVal}}));
 						 }}
-						 value={datawolfFormState[datawolfConfigItem.parameters.variableName][datawolfConfigItem.paramId] ?? ""}>
+						 value={datawolfFormState[datawolfParamConfigItem.parameters.variableName][datawolfParamConfigItem.paramId] ?? ""}>
 			{
 				hazards.map((option) => {
 					return (

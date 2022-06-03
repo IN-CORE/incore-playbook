@@ -2,17 +2,86 @@ import {Box, Container, Dialog, DialogContent, Divider, Grid, IconButton, Typogr
 import CloseIcon from "@material-ui/icons/Close";
 import Map from "../map/Map";
 import {fromLonLat, getTransform} from "ol/proj";
-import React from "react";
+import React, {useEffect, useState} from "react";
 import {ResultSummaryTable} from "../table/ResultSummaryTable";
 import {StackedResult} from "../graph/StackedResult";
 import {ResultTable} from "../table/ResultTable";
 import {useSelector} from "react-redux";
 import {applyTransform} from "ol/extent";
+import {getOutputFileContent, getOutputFileContentJSON, getOutputFileJson} from "../../../utils/datawolf";
+import {getHazardMetadata} from "../../../utils/hazard";
+import {handleLayerUpdate} from "../../../utils/map";
 
 export default function BldgDamage(props) {
 
-	let {executionName, title, previewOn, handlePreviewClose, runtime, barCharts, layers, tables, setMap} = props;
+	let {executionItemId, getExecution, selectedExecutionName, setSelectedExecutionName, title, previewOn,
+		handlePreviewClose, datawolfDatasetConfigItems, setMap, hazardId,
+	} = props;
+	// let {selectedExecutionName, title, previewOn, handlePreviewClose, runtime, barCharts, layers, tables, setMap} = props;
+
 	const mapConfig = useSelector((state) => state.config.mapConfig);
+	const datawolfConfig = useSelector((state) => state.config.datawolfConfig);
+	const globalConfig = useSelector((state) => state.config.globalConfig);
+
+	const [tables, setTables] = useState({});
+	const [barCharts, setBarCharts] = useState({});
+	const [runtime, setRuntime] = useState({});
+	const [layers, setLayers] = useState([]);
+
+	const [bldgDmgSummaryTableContent, setBldgDmgSummaryTableContent] = useState();
+	const [bldgMaxDamageStateINCOREId, setBldgMaxDamageStateINCOREId] = useState();
+	const [hazardMetadata, setHazardMetadata] = useState();
+
+	useEffect(() => {
+		let executionItem = getExecution(executionItemId);
+		setSelectedExecutionName(executionItem["title"]);
+
+		datawolfDatasetConfigItems.map((datawolfDatasetConfigItem) => {
+			const vName = datawolfDatasetConfigItem.datasets.variableName;
+			if (vName === "bldgMaxDamageStateINCOREId") {
+				setBldgMaxDamageStateINCOREId(getOutputFileContent(datawolfConfig, executionItem, datawolfDatasetConfigItem.datasetId));
+			}
+			else if (vName === "bldgDmgSummaryTableContent") {
+				setBldgDmgSummaryTableContent(getOutputFileContentJSON(datawolfConfig, executionItem, datawolfDatasetConfigItem.datasetId));
+			}
+			else if (vName === ""){
+
+			}
+		});
+
+		// for summary table on the top
+		setRuntime(executionItem["date"].slice(0, 10));
+	}, []);
+
+	useEffect(() => {
+		// for table
+		setTables(bldgDmgSummaryTableContent);
+		// for chart
+		setBarCharts(bldgDmgSummaryTableContent["by_category"]);
+
+	}, [bldgDmgSummaryTableContent]);
+
+	useEffect(() => {
+		// let hazardId = executionItem["parameters"][datawolfConfig["parameters"]["hazardId"]];
+		// let hazardMetadata = await getHazardMetadata(globalConfig, hazardId);
+		// let hazardDatasetId = hazardMetadata["datasetId"];
+		// for map
+		const layerDef = [
+			{
+				"layerId": bldgMaxDamageStateINCOREId,
+				"layerStyles": "incore:bldg-dmg-summary",
+				"title": "Building Damage",
+				"opacity": 1
+			},
+			// {
+			// 	"layerId": hazardDatasetId,
+			// 	"layerStyles": "incore:tornado",
+			// 	"title": "Tornado",
+			// 	"opacity": 0.3
+			// }
+		];
+		setLayers(handleLayerUpdate(globalConfig, layerDef));
+	}, [bldgMaxDamageStateINCOREId]);
 
 	return (
 		<Dialog open={previewOn} onClose={handlePreviewClose} maxWidth="lg" fullWidth scroll="paper">
@@ -24,7 +93,7 @@ export default function BldgDamage(props) {
 				{/*title*/}
 				{/*TODO wrap into a component*/}
 				<Box className="previewTitleSection">
-					<Typography className="previewTitle">{executionName}</Typography>
+					<Typography className="previewTitle">{selectedExecutionName}</Typography>
 					<Typography className="previewTitle">Select Data: {title}</Typography>
 				</Box>
 
