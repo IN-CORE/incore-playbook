@@ -416,7 +416,7 @@ const datawolfWorkflowConfig =
 						"datasets": {
 							"step": "Joplin VSAM Nov 2021",
 							"title": "Total Population dislocation",
-							"variableName":"totalDislocationContent",
+							"variableName":"totalDislTableContent",
 							"widget": "PopDislocation",
 						}
 					},
