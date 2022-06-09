@@ -86,7 +86,9 @@ export default function ViewResult(props) {
 	const [executionEntries, setExecutionEntries] = useState([]);
 	const [selectedExecutionId, setSelectedExecutionId] = useState("");
 	const [selectedExecutionName, setSelectedExecutionName] = useState("");
-	const [resultType, setResultType] = useState(""); // bldgFunc, bldgDmg, epfDmg, bldgMCS, interD
+	const [resultType, setResultType] = useState(""); // outputWidgets name
+	const [datawolfDatasetConfigItems, setDatawolfDatasetConfigItems] = useState([]);
+
 	const [runtime, setRuntime] = useState("");
 	const [tables, setTables] = useState({});
 	const [barCharts, setBarCharts] = useState([]);
@@ -519,6 +521,29 @@ export default function ViewResult(props) {
 	const preview = (executionId, resultType) => {
 		setResultType(resultType);
 		setSelectedExecutionId(executionId);
+
+		// group output items belongs to that resultType/widget type
+		setDatawolfDatasetConfigItems(datawolfWorkflowConfig.outputs.datasets[0].datasetsMap.reduce((list, item) => {
+			if (resultType === "ResilienceMetrics"){
+				if (item.datasets.widget === "CGE" || item.datasets.widget === "PopDislocation"
+					|| item.datasets.widget === "BldgFunctionality"){
+					return [...list, item];
+				}
+				else{
+					return list;
+				}
+			}
+			else{
+				if (item.datasets.widget === resultType){
+					return [...list, item];
+				}
+				else{
+					return list;
+				}
+			}
+		}, []));
+
+		// dialog on
 		setPreviewOn(true);
 	};
 
@@ -555,8 +580,9 @@ export default function ViewResult(props) {
 
 			{/*for individual analysis result preview*/}
 			{
+				// TODO this condition can be modified
 				(()=>{
-					if (resultType === "metrics"){
+					if (resultType === "ResilienceMetrics"){
 						return (<ResilienceMetrics selectedExecutionId={selectedExecutionId}
 												   getExecution={getExecution}
 												   previewOn={previewOn}

@@ -244,7 +244,7 @@ export function ViewResultEntryTable(props) {
 															<TableCell key={`${execution["id"]}-resilience-metrics-title`}>Resilience Metrics</TableCell>
 															<TableCell colSpan={3} key={`${execution["id"]}-resilience-metrics-1`}/>
 															<TableCell colSpan={2} key={`${execution["id"]}-resilience-metrics-2`}>
-																<Link color="primary" onClick={() => {preview(execution["id"], "metrics");}}
+																<Link color="primary" onClick={() => {preview(execution["id"], "ResilienceMetrics");}}
 																	  className={execution["finalStatus"] === undefined ||
 																	  execution["finalStatus"] === "FINISHED" ?
 																		  classes.clickableLink : classes.clickableLinkDisabled}>
@@ -261,43 +261,19 @@ export function ViewResultEntryTable(props) {
 												{/*interdependency network*/}
 												{
 													widgetList.includes("EpfDamage") ?
-														<TableRow className={classes.subBodyRow}
-																  key={`${execution["id"]}-interdependency`}>
-															<TableCell key={`${execution["id"]}-interdependency-title`}>Interdependency</TableCell>
-															<TableCell colSpan={3} key={`${execution["id"]}-interdependency-1`}/>
-															<TableCell colSpan={2} key={`${execution["id"]}-interdependency-2`}>
-																<Link color="primary" onClick={() => {previewInterd(execution["id"]);}}
-																	  className={execution["finalStatus"] === undefined ||
-																	  execution["finalStatus"] === "FINISHED" ?
-																		  classes.clickableLink : classes.clickableLinkDisabled}>
-																	View
-																</Link>
-																<Link color="primary" className={classes.clickableLinkDisabled}>
-																	Download
-																</Link>
-															</TableCell>
-														</TableRow>
-														:<></>
-												}
-												{
-													widgetList.includes("BldgDamage") ?
 														<>
-															{/*building damage*/}
 															<TableRow className={classes.subBodyRow}
-																	  key={`${execution["id"]}-bldg-dmg`}>
-																<TableCell key={`${execution["id"]}-bldg-dmg-title`}>Building Damage</TableCell>
-																<TableCell colSpan={3} key={`${execution["id"]}-bldg-dmg-1`}/>
-																<TableCell colSpan={2} key={`${execution["id"]}-bldg-dmg-2`}>
-																	<Link color="primary" onClick={() => {previewBldgDmg(execution["id"]);}}
+																	  key={`${execution["id"]}-interdependency`}>
+																<TableCell key={`${execution["id"]}-interdependency-title`}>Interdependency</TableCell>
+																<TableCell colSpan={3} key={`${execution["id"]}-interdependency-1`}/>
+																<TableCell colSpan={2} key={`${execution["id"]}-interdependency-2`}>
+																	<Link color="primary" onClick={() => {preview(execution["id"], "Interdependency");}}
 																		  className={execution["finalStatus"] === undefined ||
 																		  execution["finalStatus"] === "FINISHED" ?
 																			  classes.clickableLink : classes.clickableLinkDisabled}>
 																		View
 																	</Link>
-																	<Link color="primary" onClick={() => {downloadBldgDmg(execution["id"]);}}
-																		  className={execution["finalStatus"] === undefined ||
-																		  execution["finalStatus"] === "FINISHED" ?
-																			  classes.clickableLink : classes.clickableLinkDisabled}>
+																	<Link color="primary" className={classes.clickableLinkDisabled}>
 																		Download
 																	</Link>
 																</TableCell>
@@ -309,7 +285,7 @@ export function ViewResultEntryTable(props) {
 																<TableCell colSpan={3} key={`${execution["id"]}-epf-pole-1`}/>
 																<TableCell colSpan={2} key={`${execution["id"]}-epf-pole-2`}>
 																	<Link color="primary" onClick={() =>
-																	{previewEpfDmg(execution["id"], "pole");}}
+																	{preview(execution["id"], "EpfDamage");}}
 																		  className={execution["finalStatus"] === undefined ||
 																		  execution["finalStatus"] === "FINISHED" ?
 																			  classes.clickableLink : classes.clickableLinkDisabled}>
@@ -327,7 +303,7 @@ export function ViewResultEntryTable(props) {
 																<TableCell colSpan={3} key={`${execution["id"]}-epf-substation-1`}/>
 																<TableCell colSpan={2} key={`${execution["id"]}-epf-substation-2`}>
 																	<Link color="primary" onClick={() =>
-																	{previewEpfDmg(execution["id"], "substation");}}
+																	{preview(execution["id"], "EpfDamage");}}
 																		  className={execution["finalStatus"] === undefined ||
 																		  execution["finalStatus"] === "FINISHED" ?
 																			  classes.clickableLink : classes.clickableLinkDisabled}>
@@ -340,6 +316,30 @@ export function ViewResultEntryTable(props) {
 																</TableCell>
 															</TableRow>
 														</>
+														:<></>
+												}
+												{/*building damage*/}
+												{
+													widgetList.includes("BldgDamage") ?
+														<TableRow className={classes.subBodyRow}
+																	  key={`${execution["id"]}-bldg-dmg`}>
+															<TableCell key={`${execution["id"]}-bldg-dmg-title`}>Building Damage</TableCell>
+															<TableCell colSpan={3} key={`${execution["id"]}-bldg-dmg-1`}/>
+															<TableCell colSpan={2} key={`${execution["id"]}-bldg-dmg-2`}>
+																<Link color="primary" onClick={() => {preview(execution["id"], "BldgDamage");}}
+																		  className={execution["finalStatus"] === undefined ||
+																		  execution["finalStatus"] === "FINISHED" ?
+																			  classes.clickableLink : classes.clickableLinkDisabled}>
+																		View
+																</Link>
+																<Link color="primary" onClick={() => {downloadBldgDmg(execution["id"]);}}
+																		  className={execution["finalStatus"] === undefined ||
+																		  execution["finalStatus"] === "FINISHED" ?
+																			  classes.clickableLink : classes.clickableLinkDisabled}>
+																		Download
+																</Link>
+															</TableCell>
+														</TableRow>
 														:
 														<></>
 												}
@@ -352,7 +352,7 @@ export function ViewResultEntryTable(props) {
 																<TableCell key={`${execution["id"]}-mcs-title`}>Building Functionality (w/o Electrical Power Dependency)</TableCell>
 																<TableCell colSpan={3} key={`${execution["id"]}-mcs-1`}/>
 																<TableCell colSpan={2}key={`${execution["id"]}-mcs-2`}>
-																	<Link color="primary" onClick={() => {previewBldgMCS(execution["id"]);}}
+																	<Link color="primary" onClick={() => {preview(execution["id"], "BldgFunctionality");}}
 																		  className={execution["finalStatus"] === undefined ||
 																		  execution["finalStatus"] === "FINISHED" ?
 																			  classes.clickableLink : classes.clickableLinkDisabled}>
@@ -369,7 +369,7 @@ export function ViewResultEntryTable(props) {
 																<TableCell key={`${execution["id"]}-bldg-functionality-title`}>Building Functionality (with Electrical Power Dependency)</TableCell>
 																<TableCell colSpan={3} key={`${execution["id"]}-bldg-functionality-1`}/>
 																<TableCell colSpan={2} key={`${execution["id"]}-bldg-functionality-2`}>
-																	<Link color="primary" onClick={() => {previewBldgFunc(execution["id"]);}}
+																	<Link color="primary" onClick={() => {preview(execution["id"], "BldgFunctionality");}}
 																		  className={execution["finalStatus"] === undefined ||
 																		  execution["finalStatus"] === "FINISHED" ?
 																			  classes.clickableLink : classes.clickableLinkDisabled}>
@@ -391,7 +391,7 @@ export function ViewResultEntryTable(props) {
 															<TableCell key={`${execution["id"]}-cge-title`}>Economic Prediction Model (Computable General Equilibrium)</TableCell>
 															<TableCell colSpan={3} key={`${execution["id"]}-cge-1`}/>
 															<TableCell colSpan={2} key={`${execution["id"]}-cge-2`}>
-																<Link color="primary" onClick={() => {previewCGE(execution["id"]);}}
+																<Link color="primary" onClick={() => {preview(execution["id"], "CGE");}}
 																	  className={execution["finalStatus"] === undefined ||
 																	  execution["finalStatus"] === "FINISHED" ?
 																		  classes.clickableLink : classes.clickableLinkDisabled}>
@@ -415,7 +415,7 @@ export function ViewResultEntryTable(props) {
 															<TableCell key={`${execution["id"]}-popdislocation-title`}>Population Dislocation</TableCell>
 															<TableCell colSpan={3} key={`${execution["id"]}-popdislocation-1`}/>
 															<TableCell colSpan={2} key={`${execution["id"]}-popdislocation-2`}>
-																<Link color="primary" onClick={() => {previewPopDisl(execution["id"]);}}
+																<Link color="primary" onClick={() => {preview(execution["id"], "PopDislocation");}}
 																	  className={execution["finalStatus"] === undefined ||
 																	  execution["finalStatus"] === "FINISHED" ?
 																		  classes.clickableLink : classes.clickableLinkDisabled}>

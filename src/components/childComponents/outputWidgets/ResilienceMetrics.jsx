@@ -50,78 +50,87 @@ export default function ResilienceMetrics(props){
 	const datawolfConfig = useSelector((state) => state.config.datawolfConfig);
 
 	const [currTabIndex, setCurrTabIndex] = useState(0);
-	const [tables, setTables] = useState({});
+	// const [tables, setTables] = useState({});
 	const [selectedExecutionName, setSelectedExecutionName] = useState("");
 
-	const [totalDislTableIdContent, setTotalDislTableIdContent] = useState();
-	const [dislocationByRaceContent, setDislocationByRaceContent] = useState();
-	const [dislocationByTenureContent, setDislocationByTenureContent] = useState();
-	const [dislocationByIncomeContent, setDislocationByIncomeContent] = useState();
-	const [dislocationByHousingTypeIdContent, setDislocationByHousingTypeIdContent] = useState();
-	const [cgeHouseholdIncomeContent, setCgeHouseholdIncomeContent] = useState();
-	const [cgeDomesticSupplyContent, setCgeDomesticSupplyContent] = useState();
-	const [cgeEmploymentContent, setCgeEmploymentContent] = useState();
-	const [bldgFuncSummaryTableContent, setBldgFuncSummaryTableContent] = useState();
+	const [totalDislTableIdContent, setTotalDislTableIdContent] = useState(null);
+	const [dislocationByRaceContent, setDislocationByRaceContent] = useState(null);
+	const [dislocationByTenureContent, setDislocationByTenureContent] = useState(null);
+	const [dislocationByIncomeContent, setDislocationByIncomeContent] = useState(null);
+	const [dislocationByHousingTypeIdContent, setDislocationByHousingTypeIdContent] = useState(null);
+	const [cgeHouseholdIncomeContent, setCgeHouseholdIncomeContent] = useState(null);
+	const [cgeDomesticSupplyContent, setCgeDomesticSupplyContent] = useState(null);
+	const [cgeEmploymentContent, setCgeEmploymentContent] = useState(null);
+	const [bldgFuncSummaryTableContent, setBldgFuncSummaryTableContent] = useState(null);
 
 	useEffect(()=> {
 
 		let executionItem = getExecution(selectedExecutionId);
 		setSelectedExecutionName(executionItem["title"]);
 
-		datawolfDatasetConfigItems.map((datawolfDatasetConfigItem) => {
+		datawolfDatasetConfigItems.map(async (datawolfDatasetConfigItem) => {
 			const vName = datawolfDatasetConfigItem.datasets.variableName;
 			if (vName === "totalDislTableIdContent") {
-				setTotalDislTableIdContent(getOutputFileContentJSON(datawolfConfig, executionItem, datawolfDatasetConfigItem.datasetId));
+				const totalDislTableIdContent = await getOutputFileContentJSON(datawolfConfig, executionItem, datawolfDatasetConfigItem.datasetId);
+				setTotalDislTableIdContent(totalDislTableIdContent);
 			}
 			else if (vName === "dislocationByRaceContent") {
-				setDislocationByRaceContent(getOutputFileContentJSON(datawolfDatasetConfigItem.datasetId));
+				const dislocationByRaceContent = await getOutputFileContentJSON(datawolfConfig, executionItem, datawolfDatasetConfigItem.datasetId);
+				setDislocationByRaceContent(dislocationByRaceContent);
 			}
 			else if (vName === "dislocationByTenureContent") {
-				setDislocationByTenureContent(getOutputFileContentJSON(datawolfDatasetConfigItem.datasetId));
+				const dislocationByTenureContent = await getOutputFileContentJSON(datawolfConfig, executionItem, datawolfDatasetConfigItem.datasetId);
+				setDislocationByTenureContent(dislocationByTenureContent);
 			}
 			else if (vName === "dislocationByIncomeContent") {
-				setDislocationByIncomeContent(getOutputFileContentJSON(datawolfDatasetConfigItem.datasetId));
+				const dislocationByIncomeContent = await getOutputFileContentJSON(datawolfConfig, executionItem, datawolfDatasetConfigItem.datasetId);
+				setDislocationByIncomeContent(dislocationByIncomeContent);
 			}
 			else if (vName === "dislocationByHousingTypeIdContent") {
-				setDislocationByHousingTypeIdContent(getOutputFileContentJSON(datawolfDatasetConfigItem.datasetId));
+				const dislocationByHousingTypeIdContent = await getOutputFileContentJSON(datawolfConfig, executionItem, datawolfDatasetConfigItem.datasetId);
+				setDislocationByHousingTypeIdContent(dislocationByHousingTypeIdContent);
 			}
 			else if (vName === "cgeHouseholdIncomeContent") {
-				setCgeHouseholdIncomeContent(getOutputFileContentJSON(datawolfDatasetConfigItem.datasetId));
+				const cgeHouseholdIncomeContent = await getOutputFileContentJSON(datawolfConfig, executionItem, datawolfDatasetConfigItem.datasetId);
+				setCgeHouseholdIncomeContent(cgeHouseholdIncomeContent);
 			}
 			else if (vName === "cgeDomesticSupplyContent"){
-				setCgeDomesticSupplyContent(getOutputFileContentJSON(datawolfDatasetConfigItem.datasetId));
+				const cgeDomesticSupplyContent = await getOutputFileContentJSON(datawolfConfig, executionItem, datawolfDatasetConfigItem.datasetId);
+				setCgeDomesticSupplyContent(cgeDomesticSupplyContent);
 			}
 			else if (vName === "cgeEmploymentContent"){
-				setCgeEmploymentContent(getOutputFileContentJSON(datawolfDatasetConfigItem.datasetId));
+				const cgeEmploymentContent = await getOutputFileContentJSON(datawolfConfig, executionItem, datawolfDatasetConfigItem.datasetId);
+				setCgeEmploymentContent(cgeEmploymentContent);
 			}
 			else if (vName === "bldgFuncSummaryTableContent"){
-				setBldgFuncSummaryTableContent(getOutputFileContentJSON(datawolfDatasetConfigItem.datasetId));
+				const bldgFuncSummaryTableContent = await getOutputFileContentJSON(datawolfConfig, executionItem, datawolfDatasetConfigItem.datasetId);
+				setBldgFuncSummaryTableContent(bldgFuncSummaryTableContent);
 			}
 		});
 	}, []);
 
-	useEffect(() => {
-		setTables(
-			{
-				// populationdislocation
-				"totalResultsTable": totalDislTableIdContent,
-				"huaResultsTable": {
-					"income": dislocationByIncomeContent,
-					"race": dislocationByRaceContent,
-					"tenure": dislocationByTenureContent,
-					"housingType": dislocationByHousingTypeIdContent
-				},
-				// cge
-				"totalHouseholdIncome":cgeHouseholdIncomeContent,
-				"domesticSupply":cgeDomesticSupplyContent,
-				"employment":cgeEmploymentContent,
-				// bldgfunc
-				"bldgFunc": bldgFuncSummaryTableContent,
-			}
-		);
-	}, [totalDislTableIdContent, dislocationByIncomeContent, dislocationByRaceContent, dislocationByTenureContent,
-		dislocationByHousingTypeIdContent, cgeHouseholdIncomeContent, cgeDomesticSupplyContent, cgeEmploymentContent,
-		bldgFuncSummaryTableContent]);
+	// useEffect(() => {
+	// 	setTables(
+	// 		{
+	// 			// populationdislocation
+	// 			"totalResultsTable": totalDislTableIdContent,
+	// 			"huaResultsTable": {
+	// 				"income": dislocationByIncomeContent,
+	// 				"race": dislocationByRaceContent,
+	// 				"tenure": dislocationByTenureContent,
+	// 				"housingType": dislocationByHousingTypeIdContent
+	// 			},
+	// 			// cge
+	// 			"totalHouseholdIncome":cgeHouseholdIncomeContent,
+	// 			"domesticSupply":cgeDomesticSupplyContent,
+	// 			"employment":cgeEmploymentContent,
+	// 			// bldgfunc
+	// 			"bldgFunc": bldgFuncSummaryTableContent,
+	// 		}
+	// 	);
+	// }, [totalDislTableIdContent, dislocationByIncomeContent, dislocationByRaceContent, dislocationByTenureContent,
+	// 	dislocationByHousingTypeIdContent, cgeHouseholdIncomeContent, cgeDomesticSupplyContent, cgeEmploymentContent,
+	// 	bldgFuncSummaryTableContent]);
 
 	return (
 		<Dialog open={previewOn} onClose={handlePreviewClose} maxWidth="lg" fullWidth scroll="paper">
@@ -139,61 +148,103 @@ export default function ResilienceMetrics(props){
 
 				{/*tabs*/}
 				<Tabs aria-label="metrics tabs" value={currTabIndex}
-					  TabIndicatorProps={{style: {background: "#00619D", color: "#00619D"}}}
-					  onChange={(e, value) => {setCurrTabIndex(value);}}>
+							  TabIndicatorProps={{style: {background: "#00619D", color: "#00619D"}}}
+							  onChange={(e, value) => {setCurrTabIndex(value);}}>
 					<Tab className={classes.tab} label="Population Stability"
-						 style={currTabIndex === 0? {color: "#00619D"}: {}}/>
+								 style={currTabIndex === 0 ? {color: "#00619D"} : {}}/>
 					<Tab className={classes.tab} label="Economic Stability"
-						 style={currTabIndex === 1? {color: "#00619D"}: {}}/>
+								 style={currTabIndex === 1 ? {color: "#00619D"} : {}}/>
 					<Tab className={classes.tab} label="Physical Services Stability"
-						 style={currTabIndex === 2? {color: "#00619D"}: {}}/>
+								 style={currTabIndex === 2 ? {color: "#00619D"} : {}}/>
 				</Tabs>
 				{/*population stability*/}
 				<div role="tabpanel" hidden={currTabIndex !== 0} id="tabpanel-population-stability"
-					 aria-labelledby="population stability"
+							 aria-labelledby="population stability"
 				>
-					<Box className={classes.tableEntry}>
-						<HuaResultsTable resultsJson={tables["huaResultsTable"]} isMetrics={true}/>
-					</Box>
-					<Box className={classes.tableEntry}>
-						<DislocationResultsTable resultsJson={tables["totalResultsTable"]["population_dislocation_in_total"]}
-												 headers={["POPULATION", "% of POPULATION"]}
-												 title={"Population Dislocation - in Total"}
-												 isMetrics={true}
-						/>
-					</Box>
-					<Box className={classes.tableEntry}>
-						<DislocationResultsTable resultsJson={tables["totalResultsTable"]["household_dislocation_in_total"]}
-												 headers={["HOUSEHOLD", "% of HOUSEHOLD"]}
-												 title={"Household Dislocation - in Total"}
-												 isMetrics={true}
-						/>
-					</Box>
+					{
+						dislocationByIncomeContent && dislocationByRaceContent && dislocationByTenureContent
+						&& dislocationByHousingTypeIdContent ?
+							<Box className={classes.tableEntry}>
+								<HuaResultsTable resultsJson={{
+									"income": dislocationByIncomeContent,
+									"race": dislocationByRaceContent,
+									"tenure": dislocationByTenureContent,
+									"housingType": dislocationByHousingTypeIdContent
+								}} isMetrics={true}/>
+							</Box>
+							:<></>
+					}
+					{
+						totalDislTableIdContent && totalDislTableIdContent["population_dislocation_in_total"] ?
+							<Box className={classes.tableEntry}>
+								<DislocationResultsTable
+									resultsJson={totalDislTableIdContent["population_dislocation_in_total"]}
+									headers={["POPULATION", "% of POPULATION"]}
+									title={"Population Dislocation - in Total"}
+									isMetrics={true}
+								/>
+							</Box>
+							:<></>
+					}
+					{
+						totalDislTableIdContent && totalDislTableIdContent["household_dislocation_in_total"] ?
+							<Box className={classes.tableEntry}>
+								<DislocationResultsTable
+									resultsJson={totalDislTableIdContent["household_dislocation_in_total"]}
+									headers={["HOUSEHOLD", "% of HOUSEHOLD"]}
+									title={"Household Dislocation - in Total"}
+									isMetrics={true}
+								/>
+							</Box>
+							:
+							<></>
+					}
+
 				</div>
 				<div role="tabpanel" hidden={currTabIndex !== 1} id="tabpanel-economic-stability"
-					 aria-labelledby="economic stability"
+							 aria-labelledby="economic stability"
 				>
-					<Box className={classes.tableEntry}>
-						<Typography className={classes.title}>Household Income</Typography>
-						<CgeResultsTable resultsJson={tables["totalHouseholdIncome"]} isMetrics={true}/>
-					</Box>
-					<Box className={classes.tableEntry}>
-						<Typography className={classes.title}>Employment</Typography>
-						<CgeResultsTable resultsJson={tables["employment"]} isMetrics={true}/>
-					</Box>
-					<Box className={classes.tableEntry}>
-						<Typography className={classes.title}>Community-level GDP</Typography>
-						<CgeResultsTable resultsJson={tables["domesticSupply"]} yAxisLegend="Person" isMetrics={true}/>
-					</Box>
+					{
+						cgeHouseholdIncomeContent ?
+							<Box className={classes.tableEntry}>
+								<Typography className={classes.title}>Household Income</Typography>
+								<CgeResultsTable resultsJson={cgeHouseholdIncomeContent} isMetrics={true}/>
+							</Box>
+							:
+							<></>
+					}
+					{
+						cgeEmploymentContent ?
+							<Box className={classes.tableEntry}>
+								<Typography className={classes.title}>Employment</Typography>
+								<CgeResultsTable resultsJson={cgeEmploymentContent} isMetrics={true}/>
+							</Box>
+							:<></>
+					}
+					{
+						cgeDomesticSupplyContent ?
+							<Box className={classes.tableEntry}>
+								<Typography className={classes.title}>Community-level GDP</Typography>
+								<CgeResultsTable resultsJson={cgeDomesticSupplyContent} yAxisLegend="Person"
+												 isMetrics={true}/>
+							</Box>
+							:
+							<></>
+					}
 				</div>
 
 				<div role="tabpanel" hidden={currTabIndex !== 2} id="tabpanel-physical-services-stability"
-					 aria-labelledby="physical services stability"
+							 aria-labelledby="physical services stability"
 				>
-					<Box className={classes.tableEntry}>
-						<Typography className={classes.title}>Count of Functional Buildings</Typography>
-						<FunctionalityTable funcResults={tables["bldgFunc"]}/>
-					</Box>
+					{
+						bldgFuncSummaryTableContent ?
+							<Box className={classes.tableEntry}>
+								<Typography className={classes.title}>Count of Functional Buildings</Typography>
+								<FunctionalityTable funcResults={bldgFuncSummaryTableContent}/>
+							</Box>
+							:
+							<></>
+					}
 				</div>
 			</DialogContent>
 		</Dialog>
