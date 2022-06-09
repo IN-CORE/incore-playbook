@@ -45,6 +45,10 @@ export default function BldgDamage(props) {
 				setBldgDmgSummaryTableContent(await getOutputFileContentJSON(datawolfConfig, executionItem, datawolfDatasetConfigItem.datasetId));
 			}
 		});
+
+		// let hazardId = executionItem["parameters"][datawolfConfig["parameters"]["hazardId"]];
+		// let hazardMetadata = await getHazardMetadata(globalConfig, hazardId);
+		// let hazardDatasetId = hazardMetadata["datasetId"];
 	}, []);
 
 

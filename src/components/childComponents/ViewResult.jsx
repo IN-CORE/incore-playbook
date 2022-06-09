@@ -593,7 +593,7 @@ export default function ViewResult(props) {
 							setMap={setMap}
 						/>);
 					}
-					else if (resultType === "bldgDmg") {
+					else if (resultType === "BldgDamage") {
 						return (<BldgDamage
 							selectedExecutionId={selectedExecutionId}
 							getExecution={getExecution}

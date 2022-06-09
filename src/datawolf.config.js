@@ -306,8 +306,8 @@ const datawolfWorkflowConfig =
 						"datasetId": "a65248b8-6cb5-41bf-dbc2-724eb35f4ddc",
 						"datasets": {
 							"step": "Joplin VSAM Nov 2021",
-							"title": "Building maximum damage state",
-							"variableName":"bldgMaxDamageStateContent",
+							"title": "Building maximum damage state ID",
+							"variableName":"bldgMaxDamageStateINCOREId",
 							"widget": "BldgDamage",
 						}
 					},
