@@ -1,4 +1,6 @@
 import React, {useEffect, useState} from "react";
+import {useSelector} from "react-redux";
+
 import {makeStyles} from "@material-ui/core/styles";
 import {Box, IconButton} from "@material-ui/core";
 import SyncIcon from "@material-ui/icons/Sync";
@@ -8,7 +10,7 @@ import {IncoreInputLabel} from "../styledComponents/IncoreInputLabel";
 
 import {getOutputFileJson} from "../../utils/datawolf";
 import {getHazardMetadata} from "../../utils/hazard";
-
+import {exportJson} from "../../utils/common";
 import GroupLayer from "ol/layer/Group";
 import TileLayer from "ol/layer/Tile";
 import XYZ from "ol/source/XYZ";
@@ -16,7 +18,6 @@ import OSM, {ATTRIBUTION as OSM_ATTRIBUTION} from "ol/source/OSM";
 import TileWMS from "ol/source/TileWMS";
 
 import {ViewResultEntryTable} from "./table/ViewResultEntryTable";
-
 import {downloadDataset} from "../../utils/dataset";
 import Interdependency from "./outputWidgets/Interdependency";
 import BldgDamage from "./outputWidgets/BldgDamage";
@@ -24,9 +25,8 @@ import EpfDamage from "./outputWidgets/EpfDamage";
 import BldgFunctionality from "./outputWidgets/BldgFunctionality";
 import CGE from "./outputWidgets/CGE";
 import PopDislocation from "./outputWidgets/PopDislocation";
-import ResillienceMetrics from "./outputWidgets/Metrics";
-import {exportJson} from "../../utils/common";
-import {useSelector} from "react-redux";
+import ResilienceMetrics from "./outputWidgets/ResilienceMetrics";
+
 
 const useStyles = makeStyles({
 	statTitle: {
@@ -84,6 +84,7 @@ export default function ViewResult(props) {
 	// states
 	const [numCompleted, setNumCompleted] = useState(0);
 	const [executionEntries, setExecutionEntries] = useState([]);
+	const [selectedExecutionId, setSelectedExecutionId] = useState("");
 	const [selectedExecutionName, setSelectedExecutionName] = useState("");
 	const [resultType, setResultType] = useState(""); // bldgFunc, bldgDmg, epfDmg, bldgMCS, interD
 	const [runtime, setRuntime] = useState("");
@@ -515,6 +516,12 @@ export default function ViewResult(props) {
 		exportJson(popDislJson, `population-dislocation-${executionItemId}`);
 	};
 
+	const preview = (executionId, resultType) => {
+		setResultType(resultType);
+		setSelectedExecutionId(executionId);
+		setPreviewOn(true);
+	};
+
 	return (
 		<div role="tabpanel" hidden={value !== index} id={`simple-tabpanel-${index}`}
 			 aria-labelledby={`simple-tab-${index}`}
@@ -533,14 +540,15 @@ export default function ViewResult(props) {
 				<Box>
 					<ViewResultEntryTable fieldNames={fieldNames}
 										  executions={executionEntries}
-										  previewMetrics={previewMetrics}
-										  previewBldgDmg={previewBldgDmg} downloadBldgDmg={downloadBldgDmg}
-										  previewEpfDmg={previewEpfDmg} downloadEpfDmg={downloadEpfDmg}
-										  previewBldgFunc={previewBldgFunc} downloadBldgFunc={downloadBldgFunc}
-										  previewInterd={previewInterd}
-										  previewBldgMCS={previewBldgMCS} downloadBldgMCS={downloadBldgMCS}
-										  previewPopDisl={previewPopDisl} downloadPopDisl={downloadPopDisl}
-										  previewCGE={previewCGE} downloadCGE={downloadCGE}
+										  preview={preview}
+										  // previewMetrics={previewMetrics}
+										  // previewBldgDmg={previewBldgDmg} downloadBldgDmg={downloadBldgDmg}
+										  // previewEpfDmg={previewEpfDmg} downloadEpfDmg={downloadEpfDmg}
+										  // previewBldgFunc={previewBldgFunc} downloadBldgFunc={downloadBldgFunc}
+										  // previewInterd={previewInterd}
+										  // previewBldgMCS={previewBldgMCS} downloadBldgMCS={downloadBldgMCS}
+										  // previewPopDisl={previewPopDisl} downloadPopDisl={downloadPopDisl}
+										  // previewCGE={previewCGE} downloadCGE={downloadCGE}
 					/>
 				</Box>
 			</Box>
@@ -549,10 +557,11 @@ export default function ViewResult(props) {
 			{
 				(()=>{
 					if (resultType === "metrics"){
-						return (<ResillienceMetrics executionName={selectedExecutionName} title="Resilience Metrics"
-							previewOn={previewOn}
-							handlePreviewClose={handlePreviewClose}
-							tables={tables}
+						return (<ResilienceMetrics selectedExecutionId={selectedExecutionId}
+												   getExecution={getExecution}
+												   previewOn={previewOn}
+												   handlePreviewClose={handlePreviewClose}
+												   datawolfDatasetConfigItems={datawolfDatasetConfigItems}
 						/>);
 					}
 					else if (resultType === "interD") {

@@ -40,7 +40,7 @@ export function getCurrUsername(){
 	}
 	else{
 		let cookie = cookies.get("Authorization");
-		if (cookie !== "" && cookie.split(" ").length > 0){
+		if (cookie!== undefined && cookie !== "" && cookie.split(" ").length > 0){
 			let userInfo = jwt_decode(cookie.split(" ")[1]);
 			return userInfo["preferred_username"];
 		}

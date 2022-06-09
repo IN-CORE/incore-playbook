@@ -94,7 +94,7 @@ export default function BldgDamage(props) {
 				{/*TODO wrap into a component*/}
 				<Box className="previewTitleSection">
 					<Typography className="previewTitle">{selectedExecutionName}</Typography>
-					<Typography className="previewTitle">Select Data: {title}</Typography>
+					<Typography className="previewTitle">Select Data: Building Damage</Typography>
 				</Box>
 
 				{/*for chart*/}

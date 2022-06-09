@@ -43,7 +43,7 @@ const useStyles = makeStyles({
 export default function ResilienceMetrics(props){
 	const classes = useStyles();
 
-	let {executionItemId, getExecution, selectedExecutionName, setSelectedExecutionName, title, previewOn, handlePreviewClose,
+	let {selectedExecutionId, getExecution, previewOn, handlePreviewClose,
 		datawolfDatasetConfigItems
 	} = props;
 
@@ -51,6 +51,7 @@ export default function ResilienceMetrics(props){
 
 	const [currTabIndex, setCurrTabIndex] = useState(0);
 	const [tables, setTables] = useState({});
+	const [selectedExecutionName, setSelectedExecutionName] = useState("");
 
 	const [totalDislTableIdContent, setTotalDislTableIdContent] = useState();
 	const [dislocationByRaceContent, setDislocationByRaceContent] = useState();
@@ -64,7 +65,7 @@ export default function ResilienceMetrics(props){
 
 	useEffect(()=> {
 
-		let executionItem = getExecution(executionItemId);
+		let executionItem = getExecution(selectedExecutionId);
 		setSelectedExecutionName(executionItem["title"]);
 
 		datawolfDatasetConfigItems.map((datawolfDatasetConfigItem) => {
@@ -133,7 +134,7 @@ export default function ResilienceMetrics(props){
 				{/*TODO wrap into a component*/}
 				<Box className="previewTitleSection">
 					<Typography className="previewTitle">{selectedExecutionName}</Typography>
-					<Typography className="previewTitle">Select Data: {title}</Typography>
+					<Typography className="previewTitle">Select Data: Resilience Metrics</Typography>
 				</Box>
 
 				{/*tabs*/}

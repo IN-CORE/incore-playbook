@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 
 import {
 	IconButton,
@@ -120,11 +120,25 @@ function stableSort(array, comparator) {
 
 export function ViewResultEntryTable(props) {
 
-	const {fieldNames, executions, previewMetrics, previewBldgDmg, downloadBldgDmg, previewEpfDmg, downloadEpfDmg,
-		previewBldgFunc, downloadBldgFunc, previewInterd, previewBldgMCS, downloadBldgMCS, previewPopDisl,
-		previewCGE, downloadCGE, downloadPopDisl} = props;
+	// const {fieldNames, executions, previewMetrics, previewBldgDmg, downloadBldgDmg, previewEpfDmg, downloadEpfDmg,
+	// 	previewBldgFunc, downloadBldgFunc, previewInterd, previewBldgMCS, downloadBldgMCS, previewPopDisl,
+	// 	previewCGE, downloadCGE, downloadPopDisl} = props;
 
-	const allowedDataTypes = useSelector((state) => state.config.allowedDataTypes);
+	const {fieldNames, executions, preview} = props;
+	const [widgetList, setWidgetList] = useState([]);
+
+	// list all the widgets from workflow definition
+	const datawolfWorkflowConfig = useSelector((state) => state.config.datawolfWorkflowConfig);
+	useEffect(()=> {
+		setWidgetList(datawolfWorkflowConfig.outputs.datasets[0].datasetsMap.reduce((list, item) => {
+			if (!list.includes(item.datasets.widget)){
+				return [...list, item.datasets.widget];
+			}
+			else{
+				return list;
+			}
+		}, []));
+	}, []);
 
 	const [expandId, setExpandId] = useState("");
 	const [collapseId, setCollapseId] = useState("");
@@ -221,14 +235,16 @@ export function ViewResultEntryTable(props) {
 									{
 										(execution["id"] === expandId && execution["id"] !== collapseId) ?
 											<>
+												{/*resilience metrics*/}
 												{
-													allowedDataTypes.socioeconomics ?
+													widgetList.includes("CGE") && widgetList.includes("PopDislocation")
+													&& widgetList.includes("BldgFunctionality")?
 														<TableRow className={classes.subBodyRow}
 																  key={`${execution["id"]}-resilience-metrics`}>
 															<TableCell key={`${execution["id"]}-resilience-metrics-title`}>Resilience Metrics</TableCell>
 															<TableCell colSpan={3} key={`${execution["id"]}-resilience-metrics-1`}/>
 															<TableCell colSpan={2} key={`${execution["id"]}-resilience-metrics-2`}>
-																<Link color="primary" onClick={() => {previewMetrics(execution["id"]);}}
+																<Link color="primary" onClick={() => {preview(execution["id"], "metrics");}}
 																	  className={execution["finalStatus"] === undefined ||
 																	  execution["finalStatus"] === "FINISHED" ?
 																		  classes.clickableLink : classes.clickableLinkDisabled}>
@@ -240,10 +256,11 @@ export function ViewResultEntryTable(props) {
 															</TableCell>
 														</TableRow>
 														:
-														null
+														<></>
 												}
+												{/*interdependency network*/}
 												{
-													allowedDataTypes.network ?
+													widgetList.includes("EpfDamage") ?
 														<TableRow className={classes.subBodyRow}
 																  key={`${execution["id"]}-interdependency`}>
 															<TableCell key={`${execution["id"]}-interdependency-title`}>Interdependency</TableCell>
@@ -260,36 +277,32 @@ export function ViewResultEntryTable(props) {
 																</Link>
 															</TableCell>
 														</TableRow>
-														:
-														null
+														:<></>
 												}
 												{
-													allowedDataTypes.building ?
-														<TableRow className={classes.subBodyRow}
-																  key={`${execution["id"]}-bldg-dmg`}>
-															<TableCell key={`${execution["id"]}-bldg-dmg-title`}>Building Damage</TableCell>
-															<TableCell colSpan={3} key={`${execution["id"]}-bldg-dmg-1`}/>
-															<TableCell colSpan={2} key={`${execution["id"]}-bldg-dmg-2`}>
-																<Link color="primary" onClick={() => {previewBldgDmg(execution["id"]);}}
-																	  className={execution["finalStatus"] === undefined ||
-																	  execution["finalStatus"] === "FINISHED" ?
-																		  classes.clickableLink : classes.clickableLinkDisabled}>
-																	View
-																</Link>
-																<Link color="primary" onClick={() => {downloadBldgDmg(execution["id"]);}}
-																	  className={execution["finalStatus"] === undefined ||
-																	  execution["finalStatus"] === "FINISHED" ?
-																		  classes.clickableLink : classes.clickableLinkDisabled}>
-																	Download
-																</Link>
-															</TableCell>
-														</TableRow>
-														:
-														null
-												}
-												{
-													allowedDataTypes.epf ?
+													widgetList.includes("BldgDamage") ?
 														<>
+															{/*building damage*/}
+															<TableRow className={classes.subBodyRow}
+																	  key={`${execution["id"]}-bldg-dmg`}>
+																<TableCell key={`${execution["id"]}-bldg-dmg-title`}>Building Damage</TableCell>
+																<TableCell colSpan={3} key={`${execution["id"]}-bldg-dmg-1`}/>
+																<TableCell colSpan={2} key={`${execution["id"]}-bldg-dmg-2`}>
+																	<Link color="primary" onClick={() => {previewBldgDmg(execution["id"]);}}
+																		  className={execution["finalStatus"] === undefined ||
+																		  execution["finalStatus"] === "FINISHED" ?
+																			  classes.clickableLink : classes.clickableLinkDisabled}>
+																		View
+																	</Link>
+																	<Link color="primary" onClick={() => {downloadBldgDmg(execution["id"]);}}
+																		  className={execution["finalStatus"] === undefined ||
+																		  execution["finalStatus"] === "FINISHED" ?
+																			  classes.clickableLink : classes.clickableLinkDisabled}>
+																		Download
+																	</Link>
+																</TableCell>
+															</TableRow>
+															{/*EPF damage*/}
 															<TableRow className={classes.subBodyRow}
 																	  key={`${execution["id"]}-epf-pole`}>
 																<TableCell key={`${execution["id"]}-epf-pole-title`}>Pole Damage (Electrical Power Network)</TableCell>
@@ -328,10 +341,12 @@ export function ViewResultEntryTable(props) {
 															</TableRow>
 														</>
 														:
-														null
+														<></>
 												}
+
+												{/*functionality*/}
 												{
-													allowedDataTypes.building && allowedDataTypes.epf ?
+													widgetList.includes("BldgFunctionality") ?
 														<>
 															<TableRow className={classes.subBodyRow} key={`${execution["id"]}-mcs`}>
 																<TableCell key={`${execution["id"]}-mcs-title`}>Building Functionality (w/o Electrical Power Dependency)</TableCell>
@@ -367,52 +382,55 @@ export function ViewResultEntryTable(props) {
 																</TableCell>
 															</TableRow>
 														</>
-														:
-														null
+														:<></>
 												}
+												{/*CGE*/}
 												{
-													allowedDataTypes.socioeconomics ?
-														<>
-															<TableRow className={classes.subBodyRow} key={`${execution["id"]}-cge`}>
-																<TableCell key={`${execution["id"]}-cge-title`}>Economic Prediction Model (Computable General Equilibrium)</TableCell>
-																<TableCell colSpan={3} key={`${execution["id"]}-cge-1`}/>
-																<TableCell colSpan={2} key={`${execution["id"]}-cge-2`}>
-																	<Link color="primary" onClick={() => {previewCGE(execution["id"]);}}
-																  className={execution["finalStatus"] === undefined ||
-																  execution["finalStatus"] === "FINISHED" ?
-																	  classes.clickableLink : classes.clickableLinkDisabled}>
-																View
-																	</Link>
-																	<Link color="primary" className={
-																		execution["finalStatus"] === undefined || execution["finalStatus"] === "FINISHED" ?
-																			classes.clickableLink : classes.clickableLinkDisabled
-																	} onClick={() => downloadCGE(execution["id"])}>
-																Download
-																	</Link>
-																</TableCell>
-															</TableRow>
-															<TableRow className={classes.subBodyRow}
-																  key={`${execution["id"]}-popdislocation`}>
-																<TableCell key={`${execution["id"]}-popdislocation-title`}>Population Dislocation</TableCell>
-																<TableCell colSpan={3} key={`${execution["id"]}-popdislocation-1`}/>
-																<TableCell colSpan={2} key={`${execution["id"]}-popdislocation-2`}>
-																	<Link color="primary" onClick={() => {previewPopDisl(execution["id"]);}}
+													widgetList.includes("CGE") ?
+														<TableRow className={classes.subBodyRow} key={`${execution["id"]}-cge`}>
+															<TableCell key={`${execution["id"]}-cge-title`}>Economic Prediction Model (Computable General Equilibrium)</TableCell>
+															<TableCell colSpan={3} key={`${execution["id"]}-cge-1`}/>
+															<TableCell colSpan={2} key={`${execution["id"]}-cge-2`}>
+																<Link color="primary" onClick={() => {previewCGE(execution["id"]);}}
 																	  className={execution["finalStatus"] === undefined ||
 																	  execution["finalStatus"] === "FINISHED" ?
 																		  classes.clickableLink : classes.clickableLinkDisabled}>
 																	View
-																	</Link>
-																	<Link color="primary" className={
-																		execution["finalStatus"] === undefined || execution["finalStatus"] === "FINISHED" ?
-																			classes.clickableLink : classes.clickableLinkDisabled
-																	} onClick={() => downloadPopDisl(execution["id"])}>
+																</Link>
+																<Link color="primary" className={
+																	execution["finalStatus"] === undefined || execution["finalStatus"] === "FINISHED" ?
+																		classes.clickableLink : classes.clickableLinkDisabled
+																} onClick={() => downloadCGE(execution["id"])}>
 																	Download
-																	</Link>
-																</TableCell>
-															</TableRow>
-														</>
+																</Link>
+															</TableCell>
+														</TableRow>
+														:<></>
+												}
+												{/*population dislocation*/}
+												{
+													widgetList.includes("PopDislocation") ?
+														<TableRow className={classes.subBodyRow}
+																  key={`${execution["id"]}-popdislocation`}>
+															<TableCell key={`${execution["id"]}-popdislocation-title`}>Population Dislocation</TableCell>
+															<TableCell colSpan={3} key={`${execution["id"]}-popdislocation-1`}/>
+															<TableCell colSpan={2} key={`${execution["id"]}-popdislocation-2`}>
+																<Link color="primary" onClick={() => {previewPopDisl(execution["id"]);}}
+																	  className={execution["finalStatus"] === undefined ||
+																	  execution["finalStatus"] === "FINISHED" ?
+																		  classes.clickableLink : classes.clickableLinkDisabled}>
+																	View
+																</Link>
+																<Link color="primary" className={
+																	execution["finalStatus"] === undefined || execution["finalStatus"] === "FINISHED" ?
+																		classes.clickableLink : classes.clickableLinkDisabled
+																} onClick={() => downloadPopDisl(execution["id"])}>
+																	Download
+																</Link>
+															</TableCell>
+														</TableRow>
 														:
-														null
+														<></>
 												}
 											</>
 											:

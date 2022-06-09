@@ -8,7 +8,7 @@ import {applyTransform} from "ol/extent";
 
 export default function Interdependency(props) {
 
-	let {executionName, previewOn, title, handlePreviewClose, layers, setMap} = props;
+	let {executionName, previewOn, handlePreviewClose, layers, setMap} = props;
 	const mapConfig = useSelector((state) => state.config.mapConfig);
 
 	return (
@@ -21,7 +21,7 @@ export default function Interdependency(props) {
 				{/*TODO wrap into a component*/}
 				<Box className="previewTitleSection">
 					<Typography className="previewTitle">{executionName}</Typography>
-					<Typography className="previewTitle">Select Data: {title}</Typography>
+					<Typography className="previewTitle">Select Data: Interdependent Network of Building and Electric Power Facility</Typography>
 				</Box>
 
 				{/*map*/}
