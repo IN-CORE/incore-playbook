@@ -394,44 +394,36 @@ export default function ViewResult(props) {
 		setPreviewOn(true);
 	};
 
-	const getCGEJson = async (executionItemId) => {
+	// const getCGEJson = async (executionItemId) => {
+	//
+	// 	let executionItem = getExecution(executionItemId);
+	// 	setSelectedExecutionName(executionItem["title"]);
+	//
+	// 	// cge by total household income
+	// 	let cgeHouseholdIncomeId = executionItem["datasets"][datawolfConfig["datasets"]["cgeHouseholdIncomeId"]];
+	// 	let cgeHouseholdIncome = await getOutputFileJson(datawolfConfig, cgeHouseholdIncomeId);
+	// 	let cgeHouseholdIncomeContent = JSON.parse(cgeHouseholdIncome);
+	//
+	// 	// dislocation group by
+	// 	let cgeDomesticSupplyId = executionItem["datasets"][datawolfConfig["datasets"]["cgeDomesticSupplyId"]];
+	// 	let cgeDomesticSupply = await getOutputFileJson(datawolfConfig, cgeDomesticSupplyId);
+	// 	let cgeDomesticSupplyContent = JSON.parse(cgeDomesticSupply);
+	//
+	// 	let cgeEmploymentId = executionItem["datasets"][datawolfConfig["datasets"]["cgeEmploymentId"]];
+	// 	let cgeEmployment = await getOutputFileJson(datawolfConfig, cgeEmploymentId);
+	// 	let cgeEmploymentContent = JSON.parse(cgeEmployment);
+	//
+	// 	return {
+	// 		"totalHouseholdIncome": cgeHouseholdIncomeContent,
+	// 		"domesticSupply": cgeDomesticSupplyContent,
+	// 		"employment": cgeEmploymentContent
+	// 	};
+	// };
 
-		let executionItem = getExecution(executionItemId);
-		setSelectedExecutionName(executionItem["title"]);
-
-		// cge by total household income
-		let cgeHouseholdIncomeId = executionItem["datasets"][datawolfConfig["datasets"]["cgeHouseholdIncomeId"]];
-		let cgeHouseholdIncome = await getOutputFileJson(datawolfConfig, cgeHouseholdIncomeId);
-		let cgeHouseholdIncomeContent = JSON.parse(cgeHouseholdIncome);
-
-		// dislocation group by
-		let cgeDomesticSupplyId = executionItem["datasets"][datawolfConfig["datasets"]["cgeDomesticSupplyId"]];
-		let cgeDomesticSupply = await getOutputFileJson(datawolfConfig, cgeDomesticSupplyId);
-		let cgeDomesticSupplyContent = JSON.parse(cgeDomesticSupply);
-
-		let cgeEmploymentId = executionItem["datasets"][datawolfConfig["datasets"]["cgeEmploymentId"]];
-		let cgeEmployment = await getOutputFileJson(datawolfConfig, cgeEmploymentId);
-		let cgeEmploymentContent = JSON.parse(cgeEmployment);
-
-		return {
-			"totalHouseholdIncome": cgeHouseholdIncomeContent,
-			"domesticSupply": cgeDomesticSupplyContent,
-			"employment": cgeEmploymentContent
-		};
-	};
-
-	const previewCGE = async (executionItemId) => {
-
-		let cgeJson = await getCGEJson(executionItemId);
-		setTables(cgeJson);
-		setResultType("cge");
-		setPreviewOn(true); // open preview
-	};
-
-	const downloadCGE = async (executionItemId) => {
-		let cgeJson = await getCGEJson(executionItemId);
-		exportJson(cgeJson, `cge-${executionItemId}`);
-	};
+	// const downloadCGE = async (executionItemId) => {
+	// 	let cgeJson = await getCGEJson(executionItemId);
+	// 	exportJson(cgeJson, `cge-${executionItemId}`);
+	// };
 
 	const getPopDislJson = async (executionItemId) => {
 		let executionItem = getExecution(executionItemId);
@@ -590,6 +582,7 @@ export default function ViewResult(props) {
 												   datawolfDatasetConfigItems={datawolfDatasetConfigItems}
 						/>);
 					}
+					// TODO
 					else if (resultType === "interD") {
 						return (<Interdependency executionName={selectedExecutionName}
 							title="Interdependent Network of Building and Electric Power Facility"
@@ -601,15 +594,12 @@ export default function ViewResult(props) {
 						/>);
 					}
 					else if (resultType === "bldgDmg") {
-						return (<BldgDamage executionName={selectedExecutionName}
-							title="Building Damage"
+						return (<BldgDamage
+							selectedExecutionId={selectedExecutionId}
+							getExecution={getExecution}
 							previewOn={previewOn}
 							handlePreviewClose={handlePreviewClose}
-							runtime={runtime}
-							barCharts={barCharts}
-							layers={layers}
-							tables={tables}
-							map={map}
+							datawolfDatasetConfigItems={datawolfDatasetConfigItems}
 							setMap={setMap}
 						/>);
 					}
@@ -659,12 +649,13 @@ export default function ViewResult(props) {
 							setMap={setMap}
 						/>);
 					}
-					else if (resultType === "cge") {
+					else if (resultType === "CGE") {
 						return (
-							<CGE title="CGE Results" executionName={selectedExecutionName}
-								previewOn={previewOn}
-								handlePreviewClose={handlePreviewClose}
-								tables={tables}/>);
+							<CGE selectedExecutionId={selectedExecutionId}
+								 getExecution={getExecution}
+								 previewOn={previewOn}
+								 handlePreviewClose={handlePreviewClose}
+								 datawolfDatasetConfigItems={datawolfDatasetConfigItems} />);
 					}
 					else if (resultType === "popdisl") {
 						return (<PopDislocation executionName={selectedExecutionName}

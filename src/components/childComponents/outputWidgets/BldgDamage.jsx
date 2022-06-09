@@ -14,52 +14,39 @@ import {handleLayerUpdate} from "../../../utils/map";
 
 export default function BldgDamage(props) {
 
-	let {executionItemId, getExecution, selectedExecutionName, setSelectedExecutionName, title, previewOn,
-		handlePreviewClose, datawolfDatasetConfigItems, setMap, hazardId,
-	} = props;
+	let {selectedExecutionId, getExecution, previewOn, handlePreviewClose, datawolfDatasetConfigItems, setMap, hazardId} = props;
 	// let {selectedExecutionName, title, previewOn, handlePreviewClose, runtime, barCharts, layers, tables, setMap} = props;
 
 	const mapConfig = useSelector((state) => state.config.mapConfig);
 	const datawolfConfig = useSelector((state) => state.config.datawolfConfig);
 	const globalConfig = useSelector((state) => state.config.globalConfig);
 
-	const [tables, setTables] = useState({});
-	const [barCharts, setBarCharts] = useState({});
-	const [runtime, setRuntime] = useState({});
+	const [selectedExecutionName, setSelectedExecutionName] = useState("");
+	const [runtime, setRuntime] = useState(null);
 	const [layers, setLayers] = useState([]);
 
-	const [bldgDmgSummaryTableContent, setBldgDmgSummaryTableContent] = useState();
-	const [bldgMaxDamageStateINCOREId, setBldgMaxDamageStateINCOREId] = useState();
+	const [bldgDmgSummaryTableContent, setBldgDmgSummaryTableContent] = useState(null);
+	const [bldgMaxDamageStateINCOREId, setBldgMaxDamageStateINCOREId] = useState(null);
 	const [hazardMetadata, setHazardMetadata] = useState();
 
 	useEffect(() => {
-		let executionItem = getExecution(executionItemId);
+		let executionItem = getExecution(selectedExecutionId);
 		setSelectedExecutionName(executionItem["title"]);
-
-		datawolfDatasetConfigItems.map((datawolfDatasetConfigItem) => {
-			const vName = datawolfDatasetConfigItem.datasets.variableName;
-			if (vName === "bldgMaxDamageStateINCOREId") {
-				setBldgMaxDamageStateINCOREId(getOutputFileContent(datawolfConfig, executionItem, datawolfDatasetConfigItem.datasetId));
-			}
-			else if (vName === "bldgDmgSummaryTableContent") {
-				setBldgDmgSummaryTableContent(getOutputFileContentJSON(datawolfConfig, executionItem, datawolfDatasetConfigItem.datasetId));
-			}
-			else if (vName === ""){
-
-			}
-		});
 
 		// for summary table on the top
 		setRuntime(executionItem["date"].slice(0, 10));
+
+		datawolfDatasetConfigItems.map(async (datawolfDatasetConfigItem) => {
+			const vName = datawolfDatasetConfigItem.datasets.variableName;
+			if (vName === "bldgMaxDamageStateINCOREId") {
+				setBldgMaxDamageStateINCOREId(await getOutputFileContent(datawolfConfig, executionItem, datawolfDatasetConfigItem.datasetId));
+			}
+			else if (vName === "bldgDmgSummaryTableContent") {
+				setBldgDmgSummaryTableContent(await getOutputFileContentJSON(datawolfConfig, executionItem, datawolfDatasetConfigItem.datasetId));
+			}
+		});
 	}, []);
 
-	useEffect(() => {
-		// for table
-		setTables(bldgDmgSummaryTableContent);
-		// for chart
-		setBarCharts(bldgDmgSummaryTableContent["by_category"]);
-
-	}, [bldgDmgSummaryTableContent]);
 
 	useEffect(() => {
 		// let hazardId = executionItem["parameters"][datawolfConfig["parameters"]["hazardId"]];
@@ -100,21 +87,30 @@ export default function BldgDamage(props) {
 				{/*for chart*/}
 				<Box className="chartContainer">
 					<Grid container spacing={3} justify="center">
-						<Grid item>
-							<Typography className="previewSubTitle">
-									Analysis Result View</Typography>
-							<ResultSummaryTable runtime={runtime}/>
-						</Grid>
-						<Divider orientation="vertical" flexItem/>
+						{
+							runtime ?
+								<Grid item>
+									<Typography className="previewSubTitle">
+										Analysis Result View</Typography>
+									<ResultSummaryTable runtime={runtime}/>
+								</Grid>
+								:<></>
 
+						}
+						<Divider orientation="vertical" flexItem/>
 						{/*barchart*/}
-						<Grid item style={{minWidth: "804px"}}>
-							<Typography className="previewSubTitle">
-									Anticipated Performance - Building Clusters</Typography>
-							<Box style={{marginTop: "38px"}}>
-								<StackedResult categorySummary={barCharts}/>
-							</Box>
-						</Grid>
+						{
+							bldgDmgSummaryTableContent ?
+								<Grid item style={{minWidth: "804px"}}>
+									<Typography className="previewSubTitle">
+										Anticipated Performance - Building Clusters</Typography>
+									<Box style={{marginTop: "38px"}}>
+										<StackedResult categorySummary={bldgDmgSummaryTableContent["by_category"]}/>
+									</Box>
+								</Grid>
+								:<></>
+						}
+
 
 					</Grid>
 					<Divider orientation="horizontal"/>
@@ -136,9 +132,13 @@ export default function BldgDamage(props) {
 				</Container>
 
 				{/*for table*/}
-				<Box>
-					<ResultTable fields={tables}/>
-				</Box>
+				{
+					bldgDmgSummaryTableContent ?
+						<Box>
+							<ResultTable fields={bldgDmgSummaryTableContent}/>
+						</Box>
+						:<></>
+				}
 			</DialogContent>
 		</Dialog>
 

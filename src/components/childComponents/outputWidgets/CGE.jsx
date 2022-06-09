@@ -3,20 +3,40 @@ import CloseIcon from "@material-ui/icons/Close";
 import CGEBarChart from "../graph/CGEBarChart";
 import {CgeResultsTable} from "../table/CgeResultsTable";
 import CgeDescription from "../step/CgeDescription";
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import {IncoreMenuItem, IncoreSelectBox} from "../../styledComponents/IncoreSelect";
+import {getOutputFileContentJSON} from "../../../utils/datawolf";
+import {useSelector} from "react-redux";
 
 export default function CGE(props) {
-	let {
-		executionName,
-		title,
-		previewOn,
-		handlePreviewClose,
-		tables,
-	} = props;
+	let {selectedExecutionId, getExecution, previewOn, handlePreviewClose, datawolfDatasetConfigItems} = props;
 
-	//"totalHouseholdIncome", "domesticSupply", "employment"
+	const datawolfConfig = useSelector((state) => state.config.datawolfConfig);
+
 	const [cgeType, setCgeType] = useState("totalHouseholdIncome");
+	const [selectedExecutionName, setSelectedExecutionName] = useState("");
+	const [cgeHouseholdIncomeContent, setCgeHouseholdIncomeContent] = useState(null);
+	const [cgeDomesticSupplyContent, setCgeDomesticSupplyContent] = useState(null);
+	const [cgeEmploymentContent, setCgeEmploymentContent] = useState(null);
+
+	useEffect(()=> {
+
+		let executionItem = getExecution(selectedExecutionId);
+		setSelectedExecutionName(executionItem["title"]);
+
+		datawolfDatasetConfigItems.map(async (datawolfDatasetConfigItem) => {
+			const vName = datawolfDatasetConfigItem.datasets.variableName;
+			if (vName === "cgeHouseholdIncomeContent") {
+				setCgeHouseholdIncomeContent(await getOutputFileContentJSON(datawolfConfig, executionItem, datawolfDatasetConfigItem.datasetId));
+			}
+			else if (vName === "cgeDomesticSupplyContent"){
+				setCgeDomesticSupplyContent(await getOutputFileContentJSON(datawolfConfig, executionItem, datawolfDatasetConfigItem.datasetId));
+			}
+			else if (vName === "cgeEmploymentContent"){
+				setCgeEmploymentContent(await getOutputFileContentJSON(datawolfConfig, executionItem, datawolfDatasetConfigItem.datasetId));
+			}
+		});
+	}, []);
 
 	return (
 		<Dialog open={previewOn} onClose={handlePreviewClose} maxWidth="lg" fullWidth scroll="paper">
@@ -28,8 +48,8 @@ export default function CGE(props) {
 				{/*title*/}
 				{/*TODO wrap into a component*/}
 				<Box className="previewTitleSection">
-					<Typography className="previewTitle">{executionName}</Typography>
-					<Typography className="previewTitle">Select Data: {title}</Typography>
+					<Typography className="previewTitle">{selectedExecutionName}</Typography>
+					<Typography className="previewTitle">Select Data: CGE Results</Typography>
 				</Box>
 
 				<Box style={{padding:"5px 25px 25px 25px"}}>
@@ -55,36 +75,36 @@ export default function CGE(props) {
 							{/*TODO for some reason barchart unit not working*/}
 							{
 								(() =>{
-									if (cgeType === "totalHouseholdIncome"){
+									if (cgeType === "totalHouseholdIncome" && cgeHouseholdIncomeContent){
 										return (
 											<>
 												<Box style={{margin:"50px 0", maxWidth:"700px"}}>
-													<CGEBarChart data={tables["totalHouseholdIncome"]}
+													<CGEBarChart data={cgeHouseholdIncomeContent}
 																 yAxisLegend="Million of $"/>
 												</Box>
 												<Box>
-													<CgeResultsTable resultsJson={tables["totalHouseholdIncome"]}/>
+													<CgeResultsTable resultsJson={cgeHouseholdIncomeContent}/>
 												</Box>
 											</>
 										);
 									}
-									else if (cgeType === "domesticSupply"){
+									else if (cgeType === "domesticSupply" && cgeDomesticSupplyContent){
 										return (<>
 											<Box style={{margin:"50px 0", maxWidth:"700px"}}>
-												<CGEBarChart data={tables["domesticSupply"]} yAxisLegend="Million of $"/>
+												<CGEBarChart data={cgeDomesticSupplyContent} yAxisLegend="Million of $"/>
 											</Box>
 											<Box>
-												<CgeResultsTable resultsJson={tables["domesticSupply"]} yAxisLegend="Person"/>
+												<CgeResultsTable resultsJson={cgeDomesticSupplyContent} yAxisLegend="Person"/>
 											</Box>
 										</>);
 									}
-									else if (cgeType === "employment"){
+									else if (cgeType === "employment" && cgeEmploymentContent){
 										return (<>
 											<Box style={{margin:"50px 0", maxWidth:"700px"}}>
-												<CGEBarChart data={tables["employment"]} title="Employment"/>
+												<CGEBarChart data={cgeEmploymentContent} title="Employment"/>
 											</Box>
 											<Box>
-												<CgeResultsTable resultsJson={tables["employment"]}/>
+												<CgeResultsTable resultsJson={cgeEmploymentContent}/>
 											</Box>
 										</>);
 									}

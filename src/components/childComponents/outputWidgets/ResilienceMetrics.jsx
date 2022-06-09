@@ -43,9 +43,7 @@ const useStyles = makeStyles({
 export default function ResilienceMetrics(props){
 	const classes = useStyles();
 
-	let {selectedExecutionId, getExecution, previewOn, handlePreviewClose,
-		datawolfDatasetConfigItems
-	} = props;
+	let {selectedExecutionId, getExecution, previewOn, handlePreviewClose, datawolfDatasetConfigItems} = props;
 
 	const datawolfConfig = useSelector((state) => state.config.datawolfConfig);
 
