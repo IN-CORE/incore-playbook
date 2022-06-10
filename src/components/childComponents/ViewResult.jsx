@@ -172,36 +172,6 @@ export default function ViewResult(props) {
 		await downloadDataset(globalConfig, epfMaxDmgStateINCOREId, `epf-${type}`);
 	};
 
-	const previewInterd = async (executionItemId) => {
-		let executionItem = getExecution(executionItemId);
-		setSelectedExecutionName(executionItem["title"]);
-
-		let epfMaxDmgStateId = executionItem["datasets"][datawolfConfig["datasets"]["epfSubstationMaxDmgStateId"]];
-		let epfMaxDmgStateINCOREId = await getOutputFileJson(datawolfConfig, epfMaxDmgStateId);
-
-		const layerDef = [
-			{
-				"layerId": "joplin-bldg-subs",
-				"layerStyles": null,
-				"title": "Interdependency Network",
-				"opacity": 0.7
-			},
-			{
-				"layerId": epfMaxDmgStateINCOREId,
-				"layerStyles": "incore:joplin-substations-label",
-				"title": "EPF Substations",
-				"opacity": 1
-			}
-		];
-		handleLayerUpdate(layerDef);
-
-		// set preview type
-		setWidgetName("interD");
-
-		// open preview
-		setPreviewOn(true);
-	};
-
 	// const getCGEJson = async (executionItemId) => {
 	//
 	// 	let executionItem = getExecution(executionItemId);
@@ -357,14 +327,14 @@ export default function ViewResult(props) {
 						/>);
 					}
 					// TODO
-					else if (widgetName === "interD") {
+					else if (widgetName === "Interdependency") {
 						return (<Interdependency executionName={selectedExecutionName}
-							title="Interdependent Network of Building and Electric Power Facility"
-							previewOn={previewOn}
-							handlePreviewClose={handlePreviewClose}
-							layers={layers}
-							map={map}
-							setMap={setMap}
+												 executionItem={selectedExecutionItem}
+												 getExecution={getExecution}
+												 previewOn={previewOn}
+												 handlePreviewClose={handlePreviewClose}
+												 datawolfDatasetConfigItems={datawolfDatasetConfigItems}
+												 setMap={setMap}
 						/>);
 					}
 					else if (widgetName === "BldgDamage") {
