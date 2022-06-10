@@ -86,12 +86,10 @@ export default function ViewResult(props) {
 	const [executionEntries, setExecutionEntries] = useState([]);
 	const [selectedExecutionId, setSelectedExecutionId] = useState("");
 	const [selectedExecutionName, setSelectedExecutionName] = useState("");
+	const [selectedExecutionItem, setSelectedExecutionItem] = useState(null);
 	const [resultType, setResultType] = useState(""); // outputWidgets name
 	const [datawolfDatasetConfigItems, setDatawolfDatasetConfigItems] = useState([]);
-
-	const [runtime, setRuntime] = useState("");
-	const [tables, setTables] = useState({});
-	const [barCharts, setBarCharts] = useState([]);
+	const [hazardDatasetId, setHazardDatasetId] = useState([]); // to overlay hazard on the map
 	const [map, setMap] = useState();
 	const [previewOn, setPreviewOn] = useState(false); // list vs preview
 
@@ -154,35 +152,6 @@ export default function ViewResult(props) {
 			"columnName": "finalStatus",
 		}
 	];
-
-	// for map
-	const handleLayerUpdate = (layerDef) => {
-		const inputLayers = [];
-
-		layerDef.map((layerDefinition) => {
-			const source = new TileWMS({
-				url: `${globalConfig.geoServerWMS}`,
-				params: {
-					LAYERS: layerDefinition["layerId"],
-					STYLES: layerDefinition["layerStyles"]
-				},
-				ratio: 1,
-				serverType: "geoserver"
-			});
-			let mapLayer = new TileLayer({
-				title: layerDefinition["title"],
-				source: source,
-				zIndex: 1,
-				opacity: layerDefinition["opacity"]
-			});
-			inputLayers.push(mapLayer);
-		});
-
-		layers["tilelayer"] = new GroupLayer({
-			title: "Preview",
-			layers: inputLayers,
-		});
-	};
 
 	// close the model
 	const handlePreviewClose = () => {
@@ -511,6 +480,8 @@ export default function ViewResult(props) {
 	};
 
 	const preview = (executionId, resultType) => {
+		const selectedExecutionItem = getExecution(executionId);
+		setSelectedExecutionItem(selectedExecutionItem);
 		setResultType(resultType);
 		setSelectedExecutionId(executionId);
 
@@ -534,6 +505,16 @@ export default function ViewResult(props) {
 				}
 			}
 		}, []));
+
+		// get hazard id params
+		setHazardDatasetId(datawolfWorkflowConfig.inputs.parameters[0].parametersMap.filter(async item => {
+			if (item.parameters.variableName === "selectedHazardId") {
+				let hazardId = selectedExecutionItem["parameters"][item.paramId];
+				let hazardMetadata = await getHazardMetadata(globalConfig, hazardId);
+				setHazardDatasetId(hazardMetadata["datasetId"]);
+			}
+		}));
+
 
 		// dialog on
 		setPreviewOn(true);
@@ -575,7 +556,7 @@ export default function ViewResult(props) {
 				// TODO this condition can be modified
 				(()=>{
 					if (resultType === "ResilienceMetrics"){
-						return (<ResilienceMetrics selectedExecutionId={selectedExecutionId}
+						return (<ResilienceMetrics executionItem={selectedExecutionItem}
 												   getExecution={getExecution}
 												   previewOn={previewOn}
 												   handlePreviewClose={handlePreviewClose}
@@ -595,12 +576,13 @@ export default function ViewResult(props) {
 					}
 					else if (resultType === "BldgDamage") {
 						return (<BldgDamage
-							selectedExecutionId={selectedExecutionId}
+							executionItem={selectedExecutionItem}
 							getExecution={getExecution}
 							previewOn={previewOn}
 							handlePreviewClose={handlePreviewClose}
 							datawolfDatasetConfigItems={datawolfDatasetConfigItems}
 							setMap={setMap}
+							hazardDatasetId={hazardDatasetId}
 						/>);
 					}
 					else if (resultType === "epfPoleDmg") {
@@ -651,7 +633,7 @@ export default function ViewResult(props) {
 					}
 					else if (resultType === "CGE") {
 						return (
-							<CGE selectedExecutionId={selectedExecutionId}
+							<CGE executionItem={selectedExecutionItem}
 								 getExecution={getExecution}
 								 previewOn={previewOn}
 								 handlePreviewClose={handlePreviewClose}

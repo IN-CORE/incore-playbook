@@ -43,7 +43,7 @@ const useStyles = makeStyles({
 export default function ResilienceMetrics(props){
 	const classes = useStyles();
 
-	let {selectedExecutionId, getExecution, previewOn, handlePreviewClose, datawolfDatasetConfigItems} = props;
+	let {executionItem, getExecution, previewOn, handlePreviewClose, datawolfDatasetConfigItems} = props;
 
 	const datawolfConfig = useSelector((state) => state.config.datawolfConfig);
 
@@ -61,8 +61,6 @@ export default function ResilienceMetrics(props){
 	const [bldgFuncSummaryTableContent, setBldgFuncSummaryTableContent] = useState(null);
 
 	useEffect(()=> {
-
-		let executionItem = getExecution(selectedExecutionId);
 		setSelectedExecutionName(executionItem["title"]);
 
 		datawolfDatasetConfigItems.map(async (datawolfDatasetConfigItem) => {

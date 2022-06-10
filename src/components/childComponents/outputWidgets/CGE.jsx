@@ -9,7 +9,7 @@ import {getOutputFileContentJSON} from "../../../utils/datawolf";
 import {useSelector} from "react-redux";
 
 export default function CGE(props) {
-	let {selectedExecutionId, getExecution, previewOn, handlePreviewClose, datawolfDatasetConfigItems} = props;
+	let {executionItem, getExecution, previewOn, handlePreviewClose, datawolfDatasetConfigItems} = props;
 
 	const datawolfConfig = useSelector((state) => state.config.datawolfConfig);
 
@@ -20,8 +20,6 @@ export default function CGE(props) {
 	const [cgeEmploymentContent, setCgeEmploymentContent] = useState(null);
 
 	useEffect(()=> {
-
-		let executionItem = getExecution(selectedExecutionId);
 		setSelectedExecutionName(executionItem["title"]);
 
 		datawolfDatasetConfigItems.map(async (datawolfDatasetConfigItem) => {

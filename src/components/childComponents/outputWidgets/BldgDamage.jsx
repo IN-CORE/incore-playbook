@@ -14,7 +14,7 @@ import {basicLayers, handleLayerUpdate} from "../../../utils/map";
 
 export default function BldgDamage(props) {
 
-	let {selectedExecutionId, getExecution, previewOn, handlePreviewClose, datawolfDatasetConfigItems, setMap, hazardId} = props;
+	let {executionItem, previewOn, handlePreviewClose, datawolfDatasetConfigItems, setMap, hazardDatasetId} = props;
 
 	const mapConfig = useSelector((state) => state.config.mapConfig);
 	const datawolfConfig = useSelector((state) => state.config.datawolfConfig);
@@ -24,11 +24,8 @@ export default function BldgDamage(props) {
 	const [runtime, setRuntime] = useState(null);
 	const [layers, setLayers] = useState(basicLayers);
 	const [bldgDmgSummaryTableContent, setBldgDmgSummaryTableContent] = useState(null);
-	// const [bldgMaxDamageStateINCOREId, setBldgMaxDamageStateINCOREId] = useState(null);
-	const [hazardMetadata, setHazardMetadata] = useState();
 
 	useEffect(() => {
-		let executionItem = getExecution(selectedExecutionId);
 		setSelectedExecutionName(executionItem["title"]);
 
 		// for summary table on the top
@@ -45,12 +42,12 @@ export default function BldgDamage(props) {
 						"title": "Building Damage",
 						"opacity": 1
 					},
-					// {
-					// 	"layerId": hazardDatasetId,
-					// 	"layerStyles": "incore:tornado",
-					// 	"title": "Tornado",
-					// 	"opacity": 0.3
-					// }
+					{
+						"layerId": hazardDatasetId,
+						"layerStyles": "incore:tornado",
+						"title": "Tornado",
+						"opacity": 0.3
+					}
 				];
 				setLayers(handleLayerUpdate(globalConfig, layerDef));
 			}
@@ -58,10 +55,6 @@ export default function BldgDamage(props) {
 				setBldgDmgSummaryTableContent(await getOutputFileContentJSON(datawolfConfig, executionItem, datawolfDatasetConfigItem.datasetId));
 			}
 		});
-
-		// let hazardId = executionItem["parameters"][datawolfConfig["parameters"]["hazardId"]];
-		// let hazardMetadata = await getHazardMetadata(globalConfig, hazardId);
-		// let hazardDatasetId = hazardMetadata["datasetId"];
 	}, []);
 
 
