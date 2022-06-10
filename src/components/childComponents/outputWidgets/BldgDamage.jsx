@@ -9,7 +9,6 @@ import {ResultTable} from "../table/ResultTable";
 import {useSelector} from "react-redux";
 import {applyTransform} from "ol/extent";
 import {getOutputFileContent, getOutputFileContentJSON} from "../../../utils/datawolf";
-import {getHazardMetadata} from "../../../utils/hazard";
 import {basicLayers, handleLayerUpdate} from "../../../utils/map";
 
 export default function BldgDamage(props) {
@@ -56,29 +55,6 @@ export default function BldgDamage(props) {
 			}
 		});
 	}, []);
-
-
-	// useEffect(() => {
-	// 	// let hazardId = executionItem["parameters"][datawolfConfig["parameters"]["hazardId"]];
-	// 	// let hazardMetadata = await getHazardMetadata(globalConfig, hazardId);
-	// 	// let hazardDatasetId = hazardMetadata["datasetId"];
-	// 	// for map
-	// 	const layerDef = [
-	// 		{
-	// 			"layerId": bldgMaxDamageStateINCOREId,
-	// 			"layerStyles": "incore:bldg-dmg-summary",
-	// 			"title": "Building Damage",
-	// 			"opacity": 1
-	// 		},
-	// 		// {
-	// 		// 	"layerId": hazardDatasetId,
-	// 		// 	"layerStyles": "incore:tornado",
-	// 		// 	"title": "Tornado",
-	// 		// 	"opacity": 0.3
-	// 		// }
-	// 	];
-	//
-	// }, [bldgMaxDamageStateINCOREId]);
 
 	return (
 		<Dialog open={previewOn} onClose={handlePreviewClose} maxWidth="lg" fullWidth scroll="paper">

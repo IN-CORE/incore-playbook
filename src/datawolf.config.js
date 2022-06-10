@@ -316,8 +316,8 @@ const datawolfWorkflowConfig =
 						"datasets": {
 							"step": "Joplin VSAM Nov 2021",
 							"title": "EPF pole maximum damage state",
-							"variableName":"epfPoleMaxDmgStateContent",
-							"widget": "EpfDamage",
+							"variableName":"poleMaxDmgStateINCOREId",
+							"widget": "PoleDamage",
 						}
 					},
 					{
@@ -325,8 +325,8 @@ const datawolfWorkflowConfig =
 						"datasets": {
 							"step": "Joplin VSAM Nov 2021",
 							"title": "EPF substation maximum damage state",
-							"variableName":"epfSubstationMaxDmgStateContent",
-							"widget": "EpfDamage",
+							"variableName":"substationMaxDmgStateINCOREId",
+							"widget": "SubstationDamage",
 						}
 					},
 					{
@@ -335,24 +335,24 @@ const datawolfWorkflowConfig =
 							"step": "Joplin VSAM Nov 2021",
 							"title": "Monte Carlo building failure summary table",
 							"variableName":"mcsBldgSummaryTableContent",
-							"widget": "BldgFunctionality",
+							"widget": "BldgMCS",
 						}
 					},
 					{
 						"datasetId": "6d9f9b7c-9de5-45ff-d6ce-ac7ce348d429",
 						"datasets": {
 							"step": "Joplin VSAM Nov 2021",
-							"title": "Monte Carlo building failure probability",
-							"variableName":"mcsBldgFailureProbContent",
-							"widget": "BldgFunctionality",
+							"title": "Monte Carlo building failure probability Layer ID",
+							"variableName":"mcsBldgFailureProbINCOREId",
+							"widget": "BldgMCS",
 						}
 					},
 					{
 						"datasetId": "3f100fce-10a9-454d-cdf7-428dad7d9df0",
 						"datasets": {
 							"step": "Joplin VSAM Nov 2021",
-							"title": "Building funcionality probability",
-							"variableName":"bldgFuncProbContent",
+							"title": "Building funcionality probability layer ID",
+							"variableName":"mcsBldgFailureProbINCOREId",
 							"widget": "BldgFunctionality",
 						}
 					},

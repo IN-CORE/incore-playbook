@@ -11,21 +11,18 @@ import {IncoreInputLabel} from "../styledComponents/IncoreInputLabel";
 import {getOutputFileJson} from "../../utils/datawolf";
 import {getHazardMetadata} from "../../utils/hazard";
 import {exportJson} from "../../utils/common";
-import GroupLayer from "ol/layer/Group";
-import TileLayer from "ol/layer/Tile";
-import XYZ from "ol/source/XYZ";
-import OSM, {ATTRIBUTION as OSM_ATTRIBUTION} from "ol/source/OSM";
-import TileWMS from "ol/source/TileWMS";
 
 import {ViewResultEntryTable} from "./table/ViewResultEntryTable";
 import {downloadDataset} from "../../utils/dataset";
 import Interdependency from "./outputWidgets/Interdependency";
 import BldgDamage from "./outputWidgets/BldgDamage";
-import EpfDamage from "./outputWidgets/EpfDamage";
+import PoleDamage from "./outputWidgets/PoleDamage";
+import BldgMCS from "./outputWidgets/BldgMCS";
 import BldgFunctionality from "./outputWidgets/BldgFunctionality";
 import CGE from "./outputWidgets/CGE";
 import PopDislocation from "./outputWidgets/PopDislocation";
 import ResilienceMetrics from "./outputWidgets/ResilienceMetrics";
+import SubstationDamage from "./outputWidgets/SubstationDamage";
 
 
 const useStyles = makeStyles({
@@ -33,37 +30,6 @@ const useStyles = makeStyles({
 		margin: "55px auto",
 	},
 });
-
-
-const layers = {
-	basemaps: new GroupLayer({
-		title: "Base Maps",
-		layers: [
-			new TileLayer({
-				type: "base",
-				visible: true,
-				title: "Carto",
-				source: new XYZ({
-					url: "https://{a-d}.basemaps.cartocdn.com/rastertiles/light_all/{z}/{x}/{y}.png",
-					attributions: [
-						"&#169; <a href=\"https://www.carto.com\">Carto</a>,",
-						OSM_ATTRIBUTION
-					]
-				})
-			}),
-			new TileLayer({
-				type: "base",
-				visible: false,
-				title: "OSM",
-				source: new OSM()
-			}),
-		]
-	}),
-	tilelayer: new GroupLayer({
-		title: "Damage",
-		layers: []
-	})
-};
 
 export default function ViewResult(props) {
 	const {value, index, getExecutionList, executions, ...other} = props;
@@ -84,10 +50,9 @@ export default function ViewResult(props) {
 	// states
 	const [numCompleted, setNumCompleted] = useState(0);
 	const [executionEntries, setExecutionEntries] = useState([]);
-	const [selectedExecutionId, setSelectedExecutionId] = useState("");
 	const [selectedExecutionName, setSelectedExecutionName] = useState("");
 	const [selectedExecutionItem, setSelectedExecutionItem] = useState(null);
-	const [resultType, setResultType] = useState(""); // outputWidgets name
+	const [widgetName, setWidgetName] = useState(""); // outputWidgets name
 	const [datawolfDatasetConfigItems, setDatawolfDatasetConfigItems] = useState([]);
 	const [hazardDatasetId, setHazardDatasetId] = useState([]); // to overlay hazard on the map
 	const [map, setMap] = useState();
@@ -156,7 +121,7 @@ export default function ViewResult(props) {
 	// close the model
 	const handlePreviewClose = () => {
 		setPreviewOn(false);
-		setResultType("");
+		setWidgetName("");
 		setMap();
 	};
 
@@ -168,59 +133,13 @@ export default function ViewResult(props) {
 		return item[0];
 	};
 
-	const downloadBldgDmg = async (executionItemId) => {
-		let executionItem = getExecution(executionItemId);
-		let bldgMaxDamageStateId = executionItem["datasets"][datawolfConfig["datasets"]["bldgMaxDamageStateId"]];
-		let bldgMaxDamageStateINCOREId = await getOutputFileJson(datawolfConfig, bldgMaxDamageStateId);
-		await downloadDataset(globalConfig, bldgMaxDamageStateINCOREId, "bldg-dmg");
-	};
+	// const downloadBldgDmg = async (executionItemId) => {
+	// 	let executionItem = getExecution(executionItemId);
+	// 	let bldgMaxDamageStateId = executionItem["datasets"][datawolfConfig["datasets"]["bldgMaxDamageStateId"]];
+	// 	let bldgMaxDamageStateINCOREId = await getOutputFileJson(datawolfConfig, bldgMaxDamageStateId);
+	// 	await downloadDataset(globalConfig, bldgMaxDamageStateINCOREId, "bldg-dmg");
+	// };
 
-	const previewBldgFunc = async (executionItemId) => {
-		const executionItem = await getExecution(executionItemId);
-		setSelectedExecutionName(executionItem["title"]);
-
-		// map
-		let bldgFuncProbId = executionItem["datasets"][datawolfConfig["datasets"]["bldgFuncProbId"]];
-		let bldgFuncProbINCOREId = await getOutputFileJson(datawolfConfig, bldgFuncProbId);
-		let hazardId = executionItem["parameters"][datawolfConfig["parameters"]["hazardId"]];
-		let hazardMetadata = await getHazardMetadata(globalConfig, hazardId);
-		let hazardDatasetId = hazardMetadata["datasetId"];
-		const layerDef = [
-			{
-				"layerId": bldgFuncProbINCOREId,
-				"layerStyles": "incore:joplin-bldg-func",
-				"title": "Building Functionality Probability",
-				"opacity": 1
-			},
-			{
-				"layerId": hazardDatasetId,
-				"layerStyles": "incore:tornado",
-				"title": "Tornado",
-				"opacity": 0.3
-			}
-		];
-		handleLayerUpdate(layerDef);
-
-		// bar chart & table
-		let bldgFuncSummaryTableId = executionItem["datasets"][datawolfConfig["datasets"]["bldgFuncSummaryTableId"]];
-		let bldgFuncSummaryTable = await getOutputFileJson(datawolfConfig, bldgFuncSummaryTableId);
-		let bldgFuncSummaryTableContent = JSON.parse(bldgFuncSummaryTable);
-
-		// for runtime table on the top
-		setRuntime(executionItem["date"].slice(0, 10));
-
-		// for table
-		setTables(bldgFuncSummaryTableContent);
-
-		// for chart
-		setBarCharts(bldgFuncSummaryTableContent["by_category"]);
-
-		// set preview type
-		setResultType("bldgFunc");
-
-		// open preview
-		setPreviewOn(true);
-	};
 	const downloadBldgFunc = async (executionItemId) => {
 		let executionItem = getExecution(executionItemId);
 		let bldgFuncProbId = executionItem["datasets"][datawolfConfig["datasets"]["bldgFuncProbId"]];
@@ -228,46 +147,6 @@ export default function ViewResult(props) {
 		await downloadDataset(globalConfig, bldgFuncProbINCOREId, "bldg-func");
 	};
 
-	const previewBldgMCS = async (executionItemId) => {
-		const executionItem = await getExecution(executionItemId);
-		setSelectedExecutionName(await executionItem["title"]);
-
-		// map
-		let mcsBldgFailureProbId = executionItem["datasets"][datawolfConfig["datasets"]["mcsBldgFailureProbId"]];
-		let mcsBldgFailureProbINCOREId = await getOutputFileJson(datawolfConfig, mcsBldgFailureProbId);
-		let hazardId = executionItem["parameters"][datawolfConfig["parameters"]["hazardId"]];
-		let hazardMetadata = await getHazardMetadata(globalConfig, hazardId);
-		let hazardDatasetId = hazardMetadata["datasetId"];
-		const layerDef = [
-			{
-				"layerId": mcsBldgFailureProbINCOREId,
-				"layerStyles": "incore:joplin-bldg-mcs",
-				"title": "Building Functionality Probability without Interdependency",
-				"opacity": 1
-			},
-			{
-				"layerId": hazardDatasetId,
-				"layerStyles": "incore:tornado",
-				"title": "Tornado",
-				"opacity": 0.3
-			}
-		];
-		handleLayerUpdate(layerDef);
-
-		// bar chart & table
-		let mcsBldgSummaryTableId = executionItem["datasets"][datawolfConfig["datasets"]["mcsBldgSummaryTableId"]];
-		let mcsBldgSummaryTable = await getOutputFileJson(datawolfConfig, mcsBldgSummaryTableId);
-		let mcsBldgSummaryTableContent = JSON.parse(mcsBldgSummaryTable);
-
-		// for runtime table on the top
-		setRuntime(executionItem["date"].slice(0, 10));
-		setTables(mcsBldgSummaryTableContent);
-		setBarCharts(mcsBldgSummaryTableContent["by_category"]);
-		setResultType("bldgMCS");
-
-		// open preview
-		setPreviewOn(true);
-	};
 	const downloadBldgMCS = async (executionItemId) => {
 		let executionItem = getExecution(executionItemId);
 		let mcsBldgFailureProbId = executionItem["datasets"][datawolfConfig["datasets"]["mcsBldgFailureProbId"]];
@@ -275,46 +154,6 @@ export default function ViewResult(props) {
 		await downloadDataset(globalConfig, mcsBldgFailureProbINCOREId, "bldg-mcs");
 	};
 
-	const previewEpfDmg = async (executionItemId, type) => {
-		let executionItem = getExecution(executionItemId);
-		setSelectedExecutionName(executionItem["title"]);
-
-		let epfMaxDmgStateId;
-
-		if (type === "pole") {
-			epfMaxDmgStateId = executionItem["datasets"][datawolfConfig["datasets"]["epfPoleMaxDmgStateId"]];
-			setResultType("epfPoleDmg");
-		} else if (type === "substation") {
-			epfMaxDmgStateId = executionItem["datasets"][datawolfConfig["datasets"]["epfSubstationMaxDmgStateId"]];
-			setResultType("epfSubstationDmg");
-		} else {
-			console.log("unmatching EPF type", executionItemId);
-		}
-
-		// map
-		let epfMaxDmgStateINCOREId = await getOutputFileJson(datawolfConfig, epfMaxDmgStateId);
-		let hazardId = executionItem["parameters"][datawolfConfig["parameters"]["hazardId"]];
-		let hazardMetadata = await getHazardMetadata(globalConfig, hazardId);
-		let hazardDatasetId = hazardMetadata["datasetId"];
-		const layerDef = [
-			{
-				"layerId": epfMaxDmgStateINCOREId,
-				"layerStyles": "incore:epf-dmg-summary",
-				"title": `EPF Damage (${type})`,
-				"opacity": 1
-			},
-			{
-				"layerId": hazardDatasetId,
-				"layerStyles": "incore:tornado",
-				"title": "Tornado",
-				"opacity": 0.3
-			}
-		];
-		handleLayerUpdate(layerDef);
-
-		// open preview
-		setPreviewOn(true);
-	};
 	const downloadEpfDmg = async (executionItemId, type) => {
 		let executionItem = getExecution(executionItemId);
 		setSelectedExecutionName(executionItem["title"]);
@@ -322,10 +161,10 @@ export default function ViewResult(props) {
 		let epfMaxDmgStateId;
 		if (type === "pole") {
 			epfMaxDmgStateId = executionItem["datasets"][datawolfConfig["datasets"]["epfPoleMaxDmgStateId"]];
-			setResultType("epfPoleDmg");
+			setWidgetName("epfPoleDmg");
 		} else if (type === "substation") {
 			epfMaxDmgStateId = executionItem["datasets"][datawolfConfig["datasets"]["epfSubstationMaxDmgStateId"]];
-			setResultType("epfSubstationDmg");
+			setWidgetName("epfSubstationDmg");
 		} else {
 			console.log("unmatching EPF type", executionItemId);
 		}
@@ -357,7 +196,7 @@ export default function ViewResult(props) {
 		handleLayerUpdate(layerDef);
 
 		// set preview type
-		setResultType("interD");
+		setWidgetName("interD");
 
 		// open preview
 		setPreviewOn(true);
@@ -430,64 +269,19 @@ export default function ViewResult(props) {
 		};
 	};
 
-	const previewPopDisl = async (executionItemId) => {
-
-		let executionItem = getExecution(executionItemId);
-		setSelectedExecutionName(executionItem["title"]);
-
-		// map
-		let bldgMaxDamageStateId = executionItem["datasets"][datawolfConfig["datasets"]["bldgMaxDamageStateId"]];
-		let bldgMaxDamageStateINCOREId = await getOutputFileJson(datawolfConfig, bldgMaxDamageStateId);
-
-		let popDislId = executionItem["datasets"][datawolfConfig["datasets"]["popdislHeatmapId"]];
-		let popDislINCOREId = await getOutputFileJson(datawolfConfig, popDislId);
-
-		let hazardId = executionItem["parameters"][datawolfConfig["parameters"]["hazardId"]];
-		let hazardMetadata = await getHazardMetadata(globalConfig, hazardId);
-		let hazardDatasetId = hazardMetadata["datasetId"];
-
-		const layerDef = [
-			{
-				"layerId": bldgMaxDamageStateINCOREId,
-				"layerStyles": "incore:building",
-				"title": "Building Inventory",
-				"opacity": 1
-			},
-			{
-				"layerId": popDislINCOREId,
-				"layerStyles": "incore:heatmap",
-				"title": "Population Dislocation Heatmap",
-				"opacity": 0.8
-			},
-			{
-				"layerId": hazardDatasetId,
-				"layerStyles": "incore:tornado",
-				"title": "Tornado",
-				"opacity": 0.3
-			},
-		];
-		handleLayerUpdate(layerDef);
-
-		let popDislJson = await getPopDislJson(executionItemId);
-		setTables(popDislJson);
-		setResultType("popdisl");
-		setPreviewOn(true);  //open preview
-	};
-
 	const downloadPopDisl = async (executionItemId) => {
 		let popDislJson = await getPopDislJson(executionItemId);
 		exportJson(popDislJson, `population-dislocation-${executionItemId}`);
 	};
 
-	const preview = (executionId, resultType) => {
+	const preview = (executionId, widgetName) => {
 		const selectedExecutionItem = getExecution(executionId);
 		setSelectedExecutionItem(selectedExecutionItem);
-		setResultType(resultType);
-		setSelectedExecutionId(executionId);
+		setWidgetName(widgetName);
 
-		// group output items belongs to that resultType/widget type
+		// group output items belongs to that widgetName/widget type
 		setDatawolfDatasetConfigItems(datawolfWorkflowConfig.outputs.datasets[0].datasetsMap.reduce((list, item) => {
-			if (resultType === "ResilienceMetrics"){
+			if (widgetName === "ResilienceMetrics"){
 				if (item.datasets.widget === "CGE" || item.datasets.widget === "PopDislocation"
 					|| item.datasets.widget === "BldgFunctionality"){
 					return [...list, item];
@@ -497,7 +291,7 @@ export default function ViewResult(props) {
 				}
 			}
 			else{
-				if (item.datasets.widget === resultType){
+				if (item.datasets.widget === widgetName){
 					return [...list, item];
 				}
 				else{
@@ -514,7 +308,6 @@ export default function ViewResult(props) {
 				setHazardDatasetId(hazardMetadata["datasetId"]);
 			}
 		}));
-
 
 		// dialog on
 		setPreviewOn(true);
@@ -555,7 +348,7 @@ export default function ViewResult(props) {
 			{
 				// TODO this condition can be modified
 				(()=>{
-					if (resultType === "ResilienceMetrics"){
+					if (widgetName === "ResilienceMetrics"){
 						return (<ResilienceMetrics executionItem={selectedExecutionItem}
 												   getExecution={getExecution}
 												   previewOn={previewOn}
@@ -564,7 +357,7 @@ export default function ViewResult(props) {
 						/>);
 					}
 					// TODO
-					else if (resultType === "interD") {
+					else if (widgetName === "interD") {
 						return (<Interdependency executionName={selectedExecutionName}
 							title="Interdependent Network of Building and Electric Power Facility"
 							previewOn={previewOn}
@@ -574,7 +367,7 @@ export default function ViewResult(props) {
 							setMap={setMap}
 						/>);
 					}
-					else if (resultType === "BldgDamage") {
+					else if (widgetName === "BldgDamage") {
 						return (<BldgDamage
 							executionItem={selectedExecutionItem}
 							getExecution={getExecution}
@@ -585,69 +378,67 @@ export default function ViewResult(props) {
 							hazardDatasetId={hazardDatasetId}
 						/>);
 					}
-					else if (resultType === "epfPoleDmg") {
+					else if (widgetName === "PoleDamage") {
 						return (
-							<EpfDamage title="EPF Pole Damage" executionName={selectedExecutionName}
-									   previewOn={previewOn}
-									   handlePreviewClose={handlePreviewClose}
-									   layers={layers}
-									   map={map}
-									   setMap={setMap}
+							<PoleDamage
+								executionItem={selectedExecutionItem}
+								getExecution={getExecution}
+								previewOn={previewOn}
+								handlePreviewClose={handlePreviewClose}
+								datawolfDatasetConfigItems={datawolfDatasetConfigItems}
+								setMap={setMap}
+								hazardDatasetId={hazardDatasetId}
 							/>);
 					}
-					else if (resultType === "epfSubstationDmg") {
+					else if (widgetName === "SubstationDamage") {
 						return (
-							<EpfDamage title="EPF Substation Damage" executionName={selectedExecutionName}
-									   previewOn={previewOn}
-									   handlePreviewClose={handlePreviewClose}
-									   layers={layers}
-									   map={map}
-									   setMap={setMap}
+							<SubstationDamage
+								executionItem={selectedExecutionItem}
+								getExecution={getExecution}
+								previewOn={previewOn}
+								handlePreviewClose={handlePreviewClose}
+								datawolfDatasetConfigItems={datawolfDatasetConfigItems}
+								setMap={setMap}
+								hazardDatasetId={hazardDatasetId}
 							/>);
 					}
-					else if (resultType === "bldgMCS") {
-						return (<BldgFunctionality executionName={selectedExecutionName}
-							title="Building Functionality without Interdependency"
+					else if (widgetName === "BldgMCS") {
+						return (<BldgMCS
+							executionItem={selectedExecutionItem}
+							getExecution={getExecution}
 							previewOn={previewOn}
 							handlePreviewClose={handlePreviewClose}
-							runtime={runtime}
-							barCharts={barCharts}
-							layers={layers}
-							tables={tables}
-							map={map}
+							datawolfDatasetConfigItems={datawolfDatasetConfigItems}
 							setMap={setMap}
+							hazardDatasetId={hazardDatasetId}
 						/>);
 					}
-					else if (resultType === "bldgFunc") {
-						return (<BldgFunctionality executionName={selectedExecutionName}
-							title="Building Functionality with Interdependency"
+					else if (widgetName === "BldgFunctionality") {
+						return (<BldgFunctionality
+							executionItem={selectedExecutionItem}
+							getExecution={getExecution}
 							previewOn={previewOn}
 							handlePreviewClose={handlePreviewClose}
-							runtime={runtime}
-							barCharts={barCharts}
-							layers={layers}
-							tables={tables}
-							map={map}
+							datawolfDatasetConfigItems={datawolfDatasetConfigItems}
 							setMap={setMap}
+							hazardDatasetId={hazardDatasetId}
 						/>);
 					}
-					else if (resultType === "CGE") {
-						return (
-							<CGE executionItem={selectedExecutionItem}
+					else if (widgetName === "CGE") {
+						return (<CGE executionItem={selectedExecutionItem}
 								 getExecution={getExecution}
 								 previewOn={previewOn}
 								 handlePreviewClose={handlePreviewClose}
 								 datawolfDatasetConfigItems={datawolfDatasetConfigItems} />);
 					}
-					else if (resultType === "popdisl") {
-						return (<PopDislocation executionName={selectedExecutionName}
-							title="Population Dislocation Results"
+					else if (widgetName === "PopDislocation") {
+						return (<PopDislocation executionItem={selectedExecutionItem}
+							getExecution={getExecution}
 							previewOn={previewOn}
 							handlePreviewClose={handlePreviewClose}
-							layers={layers}
-							map={map}
+							datawolfDatasetConfigItems={datawolfDatasetConfigItems}
 							setMap={setMap}
-							tables={tables}
+							hazardDatasetId={hazardDatasetId}
 						/>);
 					}
 					else{

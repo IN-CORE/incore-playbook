@@ -1,4 +1,4 @@
-import {Box, Container, Dialog, DialogContent, Grid, IconButton, Tab, Tabs, Typography} from "@material-ui/core";
+import {Box, Dialog, DialogContent, IconButton, Tab, Tabs, Typography} from "@material-ui/core";
 import CloseIcon from "@material-ui/icons/Close";
 import {DislocationResultsTable} from "../table/DislocationResultsTable";
 import {HuaResultsTable} from "../table/HuaResultsTable";
@@ -6,10 +6,8 @@ import React, {useEffect, useState} from "react";
 import {CgeResultsTable} from "../table/CgeResultsTable";
 import {FunctionalityTable} from "../table/FunctionalityTable";
 import {makeStyles} from "@material-ui/core/styles";
-import {getOutputFileContentJSON, getOutputFileJson} from "../../../utils/datawolf";
+import {getOutputFileContentJSON} from "../../../utils/datawolf";
 import {useSelector} from "react-redux";
-import {UPDATE_MAP_CONFIG} from "../../../actions/config";
-import {datawolfConfig as defaultDatawolfConfig} from "../../../datawolf.config";
 
 const useStyles = makeStyles({
 	tableEntry:{
