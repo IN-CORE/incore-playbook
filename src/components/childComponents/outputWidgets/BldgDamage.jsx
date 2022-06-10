@@ -8,14 +8,13 @@ import {StackedResult} from "../graph/StackedResult";
 import {ResultTable} from "../table/ResultTable";
 import {useSelector} from "react-redux";
 import {applyTransform} from "ol/extent";
-import {getOutputFileContent, getOutputFileContentJSON, getOutputFileJson} from "../../../utils/datawolf";
+import {getOutputFileContent, getOutputFileContentJSON} from "../../../utils/datawolf";
 import {getHazardMetadata} from "../../../utils/hazard";
-import {handleLayerUpdate} from "../../../utils/map";
+import {basicLayers, handleLayerUpdate} from "../../../utils/map";
 
 export default function BldgDamage(props) {
 
 	let {selectedExecutionId, getExecution, previewOn, handlePreviewClose, datawolfDatasetConfigItems, setMap, hazardId} = props;
-	// let {selectedExecutionName, title, previewOn, handlePreviewClose, runtime, barCharts, layers, tables, setMap} = props;
 
 	const mapConfig = useSelector((state) => state.config.mapConfig);
 	const datawolfConfig = useSelector((state) => state.config.datawolfConfig);
@@ -23,10 +22,9 @@ export default function BldgDamage(props) {
 
 	const [selectedExecutionName, setSelectedExecutionName] = useState("");
 	const [runtime, setRuntime] = useState(null);
-	const [layers, setLayers] = useState([]);
-
+	const [layers, setLayers] = useState(basicLayers);
 	const [bldgDmgSummaryTableContent, setBldgDmgSummaryTableContent] = useState(null);
-	const [bldgMaxDamageStateINCOREId, setBldgMaxDamageStateINCOREId] = useState(null);
+	// const [bldgMaxDamageStateINCOREId, setBldgMaxDamageStateINCOREId] = useState(null);
 	const [hazardMetadata, setHazardMetadata] = useState();
 
 	useEffect(() => {
@@ -39,7 +37,22 @@ export default function BldgDamage(props) {
 		datawolfDatasetConfigItems.map(async (datawolfDatasetConfigItem) => {
 			const vName = datawolfDatasetConfigItem.datasets.variableName;
 			if (vName === "bldgMaxDamageStateINCOREId") {
-				setBldgMaxDamageStateINCOREId(await getOutputFileContent(datawolfConfig, executionItem, datawolfDatasetConfigItem.datasetId));
+				const bldgMaxDamageStateINCOREId = await getOutputFileContent(datawolfConfig, executionItem, datawolfDatasetConfigItem.datasetId);
+				const layerDef = [
+					{
+						"layerId": bldgMaxDamageStateINCOREId,
+						"layerStyles": "incore:bldg-dmg-summary",
+						"title": "Building Damage",
+						"opacity": 1
+					},
+					// {
+					// 	"layerId": hazardDatasetId,
+					// 	"layerStyles": "incore:tornado",
+					// 	"title": "Tornado",
+					// 	"opacity": 0.3
+					// }
+				];
+				setLayers(handleLayerUpdate(globalConfig, layerDef));
 			}
 			else if (vName === "bldgDmgSummaryTableContent") {
 				setBldgDmgSummaryTableContent(await getOutputFileContentJSON(datawolfConfig, executionItem, datawolfDatasetConfigItem.datasetId));
@@ -52,27 +65,27 @@ export default function BldgDamage(props) {
 	}, []);
 
 
-	useEffect(() => {
-		// let hazardId = executionItem["parameters"][datawolfConfig["parameters"]["hazardId"]];
-		// let hazardMetadata = await getHazardMetadata(globalConfig, hazardId);
-		// let hazardDatasetId = hazardMetadata["datasetId"];
-		// for map
-		const layerDef = [
-			{
-				"layerId": bldgMaxDamageStateINCOREId,
-				"layerStyles": "incore:bldg-dmg-summary",
-				"title": "Building Damage",
-				"opacity": 1
-			},
-			// {
-			// 	"layerId": hazardDatasetId,
-			// 	"layerStyles": "incore:tornado",
-			// 	"title": "Tornado",
-			// 	"opacity": 0.3
-			// }
-		];
-		setLayers(handleLayerUpdate(globalConfig, layerDef));
-	}, [bldgMaxDamageStateINCOREId]);
+	// useEffect(() => {
+	// 	// let hazardId = executionItem["parameters"][datawolfConfig["parameters"]["hazardId"]];
+	// 	// let hazardMetadata = await getHazardMetadata(globalConfig, hazardId);
+	// 	// let hazardDatasetId = hazardMetadata["datasetId"];
+	// 	// for map
+	// 	const layerDef = [
+	// 		{
+	// 			"layerId": bldgMaxDamageStateINCOREId,
+	// 			"layerStyles": "incore:bldg-dmg-summary",
+	// 			"title": "Building Damage",
+	// 			"opacity": 1
+	// 		},
+	// 		// {
+	// 		// 	"layerId": hazardDatasetId,
+	// 		// 	"layerStyles": "incore:tornado",
+	// 		// 	"title": "Tornado",
+	// 		// 	"opacity": 0.3
+	// 		// }
+	// 	];
+	//
+	// }, [bldgMaxDamageStateINCOREId]);
 
 	return (
 		<Dialog open={previewOn} onClose={handlePreviewClose} maxWidth="lg" fullWidth scroll="paper">

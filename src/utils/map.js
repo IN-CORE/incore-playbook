@@ -7,35 +7,7 @@ import OSM, {ATTRIBUTION as OSM_ATTRIBUTION} from "ol/source/OSM";
 
 export const handleLayerUpdate = (globalConfig=defaultGlobalConfig, layerDef) => {
 
-	const layers = {
-		basemaps: new GroupLayer({
-			title: "Base Maps",
-			layers: [
-				new TileLayer({
-					type: "base",
-					visible: true,
-					title: "Carto",
-					source: new XYZ({
-						url: "https://{a-d}.basemaps.cartocdn.com/rastertiles/light_all/{z}/{x}/{y}.png",
-						attributions: [
-							"&#169; <a href=\"https://www.carto.com\">Carto</a>,",
-							OSM_ATTRIBUTION
-						]
-					})
-				}),
-				new TileLayer({
-					type: "base",
-					visible: false,
-					title: "OSM",
-					source: new OSM()
-				}),
-			]
-		}),
-		tilelayer: new GroupLayer({
-			title: "Damage",
-			layers: []
-		})
-	};
+	const layers = basicLayers;
 
 	const inputLayers = [];
 
@@ -64,4 +36,34 @@ export const handleLayerUpdate = (globalConfig=defaultGlobalConfig, layerDef) =>
 	});
 
 	return layers;
+};
+
+export const basicLayers = {
+	basemaps: new GroupLayer({
+		title: "Base Maps",
+		layers: [
+			new TileLayer({
+				type: "base",
+				visible: true,
+				title: "Carto",
+				source: new XYZ({
+					url: "https://{a-d}.basemaps.cartocdn.com/rastertiles/light_all/{z}/{x}/{y}.png",
+					attributions: [
+						"&#169; <a href=\"https://www.carto.com\">Carto</a>,",
+						OSM_ATTRIBUTION
+					]
+				})
+			}),
+			new TileLayer({
+				type: "base",
+				visible: false,
+				title: "OSM",
+				source: new OSM()
+			}),
+		]
+	}),
+	tilelayer: new GroupLayer({
+		title: "Damage",
+		layers: []
+	})
 };
