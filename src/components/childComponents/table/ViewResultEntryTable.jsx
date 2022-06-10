@@ -260,62 +260,77 @@ export function ViewResultEntryTable(props) {
 												}
 												{/*interdependency network*/}
 												{
-													widgetList.includes("EpfDamage") ?
-														<>
-															<TableRow className={classes.subBodyRow}
-																	  key={`${execution["id"]}-interdependency`}>
-																<TableCell key={`${execution["id"]}-interdependency-title`}>Interdependency</TableCell>
-																<TableCell colSpan={3} key={`${execution["id"]}-interdependency-1`}/>
-																<TableCell colSpan={2} key={`${execution["id"]}-interdependency-2`}>
-																	<Link color="primary" onClick={() => {preview(execution["id"], "Interdependency");}}
-																		  className={execution["finalStatus"] === undefined ||
-																		  execution["finalStatus"] === "FINISHED" ?
-																			  classes.clickableLink : classes.clickableLinkDisabled}>
-																		View
-																	</Link>
-																	<Link color="primary" className={classes.clickableLinkDisabled}>
-																		Download
-																	</Link>
-																</TableCell>
-															</TableRow>
-															{/*EPF damage*/}
-															<TableRow className={classes.subBodyRow}
-																	  key={`${execution["id"]}-epf-pole`}>
-																<TableCell key={`${execution["id"]}-epf-pole-title`}>Pole Damage (Electrical Power Network)</TableCell>
-																<TableCell colSpan={3} key={`${execution["id"]}-epf-pole-1`}/>
-																<TableCell colSpan={2} key={`${execution["id"]}-epf-pole-2`}>
-																	<Link color="primary" onClick={() =>
-																	{preview(execution["id"], "EpfDamage");}}
-																		  className={execution["finalStatus"] === undefined ||
-																		  execution["finalStatus"] === "FINISHED" ?
-																			  classes.clickableLink : classes.clickableLinkDisabled}>
-																		View
-																	</Link>
-																	<Link color="primary" onClick={() => {downloadEpfDmg(execution["id"], "pole");}}
-																		  className={execution["finalStatus"] === undefined ||
-																		  execution["finalStatus"] === "FINISHED" ?
-																			  classes.clickableLink : classes.clickableLinkDisabled}>Download</Link>
-																</TableCell>
-															</TableRow>
-															<TableRow className={classes.subBodyRow}
+													widgetList.includes("PoleDamage") && widgetList.includes("SubstationDamage") ?
+														<TableRow className={classes.subBodyRow}
+																  key={`${execution["id"]}-interdependency`}>
+															<TableCell
+																key={`${execution["id"]}-interdependency-title`}>Interdependency</TableCell>
+															<TableCell colSpan={3}
+																	   key={`${execution["id"]}-interdependency-1`}/>
+															<TableCell colSpan={2}
+																	   key={`${execution["id"]}-interdependency-2`}>
+																<Link color="primary"
+																	  onClick={() => {preview(execution["id"], "Interdependency");}}
+																	  className={execution["finalStatus"] === undefined ||
+																	  execution["finalStatus"] === "FINISHED" ?
+																		  classes.clickableLink : classes.clickableLinkDisabled}>
+																	View
+																</Link>
+																<Link color="primary"
+																	  className={classes.clickableLinkDisabled}>
+																	Download
+																</Link>
+															</TableCell>
+														</TableRow>
+														:<></>
+												}
+												{/*EPF damage*/}
+												{
+													widgetList.includes("PoleDamage") ?
+														<TableRow className={classes.subBodyRow}
+																  key={`${execution["id"]}-epf-pole`}>
+															<TableCell key={`${execution["id"]}-epf-pole-title`}>Pole
+																Damage (Electrical Power Network)</TableCell>
+															<TableCell colSpan={3}
+																	   key={`${execution["id"]}-epf-pole-1`}/>
+															<TableCell colSpan={2}
+																	   key={`${execution["id"]}-epf-pole-2`}>
+																<Link color="primary"
+																	  onClick={() => {preview(execution["id"], "PoleDamage");}}
+																	  className={execution["finalStatus"] === undefined ||
+																	  execution["finalStatus"] === "FINISHED" ?
+																		  classes.clickableLink : classes.clickableLinkDisabled}>
+																	View
+																</Link>
+																<Link color="primary"
+																	  onClick={() => {downloadEpfDmg(execution["id"], "pole");}}
+																	  className={execution["finalStatus"] === undefined ||
+																	  execution["finalStatus"] === "FINISHED" ?
+																		  classes.clickableLink : classes.clickableLinkDisabled}>Download</Link>
+															</TableCell>
+														</TableRow>
+														: <></>
+												}
+												{
+													widgetList.includes("SubstationDamage") ?
+														<TableRow className={classes.subBodyRow}
 																	  key={`${execution["id"]}-epf-substation`}>
-																<TableCell key={`${execution["id"]}-epf-substation-title`}>Substation Damage (Electrical Power Network)</TableCell>
-																<TableCell colSpan={3} key={`${execution["id"]}-epf-substation-1`}/>
-																<TableCell colSpan={2} key={`${execution["id"]}-epf-substation-2`}>
-																	<Link color="primary" onClick={() =>
-																	{preview(execution["id"], "EpfDamage");}}
+															<TableCell key={`${execution["id"]}-epf-substation-title`}>Substation Damage (Electrical Power Network)</TableCell>
+															<TableCell colSpan={3} key={`${execution["id"]}-epf-substation-1`}/>
+															<TableCell colSpan={2} key={`${execution["id"]}-epf-substation-2`}>
+																<Link color="primary" onClick={() =>
+																{preview(execution["id"], "SubstationDamage");}}
 																		  className={execution["finalStatus"] === undefined ||
 																		  execution["finalStatus"] === "FINISHED" ?
 																			  classes.clickableLink : classes.clickableLinkDisabled}>
 																		View
-																	</Link>
-																	<Link color="primary" onClick={() => {downloadEpfDmg(execution["id"], "substation");}}
+																</Link>
+																<Link color="primary" onClick={() => {downloadEpfDmg(execution["id"], "substation");}}
 																		  className={execution["finalStatus"] === undefined ||
 																		  execution["finalStatus"] === "FINISHED" ?
 																			  classes.clickableLink : classes.clickableLinkDisabled}>Download</Link>
-																</TableCell>
-															</TableRow>
-														</>
+															</TableCell>
+														</TableRow>
 														:<></>
 												}
 												{/*building damage*/}
