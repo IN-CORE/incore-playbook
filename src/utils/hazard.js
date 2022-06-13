@@ -75,7 +75,7 @@ export async function getHazardMetadata(globalConfig=defaultGlobalConfig, hazard
 	let endpoint = `${globalConfig.hazardServiceBase}${hazardType}/${hazardId}`;
 	let hazardRequest = await fetch(endpoint, {mode: "cors", headers: getHeader()});
 	if (hazardRequest.status === 200) {
-		return hazardRequest.json();
+		return await hazardRequest.json();
 
 	} else if (hazardRequest.status === 401) {
 		// TODO handle error

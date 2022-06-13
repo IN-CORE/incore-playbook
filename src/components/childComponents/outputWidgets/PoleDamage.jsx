@@ -31,7 +31,7 @@ export default function PoleDamage(props){
 					{
 						"layerId": epfMaxDmgStateINCOREId,
 						"layerStyles": "incore:epf-dmg-summary",
-						"title": `EPF Damage (Pole)`,
+						"title": "EPF Damage (Pole)",
 						"opacity": 1
 					},
 					{

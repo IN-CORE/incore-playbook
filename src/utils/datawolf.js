@@ -142,17 +142,3 @@ export const getOutputFileContent = async (datawolfConfig = defaultDatawolfConfi
 	let incoreId = executionItem["datasets"][dwDatasetId];
 	return await getOutputFileJson(datawolfConfig, incoreId);
 };
-
-export const getOutputHazardMetadata = async (datawolfWorkflowConfig = defaultDatawolfWorkflowConfig, executionItem, globalConfig=defaultGlobalConfig ) => {
-	datawolfWorkflowConfig.inputs.parameters[0].parametersMap(item =>{
-		if (item.parameters.variableName === "hazardId"){
-			let hazardId = executionItem["parameters"][item.paramId];
-		}
-
-		if (item.parameters.variableName === "hazardType"){
-			let hazardType = executionItem["parameters"][item.paramId];
-		}
-	});
-
-	return await getHazardMetadata(globalConfig, hazardType, hazardId);
-};

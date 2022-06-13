@@ -23,6 +23,7 @@ import CGE from "./outputWidgets/CGE";
 import PopDislocation from "./outputWidgets/PopDislocation";
 import ResilienceMetrics from "./outputWidgets/ResilienceMetrics";
 import SubstationDamage from "./outputWidgets/SubstationDamage";
+import {globals as defaultGlobalConfig} from "../../globals";
 
 
 const useStyles = makeStyles({
@@ -271,13 +272,14 @@ export default function ViewResult(props) {
 		}, []));
 
 		// get hazard id params
-		setHazardDatasetId(datawolfWorkflowConfig.inputs.parameters[0].parametersMap.filter(async item => {
+		datawolfWorkflowConfig.inputs.parameters[0].parametersMap.filter(async item => {
 			if (item.parameters.variableName === "selectedHazardId") {
 				let hazardId = selectedExecutionItem["parameters"][item.paramId];
-				let hazardMetadata = await getHazardMetadata(globalConfig, hazardId);
+				// todo ned to extract hazard type
+				let hazardMetadata = await getHazardMetadata(globalConfig, "tornadoes", hazardId);
 				setHazardDatasetId(hazardMetadata["datasetId"]);
 			}
-		}));
+		});
 
 		// dialog on
 		setPreviewOn(true);
@@ -302,14 +304,12 @@ export default function ViewResult(props) {
 					<ViewResultEntryTable fieldNames={fieldNames}
 										  executions={executionEntries}
 										  preview={preview}
-										  // previewMetrics={previewMetrics}
-										  // previewBldgDmg={previewBldgDmg} downloadBldgDmg={downloadBldgDmg}
-										  // previewEpfDmg={previewEpfDmg} downloadEpfDmg={downloadEpfDmg}
-										  // previewBldgFunc={previewBldgFunc} downloadBldgFunc={downloadBldgFunc}
-										  // previewInterd={previewInterd}
-										  // previewBldgMCS={previewBldgMCS} downloadBldgMCS={downloadBldgMCS}
-										  // previewPopDisl={previewPopDisl} downloadPopDisl={downloadPopDisl}
-										  // previewCGE={previewCGE} downloadCGE={downloadCGE}
+										  // downloadBldgDmg={downloadBldgDmg}
+										  // downloadEpfDmg={downloadEpfDmg}
+										  // downloadBldgFunc={downloadBldgFunc}
+										  // downloadBldgMCS={downloadBldgMCS}
+										  // downloadPopDisl={downloadPopDisl}
+										  // downloadCGE={downloadCGE}
 					/>
 				</Box>
 			</Box>
