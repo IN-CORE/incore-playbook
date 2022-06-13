@@ -1,5 +1,5 @@
 import {globals as defaultGlobalConfig} from "../globals";
-import {dataURItoFile, getHeader, round} from "./common";
+import {dataURItoFile, getHazardTypePlural, getHeader, round} from "./common";
 
 export async function createModelTornado(globalConfig=defaultGlobalConfig, name, description, rating, startLat, startLon, endLat, endLon) {
 	const endpoint = `${globalConfig.hazardServiceBase}tornadoes`;
@@ -73,13 +73,9 @@ export async function createRasterTornado(globalConfig=defaultGlobalConfig, name
 
 export async function getHazardMetadata(globalConfig=defaultGlobalConfig, hazardType, hazardId) {
 	// need to turn hazardType into plura
-	if (hazardType.match(/w*(o|s|sh|ch|x|z)\b/)){
-		hazardType = `${hazardType}es`;
-	}
-	else{
-		hazardType = `${hazardType}s`;
-	}
-	let endpoint = `${globalConfig.hazardServiceBase}${hazardType}/${hazardId}`;
+	const hazardTypePlural = getHazardTypePlural(hazardType);
+
+	let endpoint = `${globalConfig.hazardServiceBase}${hazardTypePlural}/${hazardId}`;
 	let hazardRequest = await fetch(endpoint, {mode: "cors", headers: getHeader()});
 	if (hazardRequest.status === 200) {
 		return await hazardRequest.json();

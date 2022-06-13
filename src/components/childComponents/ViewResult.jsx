@@ -271,7 +271,7 @@ export default function ViewResult(props) {
 			}
 		}, []));
 
-		// async loop is a hell! get hazard id params
+		// async loop is a hell! get hazard id params and type
 		let hashmap = datawolfWorkflowConfig.inputs.parameters[0].parametersMap.reduce((hashmap, item) => {
 			if (item.parameters.variableName === "selectedHazardId"){
 				return {...hashmap, "hazardId": selectedExecutionItem["parameters"][item.paramId]};
