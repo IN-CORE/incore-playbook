@@ -1,4 +1,4 @@
-import {Box, Container, Dialog, DialogContent, Grid, IconButton, Typography} from "@material-ui/core";
+import {Box, Container, Dialog, DialogActions, DialogContent, Grid, IconButton, Typography} from "@material-ui/core";
 import CloseIcon from "@material-ui/icons/Close";
 import Map from "../map/Map";
 import {fromLonLat, getTransform} from "ol/proj";
@@ -9,6 +9,9 @@ import {useSelector} from "react-redux";
 import {applyTransform} from "ol/extent";
 import {getOutputFileContent, getOutputFileContentJSON} from "../../../utils/datawolf";
 import {basicLayers, handleLayerUpdate} from "../../../utils/map";
+import {exportJson} from "../../../utils/common";
+import {IncoreButtonText} from "../../styledComponents/IncoreButtonText";
+import GetAppIcon from "@material-ui/icons/GetApp";
 
 export default function PopDislocation(props){
 	let {executionItem, previewOn, handlePreviewClose, datawolfDatasetConfigItems, setMap, hazardDatasetId} = props;
@@ -82,6 +85,19 @@ export default function PopDislocation(props){
 		if (layerDef.length === 3) setLayers(handleLayerUpdate(globalConfig, layerDef));
 	}, [layerDef]);
 
+	const download = async () => {
+		const popDislJson = {
+			"totalResultsTable": totalDislTableContent,
+			"huaResultsTable":{
+				"income": dislocationByIncomeContent,
+				"race": dislocationByRaceContent,
+				"tenure": dislocationByTenureContent,
+				"housingType": dislocationByHousingTypeContent
+			}
+		};
+		exportJson(popDislJson, `population-dislocation-${executionItem.id}`);
+	};
+
 	return (
 		<Dialog open={previewOn} onClose={handlePreviewClose} maxWidth="lg" fullWidth scroll="paper">
 			<DialogContent className="previewModal">
@@ -146,6 +162,10 @@ export default function PopDislocation(props){
 					</Grid>
 				</Box>
 			</DialogContent>
+			<DialogActions>
+				<IncoreButtonText onClick={download} startIcon={<GetAppIcon/>}>Download Report</IncoreButtonText>
+				<IncoreButtonText onClick={handlePreviewClose} startIcon={<CloseIcon/>}>Close</IncoreButtonText>
+			</DialogActions>
 		</Dialog>
 	);
 }

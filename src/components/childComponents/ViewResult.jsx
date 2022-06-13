@@ -7,13 +7,8 @@ import SyncIcon from "@material-ui/icons/Sync";
 import FilterListIcon from "@material-ui/icons/FilterList";
 
 import {IncoreInputLabel} from "../styledComponents/IncoreInputLabel";
-
-import {getOutputFileJson} from "../../utils/datawolf";
 import {getHazardMetadata} from "../../utils/hazard";
-import {exportJson} from "../../utils/common";
-
 import {ViewResultEntryTable} from "./table/ViewResultEntryTable";
-import {downloadDataset} from "../../utils/dataset";
 import Interdependency from "./outputWidgets/Interdependency";
 import BldgDamage from "./outputWidgets/BldgDamage";
 import PoleDamage from "./outputWidgets/PoleDamage";
@@ -63,7 +58,6 @@ export default function ViewResult(props) {
 	// states
 	const [numCompleted, setNumCompleted] = useState(0);
 	const [executionEntries, setExecutionEntries] = useState([]);
-	const [selectedExecutionName, setSelectedExecutionName] = useState("");
 	const [selectedExecutionItem, setSelectedExecutionItem] = useState(null);
 	const [widgetName, setWidgetName] = useState(null); // outputWidgets name
 	const [datawolfDatasetConfigItems, setDatawolfDatasetConfigItems] = useState([]);
@@ -145,117 +139,6 @@ export default function ViewResult(props) {
 		return item[0];
 	};
 
-	// const downloadBldgDmg = async (executionItemId) => {
-	// 	let executionItem = getExecution(executionItemId);
-	// 	let bldgMaxDamageStateId = executionItem["datasets"][datawolfConfig["datasets"]["bldgMaxDamageStateId"]];
-	// 	let bldgMaxDamageStateINCOREId = await getOutputFileJson(datawolfConfig, bldgMaxDamageStateId);
-	// 	await downloadDataset(globalConfig, bldgMaxDamageStateINCOREId, "bldg-dmg");
-	// };
-
-	const downloadBldgFunc = async (executionItemId) => {
-		let executionItem = getExecution(executionItemId);
-		let bldgFuncProbId = executionItem["datasets"][datawolfConfig["datasets"]["bldgFuncProbId"]];
-		let bldgFuncProbINCOREId = await getOutputFileJson(datawolfConfig, bldgFuncProbId);
-		await downloadDataset(globalConfig, bldgFuncProbINCOREId, "bldg-func");
-	};
-
-	const downloadBldgMCS = async (executionItemId) => {
-		let executionItem = getExecution(executionItemId);
-		let mcsBldgFailureProbId = executionItem["datasets"][datawolfConfig["datasets"]["mcsBldgFailureProbId"]];
-		let mcsBldgFailureProbINCOREId = await getOutputFileJson(datawolfConfig, mcsBldgFailureProbId);
-		await downloadDataset(globalConfig, mcsBldgFailureProbINCOREId, "bldg-mcs");
-	};
-
-	const downloadEpfDmg = async (executionItemId, type) => {
-		let executionItem = getExecution(executionItemId);
-		setSelectedExecutionName(executionItem["title"]);
-
-		let epfMaxDmgStateId;
-		if (type === "pole") {
-			epfMaxDmgStateId = executionItem["datasets"][datawolfConfig["datasets"]["epfPoleMaxDmgStateId"]];
-			setWidgetName("epfPoleDmg");
-		} else if (type === "substation") {
-			epfMaxDmgStateId = executionItem["datasets"][datawolfConfig["datasets"]["epfSubstationMaxDmgStateId"]];
-			setWidgetName("epfSubstationDmg");
-		} else {
-			console.log("unmatching EPF type", executionItemId);
-		}
-		let epfMaxDmgStateINCOREId = await getOutputFileJson(datawolfConfig, epfMaxDmgStateId);
-		await downloadDataset(globalConfig, epfMaxDmgStateINCOREId, `epf-${type}`);
-	};
-
-	// const getCGEJson = async (executionItemId) => {
-	//
-	// 	let executionItem = getExecution(executionItemId);
-	// 	setSelectedExecutionName(executionItem["title"]);
-	//
-	// 	// cge by total household income
-	// 	let cgeHouseholdIncomeId = executionItem["datasets"][datawolfConfig["datasets"]["cgeHouseholdIncomeId"]];
-	// 	let cgeHouseholdIncome = await getOutputFileJson(datawolfConfig, cgeHouseholdIncomeId);
-	// 	let cgeHouseholdIncomeContent = JSON.parse(cgeHouseholdIncome);
-	//
-	// 	// dislocation group by
-	// 	let cgeDomesticSupplyId = executionItem["datasets"][datawolfConfig["datasets"]["cgeDomesticSupplyId"]];
-	// 	let cgeDomesticSupply = await getOutputFileJson(datawolfConfig, cgeDomesticSupplyId);
-	// 	let cgeDomesticSupplyContent = JSON.parse(cgeDomesticSupply);
-	//
-	// 	let cgeEmploymentId = executionItem["datasets"][datawolfConfig["datasets"]["cgeEmploymentId"]];
-	// 	let cgeEmployment = await getOutputFileJson(datawolfConfig, cgeEmploymentId);
-	// 	let cgeEmploymentContent = JSON.parse(cgeEmployment);
-	//
-	// 	return {
-	// 		"totalHouseholdIncome": cgeHouseholdIncomeContent,
-	// 		"domesticSupply": cgeDomesticSupplyContent,
-	// 		"employment": cgeEmploymentContent
-	// 	};
-	// };
-
-	// const downloadCGE = async (executionItemId) => {
-	// 	let cgeJson = await getCGEJson(executionItemId);
-	// 	exportJson(cgeJson, `cge-${executionItemId}`);
-	// };
-
-	const getPopDislJson = async (executionItemId) => {
-		let executionItem = getExecution(executionItemId);
-
-		// total dislocation
-		let totalDislTableId = executionItem["datasets"][datawolfConfig["datasets"]["totalDislocationId"]];
-		let totalDislTable = await getOutputFileJson(datawolfConfig, totalDislTableId);
-		let totalDislTableIdContent = JSON.parse(totalDislTable);
-
-		// dislocation group by
-		let dislocationByRaceId = executionItem["datasets"][datawolfConfig["datasets"]["dislocationByRaceId"]];
-		let dislocationByRace = await getOutputFileJson(datawolfConfig, dislocationByRaceId);
-		let dislocationByRaceContent = JSON.parse(dislocationByRace);
-
-		let dislocationByTenureId = executionItem["datasets"][datawolfConfig["datasets"]["dislocationByTenureId"]];
-		let dislocationByTenure = await getOutputFileJson(datawolfConfig, dislocationByTenureId);
-		let dislocationByTenureContent = JSON.parse(dislocationByTenure);
-
-		let dislocationByIncomeId = executionItem["datasets"][datawolfConfig["datasets"]["dislocationByIncomeId"]];
-		let dislocationByIncome = await getOutputFileJson(datawolfConfig, dislocationByIncomeId);
-		let dislocationByIncomeContent = JSON.parse(dislocationByIncome);
-
-		let dislocationByHousingTypeId = executionItem["datasets"][datawolfConfig["datasets"]["dislocationByHousingTypeId"]];
-		let dislocationByHousingType = await getOutputFileJson(datawolfConfig, dislocationByHousingTypeId);
-		let dislocationByHousingTypeIdContent = JSON.parse(dislocationByHousingType);
-
-		return {
-			"totalResultsTable": totalDislTableIdContent,
-			"huaResultsTable":{
-				"income": dislocationByIncomeContent,
-				"race": dislocationByRaceContent,
-				"tenure": dislocationByTenureContent,
-				"housingType": dislocationByHousingTypeIdContent
-			}
-		};
-	};
-
-	const downloadPopDisl = async (executionItemId) => {
-		let popDislJson = await getPopDislJson(executionItemId);
-		exportJson(popDislJson, `population-dislocation-${executionItemId}`);
-	};
-
 	// async loop is a hell! get hazard id params and type
 	const _getHazardInfo = (executionItem) => {
 		return datawolfWorkflowConfig.inputs.parameters[0].parametersMap.reduce((hazardInfo, item) => {
@@ -324,12 +207,6 @@ export default function ViewResult(props) {
 					<ViewResultEntryTable fieldNames={fieldNames}
 										  executions={executionEntries}
 										  preview={preview}
-										  // downloadBldgDmg={downloadBldgDmg}
-										  // downloadEpfDmg={downloadEpfDmg}
-										  // downloadBldgFunc={downloadBldgFunc}
-										  // downloadBldgMCS={downloadBldgMCS}
-										  // downloadPopDisl={downloadPopDisl}
-										  // downloadCGE={downloadCGE}
 					/>
 				</Box>
 			</Box>
@@ -352,7 +229,5 @@ export default function ViewResult(props) {
 					:
 					<></>
 			}
-
-
 		</div>);
 }

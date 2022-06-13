@@ -1,4 +1,4 @@
-import {Box, Dialog, DialogContent, IconButton, Tab, Tabs, Typography} from "@material-ui/core";
+import {Box, Dialog, DialogActions, DialogContent, IconButton, Tab, Tabs, Typography} from "@material-ui/core";
 import CloseIcon from "@material-ui/icons/Close";
 import {DislocationResultsTable} from "../table/DislocationResultsTable";
 import {HuaResultsTable} from "../table/HuaResultsTable";
@@ -8,6 +8,8 @@ import {FunctionalityTable} from "../table/FunctionalityTable";
 import {makeStyles} from "@material-ui/core/styles";
 import {getOutputFileContentJSON} from "../../../utils/datawolf";
 import {useSelector} from "react-redux";
+import {IncoreButtonText} from "../../styledComponents/IncoreButtonText";
+import GetAppIcon from "@material-ui/icons/GetApp";
 
 const useStyles = makeStyles({
 	tableEntry:{
@@ -208,6 +210,9 @@ export default function ResilienceMetrics(props){
 					}
 				</div>
 			</DialogContent>
+			<DialogActions>
+				<IncoreButtonText onClick={handlePreviewClose} startIcon={<CloseIcon/>}>Close</IncoreButtonText>
+			</DialogActions>
 		</Dialog>
 	);
 }

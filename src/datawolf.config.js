@@ -352,7 +352,7 @@ const datawolfWorkflowConfig =
 						"datasets": {
 							"step": "Joplin VSAM Nov 2021",
 							"title": "Building funcionality probability layer ID",
-							"variableName":"mcsBldgFailureProbINCOREId",
+							"variableName":"bldgFuncProbINCOREId",
 							"widget": "BldgFunctionality",
 						}
 					},

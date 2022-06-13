@@ -1,4 +1,4 @@
-import {Box, Container, Dialog, DialogContent, IconButton, Typography} from "@material-ui/core";
+import {Box, Container, Dialog, DialogActions, DialogContent, IconButton, Typography} from "@material-ui/core";
 import CloseIcon from "@material-ui/icons/Close";
 import Map from "../map/Map";
 import {fromLonLat, getTransform} from "ol/proj";
@@ -7,6 +7,9 @@ import {useSelector} from "react-redux";
 import {applyTransform} from "ol/extent";
 import {getOutputFileContent} from "../../../utils/datawolf";
 import {basicLayers, handleLayerUpdate} from "../../../utils/map";
+import {IncoreButtonText} from "../../styledComponents/IncoreButtonText";
+import GetAppIcon from "@material-ui/icons/GetApp";
+import {downloadDataset} from "../../../utils/dataset";
 
 
 export default function SubstationDamage(props){
@@ -19,6 +22,7 @@ export default function SubstationDamage(props){
 
 	const [selectedExecutionName, setSelectedExecutionName] = useState("");
 	const [layers, setLayers] = useState(basicLayers);
+	const [substationMaxDmgStateINCOREId, setSubstationMaxDmgStateINCOREId] = useState(null);
 
 	useEffect(() => {
 		setSelectedExecutionName(executionItem["title"]);
@@ -27,6 +31,7 @@ export default function SubstationDamage(props){
 			const vName = datawolfDatasetConfigItem.datasets.variableName;
 			if (vName === "substationMaxDmgStateINCOREId") {
 				const substationMaxDmgStateINCOREId = await getOutputFileContent(datawolfConfig, executionItem, datawolfDatasetConfigItem.datasetId);
+				setSubstationMaxDmgStateINCOREId(substationMaxDmgStateINCOREId);
 				const layerDef = [
 					{
 						"layerId": substationMaxDmgStateINCOREId,
@@ -45,6 +50,10 @@ export default function SubstationDamage(props){
 			}
 		});
 	}, []);
+
+	const download = async () => {
+		if (substationMaxDmgStateINCOREId) await downloadDataset(globalConfig, substationMaxDmgStateINCOREId, "epf-substation");
+	};
 
 	return (
 		<Dialog open={previewOn} onClose={handlePreviewClose} maxWidth="lg" fullWidth scroll="paper">
@@ -75,6 +84,10 @@ export default function SubstationDamage(props){
 					/>
 				</Container>
 			</DialogContent>
+			<DialogActions>
+				<IncoreButtonText onClick={download} startIcon={<GetAppIcon/>}>Download Report</IncoreButtonText>
+				<IncoreButtonText onClick={handlePreviewClose} startIcon={<CloseIcon/>}>Close</IncoreButtonText>
+			</DialogActions>
 		</Dialog>
 	);
 }

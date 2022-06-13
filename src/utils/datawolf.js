@@ -1,8 +1,6 @@
 import {getHeader, getCurrUserEmail, getIncoreTokenFile} from "./common";
-import {globals as defaultGlobalConfig} from "../globals";
 import {datawolfConfig as defaultDatawolfConfig} from "../datawolf.config.js";
 import {datawolfWorkflowConfig as defaultDatawolfWorkflowConfig} from "../datawolf.config.js";
-import {getHazardMetadata} from "./hazard";
 
 export async function getOutputFileJson(datawolfConfig=defaultDatawolfConfig, datasetId, outputFileName = null) {
 	let authHeader = getHeader();

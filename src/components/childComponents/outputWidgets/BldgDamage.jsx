@@ -1,4 +1,14 @@
-import {Box, Container, Dialog, DialogContent, Divider, Grid, IconButton, Typography} from "@material-ui/core";
+import {
+	Box,
+	Container,
+	Dialog,
+	DialogContent,
+	Divider,
+	Grid,
+	IconButton,
+	Typography,
+	DialogActions
+} from "@material-ui/core";
 import CloseIcon from "@material-ui/icons/Close";
 import Map from "../map/Map";
 import {fromLonLat, getTransform} from "ol/proj";
@@ -10,6 +20,9 @@ import {useSelector} from "react-redux";
 import {applyTransform} from "ol/extent";
 import {getOutputFileContent, getOutputFileContentJSON} from "../../../utils/datawolf";
 import {basicLayers, handleLayerUpdate} from "../../../utils/map";
+import {downloadDataset} from "../../../utils/dataset";
+import GetAppIcon from "@material-ui/icons/GetApp";
+import {IncoreButtonText} from "../../styledComponents/IncoreButtonText";
 
 export default function BldgDamage(props) {
 
@@ -23,6 +36,7 @@ export default function BldgDamage(props) {
 	const [runtime, setRuntime] = useState(null);
 	const [layers, setLayers] = useState(basicLayers);
 	const [bldgDmgSummaryTableContent, setBldgDmgSummaryTableContent] = useState(null);
+	const [bldgMaxDamageStateINCOREId, setBldgMaxDamageStateINCOREId] = useState(null);
 
 	useEffect(() => {
 		setSelectedExecutionName(executionItem["title"]);
@@ -34,6 +48,7 @@ export default function BldgDamage(props) {
 			const vName = datawolfDatasetConfigItem.datasets.variableName;
 			if (vName === "bldgMaxDamageStateINCOREId") {
 				const bldgMaxDamageStateINCOREId = await getOutputFileContent(datawolfConfig, executionItem, datawolfDatasetConfigItem.datasetId);
+				setBldgMaxDamageStateINCOREId(bldgMaxDamageStateINCOREId);
 				const layerDef = [
 					{
 						"layerId": bldgMaxDamageStateINCOREId,
@@ -55,6 +70,10 @@ export default function BldgDamage(props) {
 			}
 		});
 	}, []);
+
+	const download = async () => {
+		if (bldgMaxDamageStateINCOREId) await downloadDataset(globalConfig, bldgMaxDamageStateINCOREId, "bldg-dmg");
+	};
 
 	return (
 		<Dialog open={previewOn} onClose={handlePreviewClose} maxWidth="lg" fullWidth scroll="paper">
@@ -126,6 +145,10 @@ export default function BldgDamage(props) {
 						:<></>
 				}
 			</DialogContent>
+			<DialogActions>
+				<IncoreButtonText onClick={download} startIcon={<GetAppIcon/>}>Download Report</IncoreButtonText>
+				<IncoreButtonText onClick={handlePreviewClose} startIcon={<CloseIcon/>}>Close</IncoreButtonText>
+			</DialogActions>
 		</Dialog>
 
 	);

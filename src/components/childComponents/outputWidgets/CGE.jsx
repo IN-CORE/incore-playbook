@@ -1,4 +1,4 @@
-import {Box, Dialog, DialogContent, Grid, IconButton, Typography} from "@material-ui/core";
+import {Box, Dialog, DialogActions, DialogContent, Grid, IconButton, Typography} from "@material-ui/core";
 import CloseIcon from "@material-ui/icons/Close";
 import CGEBarChart from "../graph/CGEBarChart";
 import {CgeResultsTable} from "../table/CgeResultsTable";
@@ -7,9 +7,12 @@ import React, {useEffect, useState} from "react";
 import {IncoreMenuItem, IncoreSelectBox} from "../../styledComponents/IncoreSelect";
 import {getOutputFileContentJSON} from "../../../utils/datawolf";
 import {useSelector} from "react-redux";
+import {exportJson} from "../../../utils/common";
+import {IncoreButtonText} from "../../styledComponents/IncoreButtonText";
+import GetAppIcon from "@material-ui/icons/GetApp";
 
 export default function CGE(props) {
-	let {executionItem, getExecution, previewOn, handlePreviewClose, datawolfDatasetConfigItems} = props;
+	let {executionItem, previewOn, handlePreviewClose, datawolfDatasetConfigItems} = props;
 
 	const datawolfConfig = useSelector((state) => state.config.datawolfConfig);
 
@@ -35,6 +38,17 @@ export default function CGE(props) {
 			}
 		});
 	}, []);
+
+	const download = async () => {
+		if (cgeHouseholdIncomeContent && cgeDomesticSupplyContent && cgeEmploymentContent){
+			const cgeJson = {
+				"totalHouseholdIncome": cgeHouseholdIncomeContent,
+				"domesticSupply": cgeDomesticSupplyContent,
+				"employment": cgeEmploymentContent
+			};
+			exportJson(cgeJson, `cge-${executionItem.id}`);
+		}
+	};
 
 	return (
 		<Dialog open={previewOn} onClose={handlePreviewClose} maxWidth="lg" fullWidth scroll="paper">
@@ -116,6 +130,10 @@ export default function CGE(props) {
 					</Grid>
 				</Box>
 			</DialogContent>
+			<DialogActions>
+				<IncoreButtonText onClick={download} startIcon={<GetAppIcon/>}>Download Report</IncoreButtonText>
+				<IncoreButtonText onClick={handlePreviewClose} startIcon={<CloseIcon/>}>Close</IncoreButtonText>
+			</DialogActions>
 		</Dialog>
 	);
 }

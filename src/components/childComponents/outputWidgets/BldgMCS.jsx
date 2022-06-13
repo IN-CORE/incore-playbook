@@ -1,4 +1,14 @@
-import {Box, Container, Dialog, DialogContent, Divider, Grid, IconButton, Typography} from "@material-ui/core";
+import {
+	Box,
+	Container,
+	Dialog,
+	DialogActions,
+	DialogContent,
+	Divider,
+	Grid,
+	IconButton,
+	Typography
+} from "@material-ui/core";
 import CloseIcon from "@material-ui/icons/Close";
 import {ResultSummaryTable} from "../table/ResultSummaryTable";
 import {FunctionalityGraph} from "../graph/FunctionalityGraph";
@@ -10,6 +20,9 @@ import {useSelector} from "react-redux";
 import {applyTransform} from "ol/extent";
 import {getOutputFileContent, getOutputFileContentJSON} from "../../../utils/datawolf";
 import {basicLayers, handleLayerUpdate} from "../../../utils/map";
+import {downloadDataset} from "../../../utils/dataset";
+import {IncoreButtonText} from "../../styledComponents/IncoreButtonText";
+import GetAppIcon from "@material-ui/icons/GetApp";
 
 export default function BldgMCS(props){
 
@@ -23,6 +36,7 @@ export default function BldgMCS(props){
 	const [runtime, setRuntime] = useState(null);
 	const [layers, setLayers] = useState(basicLayers);
 	const [mcsBldgSummaryTableContent, setMcsBldgSummaryTableContent] = useState(null);
+	const [mcsBldgFailureProbINCOREId, setMcsBldgFailureProbINCOREId] = useState(null);
 
 	useEffect(() => {
 		setSelectedExecutionName(executionItem["title"]);
@@ -34,6 +48,7 @@ export default function BldgMCS(props){
 			const vName = datawolfDatasetConfigItem.datasets.variableName;
 			if (vName === "mcsBldgFailureProbINCOREId") {
 				const mcsBldgFailureProbINCOREId = await getOutputFileContent(datawolfConfig, executionItem, datawolfDatasetConfigItem.datasetId);
+				setMcsBldgFailureProbINCOREId(mcsBldgFailureProbINCOREId);
 				const layerDef = [
 					{
 						"layerId": mcsBldgFailureProbINCOREId,
@@ -56,6 +71,11 @@ export default function BldgMCS(props){
 		});
 	}, []);
 
+	const download = async () => {
+		if (mcsBldgFailureProbINCOREId) await downloadDataset(globalConfig, mcsBldgFailureProbINCOREId, "bldg-mcs");
+	};
+
+
 	return (
 		<Dialog open={previewOn} onClose={handlePreviewClose} maxWidth="lg" fullWidth scroll="paper">
 			<DialogContent className="previewModal">
@@ -67,7 +87,7 @@ export default function BldgMCS(props){
 				{/*TODO wrap into a component*/}
 				<Box className="previewTitleSection">
 					<Typography className="previewTitle">{selectedExecutionName}</Typography>
-					<Typography className="previewTitle">Select Data: Building Functionality wo Interdependency</Typography>
+					<Typography className="previewTitle">Select Data: Building Functionality without Interdependency</Typography>
 				</Box>
 
 				{/*for chart*/}
@@ -121,8 +141,11 @@ export default function BldgMCS(props){
 						</Box>
 						:<>/</>
 				}
-
 			</DialogContent>
+			<DialogActions>
+				<IncoreButtonText onClick={download} startIcon={<GetAppIcon/>}>Download Report</IncoreButtonText>
+				<IncoreButtonText onClick={handlePreviewClose} startIcon={<CloseIcon/>}>Close</IncoreButtonText>
+			</DialogActions>
 		</Dialog>
 	);
 }

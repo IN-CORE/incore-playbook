@@ -1,4 +1,4 @@
-import {Box, Container, Dialog, DialogContent, IconButton, Typography} from "@material-ui/core";
+import {Box, Container, Dialog, DialogActions, DialogContent, IconButton, Typography} from "@material-ui/core";
 import CloseIcon from "@material-ui/icons/Close";
 import Map from "../map/Map";
 import {fromLonLat, getTransform} from "ol/proj";
@@ -7,6 +7,9 @@ import {useSelector} from "react-redux";
 import {applyTransform} from "ol/extent";
 import {getOutputFileContent} from "../../../utils/datawolf";
 import {basicLayers, handleLayerUpdate} from "../../../utils/map";
+import {downloadDataset} from "../../../utils/dataset";
+import {IncoreButtonText} from "../../styledComponents/IncoreButtonText";
+import GetAppIcon from "@material-ui/icons/GetApp";
 
 
 export default function PoleDamage(props){
@@ -19,6 +22,7 @@ export default function PoleDamage(props){
 
 	const [selectedExecutionName, setSelectedExecutionName] = useState("");
 	const [layers, setLayers] = useState(basicLayers);
+	const [poleMaxDmgStateINCOREId, setPoleMaxDmgStateINCOREId] = useState(null);
 
 	useEffect(() => {
 		setSelectedExecutionName(executionItem["title"]);
@@ -26,10 +30,11 @@ export default function PoleDamage(props){
 		datawolfDatasetConfigItems.map(async (datawolfDatasetConfigItem) => {
 			const vName = datawolfDatasetConfigItem.datasets.variableName;
 			if (vName === "poleMaxDmgStateINCOREId") {
-				const epfMaxDmgStateINCOREId = await getOutputFileContent(datawolfConfig, executionItem, datawolfDatasetConfigItem.datasetId);
+				const poleMaxDmgStateINCOREId = await getOutputFileContent(datawolfConfig, executionItem, datawolfDatasetConfigItem.datasetId);
+				setPoleMaxDmgStateINCOREId(poleMaxDmgStateINCOREId);
 				const layerDef = [
 					{
-						"layerId": epfMaxDmgStateINCOREId,
+						"layerId": poleMaxDmgStateINCOREId,
 						"layerStyles": "incore:epf-dmg-summary",
 						"title": "EPF Damage (Pole)",
 						"opacity": 1
@@ -45,6 +50,10 @@ export default function PoleDamage(props){
 			}
 		});
 	}, []);
+
+	const download = async () => {
+		if (poleMaxDmgStateINCOREId) await downloadDataset(globalConfig, poleMaxDmgStateINCOREId, "epf-pole");
+	};
 
 	return (
 		<Dialog open={previewOn} onClose={handlePreviewClose} maxWidth="lg" fullWidth scroll="paper">
@@ -75,6 +84,10 @@ export default function PoleDamage(props){
 					/>
 				</Container>
 			</DialogContent>
+			<DialogActions>
+				<IncoreButtonText onClick={download} startIcon={<GetAppIcon/>}>Download Report</IncoreButtonText>
+				<IncoreButtonText onClick={handlePreviewClose} startIcon={<CloseIcon/>}>Close</IncoreButtonText>
+			</DialogActions>
 		</Dialog>
 	);
 }

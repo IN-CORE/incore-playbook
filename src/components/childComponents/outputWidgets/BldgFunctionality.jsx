@@ -1,4 +1,14 @@
-import {Box, Container, Dialog, DialogContent, Divider, Grid, IconButton, Typography} from "@material-ui/core";
+import {
+	Box,
+	Container,
+	Dialog,
+	DialogActions,
+	DialogContent,
+	Divider,
+	Grid,
+	IconButton,
+	Typography
+} from "@material-ui/core";
 import CloseIcon from "@material-ui/icons/Close";
 import {ResultSummaryTable} from "../table/ResultSummaryTable";
 import {FunctionalityGraph} from "../graph/FunctionalityGraph";
@@ -10,6 +20,9 @@ import {useSelector} from "react-redux";
 import {applyTransform} from "ol/extent";
 import {getOutputFileContent, getOutputFileContentJSON} from "../../../utils/datawolf";
 import {basicLayers, handleLayerUpdate} from "../../../utils/map";
+import {IncoreButtonText} from "../../styledComponents/IncoreButtonText";
+import GetAppIcon from "@material-ui/icons/GetApp";
+import {downloadDataset} from "../../../utils/dataset";
 
 export default function BldgFunctionality(props){
 
@@ -23,6 +36,7 @@ export default function BldgFunctionality(props){
 	const [runtime, setRuntime] = useState(null);
 	const [layers, setLayers] = useState(basicLayers);
 	const [bldgFuncSummaryTableContent, setBldgFuncSummaryTableContent] = useState(null);
+	const [bldgFuncProbINCOREId, setBldgFuncProbINCOREId] = useState(null);
 
 
 	useEffect(() => {
@@ -35,6 +49,7 @@ export default function BldgFunctionality(props){
 			const vName = datawolfDatasetConfigItem.datasets.variableName;
 			if (vName === "bldgFuncProbINCOREId") {
 				const bldgFuncProbINCOREId = await getOutputFileContent(datawolfConfig, executionItem, datawolfDatasetConfigItem.datasetId);
+				setBldgFuncProbINCOREId(bldgFuncProbINCOREId);
 				const layerDef = [
 					{
 						"layerId": bldgFuncProbINCOREId,
@@ -56,6 +71,10 @@ export default function BldgFunctionality(props){
 			}
 		});
 	}, []);
+
+	const download = async () => {
+		if (bldgFuncProbINCOREId) await downloadDataset(globalConfig, bldgFuncProbINCOREId, "bldg-func");
+	};
 
 	return (
 		<Dialog open={previewOn} onClose={handlePreviewClose} maxWidth="lg" fullWidth scroll="paper">
@@ -122,8 +141,11 @@ export default function BldgFunctionality(props){
 						</Box>
 						:<>/</>
 				}
-
 			</DialogContent>
+			<DialogActions>
+				<IncoreButtonText onClick={download} startIcon={<GetAppIcon/>}>Download Report</IncoreButtonText>
+				<IncoreButtonText onClick={handlePreviewClose} startIcon={<CloseIcon/>}>Close</IncoreButtonText>
+			</DialogActions>
 		</Dialog>
 	);
 }

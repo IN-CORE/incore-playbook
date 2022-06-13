@@ -1,4 +1,4 @@
-import {Box, Container, Dialog, DialogContent, IconButton, Typography} from "@material-ui/core";
+import {Box, Container, Dialog, DialogActions, DialogContent, IconButton, Typography} from "@material-ui/core";
 import CloseIcon from "@material-ui/icons/Close";
 import Map from "../map/Map";
 import {fromLonLat, getTransform} from "ol/proj";
@@ -7,6 +7,8 @@ import {useSelector} from "react-redux";
 import {applyTransform} from "ol/extent";
 import {basicLayers, handleLayerUpdate} from "../../../utils/map";
 import {getOutputFileContent} from "../../../utils/datawolf";
+import {IncoreButtonText} from "../../styledComponents/IncoreButtonText";
+import GetAppIcon from "@material-ui/icons/GetApp";
 
 export default function Interdependency(props) {
 
@@ -74,5 +76,8 @@ export default function Interdependency(props) {
 					/>
 				</Container>
 			</DialogContent>
+			<DialogActions>
+				<IncoreButtonText onClick={handlePreviewClose} startIcon={<CloseIcon/>}>Close</IncoreButtonText>
+			</DialogActions>
 		</Dialog>);
 }
