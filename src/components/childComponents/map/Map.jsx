@@ -1,49 +1,37 @@
 import * as React from "react";
-import {Map as OLMap, View} from "ol";
-import {defaults as defaultControls} from "ol/control";
+import { Map as OLMap, View } from "ol";
+// import {defaults as defaultControls} from "ol/control";
+import Overlay from "ol/Overlay";
+
 import LayerSwitcher from "./LayerSwitcher";
 
 export const MapContext = React.createContext({});
 
-class Map extends React.Component {
-	fallbackContainer = React.createRef();
+const Map = (props) => {
+	const { children, id, className } = props;
 
-	mapContainer = React.createRef();
+	const fallbackContainer = React.useRef();
 
-	static defaultProps = {
-		children: null,
-		id: "",
-		className: "",
-		projection: "EPSG:3857",
-		center: [0, 0],
-		zoom: 7,
-		minZoom: 0,
-		maxZoom: 14,
-		extent: undefined,
-		controls: [],
-		layers: [],
-		layerSwitcherOptions: null,
-		updateMap: null,
-		events: null
-	};
+	const mapRef = React.useRef();
 
-	componentDidMount() {
+	React.useEffect(() => {
 		const {
+			mapContainer,
 			projection,
 			center,
 			zoom,
 			minZoom,
 			maxZoom,
 			extent,
-			controls,
+			// controls,
 			layers,
 			layerSwitcherOptions,
 			updateMap,
 			events
-		} = this.props;
+		} = props;
 
-		this.map = new OLMap({
-			target: this.mapContainer.current || this.fallbackContainer.current,
+		const map = new OLMap({
+			target: mapContainer || fallbackContainer.current,
 			view: new View({
 				projection,
 				center,
@@ -53,75 +41,56 @@ class Map extends React.Component {
 				extent
 			}),
 			layers,
-			controls: defaultControls().extend(controls)
+			overlays: [
+				new Overlay({
+					id: "popup",
+					className: "ol-popup",
+					autoPan: true,
+					autoPanAnimation: {
+						duration: 250
+					}
+				})
+			],
+			// controls: defaultControls().extend(controls)
 		});
 
 		if (events) {
 			Object.entries(events).forEach(([event, handler]) => {
-				this.map.on(event, handler);
+				map.on(event, handler);
 			});
 		}
 
 		if (layerSwitcherOptions) {
 			const layerSwitcher = new LayerSwitcher(layerSwitcherOptions);
-			this.map.addControl(layerSwitcher);
+			map.addControl(layerSwitcher);
 		}
 
 		if (updateMap) {
-			updateMap(this.map);
+			updateMap(map);
 		}
 
-		this.forceUpdate();
-	}
+		mapRef.current = map;
 
-	map;
-
-	renderChildren = (children) => {
-		return React.Children.map(children, (child) => {
-			if (!child || !child.props) {
-				return child;
+		return () => {
+			if (events) {
+				Object.entries(events).forEach(([event, handler]) => {
+					map.un(event, handler);
+				});
 			}
-
-			const nestedChildren = child.props.children ?
-				this.renderChildren(child.props.children) :
-				[];
-
-			if (child.props.mapcontainer) {
-				return React.cloneElement(
-					child,
-					{
-						ref: this.mapContainer
-					},
-					[...nestedChildren]
-				);
-			}
-
-			if (nestedChildren.length) {
-				return React.cloneElement(child, {children: nestedChildren});
-			}
-			return child;
-		});
-	};
-
-	render() {
-		const {children, id, className} = this.props;
-
-		const data = {
-			map: this.map
 		};
+	}, []);
 
-		return (
-			<div
-				id={id}
-				className={`ol-map ${className}`}
-				ref={this.fallbackContainer}
-			>
-				<MapContext.Provider value={data}>
-					{this.renderChildren(children)}
-				</MapContext.Provider>
-			</div>
-		);
-	}
-}
+	return (
+		<div
+			id={id}
+			className={`ol-map ${className}`}
+			ref={fallbackContainer}
+		>
+			<MapContext.Provider value={{ map: mapRef.current }}>
+				{children}
+			</MapContext.Provider>
+		</div>
+	);
+};
 
 export default Map;
