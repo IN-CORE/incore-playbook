@@ -55,7 +55,7 @@ export default function ViewResult(props) {
 	const [selectedExecutionItem, setSelectedExecutionItem] = useState(null);
 	const [widgetName, setWidgetName] = useState(""); // outputWidgets name
 	const [datawolfDatasetConfigItems, setDatawolfDatasetConfigItems] = useState([]);
-	const [hazardDatasetId, setHazardDatasetId] = useState([]); // to overlay hazard on the map
+	const [hazardDatasetId, setHazardDatasetId] = useState(""); // to overlay hazard on the map
 	const [map, setMap] = useState();
 	const [previewOn, setPreviewOn] = useState(false); // list vs preview
 
@@ -245,7 +245,7 @@ export default function ViewResult(props) {
 		exportJson(popDislJson, `population-dislocation-${executionItemId}`);
 	};
 
-	const preview = (executionId, widgetName) => {
+	const preview = async (executionId, widgetName) => {
 		const selectedExecutionItem = getExecution(executionId);
 		setSelectedExecutionItem(selectedExecutionItem);
 		setWidgetName(widgetName);
@@ -271,15 +271,20 @@ export default function ViewResult(props) {
 			}
 		}, []));
 
-		// get hazard id params
-		datawolfWorkflowConfig.inputs.parameters[0].parametersMap.filter(async item => {
-			if (item.parameters.variableName === "selectedHazardId") {
-				let hazardId = selectedExecutionItem["parameters"][item.paramId];
-				// todo ned to extract hazard type
-				let hazardMetadata = await getHazardMetadata(globalConfig, "tornadoes", hazardId);
-				setHazardDatasetId(hazardMetadata["datasetId"]);
+		// async loop is a hell! get hazard id params
+		let hashmap = datawolfWorkflowConfig.inputs.parameters[0].parametersMap.reduce((hashmap, item) => {
+			if (item.parameters.variableName === "selectedHazardId"){
+				return {...hashmap, "hazardId": selectedExecutionItem["parameters"][item.paramId]};
 			}
-		});
+			else if (item.parameters.variableName === "selectedHazardType"){
+				return {...hashmap, "hazardType": selectedExecutionItem["parameters"][item.paramId]};
+			}
+			else{
+				return hashmap;
+			}
+		}, {});
+		let hazardMetadata = await getHazardMetadata(globalConfig, hashmap.hazardType, hashmap.hazardId);
+		setHazardDatasetId(hazardMetadata["datasetId"]);
 
 		// dialog on
 		setPreviewOn(true);

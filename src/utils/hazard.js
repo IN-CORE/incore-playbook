@@ -72,6 +72,13 @@ export async function createRasterTornado(globalConfig=defaultGlobalConfig, name
 }
 
 export async function getHazardMetadata(globalConfig=defaultGlobalConfig, hazardType, hazardId) {
+	// need to turn hazardType into plura
+	if (hazardType.match(/w*(o|s|sh|ch|x|z)\b/)){
+		hazardType = `${hazardType}es`;
+	}
+	else{
+		hazardType = `${hazardType}s`;
+	}
 	let endpoint = `${globalConfig.hazardServiceBase}${hazardType}/${hazardId}`;
 	let hazardRequest = await fetch(endpoint, {mode: "cors", headers: getHeader()});
 	if (hazardRequest.status === 200) {
