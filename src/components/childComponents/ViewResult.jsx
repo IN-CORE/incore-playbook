@@ -23,7 +23,6 @@ import CGE from "./outputWidgets/CGE";
 import PopDislocation from "./outputWidgets/PopDislocation";
 import ResilienceMetrics from "./outputWidgets/ResilienceMetrics";
 import SubstationDamage from "./outputWidgets/SubstationDamage";
-import {globals as defaultGlobalConfig} from "../../globals";
 
 
 const useStyles = makeStyles({
@@ -31,6 +30,19 @@ const useStyles = makeStyles({
 		margin: "55px auto",
 	},
 });
+
+// TODO move this registration somewhere else?
+const registeredWidgets = {
+	"Interdependency": <Interdependency/>,
+	"BldgDamage": <BldgDamage/>,
+	"PoleDamage": <PoleDamage/>,
+	"BldgMCS": <BldgMCS/>,
+	"BldgFunctionality": <BldgFunctionality/>,
+	"CGE":<CGE/>,
+	"PopDislocation":<PopDislocation/>,
+	"ResilienceMetrics":<ResilienceMetrics/>,
+	"SubstationDamage":<SubstationDamage/>,
+};
 
 export default function ViewResult(props) {
 	const {value, index, getExecutionList, executions, ...other} = props;
@@ -53,7 +65,7 @@ export default function ViewResult(props) {
 	const [executionEntries, setExecutionEntries] = useState([]);
 	const [selectedExecutionName, setSelectedExecutionName] = useState("");
 	const [selectedExecutionItem, setSelectedExecutionItem] = useState(null);
-	const [widgetName, setWidgetName] = useState(""); // outputWidgets name
+	const [widgetName, setWidgetName] = useState(null); // outputWidgets name
 	const [datawolfDatasetConfigItems, setDatawolfDatasetConfigItems] = useState([]);
 	const [hazardDatasetId, setHazardDatasetId] = useState(""); // to overlay hazard on the map
 	const [map, setMap] = useState();
@@ -321,105 +333,23 @@ export default function ViewResult(props) {
 
 			{/*for individual analysis result preview*/}
 			{
-				// TODO this condition can be modified
-				(()=>{
-					if (widgetName === "ResilienceMetrics"){
-						return (<ResilienceMetrics executionItem={selectedExecutionItem}
-												   getExecution={getExecution}
-												   previewOn={previewOn}
-												   handlePreviewClose={handlePreviewClose}
-												   datawolfDatasetConfigItems={datawolfDatasetConfigItems}
-						/>);
-					}
-					// TODO
-					else if (widgetName === "Interdependency") {
-						return (<Interdependency executionName={selectedExecutionName}
-												 executionItem={selectedExecutionItem}
-												 getExecution={getExecution}
-												 previewOn={previewOn}
-												 handlePreviewClose={handlePreviewClose}
-												 datawolfDatasetConfigItems={datawolfDatasetConfigItems}
-												 setMap={setMap}
-						/>);
-					}
-					else if (widgetName === "BldgDamage") {
-						return (<BldgDamage
-							executionItem={selectedExecutionItem}
-							getExecution={getExecution}
-							previewOn={previewOn}
-							handlePreviewClose={handlePreviewClose}
-							datawolfDatasetConfigItems={datawolfDatasetConfigItems}
-							setMap={setMap}
-							hazardDatasetId={hazardDatasetId}
-						/>);
-					}
-					else if (widgetName === "PoleDamage") {
-						return (
-							<PoleDamage
-								executionItem={selectedExecutionItem}
-								getExecution={getExecution}
-								previewOn={previewOn}
-								handlePreviewClose={handlePreviewClose}
-								datawolfDatasetConfigItems={datawolfDatasetConfigItems}
-								setMap={setMap}
-								hazardDatasetId={hazardDatasetId}
-							/>);
-					}
-					else if (widgetName === "SubstationDamage") {
-						return (
-							<SubstationDamage
-								executionItem={selectedExecutionItem}
-								getExecution={getExecution}
-								previewOn={previewOn}
-								handlePreviewClose={handlePreviewClose}
-								datawolfDatasetConfigItems={datawolfDatasetConfigItems}
-								setMap={setMap}
-								hazardDatasetId={hazardDatasetId}
-							/>);
-					}
-					else if (widgetName === "BldgMCS") {
-						return (<BldgMCS
-							executionItem={selectedExecutionItem}
-							getExecution={getExecution}
-							previewOn={previewOn}
-							handlePreviewClose={handlePreviewClose}
-							datawolfDatasetConfigItems={datawolfDatasetConfigItems}
-							setMap={setMap}
-							hazardDatasetId={hazardDatasetId}
-						/>);
-					}
-					else if (widgetName === "BldgFunctionality") {
-						return (<BldgFunctionality
-							executionItem={selectedExecutionItem}
-							getExecution={getExecution}
-							previewOn={previewOn}
-							handlePreviewClose={handlePreviewClose}
-							datawolfDatasetConfigItems={datawolfDatasetConfigItems}
-							setMap={setMap}
-							hazardDatasetId={hazardDatasetId}
-						/>);
-					}
-					else if (widgetName === "CGE") {
-						return (<CGE executionItem={selectedExecutionItem}
-								 getExecution={getExecution}
-								 previewOn={previewOn}
-								 handlePreviewClose={handlePreviewClose}
-								 datawolfDatasetConfigItems={datawolfDatasetConfigItems} />);
-					}
-					else if (widgetName === "PopDislocation") {
-						return (<PopDislocation executionItem={selectedExecutionItem}
-							getExecution={getExecution}
-							previewOn={previewOn}
-							handlePreviewClose={handlePreviewClose}
-							datawolfDatasetConfigItems={datawolfDatasetConfigItems}
-							setMap={setMap}
-							hazardDatasetId={hazardDatasetId}
-						/>);
-					}
-					else{
-						return <></>;
-					}
-				})()
+				widgetName ? (() => {
+					return React.cloneElement(
+						registeredWidgets[widgetName],
+						{
+							executionItem: selectedExecutionItem,
+							getExecution: getExecution,
+							previewOn: previewOn,
+							handlePreviewClose: handlePreviewClose,
+							datawolfDatasetConfigItems: datawolfDatasetConfigItems,
+							setMap: setMap,
+							hazardDatasetId: hazardDatasetId
+						}
+					);})()
+					:
+					<></>
 			}
+
+
 		</div>);
 }
