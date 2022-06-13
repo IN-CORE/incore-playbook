@@ -99,8 +99,7 @@ export default function ViewResult(props) {
 
 			// generate table
 			let entry = Object.assign({}, executionItem);
-			// TODO read hazard Tyep without hard coding
-			entry["hazardType"] = "Tornado";
+			entry["hazardType"] = _getHazardInfo(executionItem).hazardType;
 			entry["finalStatus"] = extractStatus(executionItem);
 			entries.push(entry);
 		});
@@ -257,6 +256,21 @@ export default function ViewResult(props) {
 		exportJson(popDislJson, `population-dislocation-${executionItemId}`);
 	};
 
+	// async loop is a hell! get hazard id params and type
+	const _getHazardInfo = (executionItem) => {
+		return datawolfWorkflowConfig.inputs.parameters[0].parametersMap.reduce((hazardInfo, item) => {
+			if (item.parameters.variableName === "selectedHazardId"){
+				return {...hazardInfo, "hazardId": executionItem["parameters"][item.paramId]};
+			}
+			else if (item.parameters.variableName === "selectedHazardType"){
+				return {...hazardInfo, "hazardType": executionItem["parameters"][item.paramId]};
+			}
+			else{
+				return hazardInfo;
+			}
+		}, {});
+	};
+
 	const preview = async (executionId, widgetName) => {
 		const selectedExecutionItem = getExecution(executionId);
 		setSelectedExecutionItem(selectedExecutionItem);
@@ -283,19 +297,8 @@ export default function ViewResult(props) {
 			}
 		}, []));
 
-		// async loop is a hell! get hazard id params and type
-		let hashmap = datawolfWorkflowConfig.inputs.parameters[0].parametersMap.reduce((hashmap, item) => {
-			if (item.parameters.variableName === "selectedHazardId"){
-				return {...hashmap, "hazardId": selectedExecutionItem["parameters"][item.paramId]};
-			}
-			else if (item.parameters.variableName === "selectedHazardType"){
-				return {...hashmap, "hazardType": selectedExecutionItem["parameters"][item.paramId]};
-			}
-			else{
-				return hashmap;
-			}
-		}, {});
-		let hazardMetadata = await getHazardMetadata(globalConfig, hashmap.hazardType, hashmap.hazardId);
+		const hazardInfo = _getHazardInfo(selectedExecutionItem);
+		let hazardMetadata = await getHazardMetadata(globalConfig, hazardInfo.hazardType, hazardInfo.hazardId);
 		setHazardDatasetId(hazardMetadata["datasetId"]);
 
 		// dialog on
