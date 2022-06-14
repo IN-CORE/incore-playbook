@@ -46,7 +46,6 @@ export default function BldgDamage(props) {
 		// for summary table on the top
 		setRuntime(executionItem["date"].slice(0, 10));
 
-		// todo this can be replaced with filter
 		datawolfDatasetConfigItems.map(async (datawolfDatasetConfigItem) => {
 			const vName = datawolfDatasetConfigItem.datasets.variableName;
 			if (vName === "bldgMaxDamageStateINCOREId") {
@@ -90,7 +89,6 @@ export default function BldgDamage(props) {
 				</IconButton>
 
 				{/*title*/}
-				{/*TODO wrap into a component*/}
 				<Box className="previewTitleSection">
 					<Typography className="previewTitle">{selectedExecutionName}</Typography>
 					<Typography className="previewTitle">Select Data: Building Damage</Typography>

@@ -129,12 +129,12 @@ export function FlatCoordToLonLat(flatCoord) {
 	return LonLat;
 }
 
-export function getHazardTypePlural (hazardType) {
+export function getHazardTypePlural(hazardType) {
 	if (hazardType.match(/w*(o|s|sh|ch|x|z)\b/)){
 		hazardType = `${hazardType}es`;
 	}
 	else{
 		hazardType = `${hazardType}s`;
 	}
-	return hazardType
+	return hazardType;
 }
