@@ -19,14 +19,14 @@ import React, {useEffect, useState} from "react";
 import {useSelector} from "react-redux";
 import {applyTransform} from "ol/extent";
 import {getOutputFileContent, getOutputFileContentJSON} from "../../../utils/datawolf";
-import {basicLayers, handleLayerUpdate} from "../../../utils/map";
+import {basicLayers, generateLayers} from "../../../utils/map";
 import {downloadDataset} from "../../../utils/dataset";
 import {IncoreButtonText} from "../../styledComponents/IncoreButtonText";
 import GetAppIcon from "@material-ui/icons/GetApp";
 
 export default function BldgMCS(props){
 
-	let {executionItem, previewOn, handlePreviewClose, datawolfDatasetConfigItems, setMap, hazardDatasetId} = props;
+	let {executionItem, previewOn, handlePreviewClose, datawolfDatasetConfigItems, hazardDatasetId} = props;
 
 	const mapConfig = useSelector((state) => state.config.mapConfig);
 	const datawolfConfig = useSelector((state) => state.config.datawolfConfig);
@@ -34,9 +34,12 @@ export default function BldgMCS(props){
 
 	const [selectedExecutionName, setSelectedExecutionName] = useState("");
 	const [runtime, setRuntime] = useState(null);
-	const [layers, setLayers] = useState(basicLayers);
 	const [mcsBldgSummaryTableContent, setMcsBldgSummaryTableContent] = useState(null);
 	const [mcsBldgFailureProbINCOREId, setMcsBldgFailureProbINCOREId] = useState(null);
+
+	// Holds an instance of Map component
+	const mapRef = React.useRef();
+	const layerRef = React.useRef(basicLayers);
 
 	useEffect(() => {
 		setSelectedExecutionName(executionItem["title"]);
@@ -63,7 +66,8 @@ export default function BldgMCS(props){
 						"opacity": 0.3
 					}
 				];
-				setLayers(handleLayerUpdate(globalConfig, layerDef));
+				const previewLayers = generateLayers(globalConfig, layerDef);
+				layerRef.current.tilelayer.getLayers().extend(previewLayers);
 			}
 			else if (vName === "mcsBldgSummaryTableContent") {
 				setMcsBldgSummaryTableContent(await getOutputFileContentJSON(datawolfConfig, executionItem, datawolfDatasetConfigItem.datasetId));
@@ -127,9 +131,14 @@ export default function BldgMCS(props){
 						maxZoom={mapConfig.MAX_ZOOM}
 						extent={applyTransform(mapConfig.MAP_BOUNDS, getTransform("EPSG:4326", "EPSG:3857"))}
 						center={fromLonLat(mapConfig.MAP_CENTER)}
-						layers={Object.values(layers)}
+						layers={[
+							layerRef.current.basemaps,
+							layerRef.current.tilelayer
+						]}
 						layerSwitcherOptions={{}}
-						updateMap={(map) => { setMap(map); }}
+						updateMap={(map) => {
+							mapRef.current = map;
+						}}
 					/>
 				</Container>
 

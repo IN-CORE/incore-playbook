@@ -5,37 +5,22 @@ import {globals as defaultGlobalConfig} from "../globals";
 import XYZ from "ol/source/XYZ";
 import OSM, {ATTRIBUTION as OSM_ATTRIBUTION} from "ol/source/OSM";
 
-export const handleLayerUpdate = (globalConfig=defaultGlobalConfig, layerDef) => {
-
-	const layers = basicLayers;
-
-	const inputLayers = [];
-
-	layerDef.map((layerDefinition) => {
+export const generateLayers = (globalConfig=defaultGlobalConfig, layerDef) => {
+	return layerDef.reduce((previewLayers, layerDefinition) => {
 		const source = new TileWMS({
 			url: `${globalConfig.geoServerWMS}`,
-			params: {
-				LAYERS: layerDefinition["layerId"],
-				STYLES: layerDefinition["layerStyles"]
-			},
+			params: {LAYERS: layerDefinition.layerId, STYLES: layerDefinition.layerStyles},
 			ratio: 1,
 			serverType: "geoserver"
 		});
-		let mapLayer = new TileLayer({
+		const previewLayer = new TileLayer({
 			title: layerDefinition["title"],
 			source: source,
 			zIndex: 1,
 			opacity: layerDefinition["opacity"]
 		});
-		inputLayers.push(mapLayer);
-	});
-
-	layers["tilelayer"] = new GroupLayer({
-		title: "Preview",
-		layers: inputLayers,
-	});
-
-	return layers;
+		return [...previewLayers, previewLayer];
+	}, []);
 };
 
 export const basicLayers = {

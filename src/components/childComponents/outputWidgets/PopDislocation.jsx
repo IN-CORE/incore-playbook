@@ -8,31 +8,28 @@ import React, {useEffect, useState} from "react";
 import {useSelector} from "react-redux";
 import {applyTransform} from "ol/extent";
 import {getOutputFileContent, getOutputFileContentJSON} from "../../../utils/datawolf";
-import {basicLayers, handleLayerUpdate} from "../../../utils/map";
+import {basicLayers, generateLayers} from "../../../utils/map";
 import {exportJson} from "../../../utils/common";
 import {IncoreButtonText} from "../../styledComponents/IncoreButtonText";
 import GetAppIcon from "@material-ui/icons/GetApp";
 
 export default function PopDislocation(props){
-	let {executionItem, previewOn, handlePreviewClose, datawolfDatasetConfigItems, setMap, hazardDatasetId} = props;
+	let {executionItem, previewOn, handlePreviewClose, datawolfDatasetConfigItems, hazardDatasetId} = props;
 
 	const mapConfig = useSelector((state) => state.config.mapConfig);
 	const datawolfConfig = useSelector((state) => state.config.datawolfConfig);
 	const globalConfig = useSelector((state) => state.config.globalConfig);
 
 	const [selectedExecutionName, setSelectedExecutionName] = useState("");
-	const [layerDef, setLayerDef] = useState([{
-		"layerId": hazardDatasetId,
-		"layerStyles": "incore:tornado",
-		"title": "Tornado",
-		"opacity": 0.3
-	}]);
-	const [layers, setLayers] = useState(basicLayers);
 	const [totalDislTableContent, setTotalDislTableContent] = useState(null);
 	const [dislocationByRaceContent, setDislocationByRaceContent] = useState(null);
 	const [dislocationByTenureContent, setDislocationByTenureContent] = useState(null);
 	const [dislocationByIncomeContent, setDislocationByIncomeContent] = useState(null);
 	const [dislocationByHousingTypeContent, setDislocationByHousingTypeContent] = useState(null);
+
+	// Holds an instance of Map component
+	const mapRef = React.useRef();
+	const layerRef = React.useRef(basicLayers);
 
 	useEffect(() => {
 
@@ -43,13 +40,22 @@ export default function PopDislocation(props){
 			if (vName === "bldgMaxDamageStateINCOREId") {
 				const bldgMaxDamageStateINCOREId = await getOutputFileContent(datawolfConfig, executionItem, datawolfDatasetConfigItem.datasetId);
 				const tmpLayerDef =
-					{
-						"layerId": bldgMaxDamageStateINCOREId,
-						"layerStyles": "incore:building",
-						"title": "Building Inventory",
-						"opacity": 1
-					};
-				setLayerDef(prevState => {[...prevState, tmpLayerDef];});
+					[
+						{
+							"layerId": hazardDatasetId,
+							"layerStyles": "incore:tornado",
+							"title": "Tornado",
+							"opacity": 0.3
+						},
+						{
+							"layerId": bldgMaxDamageStateINCOREId,
+							"layerStyles": "incore:building",
+							"title": "Building Inventory",
+							"opacity": 1
+						}
+					];
+				const previewLayers = generateLayers(globalConfig, tmpLayerDef);
+				layerRef.current.tilelayer.getLayers().extend(previewLayers);
 			}
 			if (vName === "popDislINCOREId") {
 				const popDislINCOREId = await getOutputFileContent(datawolfConfig, executionItem, datawolfDatasetConfigItem.datasetId);
@@ -61,7 +67,8 @@ export default function PopDislocation(props){
 						"opacity": 0.8
 					}
 				];
-				setLayerDef(prevState => {[...prevState, tmpLayerDef];});
+				const previewLayers = generateLayers(globalConfig, tmpLayerDef);
+				layerRef.current.tilelayer.getLayers().extend(previewLayers);
 			}
 			if (vName === "totalDislTableContent") {
 				setTotalDislTableContent(await getOutputFileContentJSON(datawolfConfig, executionItem, datawolfDatasetConfigItem.datasetId));
@@ -80,10 +87,6 @@ export default function PopDislocation(props){
 			}
 		});
 	}, []);
-
-	useEffect(() => {
-		if (layerDef.length === 3) setLayers(handleLayerUpdate(globalConfig, layerDef));
-	}, [layerDef]);
 
 	const download = async () => {
 		const popDislJson = {
@@ -121,9 +124,14 @@ export default function PopDislocation(props){
 						maxZoom={mapConfig.MAX_ZOOM}
 						extent={applyTransform(mapConfig.MAP_BOUNDS, getTransform("EPSG:4326", "EPSG:3857"))}
 						center={fromLonLat(mapConfig.MAP_CENTER)}
-						layers={Object.values(layers)}
+						layers={[
+							layerRef.current.basemaps,
+							layerRef.current.tilelayer
+						]}
 						layerSwitcherOptions={{}}
-						updateMap={(map) => { setMap(map); }}
+						updateMap={(map) => {
+							mapRef.current = map;
+						}}
 					/>
 				</Container>
 
