@@ -62,7 +62,6 @@ export default function ViewResult(props) {
 	const [widgetName, setWidgetName] = useState(null); // outputWidgets name
 	const [datawolfDatasetConfigItems, setDatawolfDatasetConfigItems] = useState([]);
 	const [hazardDatasetId, setHazardDatasetId] = useState(""); // to overlay hazard on the map
-	const [map, setMap] = useState();
 	const [previewOn, setPreviewOn] = useState(false); // list vs preview
 
 	// extract a single status from mutliple step status`
@@ -128,7 +127,6 @@ export default function ViewResult(props) {
 	const handlePreviewClose = () => {
 		setPreviewOn(false);
 		setWidgetName("");
-		setMap();
 	};
 
 	const getExecution = (executionItemId) => {
@@ -164,6 +162,14 @@ export default function ViewResult(props) {
 			if (widgetName === "ResilienceMetrics"){
 				if (item.datasets.widget === "CGE" || item.datasets.widget === "PopDislocation"
 					|| item.datasets.widget === "BldgFunctionality"){
+					return [...list, item];
+				}
+				else{
+					return list;
+				}
+			}
+			if (widgetName === "Interdependency"){
+				if (item.datasets.widget === "SubstationDamage"){
 					return [...list, item];
 				}
 				else{
@@ -222,7 +228,6 @@ export default function ViewResult(props) {
 							previewOn: previewOn,
 							handlePreviewClose: handlePreviewClose,
 							datawolfDatasetConfigItems: datawolfDatasetConfigItems,
-							setMap: setMap,
 							hazardDatasetId: hazardDatasetId
 						}
 					);})()
