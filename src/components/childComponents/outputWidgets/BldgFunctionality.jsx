@@ -57,13 +57,15 @@ export default function BldgFunctionality(props){
 						"layerId": bldgFuncProbINCOREId,
 						"layerStyles": "incore:joplin-bldg-func",
 						"title": "Building Functionality Probability",
-						"opacity": 1
+						"opacity": 1,
+						"zIndex": 1
 					},
 					{
 						"layerId": hazardDatasetId,
 						"layerStyles": "incore:tornado",
 						"title": "Tornado",
-						"opacity": 0.3
+						"opacity": 0.3,
+						"zIndex": 2
 					}
 				];
 				const previewLayers = generateLayers(globalConfig, layerDef);

@@ -57,13 +57,15 @@ export default function BldgMCS(props){
 						"layerId": mcsBldgFailureProbINCOREId,
 						"layerStyles": "incore:joplin-bldg-mcs",
 						"title": "Building Functionality Probability without Interdependency",
-						"opacity": 1
+						"opacity": 1,
+						"zIndex": 1
 					},
 					{
 						"layerId": hazardDatasetId,
 						"layerStyles": "incore:tornado",
 						"title": "Tornado",
-						"opacity": 0.3
+						"opacity": 0.3,
+						"zIndex": 2
 					}
 				];
 				const previewLayers = generateLayers(globalConfig, layerDef);

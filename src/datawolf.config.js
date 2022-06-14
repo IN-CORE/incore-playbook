@@ -407,7 +407,7 @@ const datawolfWorkflowConfig =
 						"datasets": {
 							"step": "Joplin VSAM Nov 2021",
 							"title": "Population dislocation heatmap",
-							"variableName":"popdislHeatmapContent",
+							"variableName":"popdislHeatmapINCOREId",
 							"widget": "PopDislocation",
 						}
 					},

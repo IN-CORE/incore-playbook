@@ -16,7 +16,7 @@ export const generateLayers = (globalConfig=defaultGlobalConfig, layerDef) => {
 		const previewLayer = new TileLayer({
 			title: layerDefinition["title"],
 			source: source,
-			zIndex: 1,
+			zIndex: layerDefinition["zIndex"],
 			opacity: layerDefinition["opacity"]
 		});
 		return [...previewLayers, previewLayer];

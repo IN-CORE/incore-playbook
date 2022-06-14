@@ -35,13 +35,15 @@ export default function Interdependency(props) {
 						"layerId": "joplin-bldg-subs",
 						"layerStyles": null,
 						"title": "Interdependency Network",
-						"opacity": 0.7
+						"opacity": 0.7,
+						"zIndex": 1
 					},
 					{
 						"layerId": substationMaxDmgStateINCOREId,
 						"layerStyles": "incore:joplin-substations-label",
 						"title": "EPF Substations",
-						"opacity": 1
+						"opacity": 1,
+						"zIndex": 2
 					}
 				];
 				const previewLayers = generateLayers(globalConfig, layerDef);

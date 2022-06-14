@@ -158,32 +158,32 @@ export default function ViewResult(props) {
 		setWidgetName(widgetName);
 
 		// group output items belongs to that widgetName/widget type
+		// TODO rewrite this part of logic!
 		setDatawolfDatasetConfigItems(datawolfWorkflowConfig.outputs.datasets[0].datasetsMap.reduce((list, item) => {
 			if (widgetName === "ResilienceMetrics"){
 				if (item.datasets.widget === "CGE" || item.datasets.widget === "PopDislocation"
 					|| item.datasets.widget === "BldgFunctionality"){
 					return [...list, item];
 				}
-				else{
-					return list;
-				}
 			}
 			if (widgetName === "Interdependency"){
 				if (item.datasets.widget === "SubstationDamage"){
 					return [...list, item];
 				}
-				else{
-					return list;
+			}
+			if (widgetName === "PopDislocation"){
+				if (item.datasets.widget === widgetName || item.datasets.widget === "BldgDamage"){
+					return [...list, item];
 				}
 			}
 			else{
 				if (item.datasets.widget === widgetName){
 					return [...list, item];
 				}
-				else{
-					return list;
-				}
 			}
+
+			return list;
+
 		}, []));
 
 		const hazardInfo = _getHazardInfo(selectedExecutionItem);

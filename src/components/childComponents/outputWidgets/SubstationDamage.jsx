@@ -40,13 +40,15 @@ export default function SubstationDamage(props){
 						"layerId": substationMaxDmgStateINCOREId,
 						"layerStyles": "incore:epf-dmg-summary",
 						"title": "EPF Damage (Substation)",
-						"opacity": 1
+						"opacity": 1,
+						"zIndex": 1
 					},
 					{
 						"layerId": hazardDatasetId,
 						"layerStyles": "incore:tornado",
 						"title": "Tornado",
-						"opacity": 0.3
+						"opacity": 0.3,
+						"zIndex": 2
 					}
 				];
 				const previewLayers = generateLayers(globalConfig, layerDef);

@@ -45,26 +45,29 @@ export default function PopDislocation(props){
 							"layerId": hazardDatasetId,
 							"layerStyles": "incore:tornado",
 							"title": "Tornado",
-							"opacity": 0.3
+							"opacity": 0.3,
+							"zIndex": 3
 						},
 						{
 							"layerId": bldgMaxDamageStateINCOREId,
 							"layerStyles": "incore:building",
 							"title": "Building Inventory",
-							"opacity": 1
+							"opacity": 1,
+							"zIndex": 1
 						}
 					];
 				const previewLayers = generateLayers(globalConfig, tmpLayerDef);
 				layerRef.current.tilelayer.getLayers().extend(previewLayers);
 			}
-			if (vName === "popDislINCOREId") {
-				const popDislINCOREId = await getOutputFileContent(datawolfConfig, executionItem, datawolfDatasetConfigItem.datasetId);
+			if (vName === "popdislHeatmapINCOREId") {
+				const popdislHeatmapINCOREId = await getOutputFileContent(datawolfConfig, executionItem, datawolfDatasetConfigItem.datasetId);
 				const tmpLayerDef = [
 					{
-						"layerId": popDislINCOREId,
+						"layerId": popdislHeatmapINCOREId,
 						"layerStyles": "incore:heatmap",
 						"title": "Population Dislocation Heatmap",
-						"opacity": 0.8
+						"opacity": 0.8,
+						"zIndex": 2
 					}
 				];
 				const previewLayers = generateLayers(globalConfig, tmpLayerDef);
