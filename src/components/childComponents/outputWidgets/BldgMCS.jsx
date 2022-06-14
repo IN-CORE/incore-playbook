@@ -38,7 +38,6 @@ export default function BldgMCS(props){
 	const [mcsBldgFailureProbINCOREId, setMcsBldgFailureProbINCOREId] = useState(null);
 
 	// Holds an instance of Map component
-	const mapRef = React.useRef();
 	const layerRef = React.useRef(basicLayers);
 
 	useEffect(() => {
@@ -83,9 +82,9 @@ export default function BldgMCS(props){
 
 
 	return (
-		<Dialog open={previewOn} onClose={handlePreviewClose} maxWidth="lg" fullWidth scroll="paper">
+		<Dialog open={previewOn} onClose={()=>{handlePreviewClose(layerRef);}} maxWidth="lg" fullWidth scroll="paper">
 			<DialogContent className="previewModal">
-				<IconButton aria-label="Close" onClick={handlePreviewClose} style={{float: "right"}}>
+				<IconButton aria-label="Close" onClick={()=>{handlePreviewClose(layerRef);}} style={{float: "right"}}>
 					<CloseIcon fontSize="small"/>
 				</IconButton>
 
@@ -138,9 +137,6 @@ export default function BldgMCS(props){
 							layerRef.current.tilelayer
 						]}
 						layerSwitcherOptions={{}}
-						updateMap={(map) => {
-							mapRef.current = map;
-						}}
 					/>
 				</Container>
 

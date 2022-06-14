@@ -38,7 +38,6 @@ export default function BldgDamage(props) {
 	const [bldgMaxDamageStateINCOREId, setBldgMaxDamageStateINCOREId] = useState(null);
 
 	// Holds an instance of Map component
-	const mapRef = React.useRef();
 	const layerRef = React.useRef(basicLayers);
 
 	useEffect(() => {
@@ -47,6 +46,7 @@ export default function BldgDamage(props) {
 		// for summary table on the top
 		setRuntime(executionItem["date"].slice(0, 10));
 
+		// todo this can be replaced with filter
 		datawolfDatasetConfigItems.map(async (datawolfDatasetConfigItem) => {
 			const vName = datawolfDatasetConfigItem.datasets.variableName;
 			if (vName === "bldgMaxDamageStateINCOREId") {
@@ -83,9 +83,9 @@ export default function BldgDamage(props) {
 	};
 
 	return (
-		<Dialog open={previewOn} onClose={handlePreviewClose} maxWidth="lg" fullWidth scroll="paper">
+		<Dialog open={previewOn} onClose={()=>{handlePreviewClose(layerRef);}} maxWidth="lg" fullWidth scroll="paper">
 			<DialogContent className="previewModal">
-				<IconButton aria-label="Close" onClick={handlePreviewClose} style={{float: "right"}}>
+				<IconButton aria-label="Close" onClick={()=>{handlePreviewClose(layerRef);}} style={{float: "right"}}>
 					<CloseIcon fontSize="small"/>
 				</IconButton>
 
@@ -142,9 +142,6 @@ export default function BldgDamage(props) {
 							layerRef.current.tilelayer
 						]}
 						layerSwitcherOptions={{}}
-						updateMap={(map) => {
-							mapRef.current = map;
-						}}
 					/>
 				</Container>
 

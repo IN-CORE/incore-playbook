@@ -18,6 +18,7 @@ import CGE from "./outputWidgets/CGE";
 import PopDislocation from "./outputWidgets/PopDislocation";
 import ResilienceMetrics from "./outputWidgets/ResilienceMetrics";
 import SubstationDamage from "./outputWidgets/SubstationDamage";
+import {Collection} from "ol";
 
 
 const useStyles = makeStyles({
@@ -124,9 +125,12 @@ export default function ViewResult(props) {
 	];
 
 	// close the model
-	const handlePreviewClose = () => {
+	const handlePreviewClose = (layerRef) => {
 		setPreviewOn(false);
 		setWidgetName("");
+
+		// remove tile layers; reset map
+		layerRef.current.tilelayer.setLayers(new Collection([]));
 	};
 
 	const getExecution = (executionItemId) => {
