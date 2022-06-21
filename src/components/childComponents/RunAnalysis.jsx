@@ -105,20 +105,15 @@ export default function ViewResult(props) {
 	let parametersMap = datawolfWorkflowConfig.inputs.parameters[0].parametersMap;
 	const [datawolfFormState, setDatawolfFormState] = useState(
 		parametersMap.reduce((state, item) => {
-			// prepopulate the default hidden fields
-			if (item.hidden) {
-				return {...state, [item.parameters.variableName]:{[item.paramId]: item.parameters.defaultValue}};
-			}
-			else{
-				return {...state, [item.parameters.variableName]:{[item.paramId]: ""}};
-			}
+			// prepopulate the default fields
+			return {...state, [item.parameters.variableName]:{[item.paramId]: item.parameters.defaultValue}};
 		}, {})
 	);
 	const [disabled, setDisabled] = useState(true);
 
-	// // form check
+	// form check
 	useEffect(() => {
-		if (Object.keys(datawolfFormState).every((k, ) => Object.values(datawolfFormState[k])[0] !== "")) setDisabled(false);
+		if (Object.keys(datawolfFormState).every((k, ) => Object.values(datawolfFormState[k])[0] !== null)) setDisabled(false);
 		else setDisabled(true);
 	}, [datawolfFormState]);
 

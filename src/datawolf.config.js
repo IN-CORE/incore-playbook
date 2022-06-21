@@ -22,7 +22,7 @@ const datawolfWorkflowConfig =
 								"title": "Result Name",
 								"variableName":"title",
 								"widget": "InputTextField",
-								"defaultValue": "",
+								"defaultValue": null,
 							}
 						},
 						{
@@ -32,7 +32,7 @@ const datawolfWorkflowConfig =
 								"title": "Building Inventory",
 								"variableName":"selectedBldgId",
 								"widget": "Buildings",
-								"defaultValue": ""
+								"defaultValue": null
 							}
 						},
 						{
@@ -42,7 +42,7 @@ const datawolfWorkflowConfig =
 								"title": "Hazard Type",
 								"variableName":"selectedHazardType",
 								"widget": "AllowedHazardTypes",
-								"defaultValue": ""
+								"defaultValue": null
 							}
 						},
 						{
@@ -52,6 +52,7 @@ const datawolfWorkflowConfig =
 								"title": "Hazard ID",
 								"variableName":"selectedHazardId",
 								"widget": "Hazards",
+								"defaultValue": null
 							}
 						},
 						{
@@ -84,7 +85,7 @@ const datawolfWorkflowConfig =
 								"title": "Include Liquefaction",
 								"variableName":"useLiquefaction",
 								"widget": null,
-								"defaultValue": "false"
+								"defaultValue": ""
 							}
 						},
 						{
@@ -95,7 +96,7 @@ const datawolfWorkflowConfig =
 								"title": "Include Hazard Uncertainty",
 								"variableName":"useUncertainty",
 								"widget": null,
-								"defaultValue": "false"
+								"defaultValue": ""
 							}
 						},
 						{
@@ -106,7 +107,7 @@ const datawolfWorkflowConfig =
 								"title": "Number of CPUs",
 								"variableName":"numCpus",
 								"widget": null,
-								"defaultValue": "4"
+								"defaultValue": 8
 							}
 						},
 						{
@@ -160,7 +161,7 @@ const datawolfWorkflowConfig =
 								"title": "EPF Substations",
 								"variableName":"selectedSubstationId",
 								"widget":"Epfs",
-								"defaultValue":""
+								"defaultValue": null
 							}
 						},
 						{
@@ -181,7 +182,7 @@ const datawolfWorkflowConfig =
 								"title": "EPF Poles",
 								"variableName": "selectedPoleId",
 								"widget":"Epfs",
-								"defaultValue":""
+								"defaultValue": null
 							}
 						},
 						{
@@ -192,7 +193,7 @@ const datawolfWorkflowConfig =
 								"title": "MCS Samples",
 								"variableName": "mcsSamples",
 								"widget": null,
-								"defaultValue": "500"
+								"defaultValue": 500
 							}
 						},
 						{
@@ -202,7 +203,7 @@ const datawolfWorkflowConfig =
 								"title": "Interdependency",
 								"variableName": "selectedInterdNetworkId",
 								"widget": "InterdNetworks",
-								"defaultValue": ""
+								"defaultValue": null
 							}
 						},
 						{
@@ -213,7 +214,7 @@ const datawolfWorkflowConfig =
 								"title": "Model Iterations",
 								"variableName": "iterations",
 								"widget": null,
-								"defaultValue": "500"
+								"defaultValue": 500
 							}
 						},
 						{
@@ -224,7 +225,7 @@ const datawolfWorkflowConfig =
 								"title": "Seed",
 								"variableName": "seed",
 								"widget": null,
-								"defaultValue": "1111"
+								"defaultValue": 1111
 							}
 						},
 						{
@@ -234,7 +235,7 @@ const datawolfWorkflowConfig =
 								"title": "Housing Unit Allocation",
 								"variableName": "selectedHuaId",
 								"widget": "Huas",
-								"defaultValue": ""
+								"defaultValue": null
 							}
 						},
 						{
@@ -244,7 +245,7 @@ const datawolfWorkflowConfig =
 								"title": "Block Group Data",
 								"variableName": "selectedBlockGroupId",
 								"widget": "BlockGroups",
-								"defaultValue": ""
+								"defaultValue": null
 							}
 						},
 						{
@@ -254,7 +255,7 @@ const datawolfWorkflowConfig =
 								"title": "Value Loss Param",
 								"variableName": "selectedValueLossId",
 								"widget": "ValueLosses",
-								"defaultValue": ""
+								"defaultValue": null
 							}
 						},
 						{
