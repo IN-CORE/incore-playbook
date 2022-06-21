@@ -74,7 +74,7 @@ const datawolfWorkflowConfig =
 								"title": "Building Fragility Key",
 								"variableName":"buildingFragilityKey",
 								"widget": null,
-								"defaultValue": "Non-Retrofit Fragility ID Code"
+								"defaultValue": ""
 							}
 						},
 						{
@@ -214,7 +214,7 @@ const datawolfWorkflowConfig =
 								"title": "Model Iterations",
 								"variableName": "iterations",
 								"widget": null,
-								"defaultValue": 500
+								"defaultValue": 1
 							}
 						},
 						{
