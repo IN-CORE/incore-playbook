@@ -22,7 +22,7 @@ const datawolfWorkflowConfig =
 								"title": "Result Name",
 								"variableName":"title",
 								"widget": "InputTextField",
-								"defaultValue": "",
+								"defaultValue": null,
 							}
 						},
 						{
@@ -32,7 +32,7 @@ const datawolfWorkflowConfig =
 								"title": "Building Inventory",
 								"variableName":"selectedBldgId",
 								"widget": "Buildings",
-								"defaultValue": ""
+								"defaultValue": null
 							}
 						},
 						{
@@ -42,7 +42,7 @@ const datawolfWorkflowConfig =
 								"title": "Hazard Type",
 								"variableName":"selectedHazardType",
 								"widget": "AllowedHazardTypes",
-								"defaultValue": ""
+								"defaultValue": null
 							}
 						},
 						{
@@ -52,6 +52,7 @@ const datawolfWorkflowConfig =
 								"title": "Hazard ID",
 								"variableName":"selectedHazardId",
 								"widget": "Hazards",
+								"defaultValue": null
 							}
 						},
 						{
@@ -73,7 +74,7 @@ const datawolfWorkflowConfig =
 								"title": "Building Fragility Key",
 								"variableName":"buildingFragilityKey",
 								"widget": null,
-								"defaultValue": "Non-Retrofit Fragility ID Code"
+								"defaultValue": ""
 							}
 						},
 						{
@@ -84,7 +85,7 @@ const datawolfWorkflowConfig =
 								"title": "Include Liquefaction",
 								"variableName":"useLiquefaction",
 								"widget": null,
-								"defaultValue": "false"
+								"defaultValue": ""
 							}
 						},
 						{
@@ -95,7 +96,7 @@ const datawolfWorkflowConfig =
 								"title": "Include Hazard Uncertainty",
 								"variableName":"useUncertainty",
 								"widget": null,
-								"defaultValue": "false"
+								"defaultValue": ""
 							}
 						},
 						{
@@ -106,7 +107,7 @@ const datawolfWorkflowConfig =
 								"title": "Number of CPUs",
 								"variableName":"numCpus",
 								"widget": null,
-								"defaultValue": "4"
+								"defaultValue": 8
 							}
 						},
 						{
@@ -160,7 +161,7 @@ const datawolfWorkflowConfig =
 								"title": "EPF Substations",
 								"variableName":"selectedSubstationId",
 								"widget":"Epfs",
-								"defaultValue":""
+								"defaultValue": null
 							}
 						},
 						{
@@ -181,7 +182,7 @@ const datawolfWorkflowConfig =
 								"title": "EPF Poles",
 								"variableName": "selectedPoleId",
 								"widget":"Epfs",
-								"defaultValue":""
+								"defaultValue": null
 							}
 						},
 						{
@@ -192,7 +193,7 @@ const datawolfWorkflowConfig =
 								"title": "MCS Samples",
 								"variableName": "mcsSamples",
 								"widget": null,
-								"defaultValue": "500"
+								"defaultValue": 500
 							}
 						},
 						{
@@ -202,7 +203,7 @@ const datawolfWorkflowConfig =
 								"title": "Interdependency",
 								"variableName": "selectedInterdNetworkId",
 								"widget": "InterdNetworks",
-								"defaultValue": ""
+								"defaultValue": null
 							}
 						},
 						{
@@ -213,7 +214,7 @@ const datawolfWorkflowConfig =
 								"title": "Model Iterations",
 								"variableName": "iterations",
 								"widget": null,
-								"defaultValue": "500"
+								"defaultValue": 1
 							}
 						},
 						{
@@ -224,7 +225,7 @@ const datawolfWorkflowConfig =
 								"title": "Seed",
 								"variableName": "seed",
 								"widget": null,
-								"defaultValue": "1111"
+								"defaultValue": 1111
 							}
 						},
 						{
@@ -234,7 +235,7 @@ const datawolfWorkflowConfig =
 								"title": "Housing Unit Allocation",
 								"variableName": "selectedHuaId",
 								"widget": "Huas",
-								"defaultValue": ""
+								"defaultValue": null
 							}
 						},
 						{
@@ -244,7 +245,7 @@ const datawolfWorkflowConfig =
 								"title": "Block Group Data",
 								"variableName": "selectedBlockGroupId",
 								"widget": "BlockGroups",
-								"defaultValue": ""
+								"defaultValue": null
 							}
 						},
 						{
@@ -254,7 +255,7 @@ const datawolfWorkflowConfig =
 								"title": "Value Loss Param",
 								"variableName": "selectedValueLossId",
 								"widget": "ValueLosses",
-								"defaultValue": ""
+								"defaultValue": null
 							}
 						},
 						{
@@ -298,17 +299,17 @@ const datawolfWorkflowConfig =
 						"datasets": {
 							"step": "Joplin VSAM Nov 2021",
 							"title": "Building damage summary table",
-							"variableName":"bldgDmgSummaryTableId",
-							"widget": null,
+							"variableName":"bldgDmgSummaryTableContent",
+							"widget": "BldgDamage",
 						}
 					},
 					{
 						"datasetId": "a65248b8-6cb5-41bf-dbc2-724eb35f4ddc",
 						"datasets": {
 							"step": "Joplin VSAM Nov 2021",
-							"title": "Building maximum damage state",
-							"variableName":"bldgMaxDamageStateId",
-							"widget": null,
+							"title": "Building maximum damage state ID",
+							"variableName":"bldgMaxDamageStateINCOREId",
+							"widget": "BldgDamage",
 						}
 					},
 					{
@@ -316,8 +317,8 @@ const datawolfWorkflowConfig =
 						"datasets": {
 							"step": "Joplin VSAM Nov 2021",
 							"title": "EPF pole maximum damage state",
-							"variableName":"epfPoleMaxDmgStateId",
-							"widget": null,
+							"variableName":"poleMaxDmgStateINCOREId",
+							"widget": "PoleDamage",
 						}
 					},
 					{
@@ -325,8 +326,8 @@ const datawolfWorkflowConfig =
 						"datasets": {
 							"step": "Joplin VSAM Nov 2021",
 							"title": "EPF substation maximum damage state",
-							"variableName":"epfSubstationMaxDmgStateId",
-							"widget": null,
+							"variableName":"substationMaxDmgStateINCOREId",
+							"widget": "SubstationDamage",
 						}
 					},
 					{
@@ -334,26 +335,26 @@ const datawolfWorkflowConfig =
 						"datasets": {
 							"step": "Joplin VSAM Nov 2021",
 							"title": "Monte Carlo building failure summary table",
-							"variableName":"mcsBldgSummaryTableId",
-							"widget": null,
+							"variableName":"mcsBldgSummaryTableContent",
+							"widget": "BldgMCS",
 						}
 					},
 					{
 						"datasetId": "6d9f9b7c-9de5-45ff-d6ce-ac7ce348d429",
 						"datasets": {
 							"step": "Joplin VSAM Nov 2021",
-							"title": "Monte Carlo building failure probability",
-							"variableName":"mcsBldgFailureProbId",
-							"widget": null,
+							"title": "Monte Carlo building failure probability Layer ID",
+							"variableName":"mcsBldgFailureProbINCOREId",
+							"widget": "BldgMCS",
 						}
 					},
 					{
 						"datasetId": "3f100fce-10a9-454d-cdf7-428dad7d9df0",
 						"datasets": {
 							"step": "Joplin VSAM Nov 2021",
-							"title": "Building funcionality probability",
-							"variableName":"bldgFuncProbId",
-							"widget": null,
+							"title": "Building funcionality probability layer ID",
+							"variableName":"bldgFuncProbINCOREId",
+							"widget": "BldgFunctionality",
 						}
 					},
 					{
@@ -361,8 +362,8 @@ const datawolfWorkflowConfig =
 						"datasets": {
 							"step": "Joplin VSAM Nov 2021",
 							"title": "Building funcionality summary table",
-							"variableName":"bldgFuncSummaryTableId",
-							"widget": null,
+							"variableName":"bldgFuncSummaryTableContent",
+							"widget": "BldgFunctionality",
 						}
 					},
 					// TODO can use this to display error messages
@@ -380,8 +381,8 @@ const datawolfWorkflowConfig =
 						"datasets": {
 							"step": "Joplin VSAM Nov 2021",
 							"title": "CGE Domestic Supply",
-							"variableName":"cgeDomesticSupplyId",
-							"widget": null,
+							"variableName":"cgeDomesticSupplyContent",
+							"widget": "CGE",
 						}
 					},
 					{
@@ -389,8 +390,8 @@ const datawolfWorkflowConfig =
 						"datasets": {
 							"step": "Joplin VSAM Nov 2021",
 							"title": "CGE household income",
-							"variableName":"cgeHouseholdIncomeId",
-							"widget": null,
+							"variableName":"cgeHouseholdIncomeContent",
+							"widget": "CGE",
 						}
 					},
 					{
@@ -398,8 +399,8 @@ const datawolfWorkflowConfig =
 						"datasets": {
 							"step": "Joplin VSAM Nov 2021",
 							"title": "CGE employment",
-							"variableName":"cgeEmploymentId",
-							"widget": null,
+							"variableName":"cgeEmploymentContent",
+							"widget": "CGE",
 						}
 					},
 					{
@@ -407,8 +408,8 @@ const datawolfWorkflowConfig =
 						"datasets": {
 							"step": "Joplin VSAM Nov 2021",
 							"title": "Population dislocation heatmap",
-							"variableName":"popdislHeatmapId",
-							"widget": null,
+							"variableName":"popdislHeatmapINCOREId",
+							"widget": "PopDislocation",
 						}
 					},
 					{
@@ -416,8 +417,8 @@ const datawolfWorkflowConfig =
 						"datasets": {
 							"step": "Joplin VSAM Nov 2021",
 							"title": "Total Population dislocation",
-							"variableName":"totalDislocationId",
-							"widget": null,
+							"variableName":"totalDislTableContent",
+							"widget": "PopDislocation",
 						}
 					},
 					{
@@ -425,8 +426,8 @@ const datawolfWorkflowConfig =
 						"datasets": {
 							"step": "Joplin VSAM Nov 2021",
 							"title": "Population dislocation by race",
-							"variableName":"dislocationByRaceId",
-							"widget": null,
+							"variableName":"dislocationByRaceContent",
+							"widget": "PopDislocation",
 						}
 					},
 					{
@@ -434,8 +435,8 @@ const datawolfWorkflowConfig =
 						"datasets": {
 							"step": "Joplin VSAM Nov 2021",
 							"title": "Population dislocation by tenure",
-							"variableName":"dislocationByTenureId",
-							"widget": null,
+							"variableName":"dislocationByTenureContent",
+							"widget": "PopDislocation",
 						}
 					},
 					{
@@ -443,8 +444,8 @@ const datawolfWorkflowConfig =
 						"datasets": {
 							"step": "Joplin VSAM Nov 2021",
 							"title": "Population dislocation by income",
-							"variableName":"dislocationByIncomeId",
-							"widget": null,
+							"variableName":"dislocationByIncomeContent",
+							"widget": "PopDislocation",
 						}
 					},
 					{
@@ -452,8 +453,8 @@ const datawolfWorkflowConfig =
 						"datasets": {
 							"step": "Joplin VSAM Nov 2021",
 							"title": "Population dislocation by housing type",
-							"variableName":"dislocationByHousingTypeId",
-							"widget": null,
+							"variableName":"dislocationByHousingTypeContent",
+							"widget": "PopDislocation",
 						}
 					},
 					{
@@ -461,8 +462,8 @@ const datawolfWorkflowConfig =
 						"datasets": {
 							"step": "Joplin VSAM Nov 2021",
 							"title": "Population dislocation by disability",
-							"variableName":"dislocationByDisabilityId",
-							"widget": null,
+							"variableName":"dislocationByDisabilityContent",
+							"widget": "PopDislocation",
 						}
 					},
 				]

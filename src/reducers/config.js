@@ -12,7 +12,7 @@ const defaultConfig = {
 	datawolfConfig: defaultDatawolfConfig,
 	datawolfWorkflowConfig: defaultDatawolfWorkflowConfig,
 	globalConfig: defaultGlobalConfig,
-	allowedHazardTypes: ["earthquakes", "tornadoes", "tsunamis", "hurricanes", "floods"],
+	allowedHazardTypes: ["earthquake", "tornado", "tsunami", "hurricane", "flood"],
 	allowedDataTypes: {
 		building: true,
 		epf: true,

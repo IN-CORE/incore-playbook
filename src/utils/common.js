@@ -40,7 +40,7 @@ export function getCurrUsername(){
 	}
 	else{
 		let cookie = cookies.get("Authorization");
-		if (cookie !== "" && cookie.split(" ").length > 0){
+		if (cookie!== undefined && cookie !== "" && cookie.split(" ").length > 0){
 			let userInfo = jwt_decode(cookie.split(" ")[1]);
 			return userInfo["preferred_username"];
 		}
@@ -124,8 +124,17 @@ export function dataURItoFile(dataURI, filename="") {
 	return new File([blob], filename, {type: mime, lastModified: new Date()});
 }
 
-
 export function FlatCoordToLonLat(flatCoord) {
 	let LonLat = toLonLat(flatCoord);
 	return LonLat;
+}
+
+export function getHazardTypePlural(hazardType) {
+	if (hazardType.match(/w*(o|s|sh|ch|x|z)\b/)){
+		hazardType = `${hazardType}es`;
+	}
+	else{
+		hazardType = `${hazardType}s`;
+	}
+	return hazardType;
 }

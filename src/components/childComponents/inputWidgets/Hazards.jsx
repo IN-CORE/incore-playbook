@@ -2,14 +2,16 @@ import React, {useEffect, useState} from "react";
 import {IncoreMenuItem, IncoreSelectBox} from "../../styledComponents/IncoreSelect";
 import {useDispatch, useSelector} from "react-redux";
 import {fetchHazards} from "../../../actions/hazards";
+import {getHazardTypePlural} from "../../../utils/common";
 
 
 export default function Hazards(props) {
 
-	const {setDatawolfFormState, datawolfFormState, datawolfConfigItem} = props;
+	const {setDatawolfFormState, datawolfFormState, datawolfParamConfigItem} = props;
 	const alllowedHazardTypes = useSelector((state) => state.config.allowedHazardTypes);
 	const globalConfig = useSelector((state) => state.config.globalConfig);
 
+	// pre-populate those; will be used in the dropdown line 34
 	const tornadoes = useSelector((state) => state.hazard.tornadoes);
 	const earthquakes = useSelector((state) => state.hazard.earthquakes);
 	const hurricanes = useSelector((state) => state.hazard.hurricanes);
@@ -29,21 +31,11 @@ export default function Hazards(props) {
 
 	// hazard dropdown
 	useEffect(() => {
-		let hazardType = Object.values(datawolfFormState.selectedHazardType)[0];
-		if (hazardType === "earthquakes"){
-			setHazards(earthquakes);
-		}
-		else if (hazardType === "tornadoes"){
-			setHazards(tornadoes);
-		}
-		else if (hazardType === "tsunamis"){
-			setHazards(tsunamis);
-		}
-		else if (hazardType === "floods"){
-			setHazards(floods);
-		}
-		else if (hazardType === "hurricanes"){
-			setHazards(hurricanes);
+		if (datawolfFormState.selectedHazardType){
+			let hazardType = Object.values(datawolfFormState.selectedHazardType)[0];
+			if (hazardType && hazardType !== ""){
+				setHazards(eval(getHazardTypePlural(hazardType)));
+			}
 		}
 	}, [datawolfFormState.selectedHazardType]);
 
@@ -52,9 +44,9 @@ export default function Hazards(props) {
 						 onChange={(e) => {
 							 let currentVal = e.target.value;
 							 setDatawolfFormState(prevState =>
-								 ({...prevState, [datawolfConfigItem.parameters.variableName]: {[datawolfConfigItem.paramId]: currentVal}}));
+								 ({...prevState, [datawolfParamConfigItem.parameters.variableName]: {[datawolfParamConfigItem.paramId]: currentVal}}));
 						 }}
-						 value={datawolfFormState[datawolfConfigItem.parameters.variableName][datawolfConfigItem.paramId] ?? ""}>
+						 value={datawolfFormState[datawolfParamConfigItem.parameters.variableName][datawolfParamConfigItem.paramId] ?? ""}>
 			{
 				hazards.map((option) => {
 					return (

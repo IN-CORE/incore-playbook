@@ -5,7 +5,7 @@ import {useSelector} from "react-redux";
 
 export default function AllowedHazardTypes(props) {
 
-	const {setDatawolfFormState, datawolfFormState, datawolfConfigItem} = props;
+	const {setDatawolfFormState, datawolfFormState, datawolfParamConfigItem} = props;
 
 	const alllowedHazardTypes = useSelector((state) => state.config.allowedHazardTypes);
 
@@ -14,9 +14,9 @@ export default function AllowedHazardTypes(props) {
 						 onChange={(e) => {
 							 let currentVal = e.target.value;
 							 setDatawolfFormState(prevState =>
-								 ({...prevState, [datawolfConfigItem.parameters.variableName]: {[datawolfConfigItem.paramId]: currentVal}}));
+								 ({...prevState, [datawolfParamConfigItem.parameters.variableName]: {[datawolfParamConfigItem.paramId]: currentVal}}));
 						 }}
-						 value={datawolfFormState[datawolfConfigItem.parameters.variableName][datawolfConfigItem.paramId] ?? ""}>
+						 value={datawolfFormState[datawolfParamConfigItem.parameters.variableName][datawolfParamConfigItem.paramId] ?? ""}>
 			{
 				alllowedHazardTypes.map((option) => {
 					return (

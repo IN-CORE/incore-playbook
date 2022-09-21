@@ -34,7 +34,7 @@ store.dispatch(setAllowedDataTypes({
 	network: true,
 	socioeconomics: true
 }));
-store.dispatch(setAllowedHazardTypes(["earthquakes", "tornadoes", "tsunamis", "hurricanes", "floods"]));
+store.dispatch(setAllowedHazardTypes(["earthquake", "tornado", "tsunami", "hurricane", "flood"]));
 
 const theme = createMuiTheme({
 

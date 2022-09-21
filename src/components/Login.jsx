@@ -148,7 +148,16 @@ export const Login = () => {
 		const tokenJson = await tokenRequest.json();
 
 		if (tokenJson["access_token"] !== undefined) {
-			cookies.set("Authorization", `bearer ${tokenJson["access_token"]}`, {maxAge: tokenJson["expires_in"], path: "/"});
+			cookies.set(
+				"Authorization",
+				`bearer ${tokenJson["access_token"]}`,
+				{
+					maxAge: tokenJson["expires_in"],
+					path: "/",
+					// TODO these flag doesn't work; it only affects cross site (localhost to geoserver) though
+					// sameSite: "None",
+					// secure: true
+				});
 			setAuthFail(false);
 			dispatch(setMenuState(true));
 			history.push("/");

@@ -2,7 +2,7 @@ import {getHeader, getCurrUserEmail, getIncoreTokenFile} from "./common";
 import {datawolfConfig as defaultDatawolfConfig} from "../datawolf.config.js";
 import {datawolfWorkflowConfig as defaultDatawolfWorkflowConfig} from "../datawolf.config.js";
 
-export async function getOutputFileJson(datawolfConfig, datasetId, outputFileName = null) {
+export async function getOutputFileJson(datawolfConfig=defaultDatawolfConfig, datasetId, outputFileName = null) {
 	let authHeader = getHeader();
 
 	// Get - Result Dataset
@@ -129,3 +129,14 @@ export async function postDataset(datawolfConfig, title="incoretoken", descripti
 		return null;
 	}
 }
+
+export const getOutputFileContentJSON = async (datawolfConfig = defaultDatawolfConfig, executionItem, dwDatasetId) => {
+	let incoreId = executionItem["datasets"][dwDatasetId];
+	let incoreTable = await getOutputFileJson(datawolfConfig, incoreId);
+	return JSON.parse(incoreTable);
+};
+
+export const getOutputFileContent = async (datawolfConfig = defaultDatawolfConfig, executionItem, dwDatasetId) => {
+	let incoreId = executionItem["datasets"][dwDatasetId];
+	return await getOutputFileJson(datawolfConfig, incoreId);
+};
