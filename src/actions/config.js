@@ -1,3 +1,5 @@
+import {datawolfWorkflowConfig as defaultDatawolfWorkflowConfig} from "../datawolf.config";
+
 export const UPDATE_MAP_CONFIG = "UPDATE_MAP_CONFIG";
 export const updateMapConfig = (config) => ({
 	type: UPDATE_MAP_CONFIG,
@@ -24,7 +26,7 @@ export const updateDatawolfConfig = (config) => ({
 export const UPDATE_DATAWOLF_WORKFLOW_CONFIG ="UPDATE_DATAWOLF_WORKFLOW_CONFIG";
 export const updateDatawolfWorkflowConfig = (config) => ({
 	type: UPDATE_DATAWOLF_WORKFLOW_CONFIG,
-	datawolfConfig: config,
+	datawolfWorkflowConfig: config,
 	receivedAt: Date.now(),
 });
 
