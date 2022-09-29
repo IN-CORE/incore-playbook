@@ -1,13 +1,13 @@
 import React, {useState} from "react";
 
-import {Box, Button, Container, Grid, Link, withStyles,} from "@material-ui/core";
+import {Box, Button, Container, Grid, Link,} from "@material-ui/core";
 
-import DefaultProfileImage from "../../public/default-profile-img.png";
 import {IncoreInputLabel} from "../styledComponents/IncoreInputLabel";
 import {IncoreButton} from "../styledComponents/IncoreButton";
 import {IncoreMenuItem, IncoreSelectBox} from "../styledComponents/IncoreSelect";
 import {IncoreTextField} from "../styledComponents/IncoreInput";
 import {makeStyles} from "@material-ui/core/styles";
+import {useSelector} from "react-redux";
 
 const useStyles = makeStyles({
 	inputGroupProfile: {
@@ -51,6 +51,8 @@ const useStyles = makeStyles({
  */
 export const UserInfo = (props) => {
 
+	const assetConfig = useSelector((state) => state.config.assetConfig);
+
 	const classes = useStyles();
 
 	const {userList, handleStepStatusChange} = props;
@@ -60,7 +62,7 @@ export const UserInfo = (props) => {
 	const [username, setUsername] = useState("");
 	const [role, setRole] = useState("");
 	const [email, setEmail] = useState("");
-	const [profileImageURL, setProfileImageURL] = useState(DefaultProfileImage);
+	const [profileImageURL, setProfileImageURL] = useState(assetConfig.defaultProfileImg);
 
 	const handleUserSelection = (event) => {
 		let index = event.target.value;
@@ -76,7 +78,7 @@ export const UserInfo = (props) => {
 	};
 
 	const handleProfileImageRemove = () => {
-		setProfileImageURL(DefaultProfileImage);
+		setProfileImageURL(assetConfig.defaultProfileImage);
 	};
 
 	const handleLeaderSave = () => {

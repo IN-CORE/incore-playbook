@@ -1,7 +1,8 @@
 import React from "react";
+import {useSelector} from "react-redux";
 
 const PoweredBy = ({text}) => {
-
+	const assetConfig = useSelector((state) => state.config.assetConfig);
 	let preText = "powered by";
 
 	if(text) {
@@ -13,7 +14,7 @@ const PoweredBy = ({text}) => {
 				color: "DarkGrey", padding: "5px 4px 0 4px"}}>
 				{preText}
 			</span>
-			 <img src="../../../public/resilience-logo.png" alt="IN-CORE" style={{maxHeight: 30}}/>
+			 <img src={assetConfig.poweredByLogo} alt="IN-CORE" style={{maxHeight: 30}}/>
 		</div>
 	);
 };

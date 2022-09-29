@@ -1,6 +1,6 @@
-import appConfig from "../globals";
 import {getHeader, getCurrUsername} from "../utils/common";
 import {inputDatasetTypes} from "../globals";
+import {globals as defaultGlobalConfig} from "../globals";
 
 export const LOGIN_ERROR = "LOGIN_ERROR";
 
@@ -14,8 +14,8 @@ export function receiveDatasets(type, json){
 	};
 }
 
-export function fetchDatasets(limit=20, offset=0, type){
-	let endpoint = `${appConfig.dataServiceBase}datasets?limit=${limit}&skip=${offset}&type=${type}`;
+export function fetchDatasets(globalConfig=defaultGlobalConfig, limit=20, offset=0, type){
+	let endpoint = `${globalConfig.dataServiceBase}datasets?limit=${limit}&skip=${offset}&type=${type}`;
 
 	// default to current user's space
 	let space = getCurrUsername();

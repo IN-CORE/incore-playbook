@@ -6,15 +6,12 @@ import {useHistory} from "react-router-dom";
 import {makeStyles } from "@material-ui/core/styles";
 import {IncoreButton} from "./styledComponents/IncoreButton";
 import Cookies from "universal-cookie";
-import appConfig from "../globals";
 import {setMenuState} from "../actions/layout";
 
-import LoginBg from "../public/login-background.jpg";
-import Powered from "../public/powered-by-incore.svg";
 import HeaderWithMenu from "../components/childComponents/navigation/HeaderWithMenu";
 import {isAuthorized} from "../utils/common";
 
-import {useDispatch} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 
 const cookies = new Cookies();
 
@@ -27,7 +24,6 @@ const useStyles = makeStyles((theme) => ({
 	rightGrid:{
 		height: "100vh",
 		width: "55vw",
-		backgroundImage:  `url(${LoginBg})`,
 		backgroundSize: "cover",
 		backgroundPosition: "0 -150px"
 	},
@@ -103,9 +99,13 @@ export const Login = () => {
 	const classes = useStyles();
 	const history = useHistory();
 
+	const globalConfig = useSelector((state) => state.config.globalConfig);
+
 	useEffect(() => {
 		if (isAuthorized()) { history.push("/");}
 	}, []);
+
+	const assetConfig = useSelector((state) => state.config.assetConfig);
 
 	const [username, setUsername] = useState("");
 	const [password, setPassword] = useState("");
@@ -128,13 +128,13 @@ export const Login = () => {
 	};
 
 	const handleLogin = async () => {
-		const endpoint = appConfig.authService;
+		const endpoint = globalConfig.authService;
 
 		let formData = [
 			`${encodeURIComponent("grant_type")  }=${  encodeURIComponent("password")}`,
 			`${encodeURIComponent("username")  }=${  encodeURIComponent(username)}`,
 			`${encodeURIComponent("password")  }=${  encodeURIComponent(password)}`,
-			`${encodeURIComponent("client_id")  }=${  encodeURIComponent(appConfig.client_id)}`,
+			`${encodeURIComponent("client_id")  }=${  encodeURIComponent(globalConfig.client_id)}`,
 		];
 
 		const tokenRequest = await fetch(endpoint, {
@@ -148,7 +148,16 @@ export const Login = () => {
 		const tokenJson = await tokenRequest.json();
 
 		if (tokenJson["access_token"] !== undefined) {
-			cookies.set("Authorization", `bearer ${tokenJson["access_token"]}`, {maxAge: tokenJson["expires_in"], path: "/"});
+			cookies.set(
+				"Authorization",
+				`bearer ${tokenJson["access_token"]}`,
+				{
+					maxAge: tokenJson["expires_in"],
+					path: "/",
+					// TODO these flag doesn't work; it only affects cross site (localhost to geoserver) though
+					// sameSite: "None",
+					// secure: true
+				});
 			setAuthFail(false);
 			dispatch(setMenuState(true));
 			history.push("/");
@@ -222,8 +231,8 @@ export const Login = () => {
 				</div>
 			</Grid>
 
-			<Grid item className={classes.rightGrid} >
-				<img src={Powered} alt="" style={{margin: "40px"}}/>
+			<Grid item className={classes.rightGrid} style={{backgroundImage:  `url(${assetConfig.loginBackgroundImg})`,}}>
+				<img src={assetConfig.poweredByLogo} alt="" style={{margin: "40px"}}/>
 			</Grid>
 		</Grid>
 	);

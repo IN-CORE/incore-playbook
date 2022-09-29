@@ -3,19 +3,40 @@
 
 import React from "react";
 import { render } from "react-dom";
-import { Provider } from "react-redux";
+import {Provider} from "react-redux";
 import {BrowserRouter, Route, Switch} from "react-router-dom";
 import routes from "./routes.js";
 import configureStore from "./store/configureStore";
 import {createMuiTheme, MuiThemeProvider} from "@material-ui/core/styles";
 import {mapConfig as defaultMapConfig} from "./map.config";
-import {setAllowedHazardTypes, updateMapConfig} from "./actions/config";
+import {assetConfig as defaultAssetConfig} from "./asset.config";
+import {datawolfConfig as defaultDatawolfConfig} from "./datawolf.config.js";
+import {datawolfWorkflowConfig as defaultDatawolfWorkflowConfig} from "./datawolf.config.js";
+import {globals as defaultGlobalConfig} from "./globals";
+import {
+	setAllowedHazardTypes,
+	setAllowedDataTypes,
+	updateAssetConfig,
+	updateMapConfig,
+	updateDatawolfConfig,
+	updateGlobalConfig, updateDatawolfWorkflowConfig
+} from "./actions/config";
 
 require("./public/favicon.ico");
 
 const store = configureStore();
 store.dispatch(updateMapConfig(defaultMapConfig));
-store.dispatch(setAllowedHazardTypes(["earthquakes", "tornadoes", "tsunamis", "hurricanes", "floods"]));
+store.dispatch(updateAssetConfig(defaultAssetConfig));
+store.dispatch(updateDatawolfConfig(defaultDatawolfConfig));
+store.dispatch(updateDatawolfWorkflowConfig(defaultDatawolfWorkflowConfig));
+store.dispatch(updateGlobalConfig(defaultGlobalConfig));
+store.dispatch(setAllowedDataTypes({
+	building: true,
+	epf: true,
+	network: true,
+	socioeconomics: true
+}));
+store.dispatch(setAllowedHazardTypes(["earthquake", "tornado", "tsunami", "hurricane", "flood"]));
 
 const theme = createMuiTheme({
 

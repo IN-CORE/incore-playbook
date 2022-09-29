@@ -11,10 +11,11 @@ import DatasetHurricaneUiSchema from "../../../schema/hurricane/datasetHurricane
 import {createRjfsDatasetHazards} from "../../../utils/hazard";
 
 import Form from "@rjsf/material-ui";
+import {useSelector} from "react-redux";
 
 export default function DatasetHurricane(props) {
 	const {value, index, handleLayerUpdate, handleListUpdate, ...other} = props;
-
+	const globalConfig = useSelector((state) => state.config.globalConfig);
 	const [loading, setLoading] = useState(false);
 
 	const widgets = {
@@ -24,10 +25,10 @@ export default function DatasetHurricane(props) {
 
 	const onSave = async (formData) => {
 		setLoading(true);
-		const hurricaneJson = await createRjfsDatasetHazards(formData, "hurricanes");
+		const hurricaneJson = await createRjfsDatasetHazards(globalConfig, formData, "hurricanes");
 		if (hurricaneJson !== {}){
 			handleLayerUpdate(hurricaneJson);
-			handleListUpdate("hurricanes");
+			handleListUpdate(globalConfig, "hurricanes");
 		}
 		setLoading(false);
 	};

@@ -18,7 +18,6 @@ import {applyTransform} from "ol/extent";
 import RasterTornado from "./childComponents/tornado/RasterTornado";
 import ModelTornado from "./childComponents/tornado/ModelTornado";
 import Map from "./childComponents/map/Map";
-import appConfig from "../globals";
 import {Layout} from "./Layout";
 import {IncoreInputLabel} from "./styledComponents/IncoreInputLabel";
 import {IncoreMenuItem, IncoreSelectBox} from "./styledComponents/IncoreSelect";
@@ -37,6 +36,7 @@ import DatasetFlood from "./childComponents/flood/datasetFlood";
 import DatasetTsunami from "./childComponents/tsuanmi/datasetTsunami";
 import {LineString} from "ol/geom";
 import {useEffectAllDepsChange} from "./customHooks/useEffectAllDeps";
+import {getHazardTypePlural} from "../utils/common";
 
 const useStyles = makeStyles({
 	tabDiv: {
@@ -73,7 +73,8 @@ export const CommunityHazards = () => {
 	const [srcCoord, setSrcCoord] = useState([]);
 
 	const dispatch = useDispatch();
-	const listHazards = (hazardType, limit, offset) => dispatch(fetchHazards(hazardType, limit, offset));
+	const listHazards = (globalConfig, hazardType, limit, offset) => dispatch(fetchHazards(globalConfig, hazardType, limit, offset));
+	const globalConfig = useSelector((state) => state.config.globalConfig);
 	const earthquakes = useSelector((state) => state.hazard.earthquakes);
 	const tornadoes = useSelector((state) => state.hazard.tornadoes);
 	const tsunamis = useSelector((state) => state.hazard.tsunamis);
@@ -167,7 +168,7 @@ export const CommunityHazards = () => {
 
 	// component did mount
 	useEffect(()=> {
-		listHazards(selectedHazardType);}, [selectedHazardType]
+		listHazards(globalConfig, selectedHazardType);}, [selectedHazardType]
 	);
 
 	useEffect(() => {
@@ -180,7 +181,7 @@ export const CommunityHazards = () => {
 		});
 
 		// construct different draw interactions
-		if (selectedHazardType === "tornadoes" && currTabIndex === 1){
+		if (selectedHazardType === "tornado" && currTabIndex === 1){
 			drawInteractionRef.current = new Draw({
 				source: drawSourceRef.current,
 				type: "LineString",
@@ -199,7 +200,7 @@ export const CommunityHazards = () => {
 				// drawSourceRef.current.removeFeature(event.feature);
 			});
 		}
-		else if (selectedHazardType === "earthquakes" && currTabIndex === 1){
+		else if (selectedHazardType === "earthquake" && currTabIndex === 1){
 			drawInteractionRef.current = new Draw({
 				source: drawSourceRef.current,
 				type: "Point",
@@ -264,7 +265,7 @@ export const CommunityHazards = () => {
 		}
 		if (layerId && layerTitle) {
 			const source = new TileWMS({
-				url: `${appConfig.geoServerWMS}`,
+				url: `${globalConfig.geoServerWMS}`,
 				params: {LAYERS: layerId, STYLES: style},
 				ratio: 1,
 				serverType: "geoserver"
@@ -343,34 +344,12 @@ export const CommunityHazards = () => {
 						</Box>
 						{
 							(() => {
-								if (selectedHazardType === "earthquakes"){
+								// selectedHazardType: are earthquake, flood, hurricane, tsunami, tornado
+								if (selectedHazardType !== ""){
 									return (
 										<Box className="entryTable">
-											<EntryTable fieldNames={fieldNames} fields={earthquakes}/>
-										</Box>);
-								}
-								else if (selectedHazardType === "tsunamis"){
-									return (
-										<Box className="entryTable">
-											<EntryTable fieldNames={fieldNames} fields={tsunamis}/>
-										</Box>);
-								}
-								else if (selectedHazardType === "tornadoes"){
-									return (
-										<Box className="entryTable">
-											<EntryTable fieldNames={fieldNames} fields={tornadoes}/>
-										</Box>);
-								}
-								else if (selectedHazardType === "floods"){
-									return (
-										<Box className="entryTable">
-											<EntryTable fieldNames={fieldNames} fields={floods}/>
-										</Box>);
-								}
-								else if (selectedHazardType === "hurricanes"){
-									return (
-										<Box className="entryTable">
-											<EntryTable fieldNames={fieldNames} fields={hurricanes}/>
+											<EntryTable fieldNames={fieldNames}
+												fields={eval(getHazardTypePlural(selectedHazardType))}/>
 										</Box>);
 								}
 							})()
@@ -399,7 +378,7 @@ export const CommunityHazards = () => {
 									  onChange={(e, value) => {setCurrTabIndex(value);}}>
 									{/*only certain hazard type has model based creation*/}
 									<Tab label="Upload a Hazard Dataset" className={classes.tab}/>
-									{selectedHazardType === "tornadoes"  || selectedHazardType === "earthquakes" ?
+									{selectedHazardType === "tornado"  || selectedHazardType === "earthquake" ?
 										<Tab label="Create a Hazard" className={classes.tab}/> :
 										null
 									}
@@ -407,7 +386,7 @@ export const CommunityHazards = () => {
 								{
 									// different hazard type will have different UI
 									(() => {
-										if (selectedHazardType === "earthquakes") {
+										if (selectedHazardType === "earthquake") {
 											return (<>
 												<DatasetEarthquake value={currTabIndex} index={0}
 															   handleLayerUpdate={handleLayerUpdate}
@@ -418,7 +397,7 @@ export const CommunityHazards = () => {
 																 srcCoordProps={srcCoord}/>
 											</>);
 										}
-										else if (selectedHazardType === "tornadoes") {
+										else if (selectedHazardType === "tornado") {
 											return (<>
 												<RasterTornado value={currTabIndex} index={0}
 															   handleLayerUpdate={handleLayerUpdate}
@@ -430,17 +409,17 @@ export const CommunityHazards = () => {
 															  endCoordProps={endCoord}/>
 											</>);
 										}
-										else if (selectedHazardType === "hurricanes"){
+										else if (selectedHazardType === "hurricane"){
 											return (<DatasetHurricane value={currTabIndex} index={0}
 																	  handleLayerUpdate={handleLayerUpdate}
 																	  handleListUpdate={listHazards}/>);
 										}
-										else if (selectedHazardType === "floods"){
+										else if (selectedHazardType === "flood"){
 											return (<DatasetFlood value={currTabIndex} index={0}
 																	  handleLayerUpdate={handleLayerUpdate}
 																	  handleListUpdate={listHazards}/>);
 										}
-										else if (selectedHazardType === "tsunamis"){
+										else if (selectedHazardType === "tsunami"){
 											return (<DatasetTsunami value={currTabIndex} index={0}
 																   handleLayerUpdate={handleLayerUpdate}
 																   handleListUpdate={listHazards}/>);

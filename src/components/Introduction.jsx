@@ -16,7 +16,6 @@ export const Introduction = ({menu}) => {
 	let fullHtml = fullHtml00;
 	let pageBanner = null;
 	if (menu === "1") {
-		console.log(menu);
 		fullHtml = fullHtml10;
 		pageBanner = <PageBanner parentStep="Form a Collaborative Planning Team" taskNo="1" />;
 	}

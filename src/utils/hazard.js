@@ -1,8 +1,8 @@
-import appConfig from "../globals";
-import {dataURItoFile, getHeader, round} from "./common";
+import {globals as defaultGlobalConfig} from "../globals";
+import {dataURItoFile, getHazardTypePlural, getHeader, round} from "./common";
 
-export async function createModelTornado(name, description, rating, startLat, startLon, endLat, endLon) {
-	const endpoint = `${appConfig.hazardServiceBase}tornadoes`;
+export async function createModelTornado(globalConfig=defaultGlobalConfig, name, description, rating, startLat, startLon, endLat, endLon) {
+	const endpoint = `${globalConfig.hazardServiceBase}tornadoes`;
 	let formData = new FormData();
 	let tornadoMetadata = {
 		"tornadoType": "model",
@@ -38,8 +38,8 @@ export async function createModelTornado(name, description, rating, startLat, st
 	}
 }
 
-export async function createRasterTornado(name, description, files) {
-	const endpoint = `${appConfig.hazardServiceBase}tornadoes`;
+export async function createRasterTornado(globalConfig=defaultGlobalConfig, name, description, files) {
+	const endpoint = `${globalConfig.hazardServiceBase}tornadoes`;
 	let formData = new FormData();
 
 	let tornadoMetadata = {
@@ -71,13 +71,16 @@ export async function createRasterTornado(name, description, files) {
 	}
 }
 
-export async function getTornadoMetadata(tornadoId) {
-	let endpoint = `${appConfig.hazardServiceBase}tornadoes/${tornadoId}`;
-	let tornadoRequest = await fetch(endpoint, {mode: "cors", headers: getHeader()});
-	if (tornadoRequest.status === 200) {
-		return tornadoRequest.json();
+export async function getHazardMetadata(globalConfig=defaultGlobalConfig, hazardType, hazardId) {
+	// need to turn hazardType into plura
+	const hazardTypePlural = getHazardTypePlural(hazardType);
 
-	} else if (tornadoRequest.status === 401) {
+	let endpoint = `${globalConfig.hazardServiceBase}${hazardTypePlural}/${hazardId}`;
+	let hazardRequest = await fetch(endpoint, {mode: "cors", headers: getHeader()});
+	if (hazardRequest.status === 200) {
+		return await hazardRequest.json();
+
+	} else if (hazardRequest.status === 401) {
 		// TODO handle error
 		return {};
 	} else {
@@ -86,15 +89,15 @@ export async function getTornadoMetadata(tornadoId) {
 	}
 }
 
-export async function createModelEarthquake(name, description, lat, lon, magnitude, depth, demandType, demandUnits) {
-	const endpoint = `${appConfig.hazardServiceBase}earthquakes`;
+export async function createModelEarthquake(globalConfig=defaultGlobalConfig, name, description, lat, lon, magnitude, depth, demandType, demandUnits, attenuations) {
+	const endpoint = `${globalConfig.hazardServiceBase}earthquakes`;
 	let formData = new FormData();
 
 	let eqMetadata = {
 		"name": name,
 		"description": description,
 		"eqType": "model",
-		"attenuations": {"AtkinsonBoore1995": 1.0},
+		"attenuations": {},
 		"eqParameters": {
 			"srcLatitude": lat,
 			"srcLongitude": lon,
@@ -112,6 +115,7 @@ export async function createModelEarthquake(name, description, lat, lon, magnitu
 			"amplifyHazard": "true"
 		}
 	};
+	eqMetadata["attenuations"][attenuations] = 1.0;
 
 	formData.append("earthquake", JSON.stringify(eqMetadata));
 	let authHeader = getHeader();
@@ -133,8 +137,8 @@ export async function createModelEarthquake(name, description, lat, lon, magnitu
 	}
 }
 
-export async function createRjfsDatasetHazards(formData, hazardType) {
-	const endpoint = `${appConfig.hazardServiceBase}${hazardType}`;
+export async function createRjfsDatasetHazards(globalConfig=defaultGlobalConfig, formData, hazardType) {
+	const endpoint = `${globalConfig.hazardServiceBase}${hazardType}`;
 	let dataurls = [];
 	let payload = new FormData();
 

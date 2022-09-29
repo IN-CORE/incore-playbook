@@ -1,8 +1,8 @@
-import {getHeader, getCurrUserEmail, getIncoreTokenFile, getCurrUsername} from "./common";
-import datawolfConfig from "../datawolf.config";
-import appConfig from "../globals";
+import {getHeader, getCurrUserEmail, getIncoreTokenFile} from "./common";
+import {datawolfConfig as defaultDatawolfConfig} from "../datawolf.config.js";
+import {datawolfWorkflowConfig as defaultDatawolfWorkflowConfig} from "../datawolf.config.js";
 
-export async function getOutputFileJson(datasetId, outputFileName = null) {
+export async function getOutputFileJson(datawolfConfig=defaultDatawolfConfig, datasetId, outputFileName = null) {
 	let authHeader = getHeader();
 
 	// Get - Result Dataset
@@ -47,81 +47,56 @@ export async function getOutputFileJson(datasetId, outputFileName = null) {
 	}
 }
 
-export async function submitExecution(title, description, bldgId, substationId, poleId, interdNetworkId,
-									  bldgToSectorId, huaId, blockGroupId, valueLossId, hazardId,){
-	let incoreTokenDatasetId = await postDataset();
+export async function submitExecution(datawolfConfig=defaultDatawolfConfig,
+									  datawolfWorkflowConfig=defaultDatawolfWorkflowConfig,
+									  title, description,
+									  datawolfFormState){
+
+	let incoreTokenDatasetId = await postDataset(datawolfConfig);
 	if (incoreTokenDatasetId === null) {
-		console.log("Fail to post incoretoken. Abort exeuction submission!");
+		console.log("Fail to post incoretoken. Abort execution submission!");
+		return null;
 	}
-	else{
-		let authHeader = getHeader();
-		authHeader.append("Content-Type", "application/json");
 
-		const datawolfDatasets = datawolfConfig["datasets"];
-		const datawolfParams = datawolfConfig["parameters"];
+	let authHeader = getHeader();
+	authHeader.append("Content-Type", "application/json");
 
-		let requestBody = {
-			"workflowId": datawolfConfig["workflowId"],
-			"creatorId": datawolfConfig["creatorId"],
-			"title": title,
-			"description": description,
-			"parameters": {},
-			"datasets": {}
-		};
+	const parameters = Object.keys(datawolfFormState).reduce((parameters, key) => {
+		return {...parameters, ...datawolfFormState[key]};
+	}, {});
 
-		requestBody["parameters"][datawolfParams["incoreUserNameId"]] = getCurrUsername();
-		requestBody["parameters"][datawolfParams["interdependencyId"]] = interdNetworkId;
-		requestBody["parameters"][datawolfParams["useUncertaintyId"]] = "";
-		requestBody["parameters"][datawolfParams["numCpuId"]] = 8;
-		requestBody["parameters"][datawolfParams["useLiquefactionId"]] = "";
-		requestBody["parameters"][datawolfParams["mcsSamplesId"]] = 500;
-		requestBody["parameters"][datawolfParams["bldgDamageRatioId"]] = "5a284f2ec7d30d13bc08209a";
-		requestBody["parameters"][datawolfParams["epfPoleId"]] = poleId;
-		requestBody["parameters"][datawolfParams["hazardId"]] = hazardId;
-		requestBody["parameters"][datawolfParams["damageIntervalKeysId"]] = "DS_0 DS_1 DS_2 DS_3";
-		requestBody["parameters"][datawolfParams["hazardTypeId"]] = "tornado";
-		requestBody["parameters"][datawolfParams["bldgMappingId"]] = "5e8e3a21eaa8b80001f04f1c";
-		requestBody["parameters"][datawolfParams["epfMappingId"]] = "5d8a326fb9219c068ea798e7";
-		requestBody["parameters"][datawolfParams["archeTypeMappingId"]] = "5fca915fb34b193f7a44059b";
-		requestBody["parameters"][datawolfParams["bldgFragilityKeyId"]] = "";
-		requestBody["parameters"][datawolfParams["serviceUrlId"]] = appConfig["apiUrl"];
-		requestBody["parameters"][datawolfParams["epfSubstationId"]] = substationId;
-		requestBody["parameters"][datawolfParams["buildingId"]] = bldgId;
-		requestBody["parameters"][datawolfParams["resultNameId"]] = "Joplin";
+	let requestBody = {
+		"workflowId": datawolfWorkflowConfig["wfId"],
+		"creatorId": datawolfWorkflowConfig["creatorId"],
+		"title": title,
+		"description": description,
+		"parameters": parameters,
 
-		// for cge and pop
-		// requestBody["parameters"][datawolfParams[""]] = bldgToSectorId;
-		requestBody["parameters"][datawolfParams["modelIterationsId"]] = "1";
-		requestBody["parameters"][datawolfParams["seedId"]] = "1111";
-		requestBody["parameters"][datawolfParams["housingUnitAllocationId"]] = huaId;
-		requestBody["parameters"][datawolfParams["blockGroupDataId"]] = blockGroupId;
-		requestBody["parameters"][datawolfParams["valueLossParamId"]] = valueLossId;
+		// TODO right now only one input datasets; need to think in the future when we have more
+		"datasets": {[datawolfWorkflowConfig["inputs"]["datasets"][0]["datasetsMap"][0]["datasetId"]]: incoreTokenDatasetId}
+	};
 
-		// token will expire
-		requestBody["datasets"][datawolfDatasets["incoreTokenId"]] = incoreTokenDatasetId;
+	let datawolfResponse = await fetch(`${datawolfConfig["executionPostURL"]}`, {
+		method: "POST",
+		headers: authHeader,
+		body: JSON.stringify(requestBody),
+		mode: "cors",
+	});
 
-		let datawolfResponse = await fetch(`${datawolfConfig["executionPostURL"]}`, {
-			method: "POST",
-			headers: authHeader,
-			body: JSON.stringify(requestBody),
-			mode: "cors",
-		});
-
-		if (datawolfResponse.status  === 200){
-			return datawolfResponse.text();
-		}
-		else if  (datawolfResponse.status  === 401){
-			// TODO handle error
-			return null;
-		}
-		else {
-			// TODO handle error
-			return null;
-		}
+	if (datawolfResponse.status  === 200){
+		return datawolfResponse.text();
+	}
+	else if  (datawolfResponse.status  === 401){
+		// TODO handle error
+		return null;
+	}
+	else {
+		// TODO handle error
+		return null;
 	}
 }
 
-export async function postDataset(title="incoretoken", description="incoretoken"){
+export async function postDataset(datawolfConfig, title="incoretoken", description="incoretoken"){
 
 	let authHeader = getHeader();
 	// authHeader.append("Content-Type", "multipart/form-data");
@@ -154,3 +129,14 @@ export async function postDataset(title="incoretoken", description="incoretoken"
 		return null;
 	}
 }
+
+export const getOutputFileContentJSON = async (datawolfConfig = defaultDatawolfConfig, executionItem, dwDatasetId) => {
+	let incoreId = executionItem["datasets"][dwDatasetId];
+	let incoreTable = await getOutputFileJson(datawolfConfig, incoreId);
+	return JSON.parse(incoreTable);
+};
+
+export const getOutputFileContent = async (datawolfConfig = defaultDatawolfConfig, executionItem, dwDatasetId) => {
+	let incoreId = executionItem["datasets"][dwDatasetId];
+	return await getOutputFileJson(datawolfConfig, incoreId);
+};

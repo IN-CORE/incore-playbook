@@ -12,6 +12,7 @@ import {IncoreInputLabel} from "../../styledComponents/IncoreInputLabel";
 import {createModelEarthquake} from "../../../utils/hazard";
 import {FlatCoordToLonLat, round} from "../../../utils/common";
 import LoadingOverlay from "react-loading-overlay";
+import {useSelector} from "react-redux";
 
 const useStyles = makeStyles({
 	srcLabel: {
@@ -45,7 +46,7 @@ const useStyles = makeStyles({
 export default function ModelEarthquake(props) {
 	const {value, index, srcCoordProps, handleLayerUpdate, handleListUpdate, ...other} = props;
 	const classes = useStyles();
-
+	const globalConfig = useSelector((state) => state.config.globalConfig);
 	const [name, setName] = useState("");
 	const [description, setDescription] = useState("");
 	const [coord, setCoord] = useState("");
@@ -53,6 +54,7 @@ export default function ModelEarthquake(props) {
 	const [depth, setDepth] = useState(10);
 	const [demandType, setDemandType] = useState("PGA");
 	const [demandUnits, setDemandUnits] = useState("g");
+	const [attenuations, setAttenuations] = useState("AtkinsonBoore1995");
 	const [disabled, setDisabled] = useState(true);
 	const [loading, setLoading] = useState(false);
 
@@ -76,10 +78,10 @@ export default function ModelEarthquake(props) {
 		let lat = round(FlatCoordToLonLat(srcCoordProps)[1], 4);
 		let lon = round(FlatCoordToLonLat(srcCoordProps)[0], (4));
 
-		const eqJson = await createModelEarthquake(name, description, lat, lon, magnitude, depth, demandType, demandUnits);
+		const eqJson = await createModelEarthquake(globalConfig, name, description, lat, lon, magnitude, depth, demandType, demandUnits, attenuations);
 		if (eqJson !== {}){
 			handleLayerUpdate(eqJson);
-			handleListUpdate("earthquakes");
+			handleListUpdate(globalConfig, "earthquakes");
 			setName("");
 			setDescription("");
 			setCoord("");
@@ -141,6 +143,17 @@ export default function ModelEarthquake(props) {
 								<IncoreMenuItem value="in" key="in">in</IncoreMenuItem>
 								<IncoreMenuItem value="ft" key="ft">ft</IncoreMenuItem>
 								<IncoreMenuItem value="m" key="m">m</IncoreMenuItem>
+							</IncoreSelectBox>
+						</Box>
+						<Box className="inputGroup">
+							<IncoreInputLabel>Attenuation Model</IncoreInputLabel>
+							<IncoreSelectBox labelId="label" id="select" variant="outlined" defaultValue={attenuations}
+											 onChange={(e) => setAttenuations(e.target.value)}>
+								<IncoreMenuItem value="AtkinsonBoore1995" key="AtkinsonBoore1995">AtkinsonBoore1995</IncoreMenuItem>
+								<IncoreMenuItem value="ChiouYoungs2014" key="ChiouYoungs2014">ChiouYoungs2014</IncoreMenuItem>
+								<IncoreMenuItem value="AbrahamsonSilvaKamai2014" key="AbrahamsonSilvaKamai2014">AbrahamsonSilvaKamai2014</IncoreMenuItem>
+								<IncoreMenuItem value="CampbellBozorgnia2014" key="CampbellBozorgnia2014">CampbellBozorgnia2014</IncoreMenuItem>
+								<IncoreMenuItem value="Toro1997" key="Toro1997">Toro1997</IncoreMenuItem>
 							</IncoreSelectBox>
 						</Box>
 						<Box className="inputGroup">

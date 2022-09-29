@@ -5,7 +5,6 @@ import {BrowserRouter, Route, Switch} from "react-router-dom";
 import { createStore, combineReducers, applyMiddleware, compose } from "redux";
 import thunk from "redux-thunk";
 import {createMuiTheme, MuiThemeProvider} from "@material-ui/core/styles";
-import appConfig from "./globals";
 import reduxImmutableStateInvariant from "redux-immutable-state-invariant";
 
 const baseTheme = createMuiTheme({
@@ -17,7 +16,7 @@ const baseTheme = createMuiTheme({
 	}
 });
 
-const render = (reducers, routes , theme=baseTheme, storeCallback) => {
+const render = (reducers, routes , theme=baseTheme, storeCallback, baseUrlRoute="") => {
 	// create stores
 	const middlewares = [
 		// Add other middleware on this line...
@@ -52,7 +51,8 @@ const render = (reducers, routes , theme=baseTheme, storeCallback) => {
 	ReactDOM.render(
 		<Provider store={store}>
 			<MuiThemeProvider theme={theme}>
-				<BrowserRouter basename={appConfig.baseUrlRoute || "/"}>
+				{/*TODO base route does not work out; */}
+				<BrowserRouter basename={baseUrlRoute}>
 					<Switch>
 						{
 							Object.keys(routes).map((key, ) => {

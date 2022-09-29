@@ -11,10 +11,11 @@ import DatasetEqUiSchema from "../../../schema/earthquake/datasetEarthquakeUi.js
 import {createRjfsDatasetHazards} from "../../../utils/hazard";
 
 import Form from "@rjsf/material-ui";
+import {useSelector} from "react-redux";
 
 export default function DatasetEarthquake(props) {
 	const {value, index, handleLayerUpdate, handleListUpdate, ...other} = props;
-
+	const globalConfig = useSelector((state) => state.config.globalConfig);
 	const [loading, setLoading] = useState(false);
 
 	const widgets = {
@@ -24,10 +25,10 @@ export default function DatasetEarthquake(props) {
 
 	const onSave = async (formData) => {
 		setLoading(true);
-		const eqJson = await createRjfsDatasetHazards(formData, "earthquakes");
+		const eqJson = await createRjfsDatasetHazards(globalConfig, formData, "earthquakes");
 		if (eqJson !== {}){
 			handleLayerUpdate(eqJson);
-			handleListUpdate("earthquakes");
+			handleListUpdate(globalConfig, "earthquakes");
 		}
 		setLoading(false);
 	};

@@ -68,13 +68,15 @@ export const BuiltEnvironment = () => {
 	const [datasetType, setDatasetType] = useState("");
 	// use to display dataset type menus
 	// social ecnomic datasets are a collection of various dataset types
-	const [category, setCategory] = useState("buildings");  // building, EPF, interdependency network, socioeconomics input
+	const [category, setCategory] = useState("");  // building, EPF, interdependency network, socioeconomics input
 	const [disabled, setDisabled] = useState(true);
 	const [loading, setLoading] = useState(false);
 	const [uploadModalStatus, setUploadModalStatus] = useState(false);
 
 	const dispatch = useDispatch();
-	const listDatasets = (limit, offset, type) => dispatch(fetchDatasets(limit, offset, type));
+	const listDatasets = (config, limit, offset, type) => dispatch(fetchDatasets(config, limit, offset, type));
+	const allowedDataTypes = useSelector((state) => state.config.allowedDataTypes);
+	const globalConfig = useSelector((state) => state.config.globalConfig);
 
 	const buildings = useSelector((state) => state.dataset.buildings);
 	const epfs = useSelector((state) => state.dataset.epfs);
@@ -99,7 +101,7 @@ export const BuiltEnvironment = () => {
 	useEffect(() => {
 		Object.keys(inputDatasetTypes).map((key) => {
 			inputDatasetTypes[key].map((inputDatasetType) => {
-				listDatasets(inputDatasetType["num"], 0, inputDatasetType["type"]);
+				listDatasets(globalConfig, inputDatasetType["num"], 0, inputDatasetType["type"]);
 			});
 		});
 	}, []);
@@ -134,11 +136,11 @@ export const BuiltEnvironment = () => {
 			});
 		});
 
-		const datasetJson = await createDataset(title, description, datasetType, files, format);
+		const datasetJson = await createDataset(globalConfig, title, description, datasetType, files, format);
 		if (datasetJson !== {}) {
 
 			// update table to show uploaded data
-			listDatasets(20, 0, datasetType);
+			listDatasets(globalConfig, 20, 0, datasetType);
 
 			setFile([]);
 			setTitle("");
@@ -191,87 +193,111 @@ export const BuiltEnvironment = () => {
 									<Divider orientation="horizontal" className={classes.divider} flexItem/>
 									<Box className={classes.uploadSection}>
 										{/*list of uploaded building inventory*/}
-										<Box className={classes.subUploadSection}>
-											<Box className={classes.subTitleRow}>
-												<IncoreInputLabel className={classes.subTitle}>Building
-													Inventory</IncoreInputLabel>
-												<IconButton className={classes.plusButton} onClick={() => {
-													setUploadModalStatus(true);
-													setDatasetType("ergo:buildingInventoryVer6");
-													setCategory("building");
-												}}>
-													<AddCircleOutlineIcon/>
-												</IconButton>
-												<Divider orientation="horizontal" className={classes.subDivider}
-														 flexItem/>
-											</Box>
-											<Box className="entryTable">
-												<EntryTable fieldNames={fieldNames} fields={buildings}/>
-											</Box>
-										</Box>
+										{
+											allowedDataTypes.building ?
+												<Box className={classes.subUploadSection}>
+													<Box className={classes.subTitleRow}>
+														<IncoreInputLabel className={classes.subTitle}>Building
+															Inventory</IncoreInputLabel>
+														<IconButton className={classes.plusButton} onClick={() => {
+															setUploadModalStatus(true);
+															setDatasetType("ergo:buildingInventoryVer6");
+															setCategory("building");
+														}}>
+															<AddCircleOutlineIcon/>
+														</IconButton>
+														<Divider orientation="horizontal" className={classes.subDivider}
+																 flexItem/>
+													</Box>
+													<Box className="entryTable">
+														<EntryTable fieldNames={fieldNames} fields={buildings}/>
+													</Box>
+												</Box>
+												:
+												null
+										}
+
 										{/*list of uploaded EPF inventory*/}
-										<Box className={classes.subUploadSection}>
-											<Box className={classes.subTitleRow}>
-												<IncoreInputLabel className={classes.subTitle}>Electric Power
-													Facility</IncoreInputLabel>
-												<IconButton className={classes.plusButton} onClick={() => {
-													setUploadModalStatus(true);
-													setDatasetType("incore:epf");
-													setCategory("electric power facility");
-												}}>
-													<AddCircleOutlineIcon/>
-												</IconButton>
-												<Divider orientation="horizontal" className={classes.subDivider}
-														 flexItem/>
-											</Box>
-											<Box className="entryTable">
-												<EntryTable fieldNames={fieldNames} fields={epfs}/>
-											</Box>
-										</Box>
+										{
+											allowedDataTypes.epf ?
+												<Box className={classes.subUploadSection}>
+													<Box className={classes.subTitleRow}>
+														<IncoreInputLabel className={classes.subTitle}>Electric Power
+															Facility</IncoreInputLabel>
+														<IconButton className={classes.plusButton} onClick={() => {
+															setUploadModalStatus(true);
+															setDatasetType("incore:epf");
+															setCategory("electric power facility");
+														}}>
+															<AddCircleOutlineIcon/>
+														</IconButton>
+														<Divider orientation="horizontal" className={classes.subDivider}
+																 flexItem/>
+													</Box>
+													<Box className="entryTable">
+														<EntryTable fieldNames={fieldNames} fields={epfs}/>
+													</Box>
+												</Box>
+												:
+												null
+										}
+
 										{/*list of uploaded interdependency network*/}
-										<Box className={classes.subUploadSection}>
-											<Box className={classes.subTitleRow}>
-												<IncoreInputLabel className={classes.subTitle}>Interdependency
-													Network</IncoreInputLabel>
-												<IconButton className={classes.plusButton} onClick={() => {
-													setUploadModalStatus(true);
-													setDatasetType("incore:buildingInterdependencyDict");
-													setCategory("interdependency network");
-												}}>
-													<AddCircleOutlineIcon/>
-												</IconButton>
-												<Divider orientation="horizontal" className={classes.subDivider}
-														 flexItem/>
-											</Box>
-											<Box className="entryTable">
-												<EntryTable fieldNames={fieldNames} fields={interdNetworks}/>
-											</Box>
-										</Box>
+										{
+											allowedDataTypes.network ?
+												<Box className={classes.subUploadSection}>
+													<Box className={classes.subTitleRow}>
+														<IncoreInputLabel className={classes.subTitle}>Interdependency
+															Network</IncoreInputLabel>
+														<IconButton className={classes.plusButton} onClick={() => {
+															setUploadModalStatus(true);
+															setDatasetType("incore:buildingInterdependencyDict");
+															setCategory("interdependency network");
+														}}>
+															<AddCircleOutlineIcon/>
+														</IconButton>
+														<Divider orientation="horizontal" className={classes.subDivider}
+																 flexItem/>
+													</Box>
+													<Box className="entryTable">
+														<EntryTable fieldNames={fieldNames} fields={interdNetworks}/>
+													</Box>
+												</Box>
+												:
+												null
+										}
+
 										{/*list of socioeconomics datasets for sector shock, cge and population dislocation*/}
-										<Box className={classes.subUploadSection}>
-											<Box className={classes.subTitleRow}>
-												<IncoreInputLabel className={classes.subTitle}>Socioeconomics
-													Datasets</IncoreInputLabel>
-												<IconButton className={classes.plusButton} onClick={() => {
-													setUploadModalStatus(true);
-													// don't set types here, set the types inside the modal
-													setDatasetType("");
-													setCategory("socioeconomics input");
-												}}>
-													<AddCircleOutlineIcon/>
-												</IconButton>
-												<Divider orientation="horizontal" className={classes.subDivider}
-														 flexItem/>
-											</Box>
-											<Box className="entryTable">
-												<EntryTable fieldNames={fieldNames} fields={
-													[...sectorShocks, ...cgeSams, ...cgeBbs, ...cgeIouts, ...cgeMiscs,
-														...cgeMischs, ...cgeLandcaps, ...cgeEmploys, ...cgeIgtds,
-														...cgeTauffs, ...cgeJobcrs, ...cgeOutcrs, ...huas,
-														...blockGroups, ...valueLosses]
-												}/>
-											</Box>
-										</Box>
+										{
+											allowedDataTypes.socioeconomics ?
+												<Box className={classes.subUploadSection}>
+													<Box className={classes.subTitleRow}>
+														<IncoreInputLabel className={classes.subTitle}>Socioeconomics
+															Datasets</IncoreInputLabel>
+														<IconButton className={classes.plusButton} onClick={() => {
+															setUploadModalStatus(true);
+															// don't set types here, set the types inside the modal
+															setDatasetType("");
+															setCategory("socioeconomics input");
+														}}>
+															<AddCircleOutlineIcon/>
+														</IconButton>
+														<Divider orientation="horizontal" className={classes.subDivider}
+																 flexItem/>
+													</Box>
+													<Box className="entryTable">
+														<EntryTable fieldNames={fieldNames} fields={
+															[...sectorShocks, ...cgeSams, ...cgeBbs, ...cgeIouts, ...cgeMiscs,
+																...cgeMischs, ...cgeLandcaps, ...cgeEmploys, ...cgeIgtds,
+																...cgeTauffs, ...cgeJobcrs, ...cgeOutcrs, ...huas,
+																...blockGroups, ...valueLosses]
+														}/>
+													</Box>
+												</Box>
+												:
+												null
+										}
+
 									</Box>
 								</div>
 							</LoadingOverlay>

@@ -1,5 +1,5 @@
-import appConfig from "../globals";
-import {getHeader, getCurrUsername} from "../utils/common";
+import {globals as defaultGlobalConfig} from "../globals";
+import {getHeader, getCurrUsername, getHazardTypePlural} from "../utils/common";
 
 export const LOGIN_ERROR = "LOGIN_ERROR";
 
@@ -13,8 +13,9 @@ export function receiveHazards(type, json){
 	};
 }
 
-export function fetchHazards(hazardType="tornadoes", limit=20, offset=0){
-	let endpoint = `${appConfig.hazardServiceBase}${hazardType}?limit=${limit}&skip=${offset}`;
+export function fetchHazards(globalConfig=defaultGlobalConfig, hazardType="tornadoes", limit=20, offset=0){
+	hazardType = getHazardTypePlural(hazardType);
+	let endpoint = `${globalConfig.hazardServiceBase}${hazardType}?limit=${limit}&skip=${offset}`;
 
 	// default to current user's space
 	let space = getCurrUsername();
