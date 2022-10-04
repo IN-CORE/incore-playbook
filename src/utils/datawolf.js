@@ -65,6 +65,11 @@ export async function submitExecution(datawolfConfig=defaultDatawolfConfig,
 		return {...parameters, ...datawolfFormState[key]};
 	}, {});
 
+	// TODO assume the only input dataset is token
+	const datasets = datawolfWorkflowConfig["inputs"]["datasets"][0]["datasetsMap"].reduce((datasets, datasetDef) => {
+		return {...datasets, ...{[datasetDef["datasetId"]]:incoreTokenDatasetId}};
+	}, {});
+
 	let requestBody = {
 		"workflowId": datawolfWorkflowConfig["wfId"],
 		"creatorId": datawolfWorkflowConfig["creatorId"],
@@ -72,8 +77,7 @@ export async function submitExecution(datawolfConfig=defaultDatawolfConfig,
 		"description": description,
 		"parameters": parameters,
 
-		// TODO right now only one input datasets; need to think in the future when we have more
-		"datasets": {[datawolfWorkflowConfig["inputs"]["datasets"][0]["datasetsMap"][0]["datasetId"]]: incoreTokenDatasetId}
+		"datasets": datasets
 	};
 
 	let datawolfResponse = await fetch(`${datawolfConfig["executionPostURL"]}`, {
