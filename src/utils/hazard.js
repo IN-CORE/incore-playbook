@@ -89,7 +89,8 @@ export async function getHazardMetadata(globalConfig=defaultGlobalConfig, hazard
 	}
 }
 
-export async function createModelEarthquake(globalConfig=defaultGlobalConfig, name, description, lat, lon, magnitude, depth, demandType, demandUnits, attenuations) {
+export async function createModelEarthquake(globalConfig=defaultGlobalConfig, name, description, lat, lon,
+											magnitude, depth, demandType, demandUnits, attenuations, faultTypeMap) {
 	const endpoint = `${globalConfig.hazardServiceBase}earthquakes`;
 	let formData = new FormData();
 
@@ -116,6 +117,12 @@ export async function createModelEarthquake(globalConfig=defaultGlobalConfig, na
 		}
 	};
 	eqMetadata["attenuations"][attenuations] = 1.0;
+
+	// add fault mechanism
+	if (faultTypeMap){
+		eqMetadata["eqParameters"]["faultTypeMap"] = {};
+		eqMetadata["eqParameters"]["faultTypeMap"][attenuations] = faultTypeMap;
+	}
 
 	formData.append("earthquake", JSON.stringify(eqMetadata));
 	let authHeader = getHeader();
