@@ -55,7 +55,7 @@ export default function ModelEarthquake(props) {
 	const [demandType, setDemandType] = useState("PGA");
 	const [demandUnits, setDemandUnits] = useState("g");
 	const [attenuations, setAttenuations] = useState("AtkinsonBoore1995");
-	const [faultTypeMap, setFaultTypeMap] = useState("Normal");
+	const [faultTypeMap, setFaultTypeMap] = useState("Strike-Slip");
 	const [disabled, setDisabled] = useState(true);
 	const [loading, setLoading] = useState(false);
 
@@ -166,8 +166,8 @@ export default function ModelEarthquake(props) {
 									<IncoreInputLabel>Fault Mechanism</IncoreInputLabel>
 									<IncoreSelectBox labelId="label" id="select" variant="outlined" defaultValue={faultTypeMap}
 													 onChange={(e) => setFaultTypeMap(e.target.value)}>
-										<IncoreMenuItem value="Normal" key="Normal">Normal</IncoreMenuItem>
 										<IncoreMenuItem value="Strike-Slip" key="Strike-Slip">Strike-Slip</IncoreMenuItem>
+										<IncoreMenuItem value="Normal" key="Normal">Normal</IncoreMenuItem>
 										<IncoreMenuItem value="Reverse-Thrust" key="Reverse-Thrust">Reverse-Thrust</IncoreMenuItem>
 										<IncoreMenuItem value="Reverse-Slip" key="Reverse-Slip">Reverse-Slip</IncoreMenuItem>
 										<IncoreMenuItem value="All" key="All">All</IncoreMenuItem>
