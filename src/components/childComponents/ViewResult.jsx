@@ -19,7 +19,6 @@ import PopDislocation from "./outputWidgets/PopDislocation";
 import ResilienceMetrics from "./outputWidgets/ResilienceMetrics";
 import SubstationDamage from "./outputWidgets/SubstationDamage";
 import {Collection} from "ol";
-import {IncoreTextField} from "../styledComponents/IncoreInput";
 
 
 const useStyles = makeStyles({
@@ -64,6 +63,7 @@ export default function ViewResult(props) {
 	const [widgetName, setWidgetName] = useState(null); // outputWidgets name
 	const [datawolfDatasetConfigItems, setDatawolfDatasetConfigItems] = useState([]);
 	const [hazardDatasetId, setHazardDatasetId] = useState(""); // to overlay hazard on the map
+	const [hazardType, setHazardType] = useState(""); // used in runtime table
 	const [previewOn, setPreviewOn] = useState(false); // list vs preview
 
 	// extract a single status from mutliple step status`
@@ -194,6 +194,7 @@ export default function ViewResult(props) {
 		const hazardInfo = _getHazardInfo(selectedExecutionItem);
 		let hazardMetadata = await getHazardMetadata(globalConfig, hazardInfo.hazardType, hazardInfo.hazardId);
 		setHazardDatasetId(hazardMetadata["datasetId"]);
+		setHazardType(hazardInfo["hazardType"]);
 
 		// dialog on
 		setPreviewOn(true);
@@ -233,7 +234,8 @@ export default function ViewResult(props) {
 							previewOn: previewOn,
 							handlePreviewClose: handlePreviewClose,
 							datawolfDatasetConfigItems: datawolfDatasetConfigItems,
-							hazardDatasetId: hazardDatasetId
+							hazardDatasetId: hazardDatasetId,
+							hazardType: hazardType,
 						}
 					);})()
 					:
