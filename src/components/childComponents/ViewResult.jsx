@@ -19,6 +19,7 @@ import PopDislocation from "./outputWidgets/PopDislocation";
 import ResilienceMetrics from "./outputWidgets/ResilienceMetrics";
 import SubstationDamage from "./outputWidgets/SubstationDamage";
 import {Collection} from "ol";
+import {IncoreTextField} from "../styledComponents/IncoreInput";
 
 
 const useStyles = makeStyles({
@@ -143,12 +144,12 @@ export default function ViewResult(props) {
 
 	// async loop is a hell! get hazard id params and type
 	const _getHazardInfo = (executionItem) => {
-		return datawolfWorkflowConfig.inputs.parameters[0].parametersMap.reduce((hazardInfo, item) => {
-			if (item.parameters.variableName === "selectedHazardId"){
-				return {...hazardInfo, "hazardId": executionItem["parameters"][item.paramId]};
+		return datawolfWorkflowConfig.inputs.parameters.reduce((hazardInfo, p) => {
+			if (p.variableName === "selectedHazardId"){
+				return {...hazardInfo, "hazardId": executionItem["parameters"][p.parametersMap[0].paramId]};
 			}
-			else if (item.parameters.variableName === "selectedHazardType"){
-				return {...hazardInfo, "hazardType": executionItem["parameters"][item.paramId]};
+			else if (p.variableName === "selectedHazardType"){
+				return {...hazardInfo, "hazardType": executionItem["parameters"][p.parametersMap[0].paramId]};
 			}
 			else{
 				return hazardInfo;
