@@ -12,7 +12,7 @@ const datawolfWorkflowConfig =
 			// input parameters; might be multiple steps?
 				[
 					{
-						"title":"Buildings",
+						"title":"Building Inventory",
 						"description":"Building inventory",
 						"variableName":"selectedBldgId",
 						"widget": "Buildings",

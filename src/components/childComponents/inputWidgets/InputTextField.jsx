@@ -8,10 +8,22 @@ export default function InputTextField(props) {
 
 	return (
 		<IncoreTextField variant="outlined"
-						 value={datawolfFormState[datawolfParamConfigItem.parameters.variableName][datawolfParamConfigItem.paramId] ?? ""}
-						 onChange={(e) => {// e.target.value inside async doesn't perform correctly
+						 onChange={(e) => {
 							 let currentVal = e.target.value;
-							 setDatawolfFormState(prevState =>
-								 ({...prevState, [datawolfParamConfigItem.parameters.variableName]: {[datawolfParamConfigItem.paramId]: currentVal}}));}}/>
+							 setDatawolfFormState((prevState) => {
+								 let mapState = {};
+								 datawolfParamConfigItem.parametersMap.map((pm) => {
+									 mapState[pm.paramId] = currentVal;
+								 });
+								 return {...prevState, [datawolfParamConfigItem.variableName]: mapState};
+							 });
+						 }}
+			// parameters belong to the same variable should have the same value; just pick one
+						 value={datawolfFormState[datawolfParamConfigItem.variableName][
+							 Object.keys(datawolfFormState[datawolfParamConfigItem.variableName])[0]] ?? ""
+						 }
+
+
+		/>
 	);
 }
