@@ -63,6 +63,7 @@ export default function ViewResult(props) {
 	const [widgetName, setWidgetName] = useState(null); // outputWidgets name
 	const [datawolfDatasetConfigItems, setDatawolfDatasetConfigItems] = useState([]);
 	const [hazardDatasetId, setHazardDatasetId] = useState(""); // to overlay hazard on the map
+	const [hazardType, setHazardType] = useState(""); // used in runtime table
 	const [previewOn, setPreviewOn] = useState(false); // list vs preview
 
 	// extract a single status from mutliple step status`
@@ -143,12 +144,12 @@ export default function ViewResult(props) {
 
 	// async loop is a hell! get hazard id params and type
 	const _getHazardInfo = (executionItem) => {
-		return datawolfWorkflowConfig.inputs.parameters[0].parametersMap.reduce((hazardInfo, item) => {
-			if (item.parameters.variableName === "selectedHazardId"){
-				return {...hazardInfo, "hazardId": executionItem["parameters"][item.paramId]};
+		return datawolfWorkflowConfig.inputs.parameters.reduce((hazardInfo, p) => {
+			if (p.variableName === "selectedHazardId"){
+				return {...hazardInfo, "hazardId": executionItem["parameters"][p.parametersMap[0].paramId]};
 			}
-			else if (item.parameters.variableName === "selectedHazardType"){
-				return {...hazardInfo, "hazardType": executionItem["parameters"][item.paramId]};
+			else if (p.variableName === "selectedHazardType"){
+				return {...hazardInfo, "hazardType": executionItem["parameters"][p.parametersMap[0].paramId]};
 			}
 			else{
 				return hazardInfo;
@@ -193,6 +194,7 @@ export default function ViewResult(props) {
 		const hazardInfo = _getHazardInfo(selectedExecutionItem);
 		let hazardMetadata = await getHazardMetadata(globalConfig, hazardInfo.hazardType, hazardInfo.hazardId);
 		setHazardDatasetId(hazardMetadata["datasetId"]);
+		setHazardType(hazardInfo["hazardType"]);
 
 		// dialog on
 		setPreviewOn(true);
@@ -232,7 +234,8 @@ export default function ViewResult(props) {
 							previewOn: previewOn,
 							handlePreviewClose: handlePreviewClose,
 							datawolfDatasetConfigItems: datawolfDatasetConfigItems,
-							hazardDatasetId: hazardDatasetId
+							hazardDatasetId: hazardDatasetId,
+							hazardType: hazardType,
 						}
 					);})()
 					:

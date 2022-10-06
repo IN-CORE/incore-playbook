@@ -24,10 +24,19 @@ export default function BlockGroups(props) {
 		<IncoreSelectBox labelId="label" id="select" variant="outlined"
 						 onChange={(e) => {
 							 let currentVal = e.target.value;
-							 setDatawolfFormState(prevState =>
-								 ({...prevState, [datawolfParamConfigItem.parameters.variableName]: {[datawolfParamConfigItem.paramId]: currentVal}}));
+							 setDatawolfFormState((prevState) => {
+								 let mapState = {};
+								 datawolfParamConfigItem.parametersMap.map((pm) => {
+									 mapState[pm.paramId] = currentVal;
+								 });
+								 return {...prevState, [datawolfParamConfigItem.variableName]: mapState};
+							 });
 						 }}
-						 value={datawolfFormState[datawolfParamConfigItem.parameters.variableName][datawolfParamConfigItem.paramId] ?? ""}>
+			// parameters belong to the same variable should have the same value; just pick one
+						 value={datawolfFormState[datawolfParamConfigItem.variableName][
+							 Object.keys(datawolfFormState[datawolfParamConfigItem.variableName])[0]] ?? ""
+						 }
+		>
 			{
 				blockGroups.map((option) => {
 					return (

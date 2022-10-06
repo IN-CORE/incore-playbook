@@ -101,14 +101,20 @@ export default function ViewResult(props) {
 	const datawolfConfig = useSelector((state) => state.config.datawolfConfig);
 	const datawolfWorkflowConfig = useSelector((state) => state.config.datawolfWorkflowConfig);
 
-	// TODO assume only one step of inputs hence [0]
-	let parametersMap = datawolfWorkflowConfig.inputs.parameters[0].parametersMap;
+	let parameters = datawolfWorkflowConfig.inputs.parameters;
 	const [datawolfFormState, setDatawolfFormState] = useState(
-		parametersMap.reduce((state, item) => {
+		parameters.reduce((state, p) => {
+
 			// prepopulate the default fields
-			return {...state, [item.parameters.variableName]:{[item.paramId]: item.parameters.defaultValue}};
+			let mapState = {};
+			p.parametersMap.map((pm) => {
+				mapState[pm.paramId] = p.defaultValue;
+			}, {});
+
+			return {...state, [p.variableName]:mapState};
 		}, {})
 	);
+
 	const [disabled, setDisabled] = useState(true);
 
 	// form check
@@ -120,15 +126,22 @@ export default function ViewResult(props) {
 	const handleRunButtonClick = async () =>{
 		const datawolfJson = await submitExecution(datawolfConfig, datawolfWorkflowConfig, title, description,
 			datawolfFormState);
+
+		// clear the form
 		if (datawolfJson && datawolfJson !== "") {
-			setDatawolfFormState(parametersMap.reduce((state, item) => {
-				if (item.hidden) {
-					return {...state, [item.parameters.variableName]:item.parameters.defaultValue};
-				}
-				else{
-					return {...state, [item.parameters.variableName]:""};
-				}
-			}, {}));
+			setDatawolfFormState(
+				parameters.reduce((state, p) => {
+
+					// prepopulate the default fields
+					let mapState = {};
+					p.parametersMap.map((pm) => {
+						if (p.hidden) mapState[pm.paramId] = p.defaultValue;
+						else mapState[pm.paramId] = "";
+					}, {});
+
+					return {...state, [p.variableName]:mapState};
+				}, {})
+			);
 			// update execution list and then jump to view result tab
 			getExecutionList(datawolfConfig);
 			gotoViewResultTab();
@@ -155,14 +168,14 @@ export default function ViewResult(props) {
 										 onChange={(e) => { setDescription(e.target.value); }} />
 					</Box>
 					{
-						parametersMap.map(item => {
+						parameters.map(item => {
 							if (!item.hidden){
 								return (<Box className="inputGroup" style={{height: "auto"}}>
-									<IncoreInputLabel>{item.parameters.title}</IncoreInputLabel>
+									<IncoreInputLabel>{item.title}</IncoreInputLabel>
 									{(() => {
 										// instantiate widget based on definitions
 										return React.cloneElement(
-											registeredWidgets[item.parameters.widget ],
+											registeredWidgets[item.widget],
 											{
 												setDatawolfFormState: setDatawolfFormState,
 												datawolfFormState: datawolfFormState,
