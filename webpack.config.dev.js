@@ -32,7 +32,7 @@ export default {
 		new webpack.DefinePlugin({
 			"process.env": {
 				"NODE_ENV": JSON.stringify("development"),
-				"DEPLOY_ENV": JSON.stringify(process.env.DEPLOY_ENV)
+				"INCORE_REMOTE_HOSTNAME": JSON.stringify(process.env.INCORE_REMOTE_HOSTNAME)
 			},
 			__DEV__: true
 		}),

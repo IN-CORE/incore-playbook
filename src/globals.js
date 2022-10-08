@@ -1,48 +1,13 @@
-let apiprotocol = "https";
-let apihost;
-let apiurl;
+const globals = {};
 
-const globals = {
+let hostname = process.env.INCORE_REMOTE_HOSTNAME || "";
 
-
-};
-
-if (process.env.DEPLOY_ENV === "production") {
-	apihost = "incore.ncsa.illinois.edu";
-	apiurl = `${apiprotocol}://${apihost}`;
-	globals["baseUrlRoute"] = "playbook";
-	globals["geoServerWMS"] = "https://incore-geoserver.ncsa.illinois.edu/geoserver/incore/wms"
-}
-else if (process.env.DEPLOY_ENV === "test") {
-	apihost = "incore-tst.ncsa.illinois.edu";
-	apiurl = `${apiprotocol}://${apihost}`;
-	globals["baseUrlRoute"] = "playbook";
-	globals["geoServerWMS"] ="https://incore-tst.ncsa.illinois.edu/geoserver/incore/wms";
-}
-else if (process.env.DEPLOY_ENV === "local") {
-	apihost = "localhost:8080";
-	apiurl = `http://${apihost}`;
-	globals["baseUrlRoute"] = "";
-	globals["geoServerWMS"] ="https://incore-dev.ncsa.illinois.edu/geoserver/incore/wms";
-}
-else if (process.env.DEPLOY_ENV === "development") {
-	apihost = "incore-dev.ncsa.illinois.edu";
-	apiurl = `${apiprotocol}://${apihost}`;
-	globals["baseUrlRoute"] = "playbook";
-	globals["geoServerWMS"] ="https://incore-dev.ncsa.illinois.edu/geoserver/incore/wms";
-}
-else { // default case that used dev environment
-	apihost = "";
-	apiurl = "";
-	globals["baseUrlRoute"] = "playbook";
-	globals["geoServerWMS"] = "/geoserver/incore/wms";
-}
-
-globals["apiUrl"] = apiurl;
+globals["baseUrlRoute"] = "playbook";
+globals["geoServerWMS"] = `${hostname}/geoserver/incore/wms`;
 globals["client_id"] = "react-auth";
-globals["authService"] = `${apiurl}/auth/realms/In-core/protocol/openid-connect/token`;
-globals["hazardServiceBase"] = `${apiurl}/hazard/api/`;
-globals["dataServiceBase"] = `${apiurl}/data/api/`;
+globals["authService"] = `${hostname}/auth/realms/In-core/protocol/openid-connect/token`;
+globals["hazardServiceBase"] = `${hostname}/hazard/api/`;
+globals["dataServiceBase"] = `${hostname}/data/api/`;
 
 export {globals};
 
