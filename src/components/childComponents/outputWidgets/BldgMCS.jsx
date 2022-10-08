@@ -26,7 +26,7 @@ import GetAppIcon from "@material-ui/icons/GetApp";
 
 export default function BldgMCS(props){
 
-	let {executionItem, previewOn, handlePreviewClose, datawolfDatasetConfigItems, hazardDatasetId} = props;
+	let {executionItem, previewOn, handlePreviewClose, datawolfDatasetConfigItems, hazardType, hazardDatasetId} = props;
 
 	const mapConfig = useSelector((state) => state.config.mapConfig);
 	const datawolfConfig = useSelector((state) => state.config.datawolfConfig);
@@ -103,7 +103,7 @@ export default function BldgMCS(props){
 								<Grid item>
 									<Typography className="previewSubTitle">
 										Analysis Result View</Typography>
-									<ResultSummaryTable runtime={runtime}/>
+									<ResultSummaryTable hazardType={hazardType} inventoryType="buildings" runtime={runtime}/>
 								</Grid>
 								:<></>
 						}

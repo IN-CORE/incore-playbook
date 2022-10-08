@@ -34,18 +34,18 @@ const useStyles = makeStyles({
 });
 
 export function ResultSummaryTable(props) {
-	const { runtime } = props;
+	const { hazardType, inventoryType, runtime } = props;
 	const classes = useStyles();
 	return (
 		<Table className={classes.table} size="small" aria-label="a dense table">
 			<TableBody>
 				<TableRow className={classes.tableBodyRow}>
 					<TableCell align="left" component="th" scope="row" className={classes.tableBodyCellLeft}>hazard type</TableCell>
-					<TableCell align="left" className={classes.tableBodyCellRight}>Tornado</TableCell>
+					<TableCell align="left" className={classes.tableBodyCellRight}>{hazardType ?? ""}</TableCell>
 				</TableRow>
 				<TableRow className={classes.tableBodyRow}>
 					<TableCell align="left" component="th" scope="row" className={classes.tableBodyCellLeft}>inventory type</TableCell>
-					<TableCell align="left" className={classes.tableBodyCellRight}>Buildings</TableCell>
+					<TableCell align="left" className={classes.tableBodyCellRight}>{inventoryType ?? ""}</TableCell>
 				</TableRow>
 				<TableRow align="right" className={classes.tableBodyRow}>
 					<TableCell align="left" component="th" scope="row" className={classes.tableBodyCellLeft}>run at</TableCell>
