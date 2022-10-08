@@ -10,14 +10,14 @@ const cookies = new Cookies();
 //NOTE: This is only checking if a cookie is present, but not validating the cookie.
 export const isAuthorized = () => {
 	const authorization = cookies.get("Authorization");
-	return process.env.DEPLOY_ENV === "local" ||
+	return process.env.INCORE_REMOTE_HOSTNAME === "http://localhost:8080" ||
 			(authorization !== undefined && authorization !== "" && authorization !==
 					null);
 };
 
 // construct header
 export function getHeader() {
-	if (process.env.DEPLOY_ENV === "local"){
+	if (process.env.INCORE_REMOTE_HOSTNAME === "http://localhost:8080"){
 		const headers = new Headers({
 			"x-auth-userinfo": `{"preferred_username":"${testUserInfo}"}`,
 		});
@@ -35,7 +35,7 @@ export function getHeader() {
 
 // get current username
 export function getCurrUsername(){
-	if (process.env.DEPLOY_ENV === "local"){
+	if (process.env.INCORE_REMOTE_HOSTNAME === "http://localhost:8080"){
 		return testUserInfo;
 	}
 	else{
@@ -49,7 +49,7 @@ export function getCurrUsername(){
 
 // get incore token and write to a file
 export function getIncoreTokenFile(){
-	if (process.env.DEPLOY_ENV !== "local"){
+	if (process.env.INCORE_REMOTE_HOSTNAME === "http://localhost:8080"){
 		return new Blob([cookies.get("Authorization")], {type:"text/plain"});
 	}
 	else{
@@ -59,7 +59,7 @@ export function getIncoreTokenFile(){
 
 // get current user's encoded email address for datawolf use
 export function getCurrUserEmail(){
-	if (process.env.DEPLOY_ENV === "local"){
+	if (process.env.INCORE_REMOTE_HOSTNAME === "http://localhost:8080"){
 		return testUserInfo;
 	}
 	else{
