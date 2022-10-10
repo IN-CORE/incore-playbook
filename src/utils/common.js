@@ -49,7 +49,7 @@ export function getCurrUsername(){
 
 // get incore token and write to a file
 export function getIncoreTokenFile(){
-	if (process.env.INCORE_REMOTE_HOSTNAME === "http://localhost:8080"){
+	if (process.env.INCORE_REMOTE_HOSTNAME !== "http://localhost:8080"){
 		return new Blob([cookies.get("Authorization")], {type:"text/plain"});
 	}
 	else{
