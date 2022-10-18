@@ -1,5 +1,5 @@
 {
-	"name": "incore-playbook",
+	"name": "@IN-CORE/incore-playbook",
 	"version": "0.3.7",
 	"description": "The Interdependent Networked Community Resilience Modeling Environment (IN-CORE) has the capability of computing resiliency measures at the user-desired community level. The methodologies and algorithms have been developed by different research groups within the Center of Excellence.",
 	"engines": {
@@ -126,6 +126,7 @@
 		"multi-hazard"
 	],
 	"repository": {
-		"type": "git"
+		"type": "git",
+	  	"url": "https://github.com/IN-CORE/incore-playbook.git"
 	}
 }
