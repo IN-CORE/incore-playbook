@@ -680,36 +680,11 @@ const datawolfWorkflowConfig =
 		"metadata": []
 	};
 
+let hostname = process.env.INCORE_REMOTE_HOSTNAME || "";
+
 let datawolfConfig = {};
-// use default
-if (process.env.DEPLOY_ENV === "production") {
-	let apiUrl = "https://incore.ncsa.illinois.edu";
-	datawolfConfig["executionGetURL"] = `${apiUrl}/datawolf/workflows/${datawolfWorkflowConfig["wfId"]}/executions`;
-	datawolfConfig["executionPostURL"] = `${apiUrl}/datawolf/executions`;
-	datawolfConfig["datasetBaseURL"] = `${apiUrl}/datawolf/datasets`;
-}
-else if (process.env.DEPLOY_ENV === "test") {
-	let apiUrl = "https://incore-tst.ncsa.illinois.edu";
-	datawolfConfig["executionGetURL"] = `${apiUrl}/datawolf/workflows/${datawolfWorkflowConfig["wfId"]}/executions`;
-	datawolfConfig["executionPostURL"] = `${apiUrl}/datawolf/executions`;
-	datawolfConfig["datasetBaseURL"] = `${apiUrl}/datawolf/datasets`;
-}
-else if (process.env.DEPLOY_ENV === "local") {
-	let apiUrl = "http://localhost:8080";
-	datawolfConfig["executionGetURL"] = `${apiUrl}/datawolf/workflows/${datawolfWorkflowConfig["wfId"]}/executions`;
-	datawolfConfig["executionPostURL"] = `${apiUrl}/datawolf/executions`;
-	datawolfConfig["datasetBaseURL"] = `${apiUrl}/datawolf/datasets`;
-}
-else if (process.env.DEPLOY_ENV === "development") {
-	let apiUrl = "https://incore-dev.ncsa.illinois.edu";
-	datawolfConfig["executionGetURL"] = `${apiUrl}/datawolf/workflows/${datawolfWorkflowConfig["wfId"]}/executions`;
-	datawolfConfig["executionPostURL"] = `${apiUrl}/datawolf/executions`;
-	datawolfConfig["datasetBaseURL"] = `${apiUrl}/datawolf/datasets`;
-}
-else { // default case that used dev environment
-	datawolfConfig["executionGetURL"] = `/datawolf/workflows/${datawolfWorkflowConfig["wfId"]}/executions`;
-	datawolfConfig["executionPostURL"] = "/datawolf/executions";
-	datawolfConfig["datasetBaseURL"] = "/datawolf/datasets";
-}
+datawolfConfig["executionGetURL"] = `${hostname}/datawolf/workflows/${datawolfWorkflowConfig["wfId"]}/executions`;
+datawolfConfig["executionPostURL"] = `${hostname}/datawolf/executions`;
+datawolfConfig["datasetBaseURL"] = `${hostname}/datawolf/datasets`;
 
 export {datawolfWorkflowConfig, datawolfConfig};

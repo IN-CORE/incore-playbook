@@ -9,7 +9,7 @@ import path from "path";
 import TerserPlugin from "terser-webpack-plugin";
 
 // eslint-disable-next-line no-console
-console.log(`the current DEPLOY_ENV environment variable is ${  process.env.DEPLOY_ENV}`);
+console.log(`the current HOSTNAME environment variable is ${  process.env.INCORE_REMOTE_HOSTNAME}`);
 
 export default {
 	mode:"production",
@@ -40,7 +40,7 @@ export default {
 		new webpack.DefinePlugin({
 			"process.env": {
 				"NODE_ENV": JSON.stringify("production"),
-				"DEPLOY_ENV": JSON.stringify(process.env.DEPLOY_ENV)
+				"INCORE_REMOTE_HOSTNAME": JSON.stringify(process.env.INCORE_REMOTE_HOSTNAME)
 			},
 			__DEV__: false
 		}),

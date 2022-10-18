@@ -34,7 +34,7 @@ export default function ValueLosses(props) {
 						 }}
 			// parameters belong to the same variable should have the same value; just pick one
 						 value={datawolfFormState[datawolfParamConfigItem.variableName][
-							 datawolfFormState[datawolfParamConfigItem.variableName].keys()[0]] ?? ""
+							 Object.keys(datawolfFormState[datawolfParamConfigItem.variableName])[0]] ?? ""
 						 }
 		>
 			{

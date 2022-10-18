@@ -5,7 +5,7 @@ import path from "path";
 
 
 // eslint-disable-next-line no-console
-console.log(`the current DEPLOY_ENV environment variable is ${  process.env.DEPLOY_ENV}`);
+console.log(`the current HOSTNAME environment variable is ${  process.env.INCORE_REMOTE_HOSTNAME}`);
 
 export default {
 	mode:"development",
@@ -32,7 +32,7 @@ export default {
 		new webpack.DefinePlugin({
 			"process.env": {
 				"NODE_ENV": JSON.stringify("development"),
-				"DEPLOY_ENV": JSON.stringify(process.env.DEPLOY_ENV)
+				"INCORE_REMOTE_HOSTNAME": JSON.stringify(process.env.INCORE_REMOTE_HOSTNAME)
 			},
 			__DEV__: true
 		}),
