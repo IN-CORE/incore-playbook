@@ -42,7 +42,6 @@ export default function BldgDamage(props) {
 	const layerRef = React.useRef(basicLayers);
 
 	useEffect(() => {
-		console.log(hazardDatasetId);
 		setSelectedExecutionName(executionItem["title"]);
 
 		// for summary table on the top

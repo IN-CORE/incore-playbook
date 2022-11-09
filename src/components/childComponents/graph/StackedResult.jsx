@@ -19,10 +19,10 @@ export function StackedResult(props) {
 	let DS_3 = [];
 
 	categorySummary.map((entry, idx) => {
-		DS_0.push(entry.DS_0 < 0 ? 0 : entry.DS_0);
-		DS_1.push(entry.DS_1 < 0 ? 0 : entry.DS_1);
-		DS_2.push(entry.DS_2 < 0 ? 0 : entry.DS_2);
-		DS_3.push(entry.DS_3 < 0 ? 0 : entry.DS_3);
+		DS_0.push( !("DS_0" in entry) || entry.DS_0 < 0 ? 0 : entry.DS_0);
+		DS_1.push(!("DS_1" in entry) || entry.DS_1 < 0 ? 0 : entry.DS_1);
+		DS_2.push(!("DS_2" in entry) || entry.DS_2 < 0 ? 0 : entry.DS_2);
+		DS_3.push(!("DS_3" in entry) || entry.DS_3 < 0 ? 0 : entry.DS_3);
 		totals.push(DS_0[idx] + DS_1[idx] + DS_2[idx] + DS_3[idx]);
 		categories.push([entry.category.trim(), `(total: ${  totals[idx]  })`]);
 	});
