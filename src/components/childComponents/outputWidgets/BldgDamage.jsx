@@ -26,7 +26,8 @@ import {IncoreButtonText} from "../../styledComponents/IncoreButtonText";
 
 export default function BldgDamage(props) {
 
-	let {executionItem, previewOn, handlePreviewClose, datawolfDatasetConfigItems, hazardType, hazardDatasetId} = props;
+	let {executionItem, previewOn, handlePreviewClose, datawolfDatasetConfigItems, hazardType, hazardDatasetId,
+		hazardLayerTitle, hazardLayerStyles} = props;
 
 	const mapConfig = useSelector((state) => state.config.mapConfig);
 	const datawolfConfig = useSelector((state) => state.config.datawolfConfig);
@@ -41,6 +42,7 @@ export default function BldgDamage(props) {
 	const layerRef = React.useRef(basicLayers);
 
 	useEffect(() => {
+		console.log(hazardDatasetId);
 		setSelectedExecutionName(executionItem["title"]);
 
 		// for summary table on the top
@@ -61,8 +63,8 @@ export default function BldgDamage(props) {
 					},
 					{
 						"layerId": hazardDatasetId,
-						"layerStyles": "incore:tornado",
-						"title": "Tornado",
+						"layerStyles": hazardLayerStyles,
+						"title": hazardLayerTitle,
 						"opacity": 0.3,
 						"zIndex": 2
 					}

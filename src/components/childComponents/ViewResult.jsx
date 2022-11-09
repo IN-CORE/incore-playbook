@@ -63,6 +63,8 @@ export default function ViewResult(props) {
 	const [widgetName, setWidgetName] = useState(null); // outputWidgets name
 	const [datawolfDatasetConfigItems, setDatawolfDatasetConfigItems] = useState([]);
 	const [hazardDatasetId, setHazardDatasetId] = useState(""); // to overlay hazard on the map
+	const [hazardLayerStyles, setHazardLayerStyles] = useState(null); // to overlay hazard on the map
+	const [hazardLayerTitle, setHazardLayerTitle] = useState(""); // to overlay hazard on the map
 	const [hazardType, setHazardType] = useState(""); // used in runtime table
 	const [previewOn, setPreviewOn] = useState(false); // list vs preview
 
@@ -157,6 +159,31 @@ export default function ViewResult(props) {
 		}, {});
 	};
 
+	const _getHazardLayers = (json, htype) => {
+		// extract hazard dataset id (for preview)
+		let layerId;
+		let layerTitle;
+		let layerStyles;
+		if ( "rasterDataset" in json && json["rasterDataset"]["datasetId"] !== undefined){
+			layerId = json["rasterDataset"]["datasetId"];
+			layerTitle = `${htype} - ${json["name"]} - ${json["rasterDataset"]["demandType"]}`;
+		}
+		// tsunami, hurricane, flood, earthquake all has multiple layers
+		else if ( "hazardDatasets" in json && json["hazardDatasets"].length > 0){
+			json["hazardDatasets"].map((hazardDataset) =>{
+				layerId = hazardDataset["datasetId"];
+				layerTitle = `${htype} - ${json["name"]} - ${hazardDataset["demandType"]}`;
+			});
+		}
+		// tornado has single layer
+		else {
+			layerId = json["datasetId"];
+			layerTitle = `${htype} - ${json["name"]}`;
+			layerStyles = "incore:tornado";
+		}
+		return {layerId:layerId, layerTitle:layerTitle, layerStyles:layerStyles};
+	};
+
 	const preview = async (executionId, widgetName) => {
 		const selectedExecutionItem = getExecution(executionId);
 		setSelectedExecutionItem(selectedExecutionItem);
@@ -193,7 +220,10 @@ export default function ViewResult(props) {
 
 		const hazardInfo = _getHazardInfo(selectedExecutionItem);
 		let hazardMetadata = await getHazardMetadata(globalConfig, hazardInfo.hazardType, hazardInfo.hazardId);
-		setHazardDatasetId(hazardMetadata["datasetId"]);
+		let {layerId, layerStyles, layerTitle} = _getHazardLayers(hazardMetadata, hazardInfo.hazardType);
+		setHazardDatasetId(layerId);
+		setHazardLayerStyles(layerStyles);
+		setHazardLayerTitle(layerTitle);
 		setHazardType(hazardInfo["hazardType"]);
 
 		// dialog on
@@ -235,6 +265,8 @@ export default function ViewResult(props) {
 							handlePreviewClose: handlePreviewClose,
 							datawolfDatasetConfigItems: datawolfDatasetConfigItems,
 							hazardDatasetId: hazardDatasetId,
+							hazardLayerTitle: hazardLayerTitle,
+							hazardLayerStyles: hazardLayerStyles,
 							hazardType: hazardType,
 						}
 					);})()
