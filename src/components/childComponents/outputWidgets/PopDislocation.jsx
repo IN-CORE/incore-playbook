@@ -45,7 +45,7 @@ export default function PopDislocation(props){
 							"layerId": hazardDatasetId,
 							"layerStyles": "incore:tornado",
 							"title": "Tornado",
-							"opacity": 0.3,
+							"opacity": 0.5,
 							"zIndex": 3
 						},
 						{

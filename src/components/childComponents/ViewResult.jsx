@@ -164,6 +164,10 @@ export default function ViewResult(props) {
 		let layerId;
 		let layerTitle;
 		let layerStyles;
+		if (htype === "earthquake") layerStyles = "incore:earthquake-pga-g";
+		else if (htype === "tornado") layerStyles = "incore:tornado";
+		else if (htype === "hurricane") layerStyles = "incore:hurricane-wind";
+
 		if ( "rasterDataset" in json && json["rasterDataset"]["datasetId"] !== undefined){
 			layerId = json["rasterDataset"]["datasetId"];
 			layerTitle = `${htype} - ${json["name"]} - ${json["rasterDataset"]["demandType"]}`;
@@ -179,8 +183,8 @@ export default function ViewResult(props) {
 		else {
 			layerId = json["datasetId"];
 			layerTitle = `${htype} - ${json["name"]}`;
-			layerStyles = "incore:tornado";
 		}
+
 		return {layerId:layerId, layerTitle:layerTitle, layerStyles:layerStyles};
 	};
 

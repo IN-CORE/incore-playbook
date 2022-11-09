@@ -47,7 +47,7 @@ export default function PoleDamage(props){
 						"layerId": hazardDatasetId,
 						"layerStyles": hazardLayerStyles,
 						"title": hazardLayerTitle,
-						"opacity": 0.3,
+						"opacity": 0.5,
 						"zIndex": 2
 					}
 				];
