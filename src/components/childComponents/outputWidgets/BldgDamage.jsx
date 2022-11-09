@@ -65,7 +65,7 @@ export default function BldgDamage(props) {
 						"layerId": hazardDatasetId,
 						"layerStyles": hazardLayerStyles,
 						"title": hazardLayerTitle,
-						"opacity": 0.5,
+						"opacity": 0.8,
 						"zIndex": 2
 					}
 				];
