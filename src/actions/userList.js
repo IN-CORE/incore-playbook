@@ -17,7 +17,7 @@ export function receiveUserList(type, json){
 
 export function fetchUserList(globalConfig=defaultGlobalConfig, limit=100, skip=0){
 	return (dispatch) => {
-		let endpoint = `${globalConfig.maestroServiceBase}/maestro/api/users?limit=${limit}&skip=${skip}`;
+		let endpoint = `${globalConfig.maestroServiceBase}users?limit=${limit}&skip=${skip}`;
 
 		return fetch(endpoint, {mode: "cors", headers: getHeader()})
 			.then((response) => {

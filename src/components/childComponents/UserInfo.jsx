@@ -14,53 +14,21 @@ import EditIcon from "@material-ui/icons/Edit";
 
 
 const useStyles = makeStyles({
-	inputGroupProfile: {
-		height: "196px",
-		width: "481px"
-	},
-	profileImage: {
-		height: "112px",
-		width: "112px"
+	defaultProfileImage: {
+		height: "200px",
+		width: "200px"
 	},
 	avatar: {
-		position: "relative"
-	},
-	avatarImg: {
+		position: "relative",
 		width: "100%",
 		height: "100%"
 	},
 	avatarEdit: {
 		position: "absolute",
 		bottom: "5%",
-		right: "5%",
+		left: "170px",
 		color: "#FFFFFF"
 	},
-	uploadButton: {
-		boxSizing: "border-box",
-		height: "32px",
-		width: "156px",
-		border: "1px solid #8798AD",
-		borderRadius: "3px",
-		backgroundColor: "#FFFFFF",
-		fontSize: "14px",
-		fontWeight: 500,
-		letterSpacing: "0.53px",
-		lineHeight: "17px",
-		textAlign: "center",
-		textTransform: "None",
-		display: "block",
-		margin: "auto"
-	},
-	removeLink: {
-		height: "17px",
-		color: "#00619D",
-		fontSize: "14px",
-		letterSpacing: "0.53px",
-		lineHeight: "17px",
-		textAlign: "center",
-		display: "block",
-		marginTop: "12px",
-	}
 });
 
 /**
@@ -77,7 +45,7 @@ export const UserInfo = (props) => {
 	const [firstName, setFirstName] = useState("");
 	const [lastName, setLastName] = useState("");
 	const [username, setUsername] = useState("");
-	const [selectedUser, setSelectedUser] = useState();
+	const [selectedUser, setSelectedUser] = useState({});
 	const [role, setRole] = useState("");
 	const [email, setEmail] = useState("");
 	const [profileImageURL, setProfileImageURL] = useState(assetConfig.defaultProfileImg);
@@ -122,48 +90,40 @@ export const UserInfo = (props) => {
 			</Box>
 			<Box className={classes.inputGroupProfile}>
 				<IncoreInputLabel>Profile Photo</IncoreInputLabel>
-				<Grid container spacing={3}>
-					<Grid item lg={3} md={3} sm={3} xs={12}>
-						<Box className={classes.avatar}>
-							<Gravatar
-								className={classes.avatarImg}
-								size={300}
-								email={selectedUser["email"]}
-								rating="g"
-							/>
-							<Link href={defaultGlobalConfig.setGravatarURL} target="_blank" className={classes.avatarEdit}>
-								<EditIcon fontSize="default" />
-							</Link>
+				<Box>
+					{
+						selectedUser["email"] !== undefined ?
+							<Box className={classes.avatar}>
+								<Gravatar
+									className={classes.avatarImg}
+									size={200}
+									email={selectedUser["email"]}
+									rating="g"
+								/>
+								<Link href={defaultGlobalConfig.setGravatarURL} target="_blank" className={classes.avatarEdit}>
+									<EditIcon fontSize="default" />
+								</Link>
+							</Box>
 							:
-							<img src={profileImageURL} alt="" className={classes.profileImage}/>
-						</Box>
-
-					</Grid>
-					<Grid item lg={6} md={6} sm={6} xs={12}>
-						<Button variant="outlined" component="label" className={classes.uploadButton}>
-								Upload an Image
-							<input type="file" onChange={handleProfileImageUpload} style={{display: "none"}}/>
-						</Button>
-						<Link href="#" onClick={handleProfileImageRemove} className={classes.removeLink}>Remove
-								Photo</Link>
-					</Grid>
-				</Grid>
+							<img src={profileImageURL} alt="" className={classes.defaultProfileImage}/>
+					}
+				</Box>
 			</Box>
 			<Box className="inputGroup">
 				<IncoreInputLabel>Full name</IncoreInputLabel>
-				<IncoreTextField value={`${firstName} ${lastName}`} variant="outlined"/>
+				<IncoreTextField value={`${firstName} ${lastName}`} variant="outlined" disabled/>
 			</Box>
 			<Box className="inputGroup">
 				<IncoreInputLabel>Display name</IncoreInputLabel>
-				<IncoreTextField value={username} variant="outlined"/>
+				<IncoreTextField value={username} variant="outlined" disabled/>
 			</Box>
 			<Box className="inputGroup">
 				<IncoreInputLabel>Role</IncoreInputLabel>
-				<IncoreTextField value={role} variant="outlined"/>
+				<IncoreTextField value={role} variant="outlined" disabled/>
 			</Box>
 			<Box className="inputGroup">
 				<IncoreInputLabel>Email</IncoreInputLabel>
-				<IncoreTextField value={email} variant="outlined"/>
+				<IncoreTextField value={email} variant="outlined" disabled/>
 			</Box>
 			<Box className="inputGroup">
 				<IncoreButton variant="contained" color="primary"
