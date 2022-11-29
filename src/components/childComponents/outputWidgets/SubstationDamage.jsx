@@ -14,7 +14,8 @@ import {downloadDataset} from "../../../utils/dataset";
 
 export default function SubstationDamage(props){
 
-	let {executionItem, previewOn, handlePreviewClose, datawolfDatasetConfigItems, hazardDatasetId} = props;
+	let {executionItem, previewOn, handlePreviewClose, datawolfDatasetConfigItems, hazardDatasetId,
+		hazardLayerTitle, hazardLayerStyles} = props;
 
 	const mapConfig = useSelector((state) => state.config.mapConfig);
 	const datawolfConfig = useSelector((state) => state.config.datawolfConfig);
@@ -44,9 +45,9 @@ export default function SubstationDamage(props){
 					},
 					{
 						"layerId": hazardDatasetId,
-						"layerStyles": "incore:tornado",
-						"title": "Tornado",
-						"opacity": 0.3,
+						"layerStyles": hazardLayerStyles,
+						"title": hazardLayerTitle,
+						"opacity": 0.8,
 						"zIndex": 2
 					}
 				];

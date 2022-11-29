@@ -14,7 +14,8 @@ import {IncoreButtonText} from "../../styledComponents/IncoreButtonText";
 import GetAppIcon from "@material-ui/icons/GetApp";
 
 export default function PopDislocation(props){
-	let {executionItem, previewOn, handlePreviewClose, datawolfDatasetConfigItems, hazardDatasetId} = props;
+	let {executionItem, previewOn, handlePreviewClose, datawolfDatasetConfigItems, hazardDatasetId,
+		hazardLayerTitle, hazardLayerStyles} = props;
 
 	const mapConfig = useSelector((state) => state.config.mapConfig);
 	const datawolfConfig = useSelector((state) => state.config.datawolfConfig);
@@ -44,13 +45,13 @@ export default function PopDislocation(props){
 							"layerId": hazardDatasetId,
 							"layerStyles": "incore:tornado",
 							"title": "Tornado",
-							"opacity": 0.3,
+							"opacity": 0.8,
 							"zIndex": 3
 						},
 						{
 							"layerId": bldgMaxDamageStateINCOREId,
-							"layerStyles": "incore:building",
-							"title": "Building Inventory",
+							"layerStyles": hazardLayerStyles,
+							"title": hazardLayerTitle,
 							"opacity": 1,
 							"zIndex": 1
 						}
