@@ -8,6 +8,10 @@ import {IncoreMenuItem, IncoreSelectBox} from "../styledComponents/IncoreSelect"
 import {IncoreTextField} from "../styledComponents/IncoreInput";
 import {makeStyles} from "@material-ui/core/styles";
 import {useSelector} from "react-redux";
+import Gravatar from "react-gravatar";
+import {globals as defaultGlobalConfig} from "../../globals";
+import EditIcon from "@material-ui/icons/Edit";
+
 
 const useStyles = makeStyles({
 	inputGroupProfile: {
@@ -17,6 +21,19 @@ const useStyles = makeStyles({
 	profileImage: {
 		height: "112px",
 		width: "112px"
+	},
+	avatar: {
+		position: "relative"
+	},
+	avatarImg: {
+		width: "100%",
+		height: "100%"
+	},
+	avatarEdit: {
+		position: "absolute",
+		bottom: "5%",
+		right: "5%",
+		color: "#FFFFFF"
 	},
 	uploadButton: {
 		boxSizing: "border-box",
@@ -60,12 +77,14 @@ export const UserInfo = (props) => {
 	const [firstName, setFirstName] = useState("");
 	const [lastName, setLastName] = useState("");
 	const [username, setUsername] = useState("");
+	const [selectedUser, setSelectedUser] = useState();
 	const [role, setRole] = useState("");
 	const [email, setEmail] = useState("");
 	const [profileImageURL, setProfileImageURL] = useState(assetConfig.defaultProfileImg);
 
 	const handleUserSelection = (event) => {
 		let index = event.target.value;
+		setSelectedUser(userList[index]);
 		setFirstName(userList[index]["firstName"]);
 		setLastName(userList[index]["lastName"]);
 		setUsername(userList[index]["username"]);
@@ -105,7 +124,20 @@ export const UserInfo = (props) => {
 				<IncoreInputLabel>Profile Photo</IncoreInputLabel>
 				<Grid container spacing={3}>
 					<Grid item lg={3} md={3} sm={3} xs={12}>
-						<img src={profileImageURL} alt="" className={classes.profileImage}/>
+						<Box className={classes.avatar}>
+							<Gravatar
+								className={classes.avatarImg}
+								size={300}
+								email={selectedUser["email"]}
+								rating="g"
+							/>
+							<Link href={defaultGlobalConfig.setGravatarURL} target="_blank" className={classes.avatarEdit}>
+								<EditIcon fontSize="default" />
+							</Link>
+							:
+							<img src={profileImageURL} alt="" className={classes.profileImage}/>
+						</Box>
+
 					</Grid>
 					<Grid item lg={6} md={6} sm={6} xs={12}>
 						<Button variant="outlined" component="label" className={classes.uploadButton}>

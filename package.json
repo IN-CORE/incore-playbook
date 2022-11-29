@@ -28,6 +28,8 @@
 	},
 	"author": "NCSA",
 	"dependencies": {
+		"@rjsf/core": "^3.2.1",
+		"@rjsf/material-ui": "^3.2.1",
 		"chart.js": "^2.9.4",
 		"chartjs-plugin-zoom": "^0.7.7",
 		"classnames": "^2.2.6",
@@ -38,22 +40,21 @@
 		"react-chartjs-2": "^2.10.0",
 		"react-file-drop": "^3.1.0",
 		"react-google-charts": "^3.0.15",
+		"react-gravatar": "^2.6.3",
 		"react-loading-overlay": "^1.0.1",
 		"universal-cookie": "~4.0.4",
-		"whatwg-fetch": "2.0.2",
-		"@rjsf/core": "^3.2.1",
-		"@rjsf/material-ui": "^3.2.1"
+		"whatwg-fetch": "2.0.2"
 	},
 	"peerDependencies": {
+		"@material-ui/core": "^4.11.0",
+		"@material-ui/icons": "^4.9.1",
+		"babel-polyfill": "^6.26.0",
 		"react": "~16.14.0",
 		"react-dom": "~16.14.0",
 		"react-redux": "~7.1.0",
-		"redux-thunk": "~2.3.0",
-		"redux": "~4.0.1",
 		"react-router-dom": "~5.2.0",
-		"@material-ui/core": "^4.11.0",
-		"@material-ui/icons": "^4.9.1",
-		"babel-polyfill": "^6.26.0"
+		"redux": "~4.0.1",
+		"redux-thunk": "~2.3.0"
 	},
 	"devDependencies": {
 		"@babel/cli": "^7.0.0",

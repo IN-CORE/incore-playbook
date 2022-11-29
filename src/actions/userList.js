@@ -1,6 +1,9 @@
-import {usersList} from "../globals";
+import {getHeader} from "../utils/common";
+import {globals as defaultGlobalConfig} from "../globals";
+
 
 export const RECEIVE_USER_LIST = "RECEIVE_USER_LIST";
+export const LOGIN_ERROR = "LOGIN_ERROR";
 
 export function receiveUserList(type, json){
 	return (dispatch) => {
@@ -12,27 +15,24 @@ export function receiveUserList(type, json){
 	};
 }
 
-// export function fetchUserList(){
-// 	return (dispatch) => {
-// 		// For now read user list from a static json file
-// 		return fetch("userList.json")
-// 		.then((response) => {
-// 			if (response.status === 200) {
-// 				response.json().then(json =>{
-// 					dispatch(receiveUserList(RECEIVE_USER_LIST, json));
-// 				});
-// 			}
-// 			else {
-// 				dispatch(receiveUserList(RECEIVE_USER_LIST, []));
-// 			}
-// 		});
-// 	};
-// }
-
-// Remove this and enable above block when ready to use api call
-export function fetchUserList(){
+export function fetchUserList(globalConfig=defaultGlobalConfig, limit=100, skip=0){
 	return (dispatch) => {
-		// For now read user list from a static json file
-		return dispatch(receiveUserList(RECEIVE_USER_LIST, usersList));
+		let endpoint = `${globalConfig.maestroServiceBase}/maestro/api/users?limit=${limit}&skip=${skip}`;
+
+		return fetch(endpoint, {mode: "cors", headers: getHeader()})
+			.then((response) => {
+				if (response.status === 200) {
+					response.json().then(json =>{
+						dispatch(receiveUserList(RECEIVE_USER_LIST, json));
+					});
+				}
+				else if (response.status === 401) {
+					// TODO Auth Failed
+					dispatch(receiveUserList(LOGIN_ERROR, []));
+				}
+				else {
+					dispatch(receiveUserList(RECEIVE_USER_LIST, []));
+				}
+			});
 	};
 }
