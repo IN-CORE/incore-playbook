@@ -1,4 +1,4 @@
-import userList from "./userList";
+import userList from "./user";
 import attributes from "./attributes";
 import layout from "./layout";
 import {executions} from "./datawolf";
