@@ -9,10 +9,11 @@ const cookies = new Cookies();
 
 //NOTE: This is only checking if a cookie is present, but not validating the cookie.
 export const isAuthorized = () => {
-	const authorization = cookies.get("Authorization");
-	return process.env.INCORE_REMOTE_HOSTNAME === "http://localhost:8080" ||
-			(authorization !== undefined && authorization !== "" && authorization !==
-					null);
+	// const authorization = cookies.get("Authorization");
+	// return process.env.INCORE_REMOTE_HOSTNAME === "http://localhost:8080" ||
+	// 		(authorization !== undefined && authorization !== "" && authorization !==
+	// 				null);
+	return true;
 };
 
 // construct header

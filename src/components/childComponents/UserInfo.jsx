@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from "react";
 
-import {Box, Container, Link,} from "@material-ui/core";
+import {Box, Button, Container, Link, Table, TableBody, TableCell, TableHead, TableRow,} from "@material-ui/core";
 
 import {IncoreInputLabel} from "../styledComponents/IncoreInputLabel";
 import {IncoreButton} from "../styledComponents/IncoreButton";
@@ -9,8 +9,9 @@ import {IncoreTextField} from "../styledComponents/IncoreInput";
 import {makeStyles} from "@material-ui/core/styles";
 import {useDispatch, useSelector} from "react-redux";
 import Gravatar from "react-gravatar";
-import EditIcon from "@material-ui/icons/Edit";
-import {assignUserRole, fetchUserList} from "../../actions/user";
+import AccountCircle from "@material-ui/icons/AccountCircle";
+import {assignUserRole, fetchRoles, fetchUserList} from "../../actions/user";
+import {inputDatasetTypes} from "../../globals";
 
 
 const useStyles = makeStyles({
@@ -18,16 +19,10 @@ const useStyles = makeStyles({
 		height: "200px",
 		width: "200px"
 	},
-	avatar: {
-		position: "relative",
-		width: "100%",
-		height: "100%"
-	},
-	avatarEdit: {
-		position: "absolute",
-		bottom: "5%",
-		left: "170px",
-		color: "#FFFFFF"
+	avatarImg: {
+		width: "32px",
+		height: "32px",
+		borderRadius: "50%"
 	},
 });
 
@@ -45,104 +40,89 @@ export const UserInfo = (props) => {
 
 	const dispatch = useDispatch();
 	const getPlaybookUserList = () => dispatch(fetchUserList());
+	const getPlaybookRoles = () => dispatch(fetchRoles());
 	const setPlaybookUserRole = (globalConfig, selectedUserId, userRole) => dispatch(assignUserRole(globalConfig, selectedUserId, userRole));
-	const userList = useSelector((state) => state.userList.userList);
+	const userList = useSelector((state) => state.user.userList);
+	const roles = useSelector((state) => state.user.roles);
 
-	const [firstName, setFirstName] = useState("");
-	const [lastName, setLastName] = useState("");
-	const [username, setUsername] = useState("");
-	const [selectedUser, setSelectedUser] = useState({});
-	const [role, setRole] = useState("");
-	const [email, setEmail] = useState("");
+	const [editRoleOn, setEditRoleOn] = useState(true);
+	const [selectedRole, setSelectedRole] = useState("");
 
-	useEffect(() => {getPlaybookUserList();}, []);
 
-	const handleUserSelection = (event) => {
-		let index = event.target.value;
-		if (index >= 0){
-			setSelectedUser(userList[index]);
-			setFirstName(userList[index]["firstName"]);
-			setLastName(userList[index]["lastName"]);
-			setUsername(userList[index]["username"]);
-			setRole("Resilience Leader");
-			setEmail(userList[index]["email"]);
-		}
-		else{
-			setSelectedUser({});
-			setFirstName("");
-			setLastName("");
-			setUsername("");
-			setRole("");
-			setEmail("");
-		}
-	};
+	useEffect(() => {
+		getPlaybookUserList();
+		getPlaybookRoles();
+	}, []);
 
-	const handleLeaderSave = () => {
+	const handleRoleSave = () => {
 		// role 1 is leader
 		// role 2 is member
 		setPlaybookUserRole(globalConfig, selectedUser.id, 1);
 		getPlaybookUserList();
 	};
 
+
 	return (
 		<Container>
 			<Box className="inputGroup">
-				<IncoreInputLabel>Select from user list</IncoreInputLabel>
-				<IncoreSelectBox labelId="label" id="select" variant="outlined" defaultValue=""
-									 onChange={handleUserSelection}>
-					<IncoreMenuItem value={-1} key="none">None</IncoreMenuItem>
-					{
-						userList.map((user, index) => {
-							return (
-								<IncoreMenuItem value={index} key={user["username"]}>
-									{user["firstName"]} {user["lastName"]}
-									{user["role"] && user["role"]["name"] === "leader" ? "* ": ""}
-								</IncoreMenuItem>
-							);
-						})
-					}
-				</IncoreSelectBox>
-			</Box>
-			<Box>
-				<IncoreInputLabel>Profile Photo</IncoreInputLabel>
-				<Box>
-					{
-						selectedUser["email"] !== undefined ?
-							<Box className={classes.avatar}>
-								<Gravatar
-									className={classes.avatarImg}
-									size={200}
-									email={selectedUser["email"]}
-									rating="g"
-								/>
-								<Link href={globalConfig.setGravatarURL} target="_blank" className={classes.avatarEdit}>
-									<EditIcon fontSize="default" />
-								</Link>
-							</Box>
-							:
-							<img src={assetConfig.defaultProfileImg} alt="" className={classes.defaultProfileImage}/>
-					}
-				</Box>
-			</Box>
-			<Box className="inputGroup">
-				<IncoreInputLabel>Full name</IncoreInputLabel>
-				<IncoreTextField value={`${firstName} ${lastName}`} variant="outlined" disabled/>
-			</Box>
-			<Box className="inputGroup">
-				<IncoreInputLabel>Display name</IncoreInputLabel>
-				<IncoreTextField value={username} variant="outlined" disabled/>
-			</Box>
-			<Box className="inputGroup">
-				<IncoreInputLabel>Role</IncoreInputLabel>
-				<IncoreTextField value={role} variant="outlined" disabled/>
-			</Box>
-			<Box className="inputGroup">
-				<IncoreInputLabel>Email</IncoreInputLabel>
-				<IncoreTextField value={email} variant="outlined" disabled/>
-			</Box>
-			<Box className="inputGroup">
-				<IncoreButton variant="contained" color="primary"
-								  onClick={handleLeaderSave}>Save</IncoreButton>
+				<Table className={classes.table} aria-label="simple table">
+					<TableHead>
+						<TableRow>
+							<TableCell align="center" />
+							<TableCell align="center">Username</TableCell>
+							<TableCell align="center">Email</TableCell>
+							<TableCell align="center">Name</TableCell>
+							<TableCell align="center">Role</TableCell>
+						</TableRow>
+					</TableHead>
+					<TableBody>
+						{userList.map((user, index) => (
+							<TableRow key={index}>
+								<TableCell component="th" scope="row" align="center">
+									{user["email"] !== undefined ?
+										<Gravatar className={classes.avatarImg} email={user["email"]} rating="g" />
+										:
+										<AccountCircle fontSize="small" />
+									}
+								</TableCell>
+								<TableCell align="center">
+									{user["username"]}
+								</TableCell>
+								<TableCell align="center">{user["email"]}</TableCell>
+								<TableCell align="center">{user["firstName"]} {user["lastName"]}</TableCell>
+								<TableCell align="center">
+									{
+										editRoleOn ?
+											<IncoreSelectBox labelId="label" id="select" variant="outlined"
+															 onChange={(e) => { setSelectedRole(e.target.value); }}
+															 value={selectedRole}>
+												{
+													roles.map((role) => {
+														return (<IncoreMenuItem value={role["id"]}
+															key={`role-${role["id"]}`}>
+															{role["name"]}
+														</IncoreMenuItem>);
+													})
+												}
+											</IncoreSelectBox>
+											:
+											<></>
+									}
+									{/*{user["role"] && user["role"]["name"] ? user["role"]["name"] : "None"}*/}
+									{/*<Box style={{"display":"block"}}>*/}
+									{/*	<Button style={{fontSize:"12px", color:"#00619D"}} */}
+									{/*		onClick={() => {setEditRoleOn(true);}}>Change</Button>*/}
+									{/*	/!*<Button color="primary">Save</Button>*!/*/}
+									{/*	/!*<Button color="Secondary">Cancel</Button>*!/*/}
+									{/*</Box>*/}
+
+									{/*<IncoreButton variant="contained" color="primary"*/}
+									{/*			  onClick={handleRoleChange}>Save</IncoreButton>*/}
+								</TableCell>
+							</TableRow>
+						))}
+					</TableBody>
+				</Table>
 			</Box>
 		</Container>
 	);
