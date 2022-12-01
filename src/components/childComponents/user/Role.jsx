@@ -1,9 +1,8 @@
-import React, {useEffect, useState} from "react";
+import React, {useState} from "react";
 import {IncoreMenuItem, IncoreSelectBox} from "../../styledComponents/IncoreSelect";
 import {Box, Button, ButtonGroup} from "@material-ui/core";
 import {assignUserRole} from "../../../actions/user";
 import {useDispatch, useSelector} from "react-redux";
-import {inputDatasetTypes} from "../../../globals";
 
 export const Role = (props) => {
 
@@ -13,16 +12,17 @@ export const Role = (props) => {
 
 	const globalConfig = useSelector((state) => state.config.globalConfig);
 
-	const [selectedRole, setSelectedRole] = useState(2);
+	const [selectedRoleId, setSelectedRoleId] = useState(user["role"] && user["role"]["id"] ? user["role"]["id"]: null);
+
 	const [editRoleOn, setEditRoleOn] = useState(false);
 	const setPlaybookUserRole = (globalConfig, selectedUserId, userRole) => dispatch(assignUserRole(globalConfig, selectedUserId, userRole));
 
 	const handleRoleSelection = (e) => {
-		setSelectedRole(e.target.value);
+		setSelectedRoleId(e.target.value);
 	};
 
 	const handleRoleSave = () => {
-		setPlaybookUserRole(globalConfig, user.id, selectedRole);
+		setPlaybookUserRole(globalConfig, user.id, selectedRoleId);
 		setEditRoleOn(false);
 	};
 
@@ -34,7 +34,7 @@ export const Role = (props) => {
 					<>
 						<IncoreSelectBox labelId="label" id="select" variant="outlined"
 										 onChange={(e) => { handleRoleSelection(e);}}
-										 value={user["role"] && user["role"]["name"] ? user["role"]["id"]: selectedRole}
+										 value={selectedRoleId}
 						>
 							{
 								roles.map((role) => {
@@ -55,7 +55,14 @@ export const Role = (props) => {
 					</>
 					:
 					<>
-						{user["role"] && user["role"]["name"] ? user["role"]["name"] : "None"}
+						{ selectedRoleId ? roles.map((role) => {
+							if (role["id"] === selectedRoleId) {
+								return role["name"];
+							}
+						})
+							:
+							"None"
+						}
 						<Box style={{"display": "block"}}>
 							<Button style={{fontSize: "12px", color: "#00619D"}}
 								onClick={() => {setEditRoleOn(true);}}>Change</Button>
