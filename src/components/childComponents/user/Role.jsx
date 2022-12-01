@@ -3,6 +3,7 @@ import {IncoreMenuItem, IncoreSelectBox} from "../../styledComponents/IncoreSele
 import {Box, Button, ButtonGroup} from "@material-ui/core";
 import {assignUserRole} from "../../../actions/user";
 import {useDispatch, useSelector} from "react-redux";
+import {inputDatasetTypes} from "../../../globals";
 
 export const Role = (props) => {
 
@@ -16,7 +17,11 @@ export const Role = (props) => {
 	const [editRoleOn, setEditRoleOn] = useState(false);
 	const setPlaybookUserRole = (globalConfig, selectedUserId, userRole) => dispatch(assignUserRole(globalConfig, selectedUserId, userRole));
 
-	const handleRoleSave = (selectedRole) => {
+	const handleRoleSelection = (e) => {
+		setSelectedRole(e.target.value);
+	};
+
+	const handleRoleSave = () => {
 		setPlaybookUserRole(globalConfig, user.id, selectedRole);
 		setEditRoleOn(false);
 	};
@@ -28,8 +33,8 @@ export const Role = (props) => {
 				editRoleOn ?
 					<>
 						<IncoreSelectBox labelId="label" id="select" variant="outlined"
-										 onChange={(e) => { setSelectedRole(e.target.value); }}
-										 value={selectedRole}
+										 onChange={(e) => { handleRoleSelection(e);}}
+										 value={user["role"] && user["role"]["name"] ? user["role"]["id"]: selectedRole}
 						>
 							{
 								roles.map((role) => {
