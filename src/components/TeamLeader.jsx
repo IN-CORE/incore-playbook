@@ -1,16 +1,14 @@
-import React, {useEffect, useState} from "react";
+import React, {useState} from "react";
 import {
 	Box,
 	Grid,
 } from "@material-ui/core";
-import {UserInfo} from "./childComponents/UserInfo";
+import {UserInfo} from "./childComponents/user/UserInfo";
 import StepStatus from "./childComponents/step/StepStatus";
 import PageBanner from "./childComponents/navigation/Banner";
 import {Layout} from "./Layout";
 import StepInfo from "./StepInfo";
 import fullHtml from "../public/steps/1-1.html";
-import {useDispatch, useSelector} from "react-redux";
-import {fetchUserList} from "../actions/user";
 
 
 export const TeamLeader = () => {

@@ -2,16 +2,17 @@ import React, {useEffect, useState} from "react";
 
 import {Box, Button, Container, Link, Table, TableBody, TableCell, TableHead, TableRow,} from "@material-ui/core";
 
-import {IncoreInputLabel} from "../styledComponents/IncoreInputLabel";
-import {IncoreButton} from "../styledComponents/IncoreButton";
-import {IncoreMenuItem, IncoreSelectBox} from "../styledComponents/IncoreSelect";
-import {IncoreTextField} from "../styledComponents/IncoreInput";
+import {IncoreInputLabel} from "../../styledComponents/IncoreInputLabel";
+import {IncoreButton} from "../../styledComponents/IncoreButton";
+import {IncoreMenuItem, IncoreSelectBox} from "../../styledComponents/IncoreSelect";
+import {IncoreTextField} from "../../styledComponents/IncoreInput";
 import {makeStyles} from "@material-ui/core/styles";
 import {useDispatch, useSelector} from "react-redux";
 import Gravatar from "react-gravatar";
 import AccountCircle from "@material-ui/icons/AccountCircle";
-import {assignUserRole, fetchRoles, fetchUserList} from "../../actions/user";
-import {inputDatasetTypes} from "../../globals";
+import {assignUserRole, fetchRoles, fetchUserList} from "../../../actions/user";
+import {inputDatasetTypes} from "../../../globals";
+import {Role} from "./Role";
 
 
 const useStyles = makeStyles({
@@ -33,34 +34,19 @@ export const UserInfo = (props) => {
 
 	const {handleStepStatusChange} = props;
 
-	const assetConfig = useSelector((state) => state.config.assetConfig);
-	const globalConfig = useSelector((state) => state.config.globalConfig);
-
 	const classes = useStyles();
 
 	const dispatch = useDispatch();
 	const getPlaybookUserList = () => dispatch(fetchUserList());
 	const getPlaybookRoles = () => dispatch(fetchRoles());
-	const setPlaybookUserRole = (globalConfig, selectedUserId, userRole) => dispatch(assignUserRole(globalConfig, selectedUserId, userRole));
 	const userList = useSelector((state) => state.user.userList);
 	const roles = useSelector((state) => state.user.roles);
-
-	const [editRoleOn, setEditRoleOn] = useState(true);
-	const [selectedRole, setSelectedRole] = useState("");
 
 
 	useEffect(() => {
 		getPlaybookUserList();
 		getPlaybookRoles();
 	}, []);
-
-	const handleRoleSave = () => {
-		// role 1 is leader
-		// role 2 is member
-		setPlaybookUserRole(globalConfig, selectedUser.id, 1);
-		getPlaybookUserList();
-	};
-
 
 	return (
 		<Container>
@@ -91,33 +77,7 @@ export const UserInfo = (props) => {
 								<TableCell align="center">{user["email"]}</TableCell>
 								<TableCell align="center">{user["firstName"]} {user["lastName"]}</TableCell>
 								<TableCell align="center">
-									{
-										editRoleOn ?
-											<IncoreSelectBox labelId="label" id="select" variant="outlined"
-															 onChange={(e) => { setSelectedRole(e.target.value); }}
-															 value={selectedRole}>
-												{
-													roles.map((role) => {
-														return (<IncoreMenuItem value={role["id"]}
-															key={`role-${role["id"]}`}>
-															{role["name"]}
-														</IncoreMenuItem>);
-													})
-												}
-											</IncoreSelectBox>
-											:
-											<></>
-									}
-									{/*{user["role"] && user["role"]["name"] ? user["role"]["name"] : "None"}*/}
-									{/*<Box style={{"display":"block"}}>*/}
-									{/*	<Button style={{fontSize:"12px", color:"#00619D"}} */}
-									{/*		onClick={() => {setEditRoleOn(true);}}>Change</Button>*/}
-									{/*	/!*<Button color="primary">Save</Button>*!/*/}
-									{/*	/!*<Button color="Secondary">Cancel</Button>*!/*/}
-									{/*</Box>*/}
-
-									{/*<IncoreButton variant="contained" color="primary"*/}
-									{/*			  onClick={handleRoleChange}>Save</IncoreButton>*/}
+									<Role roles={roles} user={user}/>
 								</TableCell>
 							</TableRow>
 						))}
