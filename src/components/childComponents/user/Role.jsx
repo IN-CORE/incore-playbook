@@ -33,8 +33,7 @@ export const Role = (props) => {
 						>
 							{
 								roles.map((role) => {
-									return (<IncoreMenuItem value={role["id"]}
-										key={`role-${role["id"]}`}>
+									return (<IncoreMenuItem value={role["id"]} key={`role-${role["id"]}`}>
 										{role["name"]}
 									</IncoreMenuItem>);
 								})
