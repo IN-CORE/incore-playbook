@@ -63,7 +63,7 @@ export const UserInfo = (props) => {
 					</TableHead>
 					<TableBody>
 						{userList.map((user, index) => (
-							<TableRow key={index}>
+							<TableRow key={index} style={{height: 120}}>
 								<TableCell component="th" scope="row" align="center">
 									{user["email"] !== undefined ?
 										<Gravatar className={classes.avatarImg} email={user["email"]} rating="g" />
