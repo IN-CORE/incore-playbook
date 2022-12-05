@@ -26,7 +26,8 @@ import GetAppIcon from "@material-ui/icons/GetApp";
 
 export default function BldgMCS(props){
 
-	let {executionItem, previewOn, handlePreviewClose, datawolfDatasetConfigItems, hazardType, hazardDatasetId} = props;
+	let {executionItem, previewOn, handlePreviewClose, datawolfDatasetConfigItems, hazardType, hazardDatasetId,
+		hazardLayerTitle, hazardLayerStyles} = props;
 
 	const mapConfig = useSelector((state) => state.config.mapConfig);
 	const datawolfConfig = useSelector((state) => state.config.datawolfConfig);
@@ -61,9 +62,9 @@ export default function BldgMCS(props){
 					},
 					{
 						"layerId": hazardDatasetId,
-						"layerStyles": "incore:tornado",
-						"title": "Tornado",
-						"opacity": 0.3,
+						"layerStyles": hazardLayerStyles,
+						"title": hazardLayerTitle,
+						"opacity": 0.8,
 						"zIndex": 2
 					}
 				];

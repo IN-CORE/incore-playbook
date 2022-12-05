@@ -246,6 +246,11 @@ export const CommunityHazards = () => {
 		let layerId;
 		let layerTitle;
 		let style;
+
+		if (selectedHazardType === "earthquake") style = "incore:earthquake-pga-g";
+		else if (selectedHazardType === "tornado") style = "incore:tornado";
+		else if (selectedHazardType === "hurricane") style = "incore:hurricane-wind";
+
 		if ( "rasterDataset" in json && json["rasterDataset"]["datasetId"] !== undefined){
 			layerId = json["rasterDataset"]["datasetId"];
 			layerTitle = `${json["name"]} - ${json["rasterDataset"]["demandType"]}`;
@@ -261,7 +266,6 @@ export const CommunityHazards = () => {
 		else {
 			layerId = json["datasetId"];
 			layerTitle = json["name"];
-			style = "incore:tornado";
 		}
 		if (layerId && layerTitle) {
 			const source = new TileWMS({
