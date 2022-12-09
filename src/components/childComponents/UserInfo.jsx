@@ -55,7 +55,7 @@ export const UserInfo = (props) => {
 
 	const classes = useStyles();
 
-	const {userList, handleStepStatusChange} = props;
+	const {userList} = props;
 
 	const [firstName, setFirstName] = useState("");
 	const [lastName, setLastName] = useState("");
@@ -82,7 +82,7 @@ export const UserInfo = (props) => {
 	};
 
 	const handleLeaderSave = () => {
-		handleStepStatusChange("complete");
+		console.log("TODO: Implement save functionality")
 	};
 
 	return (

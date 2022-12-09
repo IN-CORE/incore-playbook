@@ -13,8 +13,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {fetchUserList} from "../actions/userList";
 
 
-export const TeamLeader = () => {
-	const [activeKey, setActiveKey] = useState("in-progress");
+export const TeamLeader = ({step, substep}) => {
 	const dispatch = useDispatch();
 	const getPlaybookUserList = () => dispatch(fetchUserList());
 	const userList = useSelector((state) => state.userList.userList);
@@ -24,6 +23,7 @@ export const TeamLeader = () => {
 	// TODO need to configure stepStatus to accept this status
 	// might need to put the status into redux
 	const handleStepStatusChange = (status) => {
+		console.log(status)
 		setActiveKey(status);
 	};
 
@@ -35,10 +35,10 @@ export const TeamLeader = () => {
 				<Box className="outerBox">
 					<Grid container spacing={3} className="innerBox">
 						<Grid item xl={5} lg={5} md={5} sm={5} xs={12} className="gridItem">
-							<UserInfo userList={userList} handleStepStatusChange={handleStepStatusChange}/>
+							<UserInfo userList={userList}/>
 						</Grid>
 						<Grid item xl={7} lg={7} md={7} sm={7} xs={12} className="gridItem">
-							<StepStatus activeKey={activeKey} setActiveKey={setActiveKey}/>
+							<StepStatus step={step} substep={substep} />
 							<StepInfo fullHtml={fullHtml} />
 						</Grid>
 					</Grid>

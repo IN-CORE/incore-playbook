@@ -33,7 +33,7 @@ const routes = {
 		exact: false,
 		component: () => {
 			sessionStorage.setItem("menu", "1-1");
-			return (<TeamLeader/>);
+			return (<TeamLeader step={1} substep={1} />);
 		}
 	},
 	"/create-team-member": {
@@ -89,7 +89,7 @@ const routes = {
 		exact: false,
 		component: () => {
 			sessionStorage.setItem("menu", "2-4");
-			return (<BuiltEnvironment/>);
+			return (<BuiltEnvironment step={2} substep={4} />);
 		}
 	},
 	"/community-link": {
@@ -124,14 +124,14 @@ const routes = {
 		exact: false,
 		component: () => {
 			sessionStorage.setItem("menu", "3-3");
-			return (<CommunityHazards/>);
+			return (<CommunityHazards step={3} substep={3} />);
 		}
 	},
 	"/goal-objective-performance": {
 		exact: false,
 		component: () => {
 			sessionStorage.setItem("menu", "3-4");
-			return (<AnticipatedPerformance/>);
+			return (<AnticipatedPerformance step={3} substep={4} />);
 		}
 	},
 	"/goal-objective-result": {

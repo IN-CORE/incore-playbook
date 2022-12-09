@@ -58,7 +58,7 @@ const useStyles = makeStyles({
 	}
 });
 
-export const BuiltEnvironment = () => {
+export const BuiltEnvironment = ({step, substep}) => {
 	const classes = useStyles();
 
 	const fileInputRef = useRef(null);
@@ -303,7 +303,7 @@ export const BuiltEnvironment = () => {
 							</LoadingOverlay>
 						</Grid>
 						<Grid item xl={6} lg={6} md={6} sm={6} xs={12} className="gridItem">
-							<StepStatus/>
+							<StepStatus step={step} substep={substep} />
 							<StepInfo fullHtml={fullHtml}/>
 						</Grid>
 					</Grid>

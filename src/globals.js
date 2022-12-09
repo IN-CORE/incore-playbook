@@ -8,6 +8,7 @@ globals["client_id"] = "react-auth";
 globals["authService"] = `${hostname}/auth/realms/In-core/protocol/openid-connect/token`;
 globals["hazardServiceBase"] = `${hostname}/hazard/api/`;
 globals["dataServiceBase"] = `${hostname}/data/api/`;
+globals["maestroServiceBase"] = `${hostname}/maestro`;
 
 export {globals};
 
@@ -39,7 +40,7 @@ export const ARCHETYPE = {
 
 export const processStatus = [
 	{name: "PENDING", key: "pending"},
-	{name: "IN PROGRESS", key: "inprogress"},
+	{name: "IN PROGRESS", key: "in_progress"},
 	{name: "COMPLETE", key: "complete"}];
 
 export const usersList = [
