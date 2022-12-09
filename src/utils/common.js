@@ -17,7 +17,7 @@ export const isAuthorized = () => {
 
 // construct header
 export function getHeader() {
-	if (process.env.INCORE_REMOTE_HOSTNAME === "http://localhost:8080"){
+	if (process.env.INCORE_REMOTE_HOSTNAME.includes("localhost")){
 		const headers = new Headers({
 			"x-auth-userinfo": `{"preferred_username":"${testUserInfo}"}`,
 		});
