@@ -40,21 +40,21 @@ const routes = {
 		exact: false,
 		component: () => {
 			sessionStorage.setItem("menu", "1-2");
-			return (<StepTmpInfo menu={"1-2"}/>);
+			return (<StepTmpInfo menu={"1-2"} step={1} substep={2}/>);
 		}
 	},
 	"/create-team-scope": {
 		exact: false,
 		component: () => {
 			sessionStorage.setItem("menu", "1-3");
-			return (<StepTmpInfo menu={"1-3"}/>);
+			return (<StepTmpInfo menu={"1-3"} step={1} substep={3}/>);
 		}
 	},
 	"/create-team-stakeholder": {
 		exact: false,
 		component: () => {
 			sessionStorage.setItem("menu", "1-4");
-			return (<StepTmpInfo menu={"1-4"}/>);
+			return (<StepTmpInfo menu={"1-4"} step={1} substep={4}/>);
 		}
 	},
 	"/community": {
@@ -68,21 +68,21 @@ const routes = {
 		exact: false,
 		component: () => {
 			sessionStorage.setItem("menu", "2-1");
-			return (<StepTmpInfo menu={"2-1"}/>);
+			return (<StepTmpInfo menu={"2-1"} step={2} substep={1}/>);
 		}
 	},
 	"/community-member": {
 		exact: false,
 		component: () => {
 			sessionStorage.setItem("menu", "2-2");
-			return (<StepTmpInfo menu={"2-2"}/>);
+			return (<StepTmpInfo menu={"2-2"} step={2} substep={2}/>);
 		}
 	},
 	"/community-function": {
 		exact: false,
 		component: () => {
 			sessionStorage.setItem("menu", "2-3");
-			return (<StepTmpInfo menu={"2-3"}/>);
+			return (<StepTmpInfo menu={"2-3"} step={2} substep={3}/>);
 		}
 	},
 	"/community-environment": {
@@ -96,7 +96,7 @@ const routes = {
 		exact: false,
 		component: () => {
 			sessionStorage.setItem("menu", "2-5");
-			return (<StepTmpInfo menu={"2-5"}/>);
+			return (<StepTmpInfo menu={"2-5"} step={2} substep={5}/>);
 		}
 	},
 	"/goal-objective": {
@@ -110,14 +110,14 @@ const routes = {
 		exact: false,
 		component: () => {
 			sessionStorage.setItem("menu", "3-1");
-			return (<StepTmpInfo menu={"3-1"}/>);
+			return (<StepTmpInfo menu={"3-1"} step={3} substep={1}/>);
 		}
 	},
 	"/goal-objective-desired": {
 		exact: false,
 		component: () => {
 			sessionStorage.setItem("menu", "3-2");
-			return (<StepTmpInfo menu={"3-2"}/>);
+			return (<StepTmpInfo menu={"3-2"} step={3} substep={2}/>);
 		}
 	},
 	"/goal-objective-hazard": {
@@ -138,7 +138,7 @@ const routes = {
 		exact: false,
 		component: () => {
 			sessionStorage.setItem("menu", "3-5");
-			return (<StepTmpInfo menu={"3-5"}/>);
+			return (<StepTmpInfo menu={"3-5"} step={3} substep={5}/>);
 		}
 	},
 	"/plan-development": {
@@ -152,21 +152,21 @@ const routes = {
 		exact: false,
 		component: () => {
 			sessionStorage.setItem("menu", "4-1");
-			return (<StepTmpInfo menu={"4-1"}/>);
+			return (<StepTmpInfo menu={"4-1"} step={4} substep={1}/>);
 		}
 	},
 	"/plan-development-solution": {
 		exact: false,
 		component: () => {
 			sessionStorage.setItem("menu", "4-2");
-			return (<StepTmpInfo menu={"4-2"}/>);
+			return (<StepTmpInfo menu={"4-2"} step={4} substep={2}/>);
 		}
 	},
 	"/plan-development-strategy": {
 		exact: false,
 		component: () => {
 			sessionStorage.setItem("menu", "4-3");
-			return (<StepTmpInfo menu={"4-3"}/>);
+			return (<StepTmpInfo menu={"4-3"} step={4} substep={3}/>);
 		}
 	},
 	"/review": {
@@ -180,21 +180,21 @@ const routes = {
 		exact: false,
 		component: () => {
 			sessionStorage.setItem("menu", "5-1");
-			return (<StepTmpInfo menu={"5-1"}/>);
+			return (<StepTmpInfo menu={"5-1"} step={5} substep={1}/>);
 		}
 	},
 	"/review-approval": {
 		exact: false,
 		component: () => {
 			sessionStorage.setItem("menu", "5-2");
-			return (<StepTmpInfo menu={"5-2"}/>);
+			return (<StepTmpInfo menu={"5-2"} step={5} substep={2}/>);
 		}
 	},
 	"/review-final": {
 		exact: false,
 		component: () => {
 			sessionStorage.setItem("menu", "5-3");
-			return (<StepTmpInfo menu={"5-3"}/>);
+			return (<StepTmpInfo menu={"5-3"} step={5} substep={3}/>);
 		}
 	},
 	"/implementation": {
@@ -208,21 +208,21 @@ const routes = {
 		exact: false,
 		component: () => {
 			sessionStorage.setItem("menu", "6-1");
-			return (<StepTmpInfo menu={"6-1"}/>);
+			return (<StepTmpInfo menu={"6-1"} step={6} substep={1}/>);
 		}
 	},
 	"/implementation-update": {
 		exact: false,
 		component: () => {
 			sessionStorage.setItem("menu", "6-2");
-			return (<StepTmpInfo menu={"6-2"}/>);
+			return (<StepTmpInfo menu={"6-2"} step={6} substep={2}/>);
 		}
 	},
 	"/implementation-modify": {
 		exact: false,
 		component: () => {
 			sessionStorage.setItem("menu", "6-3");
-			return (<StepTmpInfo menu={"6-3"}/>);
+			return (<StepTmpInfo menu={"6-3"} step={6} substep={3}/>);
 		}
 	},
 };

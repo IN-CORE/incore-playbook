@@ -1,32 +1,17 @@
-import React, {useEffect, useState} from "react";
+import React, {useState} from "react";
 import {
 	Box,
 	Grid,
 } from "@material-ui/core";
-import {UserInfo} from "./childComponents/UserInfo";
+import {UserInfo} from "./childComponents/user/UserInfo";
 import StepStatus from "./childComponents/step/StepStatus";
 import PageBanner from "./childComponents/navigation/Banner";
 import {Layout} from "./Layout";
 import StepInfo from "./StepInfo";
 import fullHtml from "../public/steps/1-1.html";
-import {useDispatch, useSelector} from "react-redux";
-import {fetchUserList} from "../actions/userList";
 
 
 export const TeamLeader = ({step, substep}) => {
-	const dispatch = useDispatch();
-	const getPlaybookUserList = () => dispatch(fetchUserList());
-	const userList = useSelector((state) => state.userList.userList);
-
-	useEffect(() => {getPlaybookUserList();}, []);
-
-	// TODO need to configure stepStatus to accept this status
-	// might need to put the status into redux
-	const handleStepStatusChange = (status) => {
-		console.log(status)
-		setActiveKey(status);
-	};
-
 	return (
 		<Layout>
 			<div className="firstDivInContent">
@@ -35,7 +20,7 @@ export const TeamLeader = ({step, substep}) => {
 				<Box className="outerBox">
 					<Grid container spacing={3} className="innerBox">
 						<Grid item xl={5} lg={5} md={5} sm={5} xs={12} className="gridItem">
-							<UserInfo userList={userList}/>
+							<UserInfo/>
 						</Grid>
 						<Grid item xl={7} lg={7} md={7} sm={7} xs={12} className="gridItem">
 							<StepStatus step={step} substep={substep} />

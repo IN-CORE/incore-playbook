@@ -1,4 +1,4 @@
-import userList from "./userList";
+import users from "./user";
 import attributes from "./attributes";
 import layout from "./layout";
 import {executions} from "./datawolf";
@@ -8,7 +8,7 @@ import config from "./config";
 import stepsReducer from "./stepsReducer";
 
 const rootReducer = {
-	userList: userList,
+	user: users,
 	attribute: attributes,
 	layout: layout,
 	execution: executions,
