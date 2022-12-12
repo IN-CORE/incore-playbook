@@ -199,13 +199,13 @@ export const BuiltEnvironment = () => {
 													<Box className={classes.subTitleRow}>
 														<IncoreInputLabel className={classes.subTitle}>Building
 															Inventory</IncoreInputLabel>
-														<IconButton className={classes.plusButton} onClick={() => {
-															setUploadModalStatus(true);
-															setDatasetType("ergo:buildingInventoryVer6");
-															setCategory("building");
-														}}>
-															<AddCircleOutlineIcon/>
-														</IconButton>
+														{/*<IconButton className={classes.plusButton} onClick={() => {*/}
+														{/*	setUploadModalStatus(true);*/}
+														{/*	setDatasetType("ergo:buildingInventoryVer6");*/}
+														{/*	setCategory("building");*/}
+														{/*}}>*/}
+														{/*	<AddCircleOutlineIcon/>*/}
+														{/*</IconButton>*/}
 														<Divider orientation="horizontal" className={classes.subDivider}
 																 flexItem/>
 													</Box>
