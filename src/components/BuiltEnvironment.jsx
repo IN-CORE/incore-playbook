@@ -19,7 +19,7 @@ import fullHtml from "../public/steps/2-4.html";
 import CloseIcon from "@material-ui/icons/Close";
 import FileUploadDrop from "./childComponents/form/FileUploadDrop";
 import {makeStyles} from "@material-ui/core/styles";
-import {globals, inputDatasetTypes} from "../globals";
+import {inputDatasetTypes} from "../globals";
 import {IncoreMenuItem, IncoreSelectBox} from "./styledComponents/IncoreSelect";
 import {useDispatch, useSelector} from "react-redux";
 import {fetchDatasets} from "../actions/datasets";
@@ -200,7 +200,7 @@ export const BuiltEnvironment = () => {
 														<IncoreInputLabel className={classes.subTitle}>Building
 															Inventory</IncoreInputLabel>
 														{
-															globals.allowUpload ?
+															globalConfig.allowUpload ?
 																<IconButton className={classes.plusButton}
 																	onClick={() => {
 																		setUploadModalStatus(true);
