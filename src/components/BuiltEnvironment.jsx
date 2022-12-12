@@ -19,7 +19,7 @@ import fullHtml from "../public/steps/2-4.html";
 import CloseIcon from "@material-ui/icons/Close";
 import FileUploadDrop from "./childComponents/form/FileUploadDrop";
 import {makeStyles} from "@material-ui/core/styles";
-import {inputDatasetTypes} from "../globals";
+import {globals, inputDatasetTypes} from "../globals";
 import {IncoreMenuItem, IncoreSelectBox} from "./styledComponents/IncoreSelect";
 import {useDispatch, useSelector} from "react-redux";
 import {fetchDatasets} from "../actions/datasets";
@@ -199,13 +199,19 @@ export const BuiltEnvironment = () => {
 													<Box className={classes.subTitleRow}>
 														<IncoreInputLabel className={classes.subTitle}>Building
 															Inventory</IncoreInputLabel>
-														{/*<IconButton className={classes.plusButton} onClick={() => {*/}
-														{/*	setUploadModalStatus(true);*/}
-														{/*	setDatasetType("ergo:buildingInventoryVer6");*/}
-														{/*	setCategory("building");*/}
-														{/*}}>*/}
-														{/*	<AddCircleOutlineIcon/>*/}
-														{/*</IconButton>*/}
+														{
+															globals.allowUpload ?
+																<IconButton className={classes.plusButton}
+																	onClick={() => {
+																		setUploadModalStatus(true);
+																		setDatasetType("ergo:buildingInventoryVer6");
+																		setCategory("building");
+																	}}>
+																	<AddCircleOutlineIcon/>
+																</IconButton>
+																:
+																null
+														}
 														<Divider orientation="horizontal" className={classes.subDivider}
 																 flexItem/>
 													</Box>
