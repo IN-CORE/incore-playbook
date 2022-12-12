@@ -1,4 +1,4 @@
-import userList from "./userList";
+import users from "./user";
 import attributes from "./attributes";
 import layout from "./layout";
 import {executions} from "./datawolf";
@@ -7,7 +7,7 @@ import datasets from "./dataset";
 import config from "./config";
 
 const rootReducer = {
-	userList: userList,
+	user: users,
 	attribute: attributes,
 	layout: layout,
 	execution: executions,
