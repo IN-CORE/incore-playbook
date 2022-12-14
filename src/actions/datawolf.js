@@ -13,10 +13,10 @@ export function receiveExecutions(type, json){
 	};
 }
 
-export function fetchExecutions(datawolfConfig){
+export function fetchExecutions(datawolfConfig, all=false){
 	let endpoint = datawolfConfig.executionGetURL;
 	// filter by current user's email
-	endpoint = `${endpoint}?email=${getCurrUserEmail()}`;
+	if (!all)  endpoint = `${endpoint}?email=${getCurrUserEmail()}`;
 
 	return (dispatch) => {
 		return fetch(endpoint, {mode: "cors", headers: getHeader()})
