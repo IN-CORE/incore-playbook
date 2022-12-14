@@ -10,24 +10,31 @@ import {
 	Typography
 } from "@material-ui/core";
 import CloseIcon from "@material-ui/icons/Close";
-import {ResultSummaryTable} from "../table/ResultSummaryTable";
-import {FunctionalityGraph} from "../graph/FunctionalityGraph";
+import { ResultSummaryTable } from "../table/ResultSummaryTable";
+import { FunctionalityGraph } from "../graph/FunctionalityGraph";
 import Map from "../map/Map";
-import {fromLonLat, getTransform} from "ol/proj";
-import {FunctionalityTable} from "../table/FunctionalityTable";
-import React, {useEffect, useState} from "react";
-import {useSelector} from "react-redux";
-import {applyTransform} from "ol/extent";
-import {getOutputFileContent, getOutputFileContentJSON} from "../../../utils/datawolf";
-import {basicLayers, generateLayers} from "../../../utils/map";
-import {IncoreButtonText} from "../../styledComponents/IncoreButtonText";
+import { fromLonLat, getTransform } from "ol/proj";
+import { FunctionalityTable } from "../table/FunctionalityTable";
+import React, { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
+import { applyTransform } from "ol/extent";
+import { getOutputFileContent, getOutputFileContentJSON } from "../../../utils/datawolf";
+import { basicLayers, generateLayers } from "../../../utils/map";
+import { IncoreButtonText } from "../../styledComponents/IncoreButtonText";
 import GetAppIcon from "@material-ui/icons/GetApp";
-import {downloadDataset} from "../../../utils/dataset";
+import { downloadDataset } from "../../../utils/dataset";
 
-export default function BldgFunctionality(props){
-
-	let {executionItem, previewOn, handlePreviewClose, datawolfDatasetConfigItems, hazardType, hazardDatasetId,
-		hazardLayerTitle, hazardLayerStyles} = props;
+export default function BldgFunctionality(props) {
+	let {
+		executionItem,
+		previewOn,
+		handlePreviewClose,
+		datawolfDatasetConfigItems,
+		hazardType,
+		hazardDatasetId,
+		hazardLayerTitle,
+		hazardLayerStyles
+	} = props;
 
 	const mapConfig = useSelector((state) => state.config.mapConfig);
 	const datawolfConfig = useSelector((state) => state.config.datawolfConfig);
@@ -50,29 +57,34 @@ export default function BldgFunctionality(props){
 		datawolfDatasetConfigItems.map(async (datawolfDatasetConfigItem) => {
 			const vName = datawolfDatasetConfigItem.datasets.variableName;
 			if (vName === "bldgFuncProbINCOREId") {
-				const bldgFuncProbINCOREId = await getOutputFileContent(datawolfConfig, executionItem, datawolfDatasetConfigItem.datasetId);
+				const bldgFuncProbINCOREId = await getOutputFileContent(
+					datawolfConfig,
+					executionItem,
+					datawolfDatasetConfigItem.datasetId
+				);
 				setBldgFuncProbINCOREId(bldgFuncProbINCOREId);
 				const layerDef = [
 					{
-						"layerId": bldgFuncProbINCOREId,
-						"layerStyles": "incore:joplin-bldg-func",
-						"title": "Building Functionality Probability",
-						"opacity": 1,
-						"zIndex": 1
+						layerId: bldgFuncProbINCOREId,
+						layerStyles: "incore:joplin-bldg-func",
+						title: "Building Functionality Probability",
+						opacity: 1,
+						zIndex: 1
 					},
 					{
-						"layerId": hazardDatasetId,
-						"layerStyles": hazardLayerStyles,
-						"title": hazardLayerTitle,
-						"opacity": 0.8,
-						"zIndex": 2
+						layerId: hazardDatasetId,
+						layerStyles: hazardLayerStyles,
+						title: hazardLayerTitle,
+						opacity: 0.8,
+						zIndex: 2
 					}
 				];
 				const previewLayers = generateLayers(globalConfig, layerDef);
 				layerRef.current.tilelayer.getLayers().extend(previewLayers);
-			}
-			else if (vName === "bldgFuncSummaryTableContent") {
-				setBldgFuncSummaryTableContent(await getOutputFileContentJSON(datawolfConfig, executionItem, datawolfDatasetConfigItem.datasetId));
+			} else if (vName === "bldgFuncSummaryTableContent") {
+				setBldgFuncSummaryTableContent(
+					await getOutputFileContentJSON(datawolfConfig, executionItem, datawolfDatasetConfigItem.datasetId)
+				);
 			}
 		});
 	}, []);
@@ -82,10 +94,24 @@ export default function BldgFunctionality(props){
 	};
 
 	return (
-		<Dialog open={previewOn} onClose={()=>{handlePreviewClose(layerRef);}} maxWidth="lg" fullWidth scroll="paper">
+		<Dialog
+			open={previewOn}
+			onClose={() => {
+				handlePreviewClose(layerRef);
+			}}
+			maxWidth="lg"
+			fullWidth
+			scroll="paper"
+		>
 			<DialogContent className="previewModal">
-				<IconButton aria-label="Close" onClick={()=>{handlePreviewClose(layerRef);}} style={{float: "right"}}>
-					<CloseIcon fontSize="small"/>
+				<IconButton
+					aria-label="Close"
+					onClick={() => {
+						handlePreviewClose(layerRef);
+					}}
+					style={{ float: "right" }}
+				>
+					<CloseIcon fontSize="small" />
 				</IconButton>
 
 				{/*title*/}
@@ -98,29 +124,33 @@ export default function BldgFunctionality(props){
 				{/*for chart*/}
 				<Box className="chartContainer">
 					<Grid container spacing={3} justify="center">
-						{
-							runtime ?
-								<Grid item>
-									<Typography className="previewSubTitle">
-										Analysis Result View</Typography>
-									<ResultSummaryTable hazardType={hazardType} inventoryType="buildings" runtime={runtime}/>
-								</Grid>
-								:<></>
-						}
-						<Divider orientation="vertical" flexItem/>
-						{
-							bldgFuncSummaryTableContent && bldgFuncSummaryTableContent["by_category"] ?
-								<Grid item style={{minWidth: "804px"}}>
-									<Typography className="previewSubTitle">
-										Anticipated Performance - Building Clusters</Typography>
-									<Box style={{marginTop: "38px"}}>
-										<FunctionalityGraph categorySummary={bldgFuncSummaryTableContent["by_category"]}/>
-									</Box>
-								</Grid>
-								:<></>
-						}
+						{runtime ? (
+							<Grid item>
+								<Typography className="previewSubTitle">Analysis Result View</Typography>
+								<ResultSummaryTable
+									hazardType={hazardType}
+									inventoryType="buildings"
+									runtime={runtime}
+								/>
+							</Grid>
+						) : (
+							<></>
+						)}
+						<Divider orientation="vertical" flexItem />
+						{bldgFuncSummaryTableContent && bldgFuncSummaryTableContent["by_category"] ? (
+							<Grid item style={{ minWidth: "804px" }}>
+								<Typography className="previewSubTitle">
+									Anticipated Performance - Building Clusters
+								</Typography>
+								<Box style={{ marginTop: "38px" }}>
+									<FunctionalityGraph categorySummary={bldgFuncSummaryTableContent["by_category"]} />
+								</Box>
+							</Grid>
+						) : (
+							<></>
+						)}
 					</Grid>
-					<Divider orientation="horizontal"/>
+					<Divider orientation="horizontal" />
 				</Box>
 
 				{/*for map*/}
@@ -132,26 +162,27 @@ export default function BldgFunctionality(props){
 						maxZoom={mapConfig.MAX_ZOOM}
 						extent={applyTransform(mapConfig.MAP_BOUNDS, getTransform("EPSG:4326", "EPSG:3857"))}
 						center={fromLonLat(mapConfig.MAP_CENTER)}
-						layers={[
-							layerRef.current.basemaps,
-							layerRef.current.tilelayer
-						]}
+						layers={[layerRef.current.basemaps, layerRef.current.tilelayer]}
 						layerSwitcherOptions={{}}
 					/>
 				</Container>
 
 				{/*for table*/}
-				{
-					bldgFuncSummaryTableContent ?
-						<Box>
-							<FunctionalityTable funcResults={bldgFuncSummaryTableContent}/>
-						</Box>
-						:<>/</>
-				}
+				{bldgFuncSummaryTableContent ? (
+					<Box>
+						<FunctionalityTable funcResults={bldgFuncSummaryTableContent} />
+					</Box>
+				) : (
+					<>/</>
+				)}
 			</DialogContent>
 			<DialogActions>
-				<IncoreButtonText onClick={download} startIcon={<GetAppIcon/>}>Download Report</IncoreButtonText>
-				<IncoreButtonText onClick={handlePreviewClose} startIcon={<CloseIcon/>}>Close</IncoreButtonText>
+				<IncoreButtonText onClick={download} startIcon={<GetAppIcon />}>
+					Download Report
+				</IncoreButtonText>
+				<IncoreButtonText onClick={handlePreviewClose} startIcon={<CloseIcon />}>
+					Close
+				</IncoreButtonText>
 			</DialogActions>
 		</Dialog>
 	);

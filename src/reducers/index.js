@@ -1,7 +1,7 @@
 import users from "./user";
 import attributes from "./attributes";
 import layout from "./layout";
-import {executions} from "./datawolf";
+import { executions } from "./datawolf";
 import hazards from "./hazards";
 import datasets from "./dataset";
 import config from "./config";
@@ -13,7 +13,7 @@ const rootReducer = {
 	layout: layout,
 	execution: executions,
 	hazard: hazards,
-	dataset:datasets,
+	dataset: datasets,
 	config: config,
 	steps: stepsReducer
 };

@@ -1,18 +1,13 @@
-import React, {useState, useEffect} from "react";
-import {makeStyles} from "@material-ui/core/styles";
-import {
-	Box,
-	Avatar,
-	Button,
-	Grid,
-} from "@material-ui/core";
+import React, { useState, useEffect } from "react";
+import { makeStyles } from "@material-ui/core/styles";
+import { Box, Avatar, Button, Grid } from "@material-ui/core";
 
-import {IncoreInputLabel} from "../styledComponents/IncoreInputLabel";
-import {submitExecution} from "../../utils/datawolf";
+import { IncoreInputLabel } from "../styledComponents/IncoreInputLabel";
+import { submitExecution } from "../../utils/datawolf";
 
 import fullHtml from "../../public/steps/3-4.html";
 import StepInfo from "../StepInfo";
-import {useSelector} from "react-redux";
+import { useSelector } from "react-redux";
 import AllowedHazardTypes from "./inputWidgets/AllowedHazardTypes";
 import BlockGroups from "./inputWidgets/BlockGroups";
 import Epfs from "./inputWidgets/Epfs";
@@ -23,31 +18,31 @@ import Buildings from "./inputWidgets/Buildings";
 import SectorShocks from "./inputWidgets/SectorShocks";
 import ValueLosses from "./inputWidgets/ValueLosses";
 import InputTextField from "./inputWidgets/InputTextField";
-import {IncoreTextField} from "../styledComponents/IncoreInput";
+import { IncoreTextField } from "../styledComponents/IncoreInput";
 
 const useStyles = makeStyles({
-	runButton:{
-		height: "61px",
-		width: "100%",
-		fontSize: "16px",
-		fontWeight: 500,
-		backgroundColor: "#00619D",
+	runButton: {
+		"height": "61px",
+		"width": "100%",
+		"fontSize": "16px",
+		"fontWeight": 500,
+		"backgroundColor": "#00619D",
 		"&:hover": {
 			backgroundColor: "#2C4170"
 		},
-		color:"#ffffff",
-		textTransform: "capitalize"
+		"color": "#ffffff",
+		"textTransform": "capitalize"
 	},
-	endIconStyle:{
+	endIconStyle: {
 		backgroundColor: "#ffffff",
-		marginLeft:"15px"
+		marginLeft: "15px"
 	},
-	avatarStyle:{
+	avatarStyle: {
 		height: "35px",
 		width: "56px",
-		borderRadius:0
+		borderRadius: 0
 	},
-	explanation:{
+	explanation: {
 		height: "14px",
 		width: "410px",
 		color: "#8798AD",
@@ -55,43 +50,42 @@ const useStyles = makeStyles({
 		fontSize: "12px",
 		letterSpacing: 0,
 		lineHeight: "14px",
-		margin:"16px"
+		margin: "16px"
 	},
-	explanationLink:{
-		textDecoration:"underline",
+	explanationLink: {
+		textDecoration: "underline",
 		color: "#00619D"
 	},
-	socioeconomicsBlock:{
-		margin: "30px auto",
+	socioeconomicsBlock: {
+		margin: "30px auto"
 	},
-	socioeconomics:{
+	socioeconomics: {
 		padding: "0 30px",
 		border: "dashed 2px #00619D",
-		maxHeight:"300px",
-		overflow:"auto",
-		backgroundColor:"#FFFFFF"
+		maxHeight: "300px",
+		overflow: "auto",
+		backgroundColor: "#FFFFFF"
 	}
 });
 
 // TODO move this registration somewhere else?
 const registeredWidgets = {
-	"AllowedHazardTypes": <AllowedHazardTypes/>,
-	"BlockGroups": <BlockGroups/>,
-	"Buildings": <Buildings/>,
-	"Epfs": <Epfs/>,
-	"Hazards": <Hazards/>,
-	"Huas":<Huas/>,
-	"InputTextField":<InputTextField/>,
-	"InterdNetworks":<InterdNetworks/>,
-	"SectorShocks":<SectorShocks/>,
-	"ValueLosses":<ValueLosses/>
+	AllowedHazardTypes: <AllowedHazardTypes />,
+	BlockGroups: <BlockGroups />,
+	Buildings: <Buildings />,
+	Epfs: <Epfs />,
+	Hazards: <Hazards />,
+	Huas: <Huas />,
+	InputTextField: <InputTextField />,
+	InterdNetworks: <InterdNetworks />,
+	SectorShocks: <SectorShocks />,
+	ValueLosses: <ValueLosses />
 };
-
 
 export default function ViewResult(props) {
 	const classes = useStyles();
 
-	const {value, index, getExecutionList, gotoViewResultTab, ...other} = props;
+	const { value, index, getExecutionList, gotoViewResultTab, ...other } = props;
 
 	// for execution
 	const [title, setTitle] = useState("");
@@ -104,14 +98,13 @@ export default function ViewResult(props) {
 	let parameters = datawolfWorkflowConfig.inputs.parameters;
 	const [datawolfFormState, setDatawolfFormState] = useState(
 		parameters.reduce((state, p) => {
-
 			// prepopulate the default fields
 			let mapState = {};
 			p.parametersMap.map((pm) => {
 				mapState[pm.paramId] = p.defaultValue;
 			}, {});
 
-			return {...state, [p.variableName]:mapState};
+			return { ...state, [p.variableName]: mapState };
 		}, {})
 	);
 
@@ -119,19 +112,24 @@ export default function ViewResult(props) {
 
 	// form check
 	useEffect(() => {
-		if (Object.keys(datawolfFormState).every((k, ) => Object.values(datawolfFormState[k])[0] !== null)) setDisabled(false);
+		if (Object.keys(datawolfFormState).every((k) => Object.values(datawolfFormState[k])[0] !== null))
+			setDisabled(false);
 		else setDisabled(true);
 	}, [datawolfFormState]);
 
-	const handleRunButtonClick = async () =>{
-		const datawolfJson = await submitExecution(datawolfConfig, datawolfWorkflowConfig, title, description,
-			datawolfFormState);
+	const handleRunButtonClick = async () => {
+		const datawolfJson = await submitExecution(
+			datawolfConfig,
+			datawolfWorkflowConfig,
+			title,
+			description,
+			datawolfFormState
+		);
 
 		// clear the form
 		if (datawolfJson && datawolfJson !== "") {
 			setDatawolfFormState(
 				parameters.reduce((state, p) => {
-
 					// prepopulate the default fields
 					let mapState = {};
 					p.parametersMap.map((pm) => {
@@ -139,7 +137,7 @@ export default function ViewResult(props) {
 						else mapState[pm.paramId] = "";
 					}, {});
 
-					return {...state, [p.variableName]:mapState};
+					return { ...state, [p.variableName]: mapState };
 				}, {})
 			);
 			// update execution list and then jump to view result tab
@@ -149,50 +147,61 @@ export default function ViewResult(props) {
 	};
 
 	return (
-		<div role="tabpanel" hidden={value !== index} id={`simple-tabpanel-${index}`}
-			 aria-labelledby={`simple-tab-${index}`}
-			 {...other}
+		<div
+			role="tabpanel"
+			hidden={value !== index}
+			id={`simple-tabpanel-${index}`}
+			aria-labelledby={`simple-tab-${index}`}
+			{...other}
 		>
 			<Grid container spacing={3}>
 				<Grid item xl={6} lg={6} md={6} sm={6} xs={12}>
-					<Box className="inputGroup" style={{height: "auto"}}>
+					<Box className="inputGroup" style={{ height: "auto" }}>
 						<IncoreInputLabel>Title</IncoreInputLabel>
-						<IncoreTextField variant="outlined"
-										 value={title}
-										 onChange={(e) => { setTitle(e.target.value); }} />
+						<IncoreTextField
+							variant="outlined"
+							value={title}
+							onChange={(e) => {
+								setTitle(e.target.value);
+							}}
+						/>
 					</Box>
-					<Box className="inputGroup" style={{height: "auto"}}>
+					<Box className="inputGroup" style={{ height: "auto" }}>
 						<IncoreInputLabel>Description</IncoreInputLabel>
-						<IncoreTextField variant="outlined"
-										 value={description}
-										 onChange={(e) => { setDescription(e.target.value); }} />
+						<IncoreTextField
+							variant="outlined"
+							value={description}
+							onChange={(e) => {
+								setDescription(e.target.value);
+							}}
+						/>
 					</Box>
-					{
-						parameters.map(item => {
-							if (!item.hidden){
-								return (<Box className="inputGroup" style={{height: "auto"}}>
+					{parameters.map((item) => {
+						if (!item.hidden) {
+							return (
+								<Box className="inputGroup" style={{ height: "auto" }}>
 									<IncoreInputLabel>{item.title}</IncoreInputLabel>
 									{(() => {
 										// instantiate widget based on definitions
-										return React.cloneElement(
-											registeredWidgets[item.widget],
-											{
-												setDatawolfFormState: setDatawolfFormState,
-												datawolfFormState: datawolfFormState,
-												datawolfParamConfigItem: item
-											}
-										);
+										return React.cloneElement(registeredWidgets[item.widget], {
+											setDatawolfFormState: setDatawolfFormState,
+											datawolfFormState: datawolfFormState,
+											datawolfParamConfigItem: item
+										});
 									})()}
-								</Box>);
-							}
-						})
-					}
-					<Box className="inputGroup" style={{height: "auto"}}>
+								</Box>
+							);
+						}
+					})}
+					<Box className="inputGroup" style={{ height: "auto" }}>
 						<IncoreInputLabel>Run the Analysis</IncoreInputLabel>
-						<Button variant="contained" color="primary" onClick={handleRunButtonClick}
+						<Button
+							variant="contained"
+							color="primary"
+							onClick={handleRunButtonClick}
 							disabled={disabled}
-							endIcon={<Avatar src={assetConfig.poweredByLogo} className={classes.avatarStyle}/>}
-							classes={{ root: classes.runButton, endIcon: classes.endIconStyle}}
+							endIcon={<Avatar src={assetConfig.poweredByLogo} className={classes.avatarStyle} />}
+							classes={{ root: classes.runButton, endIcon: classes.endIconStyle }}
 						>
 							CALCULATE THE HAZARD RISK
 						</Button>
@@ -205,5 +214,3 @@ export default function ViewResult(props) {
 		</div>
 	);
 }
-
-

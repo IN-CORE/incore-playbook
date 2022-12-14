@@ -1,33 +1,23 @@
-import React, {useEffect, useState} from "react";
-import {
-	Button,
-	Dialog,
-	DialogActions,
-	DialogContent,
+import React, { useEffect, useState } from "react";
+import { Button, Dialog, DialogActions, DialogContent } from "@material-ui/core";
 
-} from "@material-ui/core";
-
-import {getShortHTML} from "../utils/common";
-
+import { getShortHTML } from "../utils/common";
 
 const StepInfo = (props) => {
-
 	const [open, setOpen] = useState(false);
 	const [html, setHtml] = useState(null);
 	const [shortHtml, setShortHtml] = useState(null);
 	const [showMoreLink, setShowMoreLink] = useState(true);
 
-	useEffect( () => {
+	useEffect(() => {
 		setHtml(props.fullHtml);
 		let sHtml = getShortHTML(props.fullHtml);
 		if (sHtml === undefined) {
 			setShowMoreLink(false);
 			setShortHtml(props.fullHtml);
-		}
-		else{
+		} else {
 			setShortHtml(sHtml);
 		}
-
 	}, [props.fullHtml]);
 
 	const handleClickOpen = () => {
@@ -39,18 +29,22 @@ const StepInfo = (props) => {
 	};
 
 	return (
-		<div style={{paddingLeft: 6}}>
-			<div dangerouslySetInnerHTML={{__html: shortHtml}} />
+		<div style={{ paddingLeft: 6 }}>
+			<div dangerouslySetInnerHTML={{ __html: shortHtml }} />
 
-			{showMoreLink ?
-				<span style={{color: "#00619D", textDecoration: "underline", cursor: "pointer"}}
-					onClick={handleClickOpen}> Learn More About This Step</span>
-				: null
-			}
+			{showMoreLink ? (
+				<span
+					style={{ color: "#00619D", textDecoration: "underline", cursor: "pointer" }}
+					onClick={handleClickOpen}
+				>
+					{" "}
+					Learn More About This Step
+				</span>
+			) : null}
 
 			<Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title" maxWidth="lg">
 				<DialogContent>
-					<div dangerouslySetInnerHTML={{__html: html}} />
+					<div dangerouslySetInnerHTML={{ __html: html }} />
 				</DialogContent>
 
 				<DialogActions>
@@ -59,9 +53,7 @@ const StepInfo = (props) => {
 					</Button>
 				</DialogActions>
 			</Dialog>
-
 		</div>
-
 	);
 };
 

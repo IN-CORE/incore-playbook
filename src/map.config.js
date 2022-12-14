@@ -1,15 +1,10 @@
 // joplin
 export const mapConfig = {
-	MAP_BOUNDS:[
-		-94.818621,
-		36.816347,
-		-94.192626,
-		37.377222,
-	],
-	MAP_CENTER: [-94.4980, 37.0672],
+	MAP_BOUNDS: [-94.818621, 36.816347, -94.192626, 37.377222],
+	MAP_CENTER: [-94.498, 37.0672],
 	ZOOM: 5,
 	MIN_ZOOM: 4,
-	MAX_ZOOM: 15,
+	MAX_ZOOM: 15
 };
 
 // // seaside

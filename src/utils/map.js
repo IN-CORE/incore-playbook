@@ -1,15 +1,15 @@
 import TileWMS from "ol/source/TileWMS";
 import TileLayer from "ol/layer/Tile";
 import GroupLayer from "ol/layer/Group";
-import {globals as defaultGlobalConfig} from "../globals";
+import { globals as defaultGlobalConfig } from "../globals";
 import XYZ from "ol/source/XYZ";
-import OSM, {ATTRIBUTION as OSM_ATTRIBUTION} from "ol/source/OSM";
+import OSM, { ATTRIBUTION as OSM_ATTRIBUTION } from "ol/source/OSM";
 
-export const generateLayers = (globalConfig=defaultGlobalConfig, layerDef) => {
+export const generateLayers = (globalConfig = defaultGlobalConfig, layerDef) => {
 	return layerDef.reduce((previewLayers, layerDefinition) => {
 		const source = new TileWMS({
 			url: `${globalConfig.geoServerWMS}`,
-			params: {LAYERS: layerDefinition.layerId, STYLES: layerDefinition.layerStyles},
+			params: { LAYERS: layerDefinition.layerId, STYLES: layerDefinition.layerStyles },
 			ratio: 1,
 			serverType: "geoserver"
 		});
@@ -33,10 +33,7 @@ export const basicLayers = {
 				title: "Carto",
 				source: new XYZ({
 					url: "https://{a-d}.basemaps.cartocdn.com/rastertiles/light_all/{z}/{x}/{y}.png",
-					attributions: [
-						"&#169; <a href=\"https://www.carto.com\">Carto</a>,",
-						OSM_ATTRIBUTION
-					]
+					attributions: ['&#169; <a href="https://www.carto.com">Carto</a>,', OSM_ATTRIBUTION]
 				})
 			}),
 			new TileLayer({
@@ -44,7 +41,7 @@ export const basicLayers = {
 				visible: false,
 				title: "OSM",
 				source: new OSM()
-			}),
+			})
 		]
 	}),
 	tilelayer: new GroupLayer({

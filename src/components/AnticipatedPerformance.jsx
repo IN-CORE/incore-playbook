@@ -1,13 +1,12 @@
-import React, {useState} from "react";
-import {useDispatch, useSelector} from "react-redux";
-import {Box, Grid, makeStyles, Tab, Tabs} from "@material-ui/core";
-import {Layout} from "./Layout";
+import React, { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { Box, Grid, makeStyles, Tab, Tabs } from "@material-ui/core";
+import { Layout } from "./Layout";
 
 import ViewResult from "./childComponents/ViewResult";
 import RunAnalysis from "./childComponents/RunAnalysis";
 import PageBanner from "./childComponents/navigation/Banner";
-import {fetchExecutions} from "../actions/datawolf";
-
+import { fetchExecutions } from "../actions/datawolf";
 
 const useStyles = makeStyles({
 	tab: {
@@ -18,12 +17,11 @@ const useStyles = makeStyles({
 		letterSpacing: 0,
 		lineHeight: "22px",
 		textAlign: "center",
-		textTransform:"capitalize"
-	},
+		textTransform: "capitalize"
+	}
 });
 
 export const AnticipatedPerformance = () => {
-
 	const classes = useStyles();
 
 	const [currTabIndex, setCurrTabIndex] = useState(0);
@@ -36,34 +34,53 @@ export const AnticipatedPerformance = () => {
 	return (
 		<Layout>
 			<div className="firstDivInContent">
-				<PageBanner parentStep="Determine Goals & Objectives"
-					childStep="Determine Anticipated Performance" taskNo="3" subtaskNo="3-4"/>
+				<PageBanner
+					parentStep="Determine Goals & Objectives"
+					childStep="Determine Anticipated Performance"
+					taskNo="3"
+					subtaskNo="3-4"
+				/>
 				<Box className="outerBox">
 					<Grid container spacing={3} className="innerBox">
 						<Grid item className="gridItem">
-							<Tabs TabIndicatorProps={{style: {background: "#00619D"}}}
+							<Tabs
+								TabIndicatorProps={{ style: { background: "#00619D" } }}
 								aria-label="determine anticipated performance tabs"
 								value={currTabIndex}
 								className={classes.tabs}
-								  onChange={(e, value) => { setCurrTabIndex(value);}}>
-								<Tab label="run analysis" className={classes.tab}
-									 style={currTabIndex === 0? {color: "#00619D"}: {}}/>
-								<Tab label="view results" className={classes.tab}
-									 style={currTabIndex === 1? {color: "#00619D"}: {}}/>
+								onChange={(e, value) => {
+									setCurrTabIndex(value);
+								}}
+							>
+								<Tab
+									label="run analysis"
+									className={classes.tab}
+									style={currTabIndex === 0 ? { color: "#00619D" } : {}}
+								/>
+								<Tab
+									label="view results"
+									className={classes.tab}
+									style={currTabIndex === 1 ? { color: "#00619D" } : {}}
+								/>
 							</Tabs>
-							<RunAnalysis value={currTabIndex} index={0}
-										 getExecutionList={getExecutionList}
-										 gotoViewResultTab={()=> {setCurrTabIndex(1);}}
+							<RunAnalysis
+								value={currTabIndex}
+								index={0}
+								getExecutionList={getExecutionList}
+								gotoViewResultTab={() => {
+									setCurrTabIndex(1);
+								}}
 							/>
-							<ViewResult value={currTabIndex} index={1}
+							<ViewResult
+								value={currTabIndex}
+								index={1}
 								getExecutionList={getExecutionList}
 								executions={executions}
 							/>
-
 						</Grid>
 					</Grid>
 				</Box>
 			</div>
 		</Layout>
 	);
-}
+};
