@@ -59,11 +59,6 @@ export const updateStepStatus = (stepId, substepId, status) => {
     let endpoint = `${defaultGlobalConfig.maestroServiceBase}steps/${stepId}/${substepId}?status=${status}`
 
     return async (dispatch) => {
-        // TODO: remove this in future after dev server deployment
-        // const headers = new Headers({
-		// 	"x-auth-userinfo": `{"preferred_username":"rmp6"}`
-		// });
-        
         const response = await fetch(endpoint, {mode:'cors', method: "PATCH", headers: getHeader()})
         if (response.status === 200) {
             response.json().then(json => {
