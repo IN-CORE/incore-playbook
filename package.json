@@ -128,9 +128,9 @@
 	],
 	"repository": {
 		"type": "git",
-	  	"url": "https://github.com/IN-CORE/incore-playbook.git"
+		"url": "https://github.com/IN-CORE/incore-playbook.git"
 	},
 	"publishConfig": {
-	  	"registry":"https://npm.pkg.github.com"
+		"registry": "https://npm.pkg.github.com"
 	}
 }

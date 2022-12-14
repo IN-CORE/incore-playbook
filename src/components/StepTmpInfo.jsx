@@ -3,6 +3,7 @@ import {Box, Grid} from "@material-ui/core";
 import PageBanner from "./childComponents/navigation/Banner";
 import {Layout} from "./Layout";
 import StepInfo from "./StepInfo";
+import StepStatus from "./childComponents/step/StepStatus";
 import fullHtml00 from "../public/steps/0-0.html";
 import fullHtml12 from "../public/steps/1-2.html";
 import fullHtml13 from "../public/steps/1-3.html";
@@ -25,7 +26,7 @@ import fullHtml62 from "../public/steps/6-2.html";
 import fullHtml63 from "../public/steps/6-3.html";
 
 
-export const StepTmpInfo = ({menu}) => {
+export const StepTmpInfo = ({menu, step, substep}) => {
 	let fullHtml = fullHtml00;
 	let pageBanner = null;
 	// if (menu === "1-1") {
@@ -130,6 +131,7 @@ export const StepTmpInfo = ({menu}) => {
 					<Grid container spacing={3} className="innerBox">
 						<Grid item className="gridItem">
 							<StepInfo fullHtml={fullHtml}/>
+							<StepStatus step={step} substep={substep} />
 						</Grid>
 					</Grid>
 				</Box>

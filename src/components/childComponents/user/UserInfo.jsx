@@ -32,8 +32,6 @@ const useStyles = makeStyles({
  */
 export const UserInfo = (props) => {
 
-	const {handleStepStatusChange} = props;
-
 	const classes = useStyles();
 
 	const dispatch = useDispatch();
