@@ -58,7 +58,7 @@ const useStyles = makeStyles({
 	}
 });
 
-export const BuiltEnvironment = () => {
+export const BuiltEnvironment = ({step, substep}) => {
 	const classes = useStyles();
 
 	const fileInputRef = useRef(null);
@@ -199,13 +199,19 @@ export const BuiltEnvironment = () => {
 													<Box className={classes.subTitleRow}>
 														<IncoreInputLabel className={classes.subTitle}>Building
 															Inventory</IncoreInputLabel>
-														<IconButton className={classes.plusButton} onClick={() => {
-															setUploadModalStatus(true);
-															setDatasetType("ergo:buildingInventoryVer6");
-															setCategory("building");
-														}}>
-															<AddCircleOutlineIcon/>
-														</IconButton>
+														{
+															globalConfig.allowUpload ?
+																<IconButton className={classes.plusButton}
+																	onClick={() => {
+																		setUploadModalStatus(true);
+																		setDatasetType("ergo:buildingInventoryVer6");
+																		setCategory("building");
+																	}}>
+																	<AddCircleOutlineIcon/>
+																</IconButton>
+																:
+																null
+														}
 														<Divider orientation="horizontal" className={classes.subDivider}
 																 flexItem/>
 													</Box>
@@ -224,13 +230,19 @@ export const BuiltEnvironment = () => {
 													<Box className={classes.subTitleRow}>
 														<IncoreInputLabel className={classes.subTitle}>Electric Power
 															Facility</IncoreInputLabel>
-														<IconButton className={classes.plusButton} onClick={() => {
-															setUploadModalStatus(true);
-															setDatasetType("incore:epf");
-															setCategory("electric power facility");
-														}}>
-															<AddCircleOutlineIcon/>
-														</IconButton>
+														{
+															globalConfig.allowUpload ?
+																<IconButton className={classes.plusButton}
+																	onClick={() => {
+																		setUploadModalStatus(true);
+																		setDatasetType("incore:epf");
+																		setCategory("electric power facility");
+																	}}>
+																	<AddCircleOutlineIcon/>
+																</IconButton>
+																:
+																null
+														}
 														<Divider orientation="horizontal" className={classes.subDivider}
 																 flexItem/>
 													</Box>
@@ -249,13 +261,18 @@ export const BuiltEnvironment = () => {
 													<Box className={classes.subTitleRow}>
 														<IncoreInputLabel className={classes.subTitle}>Interdependency
 															Network</IncoreInputLabel>
-														<IconButton className={classes.plusButton} onClick={() => {
-															setUploadModalStatus(true);
-															setDatasetType("incore:buildingInterdependencyDict");
-															setCategory("interdependency network");
-														}}>
-															<AddCircleOutlineIcon/>
-														</IconButton>
+														{
+															globalConfig.allowUpload ?
+																<IconButton className={classes.plusButton} onClick={() => {
+																	setUploadModalStatus(true);
+																	setDatasetType("incore:buildingInterdependencyDict");
+																	setCategory("interdependency network");
+																}}>
+																	<AddCircleOutlineIcon/>
+																</IconButton>
+																:
+																null
+														}
 														<Divider orientation="horizontal" className={classes.subDivider}
 																 flexItem/>
 													</Box>
@@ -274,14 +291,19 @@ export const BuiltEnvironment = () => {
 													<Box className={classes.subTitleRow}>
 														<IncoreInputLabel className={classes.subTitle}>Socioeconomics
 															Datasets</IncoreInputLabel>
-														<IconButton className={classes.plusButton} onClick={() => {
-															setUploadModalStatus(true);
-															// don't set types here, set the types inside the modal
-															setDatasetType("");
-															setCategory("socioeconomics input");
-														}}>
-															<AddCircleOutlineIcon/>
-														</IconButton>
+														{
+															globalConfig.allowUpload ?
+																<IconButton className={classes.plusButton} onClick={() => {
+																	setUploadModalStatus(true);
+																	// don't set types here, set the types inside the modal
+																	setDatasetType("");
+																	setCategory("socioeconomics input");
+																}}>
+																	<AddCircleOutlineIcon/>
+																</IconButton>
+																:
+																null
+														}
 														<Divider orientation="horizontal" className={classes.subDivider}
 																 flexItem/>
 													</Box>
@@ -303,7 +325,7 @@ export const BuiltEnvironment = () => {
 							</LoadingOverlay>
 						</Grid>
 						<Grid item xl={6} lg={6} md={6} sm={6} xs={12} className="gridItem">
-							<StepStatus/>
+							<StepStatus step={step} substep={substep} />
 							<StepInfo fullHtml={fullHtml}/>
 						</Grid>
 					</Grid>

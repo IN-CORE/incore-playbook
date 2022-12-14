@@ -10,7 +10,7 @@ globals["hazardServiceBase"] = `${hostname}/hazard/api/`;
 globals["dataServiceBase"] = `${hostname}/data/api/`;
 globals["maestroServiceBase"] = `${hostname}/maestro/galveston/`;
 globals["setGravatarURL"] = "https://en.gravatar.com/support/activating-your-account/";
-
+globals["allowUpload"] = true;
 
 export {globals};
 
@@ -42,7 +42,7 @@ export const ARCHETYPE = {
 
 export const processStatus = [
 	{name: "PENDING", key: "pending"},
-	{name: "IN PROGRESS", key: "inprogress"},
+	{name: "IN PROGRESS", key: "in_progress"},
 	{name: "COMPLETE", key: "complete"}];
 
 export const usersList = [

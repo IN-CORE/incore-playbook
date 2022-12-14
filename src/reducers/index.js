@@ -5,6 +5,7 @@ import {executions} from "./datawolf";
 import hazards from "./hazards";
 import datasets from "./dataset";
 import config from "./config";
+import stepsReducer from "./stepsReducer";
 
 const rootReducer = {
 	user: users,
@@ -14,6 +15,7 @@ const rootReducer = {
 	hazard: hazards,
 	dataset:datasets,
 	config: config,
+	steps: stepsReducer
 };
 
 export default rootReducer;
