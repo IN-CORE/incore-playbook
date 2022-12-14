@@ -29,7 +29,12 @@ const stepsReducer = (state=defaultState, action) => {
         case "UPDATE_STEP":
             return {
                 ...state, 
-                [action.step_id]: action.step
+                [action.step_id]: action.step,
+            }
+        case "UPDATE_ALL_STEPS":
+            return {
+                ...state,
+                ...action.steps
             }
         case "LOGIN_ERROR":
             return {

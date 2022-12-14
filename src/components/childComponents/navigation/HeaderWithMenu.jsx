@@ -1,5 +1,5 @@
 import React from "react";
-import {connect, useSelector} from "react-redux";
+import {connect, useSelector, useDispatch} from "react-redux";
 import {Link, useHistory} from "react-router-dom";
 import {makeStyles, useTheme } from "@material-ui/core/styles";
 import clsx from "clsx";
@@ -21,6 +21,7 @@ import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
 import ChevronRightIcon from "@material-ui/icons/ChevronRight";
 
 import {setMenuState} from "../../../actions/layout";
+import { getAllSteps } from "../../../actions/steps";
 
 import {menuWidth} from "../../../globals";
 import Cookies from "universal-cookie";
@@ -32,6 +33,7 @@ import Collapse from "@material-ui/core/Collapse";
 import DownIcon from "@material-ui/icons/KeyboardArrowDown";
 import RightIcon from "@material-ui/icons/KeyboardArrowRight";
 import CheckCircleIcon from "@material-ui/icons/CheckCircle";
+import QueryBuilderIcon from '@material-ui/icons/QueryBuilder';
 import Grid from "@material-ui/core/Grid";
 
 
@@ -125,6 +127,7 @@ const HeaderWithMenu = ({dispatch, isAuthenticated, menuItem, headerTitle="Playb
 	const history = useHistory();
 
 	const assetConfig = useSelector((state) => state.config.assetConfig);
+	const stepStatus = useSelector((state) => state.steps)
 
 	const [anchorEl, setAnchorEl] = React.useState(null);
 
@@ -137,6 +140,10 @@ const HeaderWithMenu = ({dispatch, isAuthenticated, menuItem, headerTitle="Playb
 	const handleMenuClose = () => {
 		setAnchorEl(null);
 	};
+
+	React.useEffect(() => {
+		getAllSteps()(dispatch)
+	}, [])
 
 	// //TODO: move this to utils if needed
 	const handleLogout = () => {
@@ -229,28 +236,28 @@ const HeaderWithMenu = ({dispatch, isAuthenticated, menuItem, headerTitle="Playb
 				{
 					key: "1-1",
 					label: "Identify leader",
-					completed: true,
+					status: "pending",
 					disabled: false,
 					route: "/create-team-leader"
 				},
 				{
 					key: "1-2",
 					label: "Identify Team Members",
-					completed: false,
+					status: "in_progress",
 					disabled: false,
 					route: "/create-team-member"
 				},
 				{
 					key: "1-3",
 					label: "Establish the scope",
-					completed: false,
+					status: "completed",
 					disabled: false,
 					route: "/create-team-scope"
 				},
 				{
 					key: "1-4",
 					label: " Identify key stakeholders",
-					completed: false,
+					status: "pending",
 					disabled: false,
 					route: "/create-team-stakeholder"
 				},
@@ -263,35 +270,35 @@ const HeaderWithMenu = ({dispatch, isAuthenticated, menuItem, headerTitle="Playb
 				{
 					key: "2-1",
 					label: "Assess existing community plans",
-					completed: false,
+					status: "pending",
 					disabled: false,
 					route: "/community-plan"
 				},
 				{
 					key: "2-2",
 					label: "Characterize community members",
-					completed: false,
+					status: "pending",
 					disabled: false,
 					route: "/community-member"
 				},
 				{
 					key: "2-3",
 					label: "Characterize social functions",
-					completed: false,
+					status: "pending",
 					disabled: false,
 					route: "/community-function"
 				},
 				{
 					key: "2-4",
 					label: "Characterize built environment",
-					completed: true,
+					status: "pending",
 					disabled: false,
 					route: "/community-environment"
 				},
 				{
 					key: "2-5",
 					label: "Link social functions & built environment",
-					completed: false,
+					status: "pending",
 					disabled: false,
 					route: "/community-link"
 				},
@@ -304,35 +311,35 @@ const HeaderWithMenu = ({dispatch, isAuthenticated, menuItem, headerTitle="Playb
 				{
 					key: "3-1",
 					label: "Identify long-term community goals",
-					completed: false,
+					status: "pending",
 					disabled: false,
 					route: "/goal-objective-long"
 				},
 				{
 					key: "3-2",
 					label: "Establish performance goals",
-					completed: false,
+					status: "pending",
 					disabled: false,
 					route: "/goal-objective-desired"
 				},
 				{
 					key: "3-3",
 					label: "Define community hazards",
-					completed: true,
+					status: "pending",
 					disabled: false,
 					route: "/goal-objective-hazard"
 				},
 				{
 					key: "3-4",
 					label: "Determine anticipated performance",
-					completed: true,
+					status: "pending",
 					disabled: false,
 					route: "/goal-objective-performance"
 				},
 				{
 					key: "3-5",
 					label: "Summarize the results",
-					completed: false,
+					status: "pending",
 					disabled: false,
 					route: "/goal-objective-result"
 				},
@@ -345,21 +352,21 @@ const HeaderWithMenu = ({dispatch, isAuthenticated, menuItem, headerTitle="Playb
 				{
 					key: "4-1",
 					label: "Evaluate Gaps",
-					completed: false,
+					status: "pending",
 					disabled: false,
 					route: "/plan-development-gap"
 				},
 				{
 					key: "4-2",
 					label: "Identify Solutions",
-					completed: false,
+					status: "pending",
 					disabled: false,
 					route: "/plan-development-solution"
 				},
 				{
 					key: "4-3",
 					label: "Prioritize implementation strategy",
-					completed: false,
+					status: "pending",
 					disabled: false,
 					route: "/plan-development-strategy"
 				},
@@ -372,21 +379,21 @@ const HeaderWithMenu = ({dispatch, isAuthenticated, menuItem, headerTitle="Playb
 				{
 					key: "5-1",
 					label: "Document Plans & Strategy",
-					completed: false,
+					status: "pending",
 					disabled: false,
 					route: "/review-strategy"
 				},
 				{
 					key: "5-2",
 					label: "Obtain Feedback & Approval",
-					completed: false,
+					status: "pending",
 					disabled: false,
 					route: "/review-approval"
 				},
 				{
 					key: "5-3",
 					label: "Finalize & Approve The Plan",
-					completed: false,
+					status: "pending",
 					disabled: false,
 					route: "/review-final"
 				},
@@ -399,21 +406,21 @@ const HeaderWithMenu = ({dispatch, isAuthenticated, menuItem, headerTitle="Playb
 				{
 					key: "6-1",
 					label: "Execute approved solutions",
-					completed: false,
+					status: "pending",
 					disabled: false,
 					route: "/implementation-execute"
 				},
 				{
 					key: "6-2",
 					label: "Evaluate & Update",
-					completed: false,
+					status: "pending",
 					disabled: false,
 					route: "/implementation-update"
 				},
 				{
 					key: "6-3",
 					label: "Modify Strategy (as needed)",
-					completed: false,
+					status: "pending",
 					disabled: false,
 					route: "/implementation-modify"
 				},
@@ -422,17 +429,31 @@ const HeaderWithMenu = ({dispatch, isAuthenticated, menuItem, headerTitle="Playb
 	];
 
 	let menus = [];
+	const greenCheckIcon = <CheckCircleIcon style={{color: "green"}}/>
+	const orangeCheckIcon = <CheckCircleIcon style={{color: "orange"}}/>
 
 	treeData.map(({key, label, nodes}) => {
 		let subMenus = [];
-		nodes.map(({key, label, completed, disabled, route}) => {
+		let subMenusStatus = [];
+		nodes.map(({key, label, status, disabled, route}) => {
 			subMenus.push(
 				<ListItem button style={{paddingLeft: 40, textTransform: "capitalize"}} key={key} selected={openSubMenu === key}
 				  onClick={handleSubmenuClick(route)} disabled={disabled}>
 					<ListItemText primary={`${key}. ${label}`}  />
-					{completed ? <CheckCircleIcon style={{color: "green"}}/> : "" }
+					{Object.keys(stepStatus).length === 0 ?
+						<QueryBuilderIcon/> 
+						: 
+						<>
+							{stepStatus[`step_${key.replace('-', '_')}`].status === "pending" ? <QueryBuilderIcon/> : stepStatus[`step_${key.replace('-', '_')}`].status === "in_progress" ? orangeCheckIcon : greenCheckIcon}
+						</>
+					}
 				</ListItem>
 			);
+			if (Object.keys(stepStatus).length === 0){
+				subMenusStatus.push("pending")
+			} else {
+				subMenusStatus.push(stepStatus[`step_${key.replace('-', '_')}`].status)
+			}
 		});
 		menus.push(
 			<div key={key}>
@@ -440,6 +461,7 @@ const HeaderWithMenu = ({dispatch, isAuthenticated, menuItem, headerTitle="Playb
 					onClick={handleParentClick(key)} onLoad={handleParentLoad(key)}>
 					{openTask === key ? <DownIcon fontSize="large" /> : <RightIcon fontSize="large"/>}
 					<ListItemText  primary={`${key}. ${label}`} />
+					{subMenusStatus.includes("in_progress") ? orangeCheckIcon : <>{subMenusStatus.includes("pending") ? <QueryBuilderIcon/> : greenCheckIcon}</>}
 				</ListItem>
 				<Collapse in={openTask === key} timeout="auto" unmountOnExit>
 					{subMenus}
