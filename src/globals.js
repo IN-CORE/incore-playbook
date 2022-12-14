@@ -10,7 +10,7 @@ globals["hazardServiceBase"] = `${hostname}/hazard/api/`;
 globals["dataServiceBase"] = `${hostname}/data/api/`;
 globals["maestroServiceBase"] = `${hostname}/maestro/galveston/`;
 globals["setGravatarURL"] = "https://en.gravatar.com/support/activating-your-account/";
-
+globals["allowUpload"] = true;
 
 export {globals};
 
