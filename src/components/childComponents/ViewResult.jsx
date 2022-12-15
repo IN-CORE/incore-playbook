@@ -75,7 +75,7 @@ export default function ViewResult(props) {
 	const [datawolfViewAllOn, setDatawolfViewAllOn] = useState(false); // datawolf view
 
 	// load executions list that has status
-	useEffect(() => { getExecutionList(datawolfConfig); }, []);
+	useEffect(() => { getExecutionList(datawolfConfig, datawolfViewAllOn); }, []);
 
 	// update execution statuses upon changing
 	useEffect(() => {
@@ -283,7 +283,7 @@ export default function ViewResult(props) {
 							}
 							label="View All"
 						/>
-						<IconButton aria-label="sync" onClick={() => {getExecutionList(datawolfConfig);}}
+						<IconButton aria-label="sync" onClick={() => {getExecutionList(datawolfConfig, datawolfViewAllOn);}}
 							color="secondary"><SyncIcon/></IconButton>
 						<IconButton aria-label="filter"><FilterListIcon/></IconButton>
 					</Box>
