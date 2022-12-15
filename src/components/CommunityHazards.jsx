@@ -277,11 +277,12 @@ export const CommunityHazards = () => {
 		// add created hazard to this created group layer
 		layerRef.current.tilelayer.getLayers().push(
 			new GroupLayer({
-				title: selectedHazardType,
+				title: json["name"],
 				layers: HazardMapLayers
 			}));
 	};
 
+	// helper function to construct a single layer of tilelayer
 	const _constructHazardLayer = (layerId, layerTitle, style) => {
 		let HazardMapLayer;
 		if (layerId && layerTitle) {
