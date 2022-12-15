@@ -28,11 +28,16 @@ const useStyles = makeStyles({
 	statTitle: {
 		margin: "55px auto",
 	},
-	datawolfViewAllSwitch: {
-		".&$checked": {
-			color: "red",
+	switchBase: {
+		"&$checked": {
+			color: "#00619D",
+		},
+		"&$checked + $track": {
+			backgroundColor: "#00619D",
 		},
 	},
+	checked: {},
+	track: {},
 });
 
 // TODO move this registration somewhere else?
@@ -267,9 +272,13 @@ export default function ViewResult(props) {
 								<Switch
 									checked={datawolfViewAllOn}
 									onChange={handleViewAllDatawolf}
-									name="checkedB"
-									color="primary"
-									className={classes.datawolfViewAllSwitch}
+									name="datawolfViewAllSwitch"
+									color="default"
+									classes={{
+										switchBase: classes.switchBase,
+										checked: classes.checked,
+										track: classes.track,
+									}}
 								/>
 							}
 							label="View All"
