@@ -26,8 +26,7 @@ import {downloadDataset} from "../../../utils/dataset";
 
 export default function BldgFunctionality(props){
 
-	let {executionItem, previewOn, handlePreviewClose, datawolfDatasetConfigItems, hazardType, hazardDatasetId,
-		hazardLayerTitle, hazardLayerStyles} = props;
+	let {executionItem, previewOn, handlePreviewClose, datawolfDatasetConfigItems, hazardType, hazardLayers} = props;
 
 	const mapConfig = useSelector((state) => state.config.mapConfig);
 	const datawolfConfig = useSelector((state) => state.config.datawolfConfig);
@@ -59,17 +58,11 @@ export default function BldgFunctionality(props){
 						"title": "Building Functionality Probability",
 						"opacity": 1,
 						"zIndex": 1
-					},
-					{
-						"layerId": hazardDatasetId,
-						"layerStyles": hazardLayerStyles,
-						"title": hazardLayerTitle,
-						"opacity": 0.8,
-						"zIndex": 2
 					}
 				];
 				const previewLayers = generateLayers(globalConfig, layerDef);
 				layerRef.current.tilelayer.getLayers().extend(previewLayers);
+				layerRef.current.tilelayer.getLayers().push(hazardLayers);
 			}
 			else if (vName === "bldgFuncSummaryTableContent") {
 				setBldgFuncSummaryTableContent(await getOutputFileContentJSON(datawolfConfig, executionItem, datawolfDatasetConfigItem.datasetId));

@@ -14,8 +14,7 @@ import {IncoreButtonText} from "../../styledComponents/IncoreButtonText";
 import GetAppIcon from "@material-ui/icons/GetApp";
 
 export default function PopDislocation(props){
-	let {executionItem, previewOn, handlePreviewClose, datawolfDatasetConfigItems, hazardDatasetId,
-		hazardLayerTitle, hazardLayerStyles} = props;
+	let {executionItem, previewOn, handlePreviewClose, datawolfDatasetConfigItems, hazardLayers} = props;
 
 	const mapConfig = useSelector((state) => state.config.mapConfig);
 	const datawolfConfig = useSelector((state) => state.config.datawolfConfig);
@@ -42,16 +41,9 @@ export default function PopDislocation(props){
 				const tmpLayerDef =
 					[
 						{
-							"layerId": hazardDatasetId,
-							"layerStyles": "incore:tornado",
-							"title": "Tornado",
-							"opacity": 0.8,
-							"zIndex": 3
-						},
-						{
 							"layerId": bldgMaxDamageStateINCOREId,
-							"layerStyles": hazardLayerStyles,
-							"title": hazardLayerTitle,
+							"layerStyles": "incore:bldg-dmg-summary",
+							"title": "Building Damage",
 							"opacity": 1,
 							"zIndex": 1
 						}
@@ -73,6 +65,10 @@ export default function PopDislocation(props){
 				const previewLayers = generateLayers(globalConfig, tmpLayerDef);
 				layerRef.current.tilelayer.getLayers().extend(previewLayers);
 			}
+
+			// overlay with hazard
+			layerRef.current.tilelayer.getLayers().push(hazardLayers);
+
 			if (vName === "totalDislTableContent") {
 				setTotalDislTableContent(await getOutputFileContentJSON(datawolfConfig, executionItem, datawolfDatasetConfigItem.datasetId));
 			}

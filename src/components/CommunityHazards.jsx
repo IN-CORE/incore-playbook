@@ -3,7 +3,6 @@ import {useDispatch, useSelector} from "react-redux";
 import {Box, Container, Grid, Tab, Tabs, makeStyles} from "@material-ui/core";
 import GroupLayer from "ol/layer/Group";
 import TileLayer from "ol/layer/Tile";
-import TileWMS from "ol/source/TileWMS";
 import XYZ from "ol/source/XYZ";
 import VectorLayer from "ol/layer/Vector";
 import VectorSource from "ol/source/Vector";
@@ -21,6 +20,7 @@ import Map from "./childComponents/map/Map";
 import {Layout} from "./Layout";
 import {IncoreInputLabel} from "./styledComponents/IncoreInputLabel";
 import {IncoreMenuItem, IncoreSelectBox} from "./styledComponents/IncoreSelect";
+import {getHazardGroupLayers } from "../utils/map";
 
 // import FilterListIcon from "@material-ui/icons/FilterList";
 
@@ -243,63 +243,9 @@ export const CommunityHazards = () => {
 	}, [srcCoord]);
 
 	const handleLayerUpdate = (json) => {
-		let layerId;
-		let layerTitle;
-		let style;
-
-		if (selectedHazardType === "earthquake") style = "incore:earthquake-pga-g";
-		else if (selectedHazardType === "tornado") style = "incore:tornado";
-		else if (selectedHazardType === "hurricane") style = "incore:hurricane-wind";
-
-		let HazardMapLayers = [];
-
-		// for earthquake
-		if ( "rasterDataset" in json && json["rasterDataset"]["datasetId"] !== undefined){
-			layerId = json["rasterDataset"]["datasetId"];
-			layerTitle = `${json["name"]} - ${json["rasterDataset"]["demandType"]}`;
-			HazardMapLayers.push(_constructHazardLayer(layerId, layerTitle, style));
-		}
-		// tsunami, hurricane, flood all has multiple layers
-		else if ( "hazardDatasets" in json && json["hazardDatasets"].length > 0){
-			json["hazardDatasets"].map((hazardDataset) =>{
-				layerId = hazardDataset["datasetId"];
-				layerTitle = `${json["name"]} - ${hazardDataset["demandType"]}`;
-				HazardMapLayers.push(_constructHazardLayer(layerId, layerTitle, style));
-			});
-		}
-		// tornado has single layer
-		else {
-			layerId = json["datasetId"];
-			layerTitle = json["name"];
-			HazardMapLayers.push(_constructHazardLayer(layerId, layerTitle, style));
-		}
-
+		const HazardMapGroupLayers = getHazardGroupLayers(globalConfig, json, selectedHazardType);
 		// add created hazard to this created group layer
-		layerRef.current.tilelayer.getLayers().push(
-			new GroupLayer({
-				title: json["name"],
-				layers: HazardMapLayers
-			}));
-	};
-
-	// helper function to construct a single layer of tilelayer
-	const _constructHazardLayer = (layerId, layerTitle, style) => {
-		let HazardMapLayer;
-		if (layerId && layerTitle) {
-			const source = new TileWMS({
-				url: `${globalConfig.geoServerWMS}`,
-				params: {LAYERS: layerId, STYLES: style},
-				ratio: 1,
-				serverType: "geoserver"
-			});
-			HazardMapLayer = new TileLayer({
-				title: layerTitle,
-				source: source,
-				zIndex: 1,
-				opacity: 1
-			});
-		}
-		return HazardMapLayer;
+		layerRef.current.tilelayer.getLayers().push(HazardMapGroupLayers);
 	};
 
 	const hazardIdClick = async (hazard) => {
