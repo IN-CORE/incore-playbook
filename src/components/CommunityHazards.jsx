@@ -251,22 +251,39 @@ export const CommunityHazards = () => {
 		else if (selectedHazardType === "tornado") style = "incore:tornado";
 		else if (selectedHazardType === "hurricane") style = "incore:hurricane-wind";
 
+		let HazardMapLayers = [];
+
+		// for earthquake
 		if ( "rasterDataset" in json && json["rasterDataset"]["datasetId"] !== undefined){
 			layerId = json["rasterDataset"]["datasetId"];
 			layerTitle = `${json["name"]} - ${json["rasterDataset"]["demandType"]}`;
+			HazardMapLayers.push(_constructHazardLayer(layerId, layerTitle, style));
 		}
-		// tsunami, hurricane, flood, earthquake all has multiple layers
+		// tsunami, hurricane, flood all has multiple layers
 		else if ( "hazardDatasets" in json && json["hazardDatasets"].length > 0){
 			json["hazardDatasets"].map((hazardDataset) =>{
 				layerId = hazardDataset["datasetId"];
 				layerTitle = `${json["name"]} - ${hazardDataset["demandType"]}`;
+				HazardMapLayers.push(_constructHazardLayer(layerId, layerTitle, style));
 			});
 		}
 		// tornado has single layer
 		else {
 			layerId = json["datasetId"];
 			layerTitle = json["name"];
+			HazardMapLayers.push(_constructHazardLayer(layerId, layerTitle, style));
 		}
+
+		// add created hazard to this created group layer
+		layerRef.current.tilelayer.getLayers().push(
+			new GroupLayer({
+				title: selectedHazardType,
+				layers: HazardMapLayers
+			}));
+	};
+
+	const _constructHazardLayer = (layerId, layerTitle, style) => {
+		let HazardMapLayer;
 		if (layerId && layerTitle) {
 			const source = new TileWMS({
 				url: `${globalConfig.geoServerWMS}`,
@@ -274,15 +291,14 @@ export const CommunityHazards = () => {
 				ratio: 1,
 				serverType: "geoserver"
 			});
-			let HazardMapLayer = new TileLayer({
+			HazardMapLayer = new TileLayer({
 				title: layerTitle,
 				source: source,
 				zIndex: 1,
 				opacity: 1
 			});
-			// add created hazard to this created group layer
-			layerRef.current.tilelayer.getLayers().push(HazardMapLayer);
 		}
+		return HazardMapLayer;
 	};
 
 	const hazardIdClick = async (hazard) => {
