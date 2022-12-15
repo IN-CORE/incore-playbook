@@ -1,14 +1,14 @@
-import React, {useEffect, useState} from "react";
-import {useSelector} from "react-redux";
+import React, { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 
-import {makeStyles} from "@material-ui/core/styles";
-import {Box, IconButton} from "@material-ui/core";
+import { makeStyles } from "@material-ui/core/styles";
+import { Box, IconButton } from "@material-ui/core";
 import SyncIcon from "@material-ui/icons/Sync";
 import FilterListIcon from "@material-ui/icons/FilterList";
 
-import {IncoreInputLabel} from "../styledComponents/IncoreInputLabel";
-import {getHazardMetadata} from "../../utils/hazard";
-import {ViewResultEntryTable} from "./table/ViewResultEntryTable";
+import { IncoreInputLabel } from "../styledComponents/IncoreInputLabel";
+import { getHazardMetadata } from "../../utils/hazard";
+import { ViewResultEntryTable } from "./table/ViewResultEntryTable";
 import Interdependency from "./outputWidgets/Interdependency";
 import BldgDamage from "./outputWidgets/BldgDamage";
 import PoleDamage from "./outputWidgets/PoleDamage";
@@ -18,7 +18,7 @@ import CGE from "./outputWidgets/CGE";
 import PopDislocation from "./outputWidgets/PopDislocation";
 import ResilienceMetrics from "./outputWidgets/ResilienceMetrics";
 import SubstationDamage from "./outputWidgets/SubstationDamage";
-import {Collection} from "ol";
+import { Collection } from "ol";
 
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Switch from "@material-ui/core/Switch";
@@ -27,35 +27,35 @@ import { getHazardGroupLayers } from "../../utils/map";
 
 const useStyles = makeStyles({
 	statTitle: {
-		margin: "55px auto",
+		margin: "55px auto"
 	},
 	switchBase: {
 		"&$checked": {
-			color: "#00619D",
+			color: "#00619D"
 		},
 		"&$checked + $track": {
-			backgroundColor: "#00619D",
-		},
+			backgroundColor: "#00619D"
+		}
 	},
 	checked: {},
-	track: {},
+	track: {}
 });
 
 // TODO move this registration somewhere else?
 const registeredWidgets = {
-	"Interdependency": <Interdependency/>,
-	"BldgDamage": <BldgDamage/>,
-	"PoleDamage": <PoleDamage/>,
-	"BldgMCS": <BldgMCS/>,
-	"BldgFunctionality": <BldgFunctionality/>,
-	"CGE": <CGE/>,
-	"PopDislocation":<PopDislocation/>,
-	"ResilienceMetrics":<ResilienceMetrics/>,
-	"SubstationDamage":<SubstationDamage/>,
+	"Interdependency": <Interdependency />,
+	"BldgDamage": <BldgDamage />,
+	"PoleDamage": <PoleDamage />,
+	"BldgMCS": <BldgMCS />,
+	"BldgFunctionality": <BldgFunctionality />,
+	"CGE": <CGE />,
+	"PopDislocation": <PopDislocation />,
+	"ResilienceMetrics": <ResilienceMetrics />,
+	"SubstationDamage": <SubstationDamage />
 };
 
 export default function ViewResult(props) {
-	const {value, index, getExecutionList, executions, ...other} = props;
+	const { value, index, getExecutionList, executions, ...other } = props;
 	const classes = useStyles();
 
 	const datawolfConfig = useSelector((state) => state.config.datawolfConfig);
@@ -125,23 +125,23 @@ export default function ViewResult(props) {
 	const fieldNames = [
 		{
 			"prettyName": "TITLE",
-			"columnName": "title",
+			"columnName": "title"
 		},
 		{
 			"prettyName": "DESCRIPTION",
-			"columnName": "description",
+			"columnName": "description"
 		},
 		{
 			"prettyName": "HAZARD TYPE",
-			"columnName": "hazardType",
+			"columnName": "hazardType"
 		},
 		{
 			"prettyName": "RUN DATE",
-			"columnName": "date",
+			"columnName": "date"
 		},
 		{
 			"prettyName": "STATUS",
-			"columnName": "finalStatus",
+			"columnName": "finalStatus"
 		}
 	];
 
@@ -165,24 +165,15 @@ export default function ViewResult(props) {
 	// async loop is a hell! get hazard id params and type
 	const _getHazardInfo = (executionItem) => {
 		return datawolfWorkflowConfig.inputs.parameters.reduce((hazardInfo, p) => {
-			if (p.variableName === "selectedHazardId"){
-				return {...hazardInfo, "hazardId": executionItem["parameters"][p.parametersMap[0].paramId]};
-			}
-			else if (p.variableName === "selectedHazardType"){
-				return {...hazardInfo, "hazardType": executionItem["parameters"][p.parametersMap[0].paramId]};
-			}
-			else{
+			if (p.variableName === "selectedHazardId") {
+				return { ...hazardInfo, "hazardId": executionItem["parameters"][p.parametersMap[0].paramId] };
+			} else if (p.variableName === "selectedHazardType") {
+				return { ...hazardInfo, "hazardType": executionItem["parameters"][p.parametersMap[0].paramId] };
+			} else {
 				return hazardInfo;
 			}
 		}, {});
 	};
-
-	const _getHazardLayers = (json, htype) => {
-		const HazardMapGroupLayers = getHazardGroupLayers(globalConfig, json, selectedHazardType, 2, 0.8);
-		// add created hazard to this created group layer
-		layerRef.current.tilelayer.getLayers().push(HazardMapGroupLayers);
-	};
-
 
 	const preview = async (executionId, widgetName) => {
 		const selectedExecutionItem = getExecution(executionId);
@@ -192,24 +183,23 @@ export default function ViewResult(props) {
 		// group output items belongs to that widgetName/widget type
 		// TODO rewrite this part of logic!
 		setDatawolfDatasetConfigItems(datawolfWorkflowConfig.outputs.datasets[0].datasetsMap.reduce((list, item) => {
-			if (widgetName === "ResilienceMetrics"){
+			if (widgetName === "ResilienceMetrics") {
 				if (item.datasets.widget === "CGE" || item.datasets.widget === "PopDislocation"
-					|| item.datasets.widget === "BldgFunctionality"){
+					|| item.datasets.widget === "BldgFunctionality") {
 					return [...list, item];
 				}
 			}
-			if (widgetName === "Interdependency"){
-				if (item.datasets.widget === "SubstationDamage"){
+			if (widgetName === "Interdependency") {
+				if (item.datasets.widget === "SubstationDamage") {
 					return [...list, item];
 				}
 			}
-			if (widgetName === "PopDislocation"){
-				if (item.datasets.widget === widgetName || item.datasets.widget === "BldgDamage"){
+			if (widgetName === "PopDislocation") {
+				if (item.datasets.widget === widgetName || item.datasets.widget === "BldgDamage") {
 					return [...list, item];
 				}
-			}
-			else{
-				if (item.datasets.widget === widgetName){
+			} else {
+				if (item.datasets.widget === widgetName) {
 					return [...list, item];
 				}
 			}
@@ -240,7 +230,7 @@ export default function ViewResult(props) {
 			<Box>
 				<Box className={classes.statTitle}>
 					<IncoreInputLabel>{`Completed Analysis (${numCompleted})`}</IncoreInputLabel>
-					<Box style={{float: "right"}}>
+					<Box style={{ float: "right" }}>
 						<FormControlLabel
 							control={
 								<Switch
@@ -251,15 +241,16 @@ export default function ViewResult(props) {
 									classes={{
 										switchBase: classes.switchBase,
 										checked: classes.checked,
-										track: classes.track,
+										track: classes.track
 									}}
 								/>
 							}
 							label="View All"
 						/>
-						<IconButton aria-label="sync" onClick={() => {getExecutionList(datawolfConfig, datawolfViewAllOn);}}
-							color="secondary"><SyncIcon/></IconButton>
-						<IconButton aria-label="filter"><FilterListIcon/></IconButton>
+						<IconButton aria-label="sync"
+									onClick={() => {getExecutionList(datawolfConfig, datawolfViewAllOn);}}
+									color="secondary"><SyncIcon /></IconButton>
+						<IconButton aria-label="filter"><FilterListIcon /></IconButton>
 					</Box>
 				</Box>
 				<Box>
@@ -273,18 +264,19 @@ export default function ViewResult(props) {
 			{/*for individual analysis result preview*/}
 			{
 				widgetName ? (() => {
-					return React.cloneElement(
-						registeredWidgets[widgetName],
-						{
-							executionItem: selectedExecutionItem,
-							getExecution: getExecution,
-							previewOn: previewOn,
-							handlePreviewClose: handlePreviewClose,
-							datawolfDatasetConfigItems: datawolfDatasetConfigItems,
-							hazardType: hazardType,
-							hazardLayers: hazardGroupLayer
-						}
-					);})()
+						return React.cloneElement(
+							registeredWidgets[widgetName],
+							{
+								executionItem: selectedExecutionItem,
+								getExecution: getExecution,
+								previewOn: previewOn,
+								handlePreviewClose: handlePreviewClose,
+								datawolfDatasetConfigItems: datawolfDatasetConfigItems,
+								hazardType: hazardType,
+								hazardLayers: hazardGroupLayer
+							}
+						);
+					})()
 					:
 					<></>
 			}
