@@ -20,11 +20,24 @@ import ResilienceMetrics from "./outputWidgets/ResilienceMetrics";
 import SubstationDamage from "./outputWidgets/SubstationDamage";
 import {Collection} from "ol";
 
+import FormControlLabel from "@material-ui/core/FormControlLabel";
+import Switch from "@material-ui/core/Switch";
+
 
 const useStyles = makeStyles({
 	statTitle: {
 		margin: "55px auto",
 	},
+	switchBase: {
+		"&$checked": {
+			color: "#00619D",
+		},
+		"&$checked + $track": {
+			backgroundColor: "#00619D",
+		},
+	},
+	checked: {},
+	track: {},
 });
 
 // TODO move this registration somewhere else?
@@ -48,14 +61,6 @@ export default function ViewResult(props) {
 	const globalConfig = useSelector((state) => state.config.globalConfig);
 	const datawolfWorkflowConfig = useSelector((state) => state.config.datawolfWorkflowConfig);
 
-	// load executions list that has status
-	useEffect(() => { getExecutionList(datawolfConfig); }, []);
-
-	// update execution statuses upon changing
-	useEffect(() => {
-		createAnalysisEntryTable();
-	}, [executions]);
-
 	// states
 	const [numCompleted, setNumCompleted] = useState(0);
 	const [executionEntries, setExecutionEntries] = useState([]);
@@ -67,6 +72,20 @@ export default function ViewResult(props) {
 	const [hazardLayerTitle, setHazardLayerTitle] = useState(""); // to overlay hazard on the map
 	const [hazardType, setHazardType] = useState(""); // used in runtime table
 	const [previewOn, setPreviewOn] = useState(false); // list vs preview
+	const [datawolfViewAllOn, setDatawolfViewAllOn] = useState(false); // datawolf view
+
+	// load executions list that has status
+	useEffect(() => { getExecutionList(datawolfConfig, datawolfViewAllOn); }, []);
+
+	// update execution statuses upon changing
+	useEffect(() => {
+		createAnalysisEntryTable();
+	}, [executions]);
+
+	// update datawolf view all on / off
+	useEffect(() => {
+		getExecutionList(datawolfConfig, datawolfViewAllOn);
+	}, [datawolfViewAllOn]);
 
 	// extract a single status from mutliple step status`
 	const extractStatus = (executionItem) => {
@@ -234,6 +253,10 @@ export default function ViewResult(props) {
 		setPreviewOn(true);
 	};
 
+	const handleViewAllDatawolf = () => {
+		setDatawolfViewAllOn(datawolfViewAllOn => !datawolfViewAllOn);
+	};
+
 	return (
 		<div role="tabpanel" hidden={value !== index} id={`simple-tabpanel-${index}`}
 			 aria-labelledby={`simple-tab-${index}`}
@@ -244,7 +267,23 @@ export default function ViewResult(props) {
 				<Box className={classes.statTitle}>
 					<IncoreInputLabel>{`Completed Analysis (${numCompleted})`}</IncoreInputLabel>
 					<Box style={{float: "right"}}>
-						<IconButton aria-label="sync" onClick={() => {getExecutionList(datawolfConfig);}}
+						<FormControlLabel
+							control={
+								<Switch
+									checked={datawolfViewAllOn}
+									onChange={handleViewAllDatawolf}
+									name="datawolfViewAllSwitch"
+									color="default"
+									classes={{
+										switchBase: classes.switchBase,
+										checked: classes.checked,
+										track: classes.track,
+									}}
+								/>
+							}
+							label="View All"
+						/>
+						<IconButton aria-label="sync" onClick={() => {getExecutionList(datawolfConfig, datawolfViewAllOn);}}
 							color="secondary"><SyncIcon/></IconButton>
 						<IconButton aria-label="filter"><FilterListIcon/></IconButton>
 					</Box>
