@@ -24,17 +24,10 @@ import { IncoreButtonText } from "../../styledComponents/IncoreButtonText";
 import GetAppIcon from "@material-ui/icons/GetApp";
 import { downloadDataset } from "../../../utils/dataset";
 
-export default function BldgFunctionality(props) {
-	let {
-		executionItem,
-		previewOn,
-		handlePreviewClose,
-		datawolfDatasetConfigItems,
-		hazardType,
-		hazardDatasetId,
-		hazardLayerTitle,
-		hazardLayerStyles
-	} = props;
+
+export default function BldgFunctionality(props){
+
+	let {executionItem, previewOn, handlePreviewClose, datawolfDatasetConfigItems, hazardType, hazardLayers} = props;
 
 	const mapConfig = useSelector((state) => state.config.mapConfig);
 	const datawolfConfig = useSelector((state) => state.config.datawolfConfig);
@@ -65,26 +58,19 @@ export default function BldgFunctionality(props) {
 				setBldgFuncProbINCOREId(bldgFuncProbINCOREId);
 				const layerDef = [
 					{
-						layerId: bldgFuncProbINCOREId,
-						layerStyles: "incore:joplin-bldg-func",
-						title: "Building Functionality Probability",
-						opacity: 1,
-						zIndex: 1
-					},
-					{
-						layerId: hazardDatasetId,
-						layerStyles: hazardLayerStyles,
-						title: hazardLayerTitle,
-						opacity: 0.8,
-						zIndex: 2
+						"layerId": bldgFuncProbINCOREId,
+						"layerStyles": "incore:joplin-bldg-func",
+						"title": "Building Functionality Probability",
+						"opacity": 1,
+						"zIndex": 1
 					}
 				];
 				const previewLayers = generateLayers(globalConfig, layerDef);
 				layerRef.current.tilelayer.getLayers().extend(previewLayers);
-			} else if (vName === "bldgFuncSummaryTableContent") {
-				setBldgFuncSummaryTableContent(
-					await getOutputFileContentJSON(datawolfConfig, executionItem, datawolfDatasetConfigItem.datasetId)
-				);
+				layerRef.current.tilelayer.getLayers().push(hazardLayers);
+			}
+			else if (vName === "bldgFuncSummaryTableContent") {
+				setBldgFuncSummaryTableContent(await getOutputFileContentJSON(datawolfConfig, executionItem, datawolfDatasetConfigItem.datasetId));
 			}
 		});
 	}, []);

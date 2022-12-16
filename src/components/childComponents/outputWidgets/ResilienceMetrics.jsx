@@ -9,7 +9,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import { getOutputFileContentJSON } from "../../../utils/datawolf";
 import { useSelector } from "react-redux";
 import { IncoreButtonText } from "../../styledComponents/IncoreButtonText";
-import GetAppIcon from "@material-ui/icons/GetApp";
+
 
 const useStyles = makeStyles({
 	tableEntry: {
@@ -43,7 +43,7 @@ const useStyles = makeStyles({
 export default function ResilienceMetrics(props) {
 	const classes = useStyles();
 
-	let { executionItem, getExecution, previewOn, handlePreviewClose, datawolfDatasetConfigItems } = props;
+	let { executionItem, previewOn, handlePreviewClose, datawolfDatasetConfigItems } = props;
 
 	const datawolfConfig = useSelector((state) => state.config.datawolfConfig);
 

@@ -25,16 +25,8 @@ import GetAppIcon from "@material-ui/icons/GetApp";
 import { IncoreButtonText } from "../../styledComponents/IncoreButtonText";
 
 export default function BldgDamage(props) {
-	let {
-		executionItem,
-		previewOn,
-		handlePreviewClose,
-		datawolfDatasetConfigItems,
-		hazardType,
-		hazardDatasetId,
-		hazardLayerTitle,
-		hazardLayerStyles
-	} = props;
+
+	let {executionItem, previewOn, handlePreviewClose, datawolfDatasetConfigItems, hazardType, hazardLayers} = props;
 
 	const mapConfig = useSelector((state) => state.config.mapConfig);
 	const datawolfConfig = useSelector((state) => state.config.datawolfConfig);
@@ -65,27 +57,20 @@ export default function BldgDamage(props) {
 				setBldgMaxDamageStateINCOREId(bldgMaxDamageStateINCOREId);
 				const layerDef = [
 					{
-						layerId: bldgMaxDamageStateINCOREId,
-						layerStyles: "incore:bldg-dmg-summary",
-						title: "Building Damage",
-						opacity: 1,
-						zIndex: 1
-					},
-					{
-						layerId: hazardDatasetId,
-						layerStyles: hazardLayerStyles,
-						title: hazardLayerTitle,
-						opacity: 0.8,
-						zIndex: 2
+						"layerId": bldgMaxDamageStateINCOREId,
+						"layerStyles": "incore:bldg-dmg-summary",
+						"title": "Building Damage",
+						"opacity": 1,
+						"zIndex": 1
 					}
 				];
 
 				const previewLayers = generateLayers(globalConfig, layerDef);
 				layerRef.current.tilelayer.getLayers().extend(previewLayers);
-			} else if (vName === "bldgDmgSummaryTableContent") {
-				setBldgDmgSummaryTableContent(
-					await getOutputFileContentJSON(datawolfConfig, executionItem, datawolfDatasetConfigItem.datasetId)
-				);
+				layerRef.current.tilelayer.getLayers().push(hazardLayers);
+			}
+			else if (vName === "bldgDmgSummaryTableContent") {
+				setBldgDmgSummaryTableContent(await getOutputFileContentJSON(datawolfConfig, executionItem, datawolfDatasetConfigItem.datasetId));
 			}
 		});
 	}, []);

@@ -24,17 +24,9 @@ import { downloadDataset } from "../../../utils/dataset";
 import { IncoreButtonText } from "../../styledComponents/IncoreButtonText";
 import GetAppIcon from "@material-ui/icons/GetApp";
 
-export default function BldgMCS(props) {
-	let {
-		executionItem,
-		previewOn,
-		handlePreviewClose,
-		datawolfDatasetConfigItems,
-		hazardType,
-		hazardDatasetId,
-		hazardLayerTitle,
-		hazardLayerStyles
-	} = props;
+export default function BldgMCS(props){
+
+	let {executionItem, previewOn, handlePreviewClose, datawolfDatasetConfigItems, hazardType, hazardLayers} = props;
 
 	const mapConfig = useSelector((state) => state.config.mapConfig);
 	const datawolfConfig = useSelector((state) => state.config.datawolfConfig);
@@ -65,26 +57,19 @@ export default function BldgMCS(props) {
 				setMcsBldgFailureProbINCOREId(mcsBldgFailureProbINCOREId);
 				const layerDef = [
 					{
-						layerId: mcsBldgFailureProbINCOREId,
-						layerStyles: "incore:joplin-bldg-mcs",
-						title: "Building Functionality Probability without Interdependency",
-						opacity: 1,
-						zIndex: 1
-					},
-					{
-						layerId: hazardDatasetId,
-						layerStyles: hazardLayerStyles,
-						title: hazardLayerTitle,
-						opacity: 0.8,
-						zIndex: 2
+						"layerId": mcsBldgFailureProbINCOREId,
+						"layerStyles": "incore:joplin-bldg-mcs",
+						"title": "Building Functionality Probability without Interdependency",
+						"opacity": 1,
+						"zIndex": 1
 					}
 				];
 				const previewLayers = generateLayers(globalConfig, layerDef);
 				layerRef.current.tilelayer.getLayers().extend(previewLayers);
-			} else if (vName === "mcsBldgSummaryTableContent") {
-				setMcsBldgSummaryTableContent(
-					await getOutputFileContentJSON(datawolfConfig, executionItem, datawolfDatasetConfigItem.datasetId)
-				);
+				layerRef.current.tilelayer.getLayers().push(hazardLayers);
+			}
+			else if (vName === "mcsBldgSummaryTableContent") {
+				setMcsBldgSummaryTableContent(await getOutputFileContentJSON(datawolfConfig, executionItem, datawolfDatasetConfigItem.datasetId));
 			}
 		});
 	}, []);

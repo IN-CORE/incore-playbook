@@ -11,16 +11,10 @@ import { IncoreButtonText } from "../../styledComponents/IncoreButtonText";
 import GetAppIcon from "@material-ui/icons/GetApp";
 import { downloadDataset } from "../../../utils/dataset";
 
-export default function SubstationDamage(props) {
-	let {
-		executionItem,
-		previewOn,
-		handlePreviewClose,
-		datawolfDatasetConfigItems,
-		hazardDatasetId,
-		hazardLayerTitle,
-		hazardLayerStyles
-	} = props;
+
+export default function SubstationDamage(props){
+
+	let {executionItem, previewOn, handlePreviewClose, datawolfDatasetConfigItems, hazardLayers} = props;
 
 	const mapConfig = useSelector((state) => state.config.mapConfig);
 	const datawolfConfig = useSelector((state) => state.config.datawolfConfig);
@@ -62,6 +56,7 @@ export default function SubstationDamage(props) {
 				];
 				const previewLayers = generateLayers(globalConfig, layerDef);
 				layerRef.current.tilelayer.getLayers().extend(previewLayers);
+				layerRef.current.tilelayer.getLayers().push(hazardLayers);
 			}
 		});
 	}, []);

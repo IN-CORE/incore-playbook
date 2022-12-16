@@ -18,26 +18,27 @@ import CGE from "./outputWidgets/CGE";
 import PopDislocation from "./outputWidgets/PopDislocation";
 import ResilienceMetrics from "./outputWidgets/ResilienceMetrics";
 import SubstationDamage from "./outputWidgets/SubstationDamage";
-import {Collection} from "ol";
+import { Collection } from "ol";
 
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Switch from "@material-ui/core/Switch";
+import { getHazardGroupLayers } from "../../utils/map";
 
 
 const useStyles = makeStyles({
 	statTitle: {
-		margin: "55px auto",
+		margin: "55px auto"
 	},
 	switchBase: {
 		"&$checked": {
-			color: "#00619D",
+			color: "#00619D"
 		},
 		"&$checked + $track": {
-			backgroundColor: "#00619D",
-		},
+			backgroundColor: "#00619D"
+		}
 	},
 	checked: {},
-	track: {},
+	track: {}
 });
 
 // TODO move this registration somewhere else?
@@ -77,9 +78,7 @@ export default function ViewResult(props) {
 	const [selectedExecutionItem, setSelectedExecutionItem] = useState(null);
 	const [widgetName, setWidgetName] = useState(null); // outputWidgets name
 	const [datawolfDatasetConfigItems, setDatawolfDatasetConfigItems] = useState([]);
-	const [hazardDatasetId, setHazardDatasetId] = useState(""); // to overlay hazard on the map
-	const [hazardLayerStyles, setHazardLayerStyles] = useState(null); // to overlay hazard on the map
-	const [hazardLayerTitle, setHazardLayerTitle] = useState(""); // to overlay hazard on the map
+	const [hazardGroupLayer, setHazardGroupLayer] = useState(null); // group layer of hazard to overlay on the map
 	const [hazardType, setHazardType] = useState(""); // used in runtime table
 	const [previewOn, setPreviewOn] = useState(false); // list vs preview
 	const [datawolfViewAllOn, setDatawolfViewAllOn] = useState(false); // datawolf view
@@ -193,35 +192,6 @@ export default function ViewResult(props) {
 		}, {});
 	};
 
-	const _getHazardLayers = (json, htype) => {
-		// extract hazard dataset id (for preview)
-		let layerId;
-		let layerTitle;
-		let layerStyles;
-		if (htype === "earthquake") layerStyles = "incore:earthquake-pga-g";
-		else if (htype === "tornado") layerStyles = "incore:tornado";
-		else if (htype === "hurricane") layerStyles = "incore:hurricane-wind";
-
-		if ("rasterDataset" in json && json["rasterDataset"]["datasetId"] !== undefined) {
-			layerId = json["rasterDataset"]["datasetId"];
-			layerTitle = `${htype} - ${json["name"]} - ${json["rasterDataset"]["demandType"]}`;
-		}
-		// tsunami, hurricane, flood, earthquake all has multiple layers
-		else if ("hazardDatasets" in json && json["hazardDatasets"].length > 0) {
-			json["hazardDatasets"].map((hazardDataset) => {
-				layerId = hazardDataset["datasetId"];
-				layerTitle = `${htype} - ${json["name"]} - ${hazardDataset["demandType"]}`;
-			});
-		}
-		// tornado has single layer
-		else {
-			layerId = json["datasetId"];
-			layerTitle = `${htype} - ${json["name"]}`;
-		}
-
-		return { layerId: layerId, layerTitle: layerTitle, layerStyles: layerStyles };
-	};
-
 	const preview = async (executionId, widgetName) => {
 		const selectedExecutionItem = getExecution(executionId);
 		setSelectedExecutionItem(selectedExecutionItem);
@@ -261,10 +231,7 @@ export default function ViewResult(props) {
 
 		const hazardInfo = _getHazardInfo(selectedExecutionItem);
 		let hazardMetadata = await getHazardMetadata(globalConfig, hazardInfo.hazardType, hazardInfo.hazardId);
-		let { layerId, layerStyles, layerTitle } = _getHazardLayers(hazardMetadata, hazardInfo.hazardType);
-		setHazardDatasetId(layerId);
-		setHazardLayerStyles(layerStyles);
-		setHazardLayerTitle(layerTitle);
+		setHazardGroupLayer(getHazardGroupLayers(globalConfig, hazardMetadata, hazardInfo.hazardType, 3, 0.5));
 		setHazardType(hazardInfo["hazardType"]);
 
 		// dialog on
@@ -287,7 +254,7 @@ export default function ViewResult(props) {
 			<Box>
 				<Box className={classes.statTitle}>
 					<IncoreInputLabel>{`Completed Analysis (${numCompleted})`}</IncoreInputLabel>
-					<Box style={{float: "right"}}>
+					<Box style={{ float: "right" }}>
 						<FormControlLabel
 							control={
 								<Switch
@@ -298,15 +265,16 @@ export default function ViewResult(props) {
 									classes={{
 										switchBase: classes.switchBase,
 										checked: classes.checked,
-										track: classes.track,
+										track: classes.track
 									}}
 								/>
 							}
 							label="View All"
 						/>
-						<IconButton aria-label="sync" onClick={() => {getExecutionList(datawolfConfig, datawolfViewAllOn);}}
-							color="secondary"><SyncIcon/></IconButton>
-						<IconButton aria-label="filter"><FilterListIcon/></IconButton>
+						<IconButton aria-label="sync"
+									onClick={() => {getExecutionList(datawolfConfig, datawolfViewAllOn);}}
+									color="secondary"><SyncIcon /></IconButton>
+						<IconButton aria-label="filter"><FilterListIcon /></IconButton>
 					</Box>
 				</Box>
 				<Box>
@@ -323,10 +291,8 @@ export default function ViewResult(props) {
 						previewOn: previewOn,
 						handlePreviewClose: handlePreviewClose,
 						datawolfDatasetConfigItems: datawolfDatasetConfigItems,
-						hazardDatasetId: hazardDatasetId,
-						hazardLayerTitle: hazardLayerTitle,
-						hazardLayerStyles: hazardLayerStyles,
-						hazardType: hazardType
+						hazardType: hazardType,
+						hazardLayers: hazardGroupLayer
 					});
 				})()
 			) : (

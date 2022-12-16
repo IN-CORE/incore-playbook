@@ -11,16 +11,10 @@ import { downloadDataset } from "../../../utils/dataset";
 import { IncoreButtonText } from "../../styledComponents/IncoreButtonText";
 import GetAppIcon from "@material-ui/icons/GetApp";
 
-export default function PoleDamage(props) {
-	let {
-		executionItem,
-		previewOn,
-		handlePreviewClose,
-		datawolfDatasetConfigItems,
-		hazardDatasetId,
-		hazardLayerTitle,
-		hazardLayerStyles
-	} = props;
+
+export default function PoleDamage(props){
+
+	let {executionItem, previewOn, handlePreviewClose, datawolfDatasetConfigItems, hazardLayers} = props;
 
 	const mapConfig = useSelector((state) => state.config.mapConfig);
 	const datawolfConfig = useSelector((state) => state.config.datawolfConfig);
@@ -46,22 +40,16 @@ export default function PoleDamage(props) {
 				setPoleMaxDmgStateINCOREId(poleMaxDmgStateINCOREId);
 				const layerDef = [
 					{
-						layerId: poleMaxDmgStateINCOREId,
-						layerStyles: "incore:epf-dmg-summary",
-						title: "EPF Damage (Pole)",
-						opacity: 1,
-						zIndex: 1
-					},
-					{
-						layerId: hazardDatasetId,
-						layerStyles: hazardLayerStyles,
-						title: hazardLayerTitle,
-						opacity: 0.8,
-						zIndex: 2
+						"layerId": poleMaxDmgStateINCOREId,
+						"layerStyles": "incore:epf-dmg-summary",
+						"title": "EPF Damage (Pole)",
+						"opacity": 1,
+						"zIndex": 1
 					}
 				];
 				const previewLayers = generateLayers(globalConfig, layerDef);
 				layerRef.current.tilelayer.getLayers().extend(previewLayers);
+				layerRef.current.tilelayer.getLayers().push(hazardLayers);
 			}
 		});
 	}, []);

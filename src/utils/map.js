@@ -3,7 +3,7 @@ import TileLayer from "ol/layer/Tile";
 import GroupLayer from "ol/layer/Group";
 import { globals as defaultGlobalConfig } from "../globals";
 import XYZ from "ol/source/XYZ";
-import OSM, { ATTRIBUTION as OSM_ATTRIBUTION } from "ol/source/OSM";
+import OSM, {ATTRIBUTION as OSM_ATTRIBUTION} from "ol/source/OSM";
 
 export const generateLayers = (globalConfig = defaultGlobalConfig, layerDef) => {
 	return layerDef.reduce((previewLayers, layerDefinition) => {
@@ -22,6 +22,66 @@ export const generateLayers = (globalConfig = defaultGlobalConfig, layerDef) => 
 		return [...previewLayers, previewLayer];
 	}, []);
 };
+
+// helper function to construct a single layer of tilelayer
+const _constructHazardLayer = (globalConfig=defaultGlobalConfig, layerId, layerTitle, style,
+									  zIndex=1, opacity=1) => {
+	let HazardMapLayer;
+	if (layerId && layerTitle) {
+		const source = new TileWMS({
+			url: `${globalConfig.geoServerWMS}`,
+			params: {LAYERS: layerId, STYLES: style},
+			ratio: 1,
+			serverType: "geoserver"
+		});
+		HazardMapLayer = new TileLayer({
+			title: layerTitle,
+			source: source,
+			zIndex: zIndex,
+			opacity: opacity
+		});
+	}
+	return HazardMapLayer;
+};
+
+
+// helper function to construct the layer
+export const getHazardGroupLayers = (globalConfig=defaultGlobalConfig, json, htype, zIndex=1,
+						  opacity=1) => {
+	let layerId;
+	let layerTitle;
+	let style;
+
+	if (htype === "earthquake") style = "incore:earthquake-pga-g";
+	else if (htype === "tornado") style = "incore:tornado";
+	else if (htype === "hurricane") style = "incore:hurricane-wind";
+
+	let HazardMapLayers = [];
+
+	// for earthquake
+	if ( "rasterDataset" in json && json["rasterDataset"]["datasetId"] !== undefined){
+		layerId = json["rasterDataset"]["datasetId"];
+		layerTitle = `${json["name"]} - ${json["rasterDataset"]["demandType"]}`;
+		HazardMapLayers.push(_constructHazardLayer(globalConfig, layerId, layerTitle, style, zIndex, opacity));
+	}
+	// tsunami, hurricane, flood all has multiple layers
+	else if ( "hazardDatasets" in json && json["hazardDatasets"].length > 0){
+		json["hazardDatasets"].map((hazardDataset) =>{
+			layerId = hazardDataset["datasetId"];
+			layerTitle = `${json["name"]} - ${hazardDataset["demandType"]}`;
+			HazardMapLayers.push(_constructHazardLayer(globalConfig, layerId, layerTitle, style, zIndex, opacity));
+		});
+	}
+	// tornado has single layer
+	else {
+		layerId = json["datasetId"];
+		layerTitle = json["name"];
+		HazardMapLayers.push(_constructHazardLayer(globalConfig, layerId, layerTitle, style, zIndex, opacity));
+	}
+
+	return new GroupLayer({ title: json["name"], layers: HazardMapLayers });
+};
+
 
 export const basicLayers = {
 	basemaps: new GroupLayer({
