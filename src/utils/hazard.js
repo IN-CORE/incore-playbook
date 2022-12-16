@@ -1,21 +1,30 @@
-import {globals as defaultGlobalConfig} from "../globals";
-import {dataURItoFile, getHazardTypePlural, getHeader, round} from "./common";
+import { globals as defaultGlobalConfig } from "../globals";
+import { dataURItoFile, getHazardTypePlural, getHeader, round } from "./common";
 
-export async function createModelTornado(globalConfig=defaultGlobalConfig, name, description, rating, startLat, startLon, endLat, endLon) {
+export async function createModelTornado(
+	globalConfig = defaultGlobalConfig,
+	name,
+	description,
+	rating,
+	startLat,
+	startLon,
+	endLat,
+	endLon
+) {
 	const endpoint = `${globalConfig.hazardServiceBase}tornadoes`;
 	let formData = new FormData();
 	let tornadoMetadata = {
-		"tornadoType": "model",
-		"name": name,
-		"description": description,
-		"tornadoModel": "MeanWidthTornado",
-		"tornadoParameters": {
-			"efRating": rating,
-			"startLatitude": startLat,
-			"startLongitude": startLon,
-			"endLatitude": [endLat],
-			"endLongitude": [endLon],
-			"windSpeedMethod": "1",
+		tornadoType: "model",
+		name: name,
+		description: description,
+		tornadoModel: "MeanWidthTornado",
+		tornadoParameters: {
+			efRating: rating,
+			startLatitude: startLat,
+			startLongitude: startLon,
+			endLatitude: [endLat],
+			endLongitude: [endLon],
+			windSpeedMethod: "1"
 		}
 	};
 	formData.append("tornado", JSON.stringify(tornadoMetadata));
@@ -24,7 +33,7 @@ export async function createModelTornado(globalConfig=defaultGlobalConfig, name,
 		method: "POST",
 		mode: "cors",
 		headers: authHeader,
-		body: formData,
+		body: formData
 	});
 
 	if (tornadoRequest.status === 200) {
@@ -38,14 +47,14 @@ export async function createModelTornado(globalConfig=defaultGlobalConfig, name,
 	}
 }
 
-export async function createRasterTornado(globalConfig=defaultGlobalConfig, name, description, files) {
+export async function createRasterTornado(globalConfig = defaultGlobalConfig, name, description, files) {
 	const endpoint = `${globalConfig.hazardServiceBase}tornadoes`;
 	let formData = new FormData();
 
 	let tornadoMetadata = {
-		"tornadoType": "dataset",
-		"name": name,
-		"description": description
+		tornadoType: "dataset",
+		name: name,
+		description: description
 	};
 	formData.append("tornado", JSON.stringify(tornadoMetadata));
 	files.map((file) => {
@@ -57,7 +66,7 @@ export async function createRasterTornado(globalConfig=defaultGlobalConfig, name
 		method: "POST",
 		mode: "cors",
 		headers: authHeader,
-		body: formData,
+		body: formData
 	});
 
 	if (tornadoRequest.status === 200) {
@@ -71,15 +80,14 @@ export async function createRasterTornado(globalConfig=defaultGlobalConfig, name
 	}
 }
 
-export async function getHazardMetadata(globalConfig=defaultGlobalConfig, hazardType, hazardId) {
+export async function getHazardMetadata(globalConfig = defaultGlobalConfig, hazardType, hazardId) {
 	// need to turn hazardType into plura
 	const hazardTypePlural = getHazardTypePlural(hazardType);
 
 	let endpoint = `${globalConfig.hazardServiceBase}${hazardTypePlural}/${hazardId}`;
-	let hazardRequest = await fetch(endpoint, {mode: "cors", headers: getHeader()});
+	let hazardRequest = await fetch(endpoint, { mode: "cors", headers: getHeader() });
 	if (hazardRequest.status === 200) {
 		return await hazardRequest.json();
-
 	} else if (hazardRequest.status === 401) {
 		// TODO handle error
 		return {};
@@ -89,37 +97,48 @@ export async function getHazardMetadata(globalConfig=defaultGlobalConfig, hazard
 	}
 }
 
-export async function createModelEarthquake(globalConfig=defaultGlobalConfig, name, description, lat, lon,
-											magnitude, depth, demandType, demandUnits, attenuations, faultTypeMap) {
+export async function createModelEarthquake(
+	globalConfig = defaultGlobalConfig,
+	name,
+	description,
+	lat,
+	lon,
+	magnitude,
+	depth,
+	demandType,
+	demandUnits,
+	attenuations,
+	faultTypeMap
+) {
 	const endpoint = `${globalConfig.hazardServiceBase}earthquakes`;
 	let formData = new FormData();
 
 	let eqMetadata = {
-		"name": name,
-		"description": description,
-		"eqType": "model",
-		"attenuations": {},
-		"eqParameters": {
-			"srcLatitude": lat,
-			"srcLongitude": lon,
-			"magnitude": magnitude,
-			"depth": depth
+		name: name,
+		description: description,
+		eqType: "model",
+		attenuations: {},
+		eqParameters: {
+			srcLatitude: lat,
+			srcLongitude: lon,
+			magnitude: magnitude,
+			depth: depth
 		},
-		"visualizationParameters":{
-			"demandType": demandType,
-			"demandUnits": demandUnits,
-			"minX": round(lon-0.1, 4),
-			"minY": round(lat-0.1, 4),
-			"maxX": round(lon+0.1, 4),
-			"maxY": round(lat+0.1, 4),
-			"numPoints": "1025",
-			"amplifyHazard": "true"
+		visualizationParameters: {
+			demandType: demandType,
+			demandUnits: demandUnits,
+			minX: round(lon - 0.1, 4),
+			minY: round(lat - 0.1, 4),
+			maxX: round(lon + 0.1, 4),
+			maxY: round(lat + 0.1, 4),
+			numPoints: "1025",
+			amplifyHazard: "true"
 		}
 	};
 	eqMetadata["attenuations"][attenuations] = 1.0;
 
 	// add fault mechanism
-	if (faultTypeMap){
+	if (faultTypeMap) {
 		eqMetadata["eqParameters"]["faultTypeMap"] = {};
 		eqMetadata["eqParameters"]["faultTypeMap"][attenuations] = faultTypeMap;
 	}
@@ -130,7 +149,7 @@ export async function createModelEarthquake(globalConfig=defaultGlobalConfig, na
 		method: "POST",
 		mode: "cors",
 		headers: authHeader,
-		body: formData,
+		body: formData
 	});
 
 	if (tornadoRequest.status === 200) {
@@ -144,17 +163,17 @@ export async function createModelEarthquake(globalConfig=defaultGlobalConfig, na
 	}
 }
 
-export async function createRjfsDatasetHazards(globalConfig=defaultGlobalConfig, formData, hazardType) {
+export async function createRjfsDatasetHazards(globalConfig = defaultGlobalConfig, formData, hazardType) {
 	const endpoint = `${globalConfig.hazardServiceBase}${hazardType}`;
 	let dataurls = [];
 	let payload = new FormData();
 
-	formData["hazardDatasets"].map((hazardDataset) =>{
+	formData["hazardDatasets"].map((hazardDataset) => {
 		dataurls.push({
-			"dataurl": hazardDataset["file"],
+			dataurl: hazardDataset["file"],
 			// need to have the correct extension name .tif to create a layer
 			// data url does not contain filename!
-			"filename": `${hazardDataset["demandType"]}-raster.tif`
+			filename: `${hazardDataset["demandType"]}-raster.tif`
 		});
 		delete hazardDataset["file"];
 	});
@@ -170,7 +189,7 @@ export async function createRjfsDatasetHazards(globalConfig=defaultGlobalConfig,
 		method: "POST",
 		mode: "cors",
 		headers: authHeader,
-		body: payload,
+		body: payload
 	});
 
 	if (request.status === 200) {

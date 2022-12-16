@@ -1,16 +1,9 @@
 import React from "react";
 
-import {
-	Table,
-	TableBody,
-	TableCell,
-	TableContainer,
-	TableHead,
-	TableRow,
-} from "@material-ui/core";
+import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@material-ui/core";
 
-import {makeStyles} from "@material-ui/core/styles";
-import {round} from "../../../utils/common";
+import { makeStyles } from "@material-ui/core/styles";
+import { round } from "../../../utils/common";
 
 const tableColumnHead = {
 	color: "#FFFFFF",
@@ -37,12 +30,12 @@ const tableRowHead = {
 const useStyles = makeStyles({
 	table: {
 		maxWidth: 700,
-		display: "block",
+		display: "block"
 	},
-	metricsTable:{
-		display:"block",
+	metricsTable: {
+		display: "block",
 		maxWidth: "fit-content",
-		margin:"auto auto"
+		margin: "auto auto"
 	},
 	tableRowHeadFirst: {
 		color: "#69707F",
@@ -55,11 +48,11 @@ const useStyles = makeStyles({
 	tableRowHead: tableRowHead,
 	tableRowHeadRight: {
 		...tableRowHead,
-		borderRight: "solid 1px #EAEEFF",
+		borderRight: "solid 1px #EAEEFF"
 	},
 	tableColumnHeadGreen: {
 		...tableColumnHead,
-		backgroundColor: "#A1BE2E",
+		backgroundColor: "#A1BE2E"
 	},
 	tableColumnHeadRed: {
 		...tableColumnHead,
@@ -72,14 +65,11 @@ const useStyles = makeStyles({
 	}
 });
 
-
 export function CgeResultsTable(props) {
+	let { resultsJson, isMetrics, ...others } = props;
 
-	let {resultsJson, isMetrics, ...others} = props;
-
-	if (resultsJson === null){
+	if (resultsJson === null) {
 		// to be commented out when integrated with API and prop validation can be added
-
 	}
 
 	let headers = [""];
@@ -88,7 +78,10 @@ export function CgeResultsTable(props) {
 	let percentageChange = resultsJson["%_change"];
 
 	// Eliminate duplicate keys. Also, handles the case where before and after has different number of groups
-	headers = [...headers, ...new Set([...Object.keys(afterJson), ...Object.keys(beforeJson), ...Object.keys(percentageChange)])];
+	headers = [
+		...headers,
+		...new Set([...Object.keys(afterJson), ...Object.keys(beforeJson), ...Object.keys(percentageChange)])
+	];
 	const headerSize = headers.length;
 
 	const classes = useStyles();
@@ -96,62 +89,69 @@ export function CgeResultsTable(props) {
 	return (
 		<div>
 			<TableContainer>
-				<Table className={isMetrics ? classes.metricsTable: classes.table} size="small" aria-label="a dense table">
+				<Table
+					className={isMetrics ? classes.metricsTable : classes.table}
+					size="small"
+					aria-label="a dense table"
+				>
 					<TableHead>
-						<TableRow >
-							{
-								headers.map( (header, idx) => {
-									let headClass = classes.tableRowHead;
-									if (idx === 0){
-										headClass = classes.tableRowHeadFirst;
-									} else if (idx === headerSize -1){
-										headClass = classes.tableRowHeadRight;
-									}
-									return (<TableCell className={headClass} key={idx}>
+						<TableRow>
+							{headers.map((header, idx) => {
+								let headClass = classes.tableRowHead;
+								if (idx === 0) {
+									headClass = classes.tableRowHeadFirst;
+								} else if (idx === headerSize - 1) {
+									headClass = classes.tableRowHeadRight;
+								}
+								return (
+									<TableCell className={headClass} key={idx}>
 										{header}
-									</TableCell>);
-								})
-							}
+									</TableCell>
+								);
+							})}
 						</TableRow>
 					</TableHead>
 					<TableBody>
 						<TableRow>
 							<TableCell className={classes.tableColumnHeadGreen}> Before Event </TableCell>
-							{
-								headers.slice(1).map( (header, idx) => {
-									return (<TableCell className={classes.tableDataCell} key={idx}>
-										{(beforeJson[header] !== undefined ? round(beforeJson[header], 1) : "-" )}
-									</TableCell>);
-								})
-							}
+							{headers.slice(1).map((header, idx) => {
+								return (
+									<TableCell className={classes.tableDataCell} key={idx}>
+										{beforeJson[header] !== undefined ? round(beforeJson[header], 1) : "-"}
+									</TableCell>
+								);
+							})}
 						</TableRow>
 
 						<TableRow>
 							<TableCell className={classes.tableColumnHeadRed}> After Event </TableCell>
-							{
-								headers.slice(1).map( (header, idx) => {
-									return (<TableCell className={classes.tableDataCell} key={idx}>
-										{(afterJson[header] !== undefined ? round(afterJson[header], 1) : "-" )}
-									</TableCell>);
-								})
-							}
+							{headers.slice(1).map((header, idx) => {
+								return (
+									<TableCell className={classes.tableDataCell} key={idx}>
+										{afterJson[header] !== undefined ? round(afterJson[header], 1) : "-"}
+									</TableCell>
+								);
+							})}
 						</TableRow>
 
 						<TableRow>
-							<TableCell className={classes.tableRowHead} style={{textAlign:"right"}}> % of Change </TableCell>
-							{
-								headers.slice(1).map( (header, idx) => {
-									return (<TableCell className={classes.tableDataCell} key={idx}>
-										{(percentageChange[header] !== undefined ? `${round(percentageChange[header], 1)} %`: "-" )}
-									</TableCell>);
-								})
-							}
+							<TableCell className={classes.tableRowHead} style={{ textAlign: "right" }}>
+								{" "}
+								% of Change{" "}
+							</TableCell>
+							{headers.slice(1).map((header, idx) => {
+								return (
+									<TableCell className={classes.tableDataCell} key={idx}>
+										{percentageChange[header] !== undefined
+											? `${round(percentageChange[header], 1)} %`
+											: "-"}
+									</TableCell>
+								);
+							})}
 						</TableRow>
-
 					</TableBody>
 				</Table>
 			</TableContainer>
 		</div>
-
 	);
 }

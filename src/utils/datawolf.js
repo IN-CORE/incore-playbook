@@ -1,16 +1,15 @@
-import {getHeader, getCurrUserEmail, getIncoreTokenFile} from "./common";
-import {datawolfConfig as defaultDatawolfConfig} from "../datawolf.config.js";
-import {datawolfWorkflowConfig as defaultDatawolfWorkflowConfig} from "../datawolf.config.js";
+import { getHeader, getCurrUserEmail, getIncoreTokenFile } from "./common";
+import { datawolfConfig as defaultDatawolfConfig } from "../datawolf.config.js";
+import { datawolfWorkflowConfig as defaultDatawolfWorkflowConfig } from "../datawolf.config.js";
 
-export async function getOutputFileJson(datawolfConfig=defaultDatawolfConfig, datasetId, outputFileName = null) {
+export async function getOutputFileJson(datawolfConfig = defaultDatawolfConfig, datasetId, outputFileName = null) {
 	let authHeader = getHeader();
 
 	// Get - Result Dataset
-	const datasetResponse = await
-	fetch(`${datawolfConfig["datasetBaseURL"]}/${datasetId}`, {
+	const datasetResponse = await fetch(`${datawolfConfig["datasetBaseURL"]}/${datasetId}`, {
 		method: "GET",
 		headers: authHeader,
-		mode: "cors",
+		mode: "cors"
 	});
 
 	const resultDataset = await datasetResponse.json();
@@ -34,24 +33,24 @@ export async function getOutputFileJson(datawolfConfig=defaultDatawolfConfig, da
 
 	if (fileId !== -1) {
 		// Get - Result File Download
-		const fileDownloadResponse = await fetch(`${datawolfConfig["datasetBaseURL"]}/${datasetId}/${fileId}/file`,
-			{
-				method: "GET",
-				headers: authHeader,
-			});
+		const fileDownloadResponse = await fetch(`${datawolfConfig["datasetBaseURL"]}/${datasetId}/${fileId}/file`, {
+			method: "GET",
+			headers: authHeader
+		});
 
 		return await fileDownloadResponse.text();
-	}
-	else {
+	} else {
 		return null;
 	}
 }
 
-export async function submitExecution(datawolfConfig=defaultDatawolfConfig,
-									  datawolfWorkflowConfig=defaultDatawolfWorkflowConfig,
-									  title, description,
-									  datawolfFormState){
-
+export async function submitExecution(
+	datawolfConfig = defaultDatawolfConfig,
+	datawolfWorkflowConfig = defaultDatawolfWorkflowConfig,
+	title,
+	description,
+	datawolfFormState
+) {
 	let incoreTokenDatasetId = await postDataset(datawolfConfig);
 	if (incoreTokenDatasetId === null) {
 		console.log("Fail to post incoretoken. Abort execution submission!");
@@ -62,46 +61,43 @@ export async function submitExecution(datawolfConfig=defaultDatawolfConfig,
 	authHeader.append("Content-Type", "application/json");
 
 	const parameters = Object.keys(datawolfFormState).reduce((parameters, key) => {
-		return {...parameters, ...datawolfFormState[key]};
+		return { ...parameters, ...datawolfFormState[key] };
 	}, {});
 
 	// TODO assume the only input dataset is token
 	const datasets = datawolfWorkflowConfig["inputs"]["datasets"][0]["datasetsMap"].reduce((datasets, datasetDef) => {
-		return {...datasets, ...{[datasetDef["datasetId"]]:incoreTokenDatasetId}};
+		return { ...datasets, ...{ [datasetDef["datasetId"]]: incoreTokenDatasetId } };
 	}, {});
 
 	let requestBody = {
-		"workflowId": datawolfWorkflowConfig["wfId"],
-		"creatorId": datawolfWorkflowConfig["creatorId"],
-		"title": title,
-		"description": description,
-		"parameters": parameters,
+		workflowId: datawolfWorkflowConfig["wfId"],
+		creatorId: datawolfWorkflowConfig["creatorId"],
+		title: title,
+		description: description,
+		parameters: parameters,
 
-		"datasets": datasets
+		datasets: datasets
 	};
 
 	let datawolfResponse = await fetch(`${datawolfConfig["executionPostURL"]}`, {
 		method: "POST",
 		headers: authHeader,
 		body: JSON.stringify(requestBody),
-		mode: "cors",
+		mode: "cors"
 	});
 
-	if (datawolfResponse.status  === 200){
+	if (datawolfResponse.status === 200) {
 		return datawolfResponse.text();
-	}
-	else if  (datawolfResponse.status  === 401){
+	} else if (datawolfResponse.status === 401) {
 		// TODO handle error
 		return null;
-	}
-	else {
+	} else {
 		// TODO handle error
 		return null;
 	}
 }
 
-export async function postDataset(datawolfConfig, title="incoretoken", description="incoretoken"){
-
+export async function postDataset(datawolfConfig, title = "incoretoken", description = "incoretoken") {
 	let authHeader = getHeader();
 	// authHeader.append("Content-Type", "multipart/form-data");
 
@@ -118,17 +114,15 @@ export async function postDataset(datawolfConfig, title="incoretoken", descripti
 		method: "POST",
 		headers: authHeader,
 		body: formData,
-		mode: "cors",
+		mode: "cors"
 	});
 
-	if (datawolfResponse.status  === 200){
+	if (datawolfResponse.status === 200) {
 		return datawolfResponse.text();
-	}
-	else if  (datawolfResponse.status  === 401){
+	} else if (datawolfResponse.status === 401) {
 		// TODO handle error
 		return null;
-	}
-	else {
+	} else {
 		// TODO handle error
 		return null;
 	}

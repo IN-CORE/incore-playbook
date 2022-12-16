@@ -1,16 +1,9 @@
 import React from "react";
 
-import {
-	Table,
-	TableBody,
-	TableCell,
-	TableContainer,
-	TableHead,
-	TableRow
-} from "@material-ui/core";
+import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@material-ui/core";
 
-import {makeStyles} from "@material-ui/core/styles";
-import {round} from "../../../utils/common";
+import { makeStyles } from "@material-ui/core/styles";
+import { round } from "../../../utils/common";
 
 const tableColumnHead = {
 	color: "#FFFFFF",
@@ -38,12 +31,12 @@ const tableRowHead = {
 const useStyles = makeStyles({
 	table: {
 		maxWidth: 550,
-		display: "block",
+		display: "block"
 	},
-	metricsTable:{
-		display:"block",
+	metricsTable: {
+		display: "block",
 		maxWidth: "fit-content",
-		margin:"auto auto"
+		margin: "auto auto"
 	},
 	tableRowHeadFirst: {
 		color: "#69707F",
@@ -56,7 +49,7 @@ const useStyles = makeStyles({
 	tableRowHead: tableRowHead,
 	tableRowHeadRight: {
 		...tableRowHead,
-		borderRight: "solid 1px rgba(234, 238, 255, 0.6)",
+		borderRight: "solid 1px rgba(234, 238, 255, 0.6)"
 	},
 	tableRowTotal: {
 		...tableRowHead,
@@ -65,7 +58,7 @@ const useStyles = makeStyles({
 	},
 	tableColumnHeadGreen: {
 		...tableColumnHead,
-		backgroundColor: "#A1BE2E",
+		backgroundColor: "#A1BE2E"
 	},
 	tableColumnHeadRed: {
 		...tableColumnHead,
@@ -92,12 +85,11 @@ const useStyles = makeStyles({
 		lineHeight: "19px",
 		padding: "12px 8px",
 		marginBottom: "17px",
-		display:"block",
+		display: "block"
 	}
 });
 
 export function DislocationResultsTable(props) {
-
 	let { resultsJson, isMetrics } = props;
 	let title = props.title;
 
@@ -110,78 +102,75 @@ export function DislocationResultsTable(props) {
 		<div>
 			<div className={classes.title}>{title}</div>
 			<TableContainer>
-				<Table className={isMetrics ? classes.metricsTable: classes.table} size="small" aria-label="a dense table">
+				<Table
+					className={isMetrics ? classes.metricsTable : classes.table}
+					size="small"
+					aria-label="a dense table"
+				>
 					<TableHead>
-						<TableRow >
-							{
-								headers.map( (header, idx) => {
-									let headClass = classes.tableRowHead;
-									if (idx === 0){
-										headClass = classes.tableRowHeadFirst;
-									} else if (idx === headerSize -1){
-										headClass = classes.tableRowHeadRight;
-									}
-									return (<TableCell className={headClass} key={idx}
-													   style={ isMetrics ? {"minWidth":"200px"} : {}}>
+						<TableRow>
+							{headers.map((header, idx) => {
+								let headClass = classes.tableRowHead;
+								if (idx === 0) {
+									headClass = classes.tableRowHeadFirst;
+								} else if (idx === headerSize - 1) {
+									headClass = classes.tableRowHeadRight;
+								}
+								return (
+									<TableCell
+										className={headClass}
+										key={idx}
+										style={isMetrics ? { minWidth: "200px" } : {}}
+									>
 										{header}
-									</TableCell>);
-								})
-							}
+									</TableCell>
+								);
+							})}
 						</TableRow>
 					</TableHead>
 					<TableBody>
 						<TableRow>
 							<TableCell className={classes.tableColumnHeadRed}> Dislocated </TableCell>
 							<TableCell className={classes.tableDataCellDislocated}>
-								{
-									"households" in resultsJson["dislocated"] ?
-										resultsJson["dislocated"]["households"].toLocaleString("en-US") :
-										resultsJson["dislocated"]["population"].toLocaleString("en-US")
-								}
+								{"households" in resultsJson["dislocated"]
+									? resultsJson["dislocated"]["households"].toLocaleString("en-US")
+									: resultsJson["dislocated"]["population"].toLocaleString("en-US")}
 							</TableCell>
 							<TableCell className={classes.tableDataCellDislocated}>
-								{
-									"%_of_households" in resultsJson["dislocated"] ?
-										round(resultsJson["dislocated"]["%_of_households"], 1) :
-										round(resultsJson["dislocated"]["%_of_population"], 1)
-								}%
+								{"%_of_households" in resultsJson["dislocated"]
+									? round(resultsJson["dislocated"]["%_of_households"], 1)
+									: round(resultsJson["dislocated"]["%_of_population"], 1)}
+								%
 							</TableCell>
 						</TableRow>
 
 						<TableRow>
 							<TableCell className={classes.tableColumnHeadGreen}> Not Dislocated </TableCell>
 							<TableCell className={classes.tableDataCell}>
-								{
-									"households" in resultsJson["not_dislocated"] ?
-										resultsJson["not_dislocated"]["households"].toLocaleString("en-US") :
-										resultsJson["not_dislocated"]["population"].toLocaleString("en-US")
-								}
+								{"households" in resultsJson["not_dislocated"]
+									? resultsJson["not_dislocated"]["households"].toLocaleString("en-US")
+									: resultsJson["not_dislocated"]["population"].toLocaleString("en-US")}
 							</TableCell>
 							<TableCell className={classes.tableDataCell}>
-								{
-									"%_of_households" in resultsJson["not_dislocated"] ?
-										round(resultsJson["not_dislocated"]["%_of_households"], 1) :
-										round(resultsJson["not_dislocated"]["%_of_population"], 1)
-								}%
+								{"%_of_households" in resultsJson["not_dislocated"]
+									? round(resultsJson["not_dislocated"]["%_of_households"], 1)
+									: round(resultsJson["not_dislocated"]["%_of_population"], 1)}
+								%
 							</TableCell>
 						</TableRow>
 
 						<TableRow>
 							<TableCell className={classes.tableRowTotal}> Total </TableCell>
 							<TableCell className={classes.tableDataCell}>
-								{
-									"households" in resultsJson["total"] ?
-										resultsJson["total"]["households"].toLocaleString("en-US") :
-										resultsJson["total"]["population"].toLocaleString("en-US")
-								}
+								{"households" in resultsJson["total"]
+									? resultsJson["total"]["households"].toLocaleString("en-US")
+									: resultsJson["total"]["population"].toLocaleString("en-US")}
 							</TableCell>
 							<TableCell className={classes.tableDataCell} />
 						</TableRow>
-
 					</TableBody>
 				</Table>
 			</TableContainer>
 		</div>
-
 	);
 }
