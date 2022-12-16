@@ -237,14 +237,14 @@ const HeaderWithMenu = ({
 				{
 					key: "1-2",
 					label: "Identify Team Members",
-					status: "in_progress",
+					status: "pending",
 					disabled: false,
 					route: "/create-team-member"
 				},
 				{
 					key: "1-3",
 					label: "Establish the scope",
-					status: "completed",
+					status: "pending",
 					disabled: false,
 					route: "/create-team-scope"
 				},
@@ -423,8 +423,8 @@ const HeaderWithMenu = ({
 	];
 
 	let menus = [];
-	const greenCheckIcon = <CheckCircleIcon style={{ color: "green" }} />;
-	const orangeCheckIcon = <CheckCircleIcon style={{ color: "orange" }} />;
+	const completedCheckIcon = <CheckCircleIcon style={{ color: "#00619D" }} />;
+	const pendingCheckIcon = <CheckCircleIcon style={{ color: "#8798AD" }} />;
 
 	treeData.map(({ key, label, nodes }) => {
 		let subMenus = [];
@@ -447,9 +447,9 @@ const HeaderWithMenu = ({
 							{stepStatus[`step_${key.replace("-", "_")}`].status === "pending" ? (
 								<QueryBuilderIcon />
 							) : stepStatus[`step_${key.replace("-", "_")}`].status === "in_progress" ? (
-								orangeCheckIcon
+								pendingCheckIcon
 							) : (
-								greenCheckIcon
+								completedCheckIcon
 							)}
 						</>
 					)}
@@ -472,10 +472,12 @@ const HeaderWithMenu = ({
 				>
 					{openTask === key ? <DownIcon fontSize="large" /> : <RightIcon fontSize="large" />}
 					<ListItemText primary={`${key}. ${label}`} />
+					{/* If any in_progress status, then add pending check icon */}
+					{/* else, if any pending icon, show pending else, all are complete and show completed icon */}
 					{subMenusStatus.includes("in_progress") ? (
-						orangeCheckIcon
+						pendingCheckIcon
 					) : (
-						<>{subMenusStatus.includes("pending") ? <QueryBuilderIcon /> : greenCheckIcon}</>
+						<>{subMenusStatus.includes("pending") ? <QueryBuilderIcon /> : completedCheckIcon}</>
 					)}
 				</ListItem>
 				<Collapse in={openTask === key} timeout="auto" unmountOnExit>
