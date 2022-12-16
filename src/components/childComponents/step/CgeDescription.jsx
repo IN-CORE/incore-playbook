@@ -1,15 +1,8 @@
 import * as React from "react";
-import {
-	Box,
-	Table,
-	TableBody,
-	TableCell,
-	TableRow,
-	Typography,
-} from "@material-ui/core";
-import {makeStyles} from "@material-ui/core/styles";
+import { Box, Table, TableBody, TableCell, TableRow, Typography } from "@material-ui/core";
+import { makeStyles } from "@material-ui/core/styles";
 
-import {cgeInfo} from "../../../messages.config";
+import { cgeInfo } from "../../../messages.config";
 
 const useStyles = makeStyles({
 	cgeDescriptionTitle: {
@@ -23,7 +16,7 @@ const useStyles = makeStyles({
 	cgeDescriptionAbout: {
 		color: "#69707F",
 		fontFamily: "Rubik, sans-serif",
-		fontSize: "12px",
+		fontSize: "12px"
 	},
 	tableRowHead: {
 		color: "#69707F",
@@ -46,7 +39,7 @@ const useStyles = makeStyles({
 });
 
 export default function CgeDescription(props) {
-	const {cgeMetrics, ...others} = props;
+	const { cgeMetrics, ...others } = props;
 	const classes = useStyles();
 	let cgeDescription = cgeInfo[cgeMetrics];
 
@@ -58,8 +51,9 @@ export default function CgeDescription(props) {
 						<TableCell component="th" scope="row" className={classes.tableRowHead}>
 							{key}
 						</TableCell>
-						<TableCell align="left"
-								   className={classes.tableRowCell}>{cgeDescription["rows"][key]}</TableCell>
+						<TableCell align="left" className={classes.tableRowCell}>
+							{cgeDescription["rows"][key]}
+						</TableCell>
 					</TableRow>
 				))}
 			</TableBody>
@@ -68,21 +62,13 @@ export default function CgeDescription(props) {
 
 	return (
 		<Box>
-			<Box style={{"marginBottom": "30px"}}>
-				<Typography className={classes.cgeDescriptionTitle}>
-					{cgeDescription["textTitle"]}
-				</Typography>
-				<Typography className={classes.cgeDescriptionAbout}>
-					{cgeDescription["textContent"]}
-				</Typography>
+			<Box style={{ marginBottom: "30px" }}>
+				<Typography className={classes.cgeDescriptionTitle}>{cgeDescription["textTitle"]}</Typography>
+				<Typography className={classes.cgeDescriptionAbout}>{cgeDescription["textContent"]}</Typography>
 			</Box>
-			<Box style={{"marginBottom": "30px"}}>
-				<Typography className={classes.cgeDescriptionTitle}>
-					{cgeDescription["tableTitle"]}
-				</Typography>
-				<Box className={classes.cgeDescriptionAbout}>
-					{tableContent}
-				</Box>
+			<Box style={{ marginBottom: "30px" }}>
+				<Typography className={classes.cgeDescriptionTitle}>{cgeDescription["tableTitle"]}</Typography>
+				<Box className={classes.cgeDescriptionAbout}>{tableContent}</Box>
 			</Box>
 		</Box>
 	);

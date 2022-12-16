@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, { useState } from "react";
 
 import {
 	Table,
@@ -12,16 +12,16 @@ import {
 } from "@material-ui/core";
 import MoreHorizIcon from "@material-ui/icons/MoreHoriz";
 
-import {makeStyles} from "@material-ui/core/styles";
+import { makeStyles } from "@material-ui/core/styles";
 
 const useStyles = makeStyles({
 	table: {
-		minWidth: 650,
+		minWidth: 650
 	},
 	tableHeaderRow: {
 		// height: "34px",
 	},
-	tableHeaderCell:{
+	tableHeaderCell: {
 		height: "14px",
 		width: "37px",
 		color: "#69707F",
@@ -30,19 +30,19 @@ const useStyles = makeStyles({
 		letterSpacing: "1.13px",
 		lineHeight: "14px"
 	},
-	tableBodyRow:{
+	tableBodyRow: {
 		// height: "75px",
 	},
-	tableBodyCell:{
+	tableBodyCell: {
 		height: "21px",
 		width: "68.75px",
 		color: "#2E384D",
 		fontSize: "15px",
 		letterSpacing: 0,
 		lineHeight: "22px",
-		wordBreak:"break-word"
+		wordBreak: "break-word"
 	},
-	firstTableBodyCell:{
+	firstTableBodyCell: {
 		width: "250px",
 		height: "21px",
 		color: "#2E384D",
@@ -50,15 +50,15 @@ const useStyles = makeStyles({
 		letterSpacing: 0,
 		lineHeight: "22px"
 	},
-	clickableLink:{
-		"&:hover":{
+	clickableLink: {
+		"&:hover": {
 			cursor: "pointer"
 		}
 	},
-	clickableLinkDisabled:{
+	clickableLinkDisabled: {
 		pointerEvents: "none",
 		textDecoration: "none",
-		color: "#9E9E9E",
+		color: "#9E9E9E"
 	}
 });
 
@@ -88,12 +88,11 @@ function stableSort(array, comparator) {
 	return stabilizedThis.map((el) => el[0]);
 }
 
-function prettifyDate(date){
+function prettifyDate(date) {
 	return date.slice(0, 10);
 }
 
 export function EntryTable(props) {
-
 	const { fieldNames, fields } = props;
 
 	const [order, setOrder] = useState("desc");
@@ -116,65 +115,68 @@ export function EntryTable(props) {
 			<Table className={classes.table} size="small" aria-label="a dense table">
 				<TableHead>
 					<TableRow className={classes.tableHeaderRow} key="hdrRow">
-						{
-							fieldNames.map((fieldName) =>{
-								return (
-									<TableCell className={classes.tableHeaderCell} key={fieldName["columnName"]}
-											   sortDirection={orderBy === fieldName["columnName"] ? order : false}>
-										<TableSortLabel
-											active={orderBy === fieldName["columnName"]}
-											direction={orderBy === fieldName["columnName"] ? order : "asc"}
-											onClick={createSortHandler(fieldName["columnName"])}
-										>
-											{fieldName["prettyName"]}
-										</TableSortLabel>
-									</TableCell>
-								);
-							})
-						}
+						{fieldNames.map((fieldName) => {
+							return (
+								<TableCell
+									className={classes.tableHeaderCell}
+									key={fieldName["columnName"]}
+									sortDirection={orderBy === fieldName["columnName"] ? order : false}
+								>
+									<TableSortLabel
+										active={orderBy === fieldName["columnName"]}
+										direction={orderBy === fieldName["columnName"] ? order : "asc"}
+										onClick={createSortHandler(fieldName["columnName"])}
+									>
+										{fieldName["prettyName"]}
+									</TableSortLabel>
+								</TableCell>
+							);
+						})}
 						{/*TODO implement expending*/}
-						<TableCell className={classes.tableHeaderCell} key="dot"/>
+						<TableCell className={classes.tableHeaderCell} key="dot" />
 					</TableRow>
 				</TableHead>
 				<TableBody>
-					{
-						stableSort(fields, getComparator(order, orderBy)).map((field) => {
-							return (
-								<TableRow className={classes.tableBodyRow} key={field["id"]}>
-									{
-										fieldNames.map((fieldName, idx) =>{
-											if (fieldName["handleClick"] !== undefined){
-												let handleClick = fieldName["handleClick"];
-												return (
-													<TableCell key={idx} className={classes.tableBodyCell}>
-														<Link color="primary" onClick={() => {handleClick(field);}}
-															  className={field["finalStatus"] === undefined || field["finalStatus"] === "FINISHED" ?
-																  classes.clickableLink:classes.clickableLinkDisabled}>
-															{
-																field[fieldName["columnName"]]
-															}
-														</Link>
-													</TableCell>
-												);
-											}
-											return (
-												<TableCell key={idx} className={classes.tableBodyCell}>
-													{
-														fieldName["columnName"] === "date"?
-															prettifyDate(field[fieldName["columnName"]]) :
-															field[fieldName["columnName"]]
+					{stableSort(fields, getComparator(order, orderBy)).map((field) => {
+						return (
+							<TableRow className={classes.tableBodyRow} key={field["id"]}>
+								{fieldNames.map((fieldName, idx) => {
+									if (fieldName["handleClick"] !== undefined) {
+										let handleClick = fieldName["handleClick"];
+										return (
+											<TableCell key={idx} className={classes.tableBodyCell}>
+												<Link
+													color="primary"
+													onClick={() => {
+														handleClick(field);
+													}}
+													className={
+														field["finalStatus"] === undefined ||
+														field["finalStatus"] === "FINISHED"
+															? classes.clickableLink
+															: classes.clickableLinkDisabled
 													}
-												</TableCell>
-											);
-										})
+												>
+													{field[fieldName["columnName"]]}
+												</Link>
+											</TableCell>
+										);
 									}
-									{/*TODO implement expending*/}
-									<TableCell className={classes.tableBodyCell} key="dot"><MoreHorizIcon /></TableCell>
-								</TableRow>
-							);
-
-						})
-					}
+									return (
+										<TableCell key={idx} className={classes.tableBodyCell}>
+											{fieldName["columnName"] === "date"
+												? prettifyDate(field[fieldName["columnName"]])
+												: field[fieldName["columnName"]]}
+										</TableCell>
+									);
+								})}
+								{/*TODO implement expending*/}
+								<TableCell className={classes.tableBodyCell} key="dot">
+									<MoreHorizIcon />
+								</TableCell>
+							</TableRow>
+						);
+					})}
 				</TableBody>
 			</Table>
 		</TableContainer>

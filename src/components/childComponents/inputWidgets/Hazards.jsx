@@ -1,13 +1,11 @@
-import React, {useEffect, useState} from "react";
-import {IncoreMenuItem, IncoreSelectBox} from "../../styledComponents/IncoreSelect";
-import {useDispatch, useSelector} from "react-redux";
-import {fetchHazards} from "../../../actions/hazards";
-import {getHazardTypePlural} from "../../../utils/common";
-
+import React, { useEffect, useState } from "react";
+import { IncoreMenuItem, IncoreSelectBox } from "../../styledComponents/IncoreSelect";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchHazards } from "../../../actions/hazards";
+import { getHazardTypePlural } from "../../../utils/common";
 
 export default function Hazards(props) {
-
-	const {setDatawolfFormState, datawolfFormState, datawolfParamConfigItem} = props;
+	const { setDatawolfFormState, datawolfFormState, datawolfParamConfigItem } = props;
 	const alllowedHazardTypes = useSelector((state) => state.config.allowedHazardTypes);
 	const globalConfig = useSelector((state) => state.config.globalConfig);
 
@@ -27,42 +25,47 @@ export default function Hazards(props) {
 		alllowedHazardTypes.map((hazardType) => {
 			listHazards(globalConfig, hazardType);
 		});
-	},[]);
+	}, []);
 
 	// hazard dropdown
 	useEffect(() => {
-		if (datawolfFormState.selectedHazardType){
+		if (datawolfFormState.selectedHazardType) {
 			let hazardType = Object.values(datawolfFormState.selectedHazardType)[0];
-			if (hazardType && hazardType !== ""){
+			if (hazardType && hazardType !== "") {
 				setHazards(eval(getHazardTypePlural(hazardType)));
 			}
 		}
 	}, [datawolfFormState.selectedHazardType]);
 
 	return (
-		<IncoreSelectBox labelId="label" id="select" variant="outlined"
-						 onChange={(e) => {
-							 let currentVal = e.target.value;
-							 setDatawolfFormState((prevState) => {
-								 let mapState = {};
-								 datawolfParamConfigItem.parametersMap.map((pm) => {
-									 mapState[pm.paramId] = currentVal;
-								 });
-								 return {...prevState, [datawolfParamConfigItem.variableName]: mapState};
-							 });
-						 }}
+		<IncoreSelectBox
+			labelId="label"
+			id="select"
+			variant="outlined"
+			onChange={(e) => {
+				let currentVal = e.target.value;
+				setDatawolfFormState((prevState) => {
+					let mapState = {};
+					datawolfParamConfigItem.parametersMap.map((pm) => {
+						mapState[pm.paramId] = currentVal;
+					});
+					return { ...prevState, [datawolfParamConfigItem.variableName]: mapState };
+				});
+			}}
 			// parameters belong to the same variable should have the same value; just pick one
-						 value={datawolfFormState[datawolfParamConfigItem.variableName][
-							 Object.keys(datawolfFormState[datawolfParamConfigItem.variableName])[0]] ?? ""
-						 }
-		>
-			{
-				hazards.map((option) => {
-					return (
-						<IncoreMenuItem value={option["id"]} key={option["id"]}>{option["name"]}</IncoreMenuItem>
-					);
-				})
+			value={
+				datawolfFormState[datawolfParamConfigItem.variableName][
+					Object.keys(datawolfFormState[datawolfParamConfigItem.variableName])[0]
+				] ?? ""
 			}
+		>
+			{hazards.map((option) => {
+				return (
+					<IncoreMenuItem value={option["id"]} key={option["id"]}>
+						{option["name"]}
+					</IncoreMenuItem>
+				);
+			})}
 		</IncoreSelectBox>
 	);
 }

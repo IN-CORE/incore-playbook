@@ -1,9 +1,8 @@
-import {FileDrop} from "react-file-drop";
+import { FileDrop } from "react-file-drop";
 import React from "react";
-import {Box, IconButton, Typography} from "@material-ui/core";
+import { Box, IconButton, Typography } from "@material-ui/core";
 import DeleteIcon from "@material-ui/icons/Delete";
-import {makeStyles} from "@material-ui/core/styles";
-
+import { makeStyles } from "@material-ui/core/styles";
 
 const useStyles = makeStyles({
 	fileDrop: {
@@ -16,7 +15,7 @@ const useStyles = makeStyles({
 		display: "block"
 	},
 	fileDropInput: {
-		width: "95px",
+		width: "95px"
 	},
 	fileDropText: {
 		height: "54px",
@@ -26,8 +25,7 @@ const useStyles = makeStyles({
 		fontWeight: 500,
 		letterSpacing: 0,
 		lineHeight: "18px",
-		textAlign: "center",
-
+		textAlign: "center"
 	},
 	fileDropGroup: {
 		width: "92px",
@@ -44,7 +42,7 @@ const useStyles = makeStyles({
 	},
 	displayFileItem: {
 		width: "100%",
-		height: "37px",
+		height: "37px"
 	},
 	displayFilename: {
 		height: "18px",
@@ -57,20 +55,18 @@ const useStyles = makeStyles({
 		float: "left"
 	},
 	deleteFileIcon: {
-		height: "24px",
-		width: "24px",
-		float: "right",
-		margin: "6px",
+		"height": "24px",
+		"width": "24px",
+		"float": "right",
+		"margin": "6px",
 		"&:hover": {
 			color: "#D63649"
 		}
-	},
+	}
 });
 
-
 export default function FileUploadDrop(props) {
-
-	const {onDrop, onFileInputChange, fileInputRef, onDeleteClick, files} = props;
+	const { onDrop, onFileInputChange, fileInputRef, onDeleteClick, files } = props;
 
 	const classes = useStyles();
 
@@ -85,25 +81,33 @@ export default function FileUploadDrop(props) {
 						className={classes.fileDropInput}
 						multiple
 					/>
-					<Typography className={classes.fileDropText}>Upload a File <br/>or<br/> Drag &
-						Drop</Typography>
+					<Typography className={classes.fileDropText}>
+						Upload a File <br />
+						or
+						<br /> Drag & Drop
+					</Typography>
 				</div>
 			</FileDrop>
-			{
-				files.length > 0 ?
-					<Box className={classes.displayFile}>
-						{files.map((file) => {
-							return (
-								<div className={classes.displayFileItem} key={file.name}>
-									<Typography className={classes.displayFilename}>{file.name}</Typography>
-									<IconButton aria-label="delete" className={classes.deleteFileIcon}
-										onClick={() => {onDeleteClick(file.name);}}><DeleteIcon/></IconButton>
-								</div>
-							);
-						})
-						}
-					</Box> : null
-			}
+			{files.length > 0 ? (
+				<Box className={classes.displayFile}>
+					{files.map((file) => {
+						return (
+							<div className={classes.displayFileItem} key={file.name}>
+								<Typography className={classes.displayFilename}>{file.name}</Typography>
+								<IconButton
+									aria-label="delete"
+									className={classes.deleteFileIcon}
+									onClick={() => {
+										onDeleteClick(file.name);
+									}}
+								>
+									<DeleteIcon />
+								</IconButton>
+							</div>
+						);
+					})}
+				</Box>
+			) : null}
 		</div>
 	);
 }

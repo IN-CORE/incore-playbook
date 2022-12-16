@@ -1,28 +1,20 @@
 import React from "react";
-import {
-	Paper,
-	Table,
-	TableBody,
-	TableCell,
-	TableContainer,
-	TableHead,
-	TableRow,
-} from "@material-ui/core";
-import {ARCHETYPE} from "../../../globals";
-import {makeStyles} from "@material-ui/core/styles";
+import { Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@material-ui/core";
+import { ARCHETYPE } from "../../../globals";
+import { makeStyles } from "@material-ui/core/styles";
 
 const useStyles = makeStyles({
 	table: {
-		minWidth: 650,
+		minWidth: 650
 	},
 	baseColorBlue: {
 		height: "29px",
 		width: "96px",
-		backgroundColor: "#ED8036",
+		backgroundColor: "#ED8036"
 	},
 	tableHeaderRow: {
 		height: "34px",
-		width: "1134px",
+		width: "1134px"
 	},
 	tableHeaderCell: {
 		height: "14px",
@@ -35,7 +27,7 @@ const useStyles = makeStyles({
 	},
 	tableBodyRow: {
 		height: "75px",
-		width: "1134px",
+		width: "1134px"
 	},
 	tableBodyCell: {
 		height: "21px",
@@ -62,7 +54,7 @@ const useStyles = makeStyles({
  * props.attributes = [ features returned from WFS query ]
  */
 export const AttributesTable = (props) => {
-	const {attributes, attributeNames} = props;
+	const { attributes, attributeNames } = props;
 	const classes = useStyles();
 
 	return (
@@ -70,52 +62,45 @@ export const AttributesTable = (props) => {
 			<Table className={classes.table} size="small" aria-label="a dense table">
 				<TableHead>
 					<TableRow className={classes.tableHeaderRow} key="hdrRow">
-						{
-							attributeNames.map((attributeName) =>{
-								return (
-									<TableCell className={classes.tableHeaderCell} key={attributeName["prettyName"]} >
-										{attributeName["prettyName"]}
-									</TableCell>
-								);
-							})
-						}
+						{attributeNames.map((attributeName) => {
+							return (
+								<TableCell className={classes.tableHeaderCell} key={attributeName["prettyName"]}>
+									{attributeName["prettyName"]}
+								</TableCell>
+							);
+						})}
 					</TableRow>
 				</TableHead>
 				<TableBody>
-					{
-						attributes.map((attribute) => {
-
-							return (
-								<TableRow className={classes.tableBodyRow} key={attribute["id"]}>
-									{
-										attributeNames.map((attributeName, idx) =>{
-											if (attributeName["prettyName"] === "MEAN DAMAGE"){
-												return (
-													<TableCell key={idx} className={classes.tableBodyCell}>
-														{parseFloat(attribute["properties"][attributeName["columnName"]]).toFixed(4)}</TableCell>
-												);
-											}
-											else if (attributeName["prettyName"] === "BUILDING DESCRIPTION"){
-												return (
-													<TableCell key={idx} className={classes.tableBodyCell}>
-														{ARCHETYPE[attribute["properties"][attributeName["columnName"]]]}</TableCell>
-												);
-											}
-											else{
-												return (
-													<TableCell key={idx} className={classes.tableBodyCell}>
-														{attribute["properties"][attributeName["columnName"]]}</TableCell>
-												);
-											}
-
-										})
+					{attributes.map((attribute) => {
+						return (
+							<TableRow className={classes.tableBodyRow} key={attribute["id"]}>
+								{attributeNames.map((attributeName, idx) => {
+									if (attributeName["prettyName"] === "MEAN DAMAGE") {
+										return (
+											<TableCell key={idx} className={classes.tableBodyCell}>
+												{parseFloat(
+													attribute["properties"][attributeName["columnName"]]
+												).toFixed(4)}
+											</TableCell>
+										);
+									} else if (attributeName["prettyName"] === "BUILDING DESCRIPTION") {
+										return (
+											<TableCell key={idx} className={classes.tableBodyCell}>
+												{ARCHETYPE[attribute["properties"][attributeName["columnName"]]]}
+											</TableCell>
+										);
+									} else {
+										return (
+											<TableCell key={idx} className={classes.tableBodyCell}>
+												{attribute["properties"][attributeName["columnName"]]}
+											</TableCell>
+										);
 									}
-								</TableRow>
-							);
-
-						})
-					}
-
+								})}
+							</TableRow>
+						);
+					})}
 				</TableBody>
 			</Table>
 		</TableContainer>

@@ -1,23 +1,23 @@
-import {Box, Container, Dialog, DialogActions, DialogContent, Grid, IconButton, Typography} from "@material-ui/core";
+import { Box, Container, Dialog, DialogActions, DialogContent, Grid, IconButton, Typography } from "@material-ui/core";
 import CloseIcon from "@material-ui/icons/Close";
 import Map from "../map/Map";
-import {fromLonLat, getTransform} from "ol/proj";
-import {DislocationResultsTable} from "../table/DislocationResultsTable";
-import {HuaResultsTable} from "../table/HuaResultsTable";
-import React, { useEffect, useRef, useState } from "react";
-import {useSelector} from "react-redux";
-import {applyTransform} from "ol/extent";
-import {getOutputFileContent, getOutputFileContentJSON} from "../../../utils/datawolf";
-import {basicLayers, generateLayers} from "../../../utils/map";
-import {exportJson} from "../../../utils/common";
-import {IncoreButtonText} from "../../styledComponents/IncoreButtonText";
+import { fromLonLat, getTransform } from "ol/proj";
+import { DislocationResultsTable } from "../table/DislocationResultsTable";
+import { HuaResultsTable } from "../table/HuaResultsTable";
+import React, { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
+import { applyTransform } from "ol/extent";
+import { getOutputFileContent, getOutputFileContentJSON } from "../../../utils/datawolf";
+import { basicLayers, generateLayers } from "../../../utils/map";
+import { exportJson } from "../../../utils/common";
+import { IncoreButtonText } from "../../styledComponents/IncoreButtonText";
 import GetAppIcon from "@material-ui/icons/GetApp";
 import { downloadImg } from "../../../utils/image";
 import CameraAltIcon from "@material-ui/icons/CameraAlt";
 
+
 export default function PopDislocation(props){
-	let {executionItem, previewOn, handlePreviewClose, datawolfDatasetConfigItems, hazardDatasetId,
-		hazardLayerTitle, hazardLayerStyles} = props;
+	let {executionItem, previewOn, handlePreviewClose, datawolfDatasetConfigItems, hazardLayers} = props;
 
 	const mapConfig = useSelector((state) => state.config.mapConfig);
 	const datawolfConfig = useSelector((state) => state.config.datawolfConfig);
@@ -36,7 +36,6 @@ export default function PopDislocation(props){
 	const printRef = useRef();
 
 	useEffect(() => {
-
 		setSelectedExecutionName(executionItem["title"]);
 
 		datawolfDatasetConfigItems.map(async (datawolfDatasetConfigItem) => {
@@ -46,16 +45,9 @@ export default function PopDislocation(props){
 				const tmpLayerDef =
 					[
 						{
-							"layerId": hazardDatasetId,
-							"layerStyles": "incore:tornado",
-							"title": "Tornado",
-							"opacity": 0.8,
-							"zIndex": 3
-						},
-						{
 							"layerId": bldgMaxDamageStateINCOREId,
-							"layerStyles": hazardLayerStyles,
-							"title": hazardLayerTitle,
+							"layerStyles": "incore:bldg-dmg-summary",
+							"title": "Building Damage",
 							"opacity": 1,
 							"zIndex": 1
 						}
@@ -64,55 +56,83 @@ export default function PopDislocation(props){
 				layerRef.current.tilelayer.getLayers().extend(previewLayers);
 			}
 			if (vName === "popdislHeatmapINCOREId") {
-				const popdislHeatmapINCOREId = await getOutputFileContent(datawolfConfig, executionItem, datawolfDatasetConfigItem.datasetId);
+				const popdislHeatmapINCOREId = await getOutputFileContent(
+					datawolfConfig,
+					executionItem,
+					datawolfDatasetConfigItem.datasetId
+				);
 				const tmpLayerDef = [
 					{
-						"layerId": popdislHeatmapINCOREId,
-						"layerStyles": "incore:heatmap",
-						"title": "Population Dislocation Heatmap",
-						"opacity": 0.8,
-						"zIndex": 2
+						layerId: popdislHeatmapINCOREId,
+						layerStyles: "incore:heatmap",
+						title: "Population Dislocation Heatmap",
+						opacity: 0.8,
+						zIndex: 2
 					}
 				];
 				const previewLayers = generateLayers(globalConfig, tmpLayerDef);
 				layerRef.current.tilelayer.getLayers().extend(previewLayers);
 			}
+
+			// overlay with hazard
+			layerRef.current.tilelayer.getLayers().push(hazardLayers);
+
 			if (vName === "totalDislTableContent") {
-				setTotalDislTableContent(await getOutputFileContentJSON(datawolfConfig, executionItem, datawolfDatasetConfigItem.datasetId));
-			}
-			else if (vName === "dislocationByRaceContent") {
-				setDislocationByRaceContent(await getOutputFileContentJSON(datawolfConfig, executionItem, datawolfDatasetConfigItem.datasetId));
-			}
-			else if (vName === "dislocationByTenureContent") {
-				setDislocationByTenureContent(await getOutputFileContentJSON(datawolfConfig, executionItem, datawolfDatasetConfigItem.datasetId));
-			}
-			else if (vName === "dislocationByIncomeContent") {
-				setDislocationByIncomeContent(await getOutputFileContentJSON(datawolfConfig, executionItem, datawolfDatasetConfigItem.datasetId));
-			}
-			else if (vName === "dislocationByHousingTypeContent") {
-				setDislocationByHousingTypeContent(await getOutputFileContentJSON(datawolfConfig, executionItem, datawolfDatasetConfigItem.datasetId));
+				setTotalDislTableContent(
+					await getOutputFileContentJSON(datawolfConfig, executionItem, datawolfDatasetConfigItem.datasetId)
+				);
+			} else if (vName === "dislocationByRaceContent") {
+				setDislocationByRaceContent(
+					await getOutputFileContentJSON(datawolfConfig, executionItem, datawolfDatasetConfigItem.datasetId)
+				);
+			} else if (vName === "dislocationByTenureContent") {
+				setDislocationByTenureContent(
+					await getOutputFileContentJSON(datawolfConfig, executionItem, datawolfDatasetConfigItem.datasetId)
+				);
+			} else if (vName === "dislocationByIncomeContent") {
+				setDislocationByIncomeContent(
+					await getOutputFileContentJSON(datawolfConfig, executionItem, datawolfDatasetConfigItem.datasetId)
+				);
+			} else if (vName === "dislocationByHousingTypeContent") {
+				setDislocationByHousingTypeContent(
+					await getOutputFileContentJSON(datawolfConfig, executionItem, datawolfDatasetConfigItem.datasetId)
+				);
 			}
 		});
 	}, []);
 
 	const download = async () => {
 		const popDislJson = {
-			"totalResultsTable": totalDislTableContent,
-			"huaResultsTable":{
-				"income": dislocationByIncomeContent,
-				"race": dislocationByRaceContent,
-				"tenure": dislocationByTenureContent,
-				"housingType": dislocationByHousingTypeContent
+			totalResultsTable: totalDislTableContent,
+			huaResultsTable: {
+				income: dislocationByIncomeContent,
+				race: dislocationByRaceContent,
+				tenure: dislocationByTenureContent,
+				housingType: dislocationByHousingTypeContent
 			}
 		};
 		exportJson(popDislJson, `population-dislocation-${executionItem.id}`);
 	};
 
 	return (
-		<Dialog open={previewOn} onClose={()=>{handlePreviewClose(layerRef);}} maxWidth="lg" fullWidth scroll="paper">
+		<Dialog
+			open={previewOn}
+			onClose={() => {
+				handlePreviewClose(layerRef);
+			}}
+			maxWidth="lg"
+			fullWidth
+			scroll="paper"
+		>
 			<DialogContent className="previewModal" ref={printRef}>
-				<IconButton aria-label="Close" onClick={()=>{handlePreviewClose(layerRef);}} style={{float: "right"}}>
-					<CloseIcon fontSize="small"/>
+				<IconButton
+					aria-label="Close"
+					onClick={() => {
+						handlePreviewClose(layerRef);
+					}}
+					style={{ float: "right" }}
+				>
+					<CloseIcon fontSize="small" />
 				</IconButton>
 
 				{/*title*/}
@@ -131,45 +151,50 @@ export default function PopDislocation(props){
 						maxZoom={mapConfig.MAX_ZOOM}
 						extent={applyTransform(mapConfig.MAP_BOUNDS, getTransform("EPSG:4326", "EPSG:3857"))}
 						center={fromLonLat(mapConfig.MAP_CENTER)}
-						layers={[
-							layerRef.current.basemaps,
-							layerRef.current.tilelayer
-						]}
+						layers={[layerRef.current.basemaps, layerRef.current.tilelayer]}
 						layerSwitcherOptions={{}}
 					/>
 				</Container>
 
 				{/*for table*/}
-				<Box style={{padding:"50px 25px"}}>
+				<Box style={{ padding: "50px 25px" }}>
 					<Grid container spacing={2} justify="center">
 						<Grid item xs={12} sm={12} md={5} lg={5} xl={5}>
-							{
-								totalDislTableContent && totalDislTableContent["household_dislocation_in_total"] ?
-									<DislocationResultsTable resultsJson={totalDislTableContent["household_dislocation_in_total"]}
-															 headers={["HOUSEHOLD", "% of HOUSEHOLD"]}
-															 title={"Household Dislocation - in Total"}/> :<></>
-							}
-							{
-								totalDislTableContent && totalDislTableContent["population_dislocation_in_total"] ?
-									<DislocationResultsTable
-										resultsJson={totalDislTableContent["population_dislocation_in_total"]}
-										headers={["POPULATION", "% of POPULATION"]}
-										title={"Population Dislocation - in Total"}/>
-									:<></>
-							}
+							{totalDislTableContent && totalDislTableContent["household_dislocation_in_total"] ? (
+								<DislocationResultsTable
+									resultsJson={totalDislTableContent["household_dislocation_in_total"]}
+									headers={["HOUSEHOLD", "% of HOUSEHOLD"]}
+									title={"Household Dislocation - in Total"}
+								/>
+							) : (
+								<></>
+							)}
+							{totalDislTableContent && totalDislTableContent["population_dislocation_in_total"] ? (
+								<DislocationResultsTable
+									resultsJson={totalDislTableContent["population_dislocation_in_total"]}
+									headers={["POPULATION", "% of POPULATION"]}
+									title={"Population Dislocation - in Total"}
+								/>
+							) : (
+								<></>
+							)}
 						</Grid>
 						<Grid item xs={12} sm={12} md={7} lg={7} xl={7}>
-							{
-								dislocationByIncomeContent && dislocationByRaceContent && dislocationByTenureContent
-								&& dislocationByHousingTypeContent ?
-									<HuaResultsTable resultsJson={{
-										"income": dislocationByIncomeContent,
-										"race": dislocationByRaceContent,
-										"tenure": dislocationByTenureContent,
-										"housingType": dislocationByHousingTypeContent
-									}}/>
-									:<></>
-							}
+							{dislocationByIncomeContent &&
+							dislocationByRaceContent &&
+							dislocationByTenureContent &&
+							dislocationByHousingTypeContent ? (
+								<HuaResultsTable
+									resultsJson={{
+										income: dislocationByIncomeContent,
+										race: dislocationByRaceContent,
+										tenure: dislocationByTenureContent,
+										housingType: dislocationByHousingTypeContent
+									}}
+								/>
+							) : (
+								<></>
+							)}
 						</Grid>
 					</Grid>
 				</Box>

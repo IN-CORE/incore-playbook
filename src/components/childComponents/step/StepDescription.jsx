@@ -1,6 +1,6 @@
-import React, {useState} from "react";
-import {makeStyles} from "@material-ui/core";
-import {ExpandLess, ExpandMore} from "@material-ui/icons";
+import React, { useState } from "react";
+import { makeStyles } from "@material-ui/core";
+import { ExpandLess, ExpandMore } from "@material-ui/icons";
 
 const useStyles = makeStyles({
 	thisStepTitle: {
@@ -34,7 +34,7 @@ const useStyles = makeStyles({
 export const StepDescription = (props) => {
 	const classes = useStyles();
 
-	const {stepInfo} = props;
+	const { stepInfo } = props;
 
 	const [open, setOpen] = useState(true);
 
@@ -43,20 +43,25 @@ export const StepDescription = (props) => {
 	};
 
 	const title = stepInfo.stepTitle;
-	const about = stepInfo.stepAbout.map((paragraph, index) =>
-		<p key={index} className="secondary-color">{paragraph}</p>);
+	const about = stepInfo.stepAbout.map((paragraph, index) => (
+		<p key={index} className="secondary-color">
+			{paragraph}
+		</p>
+	));
 	const link = stepInfo.stepLink;
-
 
 	return (
 		<div>
-			<div onClick={()=>togglePanel()} className={classes.thisStepTitle} >
-				{title} {open ? (<ExpandLess style={{fontSize: "small"}} />) : <ExpandMore style={{fontSize: "small"}} />}
+			<div onClick={() => togglePanel()} className={classes.thisStepTitle}>
+				{title}{" "}
+				{open ? <ExpandLess style={{ fontSize: "small" }} /> : <ExpandMore style={{ fontSize: "small" }} />}
 			</div>
 			{open ? (
 				<div className={classes.thisStepAbout}>
 					{about}
-					<a className={classes.learnMoreLink} href={link.uri}>{link.text}</a>
+					<a className={classes.learnMoreLink} href={link.uri}>
+						{link.text}
+					</a>
 				</div>
 			) : null}
 		</div>

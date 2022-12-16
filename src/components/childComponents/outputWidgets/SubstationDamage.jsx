@@ -1,23 +1,22 @@
-import {Box, Container, Dialog, DialogActions, DialogContent, IconButton, Typography} from "@material-ui/core";
+import { Box, Container, Dialog, DialogActions, DialogContent, IconButton, Typography } from "@material-ui/core";
 import CloseIcon from "@material-ui/icons/Close";
 import Map from "../map/Map";
-import {fromLonLat, getTransform} from "ol/proj";
-import React, { useEffect, useRef, useState } from "react";
-import {useSelector} from "react-redux";
-import {applyTransform} from "ol/extent";
-import {getOutputFileContent} from "../../../utils/datawolf";
-import {basicLayers, generateLayers} from "../../../utils/map";
-import {IncoreButtonText} from "../../styledComponents/IncoreButtonText";
+import { fromLonLat, getTransform } from "ol/proj";
+import React, { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
+import { applyTransform } from "ol/extent";
+import { getOutputFileContent } from "../../../utils/datawolf";
+import { basicLayers, generateLayers } from "../../../utils/map";
+import { IncoreButtonText } from "../../styledComponents/IncoreButtonText";
 import GetAppIcon from "@material-ui/icons/GetApp";
-import {downloadDataset} from "../../../utils/dataset";
+import { downloadDataset } from "../../../utils/dataset";
 import { downloadImg } from "../../../utils/image";
 import CameraAltIcon from "@material-ui/icons/CameraAlt";
 
 
 export default function SubstationDamage(props){
 
-	let {executionItem, previewOn, handlePreviewClose, datawolfDatasetConfigItems, hazardDatasetId,
-		hazardLayerTitle, hazardLayerStyles} = props;
+	let {executionItem, previewOn, handlePreviewClose, datawolfDatasetConfigItems, hazardLayers} = props;
 
 	const mapConfig = useSelector((state) => state.config.mapConfig);
 	const datawolfConfig = useSelector((state) => state.config.datawolfConfig);
@@ -38,39 +37,59 @@ export default function SubstationDamage(props){
 		datawolfDatasetConfigItems.map(async (datawolfDatasetConfigItem) => {
 			const vName = datawolfDatasetConfigItem.datasets.variableName;
 			if (vName === "substationMaxDmgStateINCOREId") {
-				const substationMaxDmgStateINCOREId = await getOutputFileContent(datawolfConfig, executionItem, datawolfDatasetConfigItem.datasetId);
+				const substationMaxDmgStateINCOREId = await getOutputFileContent(
+					datawolfConfig,
+					executionItem,
+					datawolfDatasetConfigItem.datasetId
+				);
 				setSubstationMaxDmgStateINCOREId(substationMaxDmgStateINCOREId);
 				const layerDef = [
 					{
-						"layerId": substationMaxDmgStateINCOREId,
-						"layerStyles": "incore:epf-dmg-summary",
-						"title": "EPF Damage (Substation)",
-						"opacity": 1,
-						"zIndex": 1
+						layerId: substationMaxDmgStateINCOREId,
+						layerStyles: "incore:epf-dmg-summary",
+						title: "EPF Damage (Substation)",
+						opacity: 1,
+						zIndex: 1
 					},
 					{
-						"layerId": hazardDatasetId,
-						"layerStyles": hazardLayerStyles,
-						"title": hazardLayerTitle,
-						"opacity": 0.8,
-						"zIndex": 2
+						layerId: hazardDatasetId,
+						layerStyles: hazardLayerStyles,
+						title: hazardLayerTitle,
+						opacity: 0.8,
+						zIndex: 2
 					}
 				];
 				const previewLayers = generateLayers(globalConfig, layerDef);
 				layerRef.current.tilelayer.getLayers().extend(previewLayers);
+				layerRef.current.tilelayer.getLayers().push(hazardLayers);
 			}
 		});
 	}, []);
 
 	const download = async () => {
-		if (substationMaxDmgStateINCOREId) await downloadDataset(globalConfig, substationMaxDmgStateINCOREId, "epf-substation");
+		if (substationMaxDmgStateINCOREId)
+			await downloadDataset(globalConfig, substationMaxDmgStateINCOREId, "epf-substation");
 	};
 
 	return (
-		<Dialog open={previewOn} onClose={()=>{handlePreviewClose(layerRef);}} maxWidth="lg" fullWidth scroll="paper">
+		<Dialog
+			open={previewOn}
+			onClose={() => {
+				handlePreviewClose(layerRef);
+			}}
+			maxWidth="lg"
+			fullWidth
+			scroll="paper"
+		>
 			<DialogContent className="previewModal" ref={printRef}>
-				<IconButton aria-label="Close" onClick={()=>{handlePreviewClose(layerRef);}} style={{float: "right"}}>
-					<CloseIcon fontSize="small"/>
+				<IconButton
+					aria-label="Close"
+					onClick={() => {
+						handlePreviewClose(layerRef);
+					}}
+					style={{ float: "right" }}
+				>
+					<CloseIcon fontSize="small" />
 				</IconButton>
 
 				{/*title*/}
@@ -89,10 +108,7 @@ export default function SubstationDamage(props){
 						maxZoom={mapConfig.MAX_ZOOM}
 						extent={applyTransform(mapConfig.MAP_BOUNDS, getTransform("EPSG:4326", "EPSG:3857"))}
 						center={fromLonLat(mapConfig.MAP_CENTER)}
-						layers={[
-							layerRef.current.basemaps,
-							layerRef.current.tilelayer
-						]}
+						layers={[layerRef.current.basemaps, layerRef.current.tilelayer]}
 						layerSwitcherOptions={{}}
 					/>
 				</Container>

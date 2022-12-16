@@ -1,19 +1,19 @@
-import React, {useEffect, useRef, useState} from "react";
+import React, { useEffect, useRef, useState } from "react";
 
-import {Box, Container} from "@material-ui/core";
+import { Box, Container } from "@material-ui/core";
 
-import {IncoreButton} from "../../styledComponents/IncoreButton";
-import {IncoreTextField} from "../../styledComponents/IncoreInput";
-import {IncoreInputLabel} from "../../styledComponents/IncoreInputLabel";
+import { IncoreButton } from "../../styledComponents/IncoreButton";
+import { IncoreTextField } from "../../styledComponents/IncoreInput";
+import { IncoreInputLabel } from "../../styledComponents/IncoreInputLabel";
 
 import FileUploadDrop from "../form/FileUploadDrop";
 
-import {createRasterTornado} from "../../../utils/hazard";
+import { createRasterTornado } from "../../../utils/hazard";
 import LoadingOverlay from "react-loading-overlay";
-import {useSelector} from "react-redux";
+import { useSelector } from "react-redux";
 
 export default function RasterTornado(props) {
-	const {value, index, handleLayerUpdate, handleListUpdate, ...other} = props;
+	const { value, index, handleLayerUpdate, handleListUpdate, ...other } = props;
 	const globalConfig = useSelector((state) => state.config.globalConfig);
 
 	const fileInputRef = useRef(null);
@@ -53,42 +53,53 @@ export default function RasterTornado(props) {
 	};
 
 	const onDeleteClick = (filename) => {
-		setFile(files.filter(file => file.name !== filename));
+		setFile(files.filter((file) => file.name !== filename));
 	};
 
 	return (
-		<div role="tabpanel" hidden={value !== index} id={`simple-tabpanel-${index}`}
-			 aria-labelledby={`simple-tab-${index}`}
-			 {...other}
+		<div
+			role="tabpanel"
+			hidden={value !== index}
+			id={`simple-tabpanel-${index}`}
+			aria-labelledby={`simple-tab-${index}`}
+			{...other}
 		>
 			{value === index && (
-
 				<Container>
-					<LoadingOverlay
-						active={loading}
-						spinner
-						text="Saving..."
-					>
+					<LoadingOverlay active={loading} spinner text="Saving...">
 						<Box className="inputGroup">
 							<IncoreInputLabel>Name</IncoreInputLabel>
-							<IncoreTextField value={name} variant="outlined" onChange={(e) => setName(e.target.value)}/>
+							<IncoreTextField
+								value={name}
+								variant="outlined"
+								onChange={(e) => setName(e.target.value)}
+							/>
 						</Box>
 						<Box className="inputGroup">
 							<IncoreInputLabel>Description</IncoreInputLabel>
-							<IncoreTextField value={description} variant="outlined"
-										 onChange={(e) => setDescription(e.target.value)}/>
+							<IncoreTextField
+								value={description}
+								variant="outlined"
+								onChange={(e) => setDescription(e.target.value)}
+							/>
 						</Box>
 						<Box className="inputGroup">
-							<FileUploadDrop onDrop={onDrop} onFileInputChange={onFileInputChange} fileInput={fileInputRef}
-								files={files} onDeleteClick={onDeleteClick}/>
+							<FileUploadDrop
+								onDrop={onDrop}
+								onFileInputChange={onFileInputChange}
+								fileInput={fileInputRef}
+								files={files}
+								onDeleteClick={onDeleteClick}
+							/>
 						</Box>
 						<Box className="inputGroup">
-							<IncoreButton variant="contained" onClick={onSave} disabled={disabled}>Save</IncoreButton>
+							<IncoreButton variant="contained" onClick={onSave} disabled={disabled}>
+								Save
+							</IncoreButton>
 						</Box>
 					</LoadingOverlay>
 				</Container>
 			)}
 		</div>
 	);
-
 }

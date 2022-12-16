@@ -1,5 +1,5 @@
-import {styled} from "@material-ui/core/styles";
-import {Select, MenuItem} from "@material-ui/core";
+import { styled } from "@material-ui/core/styles";
+import { Select, MenuItem } from "@material-ui/core";
 
 export const IncoreSelectBox = styled(Select)({
 	boxSizing: "border-box",
@@ -11,7 +11,7 @@ export const IncoreSelectBox = styled(Select)({
 	letterSpacing: 0,
 	lineHeight: "18px",
 	backgroundColor: "#FFFFFF",
-	position:"relative",
+	position: "relative"
 });
 
 export const IncoreMenuItem = styled(MenuItem)({

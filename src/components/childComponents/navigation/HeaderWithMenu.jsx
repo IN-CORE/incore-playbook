@@ -1,7 +1,7 @@
 import React from "react";
-import {connect, useSelector} from "react-redux";
-import {Link, useHistory} from "react-router-dom";
-import {makeStyles, useTheme } from "@material-ui/core/styles";
+import { connect, useSelector, useDispatch } from "react-redux";
+import { Link, useHistory } from "react-router-dom";
+import { makeStyles, useTheme } from "@material-ui/core/styles";
 import clsx from "clsx";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
@@ -20,9 +20,10 @@ import Divider from "@material-ui/core/Divider";
 import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
 import ChevronRightIcon from "@material-ui/icons/ChevronRight";
 
-import {setMenuState} from "../../../actions/layout";
+import { setMenuState } from "../../../actions/layout";
+import { getAllSteps } from "../../../actions/steps";
 
-import {menuWidth} from "../../../globals";
+import { menuWidth } from "../../../globals";
 import Cookies from "universal-cookie";
 
 import List from "@material-ui/core/List";
@@ -32,8 +33,8 @@ import Collapse from "@material-ui/core/Collapse";
 import DownIcon from "@material-ui/icons/KeyboardArrowDown";
 import RightIcon from "@material-ui/icons/KeyboardArrowRight";
 import CheckCircleIcon from "@material-ui/icons/CheckCircle";
+import QueryBuilderIcon from "@material-ui/icons/QueryBuilder";
 import Grid from "@material-ui/core/Grid";
-
 
 const cookies = new Cookies();
 
@@ -46,23 +47,23 @@ const useStyles = makeStyles((theme) => ({
 	appBar: {
 		transition: theme.transitions.create(["margin", "width"], {
 			easing: theme.transitions.easing.sharp,
-			duration: theme.transitions.duration.leavingScreen,
-		}),
+			duration: theme.transitions.duration.leavingScreen
+		})
 	},
 	appBarShift: {
 		width: `calc(100% - ${drawerWidth}px)`,
 		marginLeft: drawerWidth,
 		transition: theme.transitions.create(["margin", "width"], {
 			easing: theme.transitions.easing.easeOut,
-			duration: theme.transitions.duration.enteringScreen,
-		}),
+			duration: theme.transitions.duration.enteringScreen
+		})
 	},
 	drawer: {
 		width: drawerWidth,
-		flexShrink: 0,
+		flexShrink: 0
 	},
 	drawerPaper: {
-		width: drawerWidth,
+		width: drawerWidth
 	},
 	drawerHeader: {
 		display: "flex",
@@ -70,10 +71,10 @@ const useStyles = makeStyles((theme) => ({
 		padding: theme.spacing(0, 1),
 		// necessary for content to be below app bar
 		...theme.mixins.toolbar,
-		justifyContent: "flex-end",
+		justifyContent: "flex-end"
 	},
 	grow: {
-		flexGrow: 1,
+		flexGrow: 1
 	},
 	menuButton: {
 		marginRight: theme.spacing(0.5)
@@ -82,29 +83,29 @@ const useStyles = makeStyles((theme) => ({
 		height: 36,
 		width: 36
 	},
-	headerLogo:{
+	headerLogo: {
 		height: "44px",
-		marginRight: theme.spacing(1),
+		marginRight: theme.spacing(1)
 	},
 	hide: {
-		display: "none",
+		display: "none"
 	},
 	title: {
 		display: "none",
 		[theme.breakpoints.up("sm")]: {
 			display: "flex",
 			alignItems: "center"
-		},
+		}
 	},
 	titleLink: {
 		textDecoration: "none",
 		color: "inherit"
 	},
 	inputRoot: {
-		color: "inherit",
+		color: "inherit"
 	},
 	sectionDesktop: {
-		display: "flex",
+		display: "flex"
 		// [theme.breakpoints.up("sm")]: {
 		// 	display: "flex",
 		// },
@@ -116,15 +117,19 @@ const useStyles = makeStyles((theme) => ({
 	}
 }));
 
-
-
-const HeaderWithMenu = ({dispatch, isAuthenticated, menuItem, headerTitle="Playbook Interactive Guide for",
-	headerSubTitle="Community Resilience Planning"}) => {
+const HeaderWithMenu = ({
+	dispatch,
+	isAuthenticated,
+	menuItem,
+	headerTitle = "Playbook Interactive Guide for",
+	headerSubTitle = "Community Resilience Planning"
+}) => {
 	const classes = useStyles();
 	const theme = useTheme();
 	const history = useHistory();
 
 	const assetConfig = useSelector((state) => state.config.assetConfig);
+	const stepStatus = useSelector((state) => state.steps);
 
 	const [anchorEl, setAnchorEl] = React.useState(null);
 
@@ -138,27 +143,29 @@ const HeaderWithMenu = ({dispatch, isAuthenticated, menuItem, headerTitle="Playb
 		setAnchorEl(null);
 	};
 
+	React.useEffect(() => {
+		getAllSteps()(dispatch);
+	}, []);
+
 	// //TODO: move this to utils if needed
 	const handleLogout = () => {
-		cookies.remove("Authorization", {path: "/"});
+		cookies.remove("Authorization", { path: "/" });
 		history.push("/login");
 	};
 
 	let openSubMenu = "1-1";
 	let openMenu = 1;
 
-	if(menuItem){
+	if (menuItem) {
 		openSubMenu = menuItem;
 		openMenu = openSubMenu.split("-")[0];
 	}
 
-
-
-	if(openMenu === null || openMenu === undefined){
+	if (openMenu === null || openMenu === undefined) {
 		openMenu = "1";
 	}
 
-	let [open, setOpen] = isAuthenticated ? React.useState(true): React.useState(false);
+	let [open, setOpen] = isAuthenticated ? React.useState(true) : React.useState(false);
 
 	const [openTask, setOpenTask] = React.useState(openMenu);
 
@@ -173,32 +180,26 @@ const HeaderWithMenu = ({dispatch, isAuthenticated, menuItem, headerTitle="Playb
 	};
 
 	const handleParentClick = (key) => () => {
-		(openTask === key) ? setOpenTask("0"): setOpenTask(key);
+		openTask === key ? setOpenTask("0") : setOpenTask(key);
 		if (key === "1") {
 			history.push("/create-team");
-		}
-		else if (key === "2") {
+		} else if (key === "2") {
 			history.push("/community");
-		}
-		else if (key === "3") {
+		} else if (key === "3") {
 			history.push("/goal-objective");
-		}
-		else if (key === "4") {
+		} else if (key === "4") {
 			history.push("/plan-development");
-		}
-		else if (key === "5") {
+		} else if (key === "5") {
 			history.push("/review");
-		}
-		else if (key === "6") {
+		} else if (key === "6") {
 			history.push("/implementation");
-		}
-		else {
+		} else {
 			history.push("/");
 		}
 	};
 
 	const handleParentLoad = (key) => () => {
-		(openTask === key) ? setOpenTask("0"): setOpenTask(key);
+		openTask === key ? setOpenTask("0") : setOpenTask(key);
 	};
 
 	const handleSubmenuClick = (route) => () => {
@@ -221,7 +222,7 @@ const HeaderWithMenu = ({dispatch, isAuthenticated, menuItem, headerTitle="Playb
 		</Menu>
 	);
 
-	let treeData =  [
+	let treeData = [
 		{
 			key: "1",
 			label: "Form Collaborative Planning Team",
@@ -229,32 +230,32 @@ const HeaderWithMenu = ({dispatch, isAuthenticated, menuItem, headerTitle="Playb
 				{
 					key: "1-1",
 					label: "Identify leader",
-					completed: true,
+					status: "pending",
 					disabled: false,
 					route: "/create-team-leader"
 				},
 				{
 					key: "1-2",
 					label: "Identify Team Members",
-					completed: false,
+					status: "pending",
 					disabled: false,
 					route: "/create-team-member"
 				},
 				{
 					key: "1-3",
 					label: "Establish the scope",
-					completed: false,
+					status: "pending",
 					disabled: false,
 					route: "/create-team-scope"
 				},
 				{
 					key: "1-4",
 					label: " Identify key stakeholders",
-					completed: false,
+					status: "pending",
 					disabled: false,
 					route: "/create-team-stakeholder"
-				},
-			],
+				}
+			]
 		},
 		{
 			key: "2",
@@ -263,39 +264,39 @@ const HeaderWithMenu = ({dispatch, isAuthenticated, menuItem, headerTitle="Playb
 				{
 					key: "2-1",
 					label: "Assess existing community plans",
-					completed: false,
+					status: "pending",
 					disabled: false,
 					route: "/community-plan"
 				},
 				{
 					key: "2-2",
 					label: "Characterize community members",
-					completed: false,
+					status: "pending",
 					disabled: false,
 					route: "/community-member"
 				},
 				{
 					key: "2-3",
 					label: "Characterize social functions",
-					completed: false,
+					status: "pending",
 					disabled: false,
 					route: "/community-function"
 				},
 				{
 					key: "2-4",
 					label: "Characterize built environment",
-					completed: true,
+					status: "pending",
 					disabled: false,
 					route: "/community-environment"
 				},
 				{
 					key: "2-5",
 					label: "Link social functions & built environment",
-					completed: false,
+					status: "pending",
 					disabled: false,
 					route: "/community-link"
-				},
-			],
+				}
+			]
 		},
 		{
 			key: "3",
@@ -304,39 +305,39 @@ const HeaderWithMenu = ({dispatch, isAuthenticated, menuItem, headerTitle="Playb
 				{
 					key: "3-1",
 					label: "Identify long-term community goals",
-					completed: false,
+					status: "pending",
 					disabled: false,
 					route: "/goal-objective-long"
 				},
 				{
 					key: "3-2",
 					label: "Establish performance goals",
-					completed: false,
+					status: "pending",
 					disabled: false,
 					route: "/goal-objective-desired"
 				},
 				{
 					key: "3-3",
 					label: "Define community hazards",
-					completed: true,
+					status: "pending",
 					disabled: false,
 					route: "/goal-objective-hazard"
 				},
 				{
 					key: "3-4",
 					label: "Determine anticipated performance",
-					completed: true,
+					status: "pending",
 					disabled: false,
 					route: "/goal-objective-performance"
 				},
 				{
 					key: "3-5",
 					label: "Summarize the results",
-					completed: false,
+					status: "pending",
 					disabled: false,
 					route: "/goal-objective-result"
-				},
-			],
+				}
+			]
 		},
 		{
 			key: "4",
@@ -345,24 +346,24 @@ const HeaderWithMenu = ({dispatch, isAuthenticated, menuItem, headerTitle="Playb
 				{
 					key: "4-1",
 					label: "Evaluate Gaps",
-					completed: false,
+					status: "pending",
 					disabled: false,
 					route: "/plan-development-gap"
 				},
 				{
 					key: "4-2",
 					label: "Identify Solutions",
-					completed: false,
+					status: "pending",
 					disabled: false,
 					route: "/plan-development-solution"
 				},
 				{
 					key: "4-3",
 					label: "Prioritize implementation strategy",
-					completed: false,
+					status: "pending",
 					disabled: false,
 					route: "/plan-development-strategy"
-				},
+				}
 			]
 		},
 		{
@@ -372,24 +373,24 @@ const HeaderWithMenu = ({dispatch, isAuthenticated, menuItem, headerTitle="Playb
 				{
 					key: "5-1",
 					label: "Document Plans & Strategy",
-					completed: false,
+					status: "pending",
 					disabled: false,
 					route: "/review-strategy"
 				},
 				{
 					key: "5-2",
 					label: "Obtain Feedback & Approval",
-					completed: false,
+					status: "pending",
 					disabled: false,
 					route: "/review-approval"
 				},
 				{
 					key: "5-3",
 					label: "Finalize & Approve The Plan",
-					completed: false,
+					status: "pending",
 					disabled: false,
 					route: "/review-final"
-				},
+				}
 			]
 		},
 		{
@@ -399,63 +400,104 @@ const HeaderWithMenu = ({dispatch, isAuthenticated, menuItem, headerTitle="Playb
 				{
 					key: "6-1",
 					label: "Execute approved solutions",
-					completed: false,
+					status: "pending",
 					disabled: false,
 					route: "/implementation-execute"
 				},
 				{
 					key: "6-2",
 					label: "Evaluate & Update",
-					completed: false,
+					status: "pending",
 					disabled: false,
 					route: "/implementation-update"
 				},
 				{
 					key: "6-3",
 					label: "Modify Strategy (as needed)",
-					completed: false,
+					status: "pending",
 					disabled: false,
 					route: "/implementation-modify"
-				},
+				}
 			]
 		}
 	];
 
 	let menus = [];
+	const completedCheckIcon = <CheckCircleIcon style={{ color: "#00619D" }} />;
+	const pendingCheckIcon = <CheckCircleIcon style={{ color: "#8798AD" }} />;
 
-	treeData.map(({key, label, nodes}) => {
+	treeData.map(({ key, label, nodes }) => {
 		let subMenus = [];
-		nodes.map(({key, label, completed, disabled, route}) => {
+		let subMenusStatus = [];
+		nodes.map(({ key, label, status, disabled, route }) => {
 			subMenus.push(
-				<ListItem button style={{paddingLeft: 40, textTransform: "capitalize"}} key={key} selected={openSubMenu === key}
-				  onClick={handleSubmenuClick(route)} disabled={disabled}>
-					<ListItemText primary={`${key}. ${label}`}  />
-					{completed ? <CheckCircleIcon style={{color: "green"}}/> : "" }
+				<ListItem
+					button
+					style={{ paddingLeft: 40, textTransform: "capitalize" }}
+					key={key}
+					selected={openSubMenu === key}
+					onClick={handleSubmenuClick(route)}
+					disabled={disabled}
+				>
+					<ListItemText primary={`${key}. ${label}`} />
+					{Object.keys(stepStatus).length === 0 ? (
+						<QueryBuilderIcon />
+					) : (
+						<>
+							{stepStatus[`step_${key.replace("-", "_")}`].status === "pending" ? (
+								<QueryBuilderIcon />
+							) : stepStatus[`step_${key.replace("-", "_")}`].status === "in_progress" ? (
+								pendingCheckIcon
+							) : (
+								completedCheckIcon
+							)}
+						</>
+					)}
 				</ListItem>
 			);
+			if (Object.keys(stepStatus).length === 0) {
+				subMenusStatus.push("pending");
+			} else {
+				subMenusStatus.push(stepStatus[`step_${key.replace("-", "_")}`].status);
+			}
 		});
 		menus.push(
 			<div key={key}>
-				<ListItem button disableGutters={true} className={classes.parentMenu}
-					onClick={handleParentClick(key)} onLoad={handleParentLoad(key)}>
-					{openTask === key ? <DownIcon fontSize="large" /> : <RightIcon fontSize="large"/>}
-					<ListItemText  primary={`${key}. ${label}`} />
+				<ListItem
+					button
+					disableGutters={true}
+					className={classes.parentMenu}
+					onClick={handleParentClick(key)}
+					onLoad={handleParentLoad(key)}
+				>
+					{openTask === key ? <DownIcon fontSize="large" /> : <RightIcon fontSize="large" />}
+					<ListItemText primary={`${key}. ${label}`} />
+					{/* If any in_progress status, then add pending check icon */}
+					{/* else, if any pending icon, show pending else, all are complete and show completed icon */}
+					{subMenusStatus.includes("in_progress") ? (
+						pendingCheckIcon
+					) : (
+						<>{subMenusStatus.includes("pending") ? <QueryBuilderIcon /> : completedCheckIcon}</>
+					)}
 				</ListItem>
 				<Collapse in={openTask === key} timeout="auto" unmountOnExit>
 					{subMenus}
 				</Collapse>
-				<Divider/>
+				<Divider />
 			</div>
 		);
 	});
 
 	return (
 		<div className={classes.grow}>
-			<CssBaseline/>
-			<AppBar position="relative" color="transparent"
+			<CssBaseline />
+			<AppBar
+				position="relative"
+				color="transparent"
 				className={clsx(classes.appBar, {
-					[classes.appBarShift]: open,
-				})}>
+					[classes.appBarShift]: open
+				})}
+			>
 				<Toolbar>
 					<IconButton
 						color="inherit"
@@ -468,28 +510,27 @@ const HeaderWithMenu = ({dispatch, isAuthenticated, menuItem, headerTitle="Playb
 					</IconButton>
 
 					<Link to="/" className={classes.titleLink}>
-
 						<Grid container justify="center">
 							<Grid item>
-								<img src={assetConfig.communityResilienceLogo} className={classes.headerLogo} alt="Community Resilience"
-										 style={{maxHeight: 50, maxWidth: 50}}/>
+								<img
+									src={assetConfig.communityResilienceLogo}
+									className={classes.headerLogo}
+									alt="Community Resilience"
+									style={{ maxHeight: 50, maxWidth: 50 }}
+								/>
 							</Grid>
 
-							<Grid item style={{display: "flex", marginTop: "6px"}}>
-								<div >
-									<div className="titleSmall">
-										{headerTitle}
-									</div>
-									<div className="titleLarge">
-										{headerSubTitle}
-									</div>
+							<Grid item style={{ display: "flex", marginTop: "6px" }}>
+								<div>
+									<div className="titleSmall">{headerTitle}</div>
+									<div className="titleLarge">{headerSubTitle}</div>
 								</div>
 							</Grid>
 						</Grid>
 					</Link>
 
 					<div className={classes.grow} />
-					<div className={isAuthenticated ? classes.sectionDesktop: classes.hide}>
+					<div className={isAuthenticated ? classes.sectionDesktop : classes.hide}>
 						<IconButton aria-label="show messages" color="inherit">
 							<Badge variant="dot" color="primary">
 								<MailIcon />
@@ -511,7 +552,6 @@ const HeaderWithMenu = ({dispatch, isAuthenticated, menuItem, headerTitle="Playb
 							<AccountCircle />
 						</IconButton>
 					</div>
-
 				</Toolbar>
 			</AppBar>
 			{renderMenu}
@@ -522,29 +562,29 @@ const HeaderWithMenu = ({dispatch, isAuthenticated, menuItem, headerTitle="Playb
 				anchor="left"
 				open={open}
 				classes={{
-					paper: classes.drawerPaper,
+					paper: classes.drawerPaper
 				}}
 			>
 				<div className={classes.drawerHeader}>
 					<IconButton onClick={handleDrawerClose}>
 						{theme.direction === "ltr" ? <ChevronLeftIcon /> : <ChevronRightIcon />}
-					</IconButton> <br/>
-					<Divider/>
+					</IconButton>{" "}
+					<br />
+					<Divider />
 				</div>
 				<List
 					component="nav"
 					aria-labelledby="nested-list-subheader"
 					// className={classes.root}
-				 >
+				>
 					{menus}
 				</List>
 			</Drawer>
 			<main
 				className={clsx(classes.content, {
-					[classes.contentShift]: open,
+					[classes.contentShift]: open
 				})}
-			 />
-
+			/>
 		</div>
 	);
 };
