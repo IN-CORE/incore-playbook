@@ -1,14 +1,14 @@
-import {Box, Container, Dialog, DialogActions, DialogContent, IconButton, Typography} from "@material-ui/core";
+import { Box, Container, Dialog, DialogActions, DialogContent, IconButton, Typography } from "@material-ui/core";
 import CloseIcon from "@material-ui/icons/Close";
 import Map from "../map/Map";
-import {fromLonLat, getTransform} from "ol/proj";
-import React, {useEffect, useState} from "react";
-import {useSelector} from "react-redux";
-import {applyTransform} from "ol/extent";
-import {getOutputFileContent} from "../../../utils/datawolf";
-import {basicLayers, generateLayers} from "../../../utils/map";
-import {downloadDataset} from "../../../utils/dataset";
-import {IncoreButtonText} from "../../styledComponents/IncoreButtonText";
+import { fromLonLat, getTransform } from "ol/proj";
+import React, { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
+import { applyTransform } from "ol/extent";
+import { getOutputFileContent } from "../../../utils/datawolf";
+import { basicLayers, generateLayers } from "../../../utils/map";
+import { downloadDataset } from "../../../utils/dataset";
+import { IncoreButtonText } from "../../styledComponents/IncoreButtonText";
 import GetAppIcon from "@material-ui/icons/GetApp";
 
 
@@ -32,7 +32,11 @@ export default function PoleDamage(props){
 		datawolfDatasetConfigItems.map(async (datawolfDatasetConfigItem) => {
 			const vName = datawolfDatasetConfigItem.datasets.variableName;
 			if (vName === "poleMaxDmgStateINCOREId") {
-				const poleMaxDmgStateINCOREId = await getOutputFileContent(datawolfConfig, executionItem, datawolfDatasetConfigItem.datasetId);
+				const poleMaxDmgStateINCOREId = await getOutputFileContent(
+					datawolfConfig,
+					executionItem,
+					datawolfDatasetConfigItem.datasetId
+				);
 				setPoleMaxDmgStateINCOREId(poleMaxDmgStateINCOREId);
 				const layerDef = [
 					{
@@ -55,10 +59,24 @@ export default function PoleDamage(props){
 	};
 
 	return (
-		<Dialog open={previewOn} onClose={()=>{handlePreviewClose(layerRef);}} maxWidth="lg" fullWidth scroll="paper">
+		<Dialog
+			open={previewOn}
+			onClose={() => {
+				handlePreviewClose(layerRef);
+			}}
+			maxWidth="lg"
+			fullWidth
+			scroll="paper"
+		>
 			<DialogContent className="previewModal">
-				<IconButton aria-label="Close" onClick={()=>{handlePreviewClose(layerRef);}} style={{float: "right"}}>
-					<CloseIcon fontSize="small"/>
+				<IconButton
+					aria-label="Close"
+					onClick={() => {
+						handlePreviewClose(layerRef);
+					}}
+					style={{ float: "right" }}
+				>
+					<CloseIcon fontSize="small" />
 				</IconButton>
 
 				{/*title*/}
@@ -77,17 +95,18 @@ export default function PoleDamage(props){
 						maxZoom={mapConfig.MAX_ZOOM}
 						extent={applyTransform(mapConfig.MAP_BOUNDS, getTransform("EPSG:4326", "EPSG:3857"))}
 						center={fromLonLat(mapConfig.MAP_CENTER)}
-						layers={[
-							layerRef.current.basemaps,
-							layerRef.current.tilelayer
-						]}
+						layers={[layerRef.current.basemaps, layerRef.current.tilelayer]}
 						layerSwitcherOptions={{}}
 					/>
 				</Container>
 			</DialogContent>
 			<DialogActions>
-				<IncoreButtonText onClick={download} startIcon={<GetAppIcon/>}>Download Report</IncoreButtonText>
-				<IncoreButtonText onClick={handlePreviewClose} startIcon={<CloseIcon/>}>Close</IncoreButtonText>
+				<IncoreButtonText onClick={download} startIcon={<GetAppIcon />}>
+					Download Report
+				</IncoreButtonText>
+				<IncoreButtonText onClick={handlePreviewClose} startIcon={<CloseIcon />}>
+					Close
+				</IncoreButtonText>
 			</DialogActions>
 		</Dialog>
 	);

@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from "react";
-import {usePrevious} from "./usePrevious";
+import { usePrevious } from "./usePrevious";
 
 export function useEffectAllDepsChange(fn, deps) {
 	const prevDeps = usePrevious(deps);

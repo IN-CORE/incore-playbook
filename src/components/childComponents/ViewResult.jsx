@@ -43,15 +43,15 @@ const useStyles = makeStyles({
 
 // TODO move this registration somewhere else?
 const registeredWidgets = {
-	"Interdependency": <Interdependency />,
-	"BldgDamage": <BldgDamage />,
-	"PoleDamage": <PoleDamage />,
-	"BldgMCS": <BldgMCS />,
-	"BldgFunctionality": <BldgFunctionality />,
-	"CGE": <CGE />,
-	"PopDislocation": <PopDislocation />,
-	"ResilienceMetrics": <ResilienceMetrics />,
-	"SubstationDamage": <SubstationDamage />
+	Interdependency: <Interdependency />,
+	BldgDamage: <BldgDamage />,
+	PoleDamage: <PoleDamage />,
+	BldgMCS: <BldgMCS />,
+	BldgFunctionality: <BldgFunctionality />,
+	CGE: <CGE />,
+	PopDislocation: <PopDislocation />,
+	ResilienceMetrics: <ResilienceMetrics />,
+	SubstationDamage: <SubstationDamage />
 };
 
 export default function ViewResult(props) {
@@ -61,6 +61,16 @@ export default function ViewResult(props) {
 	const datawolfConfig = useSelector((state) => state.config.datawolfConfig);
 	const globalConfig = useSelector((state) => state.config.globalConfig);
 	const datawolfWorkflowConfig = useSelector((state) => state.config.datawolfWorkflowConfig);
+
+	// load executions list that has status
+	useEffect(() => {
+		getExecutionList(datawolfConfig);
+	}, []);
+
+	// update execution statuses upon changing
+	useEffect(() => {
+		createAnalysisEntryTable();
+	}, [executions]);
 
 	// states
 	const [numCompleted, setNumCompleted] = useState(0);
@@ -91,13 +101,20 @@ export default function ViewResult(props) {
 		if (executionItem !== undefined && executionItem["stepState"] !== undefined) {
 			let statusArr = Object.values(executionItem["stepState"]);
 			// WAITING, QUEUED, RUNNING, FINISHED, ABORTED, FAILED, UNKNOWN
-			if (statusArr.indexOf("WAITING") >= 0) return "WAITING";
-			else if (statusArr.indexOf("QUEUED") >= 0) return "QUEUED";
+			// if failed or aborted, return failed | aborted
+			// else if atleast one running, return running
+			// else if atleast one queued, return queued
+			// else if atleast one waiting, return waiting
+			// else if any unknown, return unknown
+			// last case where we need to check all values are finished then return finished
+			// else return undefined
+			if (statusArr.indexOf("FAILED") >= 0) return "FAILED";
+			if (statusArr.indexOf("ABORTED") >= 0) return "ABORTED";
 			else if (statusArr.indexOf("RUNNING") >= 0) return "RUNNING";
-			else if (statusArr.indexOf("ABORTED") >= 0) return "ABORTED";
-			else if (statusArr.indexOf("FAILED") >= 0) return "FAILED";
+			else if (statusArr.indexOf("QUEUED") >= 0) return "QUEUED";
+			else if (statusArr.indexOf("WAITING") >= 0) return "WAITING";
 			else if (statusArr.indexOf("UNKNOWN") >= 0) return "UNKNOWN";
-			else if (statusArr.indexOf("FINISHED") >= 0) return "FINISHED";
+			else if (statusArr.every(status => status === "FINISHED")) return "FINISHED";
 		}
 		return "UNDEFINED";
 	};
@@ -124,24 +141,24 @@ export default function ViewResult(props) {
 
 	const fieldNames = [
 		{
-			"prettyName": "TITLE",
-			"columnName": "title"
+			prettyName: "TITLE",
+			columnName: "title"
 		},
 		{
-			"prettyName": "DESCRIPTION",
-			"columnName": "description"
+			prettyName: "DESCRIPTION",
+			columnName: "description"
 		},
 		{
-			"prettyName": "HAZARD TYPE",
-			"columnName": "hazardType"
+			prettyName: "HAZARD TYPE",
+			columnName: "hazardType"
 		},
 		{
-			"prettyName": "RUN DATE",
-			"columnName": "date"
+			prettyName: "RUN DATE",
+			columnName: "date"
 		},
 		{
-			"prettyName": "STATUS",
-			"columnName": "finalStatus"
+			prettyName: "STATUS",
+			columnName: "finalStatus"
 		}
 	];
 
@@ -166,9 +183,9 @@ export default function ViewResult(props) {
 	const _getHazardInfo = (executionItem) => {
 		return datawolfWorkflowConfig.inputs.parameters.reduce((hazardInfo, p) => {
 			if (p.variableName === "selectedHazardId") {
-				return { ...hazardInfo, "hazardId": executionItem["parameters"][p.parametersMap[0].paramId] };
+				return { ...hazardInfo, hazardId: executionItem["parameters"][p.parametersMap[0].paramId] };
 			} else if (p.variableName === "selectedHazardType") {
-				return { ...hazardInfo, "hazardType": executionItem["parameters"][p.parametersMap[0].paramId] };
+				return { ...hazardInfo, hazardType: executionItem["parameters"][p.parametersMap[0].paramId] };
 			} else {
 				return hazardInfo;
 			}
@@ -182,31 +199,35 @@ export default function ViewResult(props) {
 
 		// group output items belongs to that widgetName/widget type
 		// TODO rewrite this part of logic!
-		setDatawolfDatasetConfigItems(datawolfWorkflowConfig.outputs.datasets[0].datasetsMap.reduce((list, item) => {
-			if (widgetName === "ResilienceMetrics") {
-				if (item.datasets.widget === "CGE" || item.datasets.widget === "PopDislocation"
-					|| item.datasets.widget === "BldgFunctionality") {
-					return [...list, item];
+		setDatawolfDatasetConfigItems(
+			datawolfWorkflowConfig.outputs.datasets[0].datasetsMap.reduce((list, item) => {
+				if (widgetName === "ResilienceMetrics") {
+					if (
+						item.datasets.widget === "CGE" ||
+						item.datasets.widget === "PopDislocation" ||
+						item.datasets.widget === "BldgFunctionality"
+					) {
+						return [...list, item];
+					}
 				}
-			}
-			if (widgetName === "Interdependency") {
-				if (item.datasets.widget === "SubstationDamage") {
-					return [...list, item];
+				if (widgetName === "Interdependency") {
+					if (item.datasets.widget === "SubstationDamage") {
+						return [...list, item];
+					}
 				}
-			}
-			if (widgetName === "PopDislocation") {
-				if (item.datasets.widget === widgetName || item.datasets.widget === "BldgDamage") {
-					return [...list, item];
+				if (widgetName === "PopDislocation") {
+					if (item.datasets.widget === widgetName || item.datasets.widget === "BldgDamage") {
+						return [...list, item];
+					}
+				} else {
+					if (item.datasets.widget === widgetName) {
+						return [...list, item];
+					}
 				}
-			} else {
-				if (item.datasets.widget === widgetName) {
-					return [...list, item];
-				}
-			}
 
-			return list;
-
-		}, []));
+				return list;
+			}, [])
+		);
 
 		const hazardInfo = _getHazardInfo(selectedExecutionItem);
 		let hazardMetadata = await getHazardMetadata(globalConfig, hazardInfo.hazardType, hazardInfo.hazardId);
@@ -222,9 +243,12 @@ export default function ViewResult(props) {
 	};
 
 	return (
-		<div role="tabpanel" hidden={value !== index} id={`simple-tabpanel-${index}`}
-			 aria-labelledby={`simple-tab-${index}`}
-			 {...other}
+		<div
+			role="tabpanel"
+			hidden={value !== index}
+			id={`simple-tabpanel-${index}`}
+			aria-labelledby={`simple-tab-${index}`}
+			{...other}
 		>
 			{/*for analysis list*/}
 			<Box>
@@ -254,31 +278,26 @@ export default function ViewResult(props) {
 					</Box>
 				</Box>
 				<Box>
-					<ViewResultEntryTable fieldNames={fieldNames}
-										  executions={executionEntries}
-										  preview={preview}
-					/>
+					<ViewResultEntryTable fieldNames={fieldNames} executions={executionEntries} preview={preview} />
 				</Box>
 			</Box>
 
 			{/*for individual analysis result preview*/}
-			{
-				widgetName ? (() => {
-						return React.cloneElement(
-							registeredWidgets[widgetName],
-							{
-								executionItem: selectedExecutionItem,
-								getExecution: getExecution,
-								previewOn: previewOn,
-								handlePreviewClose: handlePreviewClose,
-								datawolfDatasetConfigItems: datawolfDatasetConfigItems,
-								hazardType: hazardType,
-								hazardLayers: hazardGroupLayer
-							}
-						);
-					})()
-					:
-					<></>
-			}
-		</div>);
+			{widgetName ? (
+				(() => {
+					return React.cloneElement(registeredWidgets[widgetName], {
+						executionItem: selectedExecutionItem,
+						getExecution: getExecution,
+						previewOn: previewOn,
+						handlePreviewClose: handlePreviewClose,
+						datawolfDatasetConfigItems: datawolfDatasetConfigItems,
+						hazardType: hazardType,
+						hazardLayers: hazardGroupLayer
+					});
+				})()
+			) : (
+				<></>
+			)}
+		</div>
+	);
 }

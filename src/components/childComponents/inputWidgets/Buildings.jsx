@@ -1,13 +1,11 @@
-import React, {useEffect} from "react";
-import {IncoreMenuItem, IncoreSelectBox} from "../../styledComponents/IncoreSelect";
-import {useDispatch, useSelector} from "react-redux";
-import {inputDatasetTypes} from "../../../globals";
-import {fetchDatasets} from "../../../actions/datasets";
-
+import React, { useEffect } from "react";
+import { IncoreMenuItem, IncoreSelectBox } from "../../styledComponents/IncoreSelect";
+import { useDispatch, useSelector } from "react-redux";
+import { inputDatasetTypes } from "../../../globals";
+import { fetchDatasets } from "../../../actions/datasets";
 
 export default function Buildings(props) {
-
-	const {setDatawolfFormState, datawolfFormState, datawolfParamConfigItem} = props;
+	const { setDatawolfFormState, datawolfFormState, datawolfParamConfigItem } = props;
 
 	const dispatch = useDispatch();
 	const listDatasets = (config, limit, offset, type) => dispatch(fetchDatasets(config, limit, offset, type));
@@ -28,29 +26,34 @@ export default function Buildings(props) {
 	// 	"1a15df03-c590-43ba-bb29-0aa2e86dd4ae": "6335b2aeac33a63950a9e0b7"
 	// }
 	return (
-		<IncoreSelectBox labelId="label" id="select" variant="outlined"
-						 onChange={(e) => {
-							 let currentVal = e.target.value;
-							 setDatawolfFormState((prevState) => {
-								 let mapState = {};
-								 datawolfParamConfigItem.parametersMap.map((pm) => {
-									 mapState[pm.paramId] = currentVal;
-								 });
-								 return {...prevState, [datawolfParamConfigItem.variableName]: mapState};
-							 });
-						 }}
+		<IncoreSelectBox
+			labelId="label"
+			id="select"
+			variant="outlined"
+			onChange={(e) => {
+				let currentVal = e.target.value;
+				setDatawolfFormState((prevState) => {
+					let mapState = {};
+					datawolfParamConfigItem.parametersMap.map((pm) => {
+						mapState[pm.paramId] = currentVal;
+					});
+					return { ...prevState, [datawolfParamConfigItem.variableName]: mapState };
+				});
+			}}
 			// parameters belong to the same variable should have the same value; just pick one
-						 value={datawolfFormState[datawolfParamConfigItem.variableName][
-							 Object.keys(datawolfFormState[datawolfParamConfigItem.variableName])[0]] ?? ""
-						 }
-		>
-			{
-				buildings.map((option) => {
-					return (
-						<IncoreMenuItem value={option["id"]} key={option["id"]}>{option["title"]}</IncoreMenuItem>
-					);
-				})
+			value={
+				datawolfFormState[datawolfParamConfigItem.variableName][
+					Object.keys(datawolfFormState[datawolfParamConfigItem.variableName])[0]
+				] ?? ""
 			}
+		>
+			{buildings.map((option) => {
+				return (
+					<IncoreMenuItem value={option["id"]} key={option["id"]}>
+						{option["title"]}
+					</IncoreMenuItem>
+				);
+			})}
 		</IncoreSelectBox>
 	);
 }

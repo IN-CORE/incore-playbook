@@ -1,18 +1,25 @@
-import {globals as defaultGlobalConfig} from "../globals";
-import {getHeader} from "./common";
+import { globals as defaultGlobalConfig } from "../globals";
+import { getHeader } from "./common";
 
-export async function createDataset(globalConfig=defaultGlobalConfig, title, description, dataType, files, format="shapefile"){
+export async function createDataset(
+	globalConfig = defaultGlobalConfig,
+	title,
+	description,
+	dataType,
+	files,
+	format = "shapefile"
+) {
 	const datasetEndpoint = `${globalConfig.dataServiceBase}datasets`;
 	let datasetFormData = new FormData();
 	let datasetMetadata = {
-		"title": title,
-		"description": description,
-		"contributors":[],
-		"dataType": dataType,
-		"storedUrl": "",
-		"format": format,
-		"sourceDataset": "",
-		"networkDataset": null
+		title: title,
+		description: description,
+		contributors: [],
+		dataType: dataType,
+		storedUrl: "",
+		format: format,
+		sourceDataset: "",
+		networkDataset: null
 	};
 	datasetFormData.append("dataset", JSON.stringify(datasetMetadata));
 
@@ -21,10 +28,10 @@ export async function createDataset(globalConfig=defaultGlobalConfig, title, des
 		method: "POST",
 		mode: "cors",
 		headers: authHeader,
-		body: datasetFormData,
+		body: datasetFormData
 	});
 
-	if (datasetRequest.status  === 200){
+	if (datasetRequest.status === 200) {
 		let datasetJson = await datasetRequest.json();
 
 		// attach files to that dataset
@@ -38,30 +45,26 @@ export async function createDataset(globalConfig=defaultGlobalConfig, title, des
 			method: "POST",
 			mode: "cors",
 			headers: authHeader,
-			body: fileFormData,
+			body: fileFormData
 		});
 
-		if (fileRequest.status === 200){
+		if (fileRequest.status === 200) {
 			return fileRequest.json();
-		}
-		else if  (fileRequest.status  === 401){
+		} else if (fileRequest.status === 401) {
+			return {};
+		} else {
 			return {};
 		}
-		else {
-			return {};
-		}
-	}
-	else if  (datasetRequest.status  === 401){
+	} else if (datasetRequest.status === 401) {
 		// TODO handle error
 		return {};
-	}
-	else {
+	} else {
 		// TODO handle error
 		return {};
 	}
 }
 
-export async function downloadDataset(globalConfig=defaultGlobalConfig, datasetId, title=null) {
+export async function downloadDataset(globalConfig = defaultGlobalConfig, datasetId, title = null) {
 	let filename = `${datasetId}.zip`;
 	if (title) filename = `${title}-${filename}`;
 
@@ -70,10 +73,10 @@ export async function downloadDataset(globalConfig=defaultGlobalConfig, datasetI
 	let response = await fetch(url, {
 		method: "GET",
 		mode: "cors",
-		headers: authHeader,
+		headers: authHeader
 	});
 
-	if (response.status  === 200){
+	if (response.status === 200) {
 		let blob = await response.blob();
 		if (window.navigator.msSaveOrOpenBlob) {
 			window.navigator.msSaveBlob(blob, filename);
@@ -85,14 +88,11 @@ export async function downloadDataset(globalConfig=defaultGlobalConfig, datasetI
 			anchor.click();
 			document.body.removeChild(anchor);
 		}
-	}
-	else if  (response.status  === 401){
+	} else if (response.status === 401) {
+		// TODO handle error
+		return {};
+	} else {
 		// TODO handle error
 		return {};
 	}
-	else {
-		// TODO handle error
-		return {};
-	}
-
 }

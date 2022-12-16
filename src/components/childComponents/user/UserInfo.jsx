@@ -1,19 +1,18 @@
-import React, {useEffect, useState} from "react";
+import React, { useEffect, useState } from "react";
 
-import {Box, Button, Container, Link, Table, TableBody, TableCell, TableHead, TableRow,} from "@material-ui/core";
+import { Box, Button, Container, Link, Table, TableBody, TableCell, TableHead, TableRow } from "@material-ui/core";
 
-import {IncoreInputLabel} from "../../styledComponents/IncoreInputLabel";
-import {IncoreButton} from "../../styledComponents/IncoreButton";
-import {IncoreMenuItem, IncoreSelectBox} from "../../styledComponents/IncoreSelect";
-import {IncoreTextField} from "../../styledComponents/IncoreInput";
-import {makeStyles} from "@material-ui/core/styles";
-import {useDispatch, useSelector} from "react-redux";
+import { IncoreInputLabel } from "../../styledComponents/IncoreInputLabel";
+import { IncoreButton } from "../../styledComponents/IncoreButton";
+import { IncoreMenuItem, IncoreSelectBox } from "../../styledComponents/IncoreSelect";
+import { IncoreTextField } from "../../styledComponents/IncoreInput";
+import { makeStyles } from "@material-ui/core/styles";
+import { useDispatch, useSelector } from "react-redux";
 import Gravatar from "react-gravatar";
 import AccountCircle from "@material-ui/icons/AccountCircle";
-import {assignUserRole, fetchRoles, fetchUserList} from "../../../actions/user";
-import {inputDatasetTypes} from "../../../globals";
-import {Role} from "./Role";
-
+import { assignUserRole, fetchRoles, fetchUserList } from "../../../actions/user";
+import { inputDatasetTypes } from "../../../globals";
+import { Role } from "./Role";
 
 const useStyles = makeStyles({
 	defaultProfileImage: {
@@ -24,14 +23,13 @@ const useStyles = makeStyles({
 		width: "32px",
 		height: "32px",
 		borderRadius: "50%"
-	},
+	}
 });
 
 /**
  * Generate a user info form
  */
 export const UserInfo = (props) => {
-
 	const classes = useStyles();
 
 	const dispatch = useDispatch();
@@ -39,7 +37,6 @@ export const UserInfo = (props) => {
 	const getPlaybookRoles = () => dispatch(fetchRoles());
 	const userList = useSelector((state) => state.user.userList);
 	const roles = useSelector((state) => state.user.roles);
-
 
 	useEffect(() => {
 		getPlaybookUserList();
@@ -61,21 +58,21 @@ export const UserInfo = (props) => {
 					</TableHead>
 					<TableBody>
 						{userList.map((user, index) => (
-							<TableRow key={index} style={{height: 120}}>
+							<TableRow key={index} style={{ height: 120 }}>
 								<TableCell component="th" scope="row" align="center">
-									{user["email"] !== undefined ?
+									{user["email"] !== undefined ? (
 										<Gravatar className={classes.avatarImg} email={user["email"]} rating="g" />
-										:
+									) : (
 										<AccountCircle fontSize="small" />
-									}
+									)}
 								</TableCell>
-								<TableCell align="center">
-									{user["username"]}
-								</TableCell>
+								<TableCell align="center">{user["username"]}</TableCell>
 								<TableCell align="center">{user["email"]}</TableCell>
-								<TableCell align="center">{user["firstName"]} {user["lastName"]}</TableCell>
 								<TableCell align="center">
-									<Role roles={roles} user={user}/>
+									{user["firstName"]} {user["lastName"]}
+								</TableCell>
+								<TableCell align="center">
+									<Role roles={roles} user={user} />
 								</TableCell>
 							</TableRow>
 						))}

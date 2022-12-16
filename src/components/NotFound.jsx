@@ -1,9 +1,5 @@
 import React from "react";
 
 export const NotFound = () => {
-	return(
-		<div>
-			Page Doesn't Exist
-		</div>
-	);
+	return <div>Page Doesn't Exist</div>;
 };
