@@ -2,7 +2,7 @@ import {Box, Dialog, DialogActions, DialogContent, IconButton, Tab, Tabs, Typogr
 import CloseIcon from "@material-ui/icons/Close";
 import {DislocationResultsTable} from "../table/DislocationResultsTable";
 import {HuaResultsTable} from "../table/HuaResultsTable";
-import React, {useEffect, useState} from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {CgeResultsTable} from "../table/CgeResultsTable";
 import {FunctionalityTable} from "../table/FunctionalityTable";
 import {makeStyles} from "@material-ui/core/styles";
@@ -10,6 +10,8 @@ import {getOutputFileContentJSON} from "../../../utils/datawolf";
 import {useSelector} from "react-redux";
 import {IncoreButtonText} from "../../styledComponents/IncoreButtonText";
 import GetAppIcon from "@material-ui/icons/GetApp";
+import { downloadImg } from "../../../utils/image";
+import CameraAltIcon from "@material-ui/icons/CameraAlt";
 
 const useStyles = makeStyles({
 	tableEntry:{
@@ -43,7 +45,7 @@ const useStyles = makeStyles({
 export default function ResilienceMetrics(props){
 	const classes = useStyles();
 
-	let {executionItem, getExecution, previewOn, handlePreviewClose, datawolfDatasetConfigItems} = props;
+	let {executionItem, previewOn, handlePreviewClose, datawolfDatasetConfigItems} = props;
 
 	const datawolfConfig = useSelector((state) => state.config.datawolfConfig);
 
@@ -59,6 +61,9 @@ export default function ResilienceMetrics(props){
 	const [cgeDomesticSupplyContent, setCgeDomesticSupplyContent] = useState(null);
 	const [cgeEmploymentContent, setCgeEmploymentContent] = useState(null);
 	const [bldgFuncSummaryTableContent, setBldgFuncSummaryTableContent] = useState(null);
+
+	// print container
+	const printRef = useRef();
 
 	useEffect(()=> {
 		setSelectedExecutionName(executionItem["title"]);
@@ -97,7 +102,7 @@ export default function ResilienceMetrics(props){
 
 	return (
 		<Dialog open={previewOn} onClose={handlePreviewClose} maxWidth="lg" fullWidth scroll="paper">
-			<DialogContent className="previewModal">
+			<DialogContent className="previewModal" ref={printRef}>
 				<IconButton aria-label="Close" onClick={handlePreviewClose} style={{float: "right"}}>
 					<CloseIcon fontSize="small"/>
 				</IconButton>
@@ -211,6 +216,8 @@ export default function ResilienceMetrics(props){
 				</div>
 			</DialogContent>
 			<DialogActions>
+				<IncoreButtonText onClick={()=>{downloadImg(printRef.current, "Resilience_Metrics");}}
+								  startIcon={<CameraAltIcon/>}>Image</IncoreButtonText>
 				<IncoreButtonText onClick={handlePreviewClose} startIcon={<CloseIcon/>}>Close</IncoreButtonText>
 			</DialogActions>
 		</Dialog>

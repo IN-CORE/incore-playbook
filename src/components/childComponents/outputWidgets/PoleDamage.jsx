@@ -2,7 +2,7 @@ import {Box, Container, Dialog, DialogActions, DialogContent, IconButton, Typogr
 import CloseIcon from "@material-ui/icons/Close";
 import Map from "../map/Map";
 import {fromLonLat, getTransform} from "ol/proj";
-import React, {useEffect, useState} from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {useSelector} from "react-redux";
 import {applyTransform} from "ol/extent";
 import {getOutputFileContent} from "../../../utils/datawolf";
@@ -10,6 +10,8 @@ import {basicLayers, generateLayers} from "../../../utils/map";
 import {downloadDataset} from "../../../utils/dataset";
 import {IncoreButtonText} from "../../styledComponents/IncoreButtonText";
 import GetAppIcon from "@material-ui/icons/GetApp";
+import { downloadImg } from "../../../utils/image";
+import CameraAltIcon from "@material-ui/icons/CameraAlt";
 
 
 export default function PoleDamage(props){
@@ -25,7 +27,9 @@ export default function PoleDamage(props){
 	const [poleMaxDmgStateINCOREId, setPoleMaxDmgStateINCOREId] = useState(null);
 
 	// Holds an instance of Map component
-	const layerRef = React.useRef(basicLayers);
+	const layerRef = useRef(basicLayers);
+	// print container
+	const printRef = useRef();
 
 	useEffect(() => {
 		setSelectedExecutionName(executionItem["title"]);
@@ -63,7 +67,7 @@ export default function PoleDamage(props){
 
 	return (
 		<Dialog open={previewOn} onClose={()=>{handlePreviewClose(layerRef);}} maxWidth="lg" fullWidth scroll="paper">
-			<DialogContent className="previewModal">
+			<DialogContent className="previewModal" ref={printRef}>
 				<IconButton aria-label="Close" onClick={()=>{handlePreviewClose(layerRef);}} style={{float: "right"}}>
 					<CloseIcon fontSize="small"/>
 				</IconButton>
@@ -93,7 +97,9 @@ export default function PoleDamage(props){
 				</Container>
 			</DialogContent>
 			<DialogActions>
-				<IncoreButtonText onClick={download} startIcon={<GetAppIcon/>}>Download Report</IncoreButtonText>
+				<IncoreButtonText onClick={()=>{downloadImg(printRef.current, "Electric_Pole_Damage");}}
+								  startIcon={<CameraAltIcon/>}>Image</IncoreButtonText>
+				<IncoreButtonText onClick={download} startIcon={<GetAppIcon/>}>Data</IncoreButtonText>
 				<IncoreButtonText onClick={handlePreviewClose} startIcon={<CloseIcon/>}>Close</IncoreButtonText>
 			</DialogActions>
 		</Dialog>

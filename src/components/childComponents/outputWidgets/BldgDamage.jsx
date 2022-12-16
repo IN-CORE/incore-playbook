@@ -12,7 +12,7 @@ import {
 import CloseIcon from "@material-ui/icons/Close";
 import Map from "../map/Map";
 import {fromLonLat, getTransform} from "ol/proj";
-import React, {useEffect, useState} from "react";
+import React, {useEffect, useState, useRef} from "react";
 import {ResultSummaryTable} from "../table/ResultSummaryTable";
 import {StackedResult} from "../graph/StackedResult";
 import {ResultTable} from "../table/ResultTable";
@@ -22,7 +22,11 @@ import {getOutputFileContent, getOutputFileContentJSON} from "../../../utils/dat
 import {basicLayers, generateLayers} from "../../../utils/map";
 import {downloadDataset} from "../../../utils/dataset";
 import GetAppIcon from "@material-ui/icons/GetApp";
+import CameraAltIcon from "@material-ui/icons/CameraAlt";
 import {IncoreButtonText} from "../../styledComponents/IncoreButtonText";
+
+import { downloadImg } from "../../../utils/image";
+
 
 export default function BldgDamage(props) {
 
@@ -39,7 +43,10 @@ export default function BldgDamage(props) {
 	const [bldgMaxDamageStateINCOREId, setBldgMaxDamageStateINCOREId] = useState(null);
 
 	// Holds an instance of Map component
-	const layerRef = React.useRef(basicLayers);
+	const layerRef = useRef(basicLayers);
+
+	// print container
+	const printRef = useRef();
 
 	useEffect(() => {
 		setSelectedExecutionName(executionItem["title"]);
@@ -83,8 +90,8 @@ export default function BldgDamage(props) {
 	};
 
 	return (
-		<Dialog open={previewOn} onClose={()=>{handlePreviewClose(layerRef);}} maxWidth="lg" fullWidth scroll="paper">
-			<DialogContent className="previewModal">
+		<Dialog open={previewOn} onClose={()=>{handlePreviewClose(layerRef);}} maxWidth="lg" fullWidth>
+			<DialogContent className="previewModal" ref={printRef}>
 				<IconButton aria-label="Close" onClick={()=>{handlePreviewClose(layerRef);}} style={{float: "right"}}>
 					<CloseIcon fontSize="small"/>
 				</IconButton>
@@ -154,10 +161,11 @@ export default function BldgDamage(props) {
 				}
 			</DialogContent>
 			<DialogActions>
-				<IncoreButtonText onClick={download} startIcon={<GetAppIcon/>}>Download Report</IncoreButtonText>
+				<IncoreButtonText onClick={()=>{downloadImg(printRef.current, "Building_Damage");}}
+								  startIcon={<CameraAltIcon/>}>Image</IncoreButtonText>
+				<IncoreButtonText onClick={download} startIcon={<GetAppIcon/>}>Data</IncoreButtonText>
 				<IncoreButtonText onClick={handlePreviewClose} startIcon={<CloseIcon/>}>Close</IncoreButtonText>
 			</DialogActions>
 		</Dialog>
-
 	);
 }

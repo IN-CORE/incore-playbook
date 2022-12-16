@@ -272,7 +272,8 @@ export const CommunityHazards = () => {
 				url: `${globalConfig.geoServerWMS}`,
 				params: {LAYERS: layerId, STYLES: style},
 				ratio: 1,
-				serverType: "geoserver"
+				serverType: "geoserver",
+				crossOrigin: "anonymous"
 			});
 			let HazardMapLayer = new TileLayer({
 				title: layerTitle,

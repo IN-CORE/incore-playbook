@@ -33,6 +33,7 @@
 		"chart.js": "^2.9.4",
 		"chartjs-plugin-zoom": "^0.7.7",
 		"classnames": "^2.2.6",
+		"html2canvas": "^1.4.1",
 		"jssoup": "^0.0.12",
 		"jwt-decode": "^3.0.0",
 		"ol": "^6.4.3",

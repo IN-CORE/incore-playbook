@@ -11,7 +11,8 @@ export const generateLayers = (globalConfig=defaultGlobalConfig, layerDef) => {
 			url: `${globalConfig.geoServerWMS}`,
 			params: {LAYERS: layerDefinition.layerId, STYLES: layerDefinition.layerStyles},
 			ratio: 1,
-			serverType: "geoserver"
+			serverType: "geoserver",
+			crossOrigin: "anonymous"
 		});
 		const previewLayer = new TileLayer({
 			title: layerDefinition["title"],
@@ -36,14 +37,17 @@ export const basicLayers = {
 					attributions: [
 						"&#169; <a href=\"https://www.carto.com\">Carto</a>,",
 						OSM_ATTRIBUTION
-					]
+					],
+					crossOrigin: "anonymous"
 				})
 			}),
 			new TileLayer({
 				type: "base",
 				visible: false,
 				title: "OSM",
-				source: new OSM()
+				source: new OSM({
+					crossOrigin: "anonymous"
+				})
 			}),
 		]
 	}),
