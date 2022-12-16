@@ -68,6 +68,20 @@ export default function ViewResult(props) {
 	const [hazardLayerTitle, setHazardLayerTitle] = useState(""); // to overlay hazard on the map
 	const [hazardType, setHazardType] = useState(""); // used in runtime table
 	const [previewOn, setPreviewOn] = useState(false); // list vs preview
+	const [datawolfViewAllOn, setDatawolfViewAllOn] = useState(false); // datawolf view
+
+	// load executions list that has status
+	useEffect(() => { getExecutionList(datawolfConfig, datawolfViewAllOn); }, []);
+
+	// update execution statuses upon changing
+	useEffect(() => {
+		createAnalysisEntryTable();
+	}, [executions]);
+
+	// update datawolf view all on / off
+	useEffect(() => {
+		getExecutionList(datawolfConfig, datawolfViewAllOn);
+	}, [datawolfViewAllOn]);
 
 	// extract a single status from mutliple step status`
 	const extractStatus = (executionItem) => {
@@ -241,6 +255,10 @@ export default function ViewResult(props) {
 
 		// dialog on
 		setPreviewOn(true);
+	};
+
+	const handleViewAllDatawolf = () => {
+		setDatawolfViewAllOn(datawolfViewAllOn => !datawolfViewAllOn);
 	};
 
 	return (

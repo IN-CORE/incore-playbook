@@ -28,7 +28,7 @@ export const AnticipatedPerformance = () => {
 
 	// Redux connect equivalent
 	const dispatch = useDispatch();
-	const getExecutionList = (datawolfConfig) => dispatch(fetchExecutions(datawolfConfig));
+	const getExecutionList = (datawolfConfig, all) => dispatch(fetchExecutions(datawolfConfig, all));
 	const executions = useSelector((state) => state.execution.executions);
 
 	return (
