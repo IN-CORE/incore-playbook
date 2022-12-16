@@ -18,12 +18,26 @@ import CGE from "./outputWidgets/CGE";
 import PopDislocation from "./outputWidgets/PopDislocation";
 import ResilienceMetrics from "./outputWidgets/ResilienceMetrics";
 import SubstationDamage from "./outputWidgets/SubstationDamage";
-import { Collection } from "ol";
+import {Collection} from "ol";
+
+import FormControlLabel from "@material-ui/core/FormControlLabel";
+import Switch from "@material-ui/core/Switch";
+
 
 const useStyles = makeStyles({
 	statTitle: {
-		margin: "55px auto"
-	}
+		margin: "55px auto",
+	},
+	switchBase: {
+		"&$checked": {
+			color: "#00619D",
+		},
+		"&$checked + $track": {
+			backgroundColor: "#00619D",
+		},
+	},
+	checked: {},
+	track: {},
 });
 
 // TODO move this registration somewhere else?
@@ -273,19 +287,26 @@ export default function ViewResult(props) {
 			<Box>
 				<Box className={classes.statTitle}>
 					<IncoreInputLabel>{`Completed Analysis (${numCompleted})`}</IncoreInputLabel>
-					<Box style={{ float: "right" }}>
-						<IconButton
-							aria-label="sync"
-							onClick={() => {
-								getExecutionList(datawolfConfig);
-							}}
-							color="secondary"
-						>
-							<SyncIcon />
-						</IconButton>
-						<IconButton aria-label="filter">
-							<FilterListIcon />
-						</IconButton>
+					<Box style={{float: "right"}}>
+						<FormControlLabel
+							control={
+								<Switch
+									checked={datawolfViewAllOn}
+									onChange={handleViewAllDatawolf}
+									name="datawolfViewAllSwitch"
+									color="default"
+									classes={{
+										switchBase: classes.switchBase,
+										checked: classes.checked,
+										track: classes.track,
+									}}
+								/>
+							}
+							label="View All"
+						/>
+						<IconButton aria-label="sync" onClick={() => {getExecutionList(datawolfConfig, datawolfViewAllOn);}}
+							color="secondary"><SyncIcon/></IconButton>
+						<IconButton aria-label="filter"><FilterListIcon/></IconButton>
 					</Box>
 				</Box>
 				<Box>
