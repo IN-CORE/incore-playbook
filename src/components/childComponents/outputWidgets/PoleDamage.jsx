@@ -14,8 +14,7 @@ import GetAppIcon from "@material-ui/icons/GetApp";
 
 export default function PoleDamage(props){
 
-	let {executionItem, previewOn, handlePreviewClose, datawolfDatasetConfigItems, hazardDatasetId,
-		hazardLayerTitle, hazardLayerStyles} = props;
+	let {executionItem, previewOn, handlePreviewClose, datawolfDatasetConfigItems, hazardLayers} = props;
 
 	const mapConfig = useSelector((state) => state.config.mapConfig);
 	const datawolfConfig = useSelector((state) => state.config.datawolfConfig);
@@ -42,17 +41,11 @@ export default function PoleDamage(props){
 						"title": "EPF Damage (Pole)",
 						"opacity": 1,
 						"zIndex": 1
-					},
-					{
-						"layerId": hazardDatasetId,
-						"layerStyles": hazardLayerStyles,
-						"title": hazardLayerTitle,
-						"opacity": 0.8,
-						"zIndex": 2
 					}
 				];
 				const previewLayers = generateLayers(globalConfig, layerDef);
 				layerRef.current.tilelayer.getLayers().extend(previewLayers);
+				layerRef.current.tilelayer.getLayers().push(hazardLayers);
 			}
 		});
 	}, []);
