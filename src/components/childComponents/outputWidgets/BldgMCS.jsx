@@ -15,7 +15,7 @@ import { FunctionalityGraph } from "../graph/FunctionalityGraph";
 import Map from "../map/Map";
 import { fromLonLat, getTransform } from "ol/proj";
 import { FunctionalityTable } from "../table/FunctionalityTable";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { useSelector } from "react-redux";
 import { applyTransform } from "ol/extent";
 import { getOutputFileContent, getOutputFileContentJSON } from "../../../utils/datawolf";

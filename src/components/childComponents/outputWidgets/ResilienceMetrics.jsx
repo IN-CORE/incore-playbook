@@ -2,7 +2,7 @@ import { Box, Dialog, DialogActions, DialogContent, IconButton, Tab, Tabs, Typog
 import CloseIcon from "@material-ui/icons/Close";
 import { DislocationResultsTable } from "../table/DislocationResultsTable";
 import { HuaResultsTable } from "../table/HuaResultsTable";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { CgeResultsTable } from "../table/CgeResultsTable";
 import { FunctionalityTable } from "../table/FunctionalityTable";
 import { makeStyles } from "@material-ui/core/styles";

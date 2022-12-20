@@ -2,7 +2,7 @@ import { Box, Container, Dialog, DialogActions, DialogContent, IconButton, Typog
 import CloseIcon from "@material-ui/icons/Close";
 import Map from "../map/Map";
 import { fromLonLat, getTransform } from "ol/proj";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { useSelector } from "react-redux";
 import { applyTransform } from "ol/extent";
 import { getOutputFileContent } from "../../../utils/datawolf";

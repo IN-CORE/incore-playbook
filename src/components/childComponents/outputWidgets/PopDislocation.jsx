@@ -4,7 +4,7 @@ import Map from "../map/Map";
 import { fromLonLat, getTransform } from "ol/proj";
 import { DislocationResultsTable } from "../table/DislocationResultsTable";
 import { HuaResultsTable } from "../table/HuaResultsTable";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { useSelector } from "react-redux";
 import { applyTransform } from "ol/extent";
 import { getOutputFileContent, getOutputFileContentJSON } from "../../../utils/datawolf";
@@ -31,7 +31,7 @@ export default function PopDislocation(props){
 	const [dislocationByHousingTypeContent, setDislocationByHousingTypeContent] = useState(null);
 
 	// Holds an instance of Map component
-	const layerRef = React.useRef(basicLayers);
+	const layerRef = useRef(basicLayers);
 	// print container
 	const printRef = useRef();
 

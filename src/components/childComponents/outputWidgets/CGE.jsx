@@ -3,7 +3,7 @@ import CloseIcon from "@material-ui/icons/Close";
 import CGEBarChart from "../graph/CGEBarChart";
 import { CgeResultsTable } from "../table/CgeResultsTable";
 import CgeDescription from "../step/CgeDescription";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { IncoreMenuItem, IncoreSelectBox } from "../../styledComponents/IncoreSelect";
 import { getOutputFileContentJSON } from "../../../utils/datawolf";
 import { useSelector } from "react-redux";

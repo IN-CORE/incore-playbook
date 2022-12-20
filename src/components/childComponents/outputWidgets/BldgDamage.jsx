@@ -12,7 +12,7 @@ import {
 import CloseIcon from "@material-ui/icons/Close";
 import Map from "../map/Map";
 import { fromLonLat, getTransform } from "ol/proj";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { ResultSummaryTable } from "../table/ResultSummaryTable";
 import { StackedResult } from "../graph/StackedResult";
 import { ResultTable } from "../table/ResultTable";
