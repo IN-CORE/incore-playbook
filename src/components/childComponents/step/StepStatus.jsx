@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import "../../../styles/step-status.css";
 import { processStatus } from "../../../globals";
 import { useDispatch, useSelector } from "react-redux";
-import { getStep, updateStepStatus } from "../../../actions/steps";
+import { getStep, updateStep } from "../../../actions/steps";
 
 const StepStatus = ({ step, substep }) => {
 	const dispatch = useDispatch();
@@ -21,7 +21,7 @@ const StepStatus = ({ step, substep }) => {
 
 	useEffect(() => {
 		if (activeKey !== stepData.status && stepData.status !== undefined) {
-			updateStepStatus(step, substep, activeKey)(dispatch);
+			updateStep(step, substep, activeKey)(dispatch);
 		}
 	}, [activeKey]);
 
