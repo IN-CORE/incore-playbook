@@ -24,8 +24,6 @@ import { getHazardGroupLayers } from "../utils/map";
 
 import Pagination from "./childComponents/navigation/Pagination";
 
-// import FilterListIcon from "@material-ui/icons/FilterList";
-
 import { EntryTable } from "./childComponents/table/EntryTable";
 import PageBanner from "./childComponents/navigation/Banner";
 import fullHtml from "../public/steps/3-3.html";
@@ -39,7 +37,7 @@ import DatasetTsunami from "./childComponents/tsuanmi/datasetTsunami";
 import { LineString } from "ol/geom";
 import { useEffectAllDepsChange } from "./customHooks/useEffectAllDeps";
 import { getHazardTypePlural } from "../utils/common";
-import {inputDatasetTypes} from "../globals";
+
 
 const useStyles = makeStyles({
 	tabDiv: {
@@ -89,7 +87,7 @@ export const CommunityHazards = () => {
 
 	const [selectedHazardType, setSelectedHazardType] = useState(allowedHazardTypes[0]);
 
-	const [dataPerPage, setDataPerPage] = React.useState(20);
+	const [dataPerPage, setDataPerPage] = React.useState(5);
 	const [pageNumber, setPageNumber] = React.useState(1);
 	const [offset, setOffset] = React.useState(0);
 
@@ -304,6 +302,8 @@ export const CommunityHazards = () => {
 	useEffect(() => {
 		setOffset(0);
 		setPageNumber(1);
+		// start from page 1 again
+		listHazards(globalConfig, selectedHazardType, dataPerPage, offset);
 	}, [selectedHazardType]);
 
 	// page changes
