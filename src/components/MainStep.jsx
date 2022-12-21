@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Box, Grid } from "@material-ui/core";
 import PageBanner from "./childComponents/navigation/Banner";
 import { Layout } from "./Layout";
@@ -10,8 +10,10 @@ import fullHtml30 from "../public/steps/3-0.html";
 import fullHtml40 from "../public/steps/4-0.html";
 import fullHtml50 from "../public/steps/5-0.html";
 import fullHtml60 from "../public/steps/6-0.html";
+import { IncoreInputLabel } from "./styledComponents/IncoreInputLabel";
+import { IncoreTextField } from "./styledComponents/IncoreInput";
 
-export const Introduction = ({ menu }) => {
+export const MainStep = ({ menu }) => {
 	let fullHtml = fullHtml00;
 	let pageBanner = null;
 	if (menu === "1") {

@@ -1,5 +1,5 @@
-import React from "react";
-import { Box, Grid } from "@material-ui/core";
+import React, { useState } from "react";
+import { Box, Button, Grid, Link } from "@material-ui/core";
 import PageBanner from "./childComponents/navigation/Banner";
 import { Layout } from "./Layout";
 import StepInfo from "./StepInfo";
@@ -24,15 +24,14 @@ import fullHtml53 from "../public/steps/5-3.html";
 import fullHtml61 from "../public/steps/6-1.html";
 import fullHtml62 from "../public/steps/6-2.html";
 import fullHtml63 from "../public/steps/6-3.html";
+import { IncoreInputLabel } from "./styledComponents/IncoreInputLabel";
+import { IncoreTextField } from "./styledComponents/IncoreInput";
+import { DocURI } from "./childComponents/form/DocURI";
 
-export const StepTmpInfo = ({ menu, step, substep }) => {
+export const StaticSubStep = ({ menu, step, substep }) => {
 	let fullHtml = fullHtml00;
 	let pageBanner = null;
-	// if (menu === "1-1") {
-	// 	console.log(menu);
-	// 	fullHtml = fullHtml11;
-	// 	<PageBanner parentStep="Form a Collaborative Planning Team" childStep="Identify a Resilience Leader for the Community" taskNo="1" subtaskNo="1-1"/>;
-	// }
+
 	if (menu === "1-2") {
 		fullHtml = fullHtml12;
 		pageBanner = (
@@ -43,7 +42,8 @@ export const StepTmpInfo = ({ menu, step, substep }) => {
 				subtaskNo="1-2"
 			/>
 		);
-	} else if (menu === "1-3") {
+	}
+	else if (menu === "1-3") {
 		fullHtml = fullHtml13;
 		pageBanner = (
 			<PageBanner
@@ -53,7 +53,8 @@ export const StepTmpInfo = ({ menu, step, substep }) => {
 				subtaskNo="1-3"
 			/>
 		);
-	} else if (menu === "1-4") {
+	}
+	else if (menu === "1-4") {
 		fullHtml = fullHtml14;
 		pageBanner = (
 			<PageBanner
@@ -63,7 +64,8 @@ export const StepTmpInfo = ({ menu, step, substep }) => {
 				subtaskNo="1-4"
 			/>
 		);
-	} else if (menu === "2-1") {
+	}
+	else if (menu === "2-1") {
 		fullHtml = fullHtml21;
 		pageBanner = (
 			<PageBanner
@@ -73,7 +75,8 @@ export const StepTmpInfo = ({ menu, step, substep }) => {
 				subtaskNo="2-1"
 			/>
 		);
-	} else if (menu === "2-2") {
+	}
+	else if (menu === "2-2") {
 		fullHtml = fullHtml22;
 		pageBanner = (
 			<PageBanner
@@ -83,7 +86,8 @@ export const StepTmpInfo = ({ menu, step, substep }) => {
 				subtaskNo="2-2"
 			/>
 		);
-	} else if (menu === "2-3") {
+	}
+	else if (menu === "2-3") {
 		fullHtml = fullHtml23;
 		pageBanner = (
 			<PageBanner
@@ -94,10 +98,6 @@ export const StepTmpInfo = ({ menu, step, substep }) => {
 			/>
 		);
 	}
-	// else if (menu === "2-4") {
-	// 	fullHtml = fullHtml24;
-	// 	pageBanner = <PageBanner parentStep="Understanding the Situation" childStep="Identify a Resilience Leader for the Community" taskNo="2" subtaskNo="2-4"/>;
-	// }
 	else if (menu === "2-5") {
 		fullHtml = fullHtml25;
 		pageBanner = (
@@ -108,7 +108,8 @@ export const StepTmpInfo = ({ menu, step, substep }) => {
 				subtaskNo="2-5"
 			/>
 		);
-	} else if (menu === "3-1") {
+	}
+	else if (menu === "3-1") {
 		fullHtml = fullHtml31;
 		pageBanner = (
 			<PageBanner
@@ -118,7 +119,8 @@ export const StepTmpInfo = ({ menu, step, substep }) => {
 				subtaskNo="3-1"
 			/>
 		);
-	} else if (menu === "3-2") {
+	}
+	else if (menu === "3-2") {
 		fullHtml = fullHtml32;
 		pageBanner = (
 			<PageBanner
@@ -129,14 +131,6 @@ export const StepTmpInfo = ({ menu, step, substep }) => {
 			/>
 		);
 	}
-	// else if (menu === "3-3") {
-	// 	fullHtml = fullHtml33;
-	// 	pageBanner = <PageBanner parentStep="Determine Goals & Objectives" childStep="Identify a Resilience Leader for the Community" taskNo="3" subtaskNo="3-3"/>;
-	// }
-	// else if (menu === "3-4") {
-	// 	fullHtml = fullHtml34;
-	// 	pageBanner = <PageBanner parentStep="Determine Goals & Objectives" childStep="Identify a Resilience Leader for the Community" taskNo="3" subtaskNo="3-4"/>;
-	// }
 	else if (menu === "3-5") {
 		fullHtml = fullHtml35;
 		pageBanner = (
@@ -147,7 +141,8 @@ export const StepTmpInfo = ({ menu, step, substep }) => {
 				subtaskNo="3-5"
 			/>
 		);
-	} else if (menu === "4-1") {
+	}
+	else if (menu === "4-1") {
 		fullHtml = fullHtml41;
 		pageBanner = (
 			<PageBanner
@@ -157,7 +152,8 @@ export const StepTmpInfo = ({ menu, step, substep }) => {
 				subtaskNo="4-1"
 			/>
 		);
-	} else if (menu === "4-2") {
+	}
+	else if (menu === "4-2") {
 		fullHtml = fullHtml42;
 		pageBanner = (
 			<PageBanner
@@ -167,7 +163,8 @@ export const StepTmpInfo = ({ menu, step, substep }) => {
 				subtaskNo="4-2"
 			/>
 		);
-	} else if (menu === "4-3") {
+	}
+	else if (menu === "4-3") {
 		fullHtml = fullHtml43;
 		pageBanner = (
 			<PageBanner
@@ -177,7 +174,8 @@ export const StepTmpInfo = ({ menu, step, substep }) => {
 				subtaskNo="4-3"
 			/>
 		);
-	} else if (menu === "5-1") {
+	}
+	else if (menu === "5-1") {
 		fullHtml = fullHtml51;
 		pageBanner = (
 			<PageBanner
@@ -187,7 +185,8 @@ export const StepTmpInfo = ({ menu, step, substep }) => {
 				subtaskNo="5-1"
 			/>
 		);
-	} else if (menu === "5-2") {
+	}
+	else if (menu === "5-2") {
 		fullHtml = fullHtml52;
 		pageBanner = (
 			<PageBanner
@@ -197,7 +196,8 @@ export const StepTmpInfo = ({ menu, step, substep }) => {
 				subtaskNo="5-2"
 			/>
 		);
-	} else if (menu === "5-3") {
+	}
+	else if (menu === "5-3") {
 		fullHtml = fullHtml53;
 		pageBanner = (
 			<PageBanner
@@ -207,7 +207,8 @@ export const StepTmpInfo = ({ menu, step, substep }) => {
 				subtaskNo="5-3"
 			/>
 		);
-	} else if (menu === "6-1") {
+	}
+	else if (menu === "6-1") {
 		fullHtml = fullHtml61;
 		pageBanner = (
 			<PageBanner
@@ -217,7 +218,8 @@ export const StepTmpInfo = ({ menu, step, substep }) => {
 				subtaskNo="6-1"
 			/>
 		);
-	} else if (menu === "6-2") {
+	}
+	else if (menu === "6-2") {
 		fullHtml = fullHtml62;
 		pageBanner = (
 			<PageBanner
@@ -227,7 +229,8 @@ export const StepTmpInfo = ({ menu, step, substep }) => {
 				subtaskNo="6-2"
 			/>
 		);
-	} else if (menu === "6-3") {
+	}
+	else if (menu === "6-3") {
 		fullHtml = fullHtml63;
 		pageBanner = (
 			<PageBanner
@@ -248,6 +251,7 @@ export const StepTmpInfo = ({ menu, step, substep }) => {
 						<Grid item className="gridItem">
 							<StepInfo fullHtml={fullHtml} />
 							<StepStatus step={step} substep={substep} />
+							<DocURI step={step} substep={substep} />
 						</Grid>
 					</Grid>
 				</Box>
