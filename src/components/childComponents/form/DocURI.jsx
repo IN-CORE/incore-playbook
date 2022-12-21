@@ -1,7 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { IncoreInputLabel } from "../../styledComponents/IncoreInputLabel";
+import { IncoreTitle } from "../../styledComponents/IncoreTitle";
+import { IncoreFootNote } from "../../styledComponents/IncoreFootNote";
 import { IncoreTextField } from "../../styledComponents/IncoreInput";
-import { Box, Button, Link, Typography } from "@material-ui/core";
+import { IncoreLink } from "../../styledComponents/IncoreLink";
+import { IncoreButtonInline } from "../../styledComponents/IncoreButtonInline";
+import { Box, Button, Typography } from "@material-ui/core";
 import { useDispatch, useSelector } from "react-redux";
 import { parseDateTime } from "../../../utils/common";
 import { getStep as getStepAction, updateStep as updateStepAction } from "../../../actions/steps";
@@ -30,7 +33,7 @@ export const DocURI = (props) => {
 
 	return (
 		<Box className="inputGroup" style={{ height: "auto" }}>
-			<IncoreInputLabel>Document Link</IncoreInputLabel>
+			<IncoreTitle>Document Link</IncoreTitle>
 			{
 				edit ?
 
@@ -46,22 +49,22 @@ export const DocURI = (props) => {
 						<Button variant="outlined" onClick={()=> {setEdit(false);}}>Cancel</Button>
 					</>
 					:
-					<>
+					<Box style={{display: "inline-flex", alginItem: "baseline"}}>
 						{
 							stepData["doc_uri"] && stepData["doc_user"]?
-								<>
-									<Link href="#">{stepData["doc_uri"]}</Link>
-									<Typography>Link last edited by {stepData["doc_user"]["firstName"]} {stepData["doc_user"]["lastName"]} at {parseDateTime(stepData["status_updated_at"]) ?? "unavailable timestamp"}</Typography>
-								</>
+								<Box className="inputGroup" style={{ height: "auto" }}>
+									<IncoreLink href="#">{stepData["doc_uri"]}</IncoreLink>
+									<IncoreFootNote>Link last edited by {stepData["doc_user"]["firstName"]} {stepData["doc_user"]["lastName"]} at {parseDateTime(stepData["status_updated_at"]) ?? "unavailable timestamp"}</IncoreFootNote>
+								</Box>
 								:
-								<Typography>No document link available yet.</Typography>
+								<Box className="inputGroup" style={{ height: "auto" }}>
+									<Typography>No document link available yet.</Typography>
+								</Box>
 						}
-						<Button variant="contained"
-							color="primary"
-							onClick={()=> {setEdit(true);}}>
+						<IncoreButtonInline variant="contained" color="default" onClick={()=> {setEdit(true);}}>
 							Update
-						</Button>
-					</>
+						</IncoreButtonInline>
+					</Box>
 			}
 		</Box>
 	);
