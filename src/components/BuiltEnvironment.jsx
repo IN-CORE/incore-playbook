@@ -162,7 +162,7 @@ export const BuiltEnvironment = ({ step, substep }) => {
 						if (key === "interdNetworks") {
 							listDatasets(globalConfig, dataPerPage, offsetInterdNetwork, datasetType);
 						}
-						if (key === "sectorShocks" || key === "huas" || key === "blockGroups" || key === "valueLosses" ) {
+						if (key === "sectorShocks" || key === "huas" || key === "blockGroups" || key === "valueLosses") {
 							listDatasets(globalConfig, dataPerPage, offsetSocioEcon, datasetType);
 						}
 					}
@@ -186,41 +186,31 @@ export const BuiltEnvironment = ({ step, substep }) => {
 		setDatasetType("");
 	};
 
-	const pageChange = (direction, key) => {
+	const _pageChangeHelper = (direction, dataPerPage, setOffset, currPageNumber, setCurrPageNumber) => {
 		if (direction === "previous") {
-			if (key === "building") {
-				setOffsetBuilding((pageNumberBuilding - 2) * dataPerPage);
-				setPageNumberBuilding(pageNumberBuilding - 1);
-			}
-			if (key === "epf") {
-				setOffsetEpf((pageNumberEpf - 2) * dataPerPage);
-				setPageNumberEpf(pageNumberEpf - 1);
-			}
-			if (key === "interdNetwork") {
-				setOffsetInterdNetwork((pageNumberInterdNetwork - 2) * dataPerPage);
-				setPageNumberInterdNetwork(pageNumberInterdNetwork - 1);
-			}
-			if (key === "sectorShocks" || key === "huas" || key === "blockGroups" || key === "valueLosses") {
-				setOffsetSocioEcon((pageNumberSocioEcon - 2) * dataPerPage);
-				setPageNumberSocioEcon(pageNumberSocioEcon - 1);
-			}
+			setOffset((currPageNumber - 2) * dataPerPage);
+			setCurrPageNumber(currPageNumber - 1);
 		} else if (direction === "next") {
-			if (key === "building") {
-				setOffsetBuilding(pageNumberBuilding * dataPerPage);
-				setPageNumberBuilding(pageNumberBuilding + 1);
-			}
-			if (key === "epf") {
-				setOffsetEpf(pageNumberEpf * dataPerPage);
-				setPageNumberEpf(pageNumberEpf + 1);
-			}
-			if (key === "interdNetwork") {
-				setOffsetInterdNetwork(pageNumberInterdNetwork * dataPerPage);
-				setPageNumberInterdNetwork(pageNumberInterdNetwork + 1);
-			}
-			if (key === "sectorShocks" || key === "huas" || key === "blockGroups" || key === "valueLosses") {
-				setOffsetSocioEcon(pageNumberSocioEcon * dataPerPage);
-				setPageNumberSocioEcon(pageNumberSocioEcon + 1);
-			}
+			setOffset(currPageNumber * dataPerPage);
+			setCurrPageNumber(currPageNumber + 1);
+		}
+	};
+
+	const pageChange = (direction, key) => {
+		if (key === "building") {
+			_pageChangeHelper(direction, dataPerPage, setOffsetBuilding, pageNumberBuilding,
+				setPageNumberBuilding);
+		}
+		if (key === "epf") {
+			_pageChangeHelper(direction, dataPerPage, setOffsetEpf, pageNumberEpf, setPageNumberEpf);
+		}
+		if (key === "interdNetwork") {
+			_pageChangeHelper(direction, dataPerPage, setOffsetInterdNetwork, pageNumberInterdNetwork,
+				setPageNumberInterdNetwork);
+		}
+		if (key === "sectorShocks" || key === "huas" || key === "blockGroups" || key === "valueLosses") {
+			_pageChangeHelper(direction, dataPerPage, setOffsetSocioEcon, pageNumberSocioEcon,
+				setPageNumberSocioEcon);
 		}
 	};
 
