@@ -98,17 +98,13 @@ export const BuiltEnvironment = ({ step, substep }) => {
 	const huas = useSelector((state) => state.dataset.huas);
 	const blockGroups = useSelector((state) => state.dataset.blockGroups);
 	const valueLosses = useSelector((state) => state.dataset.valueLosses);
-	const [dataPerPage, setDataPerPage] = React.useState(20);
-	const [dataPerPageBuilding, setDataPerPageBuilding] = React.useState(20);
+	const [dataPerPage, setDataPerPage] = React.useState(5);
 	const [offsetBuilding, setOffsetBuilding] = React.useState(0);
 	const [pageNumberBuilding, setPageNumberBuilding] = React.useState(1);
-	const [dataPerPageEpf, setDataPerPageEpf] = React.useState(20);
 	const [offsetEpf, setOffsetEpf] = React.useState(0);
 	const [pageNumberEpf, setPageNumberEpf] = React.useState(1);
-	const [dataPerPageInterdNetwork, setDataPerPagInterdNetwork] = React.useState(20);
 	const [offsetInterdNetwork, setOffsetInterdNetwork] = React.useState(0);
 	const [pageNumberInterdNetwork, setPageNumberInterdNetwork] = React.useState(1);
-	const [dataPerPageSocioEcon, setDataPerPageSocioEcon] = React.useState(20);
 	const [offsetSocioEcon, setOffsetSocioEcon] = React.useState(0);
 	const [pageNumberSocioEcon, setPageNumberSocioEcon] = React.useState(1);
 
@@ -158,16 +154,16 @@ export const BuiltEnvironment = ({ step, substep }) => {
 				inputDatasetTypes[key].map((inputDatasetType) => {
 					if (inputDatasetType["type"] === datasetType) {
 						if (key === "buildings") {
-							listDatasets(globalConfig, dataPerPageBuilding, offsetBuilding, datasetType);
+							listDatasets(globalConfig, dataPerPage, offsetBuilding, datasetType);
 						}
 						if (key === "epfs") {
-							listDatasets(globalConfig, dataPerPageEpf, offsetEpf, datasetType);
+							listDatasets(globalConfig, dataPerPage, offsetEpf, datasetType);
 						}
 						if (key === "interdNetworks") {
-							listDatasets(globalConfig, dataPerPageInterdNetwork, offsetInterdNetwork, datasetType);
+							listDatasets(globalConfig, dataPerPage, offsetInterdNetwork, datasetType);
 						}
 						if (key === "sectorShocks" || key === "huas" || key === "blockGroups" || key === "valueLosses" ) {
-							listDatasets(globalConfig, dataPerPageSocioEcon, offsetSocioEcon, datasetType);
+							listDatasets(globalConfig, dataPerPage, offsetSocioEcon, datasetType);
 						}
 					}
 				});
@@ -193,36 +189,36 @@ export const BuiltEnvironment = ({ step, substep }) => {
 	const pageChange = (direction, key) => {
 		if (direction === "previous") {
 			if (key === "building") {
-				setOffsetBuilding((pageNumberBuilding - 2) * dataPerPageBuilding);
+				setOffsetBuilding((pageNumberBuilding - 2) * dataPerPage);
 				setPageNumberBuilding(pageNumberBuilding - 1);
 			}
 			if (key === "epf") {
-				setOffsetEpf((pageNumberEpf - 2) * dataPerPageEpf);
+				setOffsetEpf((pageNumberEpf - 2) * dataPerPage);
 				setPageNumberEpf(pageNumberEpf - 1);
 			}
 			if (key === "interdNetwork") {
-				setOffsetInterdNetwork((pageNumberInterdNetwork - 2) * dataPerPageInterdNetwork);
+				setOffsetInterdNetwork((pageNumberInterdNetwork - 2) * dataPerPage);
 				setPageNumberInterdNetwork(pageNumberInterdNetwork - 1);
 			}
 			if (key === "sectorShocks" || key === "huas" || key === "blockGroups" || key === "valueLosses") {
-				setOffsetSocioEcon((pageNumberSocioEcon - 2) * dataPerPageSocioEcon);
+				setOffsetSocioEcon((pageNumberSocioEcon - 2) * dataPerPage);
 				setPageNumberSocioEcon(pageNumberSocioEcon - 1);
 			}
 		} else if (direction === "next") {
 			if (key === "building") {
-				setOffsetBuilding(pageNumberBuilding * dataPerPageBuilding);
+				setOffsetBuilding(pageNumberBuilding * dataPerPage);
 				setPageNumberBuilding(pageNumberBuilding + 1);
 			}
 			if (key === "epf") {
-				setOffsetEpf(pageNumberEpf * dataPerPageEpf);
+				setOffsetEpf(pageNumberEpf * dataPerPage);
 				setPageNumberEpf(pageNumberEpf + 1);
 			}
 			if (key === "interdNetwork") {
-				setOffsetInterdNetwork(pageNumberInterdNetwork * dataPerPageInterdNetwork);
+				setOffsetInterdNetwork(pageNumberInterdNetwork * dataPerPage);
 				setPageNumberInterdNetwork(pageNumberInterdNetwork + 1);
 			}
 			if (key === "sectorShocks" || key === "huas" || key === "blockGroups" || key === "valueLosses") {
-				setOffsetSocioEcon(pageNumberSocioEcon * dataPerPageSocioEcon);
+				setOffsetSocioEcon(pageNumberSocioEcon * dataPerPage);
 				setPageNumberSocioEcon(pageNumberSocioEcon + 1);
 			}
 		}
@@ -230,36 +226,36 @@ export const BuiltEnvironment = ({ step, substep }) => {
 
 	useEffect(() => {
 		inputDatasetTypes["buildings"].map((inputDatasetType) => {
-			listDatasets(globalConfig, dataPerPageBuilding, offsetBuilding, inputDatasetType["type"]);
+			listDatasets(globalConfig, dataPerPage, offsetBuilding, inputDatasetType["type"]);
 		});
-	}, [offsetBuilding, dataPerPageBuilding, pageNumberBuilding]);
+	}, [offsetBuilding, dataPerPage, pageNumberBuilding]);
 
 	useEffect(() => {
 		inputDatasetTypes["epfs"].map((inputDatasetType) => {
-			listDatasets(globalConfig, dataPerPageEpf, offsetEpf, inputDatasetType["type"]);
+			listDatasets(globalConfig, dataPerPage, offsetEpf, inputDatasetType["type"]);
 		});
-	}, [offsetEpf, dataPerPageEpf, pageNumberEpf]);
+	}, [offsetEpf, dataPerPage, pageNumberEpf]);
 
 	useEffect(() => {
 		inputDatasetTypes["interdNetworks"].map((inputDatasetType) => {
-			listDatasets(globalConfig, dataPerPageInterdNetwork, offsetInterdNetwork, inputDatasetType["type"]);
+			listDatasets(globalConfig, dataPerPage, offsetInterdNetwork, inputDatasetType["type"]);
 		});
-	}, [offsetInterdNetwork, dataPerPageInterdNetwork, pageNumberInterdNetwork]);
+	}, [offsetInterdNetwork, dataPerPage, pageNumberInterdNetwork]);
 
 	useEffect(() => {
 		inputDatasetTypes["sectorShocks"].map((inputDatasetType) => {
-			listDatasets(globalConfig, dataPerPageSocioEcon, offsetSocioEcon, inputDatasetType["type"]);
+			listDatasets(globalConfig, dataPerPage, offsetSocioEcon, inputDatasetType["type"]);
 		});
 		inputDatasetTypes["huas"].map((inputDatasetType) => {
-			listDatasets(globalConfig, dataPerPageSocioEcon, offsetSocioEcon, inputDatasetType["type"]);
+			listDatasets(globalConfig, dataPerPage, offsetSocioEcon, inputDatasetType["type"]);
 		});
 		inputDatasetTypes["blockGroups"].map((inputDatasetType) => {
-			listDatasets(globalConfig, dataPerPageSocioEcon, offsetSocioEcon, inputDatasetType["type"]);
+			listDatasets(globalConfig, dataPerPage, offsetSocioEcon, inputDatasetType["type"]);
 		});
 		inputDatasetTypes["valueLosses"].map((inputDatasetType) => {
-			listDatasets(globalConfig, dataPerPageSocioEcon, offsetSocioEcon, inputDatasetType["type"]);
+			listDatasets(globalConfig, dataPerPage, offsetSocioEcon, inputDatasetType["type"]);
 		});
-	}, [offsetSocioEcon, dataPerPageSocioEcon, pageNumberSocioEcon]);
+	}, [offsetSocioEcon, dataPerPage, pageNumberSocioEcon]);
 
 	const fieldNames = [
 		{
@@ -321,7 +317,7 @@ export const BuiltEnvironment = ({ step, substep }) => {
 													<Pagination
 														pageNumber={pageNumberBuilding}
 														data={buildings}
-														dataPerPage={dataPerPageBuilding}
+														dataPerPage={dataPerPage}
 														previous={() => pageChange("previous", "building")}
 														next={() => pageChange("next", "building")}
 													/>
@@ -357,7 +353,7 @@ export const BuiltEnvironment = ({ step, substep }) => {
 													<Pagination
 														pageNumber={pageNumberEpf}
 														data={epfs}
-														dataPerPage={dataPerPageEpf}
+														dataPerPage={dataPerPage}
 														previous={() => pageChange("previous", "epf")}
 														next={() => pageChange("next", "epf")}
 													/>
@@ -393,7 +389,7 @@ export const BuiltEnvironment = ({ step, substep }) => {
 													<Pagination
 														pageNumber={pageNumberInterdNetwork}
 														data={interdNetworks}
-														dataPerPage={dataPerPageInterdNetwork}
+														dataPerPage={dataPerPage}
 														previous={() => pageChange("previous", "interdNetwork")}
 														next={() => pageChange("next", "interdNetwork")}
 													/>
@@ -443,7 +439,7 @@ export const BuiltEnvironment = ({ step, substep }) => {
 															...blockGroups,
 															...valueLosses
 														]}
-														dataPerPage={dataPerPageSocioEcon}
+														dataPerPage={dataPerPage}
 														previous={() => pageChange("previous", "socioEcon")}
 														next={() => pageChange("next", "socioEcon")}
 													/>
