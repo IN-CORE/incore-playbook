@@ -22,6 +22,8 @@ import { IncoreInputLabel } from "./styledComponents/IncoreInputLabel";
 import { IncoreMenuItem, IncoreSelectBox } from "./styledComponents/IncoreSelect";
 import { getHazardGroupLayers } from "../utils/map";
 
+import Pagination from "./childComponents/navigation/Pagination";
+
 // import FilterListIcon from "@material-ui/icons/FilterList";
 
 import { EntryTable } from "./childComponents/table/EntryTable";
@@ -37,8 +39,7 @@ import DatasetTsunami from "./childComponents/tsuanmi/datasetTsunami";
 import { LineString } from "ol/geom";
 import { useEffectAllDepsChange } from "./customHooks/useEffectAllDeps";
 import { getHazardTypePlural } from "../utils/common";
-
-import Pagination from "./childComponents/navigation/Pagination";
+import {inputDatasetTypes} from "../globals";
 
 const useStyles = makeStyles({
 	tabDiv: {
@@ -63,7 +64,7 @@ const useStyles = makeStyles({
 	}
 });
 
-export const CommunityHazards_old = () => {
+export const CommunityHazards = () => {
 	const classes = useStyles();
 
 	const [currTabIndex, setCurrTabIndex] = useState(0);
@@ -88,18 +89,9 @@ export const CommunityHazards_old = () => {
 
 	const [selectedHazardType, setSelectedHazardType] = useState(allowedHazardTypes[0]);
 
-	const [dataPerPage, setDataPerPage] = React.useState(1);
-	const [pageNumber, setPageNumber] = React.useState(0);
-	const [offsetEq, setOffsetEq] = React.useState(0);
-	const [pageNumberEq, setPageNumberEq] = React.useState(1);
-	const [offsetTornado, setOffsetTornado] = React.useState(0);
-	const [pageNumberTornado, setPageNumberTornado] = React.useState(1);
-	const [offsetTsunami, setOffsetTsunami] = React.useState(0);
-	const [pageNumberTsunami, setPageNumberTsunami] = React.useState(1);
-	const [offsetHurricane, setOffsetHurricane] = React.useState(0);
-	const [pageNumberHurricane, setPageNumberHurricane] = React.useState(1);
-	const [offsetFlood, setOffsetFlood] = React.useState(0);
-	const [pageNumberFlood, setPageNumberFlood] = React.useState(1);
+	const [dataPerPage, setDataPerPage] = React.useState(20);
+	const [pageNumber, setPageNumber] = React.useState(1);
+	const [offset, setOffset] = React.useState(0);
 
 	// Cache the drawing
 	const drawSourceRef = React.useRef(new VectorSource({ wrapX: false }));
@@ -178,11 +170,6 @@ export const CommunityHazards_old = () => {
 
 	// Holds an instance of Map component
 	const mapRef = React.useRef();
-
-	// component did mount
-	useEffect(() => {
-		listHazards(globalConfig, selectedHazardType);
-	}, [selectedHazardType]);
 
 	useEffect(() => {
 		// Important: need to clear previous draw interaction first
@@ -303,6 +290,27 @@ export const CommunityHazards_old = () => {
 		}
 	];
 
+	const pageChange = (direction) => {
+		if (direction === "previous") {
+			setOffset((pageNumber - 2) * dataPerPage);
+			setPageNumber(pageNumber - 1);
+		} else if (direction === "next") {
+			setOffset(pageNumber * dataPerPage);
+			setPageNumber(pageNumber + 1);
+		}
+	};
+
+	// change hazard type
+	useEffect(() => {
+		setOffset(0);
+		setPageNumber(1);
+	}, [selectedHazardType]);
+
+	// page changes
+	useEffect(() => {
+		listHazards(globalConfig, selectedHazardType, dataPerPage, offset);
+	}, [offset, pageNumber]);
+
 	return (
 		<Layout>
 			<div className="firstDivInContent">
@@ -326,12 +334,18 @@ export const CommunityHazards_old = () => {
 						{(() => {
 							// selectedHazardType: are earthquake, flood, hurricane, tsunami, tornado
 							if (selectedHazardType !== "") {
-
 								return (
 									<Box className="entryTable">
 										<EntryTable
 											fieldNames={fieldNames}
 											fields={eval(getHazardTypePlural(selectedHazardType))}
+										/>
+										<Pagination
+											pageNumber={pageNumber}
+											data={eval(getHazardTypePlural(selectedHazardType))}
+											dataPerPage={dataPerPage}
+											previous={() => pageChange("previous")}
+											next={() => pageChange("next")}
 										/>
 									</Box>
 								);
