@@ -309,7 +309,7 @@ export const CommunityHazards = () => {
 	// page changes
 	useEffect(() => {
 		listHazards(globalConfig, selectedHazardType, dataPerPage, offset);
-	}, [offset, pageNumber]);
+	}, [offset, dataPerPage]);
 
 	return (
 		<Layout>

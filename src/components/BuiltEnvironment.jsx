@@ -48,6 +48,12 @@ const useStyles = makeStyles({
 	subTitle: {
 		display: "inline"
 	},
+	socioeconomicsSubBox:{
+		padding: "1em"
+	},
+	socioeconomicsSubTitle: {
+		color: "#00619d",
+	},
 	plusButton: {
 		display: "inline",
 		float: "right",
@@ -98,15 +104,21 @@ export const BuiltEnvironment = ({ step, substep }) => {
 	const huas = useSelector((state) => state.dataset.huas);
 	const blockGroups = useSelector((state) => state.dataset.blockGroups);
 	const valueLosses = useSelector((state) => state.dataset.valueLosses);
-	const [dataPerPage, setDataPerPage] = React.useState(5);
+	const [dataPerPage, setDataPerPage] = React.useState(2);
 	const [offsetBuilding, setOffsetBuilding] = React.useState(0);
 	const [pageNumberBuilding, setPageNumberBuilding] = React.useState(1);
 	const [offsetEpf, setOffsetEpf] = React.useState(0);
 	const [pageNumberEpf, setPageNumberEpf] = React.useState(1);
 	const [offsetInterdNetwork, setOffsetInterdNetwork] = React.useState(0);
 	const [pageNumberInterdNetwork, setPageNumberInterdNetwork] = React.useState(1);
-	const [offsetSocioEcon, setOffsetSocioEcon] = React.useState(0);
-	const [pageNumberSocioEcon, setPageNumberSocioEcon] = React.useState(1);
+	const [offsetSectorShocks, setOffsetSectorShocks] = React.useState(0);
+	const [offsetHuas, setOffsetHuas] = React.useState(0);
+	const [offsetBlockGroups, setOffsetBlockGroups] = React.useState(0);
+	const [offsetValueLosses, setOffsetValueLosses] = React.useState(0);
+	const [pageNumberSectorShocks, setPageNumberSectorShocks] = React.useState(1);
+	const [pageNumberHuas, setPageNumberHuas] = React.useState(1);
+	const [pageNumberBlockGroups, setPageNumberBlockGroups] = React.useState(1);
+	const [pageNumberValueLosses, setPageNumberValueLosses] = React.useState(1);
 
 	// load uploaded dataset
 	useEffect(() => {
@@ -149,25 +161,7 @@ export const BuiltEnvironment = ({ step, substep }) => {
 
 		const datasetJson = await createDataset(globalConfig, title, description, datasetType, files, format);
 		if (datasetJson !== {}) {
-			// update table to show uploaded data
-			Object.keys(inputDatasetTypes).map((key) => {
-				inputDatasetTypes[key].map((inputDatasetType) => {
-					if (inputDatasetType["type"] === datasetType) {
-						if (key === "buildings") {
-							listDatasets(globalConfig, dataPerPage, offsetBuilding, datasetType);
-						}
-						if (key === "epfs") {
-							listDatasets(globalConfig, dataPerPage, offsetEpf, datasetType);
-						}
-						if (key === "interdNetworks") {
-							listDatasets(globalConfig, dataPerPage, offsetInterdNetwork, datasetType);
-						}
-						if (key === "sectorShocks" || key === "huas" || key === "blockGroups" || key === "valueLosses") {
-							listDatasets(globalConfig, dataPerPage, offsetSocioEcon, datasetType);
-						}
-					}
-				});
-			});
+			listDatasets(globalConfig, dataPerPage, offsetBuilding, datasetType);
 			setFile([]);
 			setTitle("");
 			setDescription("");
@@ -208,9 +202,20 @@ export const BuiltEnvironment = ({ step, substep }) => {
 			_pageChangeHelper(direction, dataPerPage, setOffsetInterdNetwork, pageNumberInterdNetwork,
 				setPageNumberInterdNetwork);
 		}
-		if (key === "sectorShocks" || key === "huas" || key === "blockGroups" || key === "valueLosses") {
-			_pageChangeHelper(direction, dataPerPage, setOffsetSocioEcon, pageNumberSocioEcon,
-				setPageNumberSocioEcon);
+		if (key === "sectorShocks") {
+			_pageChangeHelper(direction, dataPerPage, setOffsetSectorShocks, pageNumberSectorShocks,
+				setPageNumberSectorShocks);
+		}
+		if (key === "huas") {
+			_pageChangeHelper(direction, dataPerPage, setOffsetHuas, pageNumberHuas, setPageNumberHuas);
+		}
+		if (key === "blockGroups") {
+			_pageChangeHelper(direction, dataPerPage, setOffsetBlockGroups, pageNumberBlockGroups,
+				setPageNumberBlockGroups);
+		}
+		if (key === "valueLosses") {
+			_pageChangeHelper(direction, dataPerPage, setOffsetValueLosses, pageNumberValueLosses,
+				setPageNumberValueLosses);
 		}
 	};
 
@@ -218,34 +223,43 @@ export const BuiltEnvironment = ({ step, substep }) => {
 		inputDatasetTypes["buildings"].map((inputDatasetType) => {
 			listDatasets(globalConfig, dataPerPage, offsetBuilding, inputDatasetType["type"]);
 		});
-	}, [offsetBuilding, dataPerPage, pageNumberBuilding]);
+	}, [offsetBuilding, dataPerPage]);
 
 	useEffect(() => {
 		inputDatasetTypes["epfs"].map((inputDatasetType) => {
 			listDatasets(globalConfig, dataPerPage, offsetEpf, inputDatasetType["type"]);
 		});
-	}, [offsetEpf, dataPerPage, pageNumberEpf]);
+	}, [offsetEpf, dataPerPage]);
 
 	useEffect(() => {
 		inputDatasetTypes["interdNetworks"].map((inputDatasetType) => {
 			listDatasets(globalConfig, dataPerPage, offsetInterdNetwork, inputDatasetType["type"]);
 		});
-	}, [offsetInterdNetwork, dataPerPage, pageNumberInterdNetwork]);
+	}, [offsetInterdNetwork, dataPerPage]);
 
 	useEffect(() => {
 		inputDatasetTypes["sectorShocks"].map((inputDatasetType) => {
-			listDatasets(globalConfig, dataPerPage, offsetSocioEcon, inputDatasetType["type"]);
+			listDatasets(globalConfig, dataPerPage, offsetSectorShocks, inputDatasetType["type"]);
 		});
+	}, [offsetSectorShocks, dataPerPage]);
+
+	useEffect(() => {
 		inputDatasetTypes["huas"].map((inputDatasetType) => {
-			listDatasets(globalConfig, dataPerPage, offsetSocioEcon, inputDatasetType["type"]);
+			listDatasets(globalConfig, dataPerPage, offsetHuas, inputDatasetType["type"]);
 		});
+	}, [offsetHuas, dataPerPage]);
+
+	useEffect(() => {
 		inputDatasetTypes["blockGroups"].map((inputDatasetType) => {
-			listDatasets(globalConfig, dataPerPage, offsetSocioEcon, inputDatasetType["type"]);
+			listDatasets(globalConfig, dataPerPage, offsetBlockGroups, inputDatasetType["type"]);
 		});
+	}, [offsetBlockGroups, dataPerPage]);
+
+	useEffect(() => {
 		inputDatasetTypes["valueLosses"].map((inputDatasetType) => {
-			listDatasets(globalConfig, dataPerPage, offsetSocioEcon, inputDatasetType["type"]);
+			listDatasets(globalConfig, dataPerPage, offsetValueLosses, inputDatasetType["type"]);
 		});
-	}, [offsetSocioEcon, dataPerPage, pageNumberSocioEcon]);
+	}, [offsetValueLosses, dataPerPage]);
 
 	const fieldNames = [
 		{
@@ -411,29 +425,82 @@ export const BuiltEnvironment = ({ step, substep }) => {
 														flexItem
 													/>
 												</Box>
-												<Box className="entryTable">
-													<EntryTable
-														fieldNames={fieldNames}
-														fields={[
-															...sectorShocks,
-															...huas,
-															...blockGroups,
-															...valueLosses
-														]}
+												{/*sector shocks*/}
+												<Box className={classes.socioeconomicsSubBox}>
+													<IncoreInputLabel className={classes.socioeconomicsSubTitle}>
+														Sector Shocks
+													</IncoreInputLabel>
+													<Box className="entryTable">
+														<EntryTable
+															fieldNames={fieldNames}
+															fields={sectorShocks}
+														/>
+													</Box>
+													<Pagination
+														pageNumber={pageNumberSectorShocks}
+														data={sectorShocks}
+														dataPerPage={dataPerPage}
+														previous={() => pageChange("previous", "sectorShocks")}
+														next={() => pageChange("next", "sectorShocks")}
 													/>
 												</Box>
-												<Pagination
-													pageNumber={pageNumberSocioEcon}
-													data={[
-														...sectorShocks,
-														...huas,
-														...blockGroups,
-														...valueLosses
-													]}
-													dataPerPage={dataPerPage}
-													previous={() => pageChange("previous", "socioEcon")}
-													next={() => pageChange("next", "socioEcon")}
-												/>
+												{/*huas*/}
+												<Box className={classes.socioeconomicsSubBox}>
+													<IncoreInputLabel className={classes.socioeconomicsSubTitle}>
+														Housing Unit Allocations
+													</IncoreInputLabel>
+													<Box className="entryTable">
+														<EntryTable
+															fieldNames={fieldNames}
+															fields={huas}
+														/>
+													</Box>
+													<Pagination
+														pageNumber={pageNumberHuas}
+														data={huas}
+														dataPerPage={dataPerPage}
+														previous={() => pageChange("previous", "huas")}
+														next={() => pageChange("next", "huas")}
+													/>
+												</Box>
+												{/*block groups*/}
+												<Box className={classes.socioeconomicsSubBox}>
+													<IncoreInputLabel className={classes.socioeconomicsSubTitle}>
+														Block Groups
+													</IncoreInputLabel>
+													<Box className="entryTable">
+														<EntryTable
+															fieldNames={fieldNames}
+															fields={blockGroups}
+														/>
+													</Box>
+													<Pagination
+														pageNumber={pageNumberBlockGroups}
+														data={blockGroups}
+														dataPerPage={dataPerPage}
+														previous={() => pageChange("previous", "blockGroups")}
+														next={() => pageChange("next", "blockGroups")}
+													/>
+												</Box>
+												{/*value losses*/}
+												<Box className={classes.socioeconomicsSubBox}>
+													<IncoreInputLabel className={classes.socioeconomicsSubTitle}>
+														Value Losses
+													</IncoreInputLabel>
+													<Box className="entryTable">
+														<EntryTable
+															fieldNames={fieldNames}
+															fields={valueLosses}
+														/>
+													</Box>
+													<Pagination
+														pageNumber={pageNumberValueLosses}
+														data={valueLosses}
+														dataPerPage={dataPerPage}
+														previous={() => pageChange("previous", "valueLosses")}
+														next={() => pageChange("next", "valueLosses")}
+													/>
+												</Box>
 											</Box>
 										) : null}
 									</Box>
