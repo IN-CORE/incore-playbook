@@ -38,6 +38,8 @@ import { LineString } from "ol/geom";
 import { useEffectAllDepsChange } from "./customHooks/useEffectAllDeps";
 import { getHazardTypePlural } from "../utils/common";
 
+import Pagination from "./childComponents/navigation/Pagination";
+
 const useStyles = makeStyles({
 	tabDiv: {
 		margin: "48px 0 0 0",
@@ -61,7 +63,7 @@ const useStyles = makeStyles({
 	}
 });
 
-export const CommunityHazards = () => {
+export const CommunityHazards_old = () => {
 	const classes = useStyles();
 
 	const [currTabIndex, setCurrTabIndex] = useState(0);
@@ -85,6 +87,19 @@ export const CommunityHazards = () => {
 	const allowedHazardTypes = useSelector((state) => state.config.allowedHazardTypes);
 
 	const [selectedHazardType, setSelectedHazardType] = useState(allowedHazardTypes[0]);
+
+	const [dataPerPage, setDataPerPage] = React.useState(1);
+	const [pageNumber, setPageNumber] = React.useState(0);
+	const [offsetEq, setOffsetEq] = React.useState(0);
+	const [pageNumberEq, setPageNumberEq] = React.useState(1);
+	const [offsetTornado, setOffsetTornado] = React.useState(0);
+	const [pageNumberTornado, setPageNumberTornado] = React.useState(1);
+	const [offsetTsunami, setOffsetTsunami] = React.useState(0);
+	const [pageNumberTsunami, setPageNumberTsunami] = React.useState(1);
+	const [offsetHurricane, setOffsetHurricane] = React.useState(0);
+	const [pageNumberHurricane, setPageNumberHurricane] = React.useState(1);
+	const [offsetFlood, setOffsetFlood] = React.useState(0);
+	const [pageNumberFlood, setPageNumberFlood] = React.useState(1);
 
 	// Cache the drawing
 	const drawSourceRef = React.useRef(new VectorSource({ wrapX: false }));
@@ -311,6 +326,7 @@ export const CommunityHazards = () => {
 						{(() => {
 							// selectedHazardType: are earthquake, flood, hurricane, tsunami, tornado
 							if (selectedHazardType !== "") {
+
 								return (
 									<Box className="entryTable">
 										<EntryTable
