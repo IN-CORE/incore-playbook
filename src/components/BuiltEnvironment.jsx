@@ -304,14 +304,14 @@ export const BuiltEnvironment = ({ step, substep }) => {
 												</Box>
 												<Box className="entryTable">
 													<EntryTable fieldNames={fieldNames} fields={buildings} />
-													<Pagination
-														pageNumber={pageNumberBuilding}
-														data={buildings}
-														dataPerPage={dataPerPage}
-														previous={() => pageChange("previous", "building")}
-														next={() => pageChange("next", "building")}
-													/>
 												</Box>
+												<Pagination
+													pageNumber={pageNumberBuilding}
+													data={buildings}
+													dataPerPage={dataPerPage}
+													previous={() => pageChange("previous", "building")}
+													next={() => pageChange("next", "building")}
+												/>
 											</Box>
 										) : null}
 
@@ -340,14 +340,14 @@ export const BuiltEnvironment = ({ step, substep }) => {
 												</Box>
 												<Box className="entryTable">
 													<EntryTable fieldNames={fieldNames} fields={epfs} />
-													<Pagination
-														pageNumber={pageNumberEpf}
-														data={epfs}
-														dataPerPage={dataPerPage}
-														previous={() => pageChange("previous", "epf")}
-														next={() => pageChange("next", "epf")}
-													/>
 												</Box>
+												<Pagination
+													pageNumber={pageNumberEpf}
+													data={epfs}
+													dataPerPage={dataPerPage}
+													previous={() => pageChange("previous", "epf")}
+													next={() => pageChange("next", "epf")}
+												/>
 											</Box>
 										) : null}
 
@@ -376,14 +376,14 @@ export const BuiltEnvironment = ({ step, substep }) => {
 												</Box>
 												<Box className="entryTable">
 													<EntryTable fieldNames={fieldNames} fields={interdNetworks} />
-													<Pagination
-														pageNumber={pageNumberInterdNetwork}
-														data={interdNetworks}
-														dataPerPage={dataPerPage}
-														previous={() => pageChange("previous", "interdNetwork")}
-														next={() => pageChange("next", "interdNetwork")}
-													/>
 												</Box>
+												<Pagination
+													pageNumber={pageNumberInterdNetwork}
+													data={interdNetworks}
+													dataPerPage={dataPerPage}
+													previous={() => pageChange("previous", "interdNetwork")}
+													next={() => pageChange("next", "interdNetwork")}
+												/>
 											</Box>
 										) : null}
 
@@ -421,19 +421,19 @@ export const BuiltEnvironment = ({ step, substep }) => {
 															...valueLosses
 														]}
 													/>
-													<Pagination
-														pageNumber={pageNumberSocioEcon}
-														data={[
-															...sectorShocks,
-															...huas,
-															...blockGroups,
-															...valueLosses
-														]}
-														dataPerPage={dataPerPage}
-														previous={() => pageChange("previous", "socioEcon")}
-														next={() => pageChange("next", "socioEcon")}
-													/>
 												</Box>
+												<Pagination
+													pageNumber={pageNumberSocioEcon}
+													data={[
+														...sectorShocks,
+														...huas,
+														...blockGroups,
+														...valueLosses
+													]}
+													dataPerPage={dataPerPage}
+													previous={() => pageChange("previous", "socioEcon")}
+													next={() => pageChange("next", "socioEcon")}
+												/>
 											</Box>
 										) : null}
 									</Box>

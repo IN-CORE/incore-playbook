@@ -335,11 +335,13 @@ export const CommunityHazards = () => {
 							// selectedHazardType: are earthquake, flood, hurricane, tsunami, tornado
 							if (selectedHazardType !== "") {
 								return (
-									<Box className="entryTable">
-										<EntryTable
-											fieldNames={fieldNames}
-											fields={eval(getHazardTypePlural(selectedHazardType))}
-										/>
+									<>
+										<Box className="entryTable">
+											<EntryTable
+												fieldNames={fieldNames}
+												fields={eval(getHazardTypePlural(selectedHazardType))}
+											/>
+										</Box>
 										<Pagination
 											pageNumber={pageNumber}
 											data={eval(getHazardTypePlural(selectedHazardType))}
@@ -347,7 +349,7 @@ export const CommunityHazards = () => {
 											previous={() => pageChange("previous")}
 											next={() => pageChange("next")}
 										/>
-									</Box>
+									</>
 								);
 							}
 						})()}
