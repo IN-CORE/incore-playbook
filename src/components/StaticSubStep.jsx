@@ -226,12 +226,14 @@ export const StaticSubStep = ({ menu, step, substep }) => {
 		<Layout>
 			<div className="firstDivInContent">
 				{breadCrumb}
+				<StepStatus step={step} substep={substep} />
 				<Box className="outerBox">
 					<Grid container spacing={3} className="innerBox">
-						<Grid item className="gridItem">
-							<StepInfo fullHtml={fullHtml} />
-							<StepStatus step={step} substep={substep} />
+						<Grid item xl={6} lg={6} md={6} sm={6} xs={12} className="gridItem">
 							<DocURI step={step} substep={substep} />
+						</Grid>
+						<Grid item xl={6} lg={6} md={6} sm={6} xs={12} className="gridItem">
+							<StepInfo fullHtml={fullHtml} />
 						</Grid>
 					</Grid>
 				</Box>
