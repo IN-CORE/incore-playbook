@@ -19,7 +19,7 @@ export const DocURI = (props) => {
 	const stepData = useSelector((state) => state.steps[`step_${step}_${substep}`]);
 
 	const [edit, setEdit] = useState(false);
-	const [docUri, setDocUri] = useState("");
+	const [docUri, setDocUri] = useState();
 
 	useEffect(() => {
 		listSteps(step, substep);
@@ -37,33 +37,45 @@ export const DocURI = (props) => {
 			{
 				edit ?
 
-					<>
-						<IncoreTextField
-							variant="outlined"
-							value={docUri}
-							onChange={(e) => {
-								setDocUri(e.target.value);
-							}}
-						/>
-						<Button variant="contained" color="primary" onClick={handleDocUriOnSave}>Save</Button>
-						<Button variant="outlined" onClick={()=> {setEdit(false);}}>Cancel</Button>
-					</>
+					<Box display="flex">
+						<Box flexGrow={1}>
+							<IncoreTextField
+								variant="outlined"
+								value={docUri}
+								onChange={(e) => {
+									setDocUri(e.target.value);
+								}}
+								defaultValue={stepData["doc_uri"]}
+							/>
+						</Box>
+						<Box>
+							<IncoreButtonInline variant="contained" color="default" onClick={handleDocUriOnSave}
+								style={{marginLeft:"0.5em"}}>
+								Save
+							</IncoreButtonInline>
+							<Button variant="outlined" color="default" style={{height:"41px",marginLeft:"0.5em"}}
+								onClick={()=> {setEdit(false);}}>Cancel</Button>
+						</Box>
+					</Box>
 					:
-					<Box style={{display: "inline-flex", alginItem: "baseline"}}>
+					<Box display="flex">
 						{
 							stepData["doc_uri"] && stepData["doc_user"]?
-								<Box className="inputGroup" style={{ height: "auto" }}>
+								<Box flexGrow={1}>
 									<IncoreLink href="#">{stepData["doc_uri"]}</IncoreLink>
-									<IncoreFootNote>Link last edited by {stepData["doc_user"]["firstName"]} {stepData["doc_user"]["lastName"]} at {parseDateTime(stepData["status_updated_at"]) ?? "unavailable timestamp"}</IncoreFootNote>
+									<IncoreFootNote>Link last edited by {stepData["doc_user"]["firstName"]} &npbs;
+										{stepData["doc_user"]["lastName"]} at {parseDateTime(stepData["status_updated_at"]) ?? "unavailable timestamp"}</IncoreFootNote>
 								</Box>
 								:
-								<Box className="inputGroup" style={{ height: "auto" }}>
+								<Box flexGrow={1}>
 									<Typography>No document link available yet.</Typography>
 								</Box>
 						}
-						<IncoreButtonInline variant="contained" color="default" onClick={()=> {setEdit(true);}}>
-							Update
-						</IncoreButtonInline>
+						<Box>
+							<IncoreButtonInline variant="contained" color="default" onClick={()=> {setEdit(true);}}>
+								Update
+							</IncoreButtonInline>
+						</Box>
 					</Box>
 			}
 		</Box>
