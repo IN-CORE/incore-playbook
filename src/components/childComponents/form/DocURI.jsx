@@ -63,8 +63,8 @@ export const DocURI = (props) => {
 							stepData["doc_uri"] && stepData["doc_user"]?
 								<Box>
 									<IncoreLink href={stepData["doc_uri"]} target="_blank">{stepData["doc_uri"]}</IncoreLink>
-									<IncoreFootNote>Link last edited by {stepData["doc_user"]["firstName"]} &nbsp;
-										{stepData["doc_user"]["lastName"]} at {parseDateTime(stepData["status_updated_at"]) ?? "unavailable timestamp"}</IncoreFootNote>
+									<IncoreFootNote>Link last edited by {stepData["doc_user"]["firstName"]}&nbsp;
+										{stepData["doc_user"]["lastName"]} at {parseDateTime(stepData["doc_updated_at"]) ?? "unavailable timestamp"}</IncoreFootNote>
 								</Box>
 								:
 								<Box>
