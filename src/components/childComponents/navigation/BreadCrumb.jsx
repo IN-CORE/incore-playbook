@@ -42,7 +42,7 @@ const useStyles = makeStyles({
 	}
 });
 
-export default function Banner(props) {
+export default function BreadCrumb(props) {
 	const classes = useStyles();
 
 	if (props.subtaskNo && props.childStep) {

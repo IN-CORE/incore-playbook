@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Box, Grid } from "@material-ui/core";
 import { UserInfo } from "./childComponents/user/UserInfo";
 import StepStatus from "./childComponents/step/StepStatus";
-import PageBanner from "./childComponents/navigation/Banner";
+import BreadCrumb from "./childComponents/navigation/BreadCrumb";
 import { Layout } from "./Layout";
 import StepInfo from "./StepInfo";
 import fullHtml from "../public/steps/1-1.html";
@@ -11,7 +11,7 @@ export const TeamLeader = ({ step, substep }) => {
 	return (
 		<Layout>
 			<div className="firstDivInContent">
-				<PageBanner
+				<BreadCrumb
 					parentStep="Form a Collaborative Planning Team"
 					childStep="Identify a Resilience Leader for the Community"
 					taskNo="1"

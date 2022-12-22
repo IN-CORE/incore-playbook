@@ -3,7 +3,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { Box, Dialog, DialogContent, Divider, Grid, IconButton } from "@material-ui/core";
 
 import { Layout } from "./Layout";
-import PageBanner from "./childComponents/navigation/Banner";
+import BreadCrumb from "./childComponents/navigation/BreadCrumb";
 import StepInfo from "./StepInfo";
 import StepStatus from "./childComponents/step/StepStatus";
 import { IncoreInputLabel } from "./styledComponents/IncoreInputLabel";
@@ -279,7 +279,7 @@ export const BuiltEnvironment = ({ step, substep }) => {
 	return (
 		<Layout>
 			<div className="firstDivInContent">
-				<PageBanner
+				<BreadCrumb
 					parentStep="Understand the Situation"
 					childStep="Identify & Characterize the Built Environment"
 					taskNo="2"

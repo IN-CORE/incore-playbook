@@ -25,7 +25,7 @@ import { getHazardGroupLayers } from "../utils/map";
 import Pagination from "./childComponents/navigation/Pagination";
 
 import { EntryTable } from "./childComponents/table/EntryTable";
-import PageBanner from "./childComponents/navigation/Banner";
+import BreadCrumb from "./childComponents/navigation/BreadCrumb";
 import fullHtml from "../public/steps/3-3.html";
 import StepInfo from "./StepInfo";
 import { fetchHazards } from "../actions/hazards";
@@ -314,7 +314,7 @@ export const CommunityHazards = () => {
 	return (
 		<Layout>
 			<div className="firstDivInContent">
-				<PageBanner
+				<BreadCrumb
 					parentStep="Determine Goals & Objectives"
 					childStep="Define Community Hazards"
 					taskNo="3"

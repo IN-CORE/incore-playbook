@@ -5,7 +5,7 @@ import { Layout } from "./Layout";
 
 import ViewResult from "./childComponents/ViewResult";
 import RunAnalysis from "./childComponents/RunAnalysis";
-import PageBanner from "./childComponents/navigation/Banner";
+import BreadCrumb from "./childComponents/navigation/BreadCrumb";
 import { fetchExecutions } from "../actions/datawolf";
 
 const useStyles = makeStyles({
@@ -34,7 +34,7 @@ export const AnticipatedPerformance = () => {
 	return (
 		<Layout>
 			<div className="firstDivInContent">
-				<PageBanner
+				<BreadCrumb
 					parentStep="Determine Goals & Objectives"
 					childStep="Determine Anticipated Performance"
 					taskNo="3"
