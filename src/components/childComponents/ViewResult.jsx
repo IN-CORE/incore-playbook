@@ -74,7 +74,7 @@ export default function ViewResult(props) {
 	const [datawolfViewAllOn, setDatawolfViewAllOn] = useState(false); // datawolf view
 	const [intervalId, setIntervalId] = useState(0);
 
-	// load executions list periodically every 10 seconds
+	// component did mount
 	useEffect(() => {
 		getExecutionList(datawolfConfig, datawolfViewAllOn);
 	}, []);
@@ -84,20 +84,27 @@ export default function ViewResult(props) {
 		createAnalysisEntryTable();
 	}, [executions]);
 
-	// update datawolf view all on / off
+	// update datawolf view all on / off;
+	// load executions list periodically every 10 seconds
 	useEffect(() => {
 		// clear old time due to params has changed
-		clearInterval(intervalId);
+		if (intervalId){
+			clearInterval(intervalId);
+			setIntervalId(0);
+		}
 
-		// immediately fetch new execution list
-		getExecutionList(datawolfConfig, datawolfViewAllOn);
-
-		// start a new interval timer and register that timer
-		const interval = setInterval(() => {
+		// save some traffic; only perform backend GET when on that tab
+		if (value === index){
+			// immediately fetch new execution list
 			getExecutionList(datawolfConfig, datawolfViewAllOn);
-		}, 5*1000);
-		setIntervalId(interval);
-	}, [datawolfViewAllOn]);
+
+			// start a new interval timer and register that timer
+			const interval = setInterval(() => {
+				getExecutionList(datawolfConfig, datawolfViewAllOn);
+			}, 10*1000);
+			setIntervalId(interval);
+		}
+	}, [datawolfViewAllOn, value]);
 
 	// extract a single status from mutliple step status`
 	const extractStatus = (executionItem) => {
