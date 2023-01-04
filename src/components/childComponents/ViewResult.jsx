@@ -62,16 +62,6 @@ export default function ViewResult(props) {
 	const globalConfig = useSelector((state) => state.config.globalConfig);
 	const datawolfWorkflowConfig = useSelector((state) => state.config.datawolfWorkflowConfig);
 
-	// load executions list that has status
-	useEffect(() => {
-		getExecutionList(datawolfConfig);
-	}, []);
-
-	// update execution statuses upon changing
-	useEffect(() => {
-		createAnalysisEntryTable();
-	}, [executions]);
-
 	// states
 	const [numCompleted, setNumCompleted] = useState(0);
 	const [executionEntries, setExecutionEntries] = useState([]);
@@ -82,9 +72,12 @@ export default function ViewResult(props) {
 	const [hazardType, setHazardType] = useState(""); // used in runtime table
 	const [previewOn, setPreviewOn] = useState(false); // list vs preview
 	const [datawolfViewAllOn, setDatawolfViewAllOn] = useState(false); // datawolf view
+	const [intervalId, setIntervalId] = useState(0);
 
-	// load executions list that has status
-	useEffect(() => { getExecutionList(datawolfConfig, datawolfViewAllOn); }, []);
+	// load executions list periodically every 10 seconds
+	useEffect(() => {
+		getExecutionList(datawolfConfig, datawolfViewAllOn);
+	}, []);
 
 	// update execution statuses upon changing
 	useEffect(() => {
@@ -93,7 +86,17 @@ export default function ViewResult(props) {
 
 	// update datawolf view all on / off
 	useEffect(() => {
+		// clear old time due to params has changed
+		clearInterval(intervalId);
+
+		// immediately fetch new execution list
 		getExecutionList(datawolfConfig, datawolfViewAllOn);
+
+		// start a new interval timer and register that timer
+		const interval = setInterval(() => {
+			getExecutionList(datawolfConfig, datawolfViewAllOn);
+		}, 5*1000);
+		setIntervalId(interval);
 	}, [datawolfViewAllOn]);
 
 	// extract a single status from mutliple step status`
@@ -271,10 +274,8 @@ export default function ViewResult(props) {
 							}
 							label="View All"
 						/>
-						<IconButton aria-label="sync"
-									onClick={() => {getExecutionList(datawolfConfig, datawolfViewAllOn);}}
-									color="secondary"><SyncIcon /></IconButton>
-						<IconButton aria-label="filter"><FilterListIcon /></IconButton>
+						{/*TODO in the future this could be used to add filters to narrow down exectusions (e.g. only show completed...)*/}
+						{/*<IconButton aria-label="filter"><FilterListIcon /></IconButton>*/}
 					</Box>
 				</Box>
 				<Box>
