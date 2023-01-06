@@ -8,6 +8,7 @@ globals["client_id"] = "react-auth";
 globals["authService"] = `${hostname}/auth/realms/In-core/protocol/openid-connect/token`;
 globals["hazardServiceBase"] = `${hostname}/hazard/api/`;
 globals["dataServiceBase"] = `${hostname}/data/api/`;
+globals["spaceServiceBase"] = `${hostname}/space/api/`;
 globals["maestroServiceBase"] = `${hostname}/maestro/galveston/`;
 globals["setGravatarURL"] = "https://en.gravatar.com/support/activating-your-account/";
 globals["allowUpload"] = true;

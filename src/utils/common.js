@@ -1,6 +1,6 @@
 import Cookies from "universal-cookie";
 import jwt_decode from "jwt-decode";
-import { testUserInfo } from "../globals";
+import { globals as defaultGlobalConfig, testUserInfo } from "../globals";
 import JSSoup from "jssoup";
 import { toLonLat } from "ol/proj";
 
@@ -131,4 +131,40 @@ export function getHazardTypePlural(hazardType) {
 		hazardType = `${hazardType}s`;
 	}
 	return hazardType;
+}
+
+// get incore space id given space name
+// TODO replace with endpoint once it's ready
+export async function getSpaceIdByName(globalConfig=defaultGlobalConfig, name){
+	const endpoint = `${globalConfig.spaceServiceBase}spaces`;
+	if (name === undefined || name === null) name = globalConfig.testbedSpace;
+	const request = await fetch(endpoint, { mode: "cors", headers: getHeader()});
+	if (request.status === 200) {
+		const spaces = await request.json();
+		spaces.filter((space) => {
+			if (space[""] === name) return space["id"];
+		});
+	} else if (request.status === 401) {
+		// TODO handle error
+		return "";
+	} else {
+		// TODO handle error
+		return "";
+	}
+}
+
+// move resource to space
+export async function move2TestbedSpace(globalConfig=defaultGlobalConfig, resourceId){
+	const spaceId = getSpaceIdByName(globalConfig.testbedSpace);
+	const endpoint = `${globalConfig.spaceServiceBase}spaces/${spaceId}/members/${resourceId}`;
+	const request = await fetch(endpoint, { mode: "cors", headers: getHeader(), method: "POST"});
+	if (request.status === 200) {
+		return await request.json();
+	} else if (request.status === 401) {
+		// TODO handle error
+		return {};
+	} else {
+		// TODO handle error
+		return {};
+	}
 }
