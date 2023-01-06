@@ -432,13 +432,25 @@ export const BuiltEnvironment = ({ step, substep }) => {
 														<Divider orientation="horizontal" className={classes.subDivider}
 																 flexItem/>
 													</Box>
-													<Pagination
-														pageNumber={pageNumberSectorShocks}
-														data={sectorShocks}
-														dataPerPage={dataPerPage}
-														previous={() => pageChange("previous", "sectorShocks")}
-														next={() => pageChange("next", "sectorShocks")}
-													/>
+													{/*sector shocks*/}
+													<Box className={classes.socioeconomicsSubBox}>
+														<IncoreInputLabel className={classes.socioeconomicsSubTitle}>
+															Sector Shocks
+														</IncoreInputLabel>
+														<Box className="entryTable">
+															<EntryTable
+																fieldNames={fieldNames}
+																fields={sectorShocks}
+															/>
+														</Box>
+														<Pagination
+															pageNumber={pageNumberSectorShocks}
+															data={sectorShocks}
+															dataPerPage={dataPerPage}
+															previous={() => pageChange("previous", "sectorShocks")}
+															next={() => pageChange("next", "sectorShocks")}
+														/>
+													</Box>
 													{/*huas*/}
 													<Box className={classes.socioeconomicsSubBox}>
 														<IncoreInputLabel className={classes.socioeconomicsSubTitle}>
