@@ -11,6 +11,7 @@ globals["dataServiceBase"] = `${hostname}/data/api/`;
 globals["maestroServiceBase"] = `${hostname}/maestro/galveston/`;
 globals["setGravatarURL"] = "https://en.gravatar.com/support/activating-your-account/";
 globals["allowUpload"] = true;
+globals["testbedSpace"] = "commresilienceslc";
 
 export {globals};
 
