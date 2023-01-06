@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 - Pagination of list dataset and hazard [#70](https://github.com/IN-CORE/incore-playbook/issues/70)
 - Toggle switch for showing all datawolf flows [#74](https://github.com/IN-CORE/incore-playbook/issues/74)
+- Move created dataset and hazard into a common testbed space [#87](https://github.com/IN-CORE/incore-playbook/issues/87)
 
 ### Changed
 - Renamed master branch to main [#28](https://github.com/IN-CORE/incore-playbook/issues/28)
