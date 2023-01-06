@@ -31,7 +31,7 @@ export default function DatasetEarthquake(props) {
 			// move to testbed space
 			await move2TestbedSpace(globalConfig, eqJson["id"]);
 			handleLayerUpdate(eqJson);
-			handleListUpdate(globalConfig, "earthquakes");
+			handleListUpdate(globalConfig, "earthquake");
 		}
 		setLoading(false);
 	};

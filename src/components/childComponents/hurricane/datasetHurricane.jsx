@@ -31,7 +31,7 @@ export default function DatasetHurricane(props) {
 			// move to testbed space
 			await move2TestbedSpace(globalConfig, hurricaneJson["id"]);
 			handleLayerUpdate(hurricaneJson);
-			handleListUpdate(globalConfig, "hurricanes");
+			handleListUpdate(globalConfig, "hurricane");
 		}
 		setLoading(false);
 	};

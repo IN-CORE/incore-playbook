@@ -47,7 +47,7 @@ export default function RasterTornado(props) {
 			// move to testbed space
 			await move2TestbedSpace(globalConfig, tornadoJson["id"]);
 			handleLayerUpdate(tornadoJson);
-			handleListUpdate(globalConfig, "tornadoes");
+			handleListUpdate(globalConfig, "tornado");
 			setFile([]);
 			setName("");
 			setDescription("");

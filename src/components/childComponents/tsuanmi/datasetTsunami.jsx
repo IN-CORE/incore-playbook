@@ -31,7 +31,7 @@ export default function DatasetTsunami(props) {
 			// move to testbed space
 			await move2TestbedSpace(globalConfig, tsunamiJson["id"]);
 			handleLayerUpdate(tsunamiJson);
-			handleListUpdate(globalConfig, "tsunamis");
+			handleListUpdate(globalConfig, "tsunami");
 		}
 		setLoading(false);
 	};

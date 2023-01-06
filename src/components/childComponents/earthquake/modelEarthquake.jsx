@@ -104,7 +104,7 @@ export default function ModelEarthquake(props) {
 			// move to testbed space
 			await move2TestbedSpace(globalConfig, eqJson["id"]);
 			handleLayerUpdate(eqJson);
-			handleListUpdate(globalConfig, "earthquakes");
+			handleListUpdate(globalConfig, "earthquake");
 			setName("");
 			setDescription("");
 			setCoord("");

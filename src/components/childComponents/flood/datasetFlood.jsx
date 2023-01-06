@@ -32,7 +32,7 @@ export default function DatasetFlood(props) {
 			// move to testbed space
 			await move2TestbedSpace(globalConfig, floodJson["id"]);
 			handleLayerUpdate(floodJson);
-			handleListUpdate(globalConfig, "floods");
+			handleListUpdate(globalConfig, "flood");
 		}
 		setLoading(false);
 	};
