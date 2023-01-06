@@ -12,6 +12,7 @@ import { createRjfsDatasetHazards } from "../../../utils/hazard";
 
 import Form from "@rjsf/material-ui";
 import { useSelector } from "react-redux";
+import { move2TestbedSpace } from "../../../utils/common";
 
 export default function DatasetTsunami(props) {
 	const { value, index, handleLayerUpdate, handleListUpdate, ...other } = props;
@@ -26,7 +27,9 @@ export default function DatasetTsunami(props) {
 	const onSave = async (formData) => {
 		setLoading(true);
 		const tsunamiJson = await createRjfsDatasetHazards(globalConfig, formData, "tsunamis");
-		if (tsunamiJson !== {}) {
+		if (tsunamiJson && tsunamiJson["id"]) {
+			// move to testbed space
+			await move2TestbedSpace(globalConfig, tsunamiJson["id"]);
 			handleLayerUpdate(tsunamiJson);
 			handleListUpdate(globalConfig, "tsunamis");
 		}

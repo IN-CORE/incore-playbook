@@ -25,6 +25,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchDatasets } from "../actions/datasets";
 
 import Pagination from "./childComponents/navigation/Pagination";
+import { move2TestbedSpace } from "../utils/common";
 
 const useStyles = makeStyles({
 	title: {
@@ -160,7 +161,9 @@ export const BuiltEnvironment = ({ step, substep }) => {
 		});
 
 		const datasetJson = await createDataset(globalConfig, title, description, datasetType, files, format);
-		if (datasetJson !== {}) {
+		if (datasetJson && datasetJson["id"]) {
+			// move to testbed space
+			await move2TestbedSpace(globalConfig, datasetJson["id"]);
 			listDatasets(globalConfig, dataPerPage, offsetBuilding, datasetType);
 			setFile([]);
 			setTitle("");

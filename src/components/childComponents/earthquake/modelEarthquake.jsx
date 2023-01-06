@@ -10,7 +10,7 @@ import { IncoreTextField } from "../../styledComponents/IncoreInput";
 import { IncoreInputLabel } from "../../styledComponents/IncoreInputLabel";
 
 import { createModelEarthquake } from "../../../utils/hazard";
-import { FlatCoordToLonLat, round } from "../../../utils/common";
+import { FlatCoordToLonLat, move2TestbedSpace, round } from "../../../utils/common";
 import LoadingOverlay from "react-loading-overlay";
 import { useSelector } from "react-redux";
 
@@ -100,7 +100,9 @@ export default function ModelEarthquake(props) {
 			attenuations,
 			faultTypeMap
 		);
-		if (eqJson !== {}) {
+		if (eqJson && eqJson["id"]) {
+			// move to testbed space
+			await move2TestbedSpace(globalConfig, eqJson["id"]);
 			handleLayerUpdate(eqJson);
 			handleListUpdate(globalConfig, "earthquakes");
 			setName("");

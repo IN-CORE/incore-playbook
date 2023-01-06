@@ -141,9 +141,7 @@ export async function getSpaceIdByName(globalConfig=defaultGlobalConfig, name){
 	const request = await fetch(endpoint, { mode: "cors", headers: getHeader()});
 	if (request.status === 200) {
 		const spaces = await request.json();
-		spaces.filter((space) => {
-			if (space[""] === name) return space["id"];
-		});
+		return spaces.filter((space) => space["name"] === name)[0]["id"];
 	} else if (request.status === 401) {
 		// TODO handle error
 		return "";
@@ -155,7 +153,7 @@ export async function getSpaceIdByName(globalConfig=defaultGlobalConfig, name){
 
 // move resource to space
 export async function move2TestbedSpace(globalConfig=defaultGlobalConfig, resourceId){
-	const spaceId = getSpaceIdByName(globalConfig.testbedSpace);
+	const spaceId = await getSpaceIdByName(globalConfig);
 	const endpoint = `${globalConfig.spaceServiceBase}spaces/${spaceId}/members/${resourceId}`;
 	const request = await fetch(endpoint, { mode: "cors", headers: getHeader(), method: "POST"});
 	if (request.status === 200) {
