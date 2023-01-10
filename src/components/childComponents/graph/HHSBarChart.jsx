@@ -4,8 +4,9 @@ import Chart from "react-google-charts";
 
 const ParseData = (data) => {
 	const chartData = [];
-	chartData.push(["Frequency", "Stage 1", "Stage 2", "Stage 3", "Stage 4"]);
-	return [...chartData, ...data];
+	chartData.push(["Stage 1", "Stage 2", "Stage 3", "Stage 4"]);
+	chartData.push(data);
+	return chartData;
 };
 
 export default function HHSBarChart(props) {
