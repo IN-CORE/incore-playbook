@@ -476,6 +476,32 @@ export function ViewResultEntryTable(props) {
 										) : (
 											<></>
 										)}
+										{/*Housing Recover*/}
+										{widgetList.includes("HHS") ? (
+											<TableRow
+												className={classes.subBodyRow}
+												key={`${execution["id"]}-HHS`}
+											>
+												<TableCell colSpan={6} key={`${execution["id"]}-HHS-title`}>
+													<Link
+														color="primary"
+														onClick={() => {
+															preview(execution["id"], "HHS");
+														}}
+														className={
+															execution["finalStatus"] === undefined ||
+															execution["finalStatus"] === "FINISHED"
+																? classes.clickableLink
+																: classes.clickableLinkDisabled
+														}
+													>
+														Housing Recovery
+													</Link>
+												</TableCell>
+											</TableRow>
+										) : (
+											<></>
+										)}
 									</>
 								) : null}
 							</>

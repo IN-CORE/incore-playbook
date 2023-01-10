@@ -663,6 +663,16 @@ const datawolfWorkflowConfig = {
 							variableName: "bldgFuncSummaryTableContent",
 							widget: "BldgFunctionality"
 						}
+					},
+					// TODO placeholder
+					{
+						datasetId: "08d2248b-b405-47e9-ec50-cc03eeba67e1",
+						datasets: {
+							step: "SLC-HHS",
+							title: "Housing Recovery",
+							variableName: "HHSBarChartContent",
+							widget: "HHS"
+						}
 					}
 					// TODO can use this to display error messages
 					// {

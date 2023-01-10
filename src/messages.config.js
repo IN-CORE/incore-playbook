@@ -82,6 +82,16 @@ export const stepInfo = [
 	}
 ];
 
+export const hhsInfo = {
+	tableTitle: "Recovery Stages",
+	rows: {
+		"Stage 1": "Dislocate to a large group emergency shelter",
+		"Stage 2": "Receive assistance from insurance company and settles into hotel",
+		"Stage 3": "Find rental unit",
+		"Stage 4": "Return to permanent housing",
+	}
+};
+
 export const cgeInfo = {
 	totalHouseholdIncome: {
 		textTitle: 'What do we mean by "Total Household Income"?',
