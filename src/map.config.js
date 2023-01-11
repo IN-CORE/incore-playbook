@@ -1,16 +1,16 @@
-// // joplin
-// export const mapConfig = {
-// 	MAP_BOUNDS:[
-// 		-94.818621,
-// 		36.816347,
-// 		-94.192626,
-// 		37.377222,
-// 	],
-// 	MAP_CENTER: [-94.4980, 37.0672],
-// 	ZOOM: 5,
-// 	MIN_ZOOM: 4,
-// 	MAX_ZOOM: 15,
-// };
+// joplin
+export const mapConfig = {
+	MAP_BOUNDS:[
+		-94.818621,
+		36.816347,
+		-94.192626,
+		37.377222,
+	],
+	MAP_CENTER: [-94.4980, 37.0672],
+	ZOOM: 5,
+	MIN_ZOOM: 4,
+	MAX_ZOOM: 15,
+};
 
 // // seaside
 // export const mapConfig = {
@@ -40,19 +40,19 @@
 // 	MAX_ZOOM: 15,
 // };
 
-// galveston
-export const mapConfig = {
-	MAP_BOUNDS:[
-		-96.211436,
-		27.941297,
-		-93.611436,
-		30.541297,
-	],
-	MAP_CENTER: [-94.911436, 29.241297],
-	ZOOM: 5,
-	MIN_ZOOM: 4,
-	MAX_ZOOM: 15,
-};
+// // galveston
+// export const mapConfig = {
+// 	MAP_BOUNDS:[
+// 		-96.211436,
+// 		27.941297,
+// 		-93.611436,
+// 		30.541297,
+// 	],
+// 	MAP_CENTER: [-94.911436, 29.241297],
+// 	ZOOM: 5,
+// 	MIN_ZOOM: 4,
+// 	MAX_ZOOM: 15,
+// };
 
 // // lumberton
 // export const mapConfig = {
