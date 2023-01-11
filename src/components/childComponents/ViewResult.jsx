@@ -167,7 +167,7 @@ export default function ViewResult(props) {
 		setPreviewOn(false);
 		setWidgetName("");
 
-		// remove tile layers; reset map
+		// important! remove tile layers; reset map
 		layerRef.current.tilelayer.setLayers(new Collection([]));
 	};
 

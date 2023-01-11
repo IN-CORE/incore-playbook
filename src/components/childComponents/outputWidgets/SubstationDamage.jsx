@@ -62,10 +62,6 @@ export default function SubstationDamage(props){
 			await downloadDataset(globalConfig, substationMaxDmgStateINCOREId, "epf-substation");
 	};
 
-	useEffect(() => {
-		if (hazardLayers) layerRef.current.tilelayer.getLayers().push(hazardLayers);
-	}, [hazardLayers]);
-
 	return (
 		<Dialog
 			open={previewOn}
