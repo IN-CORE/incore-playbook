@@ -29,7 +29,7 @@ const StepInfo = (props) => {
 	};
 
 	return (
-		<div style={{ paddingLeft: 6 }}>
+		<>
 			<div dangerouslySetInnerHTML={{ __html: shortHtml }} />
 
 			{showMoreLink ? (
@@ -53,7 +53,7 @@ const StepInfo = (props) => {
 					</Button>
 				</DialogActions>
 			</Dialog>
-		</div>
+		</>
 	);
 };
 

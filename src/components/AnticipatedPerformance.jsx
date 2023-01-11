@@ -5,8 +5,9 @@ import { Layout } from "./Layout";
 
 import ViewResult from "./childComponents/ViewResult";
 import RunAnalysis from "./childComponents/RunAnalysis";
-import PageBanner from "./childComponents/navigation/Banner";
+import BreadCrumb from "./childComponents/navigation/BreadCrumb";
 import { fetchExecutions } from "../actions/datawolf";
+import StepStatus from "./childComponents/step/StepStatus";
 
 const useStyles = makeStyles({
 	tab: {
@@ -21,7 +22,9 @@ const useStyles = makeStyles({
 	}
 });
 
-export const AnticipatedPerformance = () => {
+export const AnticipatedPerformance = (props) => {
+	const {step, substep} = props;
+
 	const classes = useStyles();
 
 	const [currTabIndex, setCurrTabIndex] = useState(0);
@@ -34,12 +37,15 @@ export const AnticipatedPerformance = () => {
 	return (
 		<Layout>
 			<div className="firstDivInContent">
-				<PageBanner
-					parentStep="Determine Goals & Objectives"
-					childStep="Determine Anticipated Performance"
-					taskNo="3"
-					subtaskNo="3-4"
-				/>
+				<Box display="flex" style={{alignItem:"baseline", padding:"1em 0"}}>
+					<BreadCrumb
+						parentStep="Determine Goals & Objectives"
+						childStep="Determine Anticipated Performance"
+						taskNo="3"
+						subtaskNo="3-4"
+					/>
+					<StepStatus step={step} substep={substep} />
+				</Box>
 				<Box className="outerBox">
 					<Grid container spacing={3} className="innerBox">
 						<Grid item className="gridItem">
