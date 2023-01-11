@@ -16,6 +16,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Made data upload button on and off [#73](https://github.com/IN-CORE/incore-playbook/issues/73)
 - Display multiple layers of hazard [#63](https://github.com/IN-CORE/incore-playbook/issues/63)
 
+### Fixed
+- First time load map layers at step 3-4 "view results" does not show correctly sometimes [#97](https://github.com/IN-CORE/incore-playbook/issues/97)
 
 ## [0.3.0] - 2021-11-16
 
