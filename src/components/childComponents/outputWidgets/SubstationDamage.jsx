@@ -29,6 +29,10 @@ export default function SubstationDamage(props){
 	useEffect(() => {
 		setSelectedExecutionName(executionItem["title"]);
 
+		if (hazardLayers && layerRef.current.tilelayer.getLayers()) {
+			layerRef.current.tilelayer.getLayers().push(hazardLayers);
+		}
+
 		datawolfDatasetConfigItems.map(async (datawolfDatasetConfigItem) => {
 			const vName = datawolfDatasetConfigItem.datasets.variableName;
 			if (vName === "substationMaxDmgStateINCOREId") {

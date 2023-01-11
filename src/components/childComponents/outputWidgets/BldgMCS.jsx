@@ -46,6 +46,10 @@ export default function BldgMCS(props){
 		// for summary table on the top
 		setRuntime(executionItem["date"].slice(0, 10));
 
+		if (hazardLayers && layerRef.current.tilelayer.getLayers()) {
+			layerRef.current.tilelayer.getLayers().push(hazardLayers);
+		}
+
 		datawolfDatasetConfigItems.map(async (datawolfDatasetConfigItem) => {
 			const vName = datawolfDatasetConfigItem.datasets.variableName;
 			if (vName === "mcsBldgFailureProbINCOREId") {
@@ -72,10 +76,6 @@ export default function BldgMCS(props){
 			}
 		});
 	}, []);
-
-	useEffect(() => {
-		if (hazardLayers) layerRef.current.tilelayer.getLayers().push(hazardLayers);
-	}, [hazardLayers]);
 
 	const download = async () => {
 		if (mcsBldgFailureProbINCOREId) await downloadDataset(globalConfig, mcsBldgFailureProbINCOREId, "bldg-mcs");

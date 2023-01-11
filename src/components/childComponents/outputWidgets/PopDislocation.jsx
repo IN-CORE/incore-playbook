@@ -34,6 +34,10 @@ export default function PopDislocation(props){
 	useEffect(() => {
 		setSelectedExecutionName(executionItem["title"]);
 
+		if (hazardLayers && layerRef.current.tilelayer.getLayers()) {
+			layerRef.current.tilelayer.getLayers().push(hazardLayers);
+		}
+
 		datawolfDatasetConfigItems.map(async (datawolfDatasetConfigItem) => {
 			const vName = datawolfDatasetConfigItem.datasets.variableName;
 			if (vName === "bldgMaxDamageStateINCOREId") {
@@ -93,10 +97,6 @@ export default function PopDislocation(props){
 			}
 		});
 	}, []);
-
-	useEffect(() => {
-		if (hazardLayers) layerRef.current.tilelayer.getLayers().push(hazardLayers);
-	}, [hazardLayers]);
 
 	const download = async () => {
 		const popDislJson = {

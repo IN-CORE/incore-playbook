@@ -283,7 +283,7 @@ export default function ViewResult(props) {
 			</Box>
 
 			{/*for individual analysis result preview*/}
-			{widgetName ? (
+			{widgetName && selectedExecutionItem && previewOn && datawolfDatasetConfigItems.length >0 && hazardType && hazardGroupLayer ? (
 				(() => {
 					return React.cloneElement(registeredWidgets[widgetName], {
 						executionItem: selectedExecutionItem,
