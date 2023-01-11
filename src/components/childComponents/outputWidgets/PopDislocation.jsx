@@ -70,9 +70,6 @@ export default function PopDislocation(props){
 				layerRef.current.tilelayer.getLayers().extend(previewLayers);
 			}
 
-			// overlay with hazard
-			layerRef.current.tilelayer.getLayers().push(hazardLayers);
-
 			if (vName === "totalDislTableContent") {
 				setTotalDislTableContent(
 					await getOutputFileContentJSON(datawolfConfig, executionItem, datawolfDatasetConfigItem.datasetId)
@@ -96,6 +93,10 @@ export default function PopDislocation(props){
 			}
 		});
 	}, []);
+
+	useEffect(() => {
+		if (hazardLayers) layerRef.current.tilelayer.getLayers().push(hazardLayers);
+	}, [hazardLayers]);
 
 	const download = async () => {
 		const popDislJson = {

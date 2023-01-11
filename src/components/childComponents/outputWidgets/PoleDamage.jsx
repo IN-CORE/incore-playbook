@@ -49,10 +49,13 @@ export default function PoleDamage(props){
 				];
 				const previewLayers = generateLayers(globalConfig, layerDef);
 				layerRef.current.tilelayer.getLayers().extend(previewLayers);
-				layerRef.current.tilelayer.getLayers().push(hazardLayers);
 			}
 		});
 	}, []);
+
+	useEffect(() => {
+		if (hazardLayers) layerRef.current.tilelayer.getLayers().push(hazardLayers);
+	}, [hazardLayers]);
 
 	const download = async () => {
 		if (poleMaxDmgStateINCOREId) await downloadDataset(globalConfig, poleMaxDmgStateINCOREId, "epf-pole");

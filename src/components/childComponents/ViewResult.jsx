@@ -78,7 +78,7 @@ export default function ViewResult(props) {
 	const [selectedExecutionItem, setSelectedExecutionItem] = useState(null);
 	const [widgetName, setWidgetName] = useState(null); // outputWidgets name
 	const [datawolfDatasetConfigItems, setDatawolfDatasetConfigItems] = useState([]);
-	const [hazardGroupLayer, setHazardGroupLayer] = useState(null); // group layer of hazard to overlay on the map
+	const [hazardGroupLayer, setHazardGroupLayer] = useState(); // group layer of hazard to overlay on the map
 	const [hazardType, setHazardType] = useState(""); // used in runtime table
 	const [previewOn, setPreviewOn] = useState(false); // list vs preview
 	const [datawolfViewAllOn, setDatawolfViewAllOn] = useState(false); // datawolf view

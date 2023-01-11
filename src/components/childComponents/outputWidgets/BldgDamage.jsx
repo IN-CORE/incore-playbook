@@ -64,16 +64,18 @@ export default function BldgDamage(props) {
 						"zIndex": 1
 					}
 				];
-
 				const previewLayers = generateLayers(globalConfig, layerDef);
 				layerRef.current.tilelayer.getLayers().extend(previewLayers);
-				layerRef.current.tilelayer.getLayers().push(hazardLayers);
 			}
 			else if (vName === "bldgDmgSummaryTableContent") {
 				setBldgDmgSummaryTableContent(await getOutputFileContentJSON(datawolfConfig, executionItem, datawolfDatasetConfigItem.datasetId));
 			}
 		});
 	}, []);
+
+	useEffect(() => {
+		if (hazardLayers) layerRef.current.tilelayer.getLayers().push(hazardLayers);
+	}, [hazardLayers]);
 
 	const download = async () => {
 		if (bldgMaxDamageStateINCOREId) await downloadDataset(globalConfig, bldgMaxDamageStateINCOREId, "bldg-dmg");

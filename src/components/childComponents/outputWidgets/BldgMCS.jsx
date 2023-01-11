@@ -66,13 +66,16 @@ export default function BldgMCS(props){
 				];
 				const previewLayers = generateLayers(globalConfig, layerDef);
 				layerRef.current.tilelayer.getLayers().extend(previewLayers);
-				layerRef.current.tilelayer.getLayers().push(hazardLayers);
 			}
 			else if (vName === "mcsBldgSummaryTableContent") {
 				setMcsBldgSummaryTableContent(await getOutputFileContentJSON(datawolfConfig, executionItem, datawolfDatasetConfigItem.datasetId));
 			}
 		});
 	}, []);
+
+	useEffect(() => {
+		if (hazardLayers) layerRef.current.tilelayer.getLayers().push(hazardLayers);
+	}, [hazardLayers]);
 
 	const download = async () => {
 		if (mcsBldgFailureProbINCOREId) await downloadDataset(globalConfig, mcsBldgFailureProbINCOREId, "bldg-mcs");

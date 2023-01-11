@@ -45,18 +45,10 @@ export default function SubstationDamage(props){
 						title: "EPF Damage (Substation)",
 						opacity: 1,
 						zIndex: 1
-					},
-					{
-						layerId: hazardDatasetId,
-						layerStyles: hazardLayerStyles,
-						title: hazardLayerTitle,
-						opacity: 0.8,
-						zIndex: 2
 					}
 				];
 				const previewLayers = generateLayers(globalConfig, layerDef);
 				layerRef.current.tilelayer.getLayers().extend(previewLayers);
-				layerRef.current.tilelayer.getLayers().push(hazardLayers);
 			}
 		});
 	}, []);
@@ -65,6 +57,10 @@ export default function SubstationDamage(props){
 		if (substationMaxDmgStateINCOREId)
 			await downloadDataset(globalConfig, substationMaxDmgStateINCOREId, "epf-substation");
 	};
+
+	useEffect(() => {
+		if (hazardLayers) layerRef.current.tilelayer.getLayers().push(hazardLayers);
+	}, [hazardLayers]);
 
 	return (
 		<Dialog
