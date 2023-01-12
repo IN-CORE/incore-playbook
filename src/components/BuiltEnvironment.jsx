@@ -3,7 +3,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { Box, Dialog, DialogContent, Divider, Grid, IconButton } from "@material-ui/core";
 
 import { Layout } from "./Layout";
-import PageBanner from "./childComponents/navigation/Banner";
+import BreadCrumb from "./childComponents/navigation/BreadCrumb";
 import StepInfo from "./StepInfo";
 import StepStatus from "./childComponents/step/StepStatus";
 import { IncoreInputLabel } from "./styledComponents/IncoreInputLabel";
@@ -282,12 +282,15 @@ export const BuiltEnvironment = ({ step, substep }) => {
 	return (
 		<Layout>
 			<div className="firstDivInContent">
-				<PageBanner
-					parentStep="Understand the Situation"
-					childStep="Identify & Characterize the Built Environment"
-					taskNo="2"
-					subtaskNo="2-4"
-				/>
+				<Box display="flex" style={{alignItem:"baseline", padding:"1em 0"}}>
+					<BreadCrumb
+						parentStep="Understand the Situation"
+						childStep="Identify & Characterize the Built Environment"
+						taskNo="2"
+						subtaskNo="2-4"
+					/>
+					<StepStatus step={step} substep={substep} />
+				</Box>
 				<Box className="outerBox">
 					<Grid container spacing={3} className="innerBox">
 						<Grid item xl={6} lg={6} md={6} sm={6} xs={12} className="gridItem">
@@ -520,7 +523,6 @@ export const BuiltEnvironment = ({ step, substep }) => {
 							</LoadingOverlay>
 						</Grid>
 						<Grid item xl={6} lg={6} md={6} sm={6} xs={12} className="gridItem">
-							<StepStatus step={step} substep={substep} />
 							<StepInfo fullHtml={fullHtml} />
 						</Grid>
 					</Grid>

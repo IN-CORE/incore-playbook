@@ -14,16 +14,16 @@
 	width: 362px;
 	border-radius: 8px;
 	background-color: #BFC5D2;
-	margin: 5px 10px 10px 5px;
 	padding: 0px 2px 0px 2px;
 }
 .statusInfo {
 	height: 21px;
-	width: 115px;
+	/*width: 115px;*/
 	border-radius: 8px;
 	float: left;
 	text-align: center;
-	margin: 2px 2px 2px 2px;
+	margin: 2px 4px 2px 4px;
+	padding:0 10px;
 	font-family: Roboto, sans-serif;
 	font-size: 14px;
 	font-weight: 500;

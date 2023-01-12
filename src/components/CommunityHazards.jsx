@@ -25,7 +25,7 @@ import { getHazardGroupLayers } from "../utils/map";
 import Pagination from "./childComponents/navigation/Pagination";
 
 import { EntryTable } from "./childComponents/table/EntryTable";
-import PageBanner from "./childComponents/navigation/Banner";
+import BreadCrumb from "./childComponents/navigation/BreadCrumb";
 import fullHtml from "../public/steps/3-3.html";
 import StepInfo from "./StepInfo";
 import { fetchHazards } from "../actions/hazards";
@@ -37,6 +37,7 @@ import DatasetTsunami from "./childComponents/tsuanmi/datasetTsunami";
 import { LineString } from "ol/geom";
 import { useEffectAllDepsChange } from "./customHooks/useEffectAllDeps";
 import { getHazardTypePlural } from "../utils/common";
+import StepStatus from "./childComponents/step/StepStatus";
 
 
 const useStyles = makeStyles({
@@ -62,7 +63,8 @@ const useStyles = makeStyles({
 	}
 });
 
-export const CommunityHazards = () => {
+export const CommunityHazards = (props) => {
+	const {step, substep} = props;
 	const classes = useStyles();
 
 	const [currTabIndex, setCurrTabIndex] = useState(0);
@@ -314,12 +316,15 @@ export const CommunityHazards = () => {
 	return (
 		<Layout>
 			<div className="firstDivInContent">
-				<PageBanner
-					parentStep="Determine Goals & Objectives"
-					childStep="Define Community Hazards"
-					taskNo="3"
-					subtaskNo="3-3"
-				/>
+				<Box display="flex" style={{alignItem:"baseline", padding:"1em 0"}}>
+					<BreadCrumb
+						parentStep="Determine Goals & Objectives"
+						childStep="Define Community Hazards"
+						taskNo="3"
+						subtaskNo="3-3"
+					/>
+					<StepStatus step={step} substep={substep} />
+				</Box>
 				<Box className="outerBox">
 					{/*List created hazards*/}
 					<Box className="entryTableContainer">
