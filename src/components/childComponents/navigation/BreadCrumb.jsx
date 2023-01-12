@@ -6,23 +6,23 @@ import { Box, Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 
 const useStyles = makeStyles({
-	banner: {
+	breadcrumb: {
 		height: "22px",
-		width: "1018px",
+		width: "auto",
 		color: "#69707F",
 		fontSize: "18px",
 		fontWeight: 500,
 		letterSpacing: 0,
 		lineHeight: "22px",
 		display: "inline-block",
-		margin: "19px 17px 25px 17px"
+		padding: "0 17px"
 	},
-	bannerText: {
+	breadcrumbText: {
 		display: "inline",
 		fontWeight: 500,
 		fontSize: "18px"
 	},
-	bannerTextColored: {
+	breadcrumbTextColored: {
 		color: "#00619D",
 		display: "inline",
 		fontWeight: 500,
@@ -42,17 +42,17 @@ const useStyles = makeStyles({
 	}
 });
 
-export default function Banner(props) {
+export default function BreadCrumb(props) {
 	const classes = useStyles();
 
 	if (props.subtaskNo && props.childStep) {
 		return (
-			<Box className={classes.banner}>
-				<Typography className={classes.bannerText}>
+			<Box className={classes.breadcrumb}>
+				<Typography className={classes.breadcrumbText}>
 					<Chip label={props.taskNo} className={classes.chipLabel} />
 					{props.parentStep}
 				</Typography>
-				<Typography className={classes.bannerTextColored}>
+				<Typography className={classes.breadcrumbTextColored}>
 					&nbsp; {">"} &nbsp; <Chip label={props.subtaskNo} className={classes.chipLabelColored} />
 					{props.childStep}
 				</Typography>
@@ -60,8 +60,8 @@ export default function Banner(props) {
 		);
 	} else {
 		return (
-			<Box className={classes.banner}>
-				<Typography className={classes.bannerTextColored}>
+			<Box className={classes.breadcrumb}>
+				<Typography className={classes.breadcrumbTextColored}>
 					<Chip label={props.taskNo} className={classes.chipLabelColored} />
 					{props.parentStep}
 				</Typography>

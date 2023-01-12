@@ -132,3 +132,10 @@ export function getHazardTypePlural(hazardType) {
 	}
 	return hazardType;
 }
+
+export function parseDateTime(dateString) {
+	const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+	const options = { year: "numeric", month: "short", day: "numeric", hour: "2-digit", minute: "2-digit" , timeZone: timeZone };
+	const mydate = new Date(dateString);
+	return mydate.toLocaleString("en-US", options);
+}

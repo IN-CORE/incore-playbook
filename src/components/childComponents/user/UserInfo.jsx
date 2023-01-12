@@ -1,17 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 
-import { Box, Button, Container, Link, Table, TableBody, TableCell, TableHead, TableRow } from "@material-ui/core";
-
-import { IncoreInputLabel } from "../../styledComponents/IncoreInputLabel";
-import { IncoreButton } from "../../styledComponents/IncoreButton";
-import { IncoreMenuItem, IncoreSelectBox } from "../../styledComponents/IncoreSelect";
-import { IncoreTextField } from "../../styledComponents/IncoreInput";
+import { Box, Container, Table, TableBody, TableCell, TableHead, TableRow } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import { useDispatch, useSelector } from "react-redux";
 import Gravatar from "react-gravatar";
 import AccountCircle from "@material-ui/icons/AccountCircle";
-import { assignUserRole, fetchRoles, fetchUserList } from "../../../actions/user";
-import { inputDatasetTypes } from "../../../globals";
+import { fetchRoles, fetchUserList } from "../../../actions/user";
 import { Role } from "./Role";
 
 const useStyles = makeStyles({
@@ -23,6 +17,9 @@ const useStyles = makeStyles({
 		width: "32px",
 		height: "32px",
 		borderRadius: "50%"
+	},
+	table: {
+		wordBreak: "break-all"
 	}
 });
 
@@ -46,19 +43,19 @@ export const UserInfo = (props) => {
 	return (
 		<Container>
 			<Box className="inputGroup">
-				<Table className={classes.table} aria-label="simple table">
+				<Table size="small" className={classes.table} aria-label="simple table">
 					<TableHead>
 						<TableRow>
 							<TableCell align="center" />
 							<TableCell align="center">Username</TableCell>
 							<TableCell align="center">Email</TableCell>
 							<TableCell align="center">Name</TableCell>
-							<TableCell align="center">Role</TableCell>
+							<TableCell align="center" style={{minWidth:"150px"}}>Role</TableCell>
 						</TableRow>
 					</TableHead>
 					<TableBody>
 						{userList.map((user, index) => (
-							<TableRow key={index} style={{ height: 120 }}>
+							<TableRow key={index}>
 								<TableCell component="th" scope="row" align="center">
 									{user["email"] !== undefined ? (
 										<Gravatar className={classes.avatarImg} email={user["email"]} rating="g" />
