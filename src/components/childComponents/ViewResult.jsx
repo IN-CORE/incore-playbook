@@ -101,7 +101,7 @@ export default function ViewResult(props) {
 			// start a new interval timer and register that timer
 			const interval = setInterval(() => {
 				getExecutionList(datawolfConfig, datawolfViewAllOn);
-			}, 10*1000);
+			}, datawolfConfig["retreiveTimeInterval"] ?? 10 * 1000);
 			setIntervalId(interval);
 		}
 	}, [datawolfViewAllOn, value]);
