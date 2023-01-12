@@ -687,5 +687,6 @@ let datawolfConfig = {};
 datawolfConfig["executionGetURL"] = `${hostname}/datawolf/workflows/${datawolfWorkflowConfig["wfId"]}/executions`;
 datawolfConfig["executionPostURL"] = `${hostname}/datawolf/executions`;
 datawolfConfig["datasetBaseURL"] = `${hostname}/datawolf/datasets`;
+datawolfConfig["retreiveTimeInterval"] = 10 * 1000;
 
 export { datawolfWorkflowConfig, datawolfConfig };

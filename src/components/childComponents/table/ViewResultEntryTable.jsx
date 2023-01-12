@@ -47,15 +47,29 @@ const useStyles = makeStyles({
 		letterSpacing: 0,
 		lineHeight: "22px"
 	},
-	statusSuccess: {
-		textTransform: "capitalize",
+	statusFinished: {
+		textTransform: "lowercase",
 		color: "#2E384D",
 		backgroundColor: "#9BD686",
 		padding: "auto 2px",
 		textAlign: "center"
 	},
+	statusWaiting: {
+		textTransform: "lowercase",
+		color: "#2E384D",
+		backgroundColor: "#8798AD",
+		padding: "auto 2px",
+		textAlign: "center"
+	},
+	statusRunning: {
+		textTransform: "lowercase",
+		color: "#2E384D",
+		backgroundColor: "#F7C137",
+		padding: "auto 2px",
+		textAlign: "center"
+	},
 	statusUnsuccess: {
-		textTransform: "capitalize",
+		textTransform: "lowercase",
 		color: "#2E384D",
 		backgroundColor: "#f3b4b0",
 		padding: "auto 2px",
@@ -189,15 +203,35 @@ export function ViewResultEntryTable(props) {
 										if (fieldName["columnName"] === "finalStatus") {
 											return (
 												<TableCell key={`${execution["id"]}-${idx}`}>
-													<p
-														className={
-															execution["finalStatus"].toLowerCase() === "finished"
-																? classes.statusSuccess
-																: classes.statusUnsuccess
-														}
-													>
-														{execution[fieldName["columnName"]].toLowerCase()}
-													</p>
+													{
+														(() => {
+															if (execution["finalStatus"].toLowerCase() === "finished") {
+																return (<p className={classes.statusFinished}>
+																	{execution[fieldName["columnName"]]}
+																</p>);
+															}
+															else if (execution["finalStatus"].toLowerCase() === "waiting"
+																|| execution["finalStatus"].toLowerCase() === "queued"){
+																return (<p className={classes.statusWaiting}>
+																	{execution[fieldName["columnName"]]}
+																</p>);
+															}
+															else if (execution["finalStatus"].toLowerCase() === "failed"
+																|| execution["finalStatus"].toLowerCase() === "aborted"){
+																return (<p className={classes.statusUnsuccess}>
+																	{execution[fieldName["columnName"]]}
+																</p>);
+															}
+															else if (execution["finalStatus"].toLowerCase() === "running"){
+																return (<p className={classes.statusRunning}>
+																	{execution[fieldName["columnName"]]}
+																</p>);
+															}
+															else{
+																return (<p>{execution[fieldName["columnName"]]}</p>);
+															}
+														})()
+													}
 												</TableCell>
 											);
 										} else {
