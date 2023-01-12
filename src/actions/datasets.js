@@ -1,4 +1,4 @@
-import {getHeader, getCurrUsername} from "../utils/common";
+import {getHeader} from "../utils/common";
 import {inputDatasetTypes} from "../globals";
 import {globals as defaultGlobalConfig} from "../globals";
 
@@ -17,8 +17,7 @@ export function receiveDatasets(type, json){
 export function fetchDatasets(globalConfig=defaultGlobalConfig, limit=20, offset=0, type){
 	let endpoint = `${globalConfig.dataServiceBase}datasets?limit=${limit}&skip=${offset}&type=${type}`;
 
-	// default to current user's space
-	let space = getCurrUsername();
+	let space = globalConfig.testbedSpace;
 	if (space !== undefined) endpoint = `${endpoint}&space=${space}`;
 
 	return async (dispatch) => {

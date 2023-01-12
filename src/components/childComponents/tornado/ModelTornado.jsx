@@ -9,7 +9,7 @@ import { IncoreMenuItem, IncoreSelectBox } from "../../styledComponents/IncoreSe
 import { IncoreTextField } from "../../styledComponents/IncoreInput";
 import { IncoreInputLabel } from "../../styledComponents/IncoreInputLabel";
 
-import { FlatCoordToLonLat, round } from "../../../utils/common";
+import { FlatCoordToLonLat, move2TestbedSpace, round } from "../../../utils/common";
 import { createModelTornado } from "../../../utils/hazard";
 import LoadingOverlay from "react-loading-overlay";
 import { useSelector } from "react-redux";
@@ -99,9 +99,11 @@ export default function ModelTornado(props) {
 			endLat,
 			endLon
 		);
-		if (tornadoJson !== {}) {
+		if (tornadoJson && tornadoJson["id"]) {
+			// move to testbed space
+			await move2TestbedSpace(globalConfig, tornadoJson["id"]);
 			handleLayerUpdate(tornadoJson);
-			handleListUpdate(globalConfig, "tornadoes");
+			handleListUpdate(globalConfig, "tornado");
 			setName("");
 			setDescription("");
 			setStartCoord("");

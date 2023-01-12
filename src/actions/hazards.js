@@ -1,5 +1,5 @@
 import {globals as defaultGlobalConfig} from "../globals";
-import {getHeader, getCurrUsername, getHazardTypePlural} from "../utils/common";
+import {getHeader, getHazardTypePlural} from "../utils/common";
 
 export const LOGIN_ERROR = "LOGIN_ERROR";
 
@@ -17,8 +17,7 @@ export function fetchHazards(globalConfig=defaultGlobalConfig, hazardType="torna
 	hazardType = getHazardTypePlural(hazardType);
 	let endpoint = `${globalConfig.hazardServiceBase}${hazardType}?limit=${limit}&skip=${offset}`;
 
-	// default to current user's space
-	let space = getCurrUsername();
+	let space = globalConfig.testbedSpace;
 	if (space !== undefined) endpoint = `${endpoint}&space=${space}`;
 
 	return (dispatch) => {
