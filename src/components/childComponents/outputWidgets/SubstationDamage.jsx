@@ -29,6 +29,10 @@ export default function SubstationDamage(props){
 	useEffect(() => {
 		setSelectedExecutionName(executionItem["title"]);
 
+		if (hazardLayers && layerRef.current.tilelayer.getLayers()) {
+			layerRef.current.tilelayer.getLayers().push(hazardLayers);
+		}
+
 		datawolfDatasetConfigItems.map(async (datawolfDatasetConfigItem) => {
 			const vName = datawolfDatasetConfigItem.datasets.variableName;
 			if (vName === "substationMaxDmgStateINCOREId") {
@@ -45,18 +49,10 @@ export default function SubstationDamage(props){
 						title: "EPF Damage (Substation)",
 						opacity: 1,
 						zIndex: 1
-					},
-					{
-						layerId: hazardDatasetId,
-						layerStyles: hazardLayerStyles,
-						title: hazardLayerTitle,
-						opacity: 0.8,
-						zIndex: 2
 					}
 				];
 				const previewLayers = generateLayers(globalConfig, layerDef);
 				layerRef.current.tilelayer.getLayers().extend(previewLayers);
-				layerRef.current.tilelayer.getLayers().push(hazardLayers);
 			}
 		});
 	}, []);

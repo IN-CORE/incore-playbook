@@ -68,7 +68,7 @@ export default function ViewResult(props) {
 	const [selectedExecutionItem, setSelectedExecutionItem] = useState(null);
 	const [widgetName, setWidgetName] = useState(null); // outputWidgets name
 	const [datawolfDatasetConfigItems, setDatawolfDatasetConfigItems] = useState([]);
-	const [hazardGroupLayer, setHazardGroupLayer] = useState(null); // group layer of hazard to overlay on the map
+	const [hazardGroupLayer, setHazardGroupLayer] = useState(); // group layer of hazard to overlay on the map
 	const [hazardType, setHazardType] = useState(""); // used in runtime table
 	const [previewOn, setPreviewOn] = useState(false); // list vs preview
 	const [datawolfViewAllOn, setDatawolfViewAllOn] = useState(false); // datawolf view
@@ -177,7 +177,7 @@ export default function ViewResult(props) {
 		setPreviewOn(false);
 		setWidgetName("");
 
-		// remove tile layers; reset map
+		// important! remove tile layers; reset map
 		layerRef.current.tilelayer.setLayers(new Collection([]));
 	};
 
@@ -291,7 +291,7 @@ export default function ViewResult(props) {
 			</Box>
 
 			{/*for individual analysis result preview*/}
-			{widgetName ? (
+			{widgetName && selectedExecutionItem && previewOn && datawolfDatasetConfigItems.length >0 && hazardType && hazardGroupLayer ? (
 				(() => {
 					return React.cloneElement(registeredWidgets[widgetName], {
 						executionItem: selectedExecutionItem,
