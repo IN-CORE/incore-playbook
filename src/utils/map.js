@@ -11,7 +11,8 @@ export const generateLayers = (globalConfig = defaultGlobalConfig, layerDef) => 
 			url: `${globalConfig.geoServerWMS}`,
 			params: { LAYERS: layerDefinition.layerId, STYLES: layerDefinition.layerStyles },
 			ratio: 1,
-			serverType: "geoserver"
+			serverType: "geoserver",
+			crossOrigin: "anonymous"
 		});
 		const previewLayer = new TileLayer({
 			title: layerDefinition["title"],
@@ -32,7 +33,8 @@ const _constructHazardLayer = (globalConfig=defaultGlobalConfig, layerId, layerT
 			url: `${globalConfig.geoServerWMS}`,
 			params: {LAYERS: layerId, STYLES: style},
 			ratio: 1,
-			serverType: "geoserver"
+			serverType: "geoserver",
+      crossOrigin: "anonymous"
 		});
 		HazardMapLayer = new TileLayer({
 			title: layerTitle,
@@ -93,15 +95,21 @@ export const basicLayers = {
 				title: "Carto",
 				source: new XYZ({
 					url: "https://{a-d}.basemaps.cartocdn.com/rastertiles/light_all/{z}/{x}/{y}.png",
-					attributions: ['&#169; <a href="https://www.carto.com">Carto</a>,', OSM_ATTRIBUTION]
+					attributions: [
+						"&#169; <a href=\"https://www.carto.com\">Carto</a>,",
+						OSM_ATTRIBUTION
+					],
+					crossOrigin: "anonymous"
 				})
 			}),
 			new TileLayer({
 				type: "base",
 				visible: false,
 				title: "OSM",
-				source: new OSM()
-			})
+				source: new OSM({
+					crossOrigin: "anonymous"
+				})
+			}),
 		]
 	}),
 	tilelayer: new GroupLayer({
