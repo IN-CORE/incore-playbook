@@ -40,7 +40,7 @@ body {
 .innerBox {
 	background-color: #F8F9FF;
 	margin: auto 15px;
-	padding: 4px;
+	padding: 2em;
 }
 
 .outerBox {
@@ -71,7 +71,7 @@ body {
 }
 
 .entryTable{
-	max-height: 200px;
+	max-height: 400px;
 	overflow-y: auto;
 }
 

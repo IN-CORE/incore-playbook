@@ -22,10 +22,10 @@ import { IncoreInputLabel } from "./styledComponents/IncoreInputLabel";
 import { IncoreMenuItem, IncoreSelectBox } from "./styledComponents/IncoreSelect";
 import { getHazardGroupLayers } from "../utils/map";
 
-// import FilterListIcon from "@material-ui/icons/FilterList";
+import Pagination from "./childComponents/navigation/Pagination";
 
 import { EntryTable } from "./childComponents/table/EntryTable";
-import PageBanner from "./childComponents/navigation/Banner";
+import BreadCrumb from "./childComponents/navigation/BreadCrumb";
 import fullHtml from "../public/steps/3-3.html";
 import StepInfo from "./StepInfo";
 import { fetchHazards } from "../actions/hazards";
@@ -37,6 +37,8 @@ import DatasetTsunami from "./childComponents/tsuanmi/datasetTsunami";
 import { LineString } from "ol/geom";
 import { useEffectAllDepsChange } from "./customHooks/useEffectAllDeps";
 import { getHazardTypePlural } from "../utils/common";
+import StepStatus from "./childComponents/step/StepStatus";
+
 
 const useStyles = makeStyles({
 	tabDiv: {
@@ -61,7 +63,8 @@ const useStyles = makeStyles({
 	}
 });
 
-export const CommunityHazards = () => {
+export const CommunityHazards = (props) => {
+	const {step, substep} = props;
 	const classes = useStyles();
 
 	const [currTabIndex, setCurrTabIndex] = useState(0);
@@ -85,6 +88,10 @@ export const CommunityHazards = () => {
 	const allowedHazardTypes = useSelector((state) => state.config.allowedHazardTypes);
 
 	const [selectedHazardType, setSelectedHazardType] = useState(allowedHazardTypes[0]);
+
+	const [dataPerPage, setDataPerPage] = React.useState(5);
+	const [pageNumber, setPageNumber] = React.useState(1);
+	const [offset, setOffset] = React.useState(0);
 
 	// Cache the drawing
 	const drawSourceRef = React.useRef(new VectorSource({ wrapX: false }));
@@ -163,11 +170,6 @@ export const CommunityHazards = () => {
 
 	// Holds an instance of Map component
 	const mapRef = React.useRef();
-
-	// component did mount
-	useEffect(() => {
-		listHazards(globalConfig, selectedHazardType);
-	}, [selectedHazardType]);
 
 	useEffect(() => {
 		// Important: need to clear previous draw interaction first
@@ -288,15 +290,41 @@ export const CommunityHazards = () => {
 		}
 	];
 
+	const pageChange = (direction) => {
+		if (direction === "previous") {
+			setOffset((pageNumber - 2) * dataPerPage);
+			setPageNumber(pageNumber - 1);
+		} else if (direction === "next") {
+			setOffset(pageNumber * dataPerPage);
+			setPageNumber(pageNumber + 1);
+		}
+	};
+
+	// change hazard type
+	useEffect(() => {
+		setOffset(0);
+		setPageNumber(1);
+		// start from page 1 again
+		listHazards(globalConfig, selectedHazardType, dataPerPage, offset);
+	}, [selectedHazardType]);
+
+	// page changes
+	useEffect(() => {
+		listHazards(globalConfig, selectedHazardType, dataPerPage, offset);
+	}, [offset, dataPerPage]);
+
 	return (
 		<Layout>
 			<div className="firstDivInContent">
-				<PageBanner
-					parentStep="Determine Goals & Objectives"
-					childStep="Define Community Hazards"
-					taskNo="3"
-					subtaskNo="3-3"
-				/>
+				<Box display="flex" style={{alignItem:"baseline", padding:"1em 0"}}>
+					<BreadCrumb
+						parentStep="Determine Goals & Objectives"
+						childStep="Define Community Hazards"
+						taskNo="3"
+						subtaskNo="3-3"
+					/>
+					<StepStatus step={step} substep={substep} />
+				</Box>
 				<Box className="outerBox">
 					{/*List created hazards*/}
 					<Box className="entryTableContainer">
@@ -312,12 +340,21 @@ export const CommunityHazards = () => {
 							// selectedHazardType: are earthquake, flood, hurricane, tsunami, tornado
 							if (selectedHazardType !== "") {
 								return (
-									<Box className="entryTable">
-										<EntryTable
-											fieldNames={fieldNames}
-											fields={eval(getHazardTypePlural(selectedHazardType))}
+									<>
+										<Box className="entryTable">
+											<EntryTable
+												fieldNames={fieldNames}
+												fields={eval(getHazardTypePlural(selectedHazardType))}
+											/>
+										</Box>
+										<Pagination
+											pageNumber={pageNumber}
+											data={eval(getHazardTypePlural(selectedHazardType))}
+											dataPerPage={dataPerPage}
+											previous={() => pageChange("previous")}
+											next={() => pageChange("next")}
 										/>
-									</Box>
+									</>
 								);
 							}
 						})()}

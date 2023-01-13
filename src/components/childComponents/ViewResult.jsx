@@ -62,9 +62,21 @@ export default function ViewResult(props) {
 	const globalConfig = useSelector((state) => state.config.globalConfig);
 	const datawolfWorkflowConfig = useSelector((state) => state.config.datawolfWorkflowConfig);
 
-	// load executions list that has status
+	// states
+	const [numCompleted, setNumCompleted] = useState(0);
+	const [executionEntries, setExecutionEntries] = useState([]);
+	const [selectedExecutionItem, setSelectedExecutionItem] = useState(null);
+	const [widgetName, setWidgetName] = useState(null); // outputWidgets name
+	const [datawolfDatasetConfigItems, setDatawolfDatasetConfigItems] = useState([]);
+	const [hazardGroupLayer, setHazardGroupLayer] = useState(); // group layer of hazard to overlay on the map
+	const [hazardType, setHazardType] = useState(""); // used in runtime table
+	const [previewOn, setPreviewOn] = useState(false); // list vs preview
+	const [datawolfViewAllOn, setDatawolfViewAllOn] = useState(false); // datawolf view
+	const [intervalId, setIntervalId] = useState(0);
+
+	// component did mount
 	useEffect(() => {
-		getExecutionList(datawolfConfig);
+		getExecutionList(datawolfConfig, datawolfViewAllOn);
 	}, []);
 
 	// update execution statuses upon changing
@@ -72,29 +84,27 @@ export default function ViewResult(props) {
 		createAnalysisEntryTable();
 	}, [executions]);
 
-	// states
-	const [numCompleted, setNumCompleted] = useState(0);
-	const [executionEntries, setExecutionEntries] = useState([]);
-	const [selectedExecutionItem, setSelectedExecutionItem] = useState(null);
-	const [widgetName, setWidgetName] = useState(null); // outputWidgets name
-	const [datawolfDatasetConfigItems, setDatawolfDatasetConfigItems] = useState([]);
-	const [hazardGroupLayer, setHazardGroupLayer] = useState(null); // group layer of hazard to overlay on the map
-	const [hazardType, setHazardType] = useState(""); // used in runtime table
-	const [previewOn, setPreviewOn] = useState(false); // list vs preview
-	const [datawolfViewAllOn, setDatawolfViewAllOn] = useState(false); // datawolf view
-
-	// load executions list that has status
-	useEffect(() => { getExecutionList(datawolfConfig, datawolfViewAllOn); }, []);
-
-	// update execution statuses upon changing
+	// update datawolf view all on / off;
+	// load executions list periodically every 10 seconds
 	useEffect(() => {
-		createAnalysisEntryTable();
-	}, [executions]);
+		// clear old time due to params has changed
+		if (intervalId){
+			clearInterval(intervalId);
+			setIntervalId(0);
+		}
 
-	// update datawolf view all on / off
-	useEffect(() => {
-		getExecutionList(datawolfConfig, datawolfViewAllOn);
-	}, [datawolfViewAllOn]);
+		// save some traffic; only perform backend GET when on that tab
+		if (value === index){
+			// immediately fetch new execution list
+			getExecutionList(datawolfConfig, datawolfViewAllOn);
+
+			// start a new interval timer and register that timer
+			const interval = setInterval(() => {
+				getExecutionList(datawolfConfig, datawolfViewAllOn);
+			}, datawolfConfig["retreiveTimeInterval"] ?? 10 * 1000);
+			setIntervalId(interval);
+		}
+	}, [datawolfViewAllOn, value]);
 
 	// extract a single status from mutliple step status`
 	const extractStatus = (executionItem) => {
@@ -167,7 +177,7 @@ export default function ViewResult(props) {
 		setPreviewOn(false);
 		setWidgetName("");
 
-		// remove tile layers; reset map
+		// important! remove tile layers; reset map
 		layerRef.current.tilelayer.setLayers(new Collection([]));
 	};
 
@@ -271,10 +281,8 @@ export default function ViewResult(props) {
 							}
 							label="View All"
 						/>
-						<IconButton aria-label="sync"
-									onClick={() => {getExecutionList(datawolfConfig, datawolfViewAllOn);}}
-									color="secondary"><SyncIcon /></IconButton>
-						<IconButton aria-label="filter"><FilterListIcon /></IconButton>
+						{/*TODO in the future this could be used to add filters to narrow down exectusions (e.g. only show completed...)*/}
+						{/*<IconButton aria-label="filter"><FilterListIcon /></IconButton>*/}
 					</Box>
 				</Box>
 				<Box>
@@ -283,7 +291,7 @@ export default function ViewResult(props) {
 			</Box>
 
 			{/*for individual analysis result preview*/}
-			{widgetName ? (
+			{widgetName && selectedExecutionItem && previewOn && datawolfDatasetConfigItems.length >0 && hazardType && hazardGroupLayer ? (
 				(() => {
 					return React.cloneElement(registeredWidgets[widgetName], {
 						executionItem: selectedExecutionItem,

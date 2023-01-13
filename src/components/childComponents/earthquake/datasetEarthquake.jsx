@@ -12,6 +12,7 @@ import { createRjfsDatasetHazards } from "../../../utils/hazard";
 
 import Form from "@rjsf/material-ui";
 import { useSelector } from "react-redux";
+import { move2TestbedSpace } from "../../../utils/common";
 
 export default function DatasetEarthquake(props) {
 	const { value, index, handleLayerUpdate, handleListUpdate, ...other } = props;
@@ -26,9 +27,11 @@ export default function DatasetEarthquake(props) {
 	const onSave = async (formData) => {
 		setLoading(true);
 		const eqJson = await createRjfsDatasetHazards(globalConfig, formData, "earthquakes");
-		if (eqJson !== {}) {
+		if (eqJson && eqJson["id"]) {
+			// move to testbed space
+			await move2TestbedSpace(globalConfig, eqJson["id"]);
 			handleLayerUpdate(eqJson);
-			handleListUpdate(globalConfig, "earthquakes");
+			handleListUpdate(globalConfig, "earthquake");
 		}
 		setLoading(false);
 	};

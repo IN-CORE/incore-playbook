@@ -1,6 +1,6 @@
 import Cookies from "universal-cookie";
 import jwt_decode from "jwt-decode";
-import { testUserInfo } from "../globals";
+import { globals as defaultGlobalConfig, testUserInfo } from "../globals";
 import JSSoup from "jssoup";
 import { toLonLat } from "ol/proj";
 
@@ -131,4 +131,45 @@ export function getHazardTypePlural(hazardType) {
 		hazardType = `${hazardType}s`;
 	}
 	return hazardType;
+}
+
+// get incore space id given space name
+// TODO replace with endpoint once it's ready
+export async function getSpaceIdByName(globalConfig=defaultGlobalConfig, name){
+	const endpoint = `${globalConfig.spaceServiceBase}spaces`;
+	if (name === undefined || name === null) name = globalConfig.testbedSpace;
+	const request = await fetch(endpoint, { mode: "cors", headers: getHeader()});
+	if (request.status === 200) {
+		const spaces = await request.json();
+		return spaces.filter((space) => space["name"] === name)[0]["id"];
+	} else if (request.status === 401) {
+		// TODO handle error
+		return "";
+	} else {
+		// TODO handle error
+		return "";
+	}
+}
+
+// move resource to space
+export async function move2TestbedSpace(globalConfig=defaultGlobalConfig, resourceId) {
+	const spaceId = await getSpaceIdByName(globalConfig);
+	const endpoint = `${globalConfig.spaceServiceBase}spaces/${spaceId}/members/${resourceId}`;
+	const request = await fetch(endpoint, { mode: "cors", headers: getHeader(), method: "POST" });
+	if (request.status === 200) {
+		return await request.json();
+	} else if (request.status === 401) {
+		// TODO handle error
+		return {};
+	} else {
+		// TODO handle error
+		return {};
+	}
+}
+
+export function parseDateTime(dateString) {
+	const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+	const options = { year: "numeric", month: "short", day: "numeric", hour: "2-digit", minute: "2-digit" , timeZone: timeZone };
+	const mydate = new Date(dateString);
+	return mydate.toLocaleString("en-US", options);
 }
