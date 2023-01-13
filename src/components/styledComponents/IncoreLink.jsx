@@ -7,5 +7,6 @@ export const IncoreLink = styled(Link)({
 	fontWeight: 400,
 	letterSpacing: "0.6px",
 	width: "100%",
-	textDecoration: "underline"
+	textDecoration: "underline",
+	wordBreak: "break-all"
 });
