@@ -10,11 +10,12 @@ import { isAuthorized } from "../utils/common";
 export const Layout = (props) => {
 	const { children } = props;
 	const layout = useSelector((state) => state.layout);
+	const globalConfig = useSelector((state) => state.config.globalConfig);
 
 	const history = useHistory();
 
 	useEffect(() => {
-		if (!isAuthorized()) {
+		if (!isAuthorized(globalConfig["hostname"])) {
 			history.push("/login");
 		}
 	}, []);

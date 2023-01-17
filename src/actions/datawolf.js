@@ -19,7 +19,7 @@ export function fetchExecutions(datawolfConfig, all=false){
 	if (!all)  endpoint = `${endpoint}?email=${getCurrUserEmail()}`;
 
 	return (dispatch) => {
-		return fetch(endpoint, {mode: "cors", headers: getHeader()})
+		return fetch(endpoint, {mode: "cors", headers: getHeader(globalConfig.hostname)})
 			.then(response => {
 				if (response.status === 200) {
 					response.json().then(json => {
