@@ -130,6 +130,7 @@ const HeaderWithMenu = ({
 
 	const assetConfig = useSelector((state) => state.config.assetConfig);
 	const stepStatus = useSelector((state) => state.steps);
+	const globalConfig = useSelector((state) => state.config.globalConfig);
 
 	const [anchorEl, setAnchorEl] = React.useState(null);
 
@@ -144,7 +145,7 @@ const HeaderWithMenu = ({
 	};
 
 	React.useEffect(() => {
-		getAllSteps()(dispatch);
+		getAllSteps(globalConfig)(dispatch);
 	}, []);
 
 	// //TODO: move this to utils if needed

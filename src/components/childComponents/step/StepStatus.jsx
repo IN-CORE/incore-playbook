@@ -14,8 +14,10 @@ const StepStatus = ({ step, substep }) => {
 	const stepData = useSelector((state) => state.steps[`step_${step}_${substep}`]);
 	const [activeKey, setActiveKey] = useState(stepData.status !== undefined ? stepData.status : "pending");
 
+	const globalConfig = useSelector((state) => state.config.globalConfig);
+
 	useEffect(() => {
-		getStep(step, substep)(dispatch);
+		getStep(globalConfig, step, substep)(dispatch);
 	}, []);
 
 	useEffect(() => {
@@ -26,7 +28,7 @@ const StepStatus = ({ step, substep }) => {
 
 	useEffect(() => {
 		if (activeKey !== stepData.status && stepData.status !== undefined) {
-			updateStep(step, substep, activeKey)(dispatch);
+			updateStep(globalConfig, step, substep, activeKey)(dispatch);
 		}
 	}, [activeKey]);
 
