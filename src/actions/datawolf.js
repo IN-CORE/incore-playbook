@@ -16,10 +16,10 @@ export function receiveExecutions(type, json){
 export function fetchExecutions(datawolfConfig, all=false){
 	let endpoint = datawolfConfig.executionGetURL;
 	// filter by current user's email
-	if (!all)  endpoint = `${endpoint}?email=${getCurrUserEmail()}`;
+	if (!all)  endpoint = `${endpoint}?email=${getCurrUserEmail(datawolfConfig.hostname)}`;
 
 	return (dispatch) => {
-		return fetch(endpoint, {mode: "cors", headers: getHeader(globalConfig.hostname)})
+		return fetch(endpoint, {mode: "cors", headers: getHeader(datawolfConfig.hostname)})
 			.then(response => {
 				if (response.status === 200) {
 					response.json().then(json => {

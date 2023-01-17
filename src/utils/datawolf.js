@@ -107,7 +107,7 @@ export async function postDataset(datawolfConfig, title = "incoretoken", descrip
 	formData.append("useremail", getCurrUserEmail());
 
 	// TODO add a file
-	let file = getIncoreTokenFile();
+	let file = getIncoreTokenFile(datawolfConfig.hostname);
 	if (file !== null) formData.append("uploadedFile", file);
 
 	let datawolfResponse = await fetch(`${datawolfConfig["datasetBaseURL"]}`, {

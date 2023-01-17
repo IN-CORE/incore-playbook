@@ -28,7 +28,7 @@ export const Layout = (props) => {
 	let menuItem = sessionStorage.getItem("menu");
 	return (
 		<div>
-			<Header isAuthenticated={isAuthorized()} menuItem={menuItem} />
+			<Header isAuthenticated={isAuthorized(globalConfig.hostname)} menuItem={menuItem} />
 			<div
 				className="masterContent"
 				style={{ marginLeft: mLeft, padding: 8, backgroundColor: "rgba(248, 249, 255, 0.5)" }}

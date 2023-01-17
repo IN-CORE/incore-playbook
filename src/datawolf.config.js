@@ -2,6 +2,8 @@ import React from "react";
 
 import {getCurrUsername} from "./utils/common";
 
+let hostname = process.env.INCORE_REMOTE_HOSTNAME || "";
+
 const datawolfWorkflowConfig =
 	{
 		"title": "Joplin Playbook",
@@ -183,7 +185,7 @@ const datawolfWorkflowConfig =
 						"description": "",
 						"variableName":"incoreUserName",
 						"widget": null,
-						"defaultValue": getCurrUsername(),
+						"defaultValue": getCurrUsername(hostname),
 						"hidden": true,
 						"parametersMap": [
 							{
@@ -630,7 +632,6 @@ const datawolfWorkflowConfig =
 
 
 let datawolfConfig = {};
-let hostname = process.env.INCORE_REMOTE_HOSTNAME || "";
 
 // use default
 datawolfConfig["executionGetURL"] = `${hostname}/datawolf/workflows/${datawolfWorkflowConfig["wfId"]}/executions`;
