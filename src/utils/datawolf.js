@@ -3,7 +3,7 @@ import { datawolfConfig as defaultDatawolfConfig } from "../datawolf.config.js";
 import { datawolfWorkflowConfig as defaultDatawolfWorkflowConfig } from "../datawolf.config.js";
 
 export async function getOutputFileJson(datawolfConfig = defaultDatawolfConfig, datasetId, outputFileName = null) {
-	let authHeader = getHeader(globalConfig.hostname);
+	let authHeader = getHeader(datawolfConfig.hostname);
 
 	// Get - Result Dataset
 	const datasetResponse = await fetch(`${datawolfConfig["datasetBaseURL"]}/${datasetId}`, {
