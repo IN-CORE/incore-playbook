@@ -14,20 +14,23 @@ export const DocURI = (props) => {
 	const {step, substep} = props;
 
 	const dispatch = useDispatch();
-	const listSteps = (stepId, substepId) => dispatch(getStepAction(stepId, substepId));
-	const patchStep= (stepId, substepId, status, docUri) => dispatch(updateStepAction(stepId, substepId, status, docUri));
+
+	const globalConfig = useSelector((state) => state.config.globalConfig);
+
+	const listSteps = (globalConfig, stepId, substepId) => dispatch(getStepAction(globalConfig, stepId, substepId));
+	const patchStep = (globalConfig, stepId, substepId, status, docUri) => dispatch(updateStepAction(globalConfig, stepId, substepId, status, docUri));
 	const stepData = useSelector((state) => state.steps[`step_${step}_${substep}`]);
 
 	const [edit, setEdit] = useState(false);
 	const [docUri, setDocUri] = useState();
 
 	useEffect(() => {
-		listSteps(step, substep);
+		listSteps(globalConfig, step, substep);
 	}, []);
 
 
 	const handleDocUriOnSave = () => {
-		patchStep(step, substep, null, docUri);
+		patchStep(globalConfig, step, substep, null, docUri);
 		setEdit(false);
 	};
 

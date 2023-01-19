@@ -12,11 +12,11 @@ export const updateStepDispatcher = (type, data, step_id) => {
 	};
 };
 
-export const getAllSteps = () => {
-	let endpoint = `${defaultGlobalConfig.maestroServiceBase}steps`;
+export const getAllSteps = (globalConfig=defaultGlobalConfig) => {
+	let endpoint = `${globalConfig.maestroServiceBase}steps`;
 
 	return async (dispatch) => {
-		const response = await fetch(endpoint, { mode: "cors", headers: getHeader() });
+		const response = await fetch(endpoint, { mode: "cors", headers: getHeader(globalConfig.hostname) });
 		if (response.status === 200) {
 			response.json().then(json => {
 				let step_status = {};
@@ -38,11 +38,11 @@ export const getAllSteps = () => {
 	};
 };
 
-export const getStep = (stepId, substepId) => {
-	let endpoint = `${defaultGlobalConfig.maestroServiceBase}steps/${stepId}/${substepId}`;
+export const getStep = (globalConfig=defaultGlobalConfig, stepId, substepId) => {
+	let endpoint = `${globalConfig.maestroServiceBase}steps/${stepId}/${substepId}`;
 
 	return async (dispatch) => {
-		const response = await fetch(endpoint, { mode: "cors", headers: getHeader() });
+		const response = await fetch(endpoint, { mode: "cors", headers: getHeader(globalConfig.hostname) });
 		if (response.status === 200) {
 			response.json().then(json => dispatch(updateStepDispatcher("UPDATE_STEP", json, `step_${stepId}_${substepId}`)));
 		} else if (response.status === 401) {
@@ -55,13 +55,13 @@ export const getStep = (stepId, substepId) => {
 	};
 };
 
-export const updateStep = (stepId, substepId, status = null, docUri = null) => {
-	let endpoint = `${defaultGlobalConfig.maestroServiceBase}steps/${stepId}/${substepId}?`;
+export const updateStep = (globalConfig=defaultGlobalConfig, stepId, substepId, status = null, docUri = null) => {
+	let endpoint = `${globalConfig.maestroServiceBase}steps/${stepId}/${substepId}?`;
 	if (status) endpoint = `${endpoint}status=${status}&`;
 	if (docUri) endpoint = `${endpoint}doc_uri=${docUri}&`;
 
 	return async (dispatch) => {
-		const response = await fetch(endpoint, { mode: "cors", method: "PATCH", headers: getHeader() });
+		const response = await fetch(endpoint, { mode: "cors", method: "PATCH", headers: getHeader(globalConfig.hostname) });
 		if (response.status === 200) {
 			response.json().then(json => {
 				dispatch(updateStepDispatcher("UPDATE_STEP", json, `step_${stepId}_${substepId}`));

@@ -21,7 +21,7 @@ export function fetchHazards(globalConfig=defaultGlobalConfig, hazardType="torna
 	if (space !== undefined) endpoint = `${endpoint}&space=${space}`;
 
 	return (dispatch) => {
-		return fetch(endpoint, {mode: "cors", headers: getHeader()})
+		return fetch(endpoint, {mode: "cors", headers: getHeader(globalConfig.hostname)})
 			.then(response => {
 				if (response.status === 200) {
 					response.json().then(json => {

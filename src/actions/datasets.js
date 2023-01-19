@@ -21,7 +21,7 @@ export function fetchDatasets(globalConfig=defaultGlobalConfig, limit=20, offset
 	if (space !== undefined) endpoint = `${endpoint}&space=${space}`;
 
 	return async (dispatch) => {
-		const response = await fetch(endpoint, { mode: "cors", headers: getHeader() });
+		const response = await fetch(endpoint, { mode: "cors", headers: getHeader(globalConfig.hostname) });
 		if (response.status === 200) {
 			response.json().then(json => {
 				Object.keys(inputDatasetTypes).map((key) => {

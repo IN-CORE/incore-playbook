@@ -102,7 +102,7 @@ export const Login = () => {
 	const globalConfig = useSelector((state) => state.config.globalConfig);
 
 	useEffect(() => {
-		if (isAuthorized()) {
+		if (isAuthorized(globalConfig["hostname"])) {
 			history.push("/");
 		}
 	}, []);

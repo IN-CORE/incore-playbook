@@ -28,7 +28,7 @@ export async function createModelTornado(
 		}
 	};
 	formData.append("tornado", JSON.stringify(tornadoMetadata));
-	let authHeader = getHeader();
+	let authHeader = getHeader(globalConfig.hostname);
 	let tornadoRequest = await fetch(endpoint, {
 		method: "POST",
 		mode: "cors",
@@ -61,7 +61,7 @@ export async function createRasterTornado(globalConfig = defaultGlobalConfig, na
 		formData.append("file", file);
 	});
 
-	let authHeader = getHeader();
+	let authHeader = getHeader(globalConfig.hostname);
 	let tornadoRequest = await fetch(endpoint, {
 		method: "POST",
 		mode: "cors",
@@ -85,7 +85,7 @@ export async function getHazardMetadata(globalConfig = defaultGlobalConfig, haza
 	const hazardTypePlural = getHazardTypePlural(hazardType);
 
 	let endpoint = `${globalConfig.hazardServiceBase}${hazardTypePlural}/${hazardId}`;
-	let hazardRequest = await fetch(endpoint, { mode: "cors", headers: getHeader() });
+	let hazardRequest = await fetch(endpoint, { mode: "cors", headers: getHeader(globalConfig.hostname) });
 	if (hazardRequest.status === 200) {
 		return await hazardRequest.json();
 	} else if (hazardRequest.status === 401) {
@@ -144,7 +144,7 @@ export async function createModelEarthquake(
 	}
 
 	formData.append("earthquake", JSON.stringify(eqMetadata));
-	let authHeader = getHeader();
+	let authHeader = getHeader(globalConfig.hostname);
 	let tornadoRequest = await fetch(endpoint, {
 		method: "POST",
 		mode: "cors",
@@ -184,7 +184,7 @@ export async function createRjfsDatasetHazards(globalConfig = defaultGlobalConfi
 	});
 
 	payload.append(hazardType.slice(0, -1), JSON.stringify(formData));
-	let authHeader = getHeader();
+	let authHeader = getHeader(globalConfig.hostname);
 	let request = await fetch(endpoint, {
 		method: "POST",
 		mode: "cors",
