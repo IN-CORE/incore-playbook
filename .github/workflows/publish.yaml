@@ -4,17 +4,8 @@ on:
   push:
     branches:
       - main
-      - develop
-      - 'release/*'
-
-    tags:
-      - '*'
 
   pull_request:
-    branches:
-      - main
-      - develop
-      - 'release/*'
 
 env:
   MAIN_REPO: IN-CORE/incore-playbook

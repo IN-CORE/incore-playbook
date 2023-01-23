@@ -13,6 +13,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Move created dataset and hazard into a common testbed space [#87](https://github.com/IN-CORE/incore-playbook/issues/87)
 - Set Time intervals to periodically requesting datawolf execution status [#60](https://github.com/IN-CORE/incore-playbook/issues/60)
 - Allow user to set document uri in each of the step [#81](https://github.com/IN-CORE/incore-playbook/issues/81)
+- Github action to publish new version to npm registry [#72](https://github.com/IN-CORE/incore-playbook/issues/72)
 
 ### Changed
 - Renamed master branch to main [#28](https://github.com/IN-CORE/incore-playbook/issues/28)
