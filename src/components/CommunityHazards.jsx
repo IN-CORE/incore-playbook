@@ -1,6 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Box, Container, Grid, Tab, Tabs, makeStyles } from "@material-ui/core";
+import Accordion from "@material-ui/core/Accordion";
+import AccordionSummary from "@material-ui/core/AccordionSummary";
+import AccordionDetails from "@material-ui/core/AccordionDetails";
+import Typography from "@material-ui/core/Typography";
+import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import GroupLayer from "ol/layer/Group";
 import TileLayer from "ol/layer/Tile";
 import XYZ from "ol/source/XYZ";
@@ -329,58 +334,77 @@ export const CommunityHazards = (props) => {
 					{/*List created hazards*/}
 					<Box className="entryTableContainer">
 						<StepInfo fullHtml={fullHtml} />
-						<br />
-						<Box className="entryTableTitle">
-							<IncoreInputLabel>
-								Created {selectedHazardType.charAt(0).toUpperCase()}
-								{selectedHazardType.slice(1)}
-							</IncoreInputLabel>
-						</Box>
-						{(() => {
-							// selectedHazardType: are earthquake, flood, hurricane, tsunami, tornado
-							if (selectedHazardType !== "") {
-								return (
-									<>
-										<Box className="entryTable">
-											<EntryTable
-												fieldNames={fieldNames}
-												fields={eval(getHazardTypePlural(selectedHazardType))}
-											/>
-										</Box>
-										<Pagination
-											pageNumber={pageNumber}
-											data={eval(getHazardTypePlural(selectedHazardType))}
-											dataPerPage={dataPerPage}
-											previous={() => pageChange("previous")}
-											next={() => pageChange("next")}
-										/>
-									</>
-								);
-							}
-						})()}
+						<br /><br />
 					</Box>
 					<Grid container spacing={3} className="innerBox">
 						<Grid item xl={6} lg={6} md={6} sm={6} xs={12} className="gridItem">
 							{/*Select*/}
 							<Box>
-								<IncoreInputLabel>Select Hazard Type</IncoreInputLabel>
-								<IncoreSelectBox
-									labelId="label"
-									id="select"
-									variant="outlined"
-									defaultValue={allowedHazardTypes[0]}
-									onChange={(e) => {
-										setSelectedHazardType(e.target.value);
-									}}
-								>
-									{allowedHazardTypes.map((hazardType) => {
-										return (
-											<IncoreMenuItem value={hazardType} key={hazardType}>
-												{hazardType}
-											</IncoreMenuItem>
-										);
-									})}
-								</IncoreSelectBox>
+								<Accordion>
+									<AccordionSummary
+										expandIcon={<ExpandMoreIcon />}
+										aria-controls="panel1a-content"
+										id="panel1a-header"
+									>
+										<IncoreInputLabel>Select Hazard Type</IncoreInputLabel>
+									</AccordionSummary>
+									<AccordionDetails>
+										<IncoreSelectBox
+											labelId="label"
+											id="select"
+											variant="outlined"
+											defaultValue={allowedHazardTypes[0]}
+											onChange={(e) => {
+												setSelectedHazardType(e.target.value);
+											}}
+										>
+											{allowedHazardTypes.map((hazardType) => {
+												return (
+													<IncoreMenuItem value={hazardType} key={hazardType}>
+														{hazardType}
+													</IncoreMenuItem>
+												);
+											})}
+										</IncoreSelectBox>
+									</AccordionDetails>
+								</Accordion>
+							</Box>
+							{/*hazard history*/}
+							<Box className="entryTableTitle">
+								<Accordion>
+									<AccordionSummary
+										expandIcon={<ExpandMoreIcon />}
+										aria-controls="panel1a-content"
+										id="panel1a-header"
+									>
+										<IncoreInputLabel>
+											Created {selectedHazardType.charAt(0).toUpperCase()}
+											{selectedHazardType.slice(1)}
+										</IncoreInputLabel>
+									</AccordionSummary>
+									<AccordionDetails>
+										{(() => {
+											// selectedHazardType: are earthquake, flood, hurricane, tsunami, tornado
+											if (selectedHazardType !== "") {
+												return (
+													<>
+														<EntryTable
+															fieldNames={fieldNames}
+															fields={eval(getHazardTypePlural(selectedHazardType))}
+														/>
+														<Pagination
+															pageNumber={pageNumber}
+															data={eval(getHazardTypePlural(selectedHazardType))}
+															dataPerPage={dataPerPage}
+															previous={() => pageChange("previous")}
+															next={() => pageChange("next")}
+														/>
+													</>
+												);
+											}
+										})()}
+									</AccordionDetails>
+								</Accordion>
 							</Box>
 							{/*Tabs*/}
 							<Box className={classes.tabDiv}>
