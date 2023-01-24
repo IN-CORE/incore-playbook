@@ -231,12 +231,8 @@ export const StaticSubStep = ({ menu, step, substep }) => {
 				</Box>
 				<Box className="outerBox">
 					<Grid container spacing={3} className="innerBox">
-						<Grid item xl={6} lg={6} md={6} sm={6} xs={12} className="gridItem">
-							<DocURI step={step} substep={substep} />
-						</Grid>
-						<Grid item xl={6} lg={6} md={6} sm={6} xs={12} className="gridItem">
-							<StepInfo fullHtml={fullHtml} />
-						</Grid>
+						<StepInfo fullHtml={fullHtml} />
+						<DocURI step={step} substep={substep} />
 					</Grid>
 				</Box>
 			</div>
