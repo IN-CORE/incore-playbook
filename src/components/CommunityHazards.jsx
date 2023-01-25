@@ -146,7 +146,7 @@ export const CommunityHazards = (props) => {
 					title: "Carto",
 					source: new XYZ({
 						url: "https://{a-d}.basemaps.cartocdn.com/rastertiles/light_all/{z}/{x}/{y}.png",
-						attributions: ['&#169; <a href="https://www.carto.com">Carto</a>,', OSM_ATTRIBUTION]
+						attributions: ["&#169; <a href=\"https://www.carto.com\">Carto</a>,", OSM_ATTRIBUTION]
 					})
 				}),
 				new TileLayer({
@@ -344,73 +344,24 @@ export const CommunityHazards = (props) => {
 						<Grid item xl={6} lg={6} md={6} sm={6} xs={12} className="gridItem">
 							{/*Select*/}
 							<Box>
-								<Accordion>
-									<AccordionSummary
-										expandIcon={<ExpandMoreIcon />}
-										aria-controls="panel1a-content"
-										id="panel1a-header"
-										className={classes.summary}
-									>
-										<IncoreInputLabel>Select Hazard Type</IncoreInputLabel>
-									</AccordionSummary>
-									<AccordionDetails>
-										<IncoreSelectBox
-											labelId="label"
-											id="select"
-											variant="outlined"
-											defaultValue={allowedHazardTypes[0]}
-											onChange={(e) => {
-												setSelectedHazardType(e.target.value);
-											}}
-										>
-											{allowedHazardTypes.map((hazardType) => {
-												return (
-													<IncoreMenuItem value={hazardType} key={hazardType}>
-														{hazardType}
-													</IncoreMenuItem>
-												);
-											})}
-										</IncoreSelectBox>
-									</AccordionDetails>
-								</Accordion>
-							</Box>
-							{/*hazard history*/}
-							<Box className="entryTableTitle">
-								<Accordion>
-									<AccordionSummary
-										expandIcon={<ExpandMoreIcon />}
-										aria-controls="panel1a-content"
-										id="panel1a-header"
-										className={classes.summary}
-									>
-										<IncoreInputLabel>
-											Created {selectedHazardType.charAt(0).toUpperCase()}
-											{selectedHazardType.slice(1)}
-										</IncoreInputLabel>
-									</AccordionSummary>
-									<AccordionDetails>
-										{(() => {
-											// selectedHazardType: are earthquake, flood, hurricane, tsunami, tornado
-											if (selectedHazardType !== "") {
-												return (
-													<>
-														<EntryTable
-															fieldNames={fieldNames}
-															fields={eval(getHazardTypePlural(selectedHazardType))}
-														/>
-														<Pagination
-															pageNumber={pageNumber}
-															data={eval(getHazardTypePlural(selectedHazardType))}
-															dataPerPage={dataPerPage}
-															previous={() => pageChange("previous")}
-															next={() => pageChange("next")}
-														/>
-													</>
-												);
-											}
-										})()}
-									</AccordionDetails>
-								</Accordion>
+								<IncoreInputLabel>Select Hazard Type</IncoreInputLabel>
+								<IncoreSelectBox
+									labelId="label"
+									id="select"
+									variant="outlined"
+									defaultValue={allowedHazardTypes[0]}
+									onChange={(e) => {
+										setSelectedHazardType(e.target.value);
+									}}
+								>
+									{allowedHazardTypes.map((hazardType) => {
+										return (
+											<IncoreMenuItem value={hazardType} key={hazardType}>
+												{hazardType}
+											</IncoreMenuItem>
+										);
+									})}
+								</IncoreSelectBox>
 							</Box>
 							{/*Tabs*/}
 							<Box className={classes.tabDiv}>
@@ -427,6 +378,7 @@ export const CommunityHazards = (props) => {
 									{selectedHazardType === "tornado" || selectedHazardType === "earthquake" ? (
 										<Tab label="Create a Hazard" className={classes.tab} />
 									) : null}
+									<Tab label="View Created" className={classes.tab} />
 								</Tabs>
 								{
 									// different hazard type will have different UI
@@ -500,6 +452,40 @@ export const CommunityHazards = (props) => {
 										}
 									})()
 								}
+								{/*hazard history*/}
+								<div
+									role="tabpanel"
+									hidden={currTabIndex !== 2}
+									id="simple-tabpanel-2"
+									aria-labelledby="simple-tab-2"
+								>
+									{
+										currTabIndex === 2 ?
+											<Box className="entryTableTitle">
+												{
+													// selectedHazardType: are earthquake, flood, hurricane, tsunami, tornado
+													selectedHazardType !== ""?
+														<>
+															<EntryTable
+																fieldNames={fieldNames}
+																fields={eval(getHazardTypePlural(selectedHazardType))}
+															/>
+															<Pagination
+																pageNumber={pageNumber}
+																data={eval(getHazardTypePlural(selectedHazardType))}
+																dataPerPage={dataPerPage}
+																previous={() => pageChange("previous")}
+																next={() => pageChange("next")}
+															/>
+														</>
+														:
+														null
+												}
+											</Box>
+											:
+											null
+									}
+								</div>
 							</Box>
 						</Grid>
 						<Grid item xl={6} lg={6} md={6} sm={6} xs={12} className="gridItem">
