@@ -130,6 +130,7 @@ const HeaderWithMenu = ({
 
 	const assetConfig = useSelector((state) => state.config.assetConfig);
 	const stepStatus = useSelector((state) => state.steps);
+	const globalConfig = useSelector((state) => state.config.globalConfig);
 
 	const [anchorEl, setAnchorEl] = React.useState(null);
 
@@ -144,7 +145,7 @@ const HeaderWithMenu = ({
 	};
 
 	React.useEffect(() => {
-		getAllSteps()(dispatch);
+		getAllSteps(globalConfig)(dispatch);
 	}, []);
 
 	// //TODO: move this to utils if needed
@@ -424,7 +425,7 @@ const HeaderWithMenu = ({
 
 	let menus = [];
 	const completedCheckIcon = <CheckCircleIcon style={{ color: "#00619D" }} />;
-	const pendingCheckIcon = <CheckCircleIcon style={{ color: "#8798AD" }} />;
+	const inProgressCheckIcon = <CheckCircleIcon style={{ color: "#8798AD" }} />;
 
 	treeData.map(({ key, label, nodes }) => {
 		let subMenus = [];
@@ -447,7 +448,7 @@ const HeaderWithMenu = ({
 							{stepStatus[`step_${key.replace("-", "_")}`].status === "pending" ? (
 								<QueryBuilderIcon />
 							) : stepStatus[`step_${key.replace("-", "_")}`].status === "in_progress" ? (
-								pendingCheckIcon
+								inProgressCheckIcon
 							) : (
 								completedCheckIcon
 							)}
@@ -475,7 +476,7 @@ const HeaderWithMenu = ({
 					{/* If any in_progress status, then add pending check icon */}
 					{/* else, if any pending icon, show pending else, all are complete and show completed icon */}
 					{subMenusStatus.includes("in_progress") ? (
-						pendingCheckIcon
+						inProgressCheckIcon
 					) : (
 						<>{subMenusStatus.includes("pending") ? <QueryBuilderIcon /> : completedCheckIcon}</>
 					)}

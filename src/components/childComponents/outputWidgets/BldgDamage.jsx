@@ -12,7 +12,7 @@ import {
 import CloseIcon from "@material-ui/icons/Close";
 import Map from "../map/Map";
 import { fromLonLat, getTransform } from "ol/proj";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { ResultSummaryTable } from "../table/ResultSummaryTable";
 import { StackedResult } from "../graph/StackedResult";
 import { ResultTable } from "../table/ResultTable";
@@ -21,8 +21,11 @@ import { applyTransform } from "ol/extent";
 import { getOutputFileContent, getOutputFileContentJSON } from "../../../utils/datawolf";
 import { basicLayers, generateLayers } from "../../../utils/map";
 import { downloadDataset } from "../../../utils/dataset";
+import { downloadImg } from "../../../utils/image";
 import GetAppIcon from "@material-ui/icons/GetApp";
+import CameraAltIcon from "@material-ui/icons/CameraAlt";
 import { IncoreButtonText } from "../../styledComponents/IncoreButtonText";
+
 
 export default function BldgDamage(props) {
 
@@ -38,13 +41,20 @@ export default function BldgDamage(props) {
 	const [bldgMaxDamageStateINCOREId, setBldgMaxDamageStateINCOREId] = useState(null);
 
 	// Holds an instance of Map component
-	const layerRef = React.useRef(basicLayers);
+	const layerRef = useRef(basicLayers);
+
+	// print container
+	const printRef = useRef();
 
 	useEffect(() => {
 		setSelectedExecutionName(executionItem["title"]);
 
 		// for summary table on the top
 		setRuntime(executionItem["date"].slice(0, 10));
+
+		if (hazardLayers && layerRef.current.tilelayer.getLayers()) {
+			layerRef.current.tilelayer.getLayers().push(hazardLayers);
+		}
 
 		datawolfDatasetConfigItems.map(async (datawolfDatasetConfigItem) => {
 			const vName = datawolfDatasetConfigItem.datasets.variableName;
@@ -64,10 +74,8 @@ export default function BldgDamage(props) {
 						"zIndex": 1
 					}
 				];
-
 				const previewLayers = generateLayers(globalConfig, layerDef);
 				layerRef.current.tilelayer.getLayers().extend(previewLayers);
-				layerRef.current.tilelayer.getLayers().push(hazardLayers);
 			}
 			else if (vName === "bldgDmgSummaryTableContent") {
 				setBldgDmgSummaryTableContent(await getOutputFileContentJSON(datawolfConfig, executionItem, datawolfDatasetConfigItem.datasetId));
@@ -89,7 +97,7 @@ export default function BldgDamage(props) {
 			fullWidth
 			scroll="paper"
 		>
-			<DialogContent className="previewModal">
+			<DialogContent className="previewModal" ref={printRef}>
 				<IconButton
 					aria-label="Close"
 					onClick={() => {
@@ -163,12 +171,10 @@ export default function BldgDamage(props) {
 				)}
 			</DialogContent>
 			<DialogActions>
-				<IncoreButtonText onClick={download} startIcon={<GetAppIcon />}>
-					Download Report
-				</IncoreButtonText>
-				<IncoreButtonText onClick={handlePreviewClose} startIcon={<CloseIcon />}>
-					Close
-				</IncoreButtonText>
+				<IncoreButtonText onClick={()=>{downloadImg(printRef.current, "Building_Damage");}}
+								  startIcon={<CameraAltIcon/>}>Image</IncoreButtonText>
+				<IncoreButtonText onClick={download} startIcon={<GetAppIcon/>}>Data</IncoreButtonText>
+				<IncoreButtonText onClick={handlePreviewClose} startIcon={<CloseIcon/>}>Close</IncoreButtonText>
 			</DialogActions>
 		</Dialog>
 	);

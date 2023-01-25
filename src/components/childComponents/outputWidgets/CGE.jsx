@@ -3,13 +3,15 @@ import CloseIcon from "@material-ui/icons/Close";
 import CGEBarChart from "../graph/CGEBarChart";
 import { CgeResultsTable } from "../table/CgeResultsTable";
 import CgeDescription from "../step/CgeDescription";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { IncoreMenuItem, IncoreSelectBox } from "../../styledComponents/IncoreSelect";
 import { getOutputFileContentJSON } from "../../../utils/datawolf";
 import { useSelector } from "react-redux";
 import { exportJson } from "../../../utils/common";
 import { IncoreButtonText } from "../../styledComponents/IncoreButtonText";
 import GetAppIcon from "@material-ui/icons/GetApp";
+import { downloadImg } from "../../../utils/image";
+import CameraAltIcon from "@material-ui/icons/CameraAlt";
 
 export default function CGE(props) {
 	let { executionItem, previewOn, handlePreviewClose, datawolfDatasetConfigItems } = props;
@@ -22,7 +24,10 @@ export default function CGE(props) {
 	const [cgeDomesticSupplyContent, setCgeDomesticSupplyContent] = useState(null);
 	const [cgeEmploymentContent, setCgeEmploymentContent] = useState(null);
 
-	useEffect(() => {
+	// print container
+	const printRef = useRef();
+
+	useEffect(()=> {
 		setSelectedExecutionName(executionItem["title"]);
 
 		datawolfDatasetConfigItems.map(async (datawolfDatasetConfigItem) => {
@@ -56,7 +61,7 @@ export default function CGE(props) {
 
 	return (
 		<Dialog open={previewOn} onClose={handlePreviewClose} maxWidth="lg" fullWidth scroll="paper">
-			<DialogContent className="previewModal">
+			<DialogContent className="previewModal" ref={printRef}>
 				<IconButton aria-label="Close" onClick={handlePreviewClose} style={{ float: "right" }}>
 					<CloseIcon fontSize="small" />
 				</IconButton>
@@ -149,12 +154,10 @@ export default function CGE(props) {
 				</Box>
 			</DialogContent>
 			<DialogActions>
-				<IncoreButtonText onClick={download} startIcon={<GetAppIcon />}>
-					Download Report
-				</IncoreButtonText>
-				<IncoreButtonText onClick={handlePreviewClose} startIcon={<CloseIcon />}>
-					Close
-				</IncoreButtonText>
+				<IncoreButtonText onClick={()=>{downloadImg(printRef.current, "CGE");}}
+								  startIcon={<CameraAltIcon/>}>Image</IncoreButtonText>
+				<IncoreButtonText onClick={download} startIcon={<GetAppIcon/>}>Data</IncoreButtonText>
+				<IncoreButtonText onClick={handlePreviewClose} startIcon={<CloseIcon/>}>Close</IncoreButtonText>
 			</DialogActions>
 		</Dialog>
 	);

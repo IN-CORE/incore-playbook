@@ -22,7 +22,7 @@ export function fetchUserList(globalConfig=defaultGlobalConfig, limit=100, skip=
 	return (dispatch) => {
 		let endpoint = `${globalConfig.maestroServiceBase}users?limit=${limit}&skip=${skip}`;
 
-		return fetch(endpoint, {mode: "cors", headers: getHeader()})
+		return fetch(endpoint, {mode: "cors", headers: getHeader(globalConfig.hostname)})
 			.then((response) => {
 				if (response.status === 200) {
 					response.json().then(json =>{
@@ -44,7 +44,7 @@ export function fetchUser(globalConfig=defaultGlobalConfig, userId){
 	return (dispatch) => {
 		let endpoint = `${globalConfig.maestroServiceBase}users/${userId}`;
 
-		return fetch(endpoint, {mode: "cors", headers: getHeader()})
+		return fetch(endpoint, {mode: "cors", headers: getHeader(globalConfig.hostname)})
 			.then((response) => {
 				if (response.status === 200) {
 					response.json().then(json =>{
@@ -77,7 +77,7 @@ export function fetchRoles(globalConfig=defaultGlobalConfig,limit=100, skip=0){
 	return (dispatch) => {
 		let endpoint = `${globalConfig.maestroServiceBase}roles?limit=${limit}&skip=${skip}`;
 
-		return fetch(endpoint, {mode: "cors", headers: getHeader(), method: "GET"})
+		return fetch(endpoint, {mode: "cors", headers: getHeader(globalConfig.hostname), method: "GET"})
 			.then((response) => {
 				if (response.status === 200) {
 					response.json().then(json =>{
@@ -112,7 +112,7 @@ export function assignUserRole(globalConfig=defaultGlobalConfig, user_id, role_i
 	return (dispatch) => {
 		let endpoint = `${globalConfig.maestroServiceBase}users/${user_id}/roles/${role_id}`;
 
-		return fetch(endpoint, {mode: "cors", headers: getHeader(), method: "POST"})
+		return fetch(endpoint, {mode: "cors", headers: getHeader(globalConfig.hostname), method: "POST"})
 			.then((response) => {
 				if (response.status === 200) {
 					response.json().then(json =>{

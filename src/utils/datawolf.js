@@ -3,7 +3,7 @@ import { datawolfConfig as defaultDatawolfConfig } from "../datawolf.config.js";
 import { datawolfWorkflowConfig as defaultDatawolfWorkflowConfig } from "../datawolf.config.js";
 
 export async function getOutputFileJson(datawolfConfig = defaultDatawolfConfig, datasetId, outputFileName = null) {
-	let authHeader = getHeader();
+	let authHeader = getHeader(datawolfConfig.hostname);
 
 	// Get - Result Dataset
 	const datasetResponse = await fetch(`${datawolfConfig["datasetBaseURL"]}/${datasetId}`, {
@@ -57,7 +57,7 @@ export async function submitExecution(
 		return null;
 	}
 
-	let authHeader = getHeader();
+	let authHeader = getHeader(datawolfConfig.hostname);
 	authHeader.append("Content-Type", "application/json");
 
 	const parameters = Object.keys(datawolfFormState).reduce((parameters, key) => {
@@ -98,7 +98,7 @@ export async function submitExecution(
 }
 
 export async function postDataset(datawolfConfig, title = "incoretoken", description = "incoretoken") {
-	let authHeader = getHeader();
+	let authHeader = getHeader(datawolfConfig.hostname);
 	// authHeader.append("Content-Type", "multipart/form-data");
 
 	let formData = new FormData();
@@ -107,7 +107,7 @@ export async function postDataset(datawolfConfig, title = "incoretoken", descrip
 	formData.append("useremail", getCurrUserEmail());
 
 	// TODO add a file
-	let file = getIncoreTokenFile();
+	let file = getIncoreTokenFile(datawolfConfig.hostname);
 	if (file !== null) formData.append("uploadedFile", file);
 
 	let datawolfResponse = await fetch(`${datawolfConfig["datasetBaseURL"]}`, {

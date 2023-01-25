@@ -23,7 +23,7 @@ export async function createDataset(
 	};
 	datasetFormData.append("dataset", JSON.stringify(datasetMetadata));
 
-	let authHeader = getHeader();
+	let authHeader = getHeader(globalConfig.hostname);
 	let datasetRequest = await fetch(datasetEndpoint, {
 		method: "POST",
 		mode: "cors",
@@ -69,7 +69,7 @@ export async function downloadDataset(globalConfig = defaultGlobalConfig, datase
 	if (title) filename = `${title}-${filename}`;
 
 	let url = `${globalConfig.dataServiceBase}datasets/${datasetId}/blob`;
-	let authHeader = getHeader();
+	let authHeader = getHeader(globalConfig.hostname);
 	let response = await fetch(url, {
 		method: "GET",
 		mode: "cors",

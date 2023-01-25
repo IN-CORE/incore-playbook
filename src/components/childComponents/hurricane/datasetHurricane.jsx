@@ -12,6 +12,7 @@ import { createRjfsDatasetHazards } from "../../../utils/hazard";
 
 import Form from "@rjsf/material-ui";
 import { useSelector } from "react-redux";
+import { move2TestbedSpace } from "../../../utils/common";
 
 export default function DatasetHurricane(props) {
 	const { value, index, handleLayerUpdate, handleListUpdate, ...other } = props;
@@ -26,9 +27,11 @@ export default function DatasetHurricane(props) {
 	const onSave = async (formData) => {
 		setLoading(true);
 		const hurricaneJson = await createRjfsDatasetHazards(globalConfig, formData, "hurricanes");
-		if (hurricaneJson !== {}) {
+		if (hurricaneJson && hurricaneJson["id"]) {
+			// move to testbed space
+			await move2TestbedSpace(globalConfig, hurricaneJson["id"]);
 			handleLayerUpdate(hurricaneJson);
-			handleListUpdate(globalConfig, "hurricanes");
+			handleListUpdate(globalConfig, "hurricane");
 		}
 		setLoading(false);
 	};
