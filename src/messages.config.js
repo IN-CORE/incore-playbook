@@ -89,6 +89,7 @@ export const hhsInfo = {
 		"Stage 2": "Receive assistance from insurance company and settles into hotel",
 		"Stage 3": "Find rental unit",
 		"Stage 4": "Return to permanent housing",
+		"Stage 5": "Languish in unstable housing."
 	}
 };
 
