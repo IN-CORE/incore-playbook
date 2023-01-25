@@ -65,6 +65,9 @@ const useStyles = makeStyles({
 	},
 	mapContainer: {
 		height: "700px"
+	},
+	summary: {
+		backgroundColor: "gray",
 	}
 });
 
@@ -345,6 +348,8 @@ export const CommunityHazards = (props) => {
 										expandIcon={<ExpandMoreIcon />}
 										aria-controls="panel1a-content"
 										id="panel1a-header"
+										// use following line to change the background color
+										// className={classes.summary}
 									>
 										<IncoreInputLabel>Select Hazard Type</IncoreInputLabel>
 									</AccordionSummary>
@@ -376,6 +381,8 @@ export const CommunityHazards = (props) => {
 										expandIcon={<ExpandMoreIcon />}
 										aria-controls="panel1a-content"
 										id="panel1a-header"
+										// use following line to change the background color
+										// className={classes.summary}
 									>
 										<IncoreInputLabel>
 											Created {selectedHazardType.charAt(0).toUpperCase()}
