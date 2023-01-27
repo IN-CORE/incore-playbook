@@ -17,14 +17,8 @@ export default function HHS(props) {
 	const datawolfConfig = useSelector((state) => state.config.datawolfConfig);
 
 	const [selectedExecutionName, setSelectedExecutionName] = useState("");
-	const [HHSBarChartContent, setHHSBarChartContent] = useState({
-		"t0": [],
-		"t1": [],
-		"t6": [],
-		"t12": [],
-		"t24": []
-	});
-	const [t, setT] = useState("t0");
+	const [HHSBarChartContent, setHHSBarChartContent] = useState({"1":[], "7":[], "13":[], "25":[], "49":[]});
+	const [t, setT] = useState("1");
 
 	useEffect(() => {
 		setSelectedExecutionName(executionItem["title"]);
@@ -38,11 +32,41 @@ export default function HHS(props) {
 		// });
 		// TODO remove hardcoding
 		setHHSBarChartContent({
-			"t0": [3033, 3138, 3857, 4862, 0],
-			"t1": [1773, 2410, 2452, 8255, 0],
-			"t6": [820, 1066, 515, 12489, 0],
-			"t12": [485, 513, 134, 13614, 609],
-			"t24": [60, 62, 10, 14149, 144]
+			"1": [
+				7000,
+				180,
+				174,
+				25147,
+				0
+			],
+			"7": [
+				1843,
+				2419,
+				1323,
+				26916,
+				0
+			],
+			"13": [
+				1654,
+				2157,
+				875,
+				27812,
+				3
+			],
+			"25": [
+				1489,
+				1698,
+				600,
+				28616,
+				98
+			],
+			"49": [
+				1138,
+				1175,
+				333,
+				29404,
+				451
+			]
 		});
 	}, []);
 
@@ -80,30 +104,36 @@ export default function HHS(props) {
 								value={t}
 								style={{ maxWidth: "500px" }}
 							>
-								<IncoreMenuItem value="t0" key="t0">
+								<IncoreMenuItem value="1" key="1">
 									Immediately after the disaster
 								</IncoreMenuItem>
-								<IncoreMenuItem value="t1" key="t1">
-									1 month post-disaster
+								<IncoreMenuItem value="7" key="7">
+									6 month post-disaster
 								</IncoreMenuItem>
-								<IncoreMenuItem value="t6" key="t6">
-									6 months post-disaster
-								</IncoreMenuItem>
-								<IncoreMenuItem value="t12" key="t12">
+								<IncoreMenuItem value="13" key="13">
 									12 months post-disaster
 								</IncoreMenuItem>
-								<IncoreMenuItem value="t24" key="t24">
+								<IncoreMenuItem value="25" key="25">
 									24 months post-disaster
+								</IncoreMenuItem>
+								<IncoreMenuItem value="49" key="49">
+									48 months post-disaster
 								</IncoreMenuItem>
 							</IncoreSelectBox>
 
 							{/*table and barchart*/}
 							<Box style={{ margin: "50px 0", maxWidth: "700px" }}>
-								<HHSBarChart
-									data={HHSBarChartContent[t]}
-									xAxisLegend="Housing Recovery Stage"
-									yAxisLegend="Frequency"
-								/>
+								{
+									HHSBarChartContent ?
+										<HHSBarChart
+											data={HHSBarChartContent[t]}
+											xAxisLegend="Housing Recovery Stage"
+											yAxisLegend="Frequency"
+										/>
+										:
+										null
+								}
+
 							</Box>
 						</Grid>
 						{/*description*/}
