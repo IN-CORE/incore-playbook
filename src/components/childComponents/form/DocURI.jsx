@@ -35,7 +35,13 @@ export const DocURI = (props) => {
 	};
 
 	return (
-		<Box className="inputGroup" style={{ height: "auto" }}>
+		<Box className="inputGroup" style={{
+			height: "auto",
+			background: "#ffffff",
+			border: "dashed 1px #00619D",
+			borderRadius: "5px",
+			padding: "1.5em"
+		}}>
 			<IncoreTitle>Document Link</IncoreTitle>
 			{
 				edit ?

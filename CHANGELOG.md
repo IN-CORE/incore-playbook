@@ -19,6 +19,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Renamed master branch to main [#28](https://github.com/IN-CORE/incore-playbook/issues/28)
 - Made data upload button on and off [#73](https://github.com/IN-CORE/incore-playbook/issues/73)
 - Display multiple layers of hazard [#63](https://github.com/IN-CORE/incore-playbook/issues/63)
+- Update the layout of document link and each static steps [#109](https://github.com/IN-CORE/incore-playbook/issues/109)
 - UI layout change for step 3-3 creating hazards [#96](https://github.com/IN-CORE/incore-playbook/issues/96)
 
 ### Fixed
