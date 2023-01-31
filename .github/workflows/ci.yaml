@@ -18,6 +18,7 @@ on:
 
 env:
   MAIN_REPO: IN-CORE/incore-playbook
+  NPM_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
 jobs:
 
