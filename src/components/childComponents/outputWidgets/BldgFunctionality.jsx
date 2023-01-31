@@ -23,6 +23,7 @@ import { basicLayers, generateLayers } from "../../../utils/map";
 import { IncoreButtonText } from "../../styledComponents/IncoreButtonText";
 import GetAppIcon from "@material-ui/icons/GetApp";
 import { downloadDataset } from "../../../utils/dataset";
+import { downloadShapefile} from "../../../utils/dataset";
 import { downloadImg } from "../../../utils/image";
 import CameraAltIcon from "@material-ui/icons/CameraAlt";
 
@@ -84,6 +85,7 @@ export default function BldgFunctionality(props){
 
 	const download = async () => {
 		if (bldgFuncProbINCOREId) await downloadDataset(globalConfig, bldgFuncProbINCOREId, "bldg-func");
+		if (bldgFuncProbINCOREId) await downloadShapefile(globalConfig, bldgFuncProbINCOREId, "bldg-func");
 	};
 
 	return (

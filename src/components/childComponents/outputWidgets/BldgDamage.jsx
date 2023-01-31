@@ -21,6 +21,7 @@ import { applyTransform } from "ol/extent";
 import { getOutputFileContent, getOutputFileContentJSON } from "../../../utils/datawolf";
 import { basicLayers, generateLayers } from "../../../utils/map";
 import { downloadDataset } from "../../../utils/dataset";
+import { downloadShapefile} from "../../../utils/dataset";
 import { downloadImg } from "../../../utils/image";
 import GetAppIcon from "@material-ui/icons/GetApp";
 import CameraAltIcon from "@material-ui/icons/CameraAlt";
@@ -85,6 +86,7 @@ export default function BldgDamage(props) {
 
 	const download = async () => {
 		if (bldgMaxDamageStateINCOREId) await downloadDataset(globalConfig, bldgMaxDamageStateINCOREId, "bldg-dmg");
+		if (bldgMaxDamageStateINCOREId) await downloadShapefile(globalConfig, bldgMaxDamageStateINCOREId, "bldg-dmg");
 	};
 
 	return (

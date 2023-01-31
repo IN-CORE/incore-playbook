@@ -96,3 +96,34 @@ export async function downloadDataset(globalConfig = defaultGlobalConfig, datase
 		return {};
 	}
 }
+
+export async function downloadShapefile(globalConfig = defaultGlobalConfig, datasetId, title = null) {
+	let filename = `${datasetId}.zip`;
+	if (title) filename = `${title}-${filename}`;
+	let url = `${globalConfig.geoServerFeature}&outputFormat=shape-zip&typename=incore:${datasetId}`;
+	let response = await fetch(url, {
+		// headers: authHeader,
+		method: "GET",
+		mode: "cors"
+	});
+
+	if (response.status === 200) {
+		let blob = await response.blob();
+		if (window.navigator.msSaveOrOpenBlob) {
+			window.navigator.msSaveBlob(blob, filename);
+		} else {
+			let anchor = window.document.createElement("a");
+			anchor.href = window.URL.createObjectURL(blob);
+			anchor.download = filename;
+			document.body.appendChild(anchor);
+			anchor.click();
+			document.body.removeChild(anchor);
+		}
+	} else if (response.status === 401) {
+		// TODO handle error
+		return {};
+	} else {
+		// TODO handle error
+		return {};
+	}
+}

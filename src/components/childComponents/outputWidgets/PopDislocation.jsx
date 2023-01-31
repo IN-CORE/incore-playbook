@@ -13,6 +13,7 @@ import { exportJson } from "../../../utils/common";
 import { IncoreButtonText } from "../../styledComponents/IncoreButtonText";
 import GetAppIcon from "@material-ui/icons/GetApp";
 import { downloadImg } from "../../../utils/image";
+import {downloadDataset, downloadShapefile} from "../../../utils/dataset";
 import CameraAltIcon from "@material-ui/icons/CameraAlt";
 
 
@@ -34,6 +35,7 @@ export default function PopDislocation(props){
 	const layerRef = useRef(basicLayers);
 	// print container
 	const printRef = useRef();
+	const [bldgMaxDamageStateINCOREId, setBldgMaxDamageStateINCOREId] = useState(null);
 
 	useEffect(() => {
 		setSelectedExecutionName(executionItem["title"]);
@@ -56,6 +58,7 @@ export default function PopDislocation(props){
 							"zIndex": 1
 						}
 					];
+				setBldgMaxDamageStateINCOREId(bldgMaxDamageStateINCOREId);
 				const previewLayers = generateLayers(globalConfig, tmpLayerDef);
 				layerRef.current.tilelayer.getLayers().extend(previewLayers);
 			}
@@ -113,6 +116,7 @@ export default function PopDislocation(props){
 			}
 		};
 		exportJson(popDislJson, `population-dislocation-${executionItem.id}`);
+		if (bldgMaxDamageStateINCOREId) await downloadShapefile(globalConfig, bldgMaxDamageStateINCOREId, "pop-disloc");
 	};
 
 	return (

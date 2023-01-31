@@ -10,6 +10,7 @@ import { basicLayers, generateLayers } from "../../../utils/map";
 import { IncoreButtonText } from "../../styledComponents/IncoreButtonText";
 import GetAppIcon from "@material-ui/icons/GetApp";
 import { downloadDataset } from "../../../utils/dataset";
+import { downloadShapefile } from "../../../utils/dataset";
 import { downloadImg } from "../../../utils/image";
 import CameraAltIcon from "@material-ui/icons/CameraAlt";
 
@@ -65,6 +66,7 @@ export default function SubstationDamage(props){
 	const download = async () => {
 		if (substationMaxDmgStateINCOREId)
 			await downloadDataset(globalConfig, substationMaxDmgStateINCOREId, "epf-substation");
+			await downloadShapefile(globalConfig, substationMaxDmgStateINCOREId, "epf-substation");
 	};
 
 	return (

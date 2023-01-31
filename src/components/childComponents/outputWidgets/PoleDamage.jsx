@@ -8,6 +8,7 @@ import { applyTransform } from "ol/extent";
 import { getOutputFileContent } from "../../../utils/datawolf";
 import { basicLayers, generateLayers } from "../../../utils/map";
 import { downloadDataset } from "../../../utils/dataset";
+import { downloadShapefile } from "../../../utils/dataset";
 import { IncoreButtonText } from "../../styledComponents/IncoreButtonText";
 import GetAppIcon from "@material-ui/icons/GetApp";
 import { downloadImg } from "../../../utils/image";
@@ -63,6 +64,7 @@ export default function PoleDamage(props){
 
 	const download = async () => {
 		if (poleMaxDmgStateINCOREId) await downloadDataset(globalConfig, poleMaxDmgStateINCOREId, "epf-pole");
+		if (poleMaxDmgStateINCOREId) await downloadShapefile(globalConfig, poleMaxDmgStateINCOREId, "epf-pole");
 	};
 
 	return (

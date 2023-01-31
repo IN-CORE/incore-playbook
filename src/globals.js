@@ -1,9 +1,11 @@
 const globals = {};
 
 let hostname = process.env.INCORE_REMOTE_HOSTNAME || "";
+const geoserverRoot = `${hostname}/geoserver`;
 
 globals["baseUrlRoute"] = "playbook";
-globals["geoServerWMS"] = `${hostname}/geoserver/incore/wms`;
+globals["geoServerWMS"] = `${geoserverRoot}/incore/wms`;
+globals["geoServerFeature"] = `${geoserverRoot}/incore/ows?service=WFS&version=1.0.0&request=GetFeature`;
 globals["client_id"] = "react-auth";
 globals["authService"] = `${hostname}/auth/realms/In-core/protocol/openid-connect/token`;
 globals["hazardServiceBase"] = `${hostname}/hazard/api/`;
