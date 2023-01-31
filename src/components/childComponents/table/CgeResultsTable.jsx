@@ -66,7 +66,7 @@ const useStyles = makeStyles({
 });
 
 export function CgeResultsTable(props) {
-	let { resultsJson, isMetrics, ...others } = props;
+	let { resultsJson, isMetrics, region, ...others } = props;
 
 	if (resultsJson === null) {
 		// to be commented out when integrated with API and prop validation can be added
@@ -76,6 +76,12 @@ export function CgeResultsTable(props) {
 	let beforeJson = resultsJson["beforeEvent"];
 	let afterJson = resultsJson["afterEvent"];
 	let percentageChange = resultsJson["%_change"];
+
+	if (region){
+		beforeJson = Object.fromEntries(Object.entries(beforeJson).filter(([key]) => key.endsWith(region)));
+		afterJson = Object.fromEntries(Object.entries(afterJson).filter(([key]) => key.endsWith(region)));
+		percentageChange = Object.fromEntries(Object.entries(percentageChange).filter(([key]) => key.endsWith(region)));
+	}
 
 	// Eliminate duplicate keys. Also, handles the case where before and after has different number of groups
 	headers = [
