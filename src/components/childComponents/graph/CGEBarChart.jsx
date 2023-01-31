@@ -34,7 +34,6 @@ export default function CGEBarChart(props) {
 				options={{
 					title: title,
 					legend: { position: "none" },
-					chartArea: { width: "50%" },
 					colors: ["#A1BE2E", "#DB4F60"],
 					hAxis: {
 						title: xAxisLegend,
