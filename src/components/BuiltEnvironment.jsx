@@ -23,6 +23,8 @@ import { inputDatasetTypes } from "../globals";
 import { IncoreMenuItem, IncoreSelectBox } from "./styledComponents/IncoreSelect";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchDatasets } from "../actions/datasets";
+import { downloadDataset } from "../utils/dataset";
+
 
 import Pagination from "./childComponents/navigation/Pagination";
 import { move2TestbedSpace } from "../utils/common";
@@ -264,10 +266,15 @@ export const BuiltEnvironment = ({ step, substep }) => {
 		});
 	}, [offsetValueLosses, dataPerPage]);
 
+	const download = async (inventory) => {
+		if (inventory["id"]) await downloadDataset(globalConfig, inventory["id"], inventory["title"]);
+	};
+
 	const fieldNames = [
 		{
 			prettyName: "NAME",
-			columnName: "title"
+			columnName: "title",
+			handleClick: download
 		},
 		{
 			prettyName: "DESCRIPTION",
@@ -276,7 +283,7 @@ export const BuiltEnvironment = ({ step, substep }) => {
 		{
 			prettyName: "DATE ADDED",
 			columnName: "date"
-		}
+		},
 	];
 
 	return (
