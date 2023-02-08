@@ -15,7 +15,7 @@ export const isAuthorized = (hostname="", testbedGroup=defaultGlobalConfig.testb
 		if (authorization !== undefined && authorization !== "" && authorization !== null){
 			// further restrict to the testbed group
 			const userInfo = getCurrUserInfo(authorization);
-			return ("groups" in userInfo && userInfo["groups"].include(testbedGroup));
+			return ("groups" in userInfo && userInfo["groups"].includes(testbedGroup));
 		}
 		else return false;
 	}
