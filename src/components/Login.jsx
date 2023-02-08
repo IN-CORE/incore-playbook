@@ -150,6 +150,7 @@ export const Login = () => {
 		const tokenJson = await tokenRequest.json();
 
 		if (tokenJson["access_token"] !== undefined) {
+			// set the cookie
 			cookies.set("Authorization", `bearer ${tokenJson["access_token"]}`, {
 				maxAge: tokenJson["expires_in"],
 				path: "/"
@@ -157,9 +158,16 @@ export const Login = () => {
 				// sameSite: "None",
 				// secure: true
 			});
-			setAuthFail(false);
-			dispatch(setMenuState(true));
-			history.push("/");
+
+			// set auth flag
+			if (isAuthorized(globalConfig["hostname"], globalConfig["testbedGroup"])){
+				setAuthFail(false);
+				dispatch(setMenuState(true));
+				history.push("/");
+			}
+			else{
+				setAuthFail(true);
+			}
 		} else {
 			setAuthFail(true);
 		}
@@ -169,7 +177,8 @@ export const Login = () => {
 	let userMessageContent = <span> Please enter your credentials to proceed </span>;
 
 	if (isAuthFail === true) {
-		userMessageContent = <span style={{ color: "Red" }}> Invalid username or password. Please try again. </span>;
+		userMessageContent = <span style={{ color: "Red" }}>Login Error: Invalid username or password. Please try
+			again or contact us if you believe you should have access.</span>;
 	} else if (isAuthFail === false) {
 		// This message will never be seen on frontend, only for testing
 		userMessageContent = <span style={{ color: "Green" }}> Login Success. </span>;
