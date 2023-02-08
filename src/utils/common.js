@@ -7,12 +7,18 @@ import { toLonLat } from "ol/proj";
 const cookies = new Cookies();
 
 //NOTE: This is only checking if a cookie is present, but not validating the cookie.
-export const isAuthorized = (hostname="") => {
+export const isAuthorized = (hostname="", testbedGroup=defaultGlobalConfig.testbedGroup) => {
 	const authorization = cookies.get("Authorization");
-	return (
-		hostname === "http://localhost:8080" ||
-		(authorization !== undefined && authorization !== "" && authorization !== null)
-	);
+
+	if (hostname === "http://localhost:8080") return true;
+	else{
+		if (authorization !== undefined && authorization !== "" && authorization !== null){
+			// further restrict to the testbed group
+			const userInfo = getCurrUserInfo(authorization);
+			return ("groups" in userInfo && userInfo["groups"].include(testbedGroup));
+		}
+		else return false;
+	}
 };
 
 // construct header
@@ -172,4 +178,21 @@ export function parseDateTime(dateString) {
 	const options = { year: "numeric", month: "short", day: "numeric", hour: "2-digit", minute: "2-digit" , timeZone: timeZone };
 	const mydate = new Date(dateString);
 	return mydate.toLocaleString("en-US", options);
+}
+
+// TODO replace this using keycloak's userInfo endpoint
+// get current user's info from jwt token
+export function getCurrUserInfo(cookie){
+	if (cookie !== undefined && cookie !== "" && cookie.split(" ").length > 0){
+		try{
+			return jwt_decode(cookie.split(" ")[1]);
+		}
+		catch(err){
+			console.log(err);
+			return {};
+		}
+	}
+	else{
+		return {};
+	}
 }

@@ -15,7 +15,7 @@ export const Layout = (props) => {
 	const history = useHistory();
 
 	useEffect(() => {
-		if (!isAuthorized(globalConfig["hostname"])) {
+		if (!isAuthorized(globalConfig["hostname"], globalConfig["testbedGroup"])) {
 			history.push("/login");
 		}
 	}, []);
@@ -28,7 +28,8 @@ export const Layout = (props) => {
 	let menuItem = sessionStorage.getItem("menu");
 	return (
 		<div>
-			<Header isAuthenticated={isAuthorized(globalConfig.hostname)} menuItem={menuItem} />
+			<Header isAuthenticated={isAuthorized(globalConfig.hostname, , globalConfig["testbedGroup"])}
+					menuItem={menuItem} />
 			<div
 				className="masterContent"
 				style={{ marginLeft: mLeft, padding: 8, backgroundColor: "rgba(248, 249, 255, 0.5)" }}
