@@ -1,6 +1,15 @@
 import React, { useEffect, useRef, useState } from "react";
 
-import { Box, Dialog, DialogContent, Divider, Grid, IconButton } from "@material-ui/core";
+import {
+	Box, Button,
+	Dialog, DialogActions,
+	DialogContent,
+	DialogContentText,
+	DialogTitle,
+	Divider,
+	Grid,
+	IconButton
+} from "@material-ui/core";
 
 import { Layout } from "./Layout";
 import BreadCrumb from "./childComponents/navigation/BreadCrumb";
@@ -122,6 +131,7 @@ export const BuiltEnvironment = ({ step, substep }) => {
 	const [pageNumberHuas, setPageNumberHuas] = React.useState(1);
 	const [pageNumberBlockGroups, setPageNumberBlockGroups] = React.useState(1);
 	const [pageNumberValueLosses, setPageNumberValueLosses] = React.useState(1);
+	const [downloadDialogOpen, setDownloadDialogOpen] = React.useState(false);
 
 	// load uploaded dataset
 	useEffect(() => {
@@ -267,8 +277,16 @@ export const BuiltEnvironment = ({ step, substep }) => {
 	}, [offsetValueLosses, dataPerPage]);
 
 	const download = async (inventory) => {
-		if (inventory["id"]) await downloadDataset(globalConfig, inventory["id"], inventory["title"]);
+		if (inventory["id"]) {
+			await downloadDataset(globalConfig, inventory["id"], inventory["title"]);
+			// display a message to remind user download is in process
+			setDownloadDialogOpen(true);
+		}
 	};
+
+	const handleDownloadDialogClose = () =>{
+		setDownloadDialogOpen(false);
+	}
 
 	const fieldNames = [
 		{
@@ -300,6 +318,24 @@ export const BuiltEnvironment = ({ step, substep }) => {
 				</Box>
 				<Box className="outerBox">
 					<Grid container spacing={3} className="innerBox">
+						{/*Download alerts*/}
+						<Dialog
+							open={downloadDialogOpen}
+							onClose={handleDownloadDialogClose}
+							aria-labelledby="alert-dialog-title"
+							aria-describedby="alert-dialog-description"
+						>
+							<DialogContent>
+								<DialogContentText id="alert-dialog-description">
+									Download is in progress.
+								</DialogContentText>
+							</DialogContent>
+							<DialogActions>
+								<Button onClick={handleDownloadDialogClose} color="primary" autoFocus>
+									Close
+								</Button>
+							</DialogActions>
+						</Dialog>
 						<Grid item xl={6} lg={6} md={6} sm={6} xs={12} className="gridItem">
 							<LoadingOverlay active={loading} spinner text="Saving...">
 								<div>
