@@ -37,6 +37,8 @@ import { downloadDataset } from "../utils/dataset";
 
 import Pagination from "./childComponents/navigation/Pagination";
 import { move2TestbedSpace } from "../utils/common";
+import { IncoreButtonInline } from "./styledComponents/IncoreButtonInline";
+import { IncoreButtonText } from "./styledComponents/IncoreButtonText";
 
 const useStyles = makeStyles({
 	title: {
@@ -278,15 +280,15 @@ export const BuiltEnvironment = ({ step, substep }) => {
 
 	const download = async (inventory) => {
 		if (inventory["id"]) {
+			setDownloadDialogOpen(true);
 			await downloadDataset(globalConfig, inventory["id"], inventory["title"]);
 			// display a message to remind user download is in process
-			setDownloadDialogOpen(true);
 		}
 	};
 
 	const handleDownloadDialogClose = () =>{
 		setDownloadDialogOpen(false);
-	}
+	};
 
 	const fieldNames = [
 		{
@@ -325,13 +327,15 @@ export const BuiltEnvironment = ({ step, substep }) => {
 							aria-labelledby="alert-dialog-title"
 							aria-describedby="alert-dialog-description"
 						>
+							<DialogTitle style={{color: "#00619D"}}>Download in Progress</DialogTitle>
 							<DialogContent>
 								<DialogContentText id="alert-dialog-description">
-									Download is in progress.
+									Your download has already started. Please do not double-click the download link as
+									this may cause multiple downloads and slow down the process.
 								</DialogContentText>
 							</DialogContent>
 							<DialogActions>
-								<Button onClick={handleDownloadDialogClose} color="primary" autoFocus>
+								<Button variant="text" onClick={handleDownloadDialogClose} style={{color: "#00619D"}}>
 									Close
 								</Button>
 							</DialogActions>
