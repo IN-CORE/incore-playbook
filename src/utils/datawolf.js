@@ -135,7 +135,6 @@ export const getOutputFileContentJSON = async (datawolfConfig = defaultDatawolfC
 };
 
 export const getOutputFileContent = async (datawolfConfig = defaultDatawolfConfig, executionItem, dwDatasetId) => {
-	console.log(dwDatasetId);
 	let incoreId = executionItem["datasets"][dwDatasetId];
 	return await getOutputFileJson(datawolfConfig, incoreId);
 };
