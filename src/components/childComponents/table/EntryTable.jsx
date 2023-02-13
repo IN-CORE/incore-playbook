@@ -10,7 +10,7 @@ import {
 	TableRow,
 	Link
 } from "@material-ui/core";
-import MoreHorizIcon from "@material-ui/icons/MoreHoriz";
+// import MoreHorizIcon from "@material-ui/icons/MoreHoriz";
 
 import { makeStyles } from "@material-ui/core/styles";
 
@@ -132,8 +132,8 @@ export function EntryTable(props) {
 								</TableCell>
 							);
 						})}
-						{/*TODO implement expending*/}
-						<TableCell className={classes.tableHeaderCell} key="dot" />
+						{/*/!*TODO implement expending*!/*/}
+						{/*<TableCell className={classes.tableHeaderCell} key="dot" />*/}
 					</TableRow>
 				</TableHead>
 				<TableBody>
@@ -170,10 +170,10 @@ export function EntryTable(props) {
 										</TableCell>
 									);
 								})}
-								{/*TODO implement expending*/}
-								<TableCell className={classes.tableBodyCell} key="dot">
-									<MoreHorizIcon />
-								</TableCell>
+								{/*/!*TODO implement expending*!/*/}
+								{/*<TableCell className={classes.tableBodyCell} key="dot">*/}
+								{/*	<MoreHorizIcon />*/}
+								{/*</TableCell>*/}
 							</TableRow>
 						);
 					})}
