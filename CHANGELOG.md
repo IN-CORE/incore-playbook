@@ -21,6 +21,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Display multiple layers of hazard [#63](https://github.com/IN-CORE/incore-playbook/issues/63)
 - Update the layout of document link and each static steps [#109](https://github.com/IN-CORE/incore-playbook/issues/109)
 - UI layout change for step 3-3 creating hazards [#96](https://github.com/IN-CORE/incore-playbook/issues/96)
+- Step 3-4 datawolf result link clickable logic to update dynamically based on requirements [#61](https://github.com/IN-CORE/incore-playbook/issues/61)
 
 ### Fixed
 - First time load map layers at step 3-4 "view results" does not show correctly sometimes [#97](https://github.com/IN-CORE/incore-playbook/issues/97)
