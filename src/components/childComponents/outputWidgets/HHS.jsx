@@ -22,51 +22,13 @@ export default function HHS(props) {
 
 	useEffect(() => {
 		setSelectedExecutionName(executionItem["title"]);
-		// datawolfDatasetConfigItems.map(async (datawolfDatasetConfigItem) => {
-		// 	const vName = datawolfDatasetConfigItem.datasets.variableName;
-		// 	if (vName === "HHSBarChartContent") {
-		// 		setHHSBarChartContent(
-		// 			await getOutputFileContentJSON(datawolfConfig, executionItem, datawolfDatasetConfigItem.datasetId)
-		// 		);
-		// 	}
-		// });
-		// TODO remove hardcoding
-		setHHSBarChartContent({
-			"1": [
-				7000,
-				180,
-				174,
-				25147,
-				0
-			],
-			"7": [
-				1843,
-				2419,
-				1323,
-				26916,
-				0
-			],
-			"13": [
-				1654,
-				2157,
-				875,
-				27812,
-				3
-			],
-			"25": [
-				1489,
-				1698,
-				600,
-				28616,
-				98
-			],
-			"49": [
-				1138,
-				1175,
-				333,
-				29404,
-				451
-			]
+		datawolfDatasetConfigItems.map(async (datawolfDatasetConfigItem) => {
+			const vName = datawolfDatasetConfigItem.datasets.variableName;
+			if (vName === "HHSBarChartContent") {
+				setHHSBarChartContent(
+					await getOutputFileContentJSON(datawolfConfig, executionItem, datawolfDatasetConfigItem.datasetId)
+				);
+			}
 		});
 	}, []);
 
