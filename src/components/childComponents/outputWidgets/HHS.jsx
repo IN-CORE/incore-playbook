@@ -1,8 +1,7 @@
 import { Box, Dialog, DialogActions, DialogContent, Grid, IconButton, Typography } from "@material-ui/core";
 import CloseIcon from "@material-ui/icons/Close";
 import HHSBarChart from "../graph/HHSBarChart";
-import CgeDescription from "../step/CgeDescription";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { IncoreMenuItem, IncoreSelectBox } from "../../styledComponents/IncoreSelect";
 import { getOutputFileContentJSON } from "../../../utils/datawolf";
 import { useSelector } from "react-redux";
@@ -10,6 +9,9 @@ import { exportJson } from "../../../utils/common";
 import { IncoreButtonText } from "../../styledComponents/IncoreButtonText";
 import GetAppIcon from "@material-ui/icons/GetApp";
 import HhsDescription from "../step/HhsDescription";
+import { downloadImg } from "../../../utils/image";
+import CameraAltIcon from "@material-ui/icons/CameraAlt";
+
 
 export default function HHS(props) {
 	let { executionItem, previewOn, handlePreviewClose, datawolfDatasetConfigItems } = props;
@@ -19,6 +21,9 @@ export default function HHS(props) {
 	const [selectedExecutionName, setSelectedExecutionName] = useState("");
 	const [HHSBarChartContent, setHHSBarChartContent] = useState({"1":[], "7":[], "13":[], "25":[], "49":[]});
 	const [t, setT] = useState("1");
+
+	// print container
+	const printRef = useRef();
 
 	useEffect(() => {
 		setSelectedExecutionName(executionItem["title"]);
@@ -40,7 +45,7 @@ export default function HHS(props) {
 
 	return (
 		<Dialog open={previewOn} onClose={handlePreviewClose} maxWidth="lg" fullWidth scroll="paper">
-			<DialogContent className="previewModal">
+			<DialogContent className="previewModal" ref={printRef}>
 				<IconButton aria-label="Close" onClick={handlePreviewClose} style={{ float: "right" }}>
 					<CloseIcon fontSize="small" />
 				</IconButton>
@@ -106,6 +111,8 @@ export default function HHS(props) {
 				</Box>
 			</DialogContent>
 			<DialogActions>
+				<IncoreButtonText onClick={()=>{downloadImg(printRef.current, "HHS");}}
+								  startIcon={<CameraAltIcon/>}>Image</IncoreButtonText>
 				<IncoreButtonText onClick={download} startIcon={<GetAppIcon />}>
 					Download Report
 				</IncoreButtonText>
