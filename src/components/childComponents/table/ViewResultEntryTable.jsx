@@ -345,35 +345,6 @@ export function ViewResultEntryTable(props) {
 										) : (
 											<></>
 										)}
-										{/*interdependency network*/}
-										{widgetList.includes("PoleDamage") &&
-										widgetList.includes("SubstationDamage") ? (
-											<TableRow
-												className={classes.subBodyRow}
-												key={`${execution["id"]}-interdependency`}
-											>
-												<TableCell colSpan={6} key={`${execution["id"]}-interdependency-title`}>
-													<Link
-														color="primary"
-														onClick={() => {
-															preview(execution["id"], "Interdependency");
-														}}
-														className={
-															checkResultsReady(
-																["PoleDamage", "SubstationDamage"],
-																execution.datasets
-															)
-																? classes.clickableLink
-																: classes.clickableLinkDisabled
-														}
-													>
-														Interdependency
-													</Link>
-												</TableCell>
-											</TableRow>
-										) : (
-											<></>
-										)}
 										{/*EPF damage*/}
 										{widgetList.includes("PoleDamage") ? (
 											<TableRow
