@@ -559,8 +559,7 @@ export function ViewResultEntryTable(props) {
 															preview(execution["id"], "HHS");
 														}}
 														className={
-															execution["finalStatus"] === undefined ||
-															execution["finalStatus"] === "FINISHED"
+															checkResultsReady(["HHS"], execution.datasets)
 																? classes.clickableLink
 																: classes.clickableLinkDisabled
 														}
