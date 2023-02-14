@@ -1,6 +1,15 @@
 import React, { useEffect, useRef, useState } from "react";
 
-import { Box, Dialog, DialogContent, Divider, Grid, IconButton } from "@material-ui/core";
+import {
+	Box, Button,
+	Dialog, DialogActions,
+	DialogContent,
+	DialogContentText,
+	DialogTitle,
+	Divider,
+	Grid,
+	IconButton
+} from "@material-ui/core";
 
 import { Layout } from "./Layout";
 import BreadCrumb from "./childComponents/navigation/BreadCrumb";
@@ -23,9 +32,13 @@ import { inputDatasetTypes } from "../globals";
 import { IncoreMenuItem, IncoreSelectBox } from "./styledComponents/IncoreSelect";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchDatasets } from "../actions/datasets";
+import { downloadDataset } from "../utils/dataset";
+
 
 import Pagination from "./childComponents/navigation/Pagination";
 import { move2TestbedSpace } from "../utils/common";
+import { IncoreButtonInline } from "./styledComponents/IncoreButtonInline";
+import { IncoreButtonText } from "./styledComponents/IncoreButtonText";
 
 const useStyles = makeStyles({
 	title: {
@@ -120,6 +133,7 @@ export const BuiltEnvironment = ({ step, substep }) => {
 	const [pageNumberHuas, setPageNumberHuas] = React.useState(1);
 	const [pageNumberBlockGroups, setPageNumberBlockGroups] = React.useState(1);
 	const [pageNumberValueLosses, setPageNumberValueLosses] = React.useState(1);
+	const [downloadDialogOpen, setDownloadDialogOpen] = React.useState(false);
 
 	// load uploaded dataset
 	useEffect(() => {
@@ -264,10 +278,23 @@ export const BuiltEnvironment = ({ step, substep }) => {
 		});
 	}, [offsetValueLosses, dataPerPage]);
 
+	const download = async (inventory) => {
+		if (inventory["id"]) {
+			setDownloadDialogOpen(true);
+			await downloadDataset(globalConfig, inventory["id"], inventory["title"]);
+			// display a message to remind user download is in process
+		}
+	};
+
+	const handleDownloadDialogClose = () =>{
+		setDownloadDialogOpen(false);
+	};
+
 	const fieldNames = [
 		{
 			prettyName: "NAME",
-			columnName: "title"
+			columnName: "title",
+			handleClick: download
 		},
 		{
 			prettyName: "DESCRIPTION",
@@ -276,7 +303,7 @@ export const BuiltEnvironment = ({ step, substep }) => {
 		{
 			prettyName: "DATE ADDED",
 			columnName: "date"
-		}
+		},
 	];
 
 	return (
@@ -293,6 +320,26 @@ export const BuiltEnvironment = ({ step, substep }) => {
 				</Box>
 				<Box className="outerBox">
 					<Grid container spacing={3} className="innerBox">
+						{/*Download alerts*/}
+						<Dialog
+							open={downloadDialogOpen}
+							onClose={handleDownloadDialogClose}
+							aria-labelledby="alert-dialog-title"
+							aria-describedby="alert-dialog-description"
+						>
+							<DialogTitle style={{color: "#00619D"}}>Download in Progress</DialogTitle>
+							<DialogContent>
+								<DialogContentText id="alert-dialog-description">
+									Your download has already started. Please do not double-click the download link as
+									this may cause multiple downloads and slow down the process.
+								</DialogContentText>
+							</DialogContent>
+							<DialogActions>
+								<Button variant="text" onClick={handleDownloadDialogClose} style={{color: "#00619D"}}>
+									Close
+								</Button>
+							</DialogActions>
+						</Dialog>
 						<Grid item xl={6} lg={6} md={6} sm={6} xs={12} className="gridItem">
 							<LoadingOverlay active={loading} spinner text="Saving...">
 								<div>

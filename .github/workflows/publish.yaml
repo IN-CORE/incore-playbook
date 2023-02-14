@@ -1,0 +1,49 @@
+name: publish
+
+on:
+  push:
+    branches:
+      - main
+
+  pull_request:
+
+env:
+  MAIN_REPO: IN-CORE/incore-playbook
+  NPM_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+jobs:
+  # ----------------------------------------------------------------------
+  # NODE BUILD
+  # ----------------------------------------------------------------------
+  build:
+    runs-on: ubuntu-latest
+
+    strategy:
+      fail-fast: false
+      matrix:
+        node:
+          # - "12"
+          # this should be only one build because the second build, regardless node version
+          # will have the conflict due to the same version already exists
+          - "14"
+
+    steps:
+      # checkout source code
+      - uses: actions/checkout@v2
+
+      # setup node
+      - uses: actions/setup-node@v2
+        with:
+          node-version: ${{ matrix.node }}
+
+      # install dependencies
+      - name: install dependencies
+        run: npm install
+
+      # compile UI
+      - name: build
+        run: npm run build
+
+      # push NPM package
+      - name: publish
+        run: npm publish

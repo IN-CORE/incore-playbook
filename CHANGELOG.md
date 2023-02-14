@@ -13,11 +13,16 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Move created dataset and hazard into a common testbed space [#87](https://github.com/IN-CORE/incore-playbook/issues/87)
 - Set Time intervals to periodically requesting datawolf execution status [#60](https://github.com/IN-CORE/incore-playbook/issues/60)
 - Allow user to set document uri in each of the step [#81](https://github.com/IN-CORE/incore-playbook/issues/81)
+- Github action to publish new version to npm registry [#72](https://github.com/IN-CORE/incore-playbook/issues/72)
+- Download Inventories at step 2-3 [#112](https://github.com/IN-CORE/incore-playbook/issues/112)
+- Check user groups to only allow user belongs to certain testbed to login [#119](https://github.com/IN-CORE/incore-playbook/issues/119)
 
 ### Changed
 - Renamed master branch to main [#28](https://github.com/IN-CORE/incore-playbook/issues/28)
 - Made data upload button on and off [#73](https://github.com/IN-CORE/incore-playbook/issues/73)
 - Display multiple layers of hazard [#63](https://github.com/IN-CORE/incore-playbook/issues/63)
+- Update the layout of document link and each static steps [#109](https://github.com/IN-CORE/incore-playbook/issues/109)
+- UI layout change for step 3-3 creating hazards [#96](https://github.com/IN-CORE/incore-playbook/issues/96)
 
 ### Fixed
 - First time load map layers at step 3-4 "view results" does not show correctly sometimes [#97](https://github.com/IN-CORE/incore-playbook/issues/97)
