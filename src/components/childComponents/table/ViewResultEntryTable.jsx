@@ -279,7 +279,11 @@ export function ViewResultEntryTable(props) {
 													}
 												>
 													{fieldName["columnName"] === "creator"
-														? execution[fieldName["columnName"]].firstName
+													&& execution[fieldName["columnName"]]
+													&& "firstName" in execution[fieldName["columnName"]]
+													&& "lastName" in execution[fieldName["columnName"]]
+														? `${execution[fieldName["columnName"]].firstName}
+														${execution[fieldName["columnName"]].lastName}`
 														: execution[fieldName["columnName"]]}
 												</TableCell>
 											);
