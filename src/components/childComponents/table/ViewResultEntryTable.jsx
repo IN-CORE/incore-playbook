@@ -17,6 +17,8 @@ import UnfoldLess from "@material-ui/icons/UnfoldLess";
 import { makeStyles } from "@material-ui/core/styles";
 import { useSelector } from "react-redux";
 
+import { parseDateTime } from "../../../utils/common";
+
 const useStyles = makeStyles({
 	table: {
 		minWidth: 650,
@@ -257,6 +259,17 @@ export function ViewResultEntryTable(props) {
 													})()}
 												</TableCell>
 											);
+										} else if (fieldName["columnName"] === "date") {
+											return (
+												<TableCell
+													key={`${execution["id"]}-${idx}`}
+													className={
+														idx === 0 ? classes.firstTableBodyCell : classes.tableBodyCell
+													}
+												>
+													{parseDateTime(execution[fieldName["columnName"]])}
+												</TableCell>
+											);
 										} else {
 											return (
 												<TableCell
@@ -265,7 +278,9 @@ export function ViewResultEntryTable(props) {
 														idx === 0 ? classes.firstTableBodyCell : classes.tableBodyCell
 													}
 												>
-													{execution[fieldName["columnName"]]}
+													{fieldName["columnName"] === "creator"
+														? execution[fieldName["columnName"]].firstName
+														: execution[fieldName["columnName"]]}
 												</TableCell>
 											);
 										}
