@@ -168,10 +168,25 @@ export function ViewResultEntryTable(props) {
 		handleRequestSort(event, property);
 	};
 
+	const checkResultsReady = (listWidgets, currentExecutionDataset) => {
+		const requiredDatasetIds = datawolfWorkflowConfig.outputs.datasets[0].datasetsMap.reduce((list, item) => {
+			if (listWidgets.includes(item.datasets.widget)) {
+				return [...list, item.datasetId];
+			}
+
+			return list;
+		}, []);
+
+		return requiredDatasetIds.every(
+			(reqId) => reqId in currentExecutionDataset && currentExecutionDataset[reqId] !== "ERROR"
+		);
+	};
+
 	const classes = useStyles();
 
 	return (
 		<TableContainer>
+			{/* {console.log(widgetList)} */}
 			<Table className={classes.table} size="small" aria-label="a dense table">
 				<TableHead>
 					<TableRow className={classes.tableHeaderRow} key="hdrRow">
@@ -296,6 +311,7 @@ export function ViewResultEntryTable(props) {
 								</TableRow>
 								{execution["id"] === expandId && execution["id"] !== collapseId ? (
 									<>
+										{/* {console.log(execution)} */}
 										{/*resilience metrics*/}
 										{widgetList.includes("CGE") &&
 										widgetList.includes("PopDislocation") &&
@@ -314,8 +330,10 @@ export function ViewResultEntryTable(props) {
 															preview(execution["id"], "ResilienceMetrics");
 														}}
 														className={
-															execution["finalStatus"] === undefined ||
-															execution["finalStatus"] === "FINISHED"
+															checkResultsReady(
+																["CGE", "PopDislocation", "BldgFunctionality"],
+																execution.datasets
+															)
 																? classes.clickableLink
 																: classes.clickableLinkDisabled
 														}
@@ -341,8 +359,10 @@ export function ViewResultEntryTable(props) {
 															preview(execution["id"], "Interdependency");
 														}}
 														className={
-															execution["finalStatus"] === undefined ||
-															execution["finalStatus"] === "FINISHED"
+															checkResultsReady(
+																["PoleDamage", "SubstationDamage"],
+																execution.datasets
+															)
 																? classes.clickableLink
 																: classes.clickableLinkDisabled
 														}
@@ -367,8 +387,7 @@ export function ViewResultEntryTable(props) {
 															preview(execution["id"], "PoleDamage");
 														}}
 														className={
-															execution["finalStatus"] === undefined ||
-															execution["finalStatus"] === "FINISHED"
+															checkResultsReady(["PoleDamage"], execution.datasets)
 																? classes.clickableLink
 																: classes.clickableLinkDisabled
 														}
@@ -392,8 +411,7 @@ export function ViewResultEntryTable(props) {
 															preview(execution["id"], "SubstationDamage");
 														}}
 														className={
-															execution["finalStatus"] === undefined ||
-															execution["finalStatus"] === "FINISHED"
+															checkResultsReady(["SubstationDamage"], execution.datasets)
 																? classes.clickableLink
 																: classes.clickableLinkDisabled
 														}
@@ -418,8 +436,7 @@ export function ViewResultEntryTable(props) {
 															preview(execution["id"], "BldgDamage");
 														}}
 														className={
-															execution["finalStatus"] === undefined ||
-															execution["finalStatus"] === "FINISHED"
+															checkResultsReady(["BldgDamage"], execution.datasets)
 																? classes.clickableLink
 																: classes.clickableLinkDisabled
 														}
@@ -442,8 +459,7 @@ export function ViewResultEntryTable(props) {
 															preview(execution["id"], "BldgMCS");
 														}}
 														className={
-															execution["finalStatus"] === undefined ||
-															execution["finalStatus"] === "FINISHED"
+															checkResultsReady(["BldgMCS"], execution.datasets)
 																? classes.clickableLink
 																: classes.clickableLinkDisabled
 														}
@@ -471,8 +487,7 @@ export function ViewResultEntryTable(props) {
 															preview(execution["id"], "BldgFunctionality");
 														}}
 														className={
-															execution["finalStatus"] === undefined ||
-															execution["finalStatus"] === "FINISHED"
+															checkResultsReady(["BldgFunctionality"], execution.datasets)
 																? classes.clickableLink
 																: classes.clickableLinkDisabled
 														}
@@ -494,8 +509,7 @@ export function ViewResultEntryTable(props) {
 															preview(execution["id"], "CGE");
 														}}
 														className={
-															execution["finalStatus"] === undefined ||
-															execution["finalStatus"] === "FINISHED"
+															checkResultsReady(["CGE"], execution.datasets)
 																? classes.clickableLink
 																: classes.clickableLinkDisabled
 														}
@@ -520,8 +534,7 @@ export function ViewResultEntryTable(props) {
 															preview(execution["id"], "PopDislocation");
 														}}
 														className={
-															execution["finalStatus"] === undefined ||
-															execution["finalStatus"] === "FINISHED"
+															checkResultsReady(["PopDislocation"], execution.datasets)
 																? classes.clickableLink
 																: classes.clickableLinkDisabled
 														}
