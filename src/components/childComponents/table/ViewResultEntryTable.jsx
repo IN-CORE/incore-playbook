@@ -17,6 +17,8 @@ import UnfoldLess from "@material-ui/icons/UnfoldLess";
 import { makeStyles } from "@material-ui/core/styles";
 import { useSelector } from "react-redux";
 
+import { parseDateTime } from "../../../utils/common";
+
 const useStyles = makeStyles({
 	table: {
 		minWidth: 650,
@@ -203,35 +205,54 @@ export function ViewResultEntryTable(props) {
 										if (fieldName["columnName"] === "finalStatus") {
 											return (
 												<TableCell key={`${execution["id"]}-${idx}`}>
-													{
-														(() => {
-															if (execution["finalStatus"].toLowerCase() === "finished") {
-																return (<p className={classes.statusFinished}>
+													{(() => {
+														if (execution["finalStatus"].toLowerCase() === "finished") {
+															return (
+																<p className={classes.statusFinished}>
 																	{execution[fieldName["columnName"]]}
-																</p>);
-															}
-															else if (execution["finalStatus"].toLowerCase() === "waiting"
-																|| execution["finalStatus"].toLowerCase() === "queued"){
-																return (<p className={classes.statusWaiting}>
+																</p>
+															);
+														} else if (
+															execution["finalStatus"].toLowerCase() === "waiting" ||
+															execution["finalStatus"].toLowerCase() === "queued"
+														) {
+															return (
+																<p className={classes.statusWaiting}>
 																	{execution[fieldName["columnName"]]}
-																</p>);
-															}
-															else if (execution["finalStatus"].toLowerCase() === "failed"
-																|| execution["finalStatus"].toLowerCase() === "aborted"){
-																return (<p className={classes.statusUnsuccess}>
+																</p>
+															);
+														} else if (
+															execution["finalStatus"].toLowerCase() === "failed" ||
+															execution["finalStatus"].toLowerCase() === "aborted"
+														) {
+															return (
+																<p className={classes.statusUnsuccess}>
 																	{execution[fieldName["columnName"]]}
-																</p>);
-															}
-															else if (execution["finalStatus"].toLowerCase() === "running"){
-																return (<p className={classes.statusRunning}>
+																</p>
+															);
+														} else if (
+															execution["finalStatus"].toLowerCase() === "running"
+														) {
+															return (
+																<p className={classes.statusRunning}>
 																	{execution[fieldName["columnName"]]}
-																</p>);
-															}
-															else{
-																return (<p>{execution[fieldName["columnName"]]}</p>);
-															}
-														})()
+																</p>
+															);
+														} else {
+															return <p>{execution[fieldName["columnName"]]}</p>;
+														}
+													})()}
+												</TableCell>
+											);
+										} else if (fieldName["columnName"] === "date") {
+											return (
+												<TableCell
+													key={`${execution["id"]}-${idx}`}
+													className={
+														idx === 0 ? classes.firstTableBodyCell : classes.tableBodyCell
 													}
+												>
+													{parseDateTime(execution[fieldName["columnName"]])}
 												</TableCell>
 											);
 										} else {
@@ -242,7 +263,9 @@ export function ViewResultEntryTable(props) {
 														idx === 0 ? classes.firstTableBodyCell : classes.tableBodyCell
 													}
 												>
-													{execution[fieldName["columnName"]]}
+													{fieldName["columnName"] === "creator"
+														? execution[fieldName["columnName"]].firstName
+														: execution[fieldName["columnName"]]}
 												</TableCell>
 											);
 										}

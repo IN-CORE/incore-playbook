@@ -13,9 +13,9 @@ globals["maestroServiceBase"] = `${hostname}/maestro/galveston/`;
 globals["setGravatarURL"] = "https://en.gravatar.com/support/activating-your-account/";
 globals["allowUpload"] = true;
 globals["testbedSpace"] = "commresilienceslc";
-globals["testbedGroup"] = "incore_joplin_user"; // incore_galveston_user, incore_joplin_user, incore_slc_user
+globals["testbedGroup"] = "incore_slc_user"; // incore_galveston_user, incore_joplin_user, incore_slc_user
 
-export {globals};
+export { globals };
 
 export const testUserInfo = "commresilience";
 
