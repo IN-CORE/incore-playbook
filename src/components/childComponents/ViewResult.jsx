@@ -25,7 +25,6 @@ import Switch from "@material-ui/core/Switch";
 import { getHazardGroupLayers } from "../../utils/map";
 import HHS from "./outputWidgets/HHS";
 
-
 const useStyles = makeStyles({
 	statTitle: {
 		margin: "55px auto"
@@ -92,13 +91,13 @@ export default function ViewResult(props) {
 	// load executions list periodically every 10 seconds
 	useEffect(() => {
 		// clear old time due to params has changed
-		if (intervalId){
+		if (intervalId) {
 			clearInterval(intervalId);
 			setIntervalId(0);
 		}
 
 		// save some traffic; only perform backend GET when on that tab
-		if (value === index){
+		if (value === index) {
 			// immediately fetch new execution list
 			getExecutionList(datawolfConfig, datawolfViewAllOn);
 
@@ -128,7 +127,7 @@ export default function ViewResult(props) {
 			else if (statusArr.indexOf("QUEUED") >= 0) return "QUEUED";
 			else if (statusArr.indexOf("WAITING") >= 0) return "WAITING";
 			else if (statusArr.indexOf("UNKNOWN") >= 0) return "UNKNOWN";
-			else if (statusArr.every(status => status === "FINISHED")) return "FINISHED";
+			else if (statusArr.every((status) => status === "FINISHED")) return "FINISHED";
 		}
 		return "UNDEFINED";
 	};
@@ -157,6 +156,10 @@ export default function ViewResult(props) {
 		{
 			prettyName: "TITLE",
 			columnName: "title"
+		},
+		{
+			prettyName: "CREATED BY",
+			columnName: "creator"
 		},
 		{
 			prettyName: "DESCRIPTION",
@@ -253,7 +256,7 @@ export default function ViewResult(props) {
 	};
 
 	const handleViewAllDatawolf = () => {
-		setDatawolfViewAllOn(datawolfViewAllOn => !datawolfViewAllOn);
+		setDatawolfViewAllOn((datawolfViewAllOn) => !datawolfViewAllOn);
 	};
 
 	return (
@@ -295,7 +298,12 @@ export default function ViewResult(props) {
 			</Box>
 
 			{/*for individual analysis result preview*/}
-			{widgetName && selectedExecutionItem && previewOn && datawolfDatasetConfigItems.length >0 && hazardType && hazardGroupLayer ? (
+			{widgetName &&
+			selectedExecutionItem &&
+			previewOn &&
+			datawolfDatasetConfigItems.length > 0 &&
+			hazardType &&
+			hazardGroupLayer ? (
 				(() => {
 					return React.cloneElement(registeredWidgets[widgetName], {
 						executionItem: selectedExecutionItem,

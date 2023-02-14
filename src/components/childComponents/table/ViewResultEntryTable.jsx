@@ -17,6 +17,8 @@ import UnfoldLess from "@material-ui/icons/UnfoldLess";
 import { makeStyles } from "@material-ui/core/styles";
 import { useSelector } from "react-redux";
 
+import { parseDateTime } from "../../../utils/common";
+
 const useStyles = makeStyles({
 	table: {
 		minWidth: 650,
@@ -166,10 +168,25 @@ export function ViewResultEntryTable(props) {
 		handleRequestSort(event, property);
 	};
 
+	const checkResultsReady = (listWidgets, currentExecutionDataset) => {
+		const requiredDatasetIds = datawolfWorkflowConfig.outputs.datasets[0].datasetsMap.reduce((list, item) => {
+			if (listWidgets.includes(item.datasets.widget)) {
+				return [...list, item.datasetId];
+			}
+
+			return list;
+		}, []);
+
+		return requiredDatasetIds.every(
+			(reqId) => reqId in currentExecutionDataset && currentExecutionDataset[reqId] !== "ERROR"
+		);
+	};
+
 	const classes = useStyles();
 
 	return (
 		<TableContainer>
+			{/* {console.log(widgetList)} */}
 			<Table className={classes.table} size="small" aria-label="a dense table">
 				<TableHead>
 					<TableRow className={classes.tableHeaderRow} key="hdrRow">
@@ -203,35 +220,54 @@ export function ViewResultEntryTable(props) {
 										if (fieldName["columnName"] === "finalStatus") {
 											return (
 												<TableCell key={`${execution["id"]}-${idx}`}>
-													{
-														(() => {
-															if (execution["finalStatus"].toLowerCase() === "finished") {
-																return (<p className={classes.statusFinished}>
+													{(() => {
+														if (execution["finalStatus"].toLowerCase() === "finished") {
+															return (
+																<p className={classes.statusFinished}>
 																	{execution[fieldName["columnName"]]}
-																</p>);
-															}
-															else if (execution["finalStatus"].toLowerCase() === "waiting"
-																|| execution["finalStatus"].toLowerCase() === "queued"){
-																return (<p className={classes.statusWaiting}>
+																</p>
+															);
+														} else if (
+															execution["finalStatus"].toLowerCase() === "waiting" ||
+															execution["finalStatus"].toLowerCase() === "queued"
+														) {
+															return (
+																<p className={classes.statusWaiting}>
 																	{execution[fieldName["columnName"]]}
-																</p>);
-															}
-															else if (execution["finalStatus"].toLowerCase() === "failed"
-																|| execution["finalStatus"].toLowerCase() === "aborted"){
-																return (<p className={classes.statusUnsuccess}>
+																</p>
+															);
+														} else if (
+															execution["finalStatus"].toLowerCase() === "failed" ||
+															execution["finalStatus"].toLowerCase() === "aborted"
+														) {
+															return (
+																<p className={classes.statusUnsuccess}>
 																	{execution[fieldName["columnName"]]}
-																</p>);
-															}
-															else if (execution["finalStatus"].toLowerCase() === "running"){
-																return (<p className={classes.statusRunning}>
+																</p>
+															);
+														} else if (
+															execution["finalStatus"].toLowerCase() === "running"
+														) {
+															return (
+																<p className={classes.statusRunning}>
 																	{execution[fieldName["columnName"]]}
-																</p>);
-															}
-															else{
-																return (<p>{execution[fieldName["columnName"]]}</p>);
-															}
-														})()
+																</p>
+															);
+														} else {
+															return <p>{execution[fieldName["columnName"]]}</p>;
+														}
+													})()}
+												</TableCell>
+											);
+										} else if (fieldName["columnName"] === "date") {
+											return (
+												<TableCell
+													key={`${execution["id"]}-${idx}`}
+													className={
+														idx === 0 ? classes.firstTableBodyCell : classes.tableBodyCell
 													}
+												>
+													{parseDateTime(execution[fieldName["columnName"]])}
 												</TableCell>
 											);
 										} else {
@@ -242,7 +278,9 @@ export function ViewResultEntryTable(props) {
 														idx === 0 ? classes.firstTableBodyCell : classes.tableBodyCell
 													}
 												>
-													{execution[fieldName["columnName"]]}
+													{fieldName["columnName"] === "creator"
+														? execution[fieldName["columnName"]].firstName
+														: execution[fieldName["columnName"]]}
 												</TableCell>
 											);
 										}
@@ -273,6 +311,7 @@ export function ViewResultEntryTable(props) {
 								</TableRow>
 								{execution["id"] === expandId && execution["id"] !== collapseId ? (
 									<>
+										{/* {console.log(execution)} */}
 										{/*resilience metrics*/}
 										{widgetList.includes("CGE") &&
 										widgetList.includes("PopDislocation") &&
@@ -291,8 +330,10 @@ export function ViewResultEntryTable(props) {
 															preview(execution["id"], "ResilienceMetrics");
 														}}
 														className={
-															execution["finalStatus"] === undefined ||
-															execution["finalStatus"] === "FINISHED"
+															checkResultsReady(
+																["CGE", "PopDislocation", "BldgFunctionality"],
+																execution.datasets
+															)
 																? classes.clickableLink
 																: classes.clickableLinkDisabled
 														}
@@ -318,8 +359,10 @@ export function ViewResultEntryTable(props) {
 															preview(execution["id"], "Interdependency");
 														}}
 														className={
-															execution["finalStatus"] === undefined ||
-															execution["finalStatus"] === "FINISHED"
+															checkResultsReady(
+																["PoleDamage", "SubstationDamage"],
+																execution.datasets
+															)
 																? classes.clickableLink
 																: classes.clickableLinkDisabled
 														}
@@ -344,8 +387,7 @@ export function ViewResultEntryTable(props) {
 															preview(execution["id"], "PoleDamage");
 														}}
 														className={
-															execution["finalStatus"] === undefined ||
-															execution["finalStatus"] === "FINISHED"
+															checkResultsReady(["PoleDamage"], execution.datasets)
 																? classes.clickableLink
 																: classes.clickableLinkDisabled
 														}
@@ -369,8 +411,7 @@ export function ViewResultEntryTable(props) {
 															preview(execution["id"], "SubstationDamage");
 														}}
 														className={
-															execution["finalStatus"] === undefined ||
-															execution["finalStatus"] === "FINISHED"
+															checkResultsReady(["SubstationDamage"], execution.datasets)
 																? classes.clickableLink
 																: classes.clickableLinkDisabled
 														}
@@ -395,8 +436,7 @@ export function ViewResultEntryTable(props) {
 															preview(execution["id"], "BldgDamage");
 														}}
 														className={
-															execution["finalStatus"] === undefined ||
-															execution["finalStatus"] === "FINISHED"
+															checkResultsReady(["BldgDamage"], execution.datasets)
 																? classes.clickableLink
 																: classes.clickableLinkDisabled
 														}
@@ -419,8 +459,7 @@ export function ViewResultEntryTable(props) {
 															preview(execution["id"], "BldgMCS");
 														}}
 														className={
-															execution["finalStatus"] === undefined ||
-															execution["finalStatus"] === "FINISHED"
+															checkResultsReady(["BldgMCS"], execution.datasets)
 																? classes.clickableLink
 																: classes.clickableLinkDisabled
 														}
@@ -448,8 +487,7 @@ export function ViewResultEntryTable(props) {
 															preview(execution["id"], "BldgFunctionality");
 														}}
 														className={
-															execution["finalStatus"] === undefined ||
-															execution["finalStatus"] === "FINISHED"
+															checkResultsReady(["BldgFunctionality"], execution.datasets)
 																? classes.clickableLink
 																: classes.clickableLinkDisabled
 														}
@@ -471,8 +509,7 @@ export function ViewResultEntryTable(props) {
 															preview(execution["id"], "CGE");
 														}}
 														className={
-															execution["finalStatus"] === undefined ||
-															execution["finalStatus"] === "FINISHED"
+															checkResultsReady(["CGE"], execution.datasets)
 																? classes.clickableLink
 																: classes.clickableLinkDisabled
 														}
@@ -497,8 +534,7 @@ export function ViewResultEntryTable(props) {
 															preview(execution["id"], "PopDislocation");
 														}}
 														className={
-															execution["finalStatus"] === undefined ||
-															execution["finalStatus"] === "FINISHED"
+															checkResultsReady(["PopDislocation"], execution.datasets)
 																? classes.clickableLink
 																: classes.clickableLinkDisabled
 														}
