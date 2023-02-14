@@ -166,7 +166,7 @@ export function ViewResultEntryTable(props) {
 		handleRequestSort(event, property);
 	};
 
-	const checkResultsReady = (listWidgets, currentExecutionDatasetIds) => {
+	const checkResultsReady = (listWidgets, currentExecutionDataset) => {
 		const requiredDatasetIds = datawolfWorkflowConfig.outputs.datasets[0].datasetsMap.reduce((list, item) => {
 			if (listWidgets.includes(item.datasets.widget)) {
 				return [...list, item.datasetId];
@@ -175,7 +175,9 @@ export function ViewResultEntryTable(props) {
 			return list;
 		}, []);
 
-		return requiredDatasetIds.every((reqId) => currentExecutionDatasetIds.includes(reqId));
+		return requiredDatasetIds.every(
+			(reqId) => reqId in currentExecutionDataset && currentExecutionDataset[reqId] !== "ERROR"
+		);
 	};
 
 	const classes = useStyles();
@@ -315,7 +317,7 @@ export function ViewResultEntryTable(props) {
 														className={
 															checkResultsReady(
 																["CGE", "PopDislocation", "BldgFunctionality"],
-																Object.keys(execution.datasets)
+																execution.datasets
 															)
 																? classes.clickableLink
 																: classes.clickableLinkDisabled
@@ -344,7 +346,7 @@ export function ViewResultEntryTable(props) {
 														className={
 															checkResultsReady(
 																["PoleDamage", "SubstationDamage"],
-																Object.keys(execution.datasets)
+																execution.datasets
 															)
 																? classes.clickableLink
 																: classes.clickableLinkDisabled
@@ -370,10 +372,7 @@ export function ViewResultEntryTable(props) {
 															preview(execution["id"], "PoleDamage");
 														}}
 														className={
-															checkResultsReady(
-																["PoleDamage"],
-																Object.keys(execution.datasets)
-															)
+															checkResultsReady(["PoleDamage"], execution.datasets)
 																? classes.clickableLink
 																: classes.clickableLinkDisabled
 														}
@@ -397,10 +396,7 @@ export function ViewResultEntryTable(props) {
 															preview(execution["id"], "SubstationDamage");
 														}}
 														className={
-															checkResultsReady(
-																["SubstationDamage"],
-																Object.keys(execution.datasets)
-															)
+															checkResultsReady(["SubstationDamage"], execution.datasets)
 																? classes.clickableLink
 																: classes.clickableLinkDisabled
 														}
@@ -425,10 +421,7 @@ export function ViewResultEntryTable(props) {
 															preview(execution["id"], "BldgDamage");
 														}}
 														className={
-															checkResultsReady(
-																["BldgDamage"],
-																Object.keys(execution.datasets)
-															)
+															checkResultsReady(["BldgDamage"], execution.datasets)
 																? classes.clickableLink
 																: classes.clickableLinkDisabled
 														}
@@ -451,10 +444,7 @@ export function ViewResultEntryTable(props) {
 															preview(execution["id"], "BldgMCS");
 														}}
 														className={
-															checkResultsReady(
-																["BldgMCS"],
-																Object.keys(execution.datasets)
-															)
+															checkResultsReady(["BldgMCS"], execution.datasets)
 																? classes.clickableLink
 																: classes.clickableLinkDisabled
 														}
@@ -482,10 +472,7 @@ export function ViewResultEntryTable(props) {
 															preview(execution["id"], "BldgFunctionality");
 														}}
 														className={
-															checkResultsReady(
-																["BldgFunctionality"],
-																Object.keys(execution.datasets)
-															)
+															checkResultsReady(["BldgFunctionality"], execution.datasets)
 																? classes.clickableLink
 																: classes.clickableLinkDisabled
 														}
@@ -507,7 +494,7 @@ export function ViewResultEntryTable(props) {
 															preview(execution["id"], "CGE");
 														}}
 														className={
-															checkResultsReady(["CGE"], Object.keys(execution.datasets))
+															checkResultsReady(["CGE"], execution.datasets)
 																? classes.clickableLink
 																: classes.clickableLinkDisabled
 														}
@@ -532,10 +519,7 @@ export function ViewResultEntryTable(props) {
 															preview(execution["id"], "PopDislocation");
 														}}
 														className={
-															checkResultsReady(
-																["PopDislocation"],
-																Object.keys(execution.datasets)
-															)
+															checkResultsReady(["PopDislocation"], execution.datasets)
 																? classes.clickableLink
 																: classes.clickableLinkDisabled
 														}
