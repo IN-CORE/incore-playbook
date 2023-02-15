@@ -5,6 +5,7 @@ const datawolfWorkflowConfig = {
 	wfTitle: "joplin-community-wf-v1",
 	wfId: "05e5ac18-c202-4a8b-973d-01afcae20b14",
 	creatorId: "901e85ca-1a52-4917-83f8-e387b95a259b", // commresileince
+	datawolfPersonsDetail: "https://incore-dev.ncsa.illinois.edu/datawolf/persons?email=",
 	inputs: {
 		parameters: [
 			{

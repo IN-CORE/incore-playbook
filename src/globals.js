@@ -13,8 +13,8 @@ globals["maestroServiceBase"] = `${hostname}/maestro/galveston/`;
 globals["setGravatarURL"] = "https://en.gravatar.com/support/activating-your-account/";
 globals["datawolfPersonsDetail"] = `${hostname}/datawolf/persons?email=`;
 globals["allowUpload"] = true;
-globals["testbedSpace"] = "commresilienceslc";
-globals["testbedGroup"] = "incore_slc_user"; // incore_galveston_user, incore_joplin_user, incore_slc_user
+globals["testbedSpace"] = "commresiliencejoplin";
+globals["testbedGroup"] = "incore_joplin_user"; // incore_galveston_user, incore_joplin_user, incore_slc_user
 
 export { globals };
 
