@@ -16,6 +16,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Github action to publish new version to npm registry [#72](https://github.com/IN-CORE/incore-playbook/issues/72)
 - Download Inventories at step 2-3 [#112](https://github.com/IN-CORE/incore-playbook/issues/112)
 - Check user groups to only allow user belongs to certain testbed to login [#119](https://github.com/IN-CORE/incore-playbook/issues/119)
+- HHRS Bar Chart [#95](https://github.com/IN-CORE/incore-playbook/issues/95)
 - A new "Created By" column in step 3-4 to track user executions. Fixed datetime format display in the table. [#120](https://github.com/IN-CORE/incore-playbook/issues/120)
 
 ### Changed

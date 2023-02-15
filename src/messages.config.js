@@ -82,6 +82,17 @@ export const stepInfo = [
 	}
 ];
 
+export const hhsInfo = {
+	tableTitle: "Recovery Stages",
+	rows: {
+		"Stage 1": "Emergency shelter.",
+		"Stage 2": "Temporary shelter, which can consist of staying with friends or family, staying at a hotel or motel.",
+		"Stage 3": "Temporary housing, which can consist of staying with friends or family, staying in a rental unit, staying in a FEMA-funded mobile home.",
+		"Stage 4": "Permanent housing, which can consist of staying in a rental unit, staying in a mobile home, or staying in a site-built home.",
+		"Stage 5": "Failure to reach permanent housing, which can occur from languishing in unstable housing or becoming homeless."
+	}
+};
+
 export const cgeInfo = {
 	totalHouseholdIncome: {
 		textTitle: 'What do we mean by "Total Household Income"?',
