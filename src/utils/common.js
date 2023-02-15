@@ -2,6 +2,7 @@ import Cookies from "universal-cookie";
 import jwt_decode from "jwt-decode";
 import { globals as defaultGlobalConfig, testUserInfo } from "../globals";
 import { datawolfConfig as defaultDatawolfConfig } from "../datawolf.config.js";
+import { datawolfWorkflowConfig as defaultDatawolfWorkflowConfig } from "../datawolf.config.js";
 import JSSoup from "jssoup";
 import { toLonLat } from "ol/proj";
 
@@ -52,15 +53,15 @@ export function getCurrUsername(hostname = "") {
 }
 
 // get current users id from datawolf
-export async function getCurrUserDatawolfId(email, datawolfWorkflowConfig = defaultDatawolfWorkflowConfig) {
+export async function getCurrUserDatawolfId(email, datawolfConfig = defaultGlobalConfig, datawolfWorkflowConfig = defaultDatawolfWorkflowConfig) {
 	let cookie = cookies.get("DatawolfUserDetails");
 	if (email === "" || undefined || null) {
-		return datawolfWorkflowConfig["creatorId"];
+		return datawolfWorkflowConfig["creatorId"]; // default to use the workflow creator's ID if no match can be found
 	} else if (cookie !== undefined && cookie.email === email) {
 		return cookie.id;
 	}
-	let endpoint = defaultDatawolfConfig["datawolfPersonsDetail"] + email;
-	let request = await fetch(endpoint, { mode: "cors", headers: getHeader(defaultGlobalConfig.hostname) });
+	let endpoint = datawolfConfig["datawolfPersonsDetail"] + email;
+	let request = await fetch(endpoint, { mode: "cors", headers: getHeader(datawolfConfig.hostname) });
 	if (request.status === 200) {
 		const userDetail = await request.json();
 		cookies.set("DatawolfUserDetails", { id: userDetail[0].id, email: userDetail[0].email });

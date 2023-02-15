@@ -60,7 +60,7 @@ export async function submitExecution(
 	let authHeader = getHeader(datawolfConfig.hostname);
 	authHeader.append("Content-Type", "application/json");
 
-	let currUserDatawolfId = await getCurrUserDatawolfId(getCurrUserEmail(), datawolfConfig);
+	let currUserDatawolfId = await getCurrUserDatawolfId(getCurrUserEmail(), datawolfConfig, datawolfWorkflowConfig);
 
 	const parameters = Object.keys(datawolfFormState).reduce((parameters, key) => {
 		return { ...parameters, ...datawolfFormState[key] };
