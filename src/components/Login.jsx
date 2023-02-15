@@ -187,7 +187,6 @@ export const Login = () => {
 	return (
 		<Grid container>
 			<Grid item className={classes.leftGrid}>
-				{/*<HeaderWithMenu isAuthenticated={false} />*/}
 				<div className={classes.loginComponent}>
 					<div className={classes.loginContainer}>
 						<div className={classes.title}>Sign In</div>
