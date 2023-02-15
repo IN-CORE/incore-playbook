@@ -81,22 +81,22 @@ export async function submitExecution(
 		datasets: datasets
 	};
 
-	let datawolfResponse = await fetch(`${datawolfConfig["executionPostURL"]}`, {
-		method: "POST",
-		headers: authHeader,
-		body: JSON.stringify(requestBody),
-		mode: "cors"
-	});
-
-	if (datawolfResponse.status === 200) {
-		return datawolfResponse.text();
-	} else if (datawolfResponse.status === 401) {
-		// TODO handle error
-		return null;
-	} else {
-		// TODO handle error
-		return null;
-	}
+	// let datawolfResponse = await fetch(`${datawolfConfig["executionPostURL"]}`, {
+	// 	method: "POST",
+	// 	headers: authHeader,
+	// 	body: JSON.stringify(requestBody),
+	// 	mode: "cors"
+	// });
+	//
+	// if (datawolfResponse.status === 200) {
+	// 	return datawolfResponse.text();
+	// } else if (datawolfResponse.status === 401) {
+	// 	// TODO handle error
+	// 	return null;
+	// } else {
+	// 	// TODO handle error
+	// 	return null;
+	// }
 }
 
 export async function postDataset(datawolfConfig, title = "incoretoken", description = "incoretoken") {

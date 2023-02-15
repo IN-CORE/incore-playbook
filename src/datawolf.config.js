@@ -1935,7 +1935,7 @@ let hostname = process.env.INCORE_REMOTE_HOSTNAME || "";
 datawolfConfig["executionGetURL"] = `${hostname}/datawolf/workflows/${datawolfWorkflowConfig["wfId"]}/executions`;
 datawolfConfig["executionPostURL"] = `${hostname}/datawolf/executions`;
 datawolfConfig["datasetBaseURL"] = `${hostname}/datawolf/datasets`;
-datawolfConfig["datawolfPersonsDetail"] = `${hostname}/datawolf/datasets/persons?email=`;
+datawolfConfig["datawolfPersonsDetail"] = `${hostname}/datawolf/persons?email=`;
 datawolfConfig["retreiveTimeInterval"] = 10 * 1000;
 
 export { datawolfWorkflowConfig, datawolfConfig };

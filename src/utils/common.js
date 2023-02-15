@@ -53,7 +53,7 @@ export function getCurrUsername(hostname = "") {
 }
 
 // get current users id from datawolf
-export async function getCurrUserDatawolfId(email, datawolfConfig = defaultGlobalConfig, datawolfWorkflowConfig = defaultDatawolfWorkflowConfig) {
+export async function getCurrUserDatawolfId(email, datawolfConfig = defaultDatawolfConfig, datawolfWorkflowConfig = defaultDatawolfWorkflowConfig) {
 	let cookie = cookies.get("DatawolfUserDetails");
 	if (email === "" || undefined || null) {
 		return datawolfWorkflowConfig["creatorId"]; // default to use the workflow creator's ID if no match can be found
