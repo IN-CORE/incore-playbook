@@ -17,25 +17,40 @@ export default function HHS(props) {
 	const datawolfConfig = useSelector((state) => state.config.datawolfConfig);
 
 	const [selectedExecutionName, setSelectedExecutionName] = useState("");
+	const [HHSBarChartContent, setHHSBarChartContent] = useState({
+		t0: [],
+		t1: [],
+		t6: [],
+		t12: [],
+		t24: []
+	});
 	const [t, setT] = useState("t0");
-
-	// TODO remove hardcoding
-	const data = {
-		t0: [3033, 3138, 3857, 4862],
-		t1: [1773, 2410, 2452, 8255],
-		t6: [820, 1066, 515, 12489],
-		t12: [485, 513, 134, 13614],
-		t24: [60, 62, 10, 14149]
-	};
-	// const [cgeHouseholdIncomeContent, setCgeHouseholdIncomeContent] = useState(null);
-	// const [cgeDomesticSupplyContent, setCgeDomesticSupplyContent] = useState(null);
-	// const [cgeEmploymentContent, setCgeEmploymentContent] = useState(null);
 
 	useEffect(() => {
 		setSelectedExecutionName(executionItem["title"]);
+		// datawolfDatasetConfigItems.map(async (datawolfDatasetConfigItem) => {
+		// 	const vName = datawolfDatasetConfigItem.datasets.variableName;
+		// 	if (vName === "HHSBarChartContent") {
+		// 		setHHSBarChartContent(
+		// 			await getOutputFileContentJSON(datawolfConfig, executionItem, datawolfDatasetConfigItem.datasetId)
+		// 		);
+		// 	}
+		// });
+		// TODO remove hardcoding
+		setHHSBarChartContent({
+			t0: [3033, 3138, 3857, 4862],
+			t1: [1773, 2410, 2452, 8255],
+			t6: [820, 1066, 515, 12489],
+			t12: [485, 513, 134, 13614],
+			t24: [60, 62, 10, 14149]
+		});
 	}, []);
 
-	const download = async () => {};
+	const download = async () => {
+		if (HHSBarChartContent) {
+			exportJson(HHSBarChartContent, `hhs-${executionItem.id}`);
+		}
+	};
 
 	return (
 		<Dialog open={previewOn} onClose={handlePreviewClose} maxWidth="lg" fullWidth scroll="paper">
@@ -87,7 +102,7 @@ export default function HHS(props) {
 							{/*table and barchart*/}
 							<Box style={{ margin: "50px 0", maxWidth: "700px" }}>
 								<HHSBarChart
-									data={data[t]}
+									data={HHSBarChartContent[t]}
 									xAxisLegend="Housing Recovery Stage"
 									yAxisLegend="Frequency"
 								/>
