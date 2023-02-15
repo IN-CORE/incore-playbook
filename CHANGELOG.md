@@ -16,7 +16,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Github action to publish new version to npm registry [#72](https://github.com/IN-CORE/incore-playbook/issues/72)
 - Download Inventories at step 2-3 [#112](https://github.com/IN-CORE/incore-playbook/issues/112)
 - Check user groups to only allow user belongs to certain testbed to login [#119](https://github.com/IN-CORE/incore-playbook/issues/119)
+- HHRS Bar Chart [#95](https://github.com/IN-CORE/incore-playbook/issues/95)
 - A new "Created By" column in step 3-4 to track user executions. Fixed datetime format display in the table. [#120](https://github.com/IN-CORE/incore-playbook/issues/120)
+- HHRS Bar Chart [#95](https://github.com/IN-CORE/incore-playbook/issues/95)
 
 ### Changed
 - Renamed master branch to main [#28](https://github.com/IN-CORE/incore-playbook/issues/28)
@@ -26,6 +28,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - UI layout change for step 3-3 creating hazards [#96](https://github.com/IN-CORE/incore-playbook/issues/96)
 - Step 3-4 datawolf result link clickable logic to update dynamically based on requirements [#61](https://github.com/IN-CORE/incore-playbook/issues/61)
 - Change the creator of workflows dynamically based on the current logged in user. [#124](https://github.com/IN-CORE/incore-playbook/issues/124)
+- Disable Interdependency widget [#125](https://github.com/IN-CORE/incore-playbook/issues/125)
 
 ### Fixed
 - First time load map layers at step 3-4 "view results" does not show correctly sometimes [#97](https://github.com/IN-CORE/incore-playbook/issues/97)

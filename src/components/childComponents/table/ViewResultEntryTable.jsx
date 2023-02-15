@@ -278,8 +278,12 @@ export function ViewResultEntryTable(props) {
 														idx === 0 ? classes.firstTableBodyCell : classes.tableBodyCell
 													}
 												>
-													{fieldName["columnName"] === "creator"
-														? execution[fieldName["columnName"]].firstName
+													{fieldName["columnName"] === "creator" &&
+													execution[fieldName["columnName"]] &&
+													"firstName" in execution[fieldName["columnName"]] &&
+													"lastName" in execution[fieldName["columnName"]]
+														? `${execution[fieldName["columnName"]].firstName}
+														${execution[fieldName["columnName"]].lastName}`
 														: execution[fieldName["columnName"]]}
 												</TableCell>
 											);
@@ -339,35 +343,6 @@ export function ViewResultEntryTable(props) {
 														}
 													>
 														Resilience Metrics
-													</Link>
-												</TableCell>
-											</TableRow>
-										) : (
-											<></>
-										)}
-										{/*interdependency network*/}
-										{widgetList.includes("PoleDamage") &&
-										widgetList.includes("SubstationDamage") ? (
-											<TableRow
-												className={classes.subBodyRow}
-												key={`${execution["id"]}-interdependency`}
-											>
-												<TableCell colSpan={6} key={`${execution["id"]}-interdependency-title`}>
-													<Link
-														color="primary"
-														onClick={() => {
-															preview(execution["id"], "Interdependency");
-														}}
-														className={
-															checkResultsReady(
-																["PoleDamage", "SubstationDamage"],
-																execution.datasets
-															)
-																? classes.clickableLink
-																: classes.clickableLinkDisabled
-														}
-													>
-														Interdependency
 													</Link>
 												</TableCell>
 											</TableRow>
@@ -540,6 +515,28 @@ export function ViewResultEntryTable(props) {
 														}
 													>
 														Population Dislocation
+													</Link>
+												</TableCell>
+											</TableRow>
+										) : (
+											<></>
+										)}
+										{/*Housing Recover*/}
+										{widgetList.includes("HHS") ? (
+											<TableRow className={classes.subBodyRow} key={`${execution["id"]}-HHS`}>
+												<TableCell colSpan={6} key={`${execution["id"]}-HHS-title`}>
+													<Link
+														color="primary"
+														onClick={() => {
+															preview(execution["id"], "HHS");
+														}}
+														className={
+															checkResultsReady(["HHS"], execution.datasets)
+																? classes.clickableLink
+																: classes.clickableLinkDisabled
+														}
+													>
+														Housing Recovery
 													</Link>
 												</TableCell>
 											</TableRow>
