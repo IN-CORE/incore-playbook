@@ -151,6 +151,7 @@ const HeaderWithMenu = ({
 	// //TODO: move this to utils if needed
 	const handleLogout = () => {
 		cookies.remove("Authorization", { path: "/" });
+		cookies.remove("DatawolfUserDetails", { path: "/" });
 		history.push("/login");
 	};
 

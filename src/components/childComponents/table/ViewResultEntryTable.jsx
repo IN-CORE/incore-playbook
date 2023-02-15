@@ -278,10 +278,10 @@ export function ViewResultEntryTable(props) {
 														idx === 0 ? classes.firstTableBodyCell : classes.tableBodyCell
 													}
 												>
-													{fieldName["columnName"] === "creator"
-													&& execution[fieldName["columnName"]]
-													&& "firstName" in execution[fieldName["columnName"]]
-													&& "lastName" in execution[fieldName["columnName"]]
+													{fieldName["columnName"] === "creator" &&
+													execution[fieldName["columnName"]] &&
+													"firstName" in execution[fieldName["columnName"]] &&
+													"lastName" in execution[fieldName["columnName"]]
 														? `${execution[fieldName["columnName"]].firstName}
 														${execution[fieldName["columnName"]].lastName}`
 														: execution[fieldName["columnName"]]}
@@ -523,10 +523,7 @@ export function ViewResultEntryTable(props) {
 										)}
 										{/*Housing Recover*/}
 										{widgetList.includes("HHS") ? (
-											<TableRow
-												className={classes.subBodyRow}
-												key={`${execution["id"]}-HHS`}
-											>
+											<TableRow className={classes.subBodyRow} key={`${execution["id"]}-HHS`}>
 												<TableCell colSpan={6} key={`${execution["id"]}-HHS-title`}>
 													<Link
 														color="primary"

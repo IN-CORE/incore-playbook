@@ -1,4 +1,4 @@
-import { getHeader, getCurrUserEmail, getIncoreTokenFile } from "./common";
+import { getHeader, getCurrUserEmail, getIncoreTokenFile, getCurrUserDatawolfId } from "./common";
 import { datawolfConfig as defaultDatawolfConfig } from "../datawolf.config.js";
 import { datawolfWorkflowConfig as defaultDatawolfWorkflowConfig } from "../datawolf.config.js";
 
@@ -60,6 +60,8 @@ export async function submitExecution(
 	let authHeader = getHeader(datawolfConfig.hostname);
 	authHeader.append("Content-Type", "application/json");
 
+	let currUserDatawolfId = await getCurrUserDatawolfId(getCurrUserEmail(), datawolfConfig, datawolfWorkflowConfig);
+
 	const parameters = Object.keys(datawolfFormState).reduce((parameters, key) => {
 		return { ...parameters, ...datawolfFormState[key] };
 	}, {});
@@ -71,7 +73,7 @@ export async function submitExecution(
 
 	let requestBody = {
 		workflowId: datawolfWorkflowConfig["wfId"],
-		creatorId: datawolfWorkflowConfig["creatorId"],
+		creatorId: currUserDatawolfId,
 		title: title,
 		description: description,
 		parameters: parameters,

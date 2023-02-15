@@ -1,7 +1,6 @@
 import React from "react";
 import Chart from "react-google-charts";
 
-
 const ParseData = (data) => {
 	const chartData = [];
 	const colors = ["#DB4F60", "#ff7e0f", "#A1BE2E", "#1e77b4", "#3fbecf"];

@@ -1,7 +1,8 @@
+import React, { useEffect, useRef, useState } from "react";
+
 import { Box, Dialog, DialogActions, DialogContent, Grid, IconButton, Typography } from "@material-ui/core";
 import CloseIcon from "@material-ui/icons/Close";
 import HHSBarChart from "../graph/HHSBarChart";
-import React, { useEffect, useRef, useState } from "react";
 import { IncoreMenuItem, IncoreSelectBox } from "../../styledComponents/IncoreSelect";
 import { getOutputFileContentJSON } from "../../../utils/datawolf";
 import { useSelector } from "react-redux";
@@ -19,10 +20,9 @@ export default function HHS(props) {
 	const datawolfConfig = useSelector((state) => state.config.datawolfConfig);
 
 	const [selectedExecutionName, setSelectedExecutionName] = useState("");
-	const [HHSBarChartContent, setHHSBarChartContent] = useState({"1":[], "7":[], "13":[], "25":[], "49":[]});
+	const [HHSBarChartContent, setHHSBarChartContent] = useState({ 1: [], 7: [], 13: [], 25: [], 49: [] });
 	const [t, setT] = useState("1");
 
-	// print container
 	const printRef = useRef();
 
 	useEffect(() => {
@@ -54,7 +54,9 @@ export default function HHS(props) {
 				{/*TODO wrap into a component*/}
 				<Box className="previewTitleSection">
 					<Typography className="previewTitle">{selectedExecutionName}</Typography>
-					<Typography className="previewTitle">Select Data: Housing Recovery Stage Across Households</Typography>
+					<Typography className="previewTitle">
+						Select Data: Housing Recovery Stage Across Households
+					</Typography>
 				</Box>
 
 				<Box style={{ padding: "5px 25px 25px 25px" }}>
@@ -90,17 +92,13 @@ export default function HHS(props) {
 
 							{/*table and barchart*/}
 							<Box style={{ margin: "50px 0", maxWidth: "700px" }}>
-								{
-									HHSBarChartContent ?
-										<HHSBarChart
-											data={HHSBarChartContent[t]}
-											xAxisLegend="Housing Recovery Stage"
-											yAxisLegend="Frequency"
-										/>
-										:
-										null
-								}
-
+								{HHSBarChartContent ? (
+									<HHSBarChart
+										data={HHSBarChartContent[t]}
+										xAxisLegend="Housing Recovery Stage"
+										yAxisLegend="Frequency"
+									/>
+								) : null}
 							</Box>
 						</Grid>
 						{/*description*/}
