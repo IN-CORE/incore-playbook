@@ -1,39 +1,38 @@
 import React from "react";
 import Chart from "react-google-charts";
 
-
 const ParseData = (data) => {
 	const chartData = [];
-	const colors = ["#DB4F60", "#ff7e0f", "#A1BE2E", "#1e77b4", "#3fbecf"];
-	chartData.push(["Housing Recovery Stage", "Frequency", {role: "style"}]);
-	for (let i=0; i< data.length; i++) {
-		// use mod (%) to recycle through those 4 colors in case we have more stages
-		chartData.push([`Stage ${(i+1).toString()}`, data[i], colors[i%4]]);
-	}
-
-	return chartData;
+	chartData.push(["Frequency", "Stage 1", "Stage 2", "Stage 3", "Stage 4"]);
+	return [...chartData, ...data];
 };
 
 export default function HHSBarChart(props) {
-	const { height, width, data, title } = props;
+	const { height, width, data, title, xAxisLegend, yAxisLegend } = props;
 
 	return (
 		<div className="barChart">
 			<Chart
 				width={width}
 				height={height}
-				chartType="ColumnChart"
+				chartType="Bar"
 				loader={<div>Loading Chart</div>}
 				data={ParseData(data)}
 				options={{
 					title: title,
 					legend: { position: "none" },
-					bar:{ groupWidth: "50%" },
-					vAxis: {
-						title: "Frequency",
-						titleTextStyle:{ italic: false }
+					chartArea: { width: "50%" },
+					colors: ["#A1BE2E", "#DB4F60"],
+					hAxis: {
+						title: xAxisLegend,
+						minValue: 0
 					},
+					vAxis: {
+						title: yAxisLegend
+					}
 				}}
+				// For tests
+				rootProps={{ "data-testid": "1" }}
 			/>
 		</div>
 	);
