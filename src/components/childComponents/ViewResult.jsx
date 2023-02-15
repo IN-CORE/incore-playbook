@@ -23,6 +23,7 @@ import { Collection } from "ol";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Switch from "@material-ui/core/Switch";
 import { getHazardGroupLayers } from "../../utils/map";
+import HHS from "./outputWidgets/HHS";
 
 const useStyles = makeStyles({
 	statTitle: {
@@ -47,10 +48,13 @@ const registeredWidgets = {
 	PoleDamage: <PoleDamage />,
 	BldgMCS: <BldgMCS />,
 	BldgFunctionality: <BldgFunctionality />,
+	// eslint-disable-next-line react/jsx-pascal-case
 	CGE: <CGE />,
 	PopDislocation: <PopDislocation />,
 	ResilienceMetrics: <ResilienceMetrics />,
-	SubstationDamage: <SubstationDamage />
+	SubstationDamage: <SubstationDamage />,
+	// eslint-disable-next-line react/jsx-pascal-case
+	HHS: <HHS />,
 };
 
 export default function ViewResult(props) {
