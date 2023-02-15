@@ -1,7 +1,7 @@
 import Cookies from "universal-cookie";
 import jwt_decode from "jwt-decode";
 import { globals as defaultGlobalConfig, testUserInfo } from "../globals";
-import { datawolfWorkflowConfig as defaultDatawolfWorkflowConfig } from "../datawolf.config";
+import { datawolfConfig as defaultDatawolfConfig } from "../datawolf.config.js";
 import JSSoup from "jssoup";
 import { toLonLat } from "ol/proj";
 
@@ -59,7 +59,7 @@ export async function getCurrUserDatawolfId(email, datawolfWorkflowConfig = defa
 	} else if (cookie !== undefined && cookie.email === email) {
 		return cookie.id;
 	}
-	let endpoint = datawolfWorkflowConfig["datawolfPersonsDetail"] + email;
+	let endpoint = defaultDatawolfConfig["datawolfPersonsDetail"] + email;
 	let request = await fetch(endpoint, { mode: "cors", headers: getHeader(defaultGlobalConfig.hostname) });
 	if (request.status === 200) {
 		const userDetail = await request.json();
