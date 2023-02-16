@@ -3,14 +3,14 @@ import React, { useEffect, useRef, useState } from "react";
 import { Box, Dialog, DialogActions, DialogContent, Grid, IconButton, Typography } from "@material-ui/core";
 import CloseIcon from "@material-ui/icons/Close";
 import HHSBarChart from "../graph/HHSBarChart";
+import CgeDescription from "../step/CgeDescription";
+import React, { useEffect, useState } from "react";
 import { IncoreMenuItem, IncoreSelectBox } from "../../styledComponents/IncoreSelect";
 import { downloadOutputFile, getOutputFileContentJSON } from "../../../utils/datawolf";
 import { useSelector } from "react-redux";
 import { IncoreButtonText } from "../../styledComponents/IncoreButtonText";
 import GetAppIcon from "@material-ui/icons/GetApp";
 import HhsDescription from "../step/HhsDescription";
-import { downloadImg } from "../../../utils/image";
-import CameraAltIcon from "@material-ui/icons/CameraAlt";
 
 export default function HHS(props) {
 	let { executionItem, previewOn, handlePreviewClose, datawolfDatasetConfigItems, setDownloadDialogOpen } = props;
@@ -18,38 +18,29 @@ export default function HHS(props) {
 	const datawolfConfig = useSelector((state) => state.config.datawolfConfig);
 
 	const [selectedExecutionName, setSelectedExecutionName] = useState("");
-	const [HHSBarChartContent, setHHSBarChartContent] = useState({ 1: [], 7: [], 13: [], 25: [], 49: [] });
-	const [HhsDownload, setHhsDownload] = useState();
-	const [t, setT] = useState("1");
+	const [t, setT] = useState("t0");
 
-	const printRef = useRef();
+	// TODO remove hardcoding
+	const data = {
+		t0: [3033, 3138, 3857, 4862],
+		t1: [1773, 2410, 2452, 8255],
+		t6: [820, 1066, 515, 12489],
+		t12: [485, 513, 134, 13614],
+		t24: [60, 62, 10, 14149]
+	};
+	// const [cgeHouseholdIncomeContent, setCgeHouseholdIncomeContent] = useState(null);
+	// const [cgeDomesticSupplyContent, setCgeDomesticSupplyContent] = useState(null);
+	// const [cgeEmploymentContent, setCgeEmploymentContent] = useState(null);
 
 	useEffect(() => {
 		setSelectedExecutionName(executionItem["title"]);
-		datawolfDatasetConfigItems.map(async (datawolfDatasetConfigItem) => {
-			const vName = datawolfDatasetConfigItem.datasets.variableName;
-			if (vName === "HHSBarChartContent") {
-				setHHSBarChartContent(
-					await getOutputFileContentJSON(datawolfConfig, executionItem, datawolfDatasetConfigItem.datasetId)
-				);
-			}
-			else if (vName === "HhsDownload") {
-				setHhsDownload(executionItem["datasets"][datawolfDatasetConfigItem.datasetId]);
-			}
-		});
 	}, []);
 
-	const download = async () => {
-		setDownloadDialogOpen(true);
-		if (HhsDownload) {
-			await downloadOutputFile(datawolfConfig, HhsDownload, null,
-				`hhs-${executionItem.id}.csv`);
-		}
-	};
+	const download = async () => {};
 
 	return (
 		<Dialog open={previewOn} onClose={handlePreviewClose} maxWidth="lg" fullWidth scroll="paper">
-			<DialogContent className="previewModal" ref={printRef}>
+			<DialogContent className="previewModal">
 				<IconButton aria-label="Close" onClick={handlePreviewClose} style={{ float: "right" }}>
 					<CloseIcon fontSize="small" />
 				</IconButton>
@@ -77,33 +68,30 @@ export default function HHS(props) {
 								value={t}
 								style={{ maxWidth: "500px" }}
 							>
-								<IncoreMenuItem value="1" key="1">
+								<IncoreMenuItem value="t0" key="t0">
 									Immediately after the disaster
 								</IncoreMenuItem>
-								<IncoreMenuItem value="7" key="7">
-									6 month post-disaster
+								<IncoreMenuItem value="t1" key="t1">
+									1 month post-disaster
 								</IncoreMenuItem>
-								<IncoreMenuItem value="13" key="13">
+								<IncoreMenuItem value="t6" key="t6">
+									6 months post-disaster
+								</IncoreMenuItem>
+								<IncoreMenuItem value="t12" key="t12">
 									12 months post-disaster
 								</IncoreMenuItem>
-								<IncoreMenuItem value="25" key="25">
+								<IncoreMenuItem value="t24" key="t24">
 									24 months post-disaster
-								</IncoreMenuItem>
-								<IncoreMenuItem value="49" key="49">
-									48 months post-disaster
 								</IncoreMenuItem>
 							</IncoreSelectBox>
 
 							{/*table and barchart*/}
 							<Box style={{ margin: "50px 0", maxWidth: "700px" }}>
-								{HHSBarChartContent ? (
-									<HHSBarChart
-										data={HHSBarChartContent[t]}
-										height={"25em"}
-										xAxisLegend="Housing Recovery Stage"
-										yAxisLegend="Frequency"
-									/>
-								) : null}
+								<HHSBarChart
+									data={data[t]}
+									xAxisLegend="Housing Recovery Stage"
+									yAxisLegend="Frequency"
+								/>
 							</Box>
 						</Grid>
 						{/*description*/}
@@ -114,14 +102,6 @@ export default function HHS(props) {
 				</Box>
 			</DialogContent>
 			<DialogActions>
-				<IncoreButtonText
-					onClick={() => {
-						downloadImg(printRef.current, "HHS");
-					}}
-					startIcon={<CameraAltIcon />}
-				>
-					Image
-				</IncoreButtonText>
 				<IncoreButtonText onClick={download} startIcon={<GetAppIcon />}>
 					Download Report
 				</IncoreButtonText>
