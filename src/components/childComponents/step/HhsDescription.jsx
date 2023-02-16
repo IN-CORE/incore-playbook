@@ -38,7 +38,7 @@ const useStyles = makeStyles({
 	}
 });
 
-export default function HhsDescription() {
+export default function HhsDescription(props) {
 	const classes = useStyles();
 
 	let tableContent = (
