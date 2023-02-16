@@ -37,7 +37,7 @@ const useStyles = makeStyles({
 	}
 });
 
-export default function HhsDescription() {
+export default function HhsDescription(props) {
 	const classes = useStyles();
 
 	const hhsInfo = useSelector((state) => state.config.hhsInfo);
