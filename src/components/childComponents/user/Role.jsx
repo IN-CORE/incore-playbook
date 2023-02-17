@@ -23,6 +23,11 @@ export const Role = (props) => {
 		setSelectedRoleId(e.target.value);
 	};
 
+	const handleRoleCancel = () => {
+		setSelectedRoleId(0);
+		setEditRoleOn(false);
+	};
+
 	const handleRoleSave = () => {
 		setPlaybookUserRole(globalConfig, user.id, selectedRoleId);
 		setEditRoleOn(false);
@@ -61,9 +66,7 @@ export const Role = (props) => {
 							<Button
 								color="Secondary"
 								style={{ fontSize: "12px", color: "#00619D" }}
-								onClick={() => {
-									setEditRoleOn(false);
-								}}
+								onClick={handleRoleCancel}
 							>
 								Cancel
 							</Button>
