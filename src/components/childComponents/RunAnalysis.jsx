@@ -127,6 +127,8 @@ export default function ViewResult(props) {
 		);
 
 		// clear the form
+		setTitle("");
+		setDescription("");
 		setDatawolfFormState(
 			parameters.reduce((state, p) => {
 				// prepopulate the default fields
