@@ -85,7 +85,7 @@ const registeredWidgets = {
 export default function ViewResult(props) {
 	const classes = useStyles();
 
-	const { value, index, getExecutionList, gotoViewResultTab, ...other } = props;
+	const { value, index, gotoViewResultTab, ...other } = props;
 
 	// for execution
 	const [title, setTitle] = useState("");
@@ -141,7 +141,6 @@ export default function ViewResult(props) {
 				}, {})
 			);
 			// update execution list and then jump to view result tab
-			getExecutionList(datawolfConfig);
 			gotoViewResultTab();
 		}
 	};

@@ -2,9 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 
 import { makeStyles } from "@material-ui/core/styles";
-import { Box, IconButton } from "@material-ui/core";
-import SyncIcon from "@material-ui/icons/Sync";
-import FilterListIcon from "@material-ui/icons/FilterList";
+import { Box } from "@material-ui/core";
 
 import { IncoreInputLabel } from "../styledComponents/IncoreInputLabel";
 import { getHazardMetadata } from "../../utils/hazard";
@@ -77,25 +75,29 @@ export default function ViewResult(props) {
 	const [datawolfViewAllOn, setDatawolfViewAllOn] = useState(false); // datawolf view
 	const [intervalId, setIntervalId] = useState(0);
 
-	// component did mount
-	useEffect(() => {
-		getExecutionList(datawolfConfig, datawolfViewAllOn);
-	}, []);
-
-	// update execution statuses upon changing
-	useEffect(() => {
-		createAnalysisEntryTable();
-	}, [executions]);
-
-	// update datawolf view all on / off;
-	// load executions list periodically every 10 seconds
-	useEffect(() => {
-		// clear old time due to params has changed
+	const _clear_old_timeinterval = () => {
 		if (intervalId) {
 			clearInterval(intervalId);
 			setIntervalId(0);
 		}
+	};
 
+	// component did mount
+	useEffect(() => {
+		_clear_old_timeinterval();
+		getExecutionList(datawolfConfig, datawolfViewAllOn);
+	}, []);
+
+	// whenever switch tab
+	useEffect(() => {
+		_clear_old_timeinterval();
+		getExecutionList(datawolfConfig, datawolfViewAllOn);
+	}, [value]);
+
+	// update datawolf view all on / off;
+	// load executions list periodically every 10 seconds
+	useEffect(() => {
+		_clear_old_timeinterval();
 		// save some traffic; only perform backend GET when on that tab
 		if (value === index) {
 			// immediately fetch new execution list
@@ -108,6 +110,11 @@ export default function ViewResult(props) {
 			setIntervalId(interval);
 		}
 	}, [datawolfViewAllOn, value]);
+
+	// update execution statuses upon changing
+	useEffect(() => {
+		createAnalysisEntryTable();
+	}, [executions]);
 
 	// extract a single status from mutliple step status`
 	const extractStatus = (executionItem) => {
