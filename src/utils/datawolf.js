@@ -113,22 +113,22 @@ export async function postDataset(datawolfConfig, title = "incoretoken", descrip
 	let file = getIncoreTokenFile(datawolfConfig.hostname);
 	if (file !== null) formData.append("uploadedFile", file);
 
-	// let datawolfResponse = await fetch(`${datawolfConfig["datasetBaseURL"]}`, {
-	// 	method: "POST",
-	// 	headers: authHeader,
-	// 	body: formData,
-	// 	mode: "cors"
-	// });
-	//
-	// if (datawolfResponse.status === 200) {
-	// 	return datawolfResponse.text();
-	// } else if (datawolfResponse.status === 401) {
-	// 	// TODO handle error
-	// 	return null;
-	// } else {
-	// 	// TODO handle error
-	// 	return null;
-	// }
+	let datawolfResponse = await fetch(`${datawolfConfig["datasetBaseURL"]}`, {
+		method: "POST",
+		headers: authHeader,
+		body: formData,
+		mode: "cors"
+	});
+
+	if (datawolfResponse.status === 200) {
+		return datawolfResponse.text();
+	} else if (datawolfResponse.status === 401) {
+		// TODO handle error
+		return null;
+	} else {
+		// TODO handle error
+		return null;
+	}
 }
 
 export const getOutputFileContentJSON = async (datawolfConfig = defaultDatawolfConfig, executionItem, dwDatasetId) => {

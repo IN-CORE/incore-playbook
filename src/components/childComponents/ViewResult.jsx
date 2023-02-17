@@ -88,12 +88,6 @@ export default function ViewResult(props) {
 		getExecutionList(datawolfConfig, datawolfViewAllOn);
 	}, []);
 
-	// whenever switch tab
-	useEffect(() => {
-		_clear_old_timeinterval();
-		getExecutionList(datawolfConfig, datawolfViewAllOn);
-	}, [value]);
-
 	// update datawolf view all on / off;
 	// load executions list periodically every 10 seconds
 	useEffect(() => {
