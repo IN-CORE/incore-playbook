@@ -25,6 +25,7 @@ import { IncoreButtonText } from "../../styledComponents/IncoreButtonText";
 import GetAppIcon from "@material-ui/icons/GetApp";
 import { downloadImg } from "../../../utils/image";
 import CameraAltIcon from "@material-ui/icons/CameraAlt";
+import { move2TestbedSpace } from "../../../utils/common";
 
 export default function BldgMCS(props){
 
@@ -82,7 +83,11 @@ export default function BldgMCS(props){
 	}, []);
 
 	const download = async () => {
-		if (mcsBldgFailureProbINCOREId) await downloadDataset(globalConfig, mcsBldgFailureProbINCOREId, "bldg-mcs");
+		if (mcsBldgFailureProbINCOREId) {
+			// move to testbed space first as a fallback
+			await move2TestbedSpace(globalConfig, mcsBldgFailureProbINCOREId);
+			await downloadDataset(globalConfig, mcsBldgFailureProbINCOREId, "bldg-mcs");
+		}
 	};
 
 	return (

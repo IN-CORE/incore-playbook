@@ -25,6 +25,7 @@ import { downloadImg } from "../../../utils/image";
 import GetAppIcon from "@material-ui/icons/GetApp";
 import CameraAltIcon from "@material-ui/icons/CameraAlt";
 import { IncoreButtonText } from "../../styledComponents/IncoreButtonText";
+import { move2TestbedSpace } from "../../../utils/common";
 
 
 export default function BldgDamage(props) {
@@ -84,7 +85,11 @@ export default function BldgDamage(props) {
 	}, []);
 
 	const download = async () => {
-		if (bldgMaxDamageStateINCOREId) await downloadDataset(globalConfig, bldgMaxDamageStateINCOREId, "bldg-dmg");
+		if (bldgMaxDamageStateINCOREId) {
+			// move to testbed space first as a fallback
+			await move2TestbedSpace(globalConfig, bldgMaxDamageStateINCOREId);
+			await downloadDataset(globalConfig, bldgMaxDamageStateINCOREId, "bldg-dmg");
+		}
 	};
 
 	return (
