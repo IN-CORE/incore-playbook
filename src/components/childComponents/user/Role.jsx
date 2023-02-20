@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { IncoreMenuItem, IncoreSelectBox } from "../../styledComponents/IncoreSelect";
 import { Box, Button, ButtonGroup } from "@material-ui/core";
 import { assignUserRole } from "../../../actions/user";
@@ -19,12 +19,18 @@ export const Role = (props) => {
 	const setPlaybookUserRole = (globalConfig, selectedUserId, userRole) =>
 		dispatch(assignUserRole(globalConfig, selectedUserId, userRole));
 
+	useEffect(() => {
+		// if any thing updated in redux, reflect on the selected user
+		setSelectedRoleId(user["role"] && user["role"]["id"] ? user["role"]["id"] : null);
+	}, [user]);
+
 	const handleRoleSelection = (e) => {
 		setSelectedRoleId(e.target.value);
 	};
 
 	const handleRoleCancel = () => {
-		setSelectedRoleId(0);
+		// Resume to the current state in redux
+		setSelectedRoleId(user["role"] && user["role"]["id"] ? user["role"]["id"] : null);
 		setEditRoleOn(false);
 	};
 
