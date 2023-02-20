@@ -121,12 +121,12 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const HeaderWithMenu = ({
-							dispatch,
-							isAuthenticated,
-							menuItem,
-							headerTitle = "Playbook Interactive Guide for",
-							headerSubTitle = "Community Resilience Planning"
-						}) => {
+	dispatch,
+	isAuthenticated,
+	menuItem,
+	headerTitle = "Playbook Interactive Guide for",
+	headerSubTitle = "Community Resilience Planning"
+}) => {
 	const classes = useStyles();
 	const theme = useTheme();
 	const history = useHistory();
@@ -438,7 +438,9 @@ const HeaderWithMenu = ({
 			subMenus.push(
 				<ListItem
 					button
-					style={{ paddingLeft: 40, textTransform: "capitalize",backgroundColor: "#F7F8FF",color:"#00619D"}}
+					style={{ paddingLeft: 40, textTransform: "capitalize",
+						backgroundColor: openSubMenu === key ? "#E9EFFE" : "#FFFFFF",
+						color:"#00619D"}}
 					key={key}
 					selected={openSubMenu === key}
 					onClick={handleSubmenuClick(route)}
