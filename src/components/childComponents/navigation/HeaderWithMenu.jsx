@@ -13,6 +13,7 @@ import MenuIcon from "@material-ui/icons/Menu";
 import AccountCircle from "@material-ui/icons/AccountCircle";
 import MailIcon from "@material-ui/icons/Mail";
 import NotificationsIcon from "@material-ui/icons/Notifications";
+import Box from "@material-ui/core/Box";
 
 import Drawer from "@material-ui/core/Drawer";
 import CssBaseline from "@material-ui/core/CssBaseline";
@@ -35,6 +36,8 @@ import RightIcon from "@material-ui/icons/KeyboardArrowRight";
 import CheckCircleIcon from "@material-ui/icons/CheckCircle";
 import QueryBuilderIcon from "@material-ui/icons/QueryBuilder";
 import Grid from "@material-ui/core/Grid";
+
+import "../../../styles/main.css";
 
 const cookies = new Cookies();
 
@@ -118,12 +121,12 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const HeaderWithMenu = ({
-	dispatch,
-	isAuthenticated,
-	menuItem,
-	headerTitle = "Playbook Interactive Guide for",
-	headerSubTitle = "Community Resilience Planning"
-}) => {
+							dispatch,
+							isAuthenticated,
+							menuItem,
+							headerTitle = "Playbook Interactive Guide for",
+							headerSubTitle = "Community Resilience Planning"
+						}) => {
 	const classes = useStyles();
 	const theme = useTheme();
 	const history = useHistory();
@@ -435,7 +438,7 @@ const HeaderWithMenu = ({
 			subMenus.push(
 				<ListItem
 					button
-					style={{ paddingLeft: 40, textTransform: "capitalize" }}
+					style={{ paddingLeft: 40, textTransform: "capitalize",backgroundColor: "#F7F8FF",color:"#00619D"}}
 					key={key}
 					selected={openSubMenu === key}
 					onClick={handleSubmenuClick(route)}
@@ -471,9 +474,21 @@ const HeaderWithMenu = ({
 					className={classes.parentMenu}
 					onClick={handleParentClick(key)}
 					onLoad={handleParentLoad(key)}
+					style={{backgroundColor: openTask === key ? "#E9EFFE" : "#FFFFFF",
+						color:openTask === key ? "#00619D" : "#8798AD"}}
 				>
 					{openTask === key ? <DownIcon fontSize="large" /> : <RightIcon fontSize="large" />}
-					<ListItemText primary={`${key}. ${label}`} />
+					<Box component="div"
+						 sx={{ display: "block",
+							 height:"1.3125em",
+							 width:"1.4375em",
+						 }}
+						 style={{backgroundColor:openTask === key ? "#00619D" : "#F2F5FB",
+							 color:openTask === key ?"#FFFFFF":"#8798AD",
+							 textAlign:"center"
+						 }}
+					>{key}</Box>
+					<ListItemText primary={`${label}`} style={{paddingLeft:"1em"}}/>
 					{/* If any in_progress status, then add pending check icon */}
 					{/* else, if any pending icon, show pending else, all are complete and show completed icon */}
 					{subMenusStatus.includes("in_progress") ? (
