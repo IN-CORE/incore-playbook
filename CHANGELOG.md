@@ -36,6 +36,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Logout do not need to call GET in steps [#93](https://github.com/IN-CORE/incore-playbook/issues/93)
 - NaN in population dislocation widget [#126](https://github.com/IN-CORE/incore-playbook/issues/126)
 - Time interval doesn't work when switching tabs in step 3-4 [#117](https://github.com/IN-CORE/incore-playbook/issues/117)
+- User role remains after cancel button clicked [#133](https://github.com/IN-CORE/incore-playbook/issues/133)
 
 
 ## [0.3.0] - 2021-11-16
