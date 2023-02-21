@@ -613,6 +613,7 @@ const HeaderWithMenu = ({
 				<List
 					component="nav"
 					aria-labelledby="nested-list-subheader"
+					style={{padding: 0}}
 				>
 					{menus}
 				</List>
