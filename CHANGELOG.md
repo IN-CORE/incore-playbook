@@ -38,6 +38,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - NaN in population dislocation widget [#126](https://github.com/IN-CORE/incore-playbook/issues/126)
 - Time interval doesn't work when switching tabs in step 3-4 [#117](https://github.com/IN-CORE/incore-playbook/issues/117)
 - User role remains after cancel button clicked [#133](https://github.com/IN-CORE/incore-playbook/issues/133)
+- fix status bar appearance for a smaller screen/ different browser [#139](https://github.com/IN-CORE/incore-playbook/issues/139)
+
 
 
 ## [0.3.0] - 2021-11-16
