@@ -38,7 +38,7 @@ const StepStatus = ({ step, substep }) => {
 
 	return (
 		<Box>
-			<div className={"statusBox"} >
+			<div className={"statusBox"}>
 				{processStatus.map((status, index) => (
 					<div key={index} className={`statusInfo ${activeKey === status.key ? "active" : ""}`}>
 						<Box
