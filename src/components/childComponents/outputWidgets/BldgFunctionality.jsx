@@ -25,7 +25,6 @@ import GetAppIcon from "@material-ui/icons/GetApp";
 import { downloadDataset } from "../../../utils/dataset";
 import { downloadImg } from "../../../utils/image";
 import CameraAltIcon from "@material-ui/icons/CameraAlt";
-import { move2TestbedSpace } from "../../../utils/common";
 
 export default function BldgFunctionality(props){
 
@@ -84,11 +83,7 @@ export default function BldgFunctionality(props){
 	}, []);
 
 	const download = async () => {
-		if (bldgFuncProbINCOREId) {
-			// move to testbed space first as a fallback
-			await move2TestbedSpace(globalConfig, bldgFuncProbINCOREId);
-			await downloadDataset(globalConfig, bldgFuncProbINCOREId, "bldg-func");
-		}
+		if (bldgFuncProbINCOREId) await downloadDataset(globalConfig, bldgFuncProbINCOREId, "bldg-func");
 	};
 
 	return (

@@ -12,7 +12,6 @@ import GetAppIcon from "@material-ui/icons/GetApp";
 import { downloadDataset } from "../../../utils/dataset";
 import { downloadImg } from "../../../utils/image";
 import CameraAltIcon from "@material-ui/icons/CameraAlt";
-import { move2TestbedSpace } from "../../../utils/common";
 
 
 export default function SubstationDamage(props){
@@ -65,8 +64,6 @@ export default function SubstationDamage(props){
 
 	const download = async () => {
 		if (substationMaxDmgStateINCOREId)
-			// move to testbed space first as a fallback
-			await move2TestbedSpace(globalConfig, substationMaxDmgStateINCOREId);
 			await downloadDataset(globalConfig, substationMaxDmgStateINCOREId, "epf-substation");
 	};
 

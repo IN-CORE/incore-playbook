@@ -12,7 +12,6 @@ import { IncoreButtonText } from "../../styledComponents/IncoreButtonText";
 import GetAppIcon from "@material-ui/icons/GetApp";
 import { downloadImg } from "../../../utils/image";
 import CameraAltIcon from "@material-ui/icons/CameraAlt";
-import { move2TestbedSpace } from "../../../utils/common";
 
 
 export default function PoleDamage(props){
@@ -63,11 +62,7 @@ export default function PoleDamage(props){
 	}, []);
 
 	const download = async () => {
-		if (poleMaxDmgStateINCOREId) {
-			// move to testbed space first as a fallback
-			await move2TestbedSpace(globalConfig, poleMaxDmgStateINCOREId);
-			await downloadDataset(globalConfig, poleMaxDmgStateINCOREId, "epf-pole");
-		}
+		if (poleMaxDmgStateINCOREId) await downloadDataset(globalConfig, poleMaxDmgStateINCOREId, "epf-pole");
 	};
 
 	return (
