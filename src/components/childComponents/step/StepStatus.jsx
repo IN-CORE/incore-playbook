@@ -38,7 +38,7 @@ const StepStatus = ({ step, substep }) => {
 
 	return (
 		<Box>
-			<div className={"statusBox"}>
+			<div className={"statusBox"} style={{ width: 380 }}>
 				{processStatus.map((status, index) => (
 					<div key={index} className={`statusInfo ${activeKey === status.key ? "active" : ""}`}>
 						<Box
@@ -50,18 +50,15 @@ const StepStatus = ({ step, substep }) => {
 						>
 							{
 								status.key === "complete" ?
-									<Box>
-										{completedCheckIcon}
-									</Box>
-									:
-									null
+									<Box>{completedCheckIcon}</Box> : null
 							}
 							{
 								status.key === "in_progress" ?
 									<Box>{inProgressCheckIcon}</Box> : null
 							}
 							{
-								status.key === "pending" ? <Box>{pendingIcon}</Box> : null
+								status.key === "pending" ?
+									<Box>{pendingIcon}</Box> : null
 							}
 							<Box>
 								{status.name}
