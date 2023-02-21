@@ -85,7 +85,7 @@ const registeredWidgets = {
 export default function ViewResult(props) {
 	const classes = useStyles();
 
-	const { value, index, getExecutionList, gotoViewResultTab, ...other } = props;
+	const { value, index, gotoViewResultTab, ...other } = props;
 
 	// for execution
 	const [title, setTitle] = useState("");
@@ -127,23 +127,23 @@ export default function ViewResult(props) {
 		);
 
 		// clear the form
-		if (datawolfJson && datawolfJson !== "") {
-			setDatawolfFormState(
-				parameters.reduce((state, p) => {
-					// prepopulate the default fields
-					let mapState = {};
-					p.parametersMap.map((pm) => {
-						if (p.hidden) mapState[pm.paramId] = p.defaultValue;
-						else mapState[pm.paramId] = "";
-					}, {});
+		setTitle("");
+		setDescription("");
+		setDatawolfFormState(
+			parameters.reduce((state, p) => {
+				// prepopulate the default fields
+				let mapState = {};
+				p.parametersMap.map((pm) => {
+					if (p.hidden) mapState[pm.paramId] = p.defaultValue;
+					else mapState[pm.paramId] = "";
+				}, {});
 
-					return { ...state, [p.variableName]: mapState };
-				}, {})
-			);
-			// update execution list and then jump to view result tab
-			getExecutionList(datawolfConfig);
-			gotoViewResultTab();
-		}
+				return { ...state, [p.variableName]: mapState };
+			}, {})
+		);
+
+		// jump to view result tab
+		gotoViewResultTab();
 	};
 
 	return (
