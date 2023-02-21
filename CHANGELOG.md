@@ -29,6 +29,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Step 3-4 datawolf result link clickable logic to update dynamically based on requirements [#61](https://github.com/IN-CORE/incore-playbook/issues/61)
 - Change the creator of workflows dynamically based on the current logged in user. [#124](https://github.com/IN-CORE/incore-playbook/issues/124)
 - Disable Interdependency widget [#125](https://github.com/IN-CORE/incore-playbook/issues/125)
+- UI Changes to navigational sidebar [#141](https://github.com/IN-CORE/incore-playbook/pull/141)
 
 ### Fixed
 - First time load map layers at step 3-4 "view results" does not show correctly sometimes [#97](https://github.com/IN-CORE/incore-playbook/issues/97)
