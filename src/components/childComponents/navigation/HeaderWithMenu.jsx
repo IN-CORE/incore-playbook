@@ -429,7 +429,7 @@ const HeaderWithMenu = ({
 
 	let menus = [];
 	const completedCheckIcon = <CheckCircleIcon style={{ color: "#00619D" }} />;
-	const inProgressCheckIcon = <CheckCircleIcon style={{ color: "#8798AD" }} />;
+	const inProgressCheckIcon = <CheckCircleIcon style={{ color: "#2E384D" }} />;
 
 	treeData.map(({ key, label, nodes }) => {
 		let subMenus = [];
@@ -487,7 +487,7 @@ const HeaderWithMenu = ({
 					onLoad={handleParentLoad(key)}
 					style={{
 						backgroundColor: openTask === key ? "#E9EFFE" : "#FFFFFF",
-						color:openTask === key ? "#00619D" : "#8798AD",
+						color:openTask === key ? "#00619D" : "#2E384D",
 						padding: "0.5em 1.5em"
 					}}
 				>
@@ -497,7 +497,7 @@ const HeaderWithMenu = ({
 							 width:"1.4375em",
 						 }}
 						 style={{backgroundColor:openTask === key ? "#00619D" : "#F2F5FB",
-							 color:openTask === key ?"#FFFFFF":"#8798AD",
+							 color:openTask === key ?"#FFFFFF":"#2E384D",
 							 textAlign:"center",
 						 }}
 					>{key}</Box>
