@@ -55,6 +55,20 @@ export default function PopDislocation(props) {
 						zIndex: 1
 					}
 				];
+				const bldgMaxDamageStateINCOREId = await getOutputFileContent(
+					datawolfConfig,
+					executionItem,
+					datawolfDatasetConfigItem.datasetId
+				);
+				const tmpLayerDef = [
+					{
+						layerId: bldgMaxDamageStateINCOREId,
+						layerStyles: "incore:bldg-dmg-summary",
+						title: "Building Damage",
+						opacity: 1,
+						zIndex: 1
+					}
+				];
 				const previewLayers = generateLayers(globalConfig, tmpLayerDef);
 				setDamageLayers1(previewLayers);
 			}
@@ -191,6 +205,12 @@ export default function PopDislocation(props) {
 				</Box>
 			</DialogContent>
 			<DialogActions>
+<<<<<<< HEAD
+				<IncoreButtonText onClick={() => {downloadImg(printRef.current, "Population_Dislocation");}}
+								  startIcon={<CameraAltIcon />}>Image</IncoreButtonText>
+				<IncoreButtonText onClick={download} startIcon={<GetAppIcon />}>Data</IncoreButtonText>
+				<IncoreButtonText onClick={handlePreviewClose} startIcon={<CloseIcon />}>Close</IncoreButtonText>
+=======
 				<IncoreButtonText
 					onClick={() => {
 						downloadImg(printRef.current, "Population_Dislocation");
@@ -205,6 +225,7 @@ export default function PopDislocation(props) {
 				<IncoreButtonText onClick={handlePreviewClose} startIcon={<CloseIcon />}>
 					Close
 				</IncoreButtonText>
+>>>>>>> 5eca8b9 (resolve merge conflicts)
 			</DialogActions>
 		</Dialog>
 	);
