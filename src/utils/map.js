@@ -11,6 +11,7 @@ export const generateLayers = (globalConfig = defaultGlobalConfig, layerDef) => 
 			url: `${globalConfig.geoServerWMS}`,
 			params: { LAYERS: layerDefinition.layerId, STYLES: layerDefinition.layerStyles },
 			ratio: 1,
+			transition: 0,
 			serverType: "geoserver",
 			crossOrigin: "anonymous"
 		});
@@ -33,8 +34,9 @@ const _constructHazardLayer = (globalConfig=defaultGlobalConfig, layerId, layerT
 			url: `${globalConfig.geoServerWMS}`,
 			params: {LAYERS: layerId, STYLES: style},
 			ratio: 1,
+			transition: 0,
 			serverType: "geoserver",
-      crossOrigin: "anonymous"
+			crossOrigin: "anonymous"
 		});
 		HazardMapLayer = new TileLayer({
 			title: layerTitle,

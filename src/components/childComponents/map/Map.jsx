@@ -1,7 +1,5 @@
 import * as React from "react";
 import { Map as OLMap, View } from "ol";
-// import {defaults as defaultControls} from "ol/control";
-import Overlay from "ol/Overlay";
 
 import LayerSwitcher from "./LayerSwitcher";
 
@@ -23,7 +21,6 @@ const Map = (props) => {
 			minZoom,
 			maxZoom,
 			extent,
-			// controls,
 			layers,
 			layerSwitcherOptions,
 			updateMap,
@@ -41,17 +38,6 @@ const Map = (props) => {
 				extent
 			}),
 			layers,
-			overlays: [
-				new Overlay({
-					id: "popup",
-					className: "ol-popup",
-					autoPan: true,
-					autoPanAnimation: {
-						duration: 250
-					}
-				})
-			]
-			// controls: defaultControls().extend(controls)
 		});
 
 		if (events) {

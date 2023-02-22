@@ -156,7 +156,7 @@ export default function BldgDamage(props) {
 				{/*for map*/}
 				<Container className="mapContainer" disableGutters>
 					<Map
-						className="fillContainer"
+						className="fillContainer-BldgDamage"
 						zoom={mapConfig.ZOOM}
 						minZoom={mapConfig.MIN_ZOOM}
 						maxZoom={mapConfig.MAX_ZOOM}

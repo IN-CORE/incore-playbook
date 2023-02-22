@@ -102,7 +102,7 @@ export default function PoleDamage(props){
 				{/*map*/}
 				<Container className="mapContainerFull" disableGutters>
 					<Map
-						className="fillContainer"
+						className="fillContainer-PoleDamage"
 						zoom={mapConfig.ZOOM}
 						minZoom={mapConfig.MIN_ZOOM}
 						maxZoom={mapConfig.MAX_ZOOM}
