@@ -40,7 +40,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - User role remains after cancel button clicked [#133](https://github.com/IN-CORE/incore-playbook/issues/133)
 - Heatmap display issue in population dislocation view [#137](https://github.com/IN-CORE/incore-playbook/issues/137)
 - fix status bar appearance for a smaller screen/ different browser [#139](https://github.com/IN-CORE/incore-playbook/issues/139)
-
+- Pole damage datawolf id for population disloation [#145](https://github.com/IN-CORE/incore-playbook/issues/145)
 
 ## [0.3.0] - 2021-11-16
 
