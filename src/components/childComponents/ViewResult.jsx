@@ -180,12 +180,9 @@ export default function ViewResult(props) {
 	];
 
 	// close the model
-	const handlePreviewClose = (layerRef) => {
+	const handlePreviewClose = () => {
 		setPreviewOn(false);
 		setWidgetName("");
-
-		// important! remove tile layers; reset map
-		layerRef.current.tilelayer.setLayers(new Collection([]));
 	};
 
 	const getExecution = (executionItemId) => {

@@ -25,6 +25,7 @@ import { downloadImg } from "../../../utils/image";
 import GetAppIcon from "@material-ui/icons/GetApp";
 import CameraAltIcon from "@material-ui/icons/CameraAlt";
 import { IncoreButtonText } from "../../styledComponents/IncoreButtonText";
+import { Collection } from "ol";
 
 
 export default function BldgDamage(props) {
@@ -81,6 +82,11 @@ export default function BldgDamage(props) {
 				setBldgDmgSummaryTableContent(await getOutputFileContentJSON(datawolfConfig, executionItem, datawolfDatasetConfigItem.datasetId));
 			}
 		});
+
+		// important! remove tile layers; reset map
+		return function cleanup() {
+			layerRef.current.tilelayer.setLayers(new Collection([]));
+		};
 	}, []);
 
 	const download = async () => {

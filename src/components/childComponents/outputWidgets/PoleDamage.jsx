@@ -12,6 +12,7 @@ import { IncoreButtonText } from "../../styledComponents/IncoreButtonText";
 import GetAppIcon from "@material-ui/icons/GetApp";
 import { downloadImg } from "../../../utils/image";
 import CameraAltIcon from "@material-ui/icons/CameraAlt";
+import { Collection } from "ol";
 
 
 export default function PoleDamage(props){
@@ -59,6 +60,11 @@ export default function PoleDamage(props){
 				layerRef.current.tilelayer.getLayers().extend(previewLayers);
 			}
 		});
+
+		// important! remove tile layers; reset map
+		return function cleanup() {
+			layerRef.current.tilelayer.setLayers(new Collection([]));
+		};
 	}, []);
 
 	const download = async () => {

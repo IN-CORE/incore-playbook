@@ -10,6 +10,7 @@ import { getOutputFileContent } from "../../../utils/datawolf";
 import { IncoreButtonText } from "../../styledComponents/IncoreButtonText";
 import { downloadImg } from "../../../utils/image";
 import CameraAltIcon from "@material-ui/icons/CameraAlt";
+import { Collection } from "ol";
 
 export default function Interdependency(props) {
 	let { executionItem, previewOn, handlePreviewClose, datawolfDatasetConfigItems } = props;
@@ -56,6 +57,11 @@ export default function Interdependency(props) {
 				layerRef.current.tilelayer.getLayers().extend(previewLayers);
 			}
 		});
+
+		// important! remove tile layers; reset map
+		return function cleanup() {
+			layerRef.current.tilelayer.setLayers(new Collection([]));
+		};
 	}, []);
 
 	return (
