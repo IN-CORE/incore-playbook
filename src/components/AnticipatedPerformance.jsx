@@ -72,7 +72,6 @@ export const AnticipatedPerformance = (props) => {
 							<RunAnalysis
 								value={currTabIndex}
 								index={0}
-								getExecutionList={getExecutionList}
 								gotoViewResultTab={() => {
 									setCurrTabIndex(1);
 								}}

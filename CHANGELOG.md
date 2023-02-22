@@ -29,14 +29,18 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Step 3-4 datawolf result link clickable logic to update dynamically based on requirements [#61](https://github.com/IN-CORE/incore-playbook/issues/61)
 - Change the creator of workflows dynamically based on the current logged in user. [#124](https://github.com/IN-CORE/incore-playbook/issues/124)
 - Disable Interdependency widget [#125](https://github.com/IN-CORE/incore-playbook/issues/125)
+- UI Changes to navigational sidebar [#141](https://github.com/IN-CORE/incore-playbook/pull/141)
 
 ### Fixed
 - First time load map layers at step 3-4 "view results" does not show correctly sometimes [#97](https://github.com/IN-CORE/incore-playbook/issues/97)
 - Properly check the remote hostname [#104](https://github.com/IN-CORE/incore-playbook/issues/104)
 - Logout do not need to call GET in steps [#93](https://github.com/IN-CORE/incore-playbook/issues/93)
 - NaN in population dislocation widget [#126](https://github.com/IN-CORE/incore-playbook/issues/126)
+- Time interval doesn't work when switching tabs in step 3-4 [#117](https://github.com/IN-CORE/incore-playbook/issues/117)
 - User role remains after cancel button clicked [#133](https://github.com/IN-CORE/incore-playbook/issues/133)
 - Heatmap display issue in population dislocation view [#137](https://github.com/IN-CORE/incore-playbook/issues/137)
+- fix status bar appearance for a smaller screen/ different browser [#139](https://github.com/IN-CORE/incore-playbook/issues/139)
+
 
 ## [0.3.0] - 2021-11-16
 
