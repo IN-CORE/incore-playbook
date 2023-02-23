@@ -148,7 +148,7 @@ export default function BldgFunctionality(props){
 								extent={applyTransform(mapConfig.MAP_BOUNDS, getTransform("EPSG:4326", "EPSG:3857"))}
 								center={fromLonLat(mapConfig.MAP_CENTER)}
 								layers={[
-									basicLayers,
+									// basicLayers,
 									damageLayers,
 									hazardLayers
 								]}

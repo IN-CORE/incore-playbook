@@ -68,7 +68,7 @@ const Map = (props) => {
 
 	return (
 		<div id={id} className={`ol-map ${className}`} ref={fallbackContainer}>
-			<MapContext.Provider value={{ map: mapRef.current }}>{children}</MapContext.Provider>
+			{/*<MapContext.Provider value={{ map: mapRef.current }}>{children}</MapContext.Provider>*/}
 		</div>
 	);
 };
