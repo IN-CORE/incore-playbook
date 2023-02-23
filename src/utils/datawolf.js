@@ -88,15 +88,20 @@ export async function submitExecution(
 		mode: "cors"
 	});
 
-	if (datawolfResponse.status === 200) {
-		return datawolfResponse.text();
-	} else if (datawolfResponse.status === 401) {
-		// TODO handle error
-		return null;
-	} else {
-		// TODO handle error
-		return null;
+	const datawolfExecutionStatus = datawolfResponse.status;
+	let subMessage = "";
+
+	if (datawolfExecutionStatus !== 200) {
+		if (datawolfExecutionStatus === 401) {
+			subMessage = " Error: Unauthorized request. Please log in and try again.";
+		} else if (datawolfExecutionStatus === 403) {
+			subMessage = " Error: Forbidden, you don't have enough privileges to run this execution.";
+		} else {
+			subMessage = ` Error: Unknown error, response status code: ${datawolfExecutionStatus}`;
+		}
 	}
+
+	return { status: datawolfExecutionStatus, message: subMessage };
 }
 
 // TODO move this to redux
