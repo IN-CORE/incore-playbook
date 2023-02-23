@@ -95,8 +95,24 @@ export const basicLayers = new GroupLayer({
 	layers: [
 		new TileLayer({
 			type: "base",
-			visible: true,
+			title: "OSM",
+			visible:false,
+			source: new XYZ({
+				url: "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
+				attributions: [
+					OSM_ATTRIBUTION,
+					"Tiles courtesy of " +
+					"<a href=\"http://openstreetmap.org\">" +
+					"OpenStreetMap" +
+					"</a>"
+				],
+				crossOrigin: "anonymous"
+			})
+		}),
+		new TileLayer({
+			type: "base",
 			title: "Carto",
+			visible:true,
 			source: new XYZ({
 				url: "https://{a-d}.basemaps.cartocdn.com/rastertiles/light_all/{z}/{x}/{y}.png",
 				attributions: [
@@ -105,14 +121,6 @@ export const basicLayers = new GroupLayer({
 				],
 				crossOrigin: "anonymous"
 			})
-		}),
-		new TileLayer({
-			type: "base",
-			visible: false,
-			title: "OSM",
-			source: new OSM({
-				crossOrigin: "anonymous"
-			})
-		}),
+		})
 	]
 });
