@@ -127,9 +127,7 @@ export default function PopDislocation(props) {
 			<DialogContent className="previewModal" ref={printRef}>
 				<IconButton
 					aria-label="Close"
-					onClick={() => {
-						handlePreviewClose();
-					}}
+					onClick={handlePreviewClose}
 					style={{ float: "right" }}
 				>
 					<CloseIcon fontSize="small" />
@@ -193,17 +191,17 @@ export default function PopDislocation(props) {
 							dislocationByRaceContent &&
 							dislocationByTenureContent &&
 							dislocationByHousingTypeContent ? (
-								<HuaResultsTable
-									resultsJson={{
-										income: dislocationByIncomeContent,
-										race: dislocationByRaceContent,
-										tenure: dislocationByTenureContent,
-										housingType: dislocationByHousingTypeContent
-									}}
-								/>
-							) : (
-								<></>
-							)}
+									<HuaResultsTable
+										resultsJson={{
+											income: dislocationByIncomeContent,
+											race: dislocationByRaceContent,
+											tenure: dislocationByTenureContent,
+											housingType: dislocationByHousingTypeContent
+										}}
+									/>
+								) : (
+									<></>
+								)}
 						</Grid>
 					</Grid>
 				</Box>

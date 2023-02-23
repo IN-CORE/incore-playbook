@@ -72,9 +72,7 @@ export default function SubstationDamage(props) {
 			<DialogContent className="previewModal" ref={printRef}>
 				<IconButton
 					aria-label="Close"
-					onClick={() => {
-						handlePreviewClose();
-					}}
+					onClick={handlePreviewClose}
 					style={{ float: "right" }}
 				>
 					<CloseIcon fontSize="small" />

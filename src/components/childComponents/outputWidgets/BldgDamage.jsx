@@ -41,6 +41,7 @@ export default function BldgDamage(props) {
 	const [bldgMaxDamageStateINCOREId, setBldgMaxDamageStateINCOREId] = useState(null);
 	const [damageLayers, setDamageLayers] = useState(null);
 
+
 	const printRef = useRef();
 
 	useEffect(() => {
@@ -91,9 +92,7 @@ export default function BldgDamage(props) {
 			<DialogContent className="previewModal" ref={printRef}>
 				<IconButton
 					aria-label="Close"
-					onClick={() => {
-						handlePreviewClose();
-					}}
+					onClick={handlePreviewClose}
 					style={{ float: "right" }}
 				>
 					<CloseIcon fontSize="small" />
@@ -142,7 +141,6 @@ export default function BldgDamage(props) {
 				{
 					basicLayers && hazardLayers && damageLayers ?
 						<Container className="mapContainer" disableGutters>
-
 							<Map
 								className="fillContainer-BldgDamage"
 								zoom={mapConfig.ZOOM}
