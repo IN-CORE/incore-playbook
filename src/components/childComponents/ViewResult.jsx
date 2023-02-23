@@ -16,7 +16,6 @@ import CGE from "./outputWidgets/CGE";
 import PopDislocation from "./outputWidgets/PopDislocation";
 import ResilienceMetrics from "./outputWidgets/ResilienceMetrics";
 import SubstationDamage from "./outputWidgets/SubstationDamage";
-import { Collection } from "ol";
 
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Switch from "@material-ui/core/Switch";

@@ -2,17 +2,17 @@ import {
 	Box,
 	Container,
 	Dialog,
+	DialogActions,
 	DialogContent,
 	Divider,
 	Grid,
 	IconButton,
-	Typography,
-	DialogActions
+	Typography
 } from "@material-ui/core";
 import CloseIcon from "@material-ui/icons/Close";
 import Map from "../map/Map";
 import { fromLonLat, getTransform } from "ol/proj";
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { ResultSummaryTable } from "../table/ResultSummaryTable";
 import { StackedResult } from "../graph/StackedResult";
 import { ResultTable } from "../table/ResultTable";
@@ -26,6 +26,7 @@ import GetAppIcon from "@material-ui/icons/GetApp";
 import CameraAltIcon from "@material-ui/icons/CameraAlt";
 import { IncoreButtonText } from "../../styledComponents/IncoreButtonText";
 import { Collection } from "ol";
+import GroupLayer from "ol/layer/Group";
 
 
 export default function BldgDamage(props) {
@@ -42,8 +43,7 @@ export default function BldgDamage(props) {
 	const [bldgMaxDamageStateINCOREId, setBldgMaxDamageStateINCOREId] = useState(null);
 
 	// Holds an instance of Map component
-	const layerRef = useRef(basicLayers);
-
+	const layerRef = React.useRef(basicLayers);
 	// print container
 	const printRef = useRef();
 
@@ -53,8 +53,8 @@ export default function BldgDamage(props) {
 		// for summary table on the top
 		setRuntime(executionItem["date"].slice(0, 10));
 
-		if (hazardLayers && layerRef.current.tilelayer.getLayers()) {
-			layerRef.current.tilelayer.getLayers().push(hazardLayers);
+		if (hazardLayers) {
+			layerRef.current["hazardlayer"] = hazardLayers;
 		}
 
 		datawolfDatasetConfigItems.map(async (datawolfDatasetConfigItem) => {
@@ -76,7 +76,7 @@ export default function BldgDamage(props) {
 					}
 				];
 				const previewLayers = generateLayers(globalConfig, layerDef);
-				layerRef.current.tilelayer.getLayers().extend(previewLayers);
+				layerRef.current["tilelayer"] = previewLayers;
 			}
 			else if (vName === "bldgDmgSummaryTableContent") {
 				setBldgDmgSummaryTableContent(await getOutputFileContentJSON(datawolfConfig, executionItem, datawolfDatasetConfigItem.datasetId));
@@ -85,7 +85,8 @@ export default function BldgDamage(props) {
 
 		// important! remove tile layers; reset map
 		return function cleanup() {
-			layerRef.current.tilelayer.setLayers(new Collection([]));
+			delete layerRef.current.hazardlayer;
+			delete layerRef.current.tilelayer;
 		};
 	}, []);
 
@@ -155,16 +156,26 @@ export default function BldgDamage(props) {
 
 				{/*for map*/}
 				<Container className="mapContainer" disableGutters>
-					<Map
-						className="fillContainer-BldgDamage"
-						zoom={mapConfig.ZOOM}
-						minZoom={mapConfig.MIN_ZOOM}
-						maxZoom={mapConfig.MAX_ZOOM}
-						extent={applyTransform(mapConfig.MAP_BOUNDS, getTransform("EPSG:4326", "EPSG:3857"))}
-						center={fromLonLat(mapConfig.MAP_CENTER)}
-						layers={[layerRef.current.basemaps, layerRef.current.tilelayer]}
-						layerSwitcherOptions={{}}
-					/>
+					{
+						layerRef.current.hazardlayer && layerRef.current.tilelayer?
+							<Map
+								className="fillContainer-BldgDamage"
+								zoom={mapConfig.ZOOM}
+								minZoom={mapConfig.MIN_ZOOM}
+								maxZoom={mapConfig.MAX_ZOOM}
+								extent={applyTransform(mapConfig.MAP_BOUNDS, getTransform("EPSG:4326", "EPSG:3857"))}
+								center={fromLonLat(mapConfig.MAP_CENTER)}
+								layers={[
+									layerRef.current.basemaps,
+									layerRef.current.hazardlayer,
+									layerRef.current.tilelayer
+								]}
+								layerSwitcherOptions={{}}
+							/>
+							:
+							<></>
+					}
+
 				</Container>
 
 				{/*for table*/}

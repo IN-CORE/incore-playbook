@@ -155,7 +155,11 @@ export default function BldgFunctionality(props){
 						maxZoom={mapConfig.MAX_ZOOM}
 						extent={applyTransform(mapConfig.MAP_BOUNDS, getTransform("EPSG:4326", "EPSG:3857"))}
 						center={fromLonLat(mapConfig.MAP_CENTER)}
-						layers={[layerRef.current.basemaps, layerRef.current.tilelayer]}
+						layers={[
+							layerRef.current.basemaps,
+							layerRef.current.tilelayer,
+							layerRef.current.hazardlayer,
+						]}
 						layerSwitcherOptions={{}}
 					/>
 				</Container>

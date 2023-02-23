@@ -5,7 +5,7 @@ import { globals as defaultGlobalConfig } from "../globals";
 import XYZ from "ol/source/XYZ";
 import OSM, {ATTRIBUTION as OSM_ATTRIBUTION} from "ol/source/OSM";
 
-export const generateLayers = (globalConfig = defaultGlobalConfig, layerDef) => {
+export const generateLayers = (globalConfig = defaultGlobalConfig, layerDef, layerGroupTitle="Damage") => {
 	return layerDef.reduce((previewLayers, layerDefinition) => {
 		const source = new TileWMS({
 			url: `${globalConfig.geoServerWMS}`,
@@ -21,7 +21,10 @@ export const generateLayers = (globalConfig = defaultGlobalConfig, layerDef) => 
 			zIndex: layerDefinition["zIndex"],
 			opacity: layerDefinition["opacity"]
 		});
-		return [...previewLayers, previewLayer];
+		return new GroupLayer({
+			title: layerGroupTitle,
+			layers:  [...previewLayers, previewLayer]
+		});
 	}, []);
 };
 
@@ -114,8 +117,4 @@ export const basicLayers = {
 			}),
 		]
 	}),
-	tilelayer: new GroupLayer({
-		title: "Damage",
-		layers: []
-	})
 };
