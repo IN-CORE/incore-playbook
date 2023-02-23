@@ -25,8 +25,6 @@ import { downloadImg } from "../../../utils/image";
 import GetAppIcon from "@material-ui/icons/GetApp";
 import CameraAltIcon from "@material-ui/icons/CameraAlt";
 import { IncoreButtonText } from "../../styledComponents/IncoreButtonText";
-import { Collection } from "ol";
-import GroupLayer from "ol/layer/Group";
 
 
 export default function BldgDamage(props) {
@@ -41,10 +39,8 @@ export default function BldgDamage(props) {
 	const [runtime, setRuntime] = useState(null);
 	const [bldgDmgSummaryTableContent, setBldgDmgSummaryTableContent] = useState(null);
 	const [bldgMaxDamageStateINCOREId, setBldgMaxDamageStateINCOREId] = useState(null);
+	const [damageLayers, setDamageLayers] = useState(null);
 
-	// Holds an instance of Map component
-	const layerRef = React.useRef(basicLayers);
-	// print container
 	const printRef = useRef();
 
 	useEffect(() => {
@@ -52,10 +48,6 @@ export default function BldgDamage(props) {
 
 		// for summary table on the top
 		setRuntime(executionItem["date"].slice(0, 10));
-
-		if (hazardLayers) {
-			layerRef.current["hazardlayer"] = hazardLayers;
-		}
 
 		datawolfDatasetConfigItems.map(async (datawolfDatasetConfigItem) => {
 			const vName = datawolfDatasetConfigItem.datasets.variableName;
@@ -76,18 +68,12 @@ export default function BldgDamage(props) {
 					}
 				];
 				const previewLayers = generateLayers(globalConfig, layerDef);
-				layerRef.current["tilelayer"] = previewLayers;
+				setDamageLayers(previewLayers);
 			}
 			else if (vName === "bldgDmgSummaryTableContent") {
 				setBldgDmgSummaryTableContent(await getOutputFileContentJSON(datawolfConfig, executionItem, datawolfDatasetConfigItem.datasetId));
 			}
 		});
-
-		// important! remove tile layers; reset map
-		return function cleanup() {
-			delete layerRef.current.hazardlayer;
-			delete layerRef.current.tilelayer;
-		};
 	}, []);
 
 	const download = async () => {
@@ -97,9 +83,7 @@ export default function BldgDamage(props) {
 	return (
 		<Dialog
 			open={previewOn}
-			onClose={() => {
-				handlePreviewClose(layerRef);
-			}}
+			onClose={handlePreviewClose}
 			maxWidth="lg"
 			fullWidth
 			scroll="paper"
@@ -108,7 +92,7 @@ export default function BldgDamage(props) {
 				<IconButton
 					aria-label="Close"
 					onClick={() => {
-						handlePreviewClose(layerRef);
+						handlePreviewClose();
 					}}
 					style={{ float: "right" }}
 				>
@@ -155,9 +139,10 @@ export default function BldgDamage(props) {
 				</Box>
 
 				{/*for map*/}
-				<Container className="mapContainer" disableGutters>
-					{
-						layerRef.current.hazardlayer && layerRef.current.tilelayer?
+				{
+					basicLayers && hazardLayers && damageLayers ?
+						<Container className="mapContainer" disableGutters>
+
 							<Map
 								className="fillContainer-BldgDamage"
 								zoom={mapConfig.ZOOM}
@@ -166,17 +151,16 @@ export default function BldgDamage(props) {
 								extent={applyTransform(mapConfig.MAP_BOUNDS, getTransform("EPSG:4326", "EPSG:3857"))}
 								center={fromLonLat(mapConfig.MAP_CENTER)}
 								layers={[
-									layerRef.current.basemaps,
-									layerRef.current.hazardlayer,
-									layerRef.current.tilelayer
+									basicLayers,
+									damageLayers,
+									hazardLayers,
 								]}
 								layerSwitcherOptions={{}}
 							/>
-							:
-							<></>
-					}
-
-				</Container>
+						</Container>
+						:
+						<></>
+				}
 
 				{/*for table*/}
 				{bldgDmgSummaryTableContent ? (

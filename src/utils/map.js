@@ -90,31 +90,29 @@ export const getHazardGroupLayers = (globalConfig=defaultGlobalConfig, json, hty
 };
 
 
-export const basicLayers = {
-	basemaps: new GroupLayer({
-		title: "Base Maps",
-		layers: [
-			new TileLayer({
-				type: "base",
-				visible: true,
-				title: "Carto",
-				source: new XYZ({
-					url: "https://{a-d}.basemaps.cartocdn.com/rastertiles/light_all/{z}/{x}/{y}.png",
-					attributions: [
-						"&#169; <a href=\"https://www.carto.com\">Carto</a>,",
-						OSM_ATTRIBUTION
-					],
-					crossOrigin: "anonymous"
-				})
-			}),
-			new TileLayer({
-				type: "base",
-				visible: false,
-				title: "OSM",
-				source: new OSM({
-					crossOrigin: "anonymous"
-				})
-			}),
-		]
-	}),
-};
+export const basicLayers = new GroupLayer({
+	title: "Base Maps",
+	layers: [
+		new TileLayer({
+			type: "base",
+			visible: true,
+			title: "Carto",
+			source: new XYZ({
+				url: "https://{a-d}.basemaps.cartocdn.com/rastertiles/light_all/{z}/{x}/{y}.png",
+				attributions: [
+					"&#169; <a href=\"https://www.carto.com\">Carto</a>,",
+					OSM_ATTRIBUTION
+				],
+				crossOrigin: "anonymous"
+			})
+		}),
+		new TileLayer({
+			type: "base",
+			visible: false,
+			title: "OSM",
+			source: new OSM({
+				crossOrigin: "anonymous"
+			})
+		}),
+	]
+});

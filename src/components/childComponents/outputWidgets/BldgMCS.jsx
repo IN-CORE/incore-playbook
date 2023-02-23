@@ -15,7 +15,7 @@ import { FunctionalityGraph } from "../graph/FunctionalityGraph";
 import Map from "../map/Map";
 import { fromLonLat, getTransform } from "ol/proj";
 import { FunctionalityTable } from "../table/FunctionalityTable";
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
 import { applyTransform } from "ol/extent";
 import { getOutputFileContent, getOutputFileContentJSON } from "../../../utils/datawolf";
@@ -38,9 +38,8 @@ export default function BldgMCS(props){
 	const [runtime, setRuntime] = useState(null);
 	const [mcsBldgSummaryTableContent, setMcsBldgSummaryTableContent] = useState(null);
 	const [mcsBldgFailureProbINCOREId, setMcsBldgFailureProbINCOREId] = useState(null);
+	const [damageLayers, setDamageLayers] = useState(null);
 
-	// Holds an instance of Map component
-	const layerRef = useRef(basicLayers);
 	// print container
 	const printRef = useRef();
 
@@ -49,10 +48,6 @@ export default function BldgMCS(props){
 
 		// for summary table on the top
 		setRuntime(executionItem["date"].slice(0, 10));
-
-		if (hazardLayers && layerRef.current.tilelayer.getLayers()) {
-			layerRef.current.tilelayer.getLayers().push(hazardLayers);
-		}
 
 		datawolfDatasetConfigItems.map(async (datawolfDatasetConfigItem) => {
 			const vName = datawolfDatasetConfigItem.datasets.variableName;
@@ -73,7 +68,7 @@ export default function BldgMCS(props){
 					}
 				];
 				const previewLayers = generateLayers(globalConfig, layerDef);
-				layerRef.current.tilelayer.getLayers().extend(previewLayers);
+				setDamageLayers(previewLayers);
 			}
 			else if (vName === "mcsBldgSummaryTableContent") {
 				setMcsBldgSummaryTableContent(await getOutputFileContentJSON(datawolfConfig, executionItem, datawolfDatasetConfigItem.datasetId));
@@ -88,9 +83,7 @@ export default function BldgMCS(props){
 	return (
 		<Dialog
 			open={previewOn}
-			onClose={() => {
-				handlePreviewClose(layerRef);
-			}}
+			onClose={handlePreviewClose}
 			maxWidth="lg"
 			fullWidth
 			scroll="paper"
@@ -99,7 +92,7 @@ export default function BldgMCS(props){
 				<IconButton
 					aria-label="Close"
 					onClick={() => {
-						handlePreviewClose(layerRef);
+						handlePreviewClose();
 					}}
 					style={{ float: "right" }}
 				>
@@ -148,18 +141,28 @@ export default function BldgMCS(props){
 				</Box>
 
 				{/*for map*/}
-				<Container className="mapContainer" disableGutters>
-					<Map
-						className="fillContainer"
-						zoom={mapConfig.ZOOM}
-						minZoom={mapConfig.MIN_ZOOM}
-						maxZoom={mapConfig.MAX_ZOOM}
-						extent={applyTransform(mapConfig.MAP_BOUNDS, getTransform("EPSG:4326", "EPSG:3857"))}
-						center={fromLonLat(mapConfig.MAP_CENTER)}
-						layers={[layerRef.current.basemaps, layerRef.current.tilelayer]}
-						layerSwitcherOptions={{}}
-					/>
-				</Container>
+				{
+					basicLayers && hazardLayers && damageLayers ?
+						<Container className="mapContainer" disableGutters>
+							<Map
+								className="fillContainer"
+								zoom={mapConfig.ZOOM}
+								minZoom={mapConfig.MIN_ZOOM}
+								maxZoom={mapConfig.MAX_ZOOM}
+								extent={applyTransform(mapConfig.MAP_BOUNDS, getTransform("EPSG:4326", "EPSG:3857"))}
+								center={fromLonLat(mapConfig.MAP_CENTER)}
+								layers={[
+									basicLayers,
+									damageLayers,
+									hazardLayers
+								]}
+								layerSwitcherOptions={{}}
+							/>
+						</Container>
+						:
+						<></>
+				}
+
 
 				{/*for table*/}
 				{mcsBldgSummaryTableContent ? (

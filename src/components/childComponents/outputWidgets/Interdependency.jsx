@@ -20,9 +20,8 @@ export default function Interdependency(props) {
 	const globalConfig = useSelector((state) => state.config.globalConfig);
 
 	const [selectedExecutionName, setSelectedExecutionName] = useState("");
+	const [damageLayers, setDamageLayers] = useState(null);
 
-	// Holds an instance of Map component
-	const layerRef = useRef(basicLayers);
 	// print container
 	const printRef = useRef();
 
@@ -54,21 +53,16 @@ export default function Interdependency(props) {
 					}
 				];
 				const previewLayers = generateLayers(globalConfig, layerDef);
-				layerRef.current.tilelayer.getLayers().extend(previewLayers);
+				setDamageLayers(previewLayers);
 			}
 		});
-
-		// important! remove tile layers; reset map
-		return function cleanup() {
-			layerRef.current.tilelayer.setLayers(new Collection([]));
-		};
 	}, []);
 
 	return (
 		<Dialog
 			open={previewOn}
 			onClose={() => {
-				handlePreviewClose(layerRef);
+				handlePreviewClose();
 			}}
 			maxWidth="lg"
 			fullWidth
@@ -78,7 +72,7 @@ export default function Interdependency(props) {
 				<IconButton
 					aria-label="Close"
 					onClick={() => {
-						handlePreviewClose(layerRef);
+						handlePreviewClose();
 					}}
 					style={{ float: "right" }}
 				>
@@ -94,18 +88,27 @@ export default function Interdependency(props) {
 				</Box>
 
 				{/*map*/}
-				<Container className="mapContainerFull" disableGutters>
-					<Map
-						className="fillContainer"
-						zoom={mapConfig.ZOOM}
-						minZoom={mapConfig.MIN_ZOOM}
-						maxZoom={mapConfig.MAX_ZOOM}
-						extent={applyTransform(mapConfig.MAP_BOUNDS, getTransform("EPSG:4326", "EPSG:3857"))}
-						center={fromLonLat(mapConfig.MAP_CENTER)}
-						layers={[layerRef.current.basemaps, layerRef.current.tilelayer]}
-						layerSwitcherOptions={{}}
-					/>
-				</Container>
+				{
+					basicLayers && damageLayers ?
+						<Container className="mapContainerFull" disableGutters>
+							<Map
+								className="fillContainer"
+								zoom={mapConfig.ZOOM}
+								minZoom={mapConfig.MIN_ZOOM}
+								maxZoom={mapConfig.MAX_ZOOM}
+								extent={applyTransform(mapConfig.MAP_BOUNDS, getTransform("EPSG:4326", "EPSG:3857"))}
+								center={fromLonLat(mapConfig.MAP_CENTER)}
+								layers={[
+									basicLayers,
+									damageLayers,
+									hazardLayers,
+								]}
+								layerSwitcherOptions={{}}
+							/>
+						</Container>
+						:
+						<></>
+				}
 			</DialogContent>
 			<DialogActions>
 				<IncoreButtonText onClick={()=>{downloadImg(printRef.current, "Interdependency");}}
