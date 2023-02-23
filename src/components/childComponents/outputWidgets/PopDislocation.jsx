@@ -29,7 +29,8 @@ export default function PopDislocation(props) {
 	const [dislocationByTenureContent, setDislocationByTenureContent] = useState(null);
 	const [dislocationByIncomeContent, setDislocationByIncomeContent] = useState(null);
 	const [dislocationByHousingTypeContent, setDislocationByHousingTypeContent] = useState(null);
-	const [damageLayers, setDamageLayers] = useState(null);
+	const [damageLayers1, setDamageLayers1] = useState(null);
+	const [damageLayers2, setDamageLayers2] = useState(null);
 
 	// print container
 	const printRef = useRef();
@@ -52,10 +53,7 @@ export default function PopDislocation(props) {
 						}
 					];
 				const previewLayers = generateLayers(globalConfig, tmpLayerDef);
-				setDamageLayers((prevState) => {
-					prevState ? prevState.getLayers().extend(previewLayers)
-						: previewLayers;
-				});
+				setDamageLayers1(previewLayers);
 			}
 			if (vName === "popdislHeatmapINCOREId") {
 				const popdislHeatmapINCOREId = await getOutputFileContent(
@@ -73,10 +71,7 @@ export default function PopDislocation(props) {
 					}
 				];
 				const previewLayers = generateLayers(globalConfig, tmpLayerDef);
-				setDamageLayers((prevState) => {
-					prevState ? prevState.getLayers().extend(previewLayers)
-						: previewLayers;
-				});
+				setDamageLayers2(previewLayers);
 			}
 
 			if (vName === "totalDislTableContent") {
@@ -142,7 +137,7 @@ export default function PopDislocation(props) {
 
 				{/*for map*/}
 				{
-					basicLayers && hazardLayers && damageLayers ?
+					basicLayers && hazardLayers && damageLayers1 && damageLayers2 ?
 						<Container className="mapContainer" disableGutters>
 							<Map
 								className="fillContainer"
@@ -153,7 +148,8 @@ export default function PopDislocation(props) {
 								center={fromLonLat(mapConfig.MAP_CENTER)}
 								layers={[
 									basicLayers,
-									damageLayers,
+									damageLayers1,
+									damageLayers2,
 									hazardLayers
 								]}
 								layerSwitcherOptions={{}}

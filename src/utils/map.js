@@ -103,16 +103,16 @@ export const basicLayers = new GroupLayer({
 					"&#169; <a href=\"https://www.carto.com\">Carto</a>,",
 					OSM_ATTRIBUTION
 				],
-				// crossOrigin: "anonymous"
+				crossOrigin: "anonymous"
 			})
 		}),
-		// new TileLayer({
-		// 	type: "base",
-		// 	visible: false,
-		// 	title: "OSM",
-		// 	source: new OSM({
-		// 		crossOrigin: "anonymous"
-		// 	})
-		// }),
+		new TileLayer({
+			type: "base",
+			visible: false,
+			title: "OSM",
+			source: new OSM({
+				crossOrigin: "anonymous"
+			})
+		}),
 	]
 });
