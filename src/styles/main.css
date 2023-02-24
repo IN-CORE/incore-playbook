@@ -76,7 +76,9 @@ body {
 }
 
 /* for map */
-.fillContainer {
+.fillContainer,
+.fillContainer-BldgDamage,
+.fillContainer-PoleDamage{
 	width: 100%;
 	height: 100%;
 	max-width: unset;

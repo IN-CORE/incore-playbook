@@ -4,7 +4,7 @@ import Map from "../map/Map";
 import { fromLonLat, getTransform } from "ol/proj";
 import { DislocationResultsTable } from "../table/DislocationResultsTable";
 import { HuaResultsTable } from "../table/HuaResultsTable";
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
 import { applyTransform } from "ol/extent";
 import { getOutputFileContent, getOutputFileContentJSON } from "../../../utils/datawolf";
@@ -16,8 +16,8 @@ import { downloadImg } from "../../../utils/image";
 import CameraAltIcon from "@material-ui/icons/CameraAlt";
 
 
-export default function PopDislocation(props){
-	let {executionItem, previewOn, handlePreviewClose, datawolfDatasetConfigItems, hazardLayers} = props;
+export default function PopDislocation(props) {
+	let { executionItem, previewOn, handlePreviewClose, datawolfDatasetConfigItems, hazardLayers } = props;
 
 	const mapConfig = useSelector((state) => state.config.mapConfig);
 	const datawolfConfig = useSelector((state) => state.config.datawolfConfig);
@@ -29,18 +29,14 @@ export default function PopDislocation(props){
 	const [dislocationByTenureContent, setDislocationByTenureContent] = useState(null);
 	const [dislocationByIncomeContent, setDislocationByIncomeContent] = useState(null);
 	const [dislocationByHousingTypeContent, setDislocationByHousingTypeContent] = useState(null);
+	const [damageLayers1, setDamageLayers1] = useState(null);
+	const [damageLayers2, setDamageLayers2] = useState(null);
 
-	// Holds an instance of Map component
-	const layerRef = useRef(basicLayers);
 	// print container
 	const printRef = useRef();
 
 	useEffect(() => {
 		setSelectedExecutionName(executionItem["title"]);
-
-		if (hazardLayers && layerRef.current.tilelayer.getLayers()) {
-			layerRef.current.tilelayer.getLayers().push(hazardLayers);
-		}
 
 		datawolfDatasetConfigItems.map(async (datawolfDatasetConfigItem) => {
 			const vName = datawolfDatasetConfigItem.datasets.variableName;
@@ -57,7 +53,7 @@ export default function PopDislocation(props){
 						}
 					];
 				const previewLayers = generateLayers(globalConfig, tmpLayerDef);
-				layerRef.current.tilelayer.getLayers().extend(previewLayers);
+				setDamageLayers1(previewLayers);
 			}
 			if (vName === "popdislHeatmapINCOREId") {
 				const popdislHeatmapINCOREId = await getOutputFileContent(
@@ -75,7 +71,7 @@ export default function PopDislocation(props){
 					}
 				];
 				const previewLayers = generateLayers(globalConfig, tmpLayerDef);
-				layerRef.current.tilelayer.getLayers().extend(previewLayers);
+				setDamageLayers2(previewLayers);
 			}
 
 			if (vName === "totalDislTableContent") {
@@ -118,9 +114,7 @@ export default function PopDislocation(props){
 	return (
 		<Dialog
 			open={previewOn}
-			onClose={() => {
-				handlePreviewClose(layerRef);
-			}}
+			onClose={handlePreviewClose}
 			maxWidth="lg"
 			fullWidth
 			scroll="paper"
@@ -128,9 +122,7 @@ export default function PopDislocation(props){
 			<DialogContent className="previewModal" ref={printRef}>
 				<IconButton
 					aria-label="Close"
-					onClick={() => {
-						handlePreviewClose(layerRef);
-					}}
+					onClick={handlePreviewClose}
 					style={{ float: "right" }}
 				>
 					<CloseIcon fontSize="small" />
@@ -144,18 +136,28 @@ export default function PopDislocation(props){
 				</Box>
 
 				{/*for map*/}
-				<Container className="mapContainer" isableGutters>
-					<Map
-						className="fillContainer"
-						zoom={mapConfig.ZOOM}
-						minZoom={mapConfig.MIN_ZOOM}
-						maxZoom={mapConfig.MAX_ZOOM}
-						extent={applyTransform(mapConfig.MAP_BOUNDS, getTransform("EPSG:4326", "EPSG:3857"))}
-						center={fromLonLat(mapConfig.MAP_CENTER)}
-						layers={[layerRef.current.basemaps, layerRef.current.tilelayer]}
-						layerSwitcherOptions={{}}
-					/>
-				</Container>
+				{
+					basicLayers && hazardLayers && damageLayers1 && damageLayers2 ?
+						<Container className="mapContainer" disableGutters>
+							<Map
+								className="fillContainer"
+								zoom={mapConfig.ZOOM}
+								minZoom={mapConfig.MIN_ZOOM}
+								maxZoom={mapConfig.MAX_ZOOM}
+								extent={applyTransform(mapConfig.MAP_BOUNDS, getTransform("EPSG:4326", "EPSG:3857"))}
+								center={fromLonLat(mapConfig.MAP_CENTER)}
+								layers={[
+									basicLayers,
+									damageLayers1,
+									damageLayers2,
+									hazardLayers
+								]}
+								layerSwitcherOptions={{}}
+							/>
+						</Container>
+						:
+						<></>
+				}
 
 				{/*for table*/}
 				<Box style={{ padding: "50px 25px" }}>
@@ -185,26 +187,26 @@ export default function PopDislocation(props){
 							dislocationByRaceContent &&
 							dislocationByTenureContent &&
 							dislocationByHousingTypeContent ? (
-								<HuaResultsTable
-									resultsJson={{
-										income: dislocationByIncomeContent,
-										race: dislocationByRaceContent,
-										tenure: dislocationByTenureContent,
-										housingType: dislocationByHousingTypeContent
-									}}
-								/>
-							) : (
-								<></>
-							)}
+									<HuaResultsTable
+										resultsJson={{
+											income: dislocationByIncomeContent,
+											race: dislocationByRaceContent,
+											tenure: dislocationByTenureContent,
+											housingType: dislocationByHousingTypeContent
+										}}
+									/>
+								) : (
+									<></>
+								)}
 						</Grid>
 					</Grid>
 				</Box>
 			</DialogContent>
 			<DialogActions>
-				<IncoreButtonText onClick={()=>{downloadImg(printRef.current, "Population_Dislocation");}}
-								  startIcon={<CameraAltIcon/>}>Image</IncoreButtonText>
-				<IncoreButtonText onClick={download} startIcon={<GetAppIcon/>}>Data</IncoreButtonText>
-				<IncoreButtonText onClick={handlePreviewClose} startIcon={<CloseIcon/>}>Close</IncoreButtonText>
+				<IncoreButtonText onClick={() => {downloadImg(printRef.current, "Population_Dislocation");}}
+								  startIcon={<CameraAltIcon />}>Image</IncoreButtonText>
+				<IncoreButtonText onClick={download} startIcon={<GetAppIcon />}>Data</IncoreButtonText>
+				<IncoreButtonText onClick={handlePreviewClose} startIcon={<CloseIcon />}>Close</IncoreButtonText>
 			</DialogActions>
 		</Dialog>
 	);

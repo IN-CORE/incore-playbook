@@ -16,7 +16,6 @@ import CGE from "./outputWidgets/CGE";
 import PopDislocation from "./outputWidgets/PopDislocation";
 import ResilienceMetrics from "./outputWidgets/ResilienceMetrics";
 import SubstationDamage from "./outputWidgets/SubstationDamage";
-import { Collection } from "ol";
 
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Switch from "@material-ui/core/Switch";
@@ -181,12 +180,9 @@ export default function ViewResult(props) {
 	];
 
 	// close the model
-	const handlePreviewClose = (layerRef) => {
+	const handlePreviewClose = () => {
 		setPreviewOn(false);
 		setWidgetName("");
-
-		// important! remove tile layers; reset map
-		layerRef.current.tilelayer.setLayers(new Collection([]));
 	};
 
 	const getExecution = (executionItemId) => {
