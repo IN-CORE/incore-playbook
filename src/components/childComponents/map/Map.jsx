@@ -66,18 +66,6 @@ const Map = (props) => {
 		};
 	}, []);
 
-	// zoom change handler
-	React.useEffect(() => {
-		if (!map) return;
-		map.getView().setZoom(zoom);
-	}, [zoom]);
-
-	// center change handler
-	React.useEffect(() => {
-		if (!map) return;
-		map.getView().setCenter(center);
-	}, [center]);
-
 	return (
 		<MapContext.Provider value={{ map }}>
 			<div ref={mapRef} className={`ol-map ${className}`}>
