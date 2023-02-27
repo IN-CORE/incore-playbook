@@ -65,7 +65,9 @@ export default function Log(props) {
 								<Box style={{
 									padding: "2em",
 									backgroundColor: "#EAEAEA",
-									fontFamily: "Monospace"
+									fontFamily: "Monospace",
+									maxHeight:"500px",
+									overflow:"scroll"
 								}}>
 									<dl>{logContent[entryKey] === "" ? "No logs available..." : logContent[entryKey]}</dl>
 								</Box>
