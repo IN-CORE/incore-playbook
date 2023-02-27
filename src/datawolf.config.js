@@ -1965,7 +1965,214 @@ const datawolfWorkflowConfig = {
 							variableName: "PolesMonteCarloFailureProbabilityLog",
 							widget: "Log"
 						}
-					}
+					},
+					{
+						datasetId: "180d1ee1-d74a-4046-c2d5-2694435c2a3e",
+						datasets: {
+							step: "Sub-MonteCarloFailureProbability",
+							title: "Electric Power Substation Monte Carlo Failure Probability",
+							variableName: "SubMonteCarloFailureProbabilityLog",
+							widget: "Log"
+						}
+					},
+					{
+						datasetId: "81650d08-7afb-4d03-b19d-3cab35ea9033",
+						datasets: {
+							step: "Sub-EpfDamage",
+							title: "Electric Power Substation Damage",
+							variableName: "SubEpfDamageLog",
+							widget: "Log"
+						}
+					},
+					{
+						datasetId: "439e46bb-6ea0-4d0e-b188-5adc71e4ec2c",
+						datasets: {
+							step: "Poles-EpfDamage",
+							title: "Electric Power Pole Damage",
+							variableName: "PolesEpfDamageLog",
+							widget: "Log"
+						}
+					},
+					{
+						datasetId: "067c9db0-84ab-4a9c-b6bc-9d0fffb32134",
+						datasets: {
+							step: "JoplinCGEModel",
+							title: "Joplin CGE Model",
+							variableName: "JoplinCGEModelLog",
+							widget: "Log"
+						}
+					},
+					{
+						datasetId: "09bf8dd2-1250-462e-b0cd-819ab216e363",
+						datasets: {
+							step: "CapitalShocks",
+							title: "Capital Shocks",
+							variableName: "CapitalShocksLog",
+							widget: "Log"
+						}
+					},
+					{
+						datasetId: "6bbd145c-1842-459b-fc65-56b0ec0745ee",
+						datasets: {
+							step: "Pole-Max-Dmg-State",
+							title: "Electric Power Pole Maximum Damage State",
+							variableName: "PoleMaxDmgStateLog",
+							widget: "Log"
+						}
+					},
+					{
+						datasetId: "6bbd145c-1842-459b-fc65-56b0ec0745ee",
+						datasets: {
+							step: "Sub-Max-Dmg-State",
+							title: "Electric Power Substation Maximum Damage State",
+							variableName: "SubMaxDmgStateLog",
+							widget: "Log"
+						}
+					},
+					{
+						datasetId: "67131668-d47e-4cfa-d4c0-e7ce61324e1e",
+						datasets: {
+							step: "Bldg-Max-Store Result",
+							title: "Store Building Maximum Damage Result",
+							variableName: "BldgMaxStoreResultLog",
+							widget: "Log"
+						}
+					},
+					{
+						datasetId: "164ad7ba-3a91-4651-9772-c4d55f27e19f",
+						datasets: {
+							step: "Pole-Max-Store Result",
+							title: "Store Electric Power Pole Maximum Damage Result",
+							variableName: "PoleMaxStoreResultLog",
+							widget: "Log"
+						}
+					},
+					{
+						datasetId: "2c82c853-1ace-4528-b271-74dfe50e4611",
+						datasets: {
+							step: "Sub-Max-Store Result",
+							title: "Store Electric Power Substation Maximum Damage Result",
+							variableName: "SubMaxStoreResultLog",
+							widget: "Log"
+						}
+					},
+					{
+						datasetId: "6d2e78ec-a2db-4876-8f99-ff2e4b848cb0",
+						datasets: {
+							step: "Bldg-Func-Store Result",
+							title: "Storing Building Functionality Result",
+							variableName: "BldgFuncStoreResultLog",
+							widget: "Log"
+						}
+					},
+					{
+						datasetId: "6d2e78ec-a2db-4876-8f99-ff2e4b848cb0",
+						datasets: {
+							step: "HeatMap-Store Result",
+							title: "Store Population Dislocation HeatMap Result",
+							variableName: "HeatMapStoreResultLog",
+							widget: "Log"
+						}
+					},
+					{
+						datasetId: "d5e99bb2-17f4-4455-ab7e-510db8a691db",
+						datasets: {
+							step: "HeatMap-Store Result",
+							title: "Store Population Dislocation HeatMap Result",
+							variableName: "HeatMapStoreResultLog",
+							widget: "Log"
+						}
+					},
+					{
+						datasetId: "f7c4252e-59ee-4185-897c-57361e114cec",
+						datasets: {
+							step: "Bldg-FailProb-Store Result",
+							title: "Storing Building Failure Probability Result",
+							variableName: "BldgFailProbStoreResultLog",
+							widget: "Log"
+						}
+					},
+					{
+						datasetId: "dee3c1df-66b9-402a-a5ad-ca6d23a4662d",
+						datasets: {
+							step: "HHRSOutputProcess",
+							title: "Post Process of Housing Household Recovery Sequential Analysis",
+							variableName: "HHRSOutputProcess",
+							widget: "Log"
+						}
+					},
+					{
+						datasetId: "4f9a7142-d382-4913-8894-7549ef77e50d",
+						datasets: {
+							step: "SocialVulnerability",
+							title: "Social Vulnerability",
+							variableName: "SocialVulnerabilityLog",
+							widget: "Log"
+						}
+					},
+					{
+						datasetId: "6f0a8e45-eca2-40b4-8ea5-a964d582de4a",
+						datasets: {
+							step: "PopulationDislocation",
+							title: "Population Dislocation",
+							variableName: "PopulationDislocationLog",
+							widget: "Log"
+						}
+					},
+					{
+						datasetId: "e2867e0d-b637-4bea-dd14-b6beb03a0335",
+						datasets: {
+							step: "CGE-Output-Process",
+							title: "Post Process of CGE",
+							variableName: "CGEOutputProcessLog",
+							widget: "Log"
+						}
+					},
+					{
+						datasetId: "7b82b481-32ae-4c3b-8e32-21f6c46c3a97",
+						datasets: {
+							step: "Building-Func-Cluster",
+							title: "Clustering Building Functionality",
+							variableName: "BuildingFuncClusterLog",
+							widget: "Log"
+						}
+					},
+					{
+						datasetId: "3f32f287-cd46-4e5f-e3cd-50dff7de3b73",
+						datasets: {
+							step: "Building-Failure-Cluster",
+							title: "Clustering Building Failure",
+							variableName: "BuildingFailureClusterLog",
+							widget: "Log"
+						}
+					},
+					{
+						datasetId: "733108d3-6343-4a91-f657-98b36a5647bb",
+						datasets: {
+							step: "Building-Dmg-Summary",
+							title: "Building Damage Summary",
+							variableName: "BuildingDmgSummaryLog",
+							widget: "Log"
+						}
+					},
+					{
+						datasetId: "fd22cd60-66be-4e0c-dcb2-751e59a3d1ec",
+						datasets: {
+							step: "HousingRecoverySequential",
+							title: "Housing Household Recovery Sequential",
+							variableName: "HousingRecoverySequentialLog",
+							widget: "Log"
+						}
+					},
+					{
+						datasetId: "3b71fa25-a661-4c7a-a981-907b1867d6d4",
+						datasets: {
+							step: "BuildingDamage",
+							title: "Building Damage",
+							variableName: "BuildingDamageLog",
+							widget: "Log"
+						}
+					},
 				]
 			}
 		]
