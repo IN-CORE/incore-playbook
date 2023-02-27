@@ -559,7 +559,7 @@ export function ViewResultEntryTable(props) {
 																: classes.clickableLinkDisabled
 														}
 													>
-														Execution Logs
+														Logs
 													</Link>
 												</TableCell>
 											</TableRow>

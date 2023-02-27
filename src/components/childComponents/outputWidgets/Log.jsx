@@ -18,7 +18,6 @@ export default function Log(props) {
 
 	const [selectedExecutionName, setSelectedExecutionName] = useState("");
 	const [logContent, setLogContent] = useState({});
-	const [t, setT] = useState("1");
 
 	const printRef = useRef();
 
@@ -27,10 +26,11 @@ export default function Log(props) {
 		datawolfDatasetConfigItems.map(async (datawolfDatasetConfigItem) => {
 			const vName = datawolfDatasetConfigItem.datasets.variableName;
 			if (vName.includes("Log")) {
-				setLogContent(async (prevState) => {
+				const temp = await getOutputFileContent(datawolfConfig, executionItem, datawolfDatasetConfigItem.datasetId)
+				setLogContent((prevState) => {
 					return {
 						...prevState,
-						[datawolfDatasetConfigItem.datasets.title]: await getOutputFileContent(datawolfConfig, executionItem, datawolfDatasetConfigItem.datasetId)
+						[datawolfDatasetConfigItem.datasets.title]: temp
 					};
 				});
 			}
@@ -54,7 +54,7 @@ export default function Log(props) {
 				{/*TODO wrap into a component*/}
 				<Box className="previewTitleSection">
 					<Typography className="previewTitle">{selectedExecutionName}</Typography>
-					<Typography className="previewTitle">Execution Logs</Typography>
+					<Typography className="previewTitle">Selected Data: Logs</Typography>
 				</Box>
 
 				{/*logs*/}
