@@ -40,7 +40,7 @@ export async function getOutputFileJson(datawolfConfig = defaultDatawolfConfig, 
 
 		return await fileDownloadResponse.text();
 	} else {
-		return null;
+		return "ERROR";
 	}
 }
 

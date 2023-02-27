@@ -547,6 +547,7 @@ export function ViewResultEntryTable(props) {
 										)}
 
 										{/*Logs: Only allow the admin to see the logs*/}
+										{/*Always show logs*/}
 										{widgetList.includes("Log") && isAdmin(globalConfig.hostname)? (
 											<TableRow className={classes.subBodyRow} key={`${execution["id"]}-Log`}>
 												<TableCell colSpan={6} key={`${execution["id"]}-Log-title`}>
@@ -555,11 +556,7 @@ export function ViewResultEntryTable(props) {
 														onClick={() => {
 															preview(execution["id"], "Log");
 														}}
-														className={
-															checkResultsReady(["Log"], execution.datasets)
-																? classes.clickableLink
-																: classes.clickableLinkDisabled
-														}
+														className={classes.clickableLink}
 													>
 														Logs
 													</Link>

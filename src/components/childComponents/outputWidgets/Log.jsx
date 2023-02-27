@@ -1,14 +1,12 @@
 import React, { useEffect, useRef, useState } from "react";
 
-import { Box, Dialog, DialogActions, DialogContent, Grid, IconButton, Typography } from "@material-ui/core";
+import { Box, Dialog, DialogActions, DialogContent, IconButton, Typography } from "@material-ui/core";
 import CloseIcon from "@material-ui/icons/Close";
-import { IncoreMenuItem, IncoreSelectBox } from "../../styledComponents/IncoreSelect";
-import { getOutputFileContent, getOutputFileContentJSON } from "../../../utils/datawolf";
+import { getOutputFileContent } from "../../../utils/datawolf";
 import { useSelector } from "react-redux";
 import { exportJson } from "../../../utils/common";
 import { IncoreButtonText } from "../../styledComponents/IncoreButtonText";
 import GetAppIcon from "@material-ui/icons/GetApp";
-import { downloadImg } from "../../../utils/image";
 import { IncoreTitle } from "../../styledComponents/IncoreTitle";
 
 
@@ -60,16 +58,16 @@ export default function Log(props) {
 
 				{/*logs*/}
 				{
-					Object.keys(logContent).map((entryKey)=>{
+					Object.keys(logContent).map((entryKey) => {
 						return (
-							<Box style={{margin:"2em auto"}}>
+							<Box style={{ margin: "2em auto" }}>
 								<IncoreTitle>{entryKey}</IncoreTitle>
 								<Box style={{
 									padding: "2em",
 									backgroundColor: "#EAEAEA",
-									fontFamily: "Monospace",
+									fontFamily: "Monospace"
 								}}>
-									<dl>{logContent[entryKey] ===""? "No logs available...": logContent[entryKey]}</dl>
+									<dl>{logContent[entryKey] === "" ? "No logs available..." : logContent[entryKey]}</dl>
 								</Box>
 							</Box>);
 					})
