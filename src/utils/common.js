@@ -22,6 +22,20 @@ export const isAuthorized = (hostname = "", testbedGroup = defaultGlobalConfig.t
 	}
 };
 
+//NOTE: This is only checking if a cookie is present, but not validating the cookie.
+export const isAdmin = (hostname = "") => {
+	const authorization = cookies.get("Authorization");
+
+	if (hostname === "http://localhost:8080") return true;
+	else {
+		if (authorization !== undefined && authorization !== "" && authorization !== null) {
+			// further restrict to the testbed group
+			const userInfo = getCurrUserInfo(authorization);
+			return "groups" in userInfo && userInfo["groups"].includes("incore_ncsa");
+		} else return false;
+	}
+};
+
 // construct header
 export function getHeader(hostname = "") {
 	if (hostname.includes("localhost")) {

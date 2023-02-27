@@ -9,6 +9,7 @@ import { exportJson } from "../../../utils/common";
 import { IncoreButtonText } from "../../styledComponents/IncoreButtonText";
 import GetAppIcon from "@material-ui/icons/GetApp";
 import { downloadImg } from "../../../utils/image";
+import { IncoreTitle } from "../../styledComponents/IncoreTitle";
 
 
 export default function Log(props) {
@@ -26,7 +27,7 @@ export default function Log(props) {
 		datawolfDatasetConfigItems.map(async (datawolfDatasetConfigItem) => {
 			const vName = datawolfDatasetConfigItem.datasets.variableName;
 			if (vName.includes("Log")) {
-				const temp = await getOutputFileContent(datawolfConfig, executionItem, datawolfDatasetConfigItem.datasetId)
+				const temp = await getOutputFileContent(datawolfConfig, executionItem, datawolfDatasetConfigItem.datasetId);
 				setLogContent((prevState) => {
 					return {
 						...prevState,
@@ -37,11 +38,11 @@ export default function Log(props) {
 		});
 	}, []);
 
-	// const download = async () => {
-	// 	if (HHSBarChartContent) {
-	// 		exportJson(HHSBarChartContent, `hhs-${executionItem.id}`);
-	// 	}
-	// };
+	const download = async () => {
+		if (Object.keys(logContent).length > 0) {
+			exportJson(logContent, `logs-${executionItem.id}`);
+		}
+	};
 
 	return (
 		<Dialog open={previewOn} onClose={handlePreviewClose} maxWidth="lg" fullWidth scroll="paper">
@@ -58,21 +59,26 @@ export default function Log(props) {
 				</Box>
 
 				{/*logs*/}
-				<Box>
-					{
-						Object.keys(logContent).map((entryKey)=>{
-							return (<>
-								<p>{entryKey}</p>
-								<p>{logContent[entryKey]}</p>
-							</>);
-						})
-					}
-				</Box>
+				{
+					Object.keys(logContent).map((entryKey)=>{
+						return (
+							<Box style={{margin:"2em auto"}}>
+								<IncoreTitle>{entryKey}</IncoreTitle>
+								<Box style={{
+									padding: "2em",
+									backgroundColor: "#EAEAEA",
+									fontFamily: "Monospace",
+								}}>
+									<dl>{logContent[entryKey] ===""? "No logs available...": logContent[entryKey]}</dl>
+								</Box>
+							</Box>);
+					})
+				}
 			</DialogContent>
 			<DialogActions>
-				{/*<IncoreButtonText onClick={download} startIcon={<GetAppIcon />}>*/}
-				{/*	Download Report*/}
-				{/*</IncoreButtonText>*/}
+				<IncoreButtonText onClick={download} startIcon={<GetAppIcon />}>
+					Download Report
+				</IncoreButtonText>
 				<IncoreButtonText onClick={handlePreviewClose} startIcon={<CloseIcon />}>
 					Close
 				</IncoreButtonText>
