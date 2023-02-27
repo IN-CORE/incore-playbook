@@ -12,35 +12,40 @@ export async function getOutputFileJson(datawolfConfig = defaultDatawolfConfig, 
 		mode: "cors"
 	});
 
-	const resultDataset = await datasetResponse.json();
-	let fileId = -1;
+	if (datasetResponse.status === 200){
+		const resultDataset = await datasetResponse.json();
+		let fileId = -1;
 
-	// If output filename is already provided as input, use that to figure out the exact file that needs to be downloaded
-	if (outputFileName !== null) {
-		for (let i = 0; i < resultDataset.fileDescriptors.length; i++) {
-			if (resultDataset.fileDescriptors[i].filename === outputFileName) {
-				fileId = resultDataset.fileDescriptors[i].id;
-				break;
+		// If output filename is already provided as input, use that to figure out the exact file that needs to be downloaded
+		if (outputFileName !== null) {
+			for (let i = 0; i < resultDataset.fileDescriptors.length; i++) {
+				if (resultDataset.fileDescriptors[i].filename === outputFileName) {
+					fileId = resultDataset.fileDescriptors[i].id;
+					break;
+				}
 			}
 		}
-	}
-	// If no output filename is provided, get the first file in the dataset
-	else {
-		if (resultDataset.fileDescriptors.length > 0) {
-			fileId = resultDataset.fileDescriptors[0].id;
+		// If no output filename is provided, get the first file in the dataset
+		else {
+			if (resultDataset.fileDescriptors.length > 0) {
+				fileId = resultDataset.fileDescriptors[0].id;
+			}
+		}
+
+		if (fileId !== -1) {
+			// Get - Result File Download
+			const fileDownloadResponse = await fetch(`${datawolfConfig["datasetBaseURL"]}/${datasetId}/${fileId}/file`, {
+				method: "GET",
+				headers: authHeader
+			});
+
+			return await fileDownloadResponse.text();
+		} else {
+			return "No logs available...";
 		}
 	}
-
-	if (fileId !== -1) {
-		// Get - Result File Download
-		const fileDownloadResponse = await fetch(`${datawolfConfig["datasetBaseURL"]}/${datasetId}/${fileId}/file`, {
-			method: "GET",
-			headers: authHeader
-		});
-
-		return await fileDownloadResponse.text();
-	} else {
-		return "ERROR";
+	else{
+		return "No logs available...";
 	}
 }
 

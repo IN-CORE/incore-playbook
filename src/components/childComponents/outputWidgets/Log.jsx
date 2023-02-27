@@ -69,7 +69,7 @@ export default function Log(props) {
 									maxHeight:"500px",
 									overflow:"scroll"
 								}}>
-									<dl>{logContent[entryKey] === "" ? "No logs available..." : logContent[entryKey]}</dl>
+									<dl>{logContent[entryKey] === "" ? "N/A" : logContent[entryKey]}</dl>
 								</Box>
 							</Box>);
 					})
