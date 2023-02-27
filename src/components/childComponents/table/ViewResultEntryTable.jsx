@@ -543,6 +543,29 @@ export function ViewResultEntryTable(props) {
 										) : (
 											<></>
 										)}
+
+										{/*Logs*/}
+										{widgetList.includes("Log") ? (
+											<TableRow className={classes.subBodyRow} key={`${execution["id"]}-Log`}>
+												<TableCell colSpan={6} key={`${execution["id"]}-Log-title`}>
+													<Link
+														color="primary"
+														onClick={() => {
+															preview(execution["id"], "Log");
+														}}
+														className={
+															checkResultsReady(["Log"], execution.datasets)
+																? classes.clickableLink
+																: classes.clickableLinkDisabled
+														}
+													>
+														Execution Logs
+													</Link>
+												</TableCell>
+											</TableRow>
+										) : (
+											<></>
+										)}
 									</>
 								) : null}
 							</>

@@ -1920,6 +1920,51 @@ const datawolfWorkflowConfig = {
 							variableName: "HHSBarChartContent",
 							widget: "HHS"
 						}
+					},
+					{
+						datasetId: "4eebb9b8-43f3-45cb-800c-d717d07d5d30",
+						datasets: {
+							step: "Disl-Post-Process",
+							title: "Disl Post Process",
+							variableName: "DislPostProcessLog",
+							widget: "Log"
+						}
+					},
+					{
+						datasetId: "622be383-df51-42a4-f4bf-84e8d24f11f2",
+						datasets: {
+							step: "Bldg-Max-Dmg-State",
+							title: "Bldg Max Dmg State",
+							variableName: "BldgMaxDmgStateLog",
+							widget: "Log"
+						}
+					},
+					{
+						datasetId: "96ee0749-dec4-48ee-adf0-9e7d8e4adde0",
+						datasets: {
+							step: "BuildingFunctionality",
+							title: "Building Functionality",
+							variableName: "BuildingFunctionalityLog",
+							widget: "Log"
+						}
+					},
+					{
+						datasetId: "9b349e27-baa7-4a41-e9e4-d3290286a0a5",
+						datasets: {
+							step: "Bldg-MonteCarloFailureProbability",
+							title: "Bldg MonteCarloFailure Probability",
+							variableName: "BldgMonteCarloFailureProbabilityLog",
+							widget: "Log"
+						}
+					},
+					{
+						datasetId: "fbc7824b-0253-4e71-a4ca-e5f2d47a4dec",
+						datasets: {
+							step: "Poles-MonteCarloFailureProbability",
+							title: "Poles MonteCarloFailure Probability",
+							variableName: "PolesMonteCarloFailureProbabilityLog",
+							widget: "Log"
+						}
 					}
 				]
 			}
