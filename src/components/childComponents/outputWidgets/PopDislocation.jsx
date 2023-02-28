@@ -205,12 +205,6 @@ export default function PopDislocation(props) {
 				</Box>
 			</DialogContent>
 			<DialogActions>
-<<<<<<< HEAD
-				<IncoreButtonText onClick={() => {downloadImg(printRef.current, "Population_Dislocation");}}
-								  startIcon={<CameraAltIcon />}>Image</IncoreButtonText>
-				<IncoreButtonText onClick={download} startIcon={<GetAppIcon />}>Data</IncoreButtonText>
-				<IncoreButtonText onClick={handlePreviewClose} startIcon={<CloseIcon />}>Close</IncoreButtonText>
-=======
 				<IncoreButtonText
 					onClick={() => {
 						downloadImg(printRef.current, "Population_Dislocation");
@@ -225,7 +219,6 @@ export default function PopDislocation(props) {
 				<IncoreButtonText onClick={handlePreviewClose} startIcon={<CloseIcon />}>
 					Close
 				</IncoreButtonText>
->>>>>>> 5eca8b9 (resolve merge conflicts)
 			</DialogActions>
 		</Dialog>
 	);
