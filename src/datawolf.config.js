@@ -1769,7 +1769,7 @@ const datawolfWorkflowConfig = {
 						}
 					},
 					{
-						datasetId: "60648e1a-17e8-4dcf-e13d-7f991a35d46b",
+						datasetId: "b9e08789-8730-49b8-8f21-be76889db2d6",
 						datasets: {
 							step: "Pole-Max-Store Result",
 							title: "EPF pole maximum damage state",
@@ -1850,7 +1850,7 @@ const datawolfWorkflowConfig = {
 						}
 					},
 					{
-						datasetId: "0a5c4805-828d-43e5-f3a6-707d6400d6e9",
+						datasetId: "b502fc43-c3b1-4332-a632-db88061c18df",
 						datasets: {
 							step: "HeatMap-Store Result",
 							title: "Population dislocation heatmap",

@@ -2,7 +2,7 @@ import { Box, Container, Dialog, DialogActions, DialogContent, IconButton, Typog
 import CloseIcon from "@material-ui/icons/Close";
 import Map from "../map/Map";
 import { fromLonLat, getTransform } from "ol/proj";
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
 import { applyTransform } from "ol/extent";
 import { getOutputFileContent } from "../../../utils/datawolf";
@@ -14,9 +14,9 @@ import { downloadImg } from "../../../utils/image";
 import CameraAltIcon from "@material-ui/icons/CameraAlt";
 
 
-export default function SubstationDamage(props){
+export default function SubstationDamage(props) {
 
-	let {executionItem, previewOn, handlePreviewClose, datawolfDatasetConfigItems, hazardLayers} = props;
+	let { executionItem, previewOn, handlePreviewClose, datawolfDatasetConfigItems, hazardLayers } = props;
 
 	const mapConfig = useSelector((state) => state.config.mapConfig);
 	const datawolfConfig = useSelector((state) => state.config.datawolfConfig);
@@ -24,19 +24,13 @@ export default function SubstationDamage(props){
 
 	const [selectedExecutionName, setSelectedExecutionName] = useState("");
 	const [substationMaxDmgStateINCOREId, setSubstationMaxDmgStateINCOREId] = useState(null);
+	const [damageLayers, setDamageLayers] = useState(null);
 
-	// Holds an instance of Map component
-	const layerRef = useRef(basicLayers);
 	// print container
 	const printRef = useRef();
 
-
 	useEffect(() => {
 		setSelectedExecutionName(executionItem["title"]);
-
-		if (hazardLayers && layerRef.current.tilelayer.getLayers()) {
-			layerRef.current.tilelayer.getLayers().push(hazardLayers);
-		}
 
 		datawolfDatasetConfigItems.map(async (datawolfDatasetConfigItem) => {
 			const vName = datawolfDatasetConfigItem.datasets.variableName;
@@ -57,7 +51,7 @@ export default function SubstationDamage(props){
 					}
 				];
 				const previewLayers = generateLayers(globalConfig, layerDef);
-				layerRef.current.tilelayer.getLayers().extend(previewLayers);
+				setDamageLayers(previewLayers);
 			}
 		});
 	}, []);
@@ -70,9 +64,7 @@ export default function SubstationDamage(props){
 	return (
 		<Dialog
 			open={previewOn}
-			onClose={() => {
-				handlePreviewClose(layerRef);
-			}}
+			onClose={handlePreviewClose}
 			maxWidth="lg"
 			fullWidth
 			scroll="paper"
@@ -80,9 +72,7 @@ export default function SubstationDamage(props){
 			<DialogContent className="previewModal" ref={printRef}>
 				<IconButton
 					aria-label="Close"
-					onClick={() => {
-						handlePreviewClose(layerRef);
-					}}
+					onClick={handlePreviewClose}
 					style={{ float: "right" }}
 				>
 					<CloseIcon fontSize="small" />
@@ -95,25 +85,35 @@ export default function SubstationDamage(props){
 					<Typography className="previewTitle">Select Data: EPF Substation Damage</Typography>
 				</Box>
 
-				{/*map*/}
-				<Container className="mapContainerFull" disableGutters>
-					<Map
-						className="fillContainer"
-						zoom={mapConfig.ZOOM}
-						minZoom={mapConfig.MIN_ZOOM}
-						maxZoom={mapConfig.MAX_ZOOM}
-						extent={applyTransform(mapConfig.MAP_BOUNDS, getTransform("EPSG:4326", "EPSG:3857"))}
-						center={fromLonLat(mapConfig.MAP_CENTER)}
-						layers={[layerRef.current.basemaps, layerRef.current.tilelayer]}
-						layerSwitcherOptions={{}}
-					/>
-				</Container>
+				{/*for map*/}
+				{
+					basicLayers && hazardLayers && damageLayers ?
+						<Container className="mapContainer" disableGutters>
+							<Map
+								className="fillContainer"
+								zoom={mapConfig.ZOOM}
+								minZoom={mapConfig.MIN_ZOOM}
+								maxZoom={mapConfig.MAX_ZOOM}
+								extent={applyTransform(mapConfig.MAP_BOUNDS, getTransform("EPSG:4326", "EPSG:3857"))}
+								center={fromLonLat(mapConfig.MAP_CENTER)}
+								layers={[
+									basicLayers,
+									damageLayers,
+									hazardLayers
+								]}
+								layerSwitcherOptions={{}}
+							/>
+						</Container>
+						:
+						<></>
+				}
+
 			</DialogContent>
 			<DialogActions>
-				<IncoreButtonText onClick={()=>{downloadImg(printRef.current, "Electric_Power_Substation_Damage");}}
-								  startIcon={<CameraAltIcon/>}>Image</IncoreButtonText>
-				<IncoreButtonText onClick={download} startIcon={<GetAppIcon/>}>Data</IncoreButtonText>
-				<IncoreButtonText onClick={handlePreviewClose} startIcon={<CloseIcon/>}>Close</IncoreButtonText>
+				<IncoreButtonText onClick={() => {downloadImg(printRef.current, "Electric_Power_Substation_Damage");}}
+								  startIcon={<CameraAltIcon />}>Image</IncoreButtonText>
+				<IncoreButtonText onClick={download} startIcon={<GetAppIcon />}>Data</IncoreButtonText>
+				<IncoreButtonText onClick={handlePreviewClose} startIcon={<CloseIcon />}>Close</IncoreButtonText>
 			</DialogActions>
 		</Dialog>
 	);

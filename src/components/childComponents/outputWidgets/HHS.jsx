@@ -13,7 +13,6 @@ import HhsDescription from "../step/HhsDescription";
 import { downloadImg } from "../../../utils/image";
 import CameraAltIcon from "@material-ui/icons/CameraAlt";
 
-
 export default function HHS(props) {
 	let { executionItem, previewOn, handlePreviewClose, datawolfDatasetConfigItems } = props;
 
@@ -109,8 +108,14 @@ export default function HHS(props) {
 				</Box>
 			</DialogContent>
 			<DialogActions>
-				<IncoreButtonText onClick={()=>{downloadImg(printRef.current, "HHS");}}
-								  startIcon={<CameraAltIcon/>}>Image</IncoreButtonText>
+				<IncoreButtonText
+					onClick={() => {
+						downloadImg(printRef.current, "HHS");
+					}}
+					startIcon={<CameraAltIcon />}
+				>
+					Image
+				</IncoreButtonText>
 				<IncoreButtonText onClick={download} startIcon={<GetAppIcon />}>
 					Download Report
 				</IncoreButtonText>
