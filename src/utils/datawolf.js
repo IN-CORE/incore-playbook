@@ -88,20 +88,7 @@ export async function submitExecution(
 		mode: "cors"
 	});
 
-	const datawolfExecutionStatus = datawolfResponse.status;
-	let subMessage = "";
-
-	if (datawolfExecutionStatus !== 200) {
-		if (datawolfExecutionStatus === 401) {
-			subMessage = " Error: Unauthorized request. Please log in and try again.";
-		} else if (datawolfExecutionStatus === 403) {
-			subMessage = " Error: Forbidden, you don't have enough privileges to run this execution.";
-		} else {
-			subMessage = ` Error: Unknown error, response status code: ${datawolfExecutionStatus}`;
-		}
-	}
-
-	return { status: datawolfExecutionStatus, message: subMessage };
+	return datawolfResponse.status;
 }
 
 // TODO move this to redux

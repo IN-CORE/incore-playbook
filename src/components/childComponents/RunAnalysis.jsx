@@ -94,6 +94,7 @@ export default function ViewResult(props) {
 	const [title, setTitle] = useState("");
 	const [description, setDescription] = useState("");
 	const [submitExecutionErrorOpen, submitExecutionErrorSetOpen] = useState(false);
+	const [submitExecutionErrorStatus, submitExecutionErrorSetStatus] = useState(null);
 
 	let submitExecutionErrorMessage = "Couldn't submit the Execution.";
 
@@ -124,7 +125,7 @@ export default function ViewResult(props) {
 	}, [datawolfFormState]);
 
 	const handleRunButtonClick = async () => {
-		const datawolfExecution = await submitExecution(
+		const datawolfExecutionStatus = await submitExecution(
 			datawolfConfig,
 			datawolfWorkflowConfig,
 			title,
@@ -132,9 +133,9 @@ export default function ViewResult(props) {
 			datawolfFormState
 		);
 
-		if (datawolfExecution.status !== 200) {
-			setOpen(true);
-			submitExecutionErrorMessage = submitExecutionErrorMessage + datawolfExecution.message;
+		if (datawolfExecutionStatus !== 200) {
+			submitExecutionErrorSetOpen(true);
+			submitExecutionErrorSetStatus(datawolfExecutionStatus);
 		} else {
 			// clear the form
 			setTitle("");
@@ -210,6 +211,7 @@ export default function ViewResult(props) {
 						setOpen={submitExecutionErrorSetOpen}
 						message={submitExecutionErrorMessage}
 						alertSeverity={"error"}
+						status={submitExecutionErrorStatus}
 					/>
 
 					<Box className="inputGroup" style={{ height: "auto" }}>
