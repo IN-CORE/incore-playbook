@@ -114,19 +114,9 @@ export default function PopDislocation(props) {
 	};
 
 	return (
-		<Dialog
-			open={previewOn}
-			onClose={handlePreviewClose}
-			maxWidth="lg"
-			fullWidth
-			scroll="paper"
-		>
+		<Dialog open={previewOn} onClose={handlePreviewClose} maxWidth="lg" fullWidth scroll="paper">
 			<DialogContent className="previewModal" ref={printRef}>
-				<IconButton
-					aria-label="Close"
-					onClick={handlePreviewClose}
-					style={{ float: "right" }}
-				>
+				<IconButton aria-label="Close" onClick={handlePreviewClose} style={{ float: "right" }}>
 					<CloseIcon fontSize="small" />
 				</IconButton>
 
@@ -138,28 +128,22 @@ export default function PopDislocation(props) {
 				</Box>
 
 				{/*for map*/}
-				{
-					basicLayers && hazardLayers && damageLayers1 && damageLayers2 ?
-						<Container className="mapContainer" disableGutters>
-							<Map
-								className="fillContainer"
-								zoom={mapConfig.ZOOM}
-								minZoom={mapConfig.MIN_ZOOM}
-								maxZoom={mapConfig.MAX_ZOOM}
-								extent={applyTransform(mapConfig.MAP_BOUNDS, getTransform("EPSG:4326", "EPSG:3857"))}
-								center={fromLonLat(mapConfig.MAP_CENTER)}
-								layers={[
-									basicLayers,
-									damageLayers1,
-									damageLayers2,
-									hazardLayers
-								]}
-								layerSwitcherOptions={{}}
-							/>
-						</Container>
-						:
-						<></>
-				}
+				{basicLayers && hazardLayers && damageLayers1 && damageLayers2 ? (
+					<Container className="mapContainer" disableGutters>
+						<Map
+							className="fillContainer"
+							zoom={mapConfig.ZOOM}
+							minZoom={mapConfig.MIN_ZOOM}
+							maxZoom={mapConfig.MAX_ZOOM}
+							extent={applyTransform(mapConfig.MAP_BOUNDS, getTransform("EPSG:4326", "EPSG:3857"))}
+							center={fromLonLat(mapConfig.MAP_CENTER)}
+							layers={[basicLayers, damageLayers1, damageLayers2, hazardLayers]}
+							layerSwitcherOptions={{}}
+						/>
+					</Container>
+				) : (
+					<></>
+				)}
 
 				{/*for table*/}
 				<Box style={{ padding: "50px 25px" }}>
@@ -189,28 +173,22 @@ export default function PopDislocation(props) {
 							dislocationByRaceContent &&
 							dislocationByTenureContent &&
 							dislocationByHousingTypeContent ? (
-									<HuaResultsTable
-										resultsJson={{
-											income: dislocationByIncomeContent,
-											race: dislocationByRaceContent,
-											tenure: dislocationByTenureContent,
-											housingType: dislocationByHousingTypeContent
-										}}
-									/>
-								) : (
-									<></>
-								)}
+								<HuaResultsTable
+									resultsJson={{
+										income: dislocationByIncomeContent,
+										race: dislocationByRaceContent,
+										tenure: dislocationByTenureContent,
+										housingType: dislocationByHousingTypeContent
+									}}
+								/>
+							) : (
+								<></>
+							)}
 						</Grid>
 					</Grid>
 				</Box>
 			</DialogContent>
 			<DialogActions>
-<<<<<<< HEAD
-				<IncoreButtonText onClick={() => {downloadImg(printRef.current, "Population_Dislocation");}}
-								  startIcon={<CameraAltIcon />}>Image</IncoreButtonText>
-				<IncoreButtonText onClick={download} startIcon={<GetAppIcon />}>Data</IncoreButtonText>
-				<IncoreButtonText onClick={handlePreviewClose} startIcon={<CloseIcon />}>Close</IncoreButtonText>
-=======
 				<IncoreButtonText
 					onClick={() => {
 						downloadImg(printRef.current, "Population_Dislocation");
@@ -225,7 +203,6 @@ export default function PopDislocation(props) {
 				<IncoreButtonText onClick={handlePreviewClose} startIcon={<CloseIcon />}>
 					Close
 				</IncoreButtonText>
->>>>>>> 5eca8b9 (resolve merge conflicts)
 			</DialogActions>
 		</Dialog>
 	);
