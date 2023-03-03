@@ -17,7 +17,7 @@ import UnfoldLess from "@material-ui/icons/UnfoldLess";
 import { makeStyles } from "@material-ui/core/styles";
 import { useSelector } from "react-redux";
 
-import { parseDateTime } from "../../../utils/common";
+import { isAdmin, parseDateTime } from "../../../utils/common";
 
 const useStyles = makeStyles({
 	table: {
@@ -140,6 +140,8 @@ export function ViewResultEntryTable(props) {
 
 	// list all the widgets from workflow definition
 	const datawolfWorkflowConfig = useSelector((state) => state.config.datawolfWorkflowConfig);
+	const globalConfig = useSelector((state) => state.config.globalConfig);
+
 	useEffect(() => {
 		setWidgetList(
 			datawolfWorkflowConfig.outputs.datasets[0].datasetsMap.reduce((list, item) => {
@@ -537,6 +539,26 @@ export function ViewResultEntryTable(props) {
 														}
 													>
 														Housing Recovery
+													</Link>
+												</TableCell>
+											</TableRow>
+										) : (
+											<></>
+										)}
+
+										{/*Logs: Only allow the admin to see the logs*/}
+										{/*Always show logs*/}
+										{widgetList.includes("Log") && isAdmin(globalConfig.hostname)? (
+											<TableRow className={classes.subBodyRow} key={`${execution["id"]}-Log`}>
+												<TableCell colSpan={6} key={`${execution["id"]}-Log-title`}>
+													<Link
+														color="primary"
+														onClick={() => {
+															preview(execution["id"], "Log");
+														}}
+														className={classes.clickableLink}
+													>
+														Logs
 													</Link>
 												</TableCell>
 											</TableRow>
