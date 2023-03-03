@@ -20,6 +20,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - A new "Created By" column in step 3-4 to track user executions. Fixed datetime format display in the table. [#120](https://github.com/IN-CORE/incore-playbook/issues/120)
 - HHRS Bar Chart [#95](https://github.com/IN-CORE/incore-playbook/issues/95)
 - Pagination to view datawolf execution [#151](https://github.com/IN-CORE/incore-playbook/issues/151)
+- Admins can see datawolf logs [#147](https://github.com/IN-CORE/incore-playbook/issues/147)
 
 ### Changed
 - Renamed master branch to main [#28](https://github.com/IN-CORE/incore-playbook/issues/28)
