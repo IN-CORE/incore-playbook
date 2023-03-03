@@ -333,256 +333,262 @@ export function ViewResultEntryTable(props) {
 												)}
 											</TableCell>
 										</TableRow>
-										{execution["id"] === expandId && execution["id"] !== collapseId ? (
-											<>
-												{/* {console.log(execution)} */}
-												{/*resilience metrics*/}
-												{widgetList.includes("CGE") &&
-										widgetList.includes("PopDislocation") &&
-										widgetList.includes("BldgFunctionality") ? (
+										{
+											execution["id"] === expandId && execution["id"] !== collapseId ? (
+												<>
+													{/* {console.log(execution)} */}
+													{/*resilience metrics*/}
+													{widgetList.includes("CGE") &&
+													widgetList.includes("PopDislocation") &&
+													widgetList.includes("BldgFunctionality") ? (
+															<TableRow
+																className={classes.subBodyRow}
+																key={`${execution["id"]}-resilience-metrics`}
+															>
+																<TableCell
+																	colSpan={6}
+																	key={`${execution["id"]}-resilience-metrics-title`}
+																>
+																	<Link
+																		color="primary"
+																		onClick={() => {
+																			preview(execution["id"], "ResilienceMetrics");
+																		}}
+																		className={
+																			checkResultsReady(
+																				["CGE", "PopDislocation", "BldgFunctionality"],
+																				execution.datasets
+																			)
+																				? classes.clickableLink
+																				: classes.clickableLinkDisabled
+																		}
+																	>
+																	Resilience Metrics
+																	</Link>
+																</TableCell>
+															</TableRow>
+														) : (
+															<></>
+														)}
+													{/*EPF damage*/}
+													{widgetList.includes("PoleDamage") ? (
 														<TableRow
 															className={classes.subBodyRow}
-															key={`${execution["id"]}-resilience-metrics`}
+															key={`${execution["id"]}-epf-pole`}
 														>
-															<TableCell
-																colSpan={6}
-																key={`${execution["id"]}-resilience-metrics-title`}
-															>
+															<TableCell colSpan={6} key={`${execution["id"]}-epf-pole-title`}>
 																<Link
 																	color="primary"
 																	onClick={() => {
-																		preview(execution["id"], "ResilienceMetrics");
+																		preview(execution["id"], "PoleDamage");
 																	}}
 																	className={
-																		checkResultsReady(
-																			["CGE", "PopDislocation", "BldgFunctionality"],
-																			execution.datasets
-																		)
+																		checkResultsReady(["PoleDamage"], execution.datasets)
 																			? classes.clickableLink
 																			: classes.clickableLinkDisabled
 																	}
 																>
-														Resilience Metrics
+																	Pole Damage (Electrical Power Network)
 																</Link>
 															</TableCell>
 														</TableRow>
 													) : (
 														<></>
 													)}
-												{/*EPF damage*/}
-												{widgetList.includes("PoleDamage") ? (
-													<TableRow
-														className={classes.subBodyRow}
-														key={`${execution["id"]}-epf-pole`}
-													>
-														<TableCell colSpan={6} key={`${execution["id"]}-epf-pole-title`}>
-															<Link
-																color="primary"
-																onClick={() => {
-																	preview(execution["id"], "PoleDamage");
-																}}
-																className={
-																	checkResultsReady(["PoleDamage"], execution.datasets)
-																		? classes.clickableLink
-																		: classes.clickableLinkDisabled
-																}
-															>
-														Pole Damage (Electrical Power Network)
-															</Link>
-														</TableCell>
-													</TableRow>
-												) : (
-													<></>
-												)}
-												{widgetList.includes("SubstationDamage") ? (
-													<TableRow
-														className={classes.subBodyRow}
-														key={`${execution["id"]}-epf-substation`}
-													>
-														<TableCell colSpan={6} key={`${execution["id"]}-epf-substation-title`}>
-															<Link
-																color="primary"
-																onClick={() => {
-																	preview(execution["id"], "SubstationDamage");
-																}}
-																className={
-																	checkResultsReady(["SubstationDamage"], execution.datasets)
-																		? classes.clickableLink
-																		: classes.clickableLinkDisabled
-																}
-															>
-														Substation Damage (Electrical Power Network)
-															</Link>
-														</TableCell>
-													</TableRow>
-												) : (
-													<></>
-												)}
-												{/*building damage*/}
-												{widgetList.includes("BldgDamage") ? (
-													<TableRow
-														className={classes.subBodyRow}
-														key={`${execution["id"]}-bldg-dmg`}
-													>
-														<TableCell colSpan={6} key={`${execution["id"]}-bldg-dmg-title`}>
-															<Link
-																color="primary"
-																onClick={() => {
-																	preview(execution["id"], "BldgDamage");
-																}}
-																className={
-																	checkResultsReady(["BldgDamage"], execution.datasets)
-																		? classes.clickableLink
-																		: classes.clickableLinkDisabled
-																}
-															>
-														Building Damage
-															</Link>
-														</TableCell>
-													</TableRow>
-												) : (
-													<></>
-												)}
-
-												{/*mcs*/}
-												{widgetList.includes("BldgMCS") ? (
-													<TableRow className={classes.subBodyRow} key={`${execution["id"]}-mcs`}>
-														<TableCell colSpan={6} key={`${execution["id"]}-mcs-title`}>
-															<Link
-																color="primary"
-																onClick={() => {
-																	preview(execution["id"], "BldgMCS");
-																}}
-																className={
-																	checkResultsReady(["BldgMCS"], execution.datasets)
-																		? classes.clickableLink
-																		: classes.clickableLinkDisabled
-																}
-															>
-														Building Functionality (without Electrical Power Dependency)
-															</Link>
-														</TableCell>
-													</TableRow>
-												) : (
-													<></>
-												)}
-												{/*bldg functionality*/}
-												{widgetList.includes("BldgFunctionality") ? (
-													<TableRow
-														className={classes.subBodyRow}
-														key={`${execution["id"]}-bldg-functionality`}
-													>
-														<TableCell
-															colSpan={6}
-															key={`${execution["id"]}-bldg-functionality-title`}
+													{widgetList.includes("SubstationDamage") ? (
+														<TableRow
+															className={classes.subBodyRow}
+															key={`${execution["id"]}-epf-substation`}
 														>
-															<Link
-																color="primary"
-																onClick={() => {
-																	preview(execution["id"], "BldgFunctionality");
-																}}
-																className={
-																	checkResultsReady(["BldgFunctionality"], execution.datasets)
-																		? classes.clickableLink
-																		: classes.clickableLinkDisabled
-																}
-															>
-														Building Functionality (with Electrical Power Dependency)
-															</Link>
-														</TableCell>
-													</TableRow>
-												) : (
-													<></>
-												)}
-												{/*CGE*/}
-												{widgetList.includes("CGE") ? (
-													<TableRow className={classes.subBodyRow} key={`${execution["id"]}-cge`}>
-														<TableCell colSpan={6} key={`${execution["id"]}-cge-title`}>
-															<Link
-																color="primary"
-																onClick={() => {
-																	preview(execution["id"], "CGE");
-																}}
-																className={
-																	checkResultsReady(["CGE"], execution.datasets)
-																		? classes.clickableLink
-																		: classes.clickableLinkDisabled
-																}
-															>
-														Economic Prediction Model (Computable General Equilibrium)
-															</Link>
-														</TableCell>
-													</TableRow>
-												) : (
-													<></>
-												)}
-												{/*population dislocation*/}
-												{widgetList.includes("PopDislocation") ? (
-													<TableRow
-														className={classes.subBodyRow}
-														key={`${execution["id"]}-popdislocation`}
-													>
-														<TableCell colSpan={6} key={`${execution["id"]}-popdislocation-title`}>
-															<Link
-																color="primary"
-																onClick={() => {
-																	preview(execution["id"], "PopDislocation");
-																}}
-																className={
-																	checkResultsReady(["PopDislocation"], execution.datasets)
-																		? classes.clickableLink
-																		: classes.clickableLinkDisabled
-																}
-															>
-														Population Dislocation
-															</Link>
-														</TableCell>
-													</TableRow>
-												) : (
-													<></>
-												)}
-												{/*Housing Recover*/}
-												{widgetList.includes("HHS") ? (
-													<TableRow className={classes.subBodyRow} key={`${execution["id"]}-HHS`}>
-														<TableCell colSpan={6} key={`${execution["id"]}-HHS-title`}>
-															<Link
-																color="primary"
-																onClick={() => {
-																	preview(execution["id"], "HHS");
-																}}
-																className={
-																	checkResultsReady(["HHS"], execution.datasets)
-																		? classes.clickableLink
-																		: classes.clickableLinkDisabled
-																}
-															>
-														Housing Recovery
-													</Link>
-												</TableCell>
-											</TableRow>
-										) : (
-											<></>
-										)}
+															<TableCell colSpan={6} key={`${execution["id"]}-epf-substation-title`}>
+																<Link
+																	color="primary"
+																	onClick={() => {
+																		preview(execution["id"], "SubstationDamage");
+																	}}
+																	className={
+																		checkResultsReady(["SubstationDamage"], execution.datasets)
+																			? classes.clickableLink
+																			: classes.clickableLinkDisabled
+																	}
+																>
+																	Substation Damage (Electrical Power Network)
+																</Link>
+															</TableCell>
+														</TableRow>
+													) : (
+														<></>
+													)}
+													{/*building damage*/}
+													{widgetList.includes("BldgDamage") ? (
+														<TableRow
+															className={classes.subBodyRow}
+															key={`${execution["id"]}-bldg-dmg`}
+														>
+															<TableCell colSpan={6} key={`${execution["id"]}-bldg-dmg-title`}>
+																<Link
+																	color="primary"
+																	onClick={() => {
+																		preview(execution["id"], "BldgDamage");
+																	}}
+																	className={
+																		checkResultsReady(["BldgDamage"], execution.datasets)
+																			? classes.clickableLink
+																			: classes.clickableLinkDisabled
+																	}
+																>
+																	Building Damage
+																</Link>
+															</TableCell>
+														</TableRow>
+													) : (
+														<></>
+													)}
 
-										{/*Logs: Only allow the admin to see the logs*/}
-										{/*Always show logs*/}
-										{widgetList.includes("Log") && isAdmin(globalConfig.hostname)? (
-											<TableRow className={classes.subBodyRow} key={`${execution["id"]}-Log`}>
-												<TableCell colSpan={6} key={`${execution["id"]}-Log-title`}>
-													<Link
-														color="primary"
-														onClick={() => {
-															preview(execution["id"], "Log");
-														}}
-														className={classes.clickableLink}
-													>
-														Logs
-													</Link>
-												</TableCell>
-											</TableRow>
-										) : (
-											<></>
-										)}
+													{/*mcs*/}
+													{widgetList.includes("BldgMCS") ? (
+														<TableRow className={classes.subBodyRow} key={`${execution["id"]}-mcs`}>
+															<TableCell colSpan={6} key={`${execution["id"]}-mcs-title`}>
+																<Link
+																	color="primary"
+																	onClick={() => {
+																		preview(execution["id"], "BldgMCS");
+																	}}
+																	className={
+																		checkResultsReady(["BldgMCS"], execution.datasets)
+																			? classes.clickableLink
+																			: classes.clickableLinkDisabled
+																	}
+																>
+																	Building Functionality (without Electrical Power Dependency)
+																</Link>
+															</TableCell>
+														</TableRow>
+													) : (
+														<></>
+													)}
+													{/*bldg functionality*/}
+													{widgetList.includes("BldgFunctionality") ? (
+														<TableRow
+															className={classes.subBodyRow}
+															key={`${execution["id"]}-bldg-functionality`}
+														>
+															<TableCell
+																colSpan={6}
+																key={`${execution["id"]}-bldg-functionality-title`}
+															>
+																<Link
+																	color="primary"
+																	onClick={() => {
+																		preview(execution["id"], "BldgFunctionality");
+																	}}
+																	className={
+																		checkResultsReady(["BldgFunctionality"], execution.datasets)
+																			? classes.clickableLink
+																			: classes.clickableLinkDisabled
+																	}
+																>
+																	Building Functionality (with Electrical Power Dependency)
+																</Link>
+															</TableCell>
+														</TableRow>
+													) : (
+														<></>
+													)}
+													{/*CGE*/}
+													{widgetList.includes("CGE") ? (
+														<TableRow className={classes.subBodyRow} key={`${execution["id"]}-cge`}>
+															<TableCell colSpan={6} key={`${execution["id"]}-cge-title`}>
+																<Link
+																	color="primary"
+																	onClick={() => {
+																		preview(execution["id"], "CGE");
+																	}}
+																	className={
+																		checkResultsReady(["CGE"], execution.datasets)
+																			? classes.clickableLink
+																			: classes.clickableLinkDisabled
+																	}
+																>
+																	Economic Prediction Model (Computable General Equilibrium)
+																</Link>
+															</TableCell>
+														</TableRow>
+													) : (
+														<></>
+													)}
+													{/*population dislocation*/}
+													{widgetList.includes("PopDislocation") ? (
+														<TableRow
+															className={classes.subBodyRow}
+															key={`${execution["id"]}-popdislocation`}
+														>
+															<TableCell colSpan={6} key={`${execution["id"]}-popdislocation-title`}>
+																<Link
+																	color="primary"
+																	onClick={() => {
+																		preview(execution["id"], "PopDislocation");
+																	}}
+																	className={
+																		checkResultsReady(["PopDislocation"], execution.datasets)
+																			? classes.clickableLink
+																			: classes.clickableLinkDisabled
+																	}
+																>
+																	Population Dislocation
+																</Link>
+															</TableCell>
+														</TableRow>
+													) : (
+														<></>
+													)}
+													{/*Housing Recover*/}
+													{widgetList.includes("HHS") ? (
+														<TableRow className={classes.subBodyRow} key={`${execution["id"]}-HHS`}>
+															<TableCell colSpan={6} key={`${execution["id"]}-HHS-title`}>
+																<Link
+																	color="primary"
+																	onClick={() => {
+																		preview(execution["id"], "HHS");
+																	}}
+																	className={
+																		checkResultsReady(["HHS"], execution.datasets)
+																			? classes.clickableLink
+																			: classes.clickableLinkDisabled
+																	}
+																>
+																	Housing Recovery
+																</Link>
+															</TableCell>
+														</TableRow>
+													) : (
+														<></>
+													)}
+
+													{/*Logs: Only allow the admin to see the logs*/}
+													{/*Always show logs*/}
+													{widgetList.includes("Log") && isAdmin(globalConfig.hostname)? (
+														<TableRow className={classes.subBodyRow} key={`${execution["id"]}-Log`}>
+															<TableCell colSpan={6} key={`${execution["id"]}-Log-title`}>
+																<Link
+																	color="primary"
+																	onClick={() => {
+																		preview(execution["id"], "Log");
+																	}}
+																	className={classes.clickableLink}
+																>
+																	Logs
+																</Link>
+															</TableCell>
+														</TableRow>
+													) : (
+														<></>
+													)}
+												</>
+											)
+												:
+												<></>
+										}
 									</>
 								);
 							})}
