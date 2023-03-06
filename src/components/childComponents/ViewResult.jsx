@@ -21,6 +21,7 @@ import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Switch from "@material-ui/core/Switch";
 import { getHazardGroupLayers } from "../../utils/map";
 import HHS from "./outputWidgets/HHS";
+import Log from "./outputWidgets/Log";
 
 const useStyles = makeStyles({
 	statTitle: {
@@ -52,6 +53,7 @@ const registeredWidgets = {
 	SubstationDamage: <SubstationDamage />,
 	// eslint-disable-next-line react/jsx-pascal-case
 	HHS: <HHS />,
+	Log: <Log />
 };
 
 export default function ViewResult(props) {
