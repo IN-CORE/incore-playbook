@@ -6,8 +6,9 @@ import { Layout } from "./Layout";
 import ViewResult from "./childComponents/ViewResult";
 import RunAnalysis from "./childComponents/RunAnalysis";
 import BreadCrumb from "./childComponents/navigation/BreadCrumb";
-import { fetchExecutions } from "../actions/datawolf";
+import { AlertMessage } from "./childComponents/AlertMessage";
 import StepStatus from "./childComponents/step/StepStatus";
+import { fetchExecutions } from "../actions/datawolf";
 
 const useStyles = makeStyles({
 	tab: {
@@ -23,11 +24,14 @@ const useStyles = makeStyles({
 });
 
 export const AnticipatedPerformance = (props) => {
-	const {step, substep} = props;
+	const { step, substep } = props;
 
 	const classes = useStyles();
 
 	const [currTabIndex, setCurrTabIndex] = useState(0);
+	const [errorAlertOpen, setErrorAlertOpen] = useState(false);
+	const [errorStatus, setErrorStatus] = useState(null);
+	const [errorMessage, setErrorMessage] = useState("");
 
 	// Redux connect equivalent
 	const dispatch = useDispatch();
@@ -37,7 +41,7 @@ export const AnticipatedPerformance = (props) => {
 	return (
 		<Layout>
 			<div className="firstDivInContent">
-				<Box display="flex" style={{alignItem:"baseline", padding:"1em 0"}}>
+				<Box display="flex" style={{ alignItem: "baseline", padding: "1em 0" }}>
 					<BreadCrumb
 						parentStep="Determine Goals & Objectives"
 						childStep="Determine Anticipated Performance"
@@ -75,12 +79,22 @@ export const AnticipatedPerformance = (props) => {
 								gotoViewResultTab={() => {
 									setCurrTabIndex(1);
 								}}
+								setErrorAlertOpen={setErrorAlertOpen}
+								setErrorStatus={setErrorStatus}
+								setErrorMessage={setErrorMessage}
 							/>
 							<ViewResult
 								value={currTabIndex}
 								index={1}
 								getExecutionList={getExecutionList}
 								executions={executions}
+							/>
+							<AlertMessage
+								open={errorAlertOpen}
+								setOpen={setErrorAlertOpen}
+								message={errorMessage}
+								alertSeverity={"error"}
+								status={errorStatus}
 							/>
 						</Grid>
 					</Grid>

@@ -1,12 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { Box, Avatar, Button, Grid, IconButton, Collapse } from "@material-ui/core";
-import Alert from "@material-ui/lab/Alert";
-import CloseIcon from "@material-ui/icons/Close";
 
 import { IncoreInputLabel } from "../styledComponents/IncoreInputLabel";
 import { submitExecution } from "../../utils/datawolf";
-import { AlertMessage } from "./AlertMessage";
 
 import fullHtml from "../../public/steps/3-4.html";
 import StepInfo from "../StepInfo";
@@ -88,13 +85,11 @@ const registeredWidgets = {
 export default function ViewResult(props) {
 	const classes = useStyles();
 
-	const { value, index, gotoViewResultTab, ...other } = props;
+	const { value, index, gotoViewResultTab, setErrorAlertOpen, setErrorStatus, setErrorMessage, ...other } = props;
 
 	// for execution
 	const [title, setTitle] = useState("");
 	const [description, setDescription] = useState("");
-	const [submitExecutionErrorOpen, submitExecutionErrorSetOpen] = useState(false);
-	const [submitExecutionErrorStatus, submitExecutionErrorSetStatus] = useState(null);
 
 	let submitExecutionErrorMessage = "Couldn't submit the Execution.";
 
@@ -134,8 +129,9 @@ export default function ViewResult(props) {
 		);
 
 		if (datawolfExecutionStatus !== 200) {
-			submitExecutionErrorSetOpen(true);
-			submitExecutionErrorSetStatus(datawolfExecutionStatus);
+			setErrorAlertOpen(true);
+			setErrorMessage(submitExecutionErrorMessage);
+			setErrorStatus(datawolfExecutionStatus);
 		} else {
 			// clear the form
 			setTitle("");
@@ -205,14 +201,6 @@ export default function ViewResult(props) {
 							);
 						}
 					})}
-
-					<AlertMessage
-						open={submitExecutionErrorOpen}
-						setOpen={submitExecutionErrorSetOpen}
-						message={submitExecutionErrorMessage}
-						alertSeverity={"error"}
-						status={submitExecutionErrorStatus}
-					/>
 
 					<Box className="inputGroup" style={{ height: "auto" }}>
 						<IncoreInputLabel>Run the Analysis</IncoreInputLabel>

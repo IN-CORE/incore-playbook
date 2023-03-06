@@ -9,8 +9,8 @@ export const AlertMessage = ({ open, setOpen, message, alertSeverity, status }) 
 	if (status !== null && status === 401) {
 		subMessage = " Error: Unauthorized request. Please log in and try again.";
 	} else if (status !== null && status === 403) {
-		subMessage = " Error: Forbidden, you don't have enough privileges to run this execution.";
-	} else if (status !== null) {
+		subMessage = " Error: Forbidden, you don't have enough privileges.";
+	} else {
 		subMessage = ` Error: Unknown error, response status code: ${status}`;
 	}
 
