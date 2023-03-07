@@ -2,7 +2,7 @@ import { getHeader, getCurrUserEmail, getIncoreTokenFile, getCurrUserDatawolfId 
 import { datawolfConfig as defaultDatawolfConfig } from "../datawolf.config.js";
 import { datawolfWorkflowConfig as defaultDatawolfWorkflowConfig } from "../datawolf.config.js";
 
-export async function getOutputFileJson(datawolfConfig = defaultDatawolfConfig, datasetId, outputFileName = null) {
+export async function getOutputFileText(datawolfConfig = defaultDatawolfConfig, datasetId, outputFileName = null) {
 	let authHeader = getHeader(datawolfConfig.hostname);
 
 	// Get - Result Dataset
@@ -41,11 +41,11 @@ export async function getOutputFileJson(datawolfConfig = defaultDatawolfConfig, 
 
 			return await fileDownloadResponse.text();
 		} else {
-			return "No logs available...";
+			return "No Content available...";
 		}
 	}
 	else{
-		return "No logs available...";
+		return "No Content available...";
 	}
 }
 
@@ -136,13 +136,79 @@ export async function postDataset(datawolfConfig, title = "incoretoken", descrip
 	}
 }
 
+export async function downloadOutputFile(datawolfConfig = defaultDatawolfConfig, datasetId,
+										 outputFileName = null, saveFileName = null) {
+	let authHeader = getHeader(datawolfConfig.hostname);
+
+	// Get - Result Dataset
+	const datasetResponse = await fetch(`${datawolfConfig["datasetBaseURL"]}/${datasetId}`, {
+		method: "GET",
+		headers: authHeader,
+		mode: "cors"
+	});
+
+	if (datasetResponse.status === 200){
+		const resultDataset = await datasetResponse.json();
+		let fileId = -1;
+
+		// If output filename is already provided as input, use that to figure out the exact file that needs to be downloaded
+		if (outputFileName !== null) {
+			for (let i = 0; i < resultDataset.fileDescriptors.length; i++) {
+				if (resultDataset.fileDescriptors[i].filename === outputFileName) {
+					fileId = resultDataset.fileDescriptors[i].id;
+					break;
+				}
+			}
+		}
+		// If no output filename is provided, get the first file in the dataset
+		else {
+			if (resultDataset.fileDescriptors.length > 0) {
+				fileId = resultDataset.fileDescriptors[0].id;
+			}
+		}
+
+		if (fileId !== -1) {
+			// Get - Result File Download
+			const fileDownloadResponse = await fetch(`${datawolfConfig["datasetBaseURL"]}/${datasetId}/${fileId}/file`, {
+				method: "GET",
+				headers: authHeader
+			});
+
+			if (fileDownloadResponse.status === 200) {
+				let blob = await fileDownloadResponse.blob();
+				if (window.navigator.msSaveOrOpenBlob) {
+					window.navigator.msSaveBlob(blob, saveFileName ? saveFileName: resultDataset.fileDescriptors[0].filename);
+				} else {
+					let anchor = window.document.createElement("a");
+					anchor.href = window.URL.createObjectURL(blob);
+					anchor.download = saveFileName ? saveFileName: resultDataset.fileDescriptors[0].filename;
+					document.body.appendChild(anchor);
+					anchor.click();
+					document.body.removeChild(anchor);
+				}
+			} else if (fileDownloadResponse.status === 401) {
+				// TODO handle error
+				return null;
+			} else {
+				// TODO handle error
+				return null;
+			}
+		} else {
+			return null;
+		}
+	}
+	else{
+		return null;
+	}
+}
+
 export const getOutputFileContentJSON = async (datawolfConfig = defaultDatawolfConfig, executionItem, dwDatasetId) => {
-	let incoreId = executionItem["datasets"][dwDatasetId];
-	let incoreTable = await getOutputFileJson(datawolfConfig, incoreId);
-	return JSON.parse(incoreTable);
+	let datawolfId = executionItem["datasets"][dwDatasetId];
+	let datawolfFileContent = await getOutputFileText(datawolfConfig, datawolfId);
+	return JSON.parse(datawolfFileContent);
 };
 
 export const getOutputFileContent = async (datawolfConfig = defaultDatawolfConfig, executionItem, dwDatasetId) => {
-	let incoreId = executionItem["datasets"][dwDatasetId];
-	return await getOutputFileJson(datawolfConfig, incoreId);
+	let datawolfId = executionItem["datasets"][dwDatasetId];
+	return await getOutputFileText(datawolfConfig, datawolfId);
 };

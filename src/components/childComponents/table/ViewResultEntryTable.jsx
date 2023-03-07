@@ -495,6 +495,28 @@ export function ViewResultEntryTable(props) {
 													) : (
 														<></>
 													)}
+													{/*Sector Shocks*/}
+													{widgetList.includes("SectorShocks") ? (
+														<TableRow className={classes.subBodyRow} key={`${execution["id"]}-sector-shocks`}>
+															<TableCell colSpan={6} key={`${execution["id"]}-sector-shocks-title`}>
+																<Link
+																	color="primary"
+																	onClick={() => {
+																		preview(execution["id"], "SectorShocks");
+																	}}
+																	className={
+																		checkResultsReady(["SectorShocks"], execution.datasets)
+																			? classes.clickableLink
+																			: classes.clickableLinkDisabled
+																	}
+																>
+																	Capital Shocks
+																</Link>
+															</TableCell>
+														</TableRow>
+													) : (
+														<></>
+													)}
 													{/*CGE*/}
 													{widgetList.includes("CGE") ? (
 														<TableRow className={classes.subBodyRow} key={`${execution["id"]}-cge`}>
