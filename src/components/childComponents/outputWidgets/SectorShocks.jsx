@@ -61,10 +61,11 @@ export default function SectorShocks(props) {
 					{(() => {
 						if (sectorShocksContent) {
 							return (
-								<Box style={{ margin: "50px 0", maxWidth: "700px" }}>
+								<Box style={{ margin: "50px 0" }}>
 									<SectorShocksBarChart
 										data={sectorShocksContent}
-										yAxisLegend="Million of $"
+										xAxisLegend="Sectors"
+										yAxisLegend="Capital Shocks"
 									/>
 								</Box>
 							);

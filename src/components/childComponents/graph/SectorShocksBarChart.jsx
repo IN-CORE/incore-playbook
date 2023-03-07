@@ -2,6 +2,18 @@ import React from "react";
 import Chart from "react-google-charts";
 import { csvToArray } from "../../../utils/common";
 
+const ParseData = (data) => {
+	const chartData = [];
+	chartData.push(["Sector", "% Capital Remaining"]);
+
+	// without header
+	const dataArr = csvToArray(data, ",", false);
+	for (let i=0; i< dataArr.length; i++) {
+		chartData.push([dataArr[i][0], parseFloat(dataArr[i][1])]);
+	}
+	return chartData;
+};
+
 export default function SectorShocksBarChart(props) {
 	const { height, width, data, title, xAxisLegend, yAxisLegend } = props;
 
@@ -12,19 +24,19 @@ export default function SectorShocksBarChart(props) {
 				height={height}
 				chartType="Bar"
 				loader={<div>Loading Chart</div>}
-				data={csvToArray(data)}
+				data={ParseData(data)}
 				options={{
 					title: title,
-					legend: { position: "none" },
-					chartArea: { width: "50%" },
-					colors: ["#A1BE2E", "#DB4F60"],
+					colors: ["#A1BE2E"],
 					hAxis: {
 						title: xAxisLegend,
-						minValue: 0
 					},
 					vAxis: {
-						title: yAxisLegend
-					}
+						title: "% Capital Remaining",
+						titleTextStyle:{ italic: false },
+						minValue: 0,
+						maxValue: 1,
+					},
 				}}
 				// For tests
 				rootProps={{ "data-testid": "1" }}
