@@ -498,7 +498,8 @@ export const CommunityHazards = (props) => {
 						<Grid item xl={6} lg={6} md={6} sm={6} xs={12} className="gridItem">
 							<Container className={classes.mapContainer} disableGutters style={{position:"relative"}}>
 								<Button variant="outlined" onClick={handleClearAllLayers}
-									style={{position:"absolute", zIndex:100, right:"60px", top: "50px"}}>
+									style={{position:"absolute", zIndex:100, right:"5px", top: "5px",
+										background: "#FFFFFF"}}>
 									Clear All
 								</Button>
 								<Map
