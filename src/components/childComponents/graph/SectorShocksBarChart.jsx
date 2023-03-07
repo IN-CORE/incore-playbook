@@ -22,17 +22,18 @@ export default function SectorShocksBarChart(props) {
 			<Chart
 				width={width}
 				height={height}
-				chartType="Bar"
+				chartType="ColumnChart"
 				loader={<div>Loading Chart</div>}
 				data={ParseData(data)}
 				options={{
 					title: title,
 					colors: ["#A1BE2E"],
+					legend: { position: "none" },
 					hAxis: {
 						title: xAxisLegend,
 					},
 					vAxis: {
-						title: "% Capital Remaining",
+						title: yAxisLegend,
 						titleTextStyle:{ italic: false },
 						minValue: 0,
 						maxValue: 1,
