@@ -1913,12 +1913,12 @@ const datawolfWorkflowConfig = {
 						}
 					},
 					{
-						"datasetId": "3704bb0d-3cc3-4a49-b33a-7b0574842c2f",
-						"datasets": {
-							"step": "CapitalShocks",
-							"title": "Sector Shocks",
-							"variableName": "sectorShocksContent",
-							"widget": "SectorShocks"
+						datasetId: "3704bb0d-3cc3-4a49-b33a-7b0574842c2f",
+						datasets: {
+							step: "CapitalShocks",
+							title: "Sector Shocks",
+							variableName: "sectorShocksContent",
+							widget: "SectorShocks"
 						}
 					},
 					{
