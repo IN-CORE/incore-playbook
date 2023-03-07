@@ -29,6 +29,7 @@ export default function SectorShocksBarChart(props) {
 					title: title,
 					colors: ["#A1BE2E"],
 					legend: { position: "none" },
+					height: "25em",
 					hAxis: {
 						title: xAxisLegend,
 					},
