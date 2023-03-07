@@ -239,3 +239,21 @@ export function getCurrUserInfo(cookie) {
 		return {};
 	}
 }
+
+export function csvToArray(str, delimiter = ",", includeHeader=true) {
+	// slice from start of text to the first \n index
+	// use split to create an array from string by delimiter
+	const headers = str.slice(0, str.indexOf("\n")).split(delimiter);
+
+	// slice from \n index + 1 to the end of the text
+	// use split to create an array of each csv value row
+	const rows = str.slice(str.indexOf("\n") + 1).split("\n");
+	let rows_arr = [];
+	rows.map(function (row) {
+		if (row) rows_arr.push(row.split(delimiter));
+	});
+
+	// return the array
+	if (includeHeader) return [headers, ...rows_arr];
+	else return rows_arr;
+}

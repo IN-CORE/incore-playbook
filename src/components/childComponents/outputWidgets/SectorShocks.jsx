@@ -7,6 +7,7 @@ import { IncoreButtonText } from "../../styledComponents/IncoreButtonText";
 import GetAppIcon from "@material-ui/icons/GetApp";
 import { downloadImg } from "../../../utils/image";
 import CameraAltIcon from "@material-ui/icons/CameraAlt";
+import SectorShocksBarChart from "../graph/SectorShocksBarChart";
 
 export default function SectorShocks(props) {
 	let { executionItem, previewOn, handlePreviewClose, datawolfDatasetConfigItems } = props;
@@ -36,7 +37,8 @@ export default function SectorShocks(props) {
 
 	const download = async () => {
 		if (sectorShocksDatasetId) {
-			await downloadOutputFile(datawolfConfig, sectorShocksDatasetId, null, `sector-shocks-${executionItem.id}.csv`);
+			await downloadOutputFile(datawolfConfig, sectorShocksDatasetId, null,
+				`sector-shocks-${executionItem.id}.csv`);
 		}
 	};
 
@@ -54,30 +56,21 @@ export default function SectorShocks(props) {
 					<Typography className="previewTitle">Select Data: Sector Shocks Results</Typography>
 				</Box>
 
-				{/*<Box style={{ padding: "5px 25px 25px 25px" }}>*/}
-				{/*	<Grid container spacing={3} justify="center">*/}
-				{/*		<Grid item xs={12} sm={12} md={8} lg={8} xl={8}>*/}
-				{/*			/!*table and barchart*!/*/}
-				{/*			{(() => {*/}
-				{/*				if (sectorShocksContent) {*/}
-				{/*					return (*/}
-				{/*						<>*/}
-				{/*							<Box style={{ margin: "50px 0", maxWidth: "700px" }}>*/}
-				{/*								<CGEBarChart*/}
-				{/*									data={cgeHouseholdIncomeContent}*/}
-				{/*									yAxisLegend="Million of $"*/}
-				{/*								/>*/}
-				{/*							</Box>*/}
-				{/*							<Box>*/}
-				{/*								<CgeResultsTable resultsJson={cgeHouseholdIncomeContent} />*/}
-				{/*							</Box>*/}
-				{/*						</>*/}
-				{/*					);*/}
-				{/*				}*/}
-				{/*			})()}*/}
-				{/*		</Grid>*/}
-				{/*	</Grid>*/}
-				{/*</Box>*/}
+				<Box style={{ padding: "5px 25px 25px 25px" }}>
+					{/*table and barchart*/}
+					{(() => {
+						if (sectorShocksContent) {
+							return (
+								<Box style={{ margin: "50px 0", maxWidth: "700px" }}>
+									<SectorShocksBarChart
+										data={sectorShocksContent}
+										yAxisLegend="Million of $"
+									/>
+								</Box>
+							);
+						}
+					})()}
+				</Box>
 			</DialogContent>
 			<DialogActions>
 				<IncoreButtonText onClick={()=>{downloadImg(printRef.current, "SectorShocks");}}
