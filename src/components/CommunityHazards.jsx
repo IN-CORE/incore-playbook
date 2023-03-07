@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Box, Container, Grid, Tab, Tabs, makeStyles } from "@material-ui/core";
+import { Box, Container, Grid, Tab, Tabs, makeStyles, Button } from "@material-ui/core";
 import GroupLayer from "ol/layer/Group";
 import TileLayer from "ol/layer/Tile";
 import XYZ from "ol/source/XYZ";
@@ -13,14 +13,12 @@ import { Circle, Fill, Stroke, Style } from "ol/style";
 import { fromLonLat, getTransform } from "ol/proj";
 import Feature from "ol/Feature";
 import { applyTransform } from "ol/extent";
-import { getUid } from "ol/util";
 
 import RasterTornado from "./childComponents/tornado/RasterTornado";
 import ModelTornado from "./childComponents/tornado/ModelTornado";
 import Map from "./childComponents/map/Map";
 import { Layout } from "./Layout";
 import { IncoreInputLabel } from "./styledComponents/IncoreInputLabel";
-import { IncoreButton } from "./styledComponents/IncoreButton";
 import { IncoreMenuItem, IncoreSelectBox } from "./styledComponents/IncoreSelect";
 import { getHazardGroupLayers } from "../utils/map";
 
@@ -40,6 +38,7 @@ import { LineString } from "ol/geom";
 import { useEffectAllDepsChange } from "./customHooks/useEffectAllDeps";
 import { getHazardTypePlural } from "../utils/common";
 import StepStatus from "./childComponents/step/StepStatus";
+import { IncoreButtonInline } from "./styledComponents/IncoreButtonInline";
 
 const useStyles = makeStyles({
 	tabDiv: {
@@ -143,7 +142,7 @@ export const CommunityHazards = (props) => {
 					title: "Carto",
 					source: new XYZ({
 						url: "https://{a-d}.basemaps.cartocdn.com/rastertiles/light_all/{z}/{x}/{y}.png",
-						attributions: ['&#169; <a href="https://www.carto.com">Carto</a>,', OSM_ATTRIBUTION]
+						attributions: ["&#169; <a href=\"https://www.carto.com\">Carto</a>,", OSM_ATTRIBUTION]
 					})
 				}),
 				new TileLayer({
@@ -258,6 +257,9 @@ export const CommunityHazards = (props) => {
 		if (layerRef.current.tilelayer.getLayers().getLength() !== 0) {
 			layerRef.current.tilelayer.getLayers().clear();
 			setOlIdLayerMap(new Set());
+		}
+		if (layerRef.current.drawlayer.getLayers().getLength() !== 0) {
+			layerRef.current.drawlayer.getLayers().clear();
 		}
 	};
 
@@ -488,18 +490,18 @@ export const CommunityHazards = (props) => {
 													</>
 												) : null
 											}
-											<Box className="inputGroup">
-												<IncoreButton variant="contained" onClick={handleClearAllLayers}>
-													Clear Layer Selection
-												</IncoreButton>
-											</Box>
 										</Box>
 									) : null}
 								</div>
 							</Box>
 						</Grid>
 						<Grid item xl={6} lg={6} md={6} sm={6} xs={12} className="gridItem">
-							<Container className={classes.mapContainer} disableGutters>
+							<Container className={classes.mapContainer} disableGutters style={{position:"relative"}}>
+								<Button variant="outlined" onClick={handleClearAllLayers}
+									style={{position:"absolute", zIndex:100, right:"5px", top: "5px",
+										background: "#FFFFFF"}}>
+									Clear All
+								</Button>
 								<Map
 									className="fillContainer"
 									zoom={mapConfig.ZOOM}
