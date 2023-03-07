@@ -29,15 +29,14 @@ export default function SectorShocks(props) {
 				setSectorShocksContent(
 					await getOutputFileContent(datawolfConfig, executionItem, datawolfDatasetConfigItem.datasetId)
 				);
-				setSectorShocksDatasetId(datawolfDatasetConfigItem.datasetId);
+				setSectorShocksDatasetId(executionItem["datasets"][datawolfDatasetConfigItem.datasetId]);
 			}
 		});
 	}, []);
 
 	const download = async () => {
 		if (sectorShocksDatasetId) {
-			downloadOutputFile(datawolfConfig, executionItem, sectorShocksDatasetId, null,
-				`sector-shocks-${executionItem.id}`);
+			await downloadOutputFile(datawolfConfig, sectorShocksDatasetId, null, `sector-shocks-${executionItem.id}.csv`);
 		}
 	};
 

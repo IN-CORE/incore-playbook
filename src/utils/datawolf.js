@@ -136,8 +136,7 @@ export async function postDataset(datawolfConfig, title = "incoretoken", descrip
 	}
 }
 
-export async function downloadOutputFile(datawolfConfig = defaultDatawolfConfig, datasetId,
-										 outputFileName = null, saveFileName = null) {
+export async function downloadOutputFile(datawolfConfig = defaultDatawolfConfig, datasetId, outputFileName = null, saveFileName = null) {
 	let authHeader = getHeader(datawolfConfig.hostname);
 
 	// Get - Result Dataset
