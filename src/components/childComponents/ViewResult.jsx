@@ -87,6 +87,9 @@ export default function ViewResult(props) {
 	useEffect(() => {
 		_clear_old_timeinterval();
 		getExecutionList(datawolfConfig, datawolfViewAllOn);
+		return () => {
+			_clear_old_timeinterval();
+		};
 	}, []);
 
 	// update datawolf view all on / off;
@@ -104,6 +107,10 @@ export default function ViewResult(props) {
 			}, datawolfConfig["retreiveTimeInterval"] ?? 10 * 1000);
 			setIntervalId(interval);
 		}
+
+		return () => {
+			_clear_old_timeinterval();
+		};
 	}, [datawolfViewAllOn, value]);
 
 	// update execution statuses upon changing
