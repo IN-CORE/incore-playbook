@@ -1913,6 +1913,15 @@ const datawolfWorkflowConfig = {
 						}
 					},
 					{
+						datasetId: "3704bb0d-3cc3-4a49-b33a-7b0574842c2f",
+						datasets: {
+							step: "CapitalShocks",
+							title: "Sector Shocks",
+							variableName: "sectorShocksContent",
+							widget: "SectorShocks"
+						}
+					},
+					{
 						datasetId: "fbf3842d-e2be-48ad-d421-5bcf5ab22811",
 						datasets: {
 							step: "HHRSOutputProcess",
