@@ -14,7 +14,7 @@ import {
 import { Layout } from "./Layout";
 import BreadCrumb from "./childComponents/navigation/BreadCrumb";
 import StepInfo from "./StepInfo";
-import StepStatus from "./childComponents/step/StepStatus";
+import StepStatusDropdown from "./childComponents/step/StepStatusDropdown";
 import { IncoreInputLabel } from "./styledComponents/IncoreInputLabel";
 import { IncoreTextField } from "./styledComponents/IncoreInput";
 import { IncoreButton } from "./styledComponents/IncoreButton";
@@ -309,14 +309,18 @@ export const BuiltEnvironment = ({ step, substep }) => {
 	return (
 		<Layout>
 			<div className="firstDivInContent">
-				<Box display="flex" style={{alignItem:"baseline", padding:"1em 0"}}>
-					<BreadCrumb
-						parentStep="Understand the Situation"
-						childStep="Identify & Characterize the Built Environment"
-						taskNo="2"
-						subtaskNo="2-4"
-					/>
-					<StepStatus step={step} substep={substep} />
+				<Box display="flex" style={{alignItem:"center", padding:"1em 0"}} sx={{ justifyContent: "space-between" }}>
+					<Box>
+						<BreadCrumb
+							parentStep="Understand the Situation"
+							childStep="Identify & Characterize the Built Environment"
+							taskNo="2"
+							subtaskNo="2-4"
+						/>
+					</Box>
+					<Box style={{marginRight:"2em"}}>
+						<StepStatusDropdown step={step} substep={substep} />
+					</Box>
 				</Box>
 				<Box className="outerBox">
 					<Grid container spacing={3} className="innerBox">
