@@ -3,7 +3,7 @@ import "../../../styles/step-status.css";
 import { processStatus } from "../../../globals";
 import { useDispatch, useSelector } from "react-redux";
 import { getStep, updateStep } from "../../../actions/steps";
-import { Box, FormControl, InputLabel, Select, MenuItem } from "@material-ui/core";
+import { Box, FormControl, InputLabel, Select, MenuItem, ListItemIcon } from "@material-ui/core";
 import { IncoreSelectBox } from "../../styledComponents/IncoreSelect";
 import {IncoreFootNote} from "../../styledComponents/IncoreFootNote";
 import { parseDateTime } from "../../../utils/common";
@@ -33,11 +33,22 @@ const StepStatusDropdown =  ({ step, substep }) => {
 		}
 	}, [activeKey]);
 
+	const completedCheckIcon = <CheckCircleIcon style={{ color: "#00619D", height: "16px", width: "16px" }} />;
+	const inProgressCheckIcon = <CheckCircleIcon style={{ color: "#8798AD", height: "16px", width: "16px" }} />;
+	const pendingIcon = <QueryBuilderIcon style={{ height: "16px", width: "16px" }} />;
+
 	const options = [
-		{ value: "pending", label: "Pending" },
-		{ value: "in_progress", label: "In Progress" },
-		{ value: "complete", label: "Complete" },
+		{ value: "pending", label: "Pending", icon: pendingIcon},
+		{ value: "in_progress", label: "In Progress", icon: inProgressCheckIcon },
+		{ value: "complete", label: "Complete", icon: completedCheckIcon },
 	];
+
+	const renderOption = (option) => (
+		<MenuItem value={option.value}>
+			<ListItemIcon>{option.icon}</ListItemIcon>
+			{option.label}
+		</MenuItem>
+	);
 
 	const handleOptionChange = (event) => {
 		setActiveKey(event.target.value);
@@ -45,21 +56,14 @@ const StepStatusDropdown =  ({ step, substep }) => {
 
 	return(
 		<>
-			<FormControl>
-				<IncoreFootNote id="dropdown-label">Select Progress Status of Current Task</IncoreFootNote>
-				<IncoreSelectBox
-					labelId="dropdown-label"
-					id="dropdown"
-					value={activeKey}
-					onChange={handleOptionChange}
-				>
-					{options.map((option) => (
-						<MenuItem key={option.value} value={option.value}>
-							{option.label}
-						</MenuItem>
-					))}
-				</IncoreSelectBox>
-			</FormControl>
+			<IncoreSelectBox
+				labelId="dropdown-label"
+				id="dropdown"
+				value={activeKey}
+				onChange={handleOptionChange}
+			>
+				{options.map(renderOption)}
+			</IncoreSelectBox>
 			{
 				stepData["status"] && stepData["status_user"] ?
 					<IncoreFootNote>Last updated by {stepData["status_user"]["firstName"]}&nbsp;

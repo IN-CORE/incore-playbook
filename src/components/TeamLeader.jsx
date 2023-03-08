@@ -11,7 +11,7 @@ export const TeamLeader = ({ step, substep }) => {
 	return (
 		<Layout>
 			<div className="firstDivInContent">
-				<Box display="flex" style={{alignItem:"baseline", padding:"1em 0"}} sx={{ justifyContent: "space-between" }}>
+				<Box display="flex" style={{alignItem:"center", padding:"1em 0"}} sx={{ justifyContent: "space-between" }}>
 					<Box>
 						<BreadCrumb
 							parentStep="Form a Collaborative Planning Team"
