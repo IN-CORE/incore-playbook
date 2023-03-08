@@ -3,7 +3,7 @@ import { Box, Grid } from "@material-ui/core";
 import BreadCrumb from "./childComponents/navigation/BreadCrumb";
 import { Layout } from "./Layout";
 import StepInfo from "./StepInfo";
-import StepStatus from "./childComponents/step/StepStatus";
+import StepStatusDropdown from "./childComponents/step/StepStatusDropdown";
 import fullHtml00 from "../public/steps/0-0.html";
 import fullHtml12 from "../public/steps/1-2.html";
 import fullHtml13 from "../public/steps/1-3.html";
@@ -225,9 +225,13 @@ export const StaticSubStep = ({ menu, step, substep }) => {
 	return (
 		<Layout>
 			<div className="firstDivInContent">
-				<Box display="flex" style={{alignItem:"baseline", padding:"1em 0"}}>
-					{breadCrumb}
-					<StepStatus step={step} substep={substep} />
+				<Box display="flex" style={{alignItem:"baseline", padding:"1em 0"}} sx={{ justifyContent: "space-between" }}>
+					<Box>
+						{breadCrumb}
+					</Box>
+					<Box style={{marginRight:"2em"}}>
+						<StepStatusDropdown step={step} substep={substep} />
+					</Box>
 				</Box>
 				<Box className="outerBox">
 					<Grid container spacing={3} className="innerBox">

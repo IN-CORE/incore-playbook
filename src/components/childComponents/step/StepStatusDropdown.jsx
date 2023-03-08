@@ -4,8 +4,9 @@ import { processStatus } from "../../../globals";
 import { useDispatch, useSelector } from "react-redux";
 import { getStep, updateStep } from "../../../actions/steps";
 import { Box, FormControl, InputLabel, Select, MenuItem } from "@material-ui/core";
+import { IncoreSelectBox } from "../../styledComponents/IncoreSelect";
+import {IncoreFootNote} from "../../styledComponents/IncoreFootNote";
 import { parseDateTime } from "../../../utils/common";
-import { IncoreFootNote } from "../../styledComponents/IncoreFootNote";
 import CheckCircleIcon from "@material-ui/icons/CheckCircle";
 import QueryBuilderIcon from "@material-ui/icons/QueryBuilder";
 
@@ -43,10 +44,10 @@ const StepStatusDropdown =  ({ step, substep }) => {
 	};
 
 	return(
-		<Box>
+		<>
 			<FormControl>
-				<InputLabel id="dropdown-label">Select Progress Status of Current Task</InputLabel>
-				<Select
+				<IncoreFootNote id="dropdown-label">Select Progress Status of Current Task</IncoreFootNote>
+				<IncoreSelectBox
 					labelId="dropdown-label"
 					id="dropdown"
 					value={activeKey}
@@ -57,9 +58,16 @@ const StepStatusDropdown =  ({ step, substep }) => {
 							{option.label}
 						</MenuItem>
 					))}
-				</Select>
+				</IncoreSelectBox>
 			</FormControl>
-		</Box>
+			{
+				stepData["status"] && stepData["status_user"] ?
+					<IncoreFootNote>Last updated by {stepData["status_user"]["firstName"]}&nbsp;
+						{stepData["status_user"]["lastName"]} at {parseDateTime(stepData["status_updated_at"]) ?? "unavailable timestamp"}</IncoreFootNote>
+					:
+					null
+			}
+		</>
 	);
 };
 

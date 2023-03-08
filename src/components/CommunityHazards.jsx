@@ -37,8 +37,9 @@ import DatasetTsunami from "./childComponents/tsuanmi/datasetTsunami";
 import { LineString } from "ol/geom";
 import { useEffectAllDepsChange } from "./customHooks/useEffectAllDeps";
 import { getHazardTypePlural } from "../utils/common";
-import StepStatus from "./childComponents/step/StepStatus";
+import StepStatusDropdown from "./childComponents/step/StepStatusDropdown";
 import { IncoreButtonInline } from "./styledComponents/IncoreButtonInline";
+
 
 const useStyles = makeStyles({
 	tabDiv: {
@@ -335,14 +336,18 @@ export const CommunityHazards = (props) => {
 	return (
 		<Layout>
 			<div className="firstDivInContent">
-				<Box display="flex" style={{ alignItem: "baseline", padding: "1em 0" }}>
-					<BreadCrumb
-						parentStep="Determine Goals & Objectives"
-						childStep="Define Community Hazards"
-						taskNo="3"
-						subtaskNo="3-3"
-					/>
-					<StepStatus step={step} substep={substep} />
+				<Box display="flex" style={{ alignItem: "baseline", padding: "1em 0" }} sx={{ justifyContent: "space-between" }}>
+					<Box>
+						<BreadCrumb
+							parentStep="Determine Goals & Objectives"
+							childStep="Define Community Hazards"
+							taskNo="3"
+							subtaskNo="3-3"
+						/>
+					</Box>
+					<Box style={{marginRight:"2em"}}>
+						<StepStatusDropdown step={step} substep={substep} />
+					</Box>
 				</Box>
 				<Box className="outerBox">
 					{/*List created hazards*/}
