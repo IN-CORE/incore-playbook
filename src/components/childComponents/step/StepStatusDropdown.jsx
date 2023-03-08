@@ -7,8 +7,9 @@ import { Box, FormControl, InputLabel, Select, MenuItem, ListItemIcon } from "@m
 import { IncoreSelectBox } from "../../styledComponents/IncoreSelect";
 import {IncoreFootNote} from "../../styledComponents/IncoreFootNote";
 import { parseDateTime } from "../../../utils/common";
-import CheckCircleIcon from "@material-ui/icons/CheckCircle";
+import CheckCircleOutlinedIcon from "@material-ui/icons/CheckCircleOutlined";
 import QueryBuilderIcon from "@material-ui/icons/QueryBuilder";
+import HourglassEmptyOutlinedIcon from "@material-ui/icons/HourglassEmptyOutlined";
 
 const StepStatusDropdown =  ({ step, substep }) => {
 	const dispatch = useDispatch();
@@ -33,8 +34,8 @@ const StepStatusDropdown =  ({ step, substep }) => {
 		}
 	}, [activeKey]);
 
-	const completedCheckIcon = <CheckCircleIcon style={{ color: "#00619D", height: "16px", width: "16px" }} />;
-	const inProgressCheckIcon = <CheckCircleIcon style={{ color: "#8798AD", height: "16px", width: "16px" }} />;
+	const completedCheckIcon = <CheckCircleOutlinedIcon style={{ color: "#00619D", height: "16px", width: "16px" }} />;
+	const inProgressCheckIcon = <HourglassEmptyOutlinedIcon style={{ color: "#8798AD", height: "16px", width: "16px" }} />;
 	const pendingIcon = <QueryBuilderIcon style={{ height: "16px", width: "16px" }} />;
 
 	const options = [
