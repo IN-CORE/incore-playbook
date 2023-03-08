@@ -94,6 +94,7 @@ export default function HHS(props) {
 								{HHSBarChartContent ? (
 									<HHSBarChart
 										data={HHSBarChartContent[t]}
+										height={"25em"}
 										xAxisLegend="Housing Recovery Stage"
 										yAxisLegend="Frequency"
 									/>

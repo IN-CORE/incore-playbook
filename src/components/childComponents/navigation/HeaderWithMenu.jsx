@@ -1,5 +1,5 @@
 import React from "react";
-import { connect, useSelector, useDispatch } from "react-redux";
+import { connect, useSelector } from "react-redux";
 import { Link, useHistory } from "react-router-dom";
 import { makeStyles, useTheme } from "@material-ui/core/styles";
 import clsx from "clsx";
@@ -31,13 +31,19 @@ import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemText from "@material-ui/core/ListItemText";
 import Collapse from "@material-ui/core/Collapse";
+import CheckCircleIcon from "@material-ui/icons/CheckCircle";
 import DownIcon from "@material-ui/icons/KeyboardArrowDown";
 import RightIcon from "@material-ui/icons/KeyboardArrowRight";
-import CheckCircleIcon from "@material-ui/icons/CheckCircle";
+import CheckCircleOutlinedIcon from "@material-ui/icons/CheckCircleOutlined";
+import HourglassEmptyOutlinedIcon from "@material-ui/icons/HourglassEmptyOutlined";
 import QueryBuilderIcon from "@material-ui/icons/QueryBuilder";
 import Grid from "@material-ui/core/Grid";
 
+import Gravatar from "react-gravatar";
+
+
 import "../../../styles/main.css";
+import { getCurrEmail } from "../../../utils/common";
 
 const cookies = new Cookies();
 
@@ -117,6 +123,11 @@ const useStyles = makeStyles((theme) => ({
 		fontWeight: 500,
 		backgroundColor: "rgba(0, 97, 157, 0.1)",
 		textTransform: "capitalize"
+	},
+	avatarImg: {
+		width: "1.5rem",
+		height: "1.5rem",
+		borderRadius: "50%"
 	}
 }));
 
@@ -222,7 +233,7 @@ const HeaderWithMenu = ({
 			open={isMenuOpen}
 			onClose={handleMenuClose}
 		>
-			<MenuItem onClick={handleMenuClose}>My Account</MenuItem>
+			{/*<MenuItem onClick={handleMenuClose}>My Account</MenuItem>*/}
 			<MenuItem onClick={handleLogout}>Logout</MenuItem>
 		</Menu>
 	);
@@ -428,8 +439,8 @@ const HeaderWithMenu = ({
 	];
 
 	let menus = [];
-	const completedCheckIcon = <CheckCircleIcon style={{ color: "#00619D" }} />;
-	const inProgressCheckIcon = <CheckCircleIcon style={{ color: "#2E384D" }} />;
+	const completedCheckIcon = <CheckCircleOutlinedIcon style={{ color: "#00619D"}} />;
+	const inProgressCheckIcon = <HourglassEmptyOutlinedIcon style={{ color: "#8798AD"}} />;
 
 	treeData.map(({ key, label, nodes }) => {
 		let subMenus = [];
@@ -587,7 +598,12 @@ const HeaderWithMenu = ({
 							onClick={handleProfileMenuOpen}
 							color="inherit"
 						>
-							<AccountCircle />
+							{getCurrEmail(globalConfig.hostname)!== undefined ?
+								<Gravatar className={classes.avatarImg} email={getCurrEmail(globalConfig.hostname)}
+										  rating="g" />
+										  :
+								<AccountCircle fontSize="small" />
+							}
 						</IconButton>
 					</div>
 				</Toolbar>

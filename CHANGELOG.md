@@ -21,6 +21,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - HHRS Bar Chart [#95](https://github.com/IN-CORE/incore-playbook/issues/95)
 - Pagination to view datawolf execution [#151](https://github.com/IN-CORE/incore-playbook/issues/151)
 - Admins can see datawolf logs [#147](https://github.com/IN-CORE/incore-playbook/issues/147)
+- Barchart for sector shocks [#157](https://github.com/IN-CORE/incore-playbook/issues/157)
 
 ### Changed
 - Renamed master branch to main [#28](https://github.com/IN-CORE/incore-playbook/issues/28)
@@ -44,6 +45,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - fix status bar appearance for a smaller screen/ different browser [#139](https://github.com/IN-CORE/incore-playbook/issues/139)
 - Pole damage datawolf id for population disloation [#145](https://github.com/IN-CORE/incore-playbook/issues/145)
 - Map loading flashes sometime [#140](https://github.com/IN-CORE/incore-playbook/issues/140)
+- Document link reset to empty [#161](https://github.com/IN-CORE/incore-playbook/issues/161)
+- Occasional interval not working issue with added cleanup [#163](https://github.com/IN-CORE/incore-playbook/issues/163)
 
 
 ## [0.3.0] - 2021-11-16

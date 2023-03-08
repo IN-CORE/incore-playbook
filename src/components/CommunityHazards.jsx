@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Box, Container, Grid, Tab, Tabs, makeStyles } from "@material-ui/core";
+import { Box, Container, Grid, Tab, Tabs, makeStyles, Button } from "@material-ui/core";
 import GroupLayer from "ol/layer/Group";
 import TileLayer from "ol/layer/Tile";
 import XYZ from "ol/source/XYZ";
@@ -37,7 +37,8 @@ import DatasetTsunami from "./childComponents/tsuanmi/datasetTsunami";
 import { LineString } from "ol/geom";
 import { useEffectAllDepsChange } from "./customHooks/useEffectAllDeps";
 import { getHazardTypePlural } from "../utils/common";
-import StepStatus from "./childComponents/step/StepStatus";
+import StepStatusDropdown from "./childComponents/step/StepStatusDropdown";
+import { IncoreButtonInline } from "./styledComponents/IncoreButtonInline";
 
 
 const useStyles = makeStyles({
@@ -68,7 +69,7 @@ const useStyles = makeStyles({
 });
 
 export const CommunityHazards = (props) => {
-	const {step, substep} = props;
+	const { step, substep } = props;
 	const classes = useStyles();
 
 	const [currTabIndex, setCurrTabIndex] = useState(0);
@@ -96,6 +97,7 @@ export const CommunityHazards = (props) => {
 	const [dataPerPage, setDataPerPage] = React.useState(5);
 	const [pageNumber, setPageNumber] = React.useState(1);
 	const [offset, setOffset] = React.useState(0);
+	const [olIdLayerMap, setOlIdLayerMap] = React.useState(new Set());
 
 	// Cache the drawing
 	const drawSourceRef = React.useRef(new VectorSource({ wrapX: false }));
@@ -243,13 +245,32 @@ export const CommunityHazards = (props) => {
 	}, [srcCoord]);
 
 	const handleLayerUpdate = (json) => {
-		const HazardMapGroupLayers = getHazardGroupLayers(globalConfig, json, selectedHazardType);
-		// add created hazard to this created group layer
-		layerRef.current.tilelayer.getLayers().push(HazardMapGroupLayers);
+		// if not already added, then add, else ignore.
+		if (!olIdLayerMap.has(json.id)) {
+			const HazardMapGroupLayers = getHazardGroupLayers(globalConfig, json, selectedHazardType);
+			layerRef.current.tilelayer.getLayers().push(HazardMapGroupLayers);
+
+			setOlIdLayerMap((olIdLayerMap) => olIdLayerMap.add(json.id));
+		}
+	};
+
+	const handleClearAllLayers = () => {
+		if (layerRef.current.tilelayer.getLayers().getLength() !== 0) {
+			layerRef.current.tilelayer.getLayers().clear();
+			setOlIdLayerMap(new Set());
+		}
+		if (layerRef.current.drawlayer.getLayers().getLength() !== 0) {
+			layerRef.current.drawlayer.getLayers().clear();
+		}
 	};
 
 	const hazardIdClick = async (hazard) => {
 		handleLayerUpdate(hazard);
+	};
+
+	const getRow = (selectedHazardType) => {
+		let row = eval(getHazardTypePlural(selectedHazardType)).map(v => ({...v, viewLayer: "View"}));
+		return row;
 	};
 
 	const syntheticDrawPoints = (coord, isStart = true) => {
@@ -278,7 +299,6 @@ export const CommunityHazards = (props) => {
 		{
 			prettyName: "NAME",
 			columnName: "name",
-			handleClick: hazardIdClick
 		},
 		{
 			prettyName: "DESCRIPTION",
@@ -291,7 +311,12 @@ export const CommunityHazards = (props) => {
 		{
 			prettyName: "SUBMITTED BY",
 			columnName: "creator"
-		}
+		},
+		{
+			prettyName: "",
+			columnName: "viewLayer",
+			handleClick: hazardIdClick
+		},
 	];
 
 	const pageChange = (direction) => {
@@ -320,20 +345,25 @@ export const CommunityHazards = (props) => {
 	return (
 		<Layout>
 			<div className="firstDivInContent">
-				<Box display="flex" style={{alignItem:"baseline", padding:"1em 0"}}>
-					<BreadCrumb
-						parentStep="Determine Goals & Objectives"
-						childStep="Define Community Hazards"
-						taskNo="3"
-						subtaskNo="3-3"
-					/>
-					<StepStatus step={step} substep={substep} />
+				<Box display="flex" style={{ alignItem: "center", padding: "1em 0" }} sx={{ justifyContent: "space-between" }}>
+					<Box>
+						<BreadCrumb
+							parentStep="Determine Goals & Objectives"
+							childStep="Define Community Hazards"
+							taskNo="3"
+							subtaskNo="3-3"
+						/>
+					</Box>
+					<Box style={{marginRight:"2em"}}>
+						<StepStatusDropdown step={step} substep={substep} />
+					</Box>
 				</Box>
 				<Box className="outerBox">
 					{/*List created hazards*/}
 					<Box className="entryTableContainer">
 						<StepInfo fullHtml={fullHtml} />
-						<br /><br />
+						<br />
+						<br />
 					</Box>
 					<Grid container spacing={3} className="innerBox">
 						<Grid item xl={6} lg={6} md={6} sm={6} xs={12} className="gridItem">
@@ -454,37 +484,38 @@ export const CommunityHazards = (props) => {
 									id="simple-tabpanel-2"
 									aria-labelledby="simple-tab-2"
 								>
-									{
-										currTabIndex === 2 ?
-											<Box className="entryTableTitle">
-												{
-													// selectedHazardType: are earthquake, flood, hurricane, tsunami, tornado
-													selectedHazardType !== ""?
-														<>
-															<EntryTable
-																fieldNames={fieldNames}
-																fields={eval(getHazardTypePlural(selectedHazardType))}
-															/>
-															<Pagination
-																pageNumber={pageNumber}
-																data={eval(getHazardTypePlural(selectedHazardType))}
-																dataPerPage={dataPerPage}
-																previous={() => pageChange("previous")}
-																next={() => pageChange("next")}
-															/>
-														</>
-														:
-														null
-												}
-											</Box>
-											:
-											null
-									}
+									{currTabIndex === 2 ? (
+										<Box className="entryTableTitle">
+											{
+												// selectedHazardType: are earthquake, flood, hurricane, tsunami, tornado
+												selectedHazardType !== "" ? (
+													<>
+														<EntryTable
+															fieldNames={fieldNames}
+															fields={getRow(selectedHazardType)}
+														/>
+														<Pagination
+															pageNumber={pageNumber}
+															data={eval(getHazardTypePlural(selectedHazardType))}
+															dataPerPage={dataPerPage}
+															previous={() => pageChange("previous")}
+															next={() => pageChange("next")}
+														/>
+													</>
+												) : null
+											}
+										</Box>
+									) : null}
 								</div>
 							</Box>
 						</Grid>
 						<Grid item xl={6} lg={6} md={6} sm={6} xs={12} className="gridItem">
-							<Container className={classes.mapContainer} disableGutters>
+							<Container className={classes.mapContainer} disableGutters style={{position:"relative"}}>
+								<Button variant="outlined" onClick={handleClearAllLayers}
+									style={{position:"absolute", zIndex:100, right:"5px", top: "5px",
+										background: "#FFFFFF"}}>
+									Clear All
+								</Button>
 								<Map
 									className="fillContainer"
 									zoom={mapConfig.ZOOM}

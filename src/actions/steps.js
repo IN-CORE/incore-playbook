@@ -58,7 +58,14 @@ export const getStep = (globalConfig=defaultGlobalConfig, stepId, substepId) => 
 export const updateStep = (globalConfig=defaultGlobalConfig, stepId, substepId, status = null, docUri = null) => {
 	let endpoint = `${globalConfig.maestroServiceBase}steps/${stepId}/${substepId}?`;
 	if (status) endpoint = `${endpoint}status=${status}&`;
-	if (docUri) endpoint = `${endpoint}doc_uri=${docUri}&`;
+
+	// proper url encoding of empty string and other symbol
+	if (docUri === ""){
+		endpoint = `${endpoint}doc_uri=%7F&`;
+	}
+	else if (docUri !== null) {
+		endpoint = `${endpoint}doc_uri=${encodeURIComponent(docUri)}&`;
+	}
 
 	return async (dispatch) => {
 		const response = await fetch(endpoint, { mode: "cors", method: "PATCH", headers: getHeader(globalConfig.hostname) });

@@ -1,7 +1,7 @@
 import React from "react";
 import { Box, Grid } from "@material-ui/core";
 import { UserInfo } from "./childComponents/user/UserInfo";
-import StepStatus from "./childComponents/step/StepStatus";
+import StepStatusDropdown from "./childComponents/step/StepStatusDropdown";
 import BreadCrumb from "./childComponents/navigation/BreadCrumb";
 import { Layout } from "./Layout";
 import StepInfo from "./StepInfo";
@@ -11,14 +11,18 @@ export const TeamLeader = ({ step, substep }) => {
 	return (
 		<Layout>
 			<div className="firstDivInContent">
-				<Box display="flex" style={{alignItem:"baseline", padding:"1em 0"}}>
-					<BreadCrumb
-						parentStep="Form a Collaborative Planning Team"
-						childStep="Identify a Resilience Leader for the Community"
-						taskNo="1"
-						subtaskNo="1-1"
-					/>
-					<StepStatus step={step} substep={substep} />
+				<Box display="flex" style={{alignItem:"center", padding:"1em 0"}} sx={{ justifyContent: "space-between" }}>
+					<Box>
+						<BreadCrumb
+							parentStep="Form a Collaborative Planning Team"
+							childStep="Identify a Resilience Leader for the Community"
+							taskNo="1"
+							subtaskNo="1-1"
+						/>
+					</Box>
+					<Box style={{marginRight:"2em"}}>
+						<StepStatusDropdown step={step} substep={substep} style={{marginLeft:"auto"}}/>
+					</Box>
 				</Box>
 				<Box className="outerBox">
 					<Grid container spacing={3} className="innerBox">
