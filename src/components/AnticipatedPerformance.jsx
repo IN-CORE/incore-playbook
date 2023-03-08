@@ -6,6 +6,7 @@ import { Layout } from "./Layout";
 import ViewResult from "./childComponents/ViewResult";
 import RunAnalysis from "./childComponents/RunAnalysis";
 import BreadCrumb from "./childComponents/navigation/BreadCrumb";
+import { AlertMessage } from "./childComponents/AlertMessage";
 import { fetchExecutions } from "../actions/datawolf";
 import StepStatusDropdown from "./childComponents/step/StepStatusDropdown";
 
@@ -23,11 +24,14 @@ const useStyles = makeStyles({
 });
 
 export const AnticipatedPerformance = (props) => {
-	const {step, substep} = props;
+	const { step, substep } = props;
 
 	const classes = useStyles();
 
 	const [currTabIndex, setCurrTabIndex] = useState(0);
+	const [errorAlertOpen, setErrorAlertOpen] = useState(false);
+	const [errorStatus, setErrorStatus] = useState(null);
+	const [errorMessage, setErrorMessage] = useState("");
 
 	// Redux connect equivalent
 	const dispatch = useDispatch();
@@ -79,12 +83,22 @@ export const AnticipatedPerformance = (props) => {
 								gotoViewResultTab={() => {
 									setCurrTabIndex(1);
 								}}
+								setErrorAlertOpen={setErrorAlertOpen}
+								setErrorStatus={setErrorStatus}
+								setErrorMessage={setErrorMessage}
 							/>
 							<ViewResult
 								value={currTabIndex}
 								index={1}
 								getExecutionList={getExecutionList}
 								executions={executions}
+							/>
+							<AlertMessage
+								open={errorAlertOpen}
+								setOpen={setErrorAlertOpen}
+								message={errorMessage}
+								alertSeverity={"error"}
+								status={errorStatus}
 							/>
 						</Grid>
 					</Grid>

@@ -93,15 +93,7 @@ export async function submitExecution(
 		mode: "cors"
 	});
 
-	if (datawolfResponse.status === 200) {
-		return datawolfResponse.text();
-	} else if (datawolfResponse.status === 401) {
-		// TODO handle error
-		return null;
-	} else {
-		// TODO handle error
-		return null;
-	}
+	return datawolfResponse.status;
 }
 
 // TODO move this to redux

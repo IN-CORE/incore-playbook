@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import { Box, Avatar, Button, Grid } from "@material-ui/core";
+import { Box, Avatar, Button, Grid, IconButton, Collapse } from "@material-ui/core";
 
 import { IncoreInputLabel } from "../styledComponents/IncoreInputLabel";
 import { submitExecution } from "../../utils/datawolf";
@@ -85,11 +85,13 @@ const registeredWidgets = {
 export default function ViewResult(props) {
 	const classes = useStyles();
 
-	const { value, index, gotoViewResultTab, ...other } = props;
+	const { value, index, gotoViewResultTab, setErrorAlertOpen, setErrorStatus, setErrorMessage, ...other } = props;
 
 	// for execution
 	const [title, setTitle] = useState("");
 	const [description, setDescription] = useState("");
+
+	let submitExecutionErrorMessage = "Couldn't submit the Execution.";
 
 	const assetConfig = useSelector((state) => state.config.assetConfig);
 	const datawolfConfig = useSelector((state) => state.config.datawolfConfig);
@@ -118,7 +120,7 @@ export default function ViewResult(props) {
 	}, [datawolfFormState]);
 
 	const handleRunButtonClick = async () => {
-		const datawolfJson = await submitExecution(
+		const datawolfExecutionStatus = await submitExecution(
 			datawolfConfig,
 			datawolfWorkflowConfig,
 			title,
@@ -126,24 +128,30 @@ export default function ViewResult(props) {
 			datawolfFormState
 		);
 
-		// clear the form
-		setTitle("");
-		setDescription("");
-		setDatawolfFormState(
-			parameters.reduce((state, p) => {
-				// prepopulate the default fields
-				let mapState = {};
-				p.parametersMap.map((pm) => {
-					if (p.hidden) mapState[pm.paramId] = p.defaultValue;
-					else mapState[pm.paramId] = "";
-				}, {});
+		if (datawolfExecutionStatus !== 200) {
+			setErrorAlertOpen(true);
+			setErrorMessage(submitExecutionErrorMessage);
+			setErrorStatus(datawolfExecutionStatus);
+		} else {
+			// clear the form
+			setTitle("");
+			setDescription("");
+			setDatawolfFormState(
+				parameters.reduce((state, p) => {
+					// prepopulate the default fields
+					let mapState = {};
+					p.parametersMap.map((pm) => {
+						if (p.hidden) mapState[pm.paramId] = p.defaultValue;
+						else mapState[pm.paramId] = "";
+					}, {});
 
-				return { ...state, [p.variableName]: mapState };
-			}, {})
-		);
+					return { ...state, [p.variableName]: mapState };
+				}, {})
+			);
 
-		// jump to view result tab
-		gotoViewResultTab();
+			// jump to view result tab
+			gotoViewResultTab();
+		}
 	};
 
 	return (
@@ -193,6 +201,7 @@ export default function ViewResult(props) {
 							);
 						}
 					})}
+
 					<Box className="inputGroup" style={{ height: "auto" }}>
 						<IncoreInputLabel>Run the Analysis</IncoreInputLabel>
 						<Button
