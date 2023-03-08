@@ -56,18 +56,16 @@ export default function SectorShocks(props) {
 					<Typography className="previewTitle">Select Data: Sector Shocks Results</Typography>
 				</Box>
 
-				<Box style={{ padding: "5px 25px 25px 25px" }}>
+				<Box style={{ padding: "2em" }}>
 					{/*table and barchart*/}
 					{(() => {
 						if (sectorShocksContent) {
 							return (
-								<Box style={{ margin: "50px 0" }}>
-									<SectorShocksBarChart
-										data={sectorShocksContent}
-										xAxisLegend="Sectors"
-										yAxisLegend="Capital Shocks"
-									/>
-								</Box>
+								<SectorShocksBarChart
+									data={sectorShocksContent}
+									xAxisLegend="Sectors"
+									yAxisLegend="Capital Shocks"
+								/>
 							);
 						}
 					})()}

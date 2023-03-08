@@ -4,7 +4,7 @@ import { csvToArray } from "../../../utils/common";
 
 const ParseData = (data) => {
 	const chartData = [];
-	chartData.push(["Sector", "% Capital Remaining"]);
+	chartData.push(["Sector", "Ratio of Capital Remaining"]);
 
 	// without header
 	const dataArr = csvToArray(data, ",", false);
@@ -32,6 +32,9 @@ export default function SectorShocksBarChart(props) {
 					height: "25em",
 					hAxis: {
 						title: xAxisLegend,
+						textStyle : {
+							fontSize: 10, // or the number you want
+						}
 					},
 					vAxis: {
 						title: yAxisLegend,
