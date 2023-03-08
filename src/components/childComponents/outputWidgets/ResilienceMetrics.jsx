@@ -11,6 +11,8 @@ import { useSelector } from "react-redux";
 import { IncoreButtonText } from "../../styledComponents/IncoreButtonText";
 import { downloadImg } from "../../../utils/image";
 import CameraAltIcon from "@material-ui/icons/CameraAlt";
+import { IncoreInputLabel } from "../../styledComponents/IncoreInputLabel";
+import { IncoreMenuItem, IncoreSelectBox } from "../../styledComponents/IncoreSelect";
 
 
 const useStyles = makeStyles({
@@ -48,6 +50,7 @@ export default function ResilienceMetrics(props) {
 	let { executionItem, previewOn, handlePreviewClose, datawolfDatasetConfigItems } = props;
 
 	const datawolfConfig = useSelector((state) => state.config.datawolfConfig);
+	const globalConfig = useSelector((state) => state.config.globalConfig);
 
 	const [currTabIndex, setCurrTabIndex] = useState(0);
 	const [selectedExecutionName, setSelectedExecutionName] = useState("");
@@ -61,6 +64,7 @@ export default function ResilienceMetrics(props) {
 	const [cgeDomesticSupplyContent, setCgeDomesticSupplyContent] = useState(null);
 	const [cgeEmploymentContent, setCgeEmploymentContent] = useState(null);
 	const [bldgFuncSummaryTableContent, setBldgFuncSummaryTableContent] = useState(null);
+	const [region, setRegion] = useState(globalConfig["allowedRegions"] ? globalConfig["allowedRegions"][0] : null);
 
 	// print container
 	const printRef = useRef();
@@ -160,20 +164,20 @@ export default function ResilienceMetrics(props) {
 					dislocationByRaceContent &&
 					dislocationByTenureContent &&
 					dislocationByHousingTypeContent ? (
-						<Box className={classes.tableEntry}>
-							<HuaResultsTable
-								resultsJson={{
-									income: dislocationByIncomeContent,
-									race: dislocationByRaceContent,
-									tenure: dislocationByTenureContent,
-									housingType: dislocationByHousingTypeContent
-								}}
-								isMetrics={true}
-							/>
-						</Box>
-					) : (
-						<></>
-					)}
+							<Box className={classes.tableEntry}>
+								<HuaResultsTable
+									resultsJson={{
+										income: dislocationByIncomeContent,
+										race: dislocationByRaceContent,
+										tenure: dislocationByTenureContent,
+										housingType: dislocationByHousingTypeContent
+									}}
+									isMetrics={true}
+								/>
+							</Box>
+						) : (
+							<></>
+						)}
 					{totalDislTableContent && totalDislTableContent["population_dislocation_in_total"] ? (
 						<Box className={classes.tableEntry}>
 							<DislocationResultsTable
@@ -205,10 +209,39 @@ export default function ResilienceMetrics(props) {
 					id="tabpanel-economic-stability"
 					aria-labelledby="economic stability"
 				>
+					{/*regions*/}
+					{
+						globalConfig["allowedRegions"] ?
+							<Box style={{margin: "1em auto"}}>
+								<IncoreInputLabel>Select A Region</IncoreInputLabel>
+								<IncoreSelectBox
+									labelId="label"
+									id="select"
+									variant="outlined"
+									onChange={(e) => {
+										setRegion(e.target.value);
+									}}
+									value={region}
+									style={{ maxWidth: "500px" }}
+								>
+									{
+										globalConfig["allowedRegions"] ? globalConfig["allowedRegions"].map((allowedRegion) => {
+											return (<IncoreMenuItem value={allowedRegion} key={allowedRegion}>
+												{allowedRegion}
+											</IncoreMenuItem>);
+										})
+											:
+											null
+									}
+								</IncoreSelectBox>
+							</Box>
+							:
+							null
+					}
 					{cgeHouseholdIncomeContent ? (
 						<Box className={classes.tableEntry}>
 							<Typography className={classes.title}>Household Income</Typography>
-							<CgeResultsTable resultsJson={cgeHouseholdIncomeContent} isMetrics={true} />
+							<CgeResultsTable resultsJson={cgeHouseholdIncomeContent} isMetrics={true} region={region}/>
 						</Box>
 					) : (
 						<></>
@@ -216,7 +249,7 @@ export default function ResilienceMetrics(props) {
 					{cgeEmploymentContent ? (
 						<Box className={classes.tableEntry}>
 							<Typography className={classes.title}>Employment</Typography>
-							<CgeResultsTable resultsJson={cgeEmploymentContent} isMetrics={true} />
+							<CgeResultsTable resultsJson={cgeEmploymentContent} isMetrics={true} region={region}/>
 						</Box>
 					) : (
 						<></>
@@ -228,6 +261,7 @@ export default function ResilienceMetrics(props) {
 								resultsJson={cgeDomesticSupplyContent}
 								yAxisLegend="Person"
 								isMetrics={true}
+								region={region}
 							/>
 						</Box>
 					) : (

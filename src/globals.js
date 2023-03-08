@@ -15,6 +15,11 @@ globals["allowUpload"] = true;
 globals["testbedSpace"] = "commresiliencejoplin";
 globals["testbedGroup"] = "incore_joplin_user"; // incore_galveston_user, incore_joplin_user, incore_slc_user
 
+// globals["allowedRegions"] = ["R1", "R2", "R3", "R4", "R5", "R6", "R7"];
+// globals["testbedSpace"] = "commresilienceslc";
+// globals["testbedGroup"] = "incore_slc_user"; // incore_galveston_user, incore_joplin_user, incore_slc_user
+
+
 export { globals };
 
 export const testUserInfo = "commresilience";

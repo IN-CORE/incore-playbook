@@ -12,13 +12,16 @@ import { IncoreButtonText } from "../../styledComponents/IncoreButtonText";
 import GetAppIcon from "@material-ui/icons/GetApp";
 import { downloadImg } from "../../../utils/image";
 import CameraAltIcon from "@material-ui/icons/CameraAlt";
+import { IncoreInputLabel } from "../../styledComponents/IncoreInputLabel";
 
 export default function CGE(props) {
 	let { executionItem, previewOn, handlePreviewClose, datawolfDatasetConfigItems } = props;
 
 	const datawolfConfig = useSelector((state) => state.config.datawolfConfig);
+	const globalConfig = useSelector((state) => state.config.globalConfig);
 
 	const [cgeType, setCgeType] = useState("totalHouseholdIncome");
+	const [region, setRegion] = useState(globalConfig["allowedRegions"] ? globalConfig["allowedRegions"][0] : null);
 	const [selectedExecutionName, setSelectedExecutionName] = useState("");
 	const [cgeHouseholdIncomeContent, setCgeHouseholdIncomeContent] = useState(null);
 	const [cgeDomesticSupplyContent, setCgeDomesticSupplyContent] = useState(null);
@@ -77,26 +80,61 @@ export default function CGE(props) {
 					<Grid container spacing={3} justify="center">
 						<Grid item xs={12} sm={12} md={8} lg={8} xl={8}>
 							{/*dropdown*/}
-							<IncoreSelectBox
-								labelId="label"
-								id="select"
-								variant="outlined"
-								onChange={(e) => {
-									setCgeType(e.target.value);
-								}}
-								value={cgeType}
-								style={{ maxWidth: "500px" }}
-							>
-								<IncoreMenuItem value="totalHouseholdIncome" key="totalHouseholdIncome">
-									Total Household Income
-								</IncoreMenuItem>
-								<IncoreMenuItem value="domesticSupply" key="domesticSupply">
-									Domestic Supply
-								</IncoreMenuItem>
-								<IncoreMenuItem value="employment" key="employment">
-									Employment
-								</IncoreMenuItem>
-							</IncoreSelectBox>
+							<Box display="flex" justifyContent="flex-start">
+								<Box flexGrow={2}>
+									<IncoreInputLabel>Select A Category</IncoreInputLabel>
+									<IncoreSelectBox
+										labelId="label"
+										id="select"
+										variant="outlined"
+										onChange={(e) => {
+											setCgeType(e.target.value);
+										}}
+										value={cgeType}
+										style={{ maxWidth: "500px" }}
+									>
+										<IncoreMenuItem value="totalHouseholdIncome" key="totalHouseholdIncome">
+											Total Household Income
+										</IncoreMenuItem>
+										<IncoreMenuItem value="domesticSupply" key="domesticSupply">
+											Domestic Supply
+										</IncoreMenuItem>
+										<IncoreMenuItem value="employment" key="employment">
+											Employment
+										</IncoreMenuItem>
+									</IncoreSelectBox>
+								</Box>
+
+								{/*regions*/}
+								{
+									globalConfig["allowedRegions"] ?
+										<Box flexGrow={1}>
+											<IncoreInputLabel>Select A Region</IncoreInputLabel>
+											<IncoreSelectBox
+												labelId="label"
+												id="select"
+												variant="outlined"
+												onChange={(e) => {
+													setRegion(e.target.value);
+												}}
+												value={region}
+												style={{ maxWidth: "500px" }}
+											>
+												{
+													globalConfig["allowedRegions"] ? globalConfig["allowedRegions"].map((allowedRegion) => {
+														return (<IncoreMenuItem value={allowedRegion} key={allowedRegion}>
+															{allowedRegion}
+														</IncoreMenuItem>);
+													})
+														:
+														null
+												}
+											</IncoreSelectBox>
+										</Box>
+										:
+										null
+								}
+							</Box>
 
 							{/*table and barchart*/}
 							{/*TODO for some reason barchart unit not working*/}
@@ -106,12 +144,15 @@ export default function CGE(props) {
 										<>
 											<Box style={{ margin: "50px 0", maxWidth: "700px" }}>
 												<CGEBarChart
+													region={region}
 													data={cgeHouseholdIncomeContent}
 													yAxisLegend="Million of $"
 												/>
 											</Box>
 											<Box>
-												<CgeResultsTable resultsJson={cgeHouseholdIncomeContent} />
+												<CgeResultsTable
+													region={region}
+													resultsJson={cgeHouseholdIncomeContent} />
 											</Box>
 										</>
 									);
@@ -120,12 +161,14 @@ export default function CGE(props) {
 										<>
 											<Box style={{ margin: "50px 0", maxWidth: "700px" }}>
 												<CGEBarChart
+													region={region}
 													data={cgeDomesticSupplyContent}
 													yAxisLegend="Million of $"
 												/>
 											</Box>
 											<Box>
 												<CgeResultsTable
+													region={region}
 													resultsJson={cgeDomesticSupplyContent}
 													yAxisLegend="Person"
 												/>
@@ -136,10 +179,15 @@ export default function CGE(props) {
 									return (
 										<>
 											<Box style={{ margin: "50px 0", maxWidth: "700px" }}>
-												<CGEBarChart data={cgeEmploymentContent} title="Employment" />
+												<CGEBarChart
+													region={region}
+													data={cgeEmploymentContent}
+													title="Employment" />
 											</Box>
 											<Box>
-												<CgeResultsTable resultsJson={cgeEmploymentContent} />
+												<CgeResultsTable
+													region={region}
+													resultsJson={cgeEmploymentContent} />
 											</Box>
 										</>
 									);
