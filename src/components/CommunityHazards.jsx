@@ -267,6 +267,11 @@ export const CommunityHazards = (props) => {
 		handleLayerUpdate(hazard);
 	};
 
+	const getRow = (selectedHazardType) => {
+		let row = eval(getHazardTypePlural(selectedHazardType)).map(v => ({...v, viewLayer: "View"}));
+		return row;
+	};
+
 	const syntheticDrawPoints = (coord, isStart = true) => {
 		let point = new Point(coord);
 		let pointFeature = new Feature({
@@ -293,7 +298,6 @@ export const CommunityHazards = (props) => {
 		{
 			prettyName: "NAME",
 			columnName: "name",
-			handleClick: hazardIdClick
 		},
 		{
 			prettyName: "DESCRIPTION",
@@ -306,7 +310,12 @@ export const CommunityHazards = (props) => {
 		{
 			prettyName: "SUBMITTED BY",
 			columnName: "creator"
-		}
+		},
+		{
+			prettyName: "",
+			columnName: "viewLayer",
+			handleClick: hazardIdClick
+		},
 	];
 
 	const pageChange = (direction) => {
@@ -478,7 +487,7 @@ export const CommunityHazards = (props) => {
 													<>
 														<EntryTable
 															fieldNames={fieldNames}
-															fields={eval(getHazardTypePlural(selectedHazardType))}
+															fields={getRow(selectedHazardType)}
 														/>
 														<Pagination
 															pageNumber={pageNumber}
