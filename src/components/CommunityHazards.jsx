@@ -300,11 +300,6 @@ export const CommunityHazards = (props) => {
 			columnName: "name",
 		},
 		{
-			prettyName: "",
-			columnName: "viewLayer",
-			handleClick: hazardIdClick
-		},
-		{
 			prettyName: "DESCRIPTION",
 			columnName: "description"
 		},
@@ -315,7 +310,12 @@ export const CommunityHazards = (props) => {
 		{
 			prettyName: "SUBMITTED BY",
 			columnName: "creator"
-		}
+		},
+		{
+			prettyName: "",
+			columnName: "viewLayer",
+			handleClick: hazardIdClick
+		},
 	];
 
 	const pageChange = (direction) => {
