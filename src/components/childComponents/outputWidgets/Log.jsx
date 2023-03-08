@@ -23,16 +23,13 @@ export default function Log(props) {
 	useEffect(() => {
 		setSelectedExecutionName(executionItem["title"]);
 		datawolfDatasetConfigItems.map(async (datawolfDatasetConfigItem) => {
-			const vName = datawolfDatasetConfigItem.datasets.variableName;
-			if (vName.includes("Log")) {
-				const temp = await getOutputFileContent(datawolfConfig, executionItem, datawolfDatasetConfigItem.datasetId);
-				setLogContent((prevState) => {
-					return {
-						...prevState,
-						[datawolfDatasetConfigItem.datasets.title]: temp
-					};
-				});
-			}
+			const temp = await getOutputFileContent(datawolfConfig, executionItem, datawolfDatasetConfigItem.datasetId);
+			setLogContent((prevState) => {
+				return {
+					...prevState,
+					[datawolfDatasetConfigItem.datasets.title]: temp
+				};
+			});
 		});
 	}, []);
 
