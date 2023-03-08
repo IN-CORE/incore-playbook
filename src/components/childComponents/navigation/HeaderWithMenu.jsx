@@ -32,6 +32,10 @@ import ListItem from "@material-ui/core/ListItem";
 import ListItemText from "@material-ui/core/ListItemText";
 import Collapse from "@material-ui/core/Collapse";
 import CheckCircleIcon from "@material-ui/icons/CheckCircle";
+import DownIcon from "@material-ui/icons/KeyboardArrowDown";
+import RightIcon from "@material-ui/icons/KeyboardArrowRight";
+import CheckCircleOutlinedIcon from "@material-ui/icons/CheckCircleOutlined";
+import HourglassEmptyOutlinedIcon from "@material-ui/icons/HourglassEmptyOutlined";
 import QueryBuilderIcon from "@material-ui/icons/QueryBuilder";
 import Grid from "@material-ui/core/Grid";
 
@@ -435,8 +439,8 @@ const HeaderWithMenu = ({
 	];
 
 	let menus = [];
-	const completedCheckIcon = <CheckCircleIcon style={{ color: "#00619D" }} />;
-	const inProgressCheckIcon = <CheckCircleIcon style={{ color: "#2E384D" }} />;
+	const completedCheckIcon = <CheckCircleOutlinedIcon style={{ color: "#00619D"}} />;
+	const inProgressCheckIcon = <HourglassEmptyOutlinedIcon style={{ color: "#8798AD"}} />;
 
 	treeData.map(({ key, label, nodes }) => {
 		let subMenus = [];
