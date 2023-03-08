@@ -45,6 +45,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - fix status bar appearance for a smaller screen/ different browser [#139](https://github.com/IN-CORE/incore-playbook/issues/139)
 - Pole damage datawolf id for population disloation [#145](https://github.com/IN-CORE/incore-playbook/issues/145)
 - Map loading flashes sometime [#140](https://github.com/IN-CORE/incore-playbook/issues/140)
+- Document link reset to empty [#161](https://github.com/IN-CORE/incore-playbook/issues/161)
 - Occasional interval not working issue with added cleanup [#163](https://github.com/IN-CORE/incore-playbook/issues/163)
 
 

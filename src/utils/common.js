@@ -99,7 +99,7 @@ export function getIncoreTokenFile(hostname = "") {
 }
 
 // get current user's encoded email address for datawolf use
-export function getCurrUserEmail(hostname = "") {
+export function getCurrEmail(hostname = "") {
 	if (hostname === "http://localhost:8080") {
 		return testUserInfo;
 	} else {
@@ -107,7 +107,7 @@ export function getCurrUserEmail(hostname = "") {
 		if (cookie !== "" && cookie.split(" ").length > 0) {
 			let userInfo = jwt_decode(cookie.split(" ")[1]);
 			// return userInfo["email"];
-			return userInfo["preferred_username"];
+			return userInfo["email"];
 		}
 	}
 }

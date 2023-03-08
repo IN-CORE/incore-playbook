@@ -22,12 +22,15 @@ export const DocURI = (props) => {
 	const stepData = useSelector((state) => state.steps[`step_${step}_${substep}`]);
 
 	const [edit, setEdit] = useState(false);
-	const [docUri, setDocUri] = useState();
+	const [docUri, setDocUri] = useState(stepData["doc_uri"]);
 
 	useEffect(() => {
 		listSteps(globalConfig, step, substep);
 	}, []);
 
+	useEffect(() => {
+		setDocUri(stepData["doc_uri"]);
+	}, [stepData]);
 
 	const handleDocUriOnSave = () => {
 		patchStep(globalConfig, step, substep, null, docUri);
@@ -55,7 +58,7 @@ export const DocURI = (props) => {
 								onChange={(e) => {
 									setDocUri(e.target.value);
 								}}
-								defaultValue={stepData["doc_uri"]}
+								defaultValue={docUri}
 							/>
 						</Box>
 						<Box style={{marginTop:"0.5em"}}>
@@ -63,22 +66,27 @@ export const DocURI = (props) => {
 								Save
 							</IncoreButtonInline>
 							<Button variant="outlined" color="default" style={{height:"41px",marginLeft:"0.5em"}}
-								onClick={()=> {setEdit(false);}}>Cancel</Button>
+								onClick={()=> {
+									setEdit(false);
+									setDocUri(stepData["doc_uri"]);
+								}}>Cancel</Button>
 						</Box>
 					</Box>
 					:
 					<Box>
 						{
-							stepData["doc_uri"] && stepData["doc_user"]?
-								<Box>
-									<IncoreLink href={stepData["doc_uri"]} target="_blank">{stepData["doc_uri"]}</IncoreLink>
-									<IncoreFootNote>Link last edited by {stepData["doc_user"]["firstName"]}&nbsp;
-										{stepData["doc_user"]["lastName"]} at {parseDateTime(stepData["doc_updated_at"]) ?? "unavailable timestamp"}</IncoreFootNote>
-								</Box>
+							stepData["doc_uri"] && encodeURIComponent(stepData["doc_uri"]) !== "%7F"
+							&& stepData["doc_uri"] !== "" ?
+								<IncoreLink href={stepData["doc_uri"]} target="_blank">{stepData["doc_uri"]}</IncoreLink>
 								:
-								<Box>
-									<Typography>No document link available yet.</Typography>
-								</Box>
+								<Typography>No document link available yet.</Typography>
+						}
+						{
+							stepData["doc_user"] ?
+								<IncoreFootNote>Link last edited by {stepData["doc_user"]["firstName"]}&nbsp;
+									{stepData["doc_user"]["lastName"]} at {parseDateTime(stepData["doc_updated_at"]) ?? "unavailable timestamp"}</IncoreFootNote>
+								:
+								<></>
 						}
 						<Box>
 							<IncoreButtonInline variant="contained" color="default" onClick={()=> {setEdit(true);}}>

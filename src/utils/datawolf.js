@@ -1,4 +1,4 @@
-import { getHeader, getCurrUserEmail, getIncoreTokenFile, getCurrUserDatawolfId } from "./common";
+import { getHeader, getCurrUsername, getIncoreTokenFile, getCurrUserDatawolfId } from "./common";
 import { datawolfConfig as defaultDatawolfConfig } from "../datawolf.config.js";
 import { datawolfWorkflowConfig as defaultDatawolfWorkflowConfig } from "../datawolf.config.js";
 
@@ -65,7 +65,7 @@ export async function submitExecution(
 	let authHeader = getHeader(datawolfConfig.hostname);
 	authHeader.append("Content-Type", "application/json");
 
-	let currUserDatawolfId = await getCurrUserDatawolfId(getCurrUserEmail(), datawolfConfig, datawolfWorkflowConfig);
+	let currUserDatawolfId = await getCurrUserDatawolfId(getCurrUsername(datawolfConfig.hostname), datawolfConfig, datawolfWorkflowConfig);
 
 	const parameters = Object.keys(datawolfFormState).reduce((parameters, key) => {
 		return { ...parameters, ...datawolfFormState[key] };
@@ -112,7 +112,7 @@ export async function postDataset(datawolfConfig, title = "incoretoken", descrip
 	let formData = new FormData();
 	formData.append("title", title);
 	formData.append("description", description);
-	formData.append("useremail", getCurrUserEmail());
+	formData.append("useremail", getCurrUsername(datawolfConfig.hostname));
 
 	// TODO add a file
 	let file = getIncoreTokenFile(datawolfConfig.hostname);
