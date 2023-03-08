@@ -552,7 +552,7 @@ export function ViewResultEntryTable(props) {
 																		preview(execution["id"], "PopDislocation");
 																	}}
 																	className={
-																		checkResultsReady(["PopDislocation"], execution.datasets)
+																		checkResultsReady(["PopDislocation", "BldgDamage"], execution.datasets)
 																			? classes.clickableLink
 																			: classes.clickableLinkDisabled
 																	}
