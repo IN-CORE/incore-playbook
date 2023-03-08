@@ -5,12 +5,13 @@ import { globals as defaultGlobalConfig } from "../globals";
 import XYZ from "ol/source/XYZ";
 import OSM, {ATTRIBUTION as OSM_ATTRIBUTION} from "ol/source/OSM";
 
-export const generateLayers = (globalConfig = defaultGlobalConfig, layerDef) => {
+export const generateLayers = (globalConfig = defaultGlobalConfig, layerDef, layerGroupTitle="Damage") => {
 	return layerDef.reduce((previewLayers, layerDefinition) => {
 		const source = new TileWMS({
 			url: `${globalConfig.geoServerWMS}`,
 			params: { LAYERS: layerDefinition.layerId, STYLES: layerDefinition.layerStyles },
 			ratio: 1,
+			transition: 0,
 			serverType: "geoserver",
 			crossOrigin: "anonymous"
 		});
@@ -20,7 +21,10 @@ export const generateLayers = (globalConfig = defaultGlobalConfig, layerDef) => 
 			zIndex: layerDefinition["zIndex"],
 			opacity: layerDefinition["opacity"]
 		});
-		return [...previewLayers, previewLayer];
+		return new GroupLayer({
+			title: layerGroupTitle,
+			layers:  [...previewLayers, previewLayer]
+		});
 	}, []);
 };
 
@@ -33,8 +37,9 @@ const _constructHazardLayer = (globalConfig=defaultGlobalConfig, layerId, layerT
 			url: `${globalConfig.geoServerWMS}`,
 			params: {LAYERS: layerId, STYLES: style},
 			ratio: 1,
+			transition: 0,
 			serverType: "geoserver",
-      crossOrigin: "anonymous"
+			crossOrigin: "anonymous"
 		});
 		HazardMapLayer = new TileLayer({
 			title: layerTitle,
@@ -85,35 +90,37 @@ export const getHazardGroupLayers = (globalConfig=defaultGlobalConfig, json, hty
 };
 
 
-export const basicLayers = {
-	basemaps: new GroupLayer({
-		title: "Base Maps",
-		layers: [
-			new TileLayer({
-				type: "base",
-				visible: true,
-				title: "Carto",
-				source: new XYZ({
-					url: "https://{a-d}.basemaps.cartocdn.com/rastertiles/light_all/{z}/{x}/{y}.png",
-					attributions: [
-						"&#169; <a href=\"https://www.carto.com\">Carto</a>,",
-						OSM_ATTRIBUTION
-					],
-					crossOrigin: "anonymous"
-				})
-			}),
-			new TileLayer({
-				type: "base",
-				visible: false,
-				title: "OSM",
-				source: new OSM({
-					crossOrigin: "anonymous"
-				})
-			}),
-		]
-	}),
-	tilelayer: new GroupLayer({
-		title: "Damage",
-		layers: []
-	})
-};
+export const basicLayers = new GroupLayer({
+	title: "Base Maps",
+	layers: [
+		new TileLayer({
+			type: "base",
+			title: "OSM",
+			visible:false,
+			source: new XYZ({
+				url: "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
+				attributions: [
+					OSM_ATTRIBUTION,
+					"Tiles courtesy of " +
+					"<a href=\"http://openstreetmap.org\">" +
+					"OpenStreetMap" +
+					"</a>"
+				],
+				crossOrigin: "anonymous"
+			})
+		}),
+		new TileLayer({
+			type: "base",
+			title: "Carto",
+			visible:true,
+			source: new XYZ({
+				url: "https://{a-d}.basemaps.cartocdn.com/rastertiles/light_all/{z}/{x}/{y}.png",
+				attributions: [
+					"&#169; <a href=\"https://www.carto.com\">Carto</a>,",
+					OSM_ATTRIBUTION
+				],
+				crossOrigin: "anonymous"
+			})
+		})
+	]
+});

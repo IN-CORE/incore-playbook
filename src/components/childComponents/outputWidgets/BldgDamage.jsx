@@ -2,17 +2,17 @@ import {
 	Box,
 	Container,
 	Dialog,
+	DialogActions,
 	DialogContent,
 	Divider,
 	Grid,
 	IconButton,
-	Typography,
-	DialogActions
+	Typography
 } from "@material-ui/core";
 import CloseIcon from "@material-ui/icons/Close";
 import Map from "../map/Map";
 import { fromLonLat, getTransform } from "ol/proj";
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { ResultSummaryTable } from "../table/ResultSummaryTable";
 import { StackedResult } from "../graph/StackedResult";
 import { ResultTable } from "../table/ResultTable";
@@ -39,11 +39,9 @@ export default function BldgDamage(props) {
 	const [runtime, setRuntime] = useState(null);
 	const [bldgDmgSummaryTableContent, setBldgDmgSummaryTableContent] = useState(null);
 	const [bldgMaxDamageStateINCOREId, setBldgMaxDamageStateINCOREId] = useState(null);
+	const [damageLayers, setDamageLayers] = useState(null);
 
-	// Holds an instance of Map component
-	const layerRef = useRef(basicLayers);
 
-	// print container
 	const printRef = useRef();
 
 	useEffect(() => {
@@ -51,10 +49,6 @@ export default function BldgDamage(props) {
 
 		// for summary table on the top
 		setRuntime(executionItem["date"].slice(0, 10));
-
-		if (hazardLayers && layerRef.current.tilelayer.getLayers()) {
-			layerRef.current.tilelayer.getLayers().push(hazardLayers);
-		}
 
 		datawolfDatasetConfigItems.map(async (datawolfDatasetConfigItem) => {
 			const vName = datawolfDatasetConfigItem.datasets.variableName;
@@ -75,7 +69,7 @@ export default function BldgDamage(props) {
 					}
 				];
 				const previewLayers = generateLayers(globalConfig, layerDef);
-				layerRef.current.tilelayer.getLayers().extend(previewLayers);
+				setDamageLayers(previewLayers);
 			}
 			else if (vName === "bldgDmgSummaryTableContent") {
 				setBldgDmgSummaryTableContent(await getOutputFileContentJSON(datawolfConfig, executionItem, datawolfDatasetConfigItem.datasetId));
@@ -90,9 +84,7 @@ export default function BldgDamage(props) {
 	return (
 		<Dialog
 			open={previewOn}
-			onClose={() => {
-				handlePreviewClose(layerRef);
-			}}
+			onClose={handlePreviewClose}
 			maxWidth="lg"
 			fullWidth
 			scroll="paper"
@@ -100,9 +92,7 @@ export default function BldgDamage(props) {
 			<DialogContent className="previewModal" ref={printRef}>
 				<IconButton
 					aria-label="Close"
-					onClick={() => {
-						handlePreviewClose(layerRef);
-					}}
+					onClick={handlePreviewClose}
 					style={{ float: "right" }}
 				>
 					<CloseIcon fontSize="small" />
@@ -148,18 +138,27 @@ export default function BldgDamage(props) {
 				</Box>
 
 				{/*for map*/}
-				<Container className="mapContainer" disableGutters>
-					<Map
-						className="fillContainer"
-						zoom={mapConfig.ZOOM}
-						minZoom={mapConfig.MIN_ZOOM}
-						maxZoom={mapConfig.MAX_ZOOM}
-						extent={applyTransform(mapConfig.MAP_BOUNDS, getTransform("EPSG:4326", "EPSG:3857"))}
-						center={fromLonLat(mapConfig.MAP_CENTER)}
-						layers={[layerRef.current.basemaps, layerRef.current.tilelayer]}
-						layerSwitcherOptions={{}}
-					/>
-				</Container>
+				{
+					basicLayers && hazardLayers && damageLayers ?
+						<Container className="mapContainer" disableGutters>
+							<Map
+								className="fillContainer-BldgDamage"
+								zoom={mapConfig.ZOOM}
+								minZoom={mapConfig.MIN_ZOOM}
+								maxZoom={mapConfig.MAX_ZOOM}
+								extent={applyTransform(mapConfig.MAP_BOUNDS, getTransform("EPSG:4326", "EPSG:3857"))}
+								center={fromLonLat(mapConfig.MAP_CENTER)}
+								layers={[
+									basicLayers,
+									damageLayers,
+									hazardLayers,
+								]}
+								layerSwitcherOptions={{}}
+							/>
+						</Container>
+						:
+						<></>
+				}
 
 				{/*for table*/}
 				{bldgDmgSummaryTableContent ? (

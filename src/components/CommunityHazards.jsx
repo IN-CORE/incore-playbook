@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Box, Container, Grid, Tab, Tabs, makeStyles } from "@material-ui/core";
+import { Box, Container, Grid, Tab, Tabs, makeStyles, Button } from "@material-ui/core";
 import GroupLayer from "ol/layer/Group";
 import TileLayer from "ol/layer/Tile";
 import XYZ from "ol/source/XYZ";
@@ -38,7 +38,7 @@ import { LineString } from "ol/geom";
 import { useEffectAllDepsChange } from "./customHooks/useEffectAllDeps";
 import { getHazardTypePlural } from "../utils/common";
 import StepStatus from "./childComponents/step/StepStatus";
-
+import { IncoreButtonInline } from "./styledComponents/IncoreButtonInline";
 
 const useStyles = makeStyles({
 	tabDiv: {
@@ -60,11 +60,15 @@ const useStyles = makeStyles({
 	},
 	mapContainer: {
 		height: "700px"
+	},
+	summary: {
+		// backgroundColor: "gray",
+		boxShadow: "none"
 	}
 });
 
 export const CommunityHazards = (props) => {
-	const {step, substep} = props;
+	const { step, substep } = props;
 	const classes = useStyles();
 
 	const [currTabIndex, setCurrTabIndex] = useState(0);
@@ -92,6 +96,7 @@ export const CommunityHazards = (props) => {
 	const [dataPerPage, setDataPerPage] = React.useState(5);
 	const [pageNumber, setPageNumber] = React.useState(1);
 	const [offset, setOffset] = React.useState(0);
+	const [olIdLayerMap, setOlIdLayerMap] = React.useState(new Set());
 
 	// Cache the drawing
 	const drawSourceRef = React.useRef(new VectorSource({ wrapX: false }));
@@ -137,7 +142,7 @@ export const CommunityHazards = (props) => {
 					title: "Carto",
 					source: new XYZ({
 						url: "https://{a-d}.basemaps.cartocdn.com/rastertiles/light_all/{z}/{x}/{y}.png",
-						attributions: ['&#169; <a href="https://www.carto.com">Carto</a>,', OSM_ATTRIBUTION]
+						attributions: ["&#169; <a href=\"https://www.carto.com\">Carto</a>,", OSM_ATTRIBUTION]
 					})
 				}),
 				new TileLayer({
@@ -239,9 +244,23 @@ export const CommunityHazards = (props) => {
 	}, [srcCoord]);
 
 	const handleLayerUpdate = (json) => {
-		const HazardMapGroupLayers = getHazardGroupLayers(globalConfig, json, selectedHazardType);
-		// add created hazard to this created group layer
-		layerRef.current.tilelayer.getLayers().push(HazardMapGroupLayers);
+		// if not already added, then add, else ignore.
+		if (!olIdLayerMap.has(json.id)) {
+			const HazardMapGroupLayers = getHazardGroupLayers(globalConfig, json, selectedHazardType);
+			layerRef.current.tilelayer.getLayers().push(HazardMapGroupLayers);
+
+			setOlIdLayerMap((olIdLayerMap) => olIdLayerMap.add(json.id));
+		}
+	};
+
+	const handleClearAllLayers = () => {
+		if (layerRef.current.tilelayer.getLayers().getLength() !== 0) {
+			layerRef.current.tilelayer.getLayers().clear();
+			setOlIdLayerMap(new Set());
+		}
+		if (layerRef.current.drawlayer.getLayers().getLength() !== 0) {
+			layerRef.current.drawlayer.getLayers().clear();
+		}
 	};
 
 	const hazardIdClick = async (hazard) => {
@@ -316,7 +335,7 @@ export const CommunityHazards = (props) => {
 	return (
 		<Layout>
 			<div className="firstDivInContent">
-				<Box display="flex" style={{alignItem:"baseline", padding:"1em 0"}}>
+				<Box display="flex" style={{ alignItem: "baseline", padding: "1em 0" }}>
 					<BreadCrumb
 						parentStep="Determine Goals & Objectives"
 						childStep="Define Community Hazards"
@@ -330,34 +349,7 @@ export const CommunityHazards = (props) => {
 					<Box className="entryTableContainer">
 						<StepInfo fullHtml={fullHtml} />
 						<br />
-						<Box className="entryTableTitle">
-							<IncoreInputLabel>
-								Created {selectedHazardType.charAt(0).toUpperCase()}
-								{selectedHazardType.slice(1)}
-							</IncoreInputLabel>
-						</Box>
-						{(() => {
-							// selectedHazardType: are earthquake, flood, hurricane, tsunami, tornado
-							if (selectedHazardType !== "") {
-								return (
-									<>
-										<Box className="entryTable">
-											<EntryTable
-												fieldNames={fieldNames}
-												fields={eval(getHazardTypePlural(selectedHazardType))}
-											/>
-										</Box>
-										<Pagination
-											pageNumber={pageNumber}
-											data={eval(getHazardTypePlural(selectedHazardType))}
-											dataPerPage={dataPerPage}
-											previous={() => pageChange("previous")}
-											next={() => pageChange("next")}
-										/>
-									</>
-								);
-							}
-						})()}
+						<br />
 					</Box>
 					<Grid container spacing={3} className="innerBox">
 						<Grid item xl={6} lg={6} md={6} sm={6} xs={12} className="gridItem">
@@ -397,6 +389,7 @@ export const CommunityHazards = (props) => {
 									{selectedHazardType === "tornado" || selectedHazardType === "earthquake" ? (
 										<Tab label="Create a Hazard" className={classes.tab} />
 									) : null}
+									<Tab label="View Created" className={classes.tab} />
 								</Tabs>
 								{
 									// different hazard type will have different UI
@@ -470,10 +463,45 @@ export const CommunityHazards = (props) => {
 										}
 									})()
 								}
+								{/*hazard history*/}
+								<div
+									role="tabpanel"
+									hidden={currTabIndex !== 2}
+									id="simple-tabpanel-2"
+									aria-labelledby="simple-tab-2"
+								>
+									{currTabIndex === 2 ? (
+										<Box className="entryTableTitle">
+											{
+												// selectedHazardType: are earthquake, flood, hurricane, tsunami, tornado
+												selectedHazardType !== "" ? (
+													<>
+														<EntryTable
+															fieldNames={fieldNames}
+															fields={eval(getHazardTypePlural(selectedHazardType))}
+														/>
+														<Pagination
+															pageNumber={pageNumber}
+															data={eval(getHazardTypePlural(selectedHazardType))}
+															dataPerPage={dataPerPage}
+															previous={() => pageChange("previous")}
+															next={() => pageChange("next")}
+														/>
+													</>
+												) : null
+											}
+										</Box>
+									) : null}
+								</div>
 							</Box>
 						</Grid>
 						<Grid item xl={6} lg={6} md={6} sm={6} xs={12} className="gridItem">
-							<Container className={classes.mapContainer} disableGutters>
+							<Container className={classes.mapContainer} disableGutters style={{position:"relative"}}>
+								<Button variant="outlined" onClick={handleClearAllLayers}
+									style={{position:"absolute", zIndex:100, right:"5px", top: "5px",
+										background: "#FFFFFF"}}>
+									Clear All
+								</Button>
 								<Map
 									className="fillContainer"
 									zoom={mapConfig.ZOOM}

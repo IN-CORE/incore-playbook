@@ -16,12 +16,12 @@ import CGE from "./outputWidgets/CGE";
 import PopDislocation from "./outputWidgets/PopDislocation";
 import ResilienceMetrics from "./outputWidgets/ResilienceMetrics";
 import SubstationDamage from "./outputWidgets/SubstationDamage";
-import { Collection } from "ol";
 
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Switch from "@material-ui/core/Switch";
 import { getHazardGroupLayers } from "../../utils/map";
-
+import HHS from "./outputWidgets/HHS";
+import Log from "./outputWidgets/Log";
 
 const useStyles = makeStyles({
 	statTitle: {
@@ -46,10 +46,14 @@ const registeredWidgets = {
 	PoleDamage: <PoleDamage />,
 	BldgMCS: <BldgMCS />,
 	BldgFunctionality: <BldgFunctionality />,
+	// eslint-disable-next-line react/jsx-pascal-case
 	CGE: <CGE />,
 	PopDislocation: <PopDislocation />,
 	ResilienceMetrics: <ResilienceMetrics />,
-	SubstationDamage: <SubstationDamage />
+	SubstationDamage: <SubstationDamage />,
+	// eslint-disable-next-line react/jsx-pascal-case
+	HHS: <HHS />,
+	Log: <Log />
 };
 
 export default function ViewResult(props) {
@@ -72,27 +76,28 @@ export default function ViewResult(props) {
 	const [datawolfViewAllOn, setDatawolfViewAllOn] = useState(false); // datawolf view
 	const [intervalId, setIntervalId] = useState(0);
 
+	const _clear_old_timeinterval = () => {
+		if (intervalId) {
+			clearInterval(intervalId);
+			setIntervalId(0);
+		}
+	};
+
 	// component did mount
 	useEffect(() => {
+		_clear_old_timeinterval();
 		getExecutionList(datawolfConfig, datawolfViewAllOn);
+		return () => {
+			_clear_old_timeinterval();
+		};
 	}, []);
-
-	// update execution statuses upon changing
-	useEffect(() => {
-		createAnalysisEntryTable();
-	}, [executions]);
 
 	// update datawolf view all on / off;
 	// load executions list periodically every 10 seconds
 	useEffect(() => {
-		// clear old time due to params has changed
-		if (intervalId){
-			clearInterval(intervalId);
-			setIntervalId(0);
-		}
-
+		_clear_old_timeinterval();
 		// save some traffic; only perform backend GET when on that tab
-		if (value === index){
+		if (value === index) {
 			// immediately fetch new execution list
 			getExecutionList(datawolfConfig, datawolfViewAllOn);
 
@@ -102,7 +107,16 @@ export default function ViewResult(props) {
 			}, datawolfConfig["retreiveTimeInterval"] ?? 10 * 1000);
 			setIntervalId(interval);
 		}
+
+		return () => {
+			_clear_old_timeinterval();
+		};
 	}, [datawolfViewAllOn, value]);
+
+	// update execution statuses upon changing
+	useEffect(() => {
+		createAnalysisEntryTable();
+	}, [executions]);
 
 	// extract a single status from mutliple step status`
 	const extractStatus = (executionItem) => {
@@ -122,7 +136,7 @@ export default function ViewResult(props) {
 			else if (statusArr.indexOf("QUEUED") >= 0) return "QUEUED";
 			else if (statusArr.indexOf("WAITING") >= 0) return "WAITING";
 			else if (statusArr.indexOf("UNKNOWN") >= 0) return "UNKNOWN";
-			else if (statusArr.every(status => status === "FINISHED")) return "FINISHED";
+			else if (statusArr.every((status) => status === "FINISHED")) return "FINISHED";
 		}
 		return "UNDEFINED";
 	};
@@ -153,6 +167,10 @@ export default function ViewResult(props) {
 			columnName: "title"
 		},
 		{
+			prettyName: "CREATED BY",
+			columnName: "creator"
+		},
+		{
 			prettyName: "DESCRIPTION",
 			columnName: "description"
 		},
@@ -171,12 +189,9 @@ export default function ViewResult(props) {
 	];
 
 	// close the model
-	const handlePreviewClose = (layerRef) => {
+	const handlePreviewClose = () => {
 		setPreviewOn(false);
 		setWidgetName("");
-
-		// important! remove tile layers; reset map
-		layerRef.current.tilelayer.setLayers(new Collection([]));
 	};
 
 	const getExecution = (executionItemId) => {
@@ -247,7 +262,7 @@ export default function ViewResult(props) {
 	};
 
 	const handleViewAllDatawolf = () => {
-		setDatawolfViewAllOn(datawolfViewAllOn => !datawolfViewAllOn);
+		setDatawolfViewAllOn((datawolfViewAllOn) => !datawolfViewAllOn);
 	};
 
 	return (
@@ -289,7 +304,12 @@ export default function ViewResult(props) {
 			</Box>
 
 			{/*for individual analysis result preview*/}
-			{widgetName && selectedExecutionItem && previewOn && datawolfDatasetConfigItems.length >0 && hazardType && hazardGroupLayer ? (
+			{widgetName &&
+			selectedExecutionItem &&
+			previewOn &&
+			datawolfDatasetConfigItems.length > 0 &&
+			hazardType &&
+			hazardGroupLayer ? (
 				(() => {
 					return React.cloneElement(registeredWidgets[widgetName], {
 						executionItem: selectedExecutionItem,

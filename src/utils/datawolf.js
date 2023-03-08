@@ -1,4 +1,4 @@
-import { getHeader, getCurrUserEmail, getIncoreTokenFile } from "./common";
+import { getHeader, getCurrUserEmail, getIncoreTokenFile, getCurrUserDatawolfId } from "./common";
 import { datawolfConfig as defaultDatawolfConfig } from "../datawolf.config.js";
 import { datawolfWorkflowConfig as defaultDatawolfWorkflowConfig } from "../datawolf.config.js";
 
@@ -12,35 +12,40 @@ export async function getOutputFileJson(datawolfConfig = defaultDatawolfConfig, 
 		mode: "cors"
 	});
 
-	const resultDataset = await datasetResponse.json();
-	let fileId = -1;
+	if (datasetResponse.status === 200){
+		const resultDataset = await datasetResponse.json();
+		let fileId = -1;
 
-	// If output filename is already provided as input, use that to figure out the exact file that needs to be downloaded
-	if (outputFileName !== null) {
-		for (let i = 0; i < resultDataset.fileDescriptors.length; i++) {
-			if (resultDataset.fileDescriptors[i].filename === outputFileName) {
-				fileId = resultDataset.fileDescriptors[i].id;
-				break;
+		// If output filename is already provided as input, use that to figure out the exact file that needs to be downloaded
+		if (outputFileName !== null) {
+			for (let i = 0; i < resultDataset.fileDescriptors.length; i++) {
+				if (resultDataset.fileDescriptors[i].filename === outputFileName) {
+					fileId = resultDataset.fileDescriptors[i].id;
+					break;
+				}
 			}
 		}
-	}
-	// If no output filename is provided, get the first file in the dataset
-	else {
-		if (resultDataset.fileDescriptors.length > 0) {
-			fileId = resultDataset.fileDescriptors[0].id;
+		// If no output filename is provided, get the first file in the dataset
+		else {
+			if (resultDataset.fileDescriptors.length > 0) {
+				fileId = resultDataset.fileDescriptors[0].id;
+			}
+		}
+
+		if (fileId !== -1) {
+			// Get - Result File Download
+			const fileDownloadResponse = await fetch(`${datawolfConfig["datasetBaseURL"]}/${datasetId}/${fileId}/file`, {
+				method: "GET",
+				headers: authHeader
+			});
+
+			return await fileDownloadResponse.text();
+		} else {
+			return "No logs available...";
 		}
 	}
-
-	if (fileId !== -1) {
-		// Get - Result File Download
-		const fileDownloadResponse = await fetch(`${datawolfConfig["datasetBaseURL"]}/${datasetId}/${fileId}/file`, {
-			method: "GET",
-			headers: authHeader
-		});
-
-		return await fileDownloadResponse.text();
-	} else {
-		return null;
+	else{
+		return "No logs available...";
 	}
 }
 
@@ -60,6 +65,8 @@ export async function submitExecution(
 	let authHeader = getHeader(datawolfConfig.hostname);
 	authHeader.append("Content-Type", "application/json");
 
+	let currUserDatawolfId = await getCurrUserDatawolfId(getCurrUserEmail(), datawolfConfig, datawolfWorkflowConfig);
+
 	const parameters = Object.keys(datawolfFormState).reduce((parameters, key) => {
 		return { ...parameters, ...datawolfFormState[key] };
 	}, {});
@@ -71,7 +78,7 @@ export async function submitExecution(
 
 	let requestBody = {
 		workflowId: datawolfWorkflowConfig["wfId"],
-		creatorId: datawolfWorkflowConfig["creatorId"],
+		creatorId: currUserDatawolfId,
 		title: title,
 		description: description,
 		parameters: parameters,
@@ -97,6 +104,7 @@ export async function submitExecution(
 	}
 }
 
+// TODO move this to redux
 export async function postDataset(datawolfConfig, title = "incoretoken", description = "incoretoken") {
 	let authHeader = getHeader(datawolfConfig.hostname);
 	// authHeader.append("Content-Type", "multipart/form-data");

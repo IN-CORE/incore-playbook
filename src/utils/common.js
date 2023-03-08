@@ -1,22 +1,43 @@
 import Cookies from "universal-cookie";
 import jwt_decode from "jwt-decode";
 import { globals as defaultGlobalConfig, testUserInfo } from "../globals";
+import { datawolfConfig as defaultDatawolfConfig } from "../datawolf.config.js";
+import { datawolfWorkflowConfig as defaultDatawolfWorkflowConfig } from "../datawolf.config.js";
 import JSSoup from "jssoup";
 import { toLonLat } from "ol/proj";
 
 const cookies = new Cookies();
 
 //NOTE: This is only checking if a cookie is present, but not validating the cookie.
-export const isAuthorized = (hostname="") => {
+export const isAuthorized = (hostname = "", testbedGroup = defaultGlobalConfig.testbedGroup) => {
 	const authorization = cookies.get("Authorization");
-	return (
-		hostname === "http://localhost:8080" ||
-		(authorization !== undefined && authorization !== "" && authorization !== null)
-	);
+
+	if (hostname === "http://localhost:8080") return true;
+	else {
+		if (authorization !== undefined && authorization !== "" && authorization !== null) {
+			// further restrict to the testbed group
+			const userInfo = getCurrUserInfo(authorization);
+			return "groups" in userInfo && userInfo["groups"].includes(testbedGroup);
+		} else return false;
+	}
+};
+
+//NOTE: This is only checking if a cookie is present, but not validating the cookie.
+export const isAdmin = (hostname = "") => {
+	const authorization = cookies.get("Authorization");
+
+	if (hostname === "http://localhost:8080") return true;
+	else {
+		if (authorization !== undefined && authorization !== "" && authorization !== null) {
+			// further restrict to the testbed group
+			const userInfo = getCurrUserInfo(authorization);
+			return "groups" in userInfo && userInfo["groups"].includes("incore_ncsa");
+		} else return false;
+	}
 };
 
 // construct header
-export function getHeader(hostname="") {
+export function getHeader(hostname = "") {
 	if (hostname.includes("localhost")) {
 		const headers = new Headers({
 			"x-auth-userinfo": `{"preferred_username":"${testUserInfo}"}`
@@ -33,7 +54,7 @@ export function getHeader(hostname="") {
 }
 
 // get current username
-export function getCurrUsername(hostname="") {
+export function getCurrUsername(hostname = "") {
 	if (hostname === "http://localhost:8080") {
 		return testUserInfo;
 	} else {
@@ -45,8 +66,31 @@ export function getCurrUsername(hostname="") {
 	}
 }
 
+// get current users id from datawolf
+export async function getCurrUserDatawolfId(email, datawolfConfig = defaultDatawolfConfig, datawolfWorkflowConfig = defaultDatawolfWorkflowConfig) {
+	let cookie = cookies.get("DatawolfUserDetails");
+	if (email === "" || undefined || null) {
+		return datawolfWorkflowConfig["creatorId"]; // default to use the workflow creator's ID if no match can be found
+	} else if (cookie !== undefined && cookie.email === email) {
+		return cookie.id;
+	}
+	let endpoint = datawolfConfig["datawolfPersonsDetail"] + email;
+	let request = await fetch(endpoint, { mode: "cors", headers: getHeader(datawolfConfig.hostname) });
+	if (request.status === 200) {
+		const userDetail = await request.json();
+		cookies.set("DatawolfUserDetails", { id: userDetail[0].id, email: userDetail[0].email });
+		return userDetail[0].id;
+	} else if (request.status === 401) {
+		// TODO handle error
+		return "";
+	} else {
+		// TODO handle error
+		return "";
+	}
+}
+
 // get incore token and write to a file
-export function getIncoreTokenFile(hostname="") {
+export function getIncoreTokenFile(hostname = "") {
 	if (hostname !== "http://localhost:8080") {
 		return new Blob([cookies.get("Authorization")], { type: "text/plain" });
 	} else {
@@ -55,7 +99,7 @@ export function getIncoreTokenFile(hostname="") {
 }
 
 // get current user's encoded email address for datawolf use
-export function getCurrUserEmail(hostname="") {
+export function getCurrUserEmail(hostname = "") {
 	if (hostname === "http://localhost:8080") {
 		return testUserInfo;
 	} else {
@@ -135,10 +179,10 @@ export function getHazardTypePlural(hazardType) {
 
 // get incore space id given space name
 // TODO replace with endpoint once it's ready
-export async function getSpaceIdByName(globalConfig=defaultGlobalConfig, name){
+export async function getSpaceIdByName(globalConfig = defaultGlobalConfig, name) {
 	const endpoint = `${globalConfig.spaceServiceBase}spaces`;
 	if (name === undefined || name === null) name = globalConfig.testbedSpace;
-	const request = await fetch(endpoint, { mode: "cors", headers: getHeader(globalConfig.hostname)});
+	const request = await fetch(endpoint, { mode: "cors", headers: getHeader(globalConfig.hostname) });
 	if (request.status === 200) {
 		const spaces = await request.json();
 		return spaces.filter((space) => space["name"] === name)[0]["id"];
@@ -152,7 +196,7 @@ export async function getSpaceIdByName(globalConfig=defaultGlobalConfig, name){
 }
 
 // move resource to space
-export async function move2TestbedSpace(globalConfig=defaultGlobalConfig, resourceId) {
+export async function move2TestbedSpace(globalConfig = defaultGlobalConfig, resourceId) {
 	const spaceId = await getSpaceIdByName(globalConfig);
 	const endpoint = `${globalConfig.spaceServiceBase}spaces/${spaceId}/members/${resourceId}`;
 	const request = await fetch(endpoint, { mode: "cors", headers: getHeader(globalConfig.hostname), method: "POST" });
@@ -169,7 +213,29 @@ export async function move2TestbedSpace(globalConfig=defaultGlobalConfig, resour
 
 export function parseDateTime(dateString) {
 	const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-	const options = { year: "numeric", month: "short", day: "numeric", hour: "2-digit", minute: "2-digit" , timeZone: timeZone };
+	const options = {
+		year: "numeric",
+		month: "short",
+		day: "numeric",
+		hour: "2-digit",
+		minute: "2-digit",
+		timeZone: timeZone
+	};
 	const mydate = new Date(dateString);
 	return mydate.toLocaleString("en-US", options);
+}
+
+// TODO replace this using keycloak's userInfo endpoint
+// get current user's info from jwt token
+export function getCurrUserInfo(cookie) {
+	if (cookie !== undefined && cookie !== "" && cookie.split(" ").length > 0) {
+		try {
+			return jwt_decode(cookie.split(" ")[1]);
+		} catch (err) {
+			console.log(err);
+			return {};
+		}
+	} else {
+		return {};
+	}
 }

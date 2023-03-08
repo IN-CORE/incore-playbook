@@ -77,6 +77,8 @@ const Map = (props) => {
 					map.un(event, handler);
 				});
 			}
+
+			map.setTarget(undefined);
 		};
 	}, []);
 

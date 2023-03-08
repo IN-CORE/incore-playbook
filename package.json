@@ -1,6 +1,6 @@
 {
 	"name": "@in-core/incore-playbook",
-	"version": "0.4.4",
+	"version": "0.4.9",
 	"description": "The Interdependent Networked Community Resilience Modeling Environment (IN-CORE) has the capability of computing resiliency measures at the user-desired community level. The methodologies and algorithms have been developed by different research groups within the Center of Excellence.",
 	"engines": {
 		"npm": ">=3.10",
@@ -36,8 +36,8 @@
 		"html2canvas": "^1.4.1",
 		"jssoup": "^0.0.12",
 		"jwt-decode": "^3.0.0",
-		"ol": "^6.4.3",
-		"ol-layerswitcher": "^3.7.0",
+		"ol": "^7.2.2",
+		"ol-layerswitcher": "^4.1.0",
 		"react-chartjs-2": "^2.10.0",
 		"react-file-drop": "^3.1.0",
 		"react-google-charts": "^3.0.15",

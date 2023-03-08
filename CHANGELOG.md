@@ -14,15 +14,38 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Set Time intervals to periodically requesting datawolf execution status [#60](https://github.com/IN-CORE/incore-playbook/issues/60)
 - Allow user to set document uri in each of the step [#81](https://github.com/IN-CORE/incore-playbook/issues/81)
 - Github action to publish new version to npm registry [#72](https://github.com/IN-CORE/incore-playbook/issues/72)
+- Download Inventories at step 2-3 [#112](https://github.com/IN-CORE/incore-playbook/issues/112)
+- Check user groups to only allow user belongs to certain testbed to login [#119](https://github.com/IN-CORE/incore-playbook/issues/119)
+- HHRS Bar Chart [#95](https://github.com/IN-CORE/incore-playbook/issues/95)
+- A new "Created By" column in step 3-4 to track user executions. Fixed datetime format display in the table. [#120](https://github.com/IN-CORE/incore-playbook/issues/120)
+- HHRS Bar Chart [#95](https://github.com/IN-CORE/incore-playbook/issues/95)
+- Pagination to view datawolf execution [#151](https://github.com/IN-CORE/incore-playbook/issues/151)
+- Admins can see datawolf logs [#147](https://github.com/IN-CORE/incore-playbook/issues/147)
 
 ### Changed
 - Renamed master branch to main [#28](https://github.com/IN-CORE/incore-playbook/issues/28)
 - Made data upload button on and off [#73](https://github.com/IN-CORE/incore-playbook/issues/73)
 - Display multiple layers of hazard [#63](https://github.com/IN-CORE/incore-playbook/issues/63)
+- Update the layout of document link and each static steps [#109](https://github.com/IN-CORE/incore-playbook/issues/109)
+- UI layout change for step 3-3 creating hazards [#96](https://github.com/IN-CORE/incore-playbook/issues/96)
+- Step 3-4 datawolf result link clickable logic to update dynamically based on requirements [#61](https://github.com/IN-CORE/incore-playbook/issues/61)
+- Change the creator of workflows dynamically based on the current logged in user. [#124](https://github.com/IN-CORE/incore-playbook/issues/124)
+- Disable Interdependency widget [#125](https://github.com/IN-CORE/incore-playbook/issues/125)
+- UI Changes to navigational sidebar [#141](https://github.com/IN-CORE/incore-playbook/pull/141)
 
 ### Fixed
 - First time load map layers at step 3-4 "view results" does not show correctly sometimes [#97](https://github.com/IN-CORE/incore-playbook/issues/97)
 - Properly check the remote hostname [#104](https://github.com/IN-CORE/incore-playbook/issues/104)
+- Logout do not need to call GET in steps [#93](https://github.com/IN-CORE/incore-playbook/issues/93)
+- NaN in population dislocation widget [#126](https://github.com/IN-CORE/incore-playbook/issues/126)
+- Time interval doesn't work when switching tabs in step 3-4 [#117](https://github.com/IN-CORE/incore-playbook/issues/117)
+- User role remains after cancel button clicked [#133](https://github.com/IN-CORE/incore-playbook/issues/133)
+- Heatmap display issue in population dislocation view [#137](https://github.com/IN-CORE/incore-playbook/issues/137)
+- fix status bar appearance for a smaller screen/ different browser [#139](https://github.com/IN-CORE/incore-playbook/issues/139)
+- Pole damage datawolf id for population disloation [#145](https://github.com/IN-CORE/incore-playbook/issues/145)
+- Map loading flashes sometime [#140](https://github.com/IN-CORE/incore-playbook/issues/140)
+- Occasional interval not working issue with added cleanup [#163](https://github.com/IN-CORE/incore-playbook/issues/163)
+
 
 ## [0.3.0] - 2021-11-16
 
