@@ -47,6 +47,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Map loading flashes sometime [#140](https://github.com/IN-CORE/incore-playbook/issues/140)
 - Document link reset to empty [#161](https://github.com/IN-CORE/incore-playbook/issues/161)
 - Occasional interval not working issue with added cleanup [#163](https://github.com/IN-CORE/incore-playbook/issues/163)
+- UI tweaks such as tab indicator color, select box, cge descriptions and etc [#150](https://github.com/IN-CORE/incore-playbook/issues/150)
 
 
 ## [0.3.0] - 2021-11-16
