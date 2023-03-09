@@ -71,10 +71,10 @@ export const mapConfig = {
 // // Salt Lake City
 // export const mapConfig = {
 // 	MAP_BOUNDS:[
-// 		-113.3762,
-// 		42.2587,
-// 		-110.3762,
-// 		39.2587,
+// 		-114.3762,
+// 		43.2587,
+// 		-109.3762,
+// 		38.2587,
 // 	],
 // 	MAP_CENTER: [-111.8762, 40.7587],
 // 	ZOOM: 5,

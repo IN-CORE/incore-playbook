@@ -11,7 +11,13 @@ export const IncoreSelectBox = styled(Select)({
 	letterSpacing: 0,
 	lineHeight: "18px",
 	backgroundColor: "#FFFFFF",
-	position: "relative"
+	position: "relative",
+	"&:before, &:after": {
+		borderColor: "#00619D",
+	},
+	"& .MuiSelect-select:focus": {
+		backgroundColor: "#FFFFFF!important"
+	},
 });
 
 export const IncoreMenuItem = styled(MenuItem)({

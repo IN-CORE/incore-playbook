@@ -130,9 +130,9 @@ export default function ResilienceMetrics(props) {
 
 				{/*tabs*/}
 				<Tabs
+					TabIndicatorProps={{ style: { background: "#00619D", color: "#00619D" } }}
 					aria-label="metrics tabs"
 					value={currTabIndex}
-					TabIndicatorProps={{ style: { background: "#00619D", color: "#00619D" } }}
 					onChange={(e, value) => {
 						setCurrTabIndex(value);
 					}}

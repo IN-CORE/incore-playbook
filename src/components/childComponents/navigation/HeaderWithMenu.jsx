@@ -31,10 +31,7 @@ import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemText from "@material-ui/core/ListItemText";
 import Collapse from "@material-ui/core/Collapse";
-import CheckCircleIcon from "@material-ui/icons/CheckCircle";
-import DownIcon from "@material-ui/icons/KeyboardArrowDown";
-import RightIcon from "@material-ui/icons/KeyboardArrowRight";
-import CheckCircleOutlinedIcon from "@material-ui/icons/CheckCircleOutlined";
+import CheckIcon from "@material-ui/icons/Check";
 import HourglassEmptyOutlinedIcon from "@material-ui/icons/HourglassEmptyOutlined";
 import QueryBuilderIcon from "@material-ui/icons/QueryBuilder";
 import Grid from "@material-ui/core/Grid";
@@ -69,10 +66,10 @@ const useStyles = makeStyles((theme) => ({
 	},
 	drawer: {
 		width: drawerWidth,
-		flexShrink: 0,
+		flexShrink: 0
 	},
 	drawerPaper: {
-		width: drawerWidth,
+		width: drawerWidth
 	},
 	drawerHeader: {
 		display: "flex",
@@ -91,6 +88,10 @@ const useStyles = makeStyles((theme) => ({
 	menuIcon: {
 		height: 36,
 		width: 36
+	},
+	statusIcon: {
+		color: "#00619D",
+		fontSize: "1.5em"
 	},
 	headerLogo: {
 		height: "44px",
@@ -439,8 +440,9 @@ const HeaderWithMenu = ({
 	];
 
 	let menus = [];
-	const completedCheckIcon = <CheckCircleOutlinedIcon style={{ color: "#00619D"}} />;
-	const inProgressCheckIcon = <HourglassEmptyOutlinedIcon style={{ color: "#8798AD"}} />;
+	const pendingIcon = <QueryBuilderIcon className={classes.statusIcon} />;
+	const completedCheckIcon = <CheckIcon className={classes.statusIcon} />;
+	const inProgressCheckIcon = <HourglassEmptyOutlinedIcon className={classes.statusIcon} />;
 
 	treeData.map(({ key, label, nodes }) => {
 		let subMenus = [];
@@ -452,7 +454,7 @@ const HeaderWithMenu = ({
 					style={{
 						textTransform: "capitalize",
 						backgroundColor: openSubMenu === key ? "#E9EFFE" : "#FFFFFF",
-						color:"#00619D",
+						color: "#00619D",
 						padding: "0.3em 1.5em"
 					}}
 					key={key}
@@ -461,18 +463,18 @@ const HeaderWithMenu = ({
 					disabled={disabled}
 				>
 					<ListItemText primary={`${key}. ${label}`} primaryTypographyProps={{
-						style:{
-							fontWeight: openSubMenu === key ? 500: 400,
+						style: {
+							fontWeight: openSubMenu === key ? 500 : 400,
 							fontSize: "15px",
-							paddingRight:"5px"
+							paddingRight: "5px"
 						}
-					}}/>
+					}} />
 					{Object.keys(stepStatus).length === 0 ? (
-						<QueryBuilderIcon />
+						pendingIcon
 					) : (
 						<>
 							{stepStatus[`step_${key.replace("-", "_")}`].status === "pending" ? (
-								<QueryBuilderIcon />
+								pendingIcon
 							) : stepStatus[`step_${key.replace("-", "_")}`].status === "in_progress" ? (
 								inProgressCheckIcon
 							) : (
@@ -498,26 +500,28 @@ const HeaderWithMenu = ({
 					onLoad={handleParentLoad(key)}
 					style={{
 						backgroundColor: openTask === key ? "#E9EFFE" : "#FFFFFF",
-						color:openTask === key ? "#00619D" : "#2E384D",
+						color: openTask === key ? "#00619D" : "#2E384D",
 						padding: "0.5em 1.5em"
 					}}
 				>
 					<Box component="div"
-						 sx={{ display: "block",
-							 height:"1.3125em",
-							 width:"1.4375em",
+						 sx={{
+							 display: "block",
+							 height: "1.3125em",
+							 width: "1.4375em"
 						 }}
-						 style={{backgroundColor:openTask === key ? "#00619D" : "#F2F5FB",
-							 color:openTask === key ?"#FFFFFF":"#2E384D",
-							 textAlign:"center",
+						 style={{
+							 backgroundColor: openTask === key ? "#00619D" : "#F2F5FB",
+							 color: openTask === key ? "#FFFFFF" : "#2E384D",
+							 textAlign: "center"
 						 }}
 					>{key}</Box>
 					<ListItemText primary={`${label}`}
 								  primaryTypographyProps={{
-									  style:{
-										  paddingLeft:"1em",
-										  fontWeight: openTask === key ? 500: 400,
-										  fontSize: "16px",
+									  style: {
+										  paddingLeft: "1em",
+										  fontWeight: openTask === key ? 500 : 400,
+										  fontSize: "16px"
 									  }
 								  }}
 					/>
@@ -526,7 +530,7 @@ const HeaderWithMenu = ({
 					{subMenusStatus.includes("in_progress") ? (
 						inProgressCheckIcon
 					) : (
-						<>{subMenusStatus.includes("pending") ? <QueryBuilderIcon /> : completedCheckIcon}</>
+						<>{subMenusStatus.includes("pending") ? pendingIcon : completedCheckIcon}</>
 					)}
 				</ListItem>
 				<Collapse in={openTask === key} timeout="auto" unmountOnExit>
@@ -598,10 +602,10 @@ const HeaderWithMenu = ({
 							onClick={handleProfileMenuOpen}
 							color="inherit"
 						>
-							{getCurrEmail(globalConfig.hostname)!== undefined ?
+							{getCurrEmail(globalConfig.hostname) !== undefined ?
 								<Gravatar className={classes.avatarImg} email={getCurrEmail(globalConfig.hostname)}
 										  rating="g" />
-										  :
+								:
 								<AccountCircle fontSize="small" />
 							}
 						</IconButton>
@@ -629,7 +633,7 @@ const HeaderWithMenu = ({
 				<List
 					component="nav"
 					aria-labelledby="nested-list-subheader"
-					style={{padding: 0}}
+					style={{ padding: 0 }}
 				>
 					{menus}
 				</List>

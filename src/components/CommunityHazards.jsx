@@ -269,7 +269,7 @@ export const CommunityHazards = (props) => {
 	};
 
 	const getRow = (selectedHazardType) => {
-		let row = eval(getHazardTypePlural(selectedHazardType)).map(v => ({...v, viewLayer: "View"}));
+		let row = eval(getHazardTypePlural(selectedHazardType)).map(v => ({...v, viewLayer: "view"}));
 		return row;
 	};
 
@@ -391,6 +391,7 @@ export const CommunityHazards = (props) => {
 							{/*Tabs*/}
 							<Box className={classes.tabDiv}>
 								<Tabs
+									TabIndicatorProps={{ style: { background: "#00619D" }}}
 									aria-label="create tornado tabs"
 									value={currTabIndex}
 									className={classes.tabs}

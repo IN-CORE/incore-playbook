@@ -5,13 +5,15 @@ import {
 	SET_ALLOWED_DATA_TYPES,
 	UPDATE_DATAWOLF_CONFIG,
 	UPDATE_GLOBAL_CONFIG,
-	UPDATE_DATAWOLF_WORKFLOW_CONFIG
+	UPDATE_DATAWOLF_WORKFLOW_CONFIG, UPDATE_CGE_INFO, UPDATE_HHS_INFO
 } from "../actions/config";
 import { mapConfig as defaultMapConfig } from "../map.config";
 import { assetConfig as defaultAssetConfig } from "../asset.config";
 import { datawolfConfig as defaultDatawolfConfig } from "../datawolf.config.js";
 import { datawolfWorkflowConfig as defaultDatawolfWorkflowConfig } from "../datawolf.config.js";
 import { globals as defaultGlobalConfig } from "../globals";
+import { cgeInfo as defaultCgeConfig} from "../messages.config";
+import { hhsInfo as defaultHhsConfig} from "../messages.config";
 
 const defaultConfig = {
 	mapConfig: defaultMapConfig,
@@ -25,27 +27,33 @@ const defaultConfig = {
 		epf: true,
 		network: true,
 		socioeconomics: true
-	}
+	},
+	cgeInfo: defaultCgeConfig,
+	hhsInfo: defaultHhsConfig
 };
 
 const config = (state = defaultConfig, action) => {
 	switch (action.type) {
-		case UPDATE_MAP_CONFIG:
-			return Object.assign({}, state, { mapConfig: action.mapConfig });
-		case UPDATE_ASSET_CONFIG:
-			return Object.assign({}, state, { assetConfig: action.assetConfig });
-		case UPDATE_DATAWOLF_CONFIG:
-			return Object.assign({}, state, { datawolfConfig: action.datawolfConfig });
-		case UPDATE_DATAWOLF_WORKFLOW_CONFIG:
-			return Object.assign({}, state, { datawolfWorkflowConfig: action.datawolfWorkflowConfig });
-		case UPDATE_GLOBAL_CONFIG:
-			return Object.assign({}, state, { globalConfig: action.globalConfig });
-		case SET_ALLOWED_HAZARD_TYPES:
-			return Object.assign({}, state, { allowedHazardTypes: action.allowedHazardTypes });
-		case SET_ALLOWED_DATA_TYPES:
-			return Object.assign({}, state, { allowedDataTypes: action.allowedDataTypes });
-		default:
-			return state;
+	case UPDATE_MAP_CONFIG:
+		return Object.assign({}, state, { mapConfig: action.mapConfig });
+	case UPDATE_ASSET_CONFIG:
+		return Object.assign({}, state, { assetConfig: action.assetConfig });
+	case UPDATE_DATAWOLF_CONFIG:
+		return Object.assign({}, state, { datawolfConfig: action.datawolfConfig });
+	case UPDATE_DATAWOLF_WORKFLOW_CONFIG:
+		return Object.assign({}, state, { datawolfWorkflowConfig: action.datawolfWorkflowConfig });
+	case UPDATE_GLOBAL_CONFIG:
+		return Object.assign({}, state, { globalConfig: action.globalConfig });
+	case SET_ALLOWED_HAZARD_TYPES:
+		return Object.assign({}, state, { allowedHazardTypes: action.allowedHazardTypes });
+	case SET_ALLOWED_DATA_TYPES:
+		return Object.assign({}, state, { allowedDataTypes: action.allowedDataTypes });
+	case UPDATE_CGE_INFO:
+		return Object.assign({}, state, { cgeInfo: action.cgeInfo });
+	case UPDATE_HHS_INFO:
+		return Object.assign({}, state, { hhsInfo: action.hhsInfo });
+	default:
+		return state;
 	}
 };
 

@@ -11,7 +11,7 @@ class Pagination extends React.Component {
 
 	render() {
 		return (
-			<div style={{textAlign: "center"}}>
+			<div style={{textAlign: "center", margin:"1em"}}>
 				<ButtonGroup size="small">
 					<Button disabled={this.props.pageNumber === 1}
 						onClick={this.props.previous}>

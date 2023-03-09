@@ -36,9 +36,6 @@ export const Layout = (props) => {
 			>
 				{children}
 			</div>
-			{/*<div style={{marginLeft: mLeft}}>*/}
-			{/*	<Footer />*/}
-			{/*</div>*/}
 		</div>
 	);
 };

@@ -117,11 +117,25 @@ export function getShortHTML(html) {
 	return htmlSoup.find("div", "shortDescription");
 }
 
-export function round(val, n) {
-	if (n === undefined || n === 0) {
-		return Math.round(val);
+// export function round(val, n) {
+// 	if (n === undefined || n === 0) {
+// 		return Math.round(val);
+// 	} else {
+// 		return (Math.round((val + Number.EPSILON) * 10**n) / 10**n);
+// 		// return +(Math.round(val + `e+${n}`) + `e-${n}`);
+// 	}
+// }
+
+export function round(num, scale) {
+	if(!("" + num).includes("e")) {
+		return +(Math.round(num + "e+" + scale)  + "e-" + scale);
 	} else {
-		return +(Math.round(val + `e+${n}`) + `e-${n}`);
+		let arr = ("" + num).split("e");
+		let sig = "";
+		if(+arr[1] + scale > 0) {
+			sig = "+";
+		}
+		return +(Math.round(+arr[0] + "e" + sig + (+arr[1] + scale)) + "e-" + scale);
 	}
 }
 
