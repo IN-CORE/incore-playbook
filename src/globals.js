@@ -12,12 +12,12 @@ globals["spaceServiceBase"] = `${hostname}/space/api/`;
 globals["maestroServiceBase"] = `${hostname}/maestro/galveston/`;
 globals["setGravatarURL"] = "https://en.gravatar.com/support/activating-your-account/";
 globals["allowUpload"] = true;
-// globals["testbedSpace"] = "commresiliencejoplin";
-// globals["testbedGroup"] = "incore_joplin_user"; // incore_galveston_user, incore_joplin_user, incore_slc_user
+globals["testbedSpace"] = "commresiliencejoplin";
+globals["testbedGroup"] = "incore_joplin_user"; // incore_galveston_user, incore_joplin_user, incore_slc_user
 
-globals["allowedRegions"] = ["R1", "R2"];
-globals["testbedSpace"] = "commresilienceslc";
-globals["testbedGroup"] = "incore_slc_user"; // incore_galveston_user, incore_joplin_user, incore_slc_user
+// globals["allowedRegions"] = ["R1", "R2"];
+// globals["testbedSpace"] = "commresilienceslc";
+// globals["testbedGroup"] = "incore_slc_user"; // incore_galveston_user, incore_joplin_user, incore_slc_user
 
 
 export { globals };
