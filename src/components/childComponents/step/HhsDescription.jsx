@@ -1,8 +1,7 @@
 import * as React from "react";
 import { Box, Table, TableBody, TableCell, TableRow, Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
-
-import { hhsInfo } from "../../../messages.config";
+import { useSelector } from "react-redux";
 
 const useStyles = makeStyles({
 	hhsDescriptionTitle: {
@@ -40,6 +39,8 @@ const useStyles = makeStyles({
 
 export default function HhsDescription() {
 	const classes = useStyles();
+
+	const hhsInfo = useSelector((state) => state.config.hhsInfo);
 
 	let tableContent = (
 		<Table size="small" aria-label="hhs description">

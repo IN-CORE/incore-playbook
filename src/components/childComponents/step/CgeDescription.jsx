@@ -1,8 +1,7 @@
 import * as React from "react";
 import { Box, Table, TableBody, TableCell, TableRow, Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
-
-import { cgeInfo } from "../../../messages.config";
+import { useSelector } from "react-redux";
 
 const useStyles = makeStyles({
 	cgeDescriptionTitle: {
@@ -41,6 +40,9 @@ const useStyles = makeStyles({
 export default function CgeDescription(props) {
 	const { cgeMetrics, ...others } = props;
 	const classes = useStyles();
+
+	const cgeInfo = useSelector((state) => state.config.cgeInfo);
+
 	let cgeDescription = cgeInfo[cgeMetrics];
 
 	let tableContent = (

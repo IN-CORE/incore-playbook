@@ -13,6 +13,9 @@ import { assetConfig as defaultAssetConfig } from "./asset.config";
 import { datawolfConfig as defaultDatawolfConfig } from "./datawolf.config.js";
 import { datawolfWorkflowConfig as defaultDatawolfWorkflowConfig } from "./datawolf.config.js";
 import { globals as defaultGlobalConfig } from "./globals";
+import { cgeInfo as defaultCgeConfig} from "./messages.config";
+import { hhsInfo as defaultHhsConfig} from "./messages.config";
+
 import {
 	setAllowedHazardTypes,
 	setAllowedDataTypes,
@@ -20,7 +23,9 @@ import {
 	updateMapConfig,
 	updateDatawolfConfig,
 	updateGlobalConfig,
-	updateDatawolfWorkflowConfig
+	updateDatawolfWorkflowConfig,
+	updateCgeInfo,
+	updateHhsInfo
 } from "./actions/config";
 
 require("./public/favicon.ico");
@@ -31,6 +36,8 @@ store.dispatch(updateAssetConfig(defaultAssetConfig));
 store.dispatch(updateDatawolfConfig(defaultDatawolfConfig));
 store.dispatch(updateDatawolfWorkflowConfig(defaultDatawolfWorkflowConfig));
 store.dispatch(updateGlobalConfig(defaultGlobalConfig));
+store.dispatch(updateCgeInfo(defaultCgeConfig));
+store.dispatch(updateHhsInfo(defaultHhsConfig));
 store.dispatch(
 	setAllowedDataTypes({
 		building: true,
