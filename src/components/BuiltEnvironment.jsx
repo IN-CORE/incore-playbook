@@ -348,7 +348,6 @@ export const BuiltEnvironment = ({ step, substep }) => {
 							<LoadingOverlay active={loading} spinner text="Saving...">
 								<div>
 									<IncoreInputLabel className={classes.title}>Uploaded Data</IncoreInputLabel>
-									<Divider orientation="horizontal" className={classes.divider} flexItem />
 									<Box className={classes.uploadSection}>
 										{/*list of uploaded building inventory*/}
 										{
