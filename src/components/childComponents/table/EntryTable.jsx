@@ -8,11 +8,11 @@ import {
 	TableContainer,
 	TableHead,
 	TableRow,
-	Link
 } from "@material-ui/core";
 // import MoreHorizIcon from "@material-ui/icons/MoreHoriz";
 
 import { makeStyles } from "@material-ui/core/styles";
+import { IncoreLinkSmall } from "../../styledComponents/IncoreLinkSmall";
 
 const useStyles = makeStyles({
 	table: {
@@ -145,7 +145,7 @@ export function EntryTable(props) {
 										let handleClick = fieldName["handleClick"];
 										return (
 											<TableCell key={idx} className={classes.tableBodyCell}>
-												<Link
+												<IncoreLinkSmall
 													color="primary"
 													onClick={() => {
 														handleClick(field);
@@ -158,7 +158,7 @@ export function EntryTable(props) {
 													}
 												>
 													{field[fieldName["columnName"]]}
-												</Link>
+												</IncoreLinkSmall>
 											</TableCell>
 										);
 									}

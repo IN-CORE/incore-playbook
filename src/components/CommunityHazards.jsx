@@ -269,7 +269,7 @@ export const CommunityHazards = (props) => {
 	};
 
 	const getRow = (selectedHazardType) => {
-		let row = eval(getHazardTypePlural(selectedHazardType)).map(v => ({...v, viewLayer: "View"}));
+		let row = eval(getHazardTypePlural(selectedHazardType)).map(v => ({...v, viewLayer: "view"}));
 		return row;
 	};
 
