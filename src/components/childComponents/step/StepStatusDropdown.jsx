@@ -2,24 +2,16 @@ import React, { useEffect, useState } from "react";
 import "../../../styles/step-status.css";
 import { useDispatch, useSelector } from "react-redux";
 import { getStep, updateStep } from "../../../actions/steps";
-import { MenuItem, ListItemIcon, ListItemText, FormControl} from "@material-ui/core";
-import { IncoreSelectBox } from "../../styledComponents/IncoreSelect";
+import { FormControl} from "@material-ui/core";
+import { IncoreMenuItem, IncoreSelectBox } from "../../styledComponents/IncoreSelect";
 import {IncoreFootNote} from "../../styledComponents/IncoreFootNote";
 import { parseDateTime } from "../../../utils/common";
 import CheckIcon from "@material-ui/icons/Check";
 import QueryBuilderIcon from "@material-ui/icons/QueryBuilder";
 import HourglassEmptyOutlinedIcon from "@material-ui/icons/HourglassEmptyOutlined";
-import { makeStyles } from "@material-ui/core/styles";
 
-const useStyles = makeStyles(() => ({
-	statusIcon: {
-		// color: "#00619D",
-		fontSize: "1.2em"
-	},
-}));
 
 const StepStatusDropdown =  ({ step, substep }) => {
-	const classes = useStyles();
 
 	const dispatch = useDispatch();
 	const stepData = useSelector((state) => state.steps[`step_${step}_${substep}`]);
@@ -54,12 +46,12 @@ const StepStatusDropdown =  ({ step, substep }) => {
 	];
 
 	const renderOption = (option) => (
-		<MenuItem value={option.value}>
+		<IncoreMenuItem value={option.value}>
 			<div style={{ display: "flex", alignItems: "center", justifyContent: "flex-start", margin: "auto 1em" }}>
 				{option.icon}
 				<div style={{marginLeft: "1em"}}>{option.label}</div>
 			</div>
-		</MenuItem>
+		</IncoreMenuItem>
 	);
 
 	const handleOptionChange = (event) => {
