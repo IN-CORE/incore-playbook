@@ -1,17 +1,26 @@
 import React, { useEffect, useState } from "react";
 import "../../../styles/step-status.css";
-import { processStatus } from "../../../globals";
 import { useDispatch, useSelector } from "react-redux";
 import { getStep, updateStep } from "../../../actions/steps";
-import { Box, FormControl, InputLabel, Select, MenuItem, ListItemIcon } from "@material-ui/core";
+import { MenuItem, ListItemIcon, ListItemText, FormControl} from "@material-ui/core";
 import { IncoreSelectBox } from "../../styledComponents/IncoreSelect";
 import {IncoreFootNote} from "../../styledComponents/IncoreFootNote";
 import { parseDateTime } from "../../../utils/common";
-import CheckCircleOutlinedIcon from "@material-ui/icons/CheckCircleOutlined";
+import CheckIcon from "@material-ui/icons/Check";
 import QueryBuilderIcon from "@material-ui/icons/QueryBuilder";
 import HourglassEmptyOutlinedIcon from "@material-ui/icons/HourglassEmptyOutlined";
+import { makeStyles } from "@material-ui/core/styles";
+
+const useStyles = makeStyles(() => ({
+	statusIcon: {
+		// color: "#00619D",
+		fontSize: "1.2em"
+	},
+}));
 
 const StepStatusDropdown =  ({ step, substep }) => {
+	const classes = useStyles();
+
 	const dispatch = useDispatch();
 	const stepData = useSelector((state) => state.steps[`step_${step}_${substep}`]);
 	const [activeKey, setActiveKey] = useState(stepData.status !== undefined ? stepData.status : "pending");
@@ -34,9 +43,9 @@ const StepStatusDropdown =  ({ step, substep }) => {
 		}
 	}, [activeKey]);
 
-	const completedCheckIcon = <CheckCircleOutlinedIcon style={{ color: "#00619D", height: "16px", width: "16px" }} />;
-	const inProgressCheckIcon = <HourglassEmptyOutlinedIcon style={{ color: "#8798AD", height: "16px", width: "16px" }} />;
-	const pendingIcon = <QueryBuilderIcon style={{ height: "16px", width: "16px" }} />;
+	const pendingIcon = <QueryBuilderIcon fontSize="small"/>;
+	const completedCheckIcon = <CheckIcon fontSize="small"/>;
+	const inProgressCheckIcon = <HourglassEmptyOutlinedIcon fontSize="small"/>;
 
 	const options = [
 		{ value: "pending", label: "Pending", icon: pendingIcon},
@@ -46,8 +55,10 @@ const StepStatusDropdown =  ({ step, substep }) => {
 
 	const renderOption = (option) => (
 		<MenuItem value={option.value}>
-			<ListItemIcon>{option.icon}</ListItemIcon>
-			{option.label}
+			<div style={{ display: "flex", alignItems: "center", justifyContent: "flex-start", margin: "auto 1em" }}>
+				{option.icon}
+				<div style={{marginLeft: "1em"}}>{option.label}</div>
+			</div>
 		</MenuItem>
 	);
 
@@ -56,7 +67,7 @@ const StepStatusDropdown =  ({ step, substep }) => {
 	};
 
 	return(
-		<>
+		<FormControl style={{ m: 1, minWidth: 120 }}>
 			<IncoreSelectBox
 				labelId="dropdown-label"
 				id="dropdown"
@@ -72,7 +83,7 @@ const StepStatusDropdown =  ({ step, substep }) => {
 					:
 					null
 			}
-		</>
+		</FormControl>
 	);
 };
 

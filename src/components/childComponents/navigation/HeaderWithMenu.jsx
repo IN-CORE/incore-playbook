@@ -31,7 +31,7 @@ import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemText from "@material-ui/core/ListItemText";
 import Collapse from "@material-ui/core/Collapse";
-import CheckCircleOutlinedIcon from "@material-ui/icons/CheckCircleOutlined";
+import CheckIcon from "@material-ui/icons/Check";
 import HourglassEmptyOutlinedIcon from "@material-ui/icons/HourglassEmptyOutlined";
 import QueryBuilderIcon from "@material-ui/icons/QueryBuilder";
 import Grid from "@material-ui/core/Grid";
@@ -441,7 +441,7 @@ const HeaderWithMenu = ({
 
 	let menus = [];
 	const pendingIcon = <QueryBuilderIcon className={classes.statusIcon} />;
-	const completedCheckIcon = <CheckCircleOutlinedIcon className={classes.statusIcon} />;
+	const completedCheckIcon = <CheckIcon className={classes.statusIcon} />;
 	const inProgressCheckIcon = <HourglassEmptyOutlinedIcon className={classes.statusIcon} />;
 
 	treeData.map(({ key, label, nodes }) => {
