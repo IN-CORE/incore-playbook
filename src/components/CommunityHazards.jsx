@@ -391,6 +391,7 @@ export const CommunityHazards = (props) => {
 							{/*Tabs*/}
 							<Box className={classes.tabDiv}>
 								<Tabs
+									TabIndicatorProps={{ style: { background: "#00619D" }}}
 									aria-label="create tornado tabs"
 									value={currTabIndex}
 									className={classes.tabs}
