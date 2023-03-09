@@ -9,12 +9,13 @@ globals["authService"] = `${hostname}/auth/realms/In-core/protocol/openid-connec
 globals["hazardServiceBase"] = `${hostname}/hazard/api/`;
 globals["dataServiceBase"] = `${hostname}/data/api/`;
 globals["spaceServiceBase"] = `${hostname}/space/api/`;
-globals["maestroServiceBase"] = `${hostname}/maestro/galveston/`;
 globals["setGravatarURL"] = "https://en.gravatar.com/support/activating-your-account/";
 globals["allowUpload"] = true;
+globals["maestroServiceBase"] = `${hostname}/maestro/joplin/`;
 globals["testbedSpace"] = "commresiliencejoplin";
 globals["testbedGroup"] = "incore_joplin_user"; // incore_galveston_user, incore_joplin_user, incore_slc_user
 
+// globals["maestroServiceBase"] = `${hostname}/maestro/slc/`;
 // globals["allowedRegions"] = ["R1", "R2"];
 // globals["testbedSpace"] = "commresilienceslc";
 // globals["testbedGroup"] = "incore_slc_user"; // incore_galveston_user, incore_joplin_user, incore_slc_user
