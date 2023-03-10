@@ -5,25 +5,24 @@ import { fromLonLat, getTransform } from "ol/proj";
 import React, { useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
 import { applyTransform } from "ol/extent";
-import { getOutputFileContent } from "../../../utils/datawolf";
+import { downloadOutputFile, getOutputFileContent } from "../../../utils/datawolf";
 import { basicLayers, generateLayers } from "../../../utils/map";
 import { IncoreButtonText } from "../../styledComponents/IncoreButtonText";
 import GetAppIcon from "@material-ui/icons/GetApp";
-import { downloadDataset } from "../../../utils/dataset";
 import { downloadImg } from "../../../utils/image";
 import CameraAltIcon from "@material-ui/icons/CameraAlt";
 
 
 export default function SubstationDamage(props) {
 
-	let { executionItem, previewOn, handlePreviewClose, datawolfDatasetConfigItems, hazardLayers } = props;
+	let { executionItem, previewOn, handlePreviewClose, datawolfDatasetConfigItems, hazardLayers, setDownloadDialogOpen } = props;
 
 	const mapConfig = useSelector((state) => state.config.mapConfig);
 	const datawolfConfig = useSelector((state) => state.config.datawolfConfig);
 	const globalConfig = useSelector((state) => state.config.globalConfig);
 
 	const [selectedExecutionName, setSelectedExecutionName] = useState("");
-	const [substationMaxDmgStateINCOREId, setSubstationMaxDmgStateINCOREId] = useState(null);
+	const [substationDmgDsResultDownload, setSubstationDmgDsResultDownload] = useState(null);
 	const [damageLayers, setDamageLayers] = useState(null);
 
 	// print container
@@ -40,7 +39,6 @@ export default function SubstationDamage(props) {
 					executionItem,
 					datawolfDatasetConfigItem.datasetId
 				);
-				setSubstationMaxDmgStateINCOREId(substationMaxDmgStateINCOREId);
 				const layerDef = [
 					{
 						layerId: substationMaxDmgStateINCOREId,
@@ -53,12 +51,18 @@ export default function SubstationDamage(props) {
 				const previewLayers = generateLayers(globalConfig, layerDef);
 				setDamageLayers(previewLayers);
 			}
+			else if (vName === "substationDmgDsResultDownload") {
+				setSubstationDmgDsResultDownload(executionItem["datasets"][datawolfDatasetConfigItem.datasetId]);
+			}
 		});
 	}, []);
 
 	const download = async () => {
-		if (substationMaxDmgStateINCOREId)
-			await downloadDataset(globalConfig, substationMaxDmgStateINCOREId, "epf-substation");
+		setDownloadDialogOpen(true);
+		if (substationDmgDsResultDownload) {
+			await downloadOutputFile(datawolfConfig, substationDmgDsResultDownload, null,
+				`epf-substation-${executionItem.id}.csv`);
+		}
 	};
 
 	return (

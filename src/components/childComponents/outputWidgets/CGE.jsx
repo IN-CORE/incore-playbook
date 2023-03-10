@@ -5,7 +5,7 @@ import { CgeResultsTable } from "../table/CgeResultsTable";
 import CgeDescription from "../step/CgeDescription";
 import React, { useEffect, useState, useRef } from "react";
 import { IncoreMenuItem, IncoreSelectBox } from "../../styledComponents/IncoreSelect";
-import { getOutputFileContentJSON } from "../../../utils/datawolf";
+import { downloadOutputFile, getOutputFileContentJSON } from "../../../utils/datawolf";
 import { useSelector } from "react-redux";
 import { exportJson } from "../../../utils/common";
 import { IncoreButtonText } from "../../styledComponents/IncoreButtonText";
@@ -15,7 +15,7 @@ import CameraAltIcon from "@material-ui/icons/CameraAlt";
 import { IncoreInputLabel } from "../../styledComponents/IncoreInputLabel";
 
 export default function CGE(props) {
-	let { executionItem, previewOn, handlePreviewClose, datawolfDatasetConfigItems } = props;
+	let { executionItem, previewOn, handlePreviewClose, datawolfDatasetConfigItems, setDownloadDialogOpen} = props;
 
 	const datawolfConfig = useSelector((state) => state.config.datawolfConfig);
 	const globalConfig = useSelector((state) => state.config.globalConfig);
@@ -26,6 +26,10 @@ export default function CGE(props) {
 	const [cgeHouseholdIncomeContent, setCgeHouseholdIncomeContent] = useState(null);
 	const [cgeDomesticSupplyContent, setCgeDomesticSupplyContent] = useState(null);
 	const [cgeEmploymentContent, setCgeEmploymentContent] = useState(null);
+	const [cgeEmploymentPreDownload, setCgeEmploymentPreDownload] = useState();
+	const [cgeEmploymentPostDownload, setCgeEmploymentPostDownload] = useState();
+	const [cgeHouseholdIncomeDownload, setCgeHouseholdIncomeDownload] = useState();
+	const [cgeDomesticSupplyDownload, setCgeDomesticSupplyDownload] = useState();
 
 	// print container
 	const printRef = useRef();
@@ -47,18 +51,33 @@ export default function CGE(props) {
 				setCgeEmploymentContent(
 					await getOutputFileContentJSON(datawolfConfig, executionItem, datawolfDatasetConfigItem.datasetId)
 				);
+			} else if (vName === "cgeEmploymentPreDownload"){
+				setCgeEmploymentPreDownload(executionItem["datasets"][datawolfDatasetConfigItem.datasetId]);
+			} else if (vName === "cgeEmploymentPostDownload"){
+				setCgeEmploymentPostDownload(executionItem["datasets"][datawolfDatasetConfigItem.datasetId]);
+			} else if (vName === "cgeHouseholdIncomeDownload"){
+				setCgeHouseholdIncomeDownload(executionItem["datasets"][datawolfDatasetConfigItem.datasetId]);
+			} else if (vName === "cgeDomesticSupplyDownload"){
+				setCgeDomesticSupplyDownload(executionItem["datasets"][datawolfDatasetConfigItem.datasetId]);
 			}
 		});
 	}, []);
 
 	const download = async () => {
-		if (cgeHouseholdIncomeContent && cgeDomesticSupplyContent && cgeEmploymentContent) {
-			const cgeJson = {
-				totalHouseholdIncome: cgeHouseholdIncomeContent,
-				domesticSupply: cgeDomesticSupplyContent,
-				employment: cgeEmploymentContent
-			};
-			exportJson(cgeJson, `cge-${executionItem.id}`);
+		setDownloadDialogOpen(true);
+		if (cgeType === "totalHouseholdIncome" && cgeHouseholdIncomeDownload) {
+			await downloadOutputFile(datawolfConfig, cgeHouseholdIncomeDownload, null,
+				`cge-household-income-${executionItem.id}.csv`);
+		}
+		else if (cgeType === "domesticSupply" && cgeDomesticSupplyDownload) {
+			await downloadOutputFile(datawolfConfig, cgeDomesticSupplyDownload, null,
+				`cge-domestic-supply-${executionItem.id}.csv`);
+		}
+		else if (cgeType === "employment" && cgeEmploymentPreDownload && cgeEmploymentPostDownload) {
+			await downloadOutputFile(datawolfConfig, cgeEmploymentPreDownload, null,
+				`cge-predisaster-demand-${executionItem.id}.csv`);
+			await downloadOutputFile(datawolfConfig, cgeEmploymentPostDownload, null,
+				`cge-postdisaster-demand-${executionItem.id}.csv`);
 		}
 	};
 

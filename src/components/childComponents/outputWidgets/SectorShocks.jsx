@@ -10,13 +10,13 @@ import CameraAltIcon from "@material-ui/icons/CameraAlt";
 import SectorShocksBarChart from "../graph/SectorShocksBarChart";
 
 export default function SectorShocks(props) {
-	let { executionItem, previewOn, handlePreviewClose, datawolfDatasetConfigItems } = props;
+	let { executionItem, previewOn, handlePreviewClose, datawolfDatasetConfigItems, setDownloadDialogOpen } = props;
 
 	const datawolfConfig = useSelector((state) => state.config.datawolfConfig);
 
 	const [selectedExecutionName, setSelectedExecutionName] = useState("");
 	const [sectorShocksContent, setSectorShocksContent] = useState(null);
-	const [sectorShocksDatasetId, setSectorShocksDatasetId] = useState(null);
+	const [sectorShocksDownload, setSectorShocksDownload] = useState(null);
 
 	// print container
 	const printRef = useRef();
@@ -26,18 +26,19 @@ export default function SectorShocks(props) {
 
 		datawolfDatasetConfigItems.map(async (datawolfDatasetConfigItem) => {
 			const vName = datawolfDatasetConfigItem.datasets.variableName;
-			if (vName === "sectorShocksContent") {
+			if (vName === "sectorShocksDownload") {
 				setSectorShocksContent(
 					await getOutputFileContent(datawolfConfig, executionItem, datawolfDatasetConfigItem.datasetId)
 				);
-				setSectorShocksDatasetId(executionItem["datasets"][datawolfDatasetConfigItem.datasetId]);
+				setSectorShocksDownload(executionItem["datasets"][datawolfDatasetConfigItem.datasetId]);
 			}
 		});
 	}, []);
 
 	const download = async () => {
-		if (sectorShocksDatasetId) {
-			await downloadOutputFile(datawolfConfig, sectorShocksDatasetId, null,
+		setDownloadDialogOpen(true);
+		if (sectorShocksDownload) {
+			await downloadOutputFile(datawolfConfig, sectorShocksDownload, null,
 				`sector-shocks-${executionItem.id}.csv`);
 		}
 	};

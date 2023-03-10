@@ -1,15 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 
-import {
-	Box, Button,
-	Dialog, DialogActions,
-	DialogContent,
-	DialogContentText,
-	DialogTitle,
-	Divider,
-	Grid,
-	IconButton
-} from "@material-ui/core";
+import { Box, Dialog, DialogContent, Divider, Grid, IconButton } from "@material-ui/core";
 
 import { Layout } from "./Layout";
 import BreadCrumb from "./childComponents/navigation/BreadCrumb";
@@ -19,7 +10,7 @@ import { IncoreInputLabel } from "./styledComponents/IncoreInputLabel";
 import { IncoreTextField } from "./styledComponents/IncoreInput";
 import { IncoreButton } from "./styledComponents/IncoreButton";
 
-import { createDataset } from "../utils/dataset";
+import { createDataset, downloadDataset } from "../utils/dataset";
 import { EntryTable } from "./childComponents/table/EntryTable";
 
 import AddCircleOutlineIcon from "@material-ui/icons/AddCircleOutline";
@@ -32,13 +23,11 @@ import { inputDatasetTypes } from "../globals";
 import { IncoreMenuItem, IncoreSelectBox } from "./styledComponents/IncoreSelect";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchDatasets } from "../actions/datasets";
-import { downloadDataset } from "../utils/dataset";
 
 
 import Pagination from "./childComponents/navigation/Pagination";
 import { move2TestbedSpace } from "../utils/common";
-import { IncoreButtonInline } from "./styledComponents/IncoreButtonInline";
-import { IncoreButtonText } from "./styledComponents/IncoreButtonText";
+import { DownloadAlert } from "./childComponents/alert/DownloadAlert";
 
 const useStyles = makeStyles({
 	title: {
@@ -62,11 +51,11 @@ const useStyles = makeStyles({
 	subTitle: {
 		display: "inline"
 	},
-	socioeconomicsSubBox:{
+	socioeconomicsSubBox: {
 		padding: "1em"
 	},
 	socioeconomicsSubTitle: {
-		color: "#00619d",
+		color: "#00619d"
 	},
 	plusButton: {
 		display: "inline",
@@ -286,10 +275,6 @@ export const BuiltEnvironment = ({ step, substep }) => {
 		}
 	};
 
-	const handleDownloadDialogClose = () =>{
-		setDownloadDialogOpen(false);
-	};
-
 	const fieldNames = [
 		{
 			prettyName: "NAME",
@@ -303,13 +288,14 @@ export const BuiltEnvironment = ({ step, substep }) => {
 		{
 			prettyName: "DATE ADDED",
 			columnName: "date"
-		},
+		}
 	];
 
 	return (
 		<Layout>
 			<div className="firstDivInContent">
-				<Box display="flex" style={{alignItem:"center", padding:"1em 0"}} sx={{ justifyContent: "space-between" }}>
+				<Box display="flex" style={{ alignItem: "center", padding: "1em 0" }}
+					 sx={{ justifyContent: "space-between" }}>
 					<Box>
 						<BreadCrumb
 							parentStep="Understand the Situation"
@@ -318,32 +304,15 @@ export const BuiltEnvironment = ({ step, substep }) => {
 							subtaskNo="2-4"
 						/>
 					</Box>
-					<Box style={{marginRight:"2em"}}>
+					<Box style={{ marginRight: "2em" }}>
 						<StepStatusDropdown step={step} substep={substep} />
 					</Box>
 				</Box>
 				<Box className="outerBox">
 					<Grid container spacing={3} className="innerBox">
 						{/*Download alerts*/}
-						<Dialog
-							open={downloadDialogOpen}
-							onClose={handleDownloadDialogClose}
-							aria-labelledby="alert-dialog-title"
-							aria-describedby="alert-dialog-description"
-						>
-							<DialogTitle style={{color: "#00619D"}}>Download in Progress</DialogTitle>
-							<DialogContent>
-								<DialogContentText id="alert-dialog-description">
-									Your download has already started. Please do not double-click the download link as
-									this may cause multiple downloads and slow down the process.
-								</DialogContentText>
-							</DialogContent>
-							<DialogActions>
-								<Button variant="text" onClick={handleDownloadDialogClose} style={{color: "#00619D"}}>
-									Close
-								</Button>
-							</DialogActions>
-						</Dialog>
+						<DownloadAlert downloadDialogOpen={downloadDialogOpen}
+									   handleDownloadDialogClose={() => {setDownloadDialogOpen(false);}} />
 						<Grid item xl={7} lg={7} md={7} sm={7} xs={12} className="gridItem">
 							<LoadingOverlay active={loading} spinner text="Saving...">
 								<div>
@@ -365,7 +334,7 @@ export const BuiltEnvironment = ({ step, substep }) => {
 																		setDatasetType("ergo:buildingInventoryVer6");
 																		setCategory("building");
 																	}}>
-																	<AddCircleOutlineIcon/>
+																	<AddCircleOutlineIcon />
 																</IconButton>
 																:
 																null
@@ -376,7 +345,7 @@ export const BuiltEnvironment = ({ step, substep }) => {
 														/>
 													</Box>
 													<Box className="entryTable">
-														<EntryTable fieldNames={fieldNames} fields={buildings}/>
+														<EntryTable fieldNames={fieldNames} fields={buildings} />
 													</Box>
 													<Pagination
 														pageNumber={pageNumberBuilding}
@@ -405,16 +374,16 @@ export const BuiltEnvironment = ({ step, substep }) => {
 																		setDatasetType("incore:epf");
 																		setCategory("electric power facility");
 																	}}>
-																	<AddCircleOutlineIcon/>
+																	<AddCircleOutlineIcon />
 																</IconButton>
 																:
 																null
 														}
 														<Divider orientation="horizontal" className={classes.subDivider}
-																 flexItem/>
+																 flexItem />
 													</Box>
 													<Box className="entryTable">
-														<EntryTable fieldNames={fieldNames} fields={epfs}/>
+														<EntryTable fieldNames={fieldNames} fields={epfs} />
 													</Box>
 													<Pagination
 														pageNumber={pageNumberEpf}
@@ -437,21 +406,22 @@ export const BuiltEnvironment = ({ step, substep }) => {
 															Network</IncoreInputLabel>
 														{
 															globalConfig.allowUpload ?
-																<IconButton className={classes.plusButton} onClick={() => {
-																	setUploadModalStatus(true);
-																	setDatasetType("incore:buildingInterdependencyDict");
-																	setCategory("interdependency network");
-																}}>
-																	<AddCircleOutlineIcon/>
+																<IconButton className={classes.plusButton}
+																	onClick={() => {
+																		setUploadModalStatus(true);
+																		setDatasetType("incore:buildingInterdependencyDict");
+																		setCategory("interdependency network");
+																	}}>
+																	<AddCircleOutlineIcon />
 																</IconButton>
 																:
 																null
 														}
 														<Divider orientation="horizontal" className={classes.subDivider}
-																 flexItem/>
+																 flexItem />
 													</Box>
 													<Box className="entryTable">
-														<EntryTable fieldNames={fieldNames} fields={interdNetworks}/>
+														<EntryTable fieldNames={fieldNames} fields={interdNetworks} />
 													</Box>
 													<Pagination
 														pageNumber={pageNumberInterdNetwork}
@@ -474,19 +444,20 @@ export const BuiltEnvironment = ({ step, substep }) => {
 															Datasets</IncoreInputLabel>
 														{
 															globalConfig.allowUpload ?
-																<IconButton className={classes.plusButton} onClick={() => {
-																	setUploadModalStatus(true);
-																	// don't set types here, set the types inside the modal
-																	setDatasetType("");
-																	setCategory("socioeconomics input");
-																}}>
-																	<AddCircleOutlineIcon/>
+																<IconButton className={classes.plusButton}
+																	onClick={() => {
+																		setUploadModalStatus(true);
+																		// don't set types here, set the types inside the modal
+																		setDatasetType("");
+																		setCategory("socioeconomics input");
+																	}}>
+																	<AddCircleOutlineIcon />
 																</IconButton>
 																:
 																null
 														}
 														<Divider orientation="horizontal" className={classes.subDivider}
-																 flexItem/>
+																 flexItem />
 													</Box>
 													{/*sector shocks*/}
 													<Box className={classes.socioeconomicsSubBox}>

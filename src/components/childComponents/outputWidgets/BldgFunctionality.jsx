@@ -18,17 +18,17 @@ import { FunctionalityTable } from "../table/FunctionalityTable";
 import React, { useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
 import { applyTransform } from "ol/extent";
-import { getOutputFileContent, getOutputFileContentJSON } from "../../../utils/datawolf";
+import { downloadOutputFile, getOutputFileContent, getOutputFileContentJSON } from "../../../utils/datawolf";
 import { basicLayers, generateLayers } from "../../../utils/map";
 import { IncoreButtonText } from "../../styledComponents/IncoreButtonText";
 import GetAppIcon from "@material-ui/icons/GetApp";
-import { downloadDataset } from "../../../utils/dataset";
 import { downloadImg } from "../../../utils/image";
 import CameraAltIcon from "@material-ui/icons/CameraAlt";
 
 export default function BldgFunctionality(props){
 
-	let {executionItem, previewOn, handlePreviewClose, datawolfDatasetConfigItems, hazardType, hazardLayers} = props;
+	let {executionItem, previewOn, handlePreviewClose, datawolfDatasetConfigItems, hazardType, hazardLayers,
+		setDownloadDialogOpen} = props;
 
 	const mapConfig = useSelector((state) => state.config.mapConfig);
 	const datawolfConfig = useSelector((state) => state.config.datawolfConfig);
@@ -37,7 +37,7 @@ export default function BldgFunctionality(props){
 	const [selectedExecutionName, setSelectedExecutionName] = useState("");
 	const [runtime, setRuntime] = useState(null);
 	const [bldgFuncSummaryTableContent, setBldgFuncSummaryTableContent] = useState(null);
-	const [bldgFuncProbINCOREId, setBldgFuncProbINCOREId] = useState(null);
+	const [bldgFuncProbDownload, setBldgFuncProbDownload] = useState();
 	const [damageLayers, setDamageLayers] = useState(null);
 
 	// print container
@@ -57,7 +57,6 @@ export default function BldgFunctionality(props){
 					executionItem,
 					datawolfDatasetConfigItem.datasetId
 				);
-				setBldgFuncProbINCOREId(bldgFuncProbINCOREId);
 				const layerDef = [
 					{
 						"layerId": bldgFuncProbINCOREId,
@@ -73,11 +72,18 @@ export default function BldgFunctionality(props){
 			else if (vName === "bldgFuncSummaryTableContent") {
 				setBldgFuncSummaryTableContent(await getOutputFileContentJSON(datawolfConfig, executionItem, datawolfDatasetConfigItem.datasetId));
 			}
+			else if (vName === "bldgFuncProbDownload"){
+				setBldgFuncProbDownload(executionItem["datasets"][datawolfDatasetConfigItem.datasetId]);
+			}
 		});
 	}, []);
 
 	const download = async () => {
-		if (bldgFuncProbINCOREId) await downloadDataset(globalConfig, bldgFuncProbINCOREId, "bldg-func");
+		setDownloadDialogOpen(true);
+		if (bldgFuncProbDownload) {
+			await downloadOutputFile(datawolfConfig, bldgFuncProbDownload, null,
+				`bldg-func-${executionItem.id}.csv`);
+		}
 	};
 
 	return (

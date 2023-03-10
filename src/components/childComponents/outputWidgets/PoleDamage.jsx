@@ -5,9 +5,8 @@ import { fromLonLat, getTransform } from "ol/proj";
 import React, { useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
 import { applyTransform } from "ol/extent";
-import { getOutputFileContent } from "../../../utils/datawolf";
+import { downloadOutputFile, getOutputFileContent } from "../../../utils/datawolf";
 import { basicLayers, generateLayers } from "../../../utils/map";
-import { downloadDataset } from "../../../utils/dataset";
 import { IncoreButtonText } from "../../styledComponents/IncoreButtonText";
 import GetAppIcon from "@material-ui/icons/GetApp";
 import { downloadImg } from "../../../utils/image";
@@ -16,14 +15,14 @@ import CameraAltIcon from "@material-ui/icons/CameraAlt";
 
 export default function PoleDamage(props){
 
-	let {executionItem, previewOn, handlePreviewClose, datawolfDatasetConfigItems, hazardLayers} = props;
+	let {executionItem, previewOn, handlePreviewClose, datawolfDatasetConfigItems, hazardLayers, setDownloadDialogOpen} = props;
 
 	const mapConfig = useSelector((state) => state.config.mapConfig);
 	const datawolfConfig = useSelector((state) => state.config.datawolfConfig);
 	const globalConfig = useSelector((state) => state.config.globalConfig);
 
 	const [selectedExecutionName, setSelectedExecutionName] = useState("");
-	const [poleMaxDmgStateINCOREId, setPoleMaxDmgStateINCOREId] = useState(null);
+	const [poleDmgDsResultDownload, setPoleDmgDsResultDownload] = useState();
 	const [damageLayers, setDamageLayers] = useState(null);
 
 	// print container
@@ -40,7 +39,6 @@ export default function PoleDamage(props){
 					executionItem,
 					datawolfDatasetConfigItem.datasetId
 				);
-				setPoleMaxDmgStateINCOREId(poleMaxDmgStateINCOREId);
 				const layerDef = [
 					{
 						"layerId": poleMaxDmgStateINCOREId,
@@ -53,11 +51,18 @@ export default function PoleDamage(props){
 				const previewLayers = generateLayers(globalConfig, layerDef);
 				setDamageLayers(previewLayers);
 			}
+			else if (vName === "poleDmgDsResultDownload"){
+				setPoleDmgDsResultDownload(executionItem["datasets"][datawolfDatasetConfigItem.datasetId]);
+			}
 		});
 	}, []);
 
 	const download = async () => {
-		if (poleMaxDmgStateINCOREId) await downloadDataset(globalConfig, poleMaxDmgStateINCOREId, "epf-pole");
+		setDownloadDialogOpen(true);
+		if (poleDmgDsResultDownload) {
+			await downloadOutputFile(datawolfConfig, poleDmgDsResultDownload, null,
+				`epf-pole-${executionItem.id}.csv`);
+		}
 	};
 
 	return (

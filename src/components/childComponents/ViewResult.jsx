@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 
 import { makeStyles } from "@material-ui/core/styles";
-import { Box } from "@material-ui/core";
+import { Box, Grid } from "@material-ui/core";
 
 import { IncoreInputLabel } from "../styledComponents/IncoreInputLabel";
 import { getHazardMetadata } from "../../utils/hazard";
@@ -23,6 +23,7 @@ import { getHazardGroupLayers } from "../../utils/map";
 import HHS from "./outputWidgets/HHS";
 import Log from "./outputWidgets/Log";
 import SectorShocks from "./outputWidgets/SectorShocks";
+import { DownloadAlert } from "./alert/DownloadAlert";
 
 const useStyles = makeStyles({
 	statTitle: {
@@ -77,6 +78,7 @@ export default function ViewResult(props) {
 	const [previewOn, setPreviewOn] = useState(false); // list vs preview
 	const [datawolfViewAllOn, setDatawolfViewAllOn] = useState(false); // datawolf view
 	const [intervalId, setIntervalId] = useState(0);
+	const [downloadDialogOpen, setDownloadDialogOpen] = React.useState(false);
 
 	const _clear_old_timeinterval = () => {
 		if (intervalId) {
@@ -275,6 +277,9 @@ export default function ViewResult(props) {
 			aria-labelledby={`simple-tab-${index}`}
 			{...other}
 		>
+			{/*Download alerts*/}
+			<DownloadAlert downloadDialogOpen={downloadDialogOpen}
+						   handleDownloadDialogClose={() => {setDownloadDialogOpen(false);}} />
 			{/*for analysis list*/}
 			<Box>
 				<Box className={classes.statTitle}>
@@ -320,7 +325,8 @@ export default function ViewResult(props) {
 						handlePreviewClose: handlePreviewClose,
 						datawolfDatasetConfigItems: datawolfDatasetConfigItems,
 						hazardType: hazardType,
-						hazardLayers: hazardGroupLayer
+						hazardLayers: hazardGroupLayer,
+						setDownloadDialogOpen: setDownloadDialogOpen
 					});
 				})()
 			) : (

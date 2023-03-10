@@ -7,16 +7,16 @@ import { HuaResultsTable } from "../table/HuaResultsTable";
 import React, { useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
 import { applyTransform } from "ol/extent";
-import { getOutputFileContent, getOutputFileContentJSON } from "../../../utils/datawolf";
+import { downloadOutputFile, getOutputFileContent, getOutputFileContentJSON } from "../../../utils/datawolf";
 import { basicLayers, generateLayers } from "../../../utils/map";
-import { exportJson } from "../../../utils/common";
 import { IncoreButtonText } from "../../styledComponents/IncoreButtonText";
 import GetAppIcon from "@material-ui/icons/GetApp";
 import { downloadImg } from "../../../utils/image";
 import CameraAltIcon from "@material-ui/icons/CameraAlt";
 
 export default function PopDislocation(props) {
-	let { executionItem, previewOn, handlePreviewClose, datawolfDatasetConfigItems, hazardLayers } = props;
+	let { executionItem, previewOn, handlePreviewClose, datawolfDatasetConfigItems, hazardLayers,
+		setDownloadDialogOpen } = props;
 
 	const mapConfig = useSelector((state) => state.config.mapConfig);
 	const datawolfConfig = useSelector((state) => state.config.datawolfConfig);
@@ -30,6 +30,7 @@ export default function PopDislocation(props) {
 	const [dislocationByHousingTypeContent, setDislocationByHousingTypeContent] = useState(null);
 	const [damageLayers1, setDamageLayers1] = useState(null);
 	const [damageLayers2, setDamageLayers2] = useState(null);
+	const [populationDislocationDownload, setPopulationDislocationDownload] = useState();
 
 	// print container
 	const printRef = useRef();
@@ -57,7 +58,7 @@ export default function PopDislocation(props) {
 				const previewLayers = generateLayers(globalConfig, tmpLayerDef);
 				setDamageLayers1(previewLayers);
 			}
-			if (vName === "popdislHeatmapINCOREId") {
+			else if (vName === "popdislHeatmapINCOREId") {
 				const popdislHeatmapINCOREId = await getOutputFileContent(
 					datawolfConfig,
 					executionItem,
@@ -75,42 +76,43 @@ export default function PopDislocation(props) {
 				const previewLayers = generateLayers(globalConfig, tmpLayerDef);
 				setDamageLayers2(previewLayers);
 			}
-
-			if (vName === "totalDislTableContent") {
+			else if (vName === "totalDislTableContent") {
 				setTotalDislTableContent(
 					await getOutputFileContentJSON(datawolfConfig, executionItem, datawolfDatasetConfigItem.datasetId)
 				);
-			} else if (vName === "dislocationByRaceContent") {
+			}
+			else if (vName === "dislocationByRaceContent") {
 				setDislocationByRaceContent(
 					await getOutputFileContentJSON(datawolfConfig, executionItem, datawolfDatasetConfigItem.datasetId)
 				);
-			} else if (vName === "dislocationByTenureContent") {
+			}
+			else if (vName === "dislocationByTenureContent") {
 				setDislocationByTenureContent(
 					await getOutputFileContentJSON(datawolfConfig, executionItem, datawolfDatasetConfigItem.datasetId)
 				);
-			} else if (vName === "dislocationByIncomeContent") {
+			}
+			else if (vName === "dislocationByIncomeContent") {
 				setDislocationByIncomeContent(
 					await getOutputFileContentJSON(datawolfConfig, executionItem, datawolfDatasetConfigItem.datasetId)
 				);
-			} else if (vName === "dislocationByHousingTypeContent") {
+			}
+			else if (vName === "dislocationByHousingTypeContent") {
 				setDislocationByHousingTypeContent(
 					await getOutputFileContentJSON(datawolfConfig, executionItem, datawolfDatasetConfigItem.datasetId)
 				);
+			}
+			else if (vName === "populationDislocationDownload"){
+				setPopulationDislocationDownload(executionItem["datasets"][datawolfDatasetConfigItem.datasetId]);
 			}
 		});
 	}, []);
 
 	const download = async () => {
-		const popDislJson = {
-			totalResultsTable: totalDislTableContent,
-			huaResultsTable: {
-				income: dislocationByIncomeContent,
-				race: dislocationByRaceContent,
-				tenure: dislocationByTenureContent,
-				housingType: dislocationByHousingTypeContent
-			}
-		};
-		exportJson(popDislJson, `population-dislocation-${executionItem.id}`);
+		setDownloadDialogOpen(true);
+		if (populationDislocationDownload) {
+			await downloadOutputFile(datawolfConfig, populationDislocationDownload, null,
+				`population-dislocation-${executionItem.id}.csv`);
+		}
 	};
 
 	return (
