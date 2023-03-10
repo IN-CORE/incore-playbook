@@ -929,11 +929,11 @@ const datawolfWorkflowConfig =
 				},
 				{
 					"title": "Demand Categories",
-					"description": "Demand Categories",
+					"description": "Demand Categories for employoment",
 					"variableName": "demCategories",
 					"widget": null,
 					"hidden": true,
-					"defaultValue": "AG_MI,UTIL,CONS,MANU,COMMER,EDU,HEALTH,ART_ACC,RELIG,HS1,HS2,HS3,HH1,HH2,HH3,HH4",
+					"defaultValue": "AG_MI,UTIL,CONS,MANU,COMMER,EDU,HEALTH,ART_ACC,RELIG",
 					"parametersMap": [
 						{
 							"paramId": "e838c579-15d3-43e7-dada-0f8345e15b21",
@@ -1658,6 +1658,15 @@ const datawolfWorkflowConfig =
 							}
 						},
 						{
+							"datasetId": "27147921-dc89-4693-f0f2-5d63b1b5a3cc",
+							"datasets": {
+								"step": "PopulationDislocation",
+								"title": "result",
+								"variableName": "populationDislocationDownload",
+								"widget": "PopDislocation"
+							}
+						},
+						{
 							"datasetId": "f0f34461-2bc2-4b2a-c396-8ea576b725fa",
 							"datasets": {
 								"step": "Disl-Post-Process",
@@ -1784,6 +1793,15 @@ const datawolfWorkflowConfig =
 							}
 						},
 						{
+							"datasetId": "45173a06-901f-4101-c8eb-5e15429d7e55",
+							"datasets": {
+								"step": "HousingRecoverySequential",
+								"title": "Housing Recovery",
+								"variableName": "HhsDownload",
+								"widget": "HHS"
+							}
+						},
+						{
 							"datasetId": "4f9a7142-d382-4913-8894-7549ef77e50d",
 							"datasets": {
 								"step": "SocialVulnerability",
@@ -1838,6 +1856,42 @@ const datawolfWorkflowConfig =
 							}
 						},
 						{
+							"datasetId": "03488efa-bd41-42d5-d621-0ac9a2fb4a8f",
+							"datasets": {
+								"step": "SaltLakeCGEModel",
+								"title": "domestic-supply",
+								"variableName": "cgeDomesticSupplyDownload",
+								"widget": "CGE"
+							}
+						},
+						{
+							"datasetId": "795a1e3a-c363-4839-c060-ef449ac6205f",
+							"datasets": {
+								"step": "SaltLakeCGEModel",
+								"title": "gross-income",
+								"variableName": "cgeHouseholdIncomeDownload",
+								"widget": "CGE"
+							}
+						},
+						{
+							"datasetId": "4335c8c8-2382-44b3-829e-5c0169082062",
+							"datasets": {
+								"step": "SaltLakeCGEModel",
+								"title": "pre-disaster-factor-demand",
+								"variableName": "cgeEmploymentPreDownload",
+								"widget": "CGE"
+							}
+						},
+						{
+							"datasetId": "198cf559-5e83-481f-8df6-b63befc84072",
+							"datasets": {
+								"step": "SaltLakeCGEModel",
+								"title": "post-disaster-factor-demand",
+								"variableName": "cgeEmploymentPostDownload",
+								"widget": "CGE"
+							}
+						},
+						{
 							"datasetId": "7b82b481-32ae-4c3b-8e32-21f6c46c3a97",
 							"datasets": {
 								"step": "Building-Func-Cluster",
@@ -1888,6 +1942,15 @@ const datawolfWorkflowConfig =
 								"step": "Building-Dmg-Summary",
 								"title": "Building Dmg Summary",
 								"variableName": "bldgDmgSummaryTableContent",
+								"widget": "BldgDamage"
+							}
+						},
+						{
+							"datasetId": "4e4aa0c6-59fe-4d4a-cb34-f9a0f6a7ea28",
+							"datasets": {
+								"step": "BuildingDamage",
+								"title": "ds_result",
+								"variableName": "bldgDmgDsResultDownload",
 								"widget": "BldgDamage"
 							}
 						},
@@ -2034,7 +2097,16 @@ const datawolfWorkflowConfig =
 								"variableName": "substationMaxDmgStateINCOREId",
 								"widget": "SubstationDamage"
 							}
-						}
+						},
+						{
+							"datasetId": "0c2c6744-1097-4bca-e479-6158c6e396e8",
+							"datasets": {
+								"step": "Sub-EpfDamage",
+								"title": "result",
+								"variableName": "substationDmgDsResultDownload",
+								"widget": "SubstationDamage"
+							}
+						},
 					]
 				}
 			]

@@ -4,9 +4,8 @@ import { Box, Dialog, DialogActions, DialogContent, Grid, IconButton, Typography
 import CloseIcon from "@material-ui/icons/Close";
 import HHSBarChart from "../graph/HHSBarChart";
 import { IncoreMenuItem, IncoreSelectBox } from "../../styledComponents/IncoreSelect";
-import { getOutputFileContentJSON } from "../../../utils/datawolf";
+import { downloadOutputFile, getOutputFileContentJSON } from "../../../utils/datawolf";
 import { useSelector } from "react-redux";
-import { exportJson } from "../../../utils/common";
 import { IncoreButtonText } from "../../styledComponents/IncoreButtonText";
 import GetAppIcon from "@material-ui/icons/GetApp";
 import HhsDescription from "../step/HhsDescription";
@@ -20,6 +19,7 @@ export default function HHS(props) {
 
 	const [selectedExecutionName, setSelectedExecutionName] = useState("");
 	const [HHSBarChartContent, setHHSBarChartContent] = useState({ 1: [], 7: [], 13: [], 25: [], 49: [] });
+	const [HhsDownload, setHhsDownload] = useState();
 	const [t, setT] = useState("1");
 
 	const printRef = useRef();
@@ -33,12 +33,16 @@ export default function HHS(props) {
 					await getOutputFileContentJSON(datawolfConfig, executionItem, datawolfDatasetConfigItem.datasetId)
 				);
 			}
+			else if (vName === "HhsDownload") {
+				setHhsDownload(executionItem["datasets"][datawolfDatasetConfigItem.datasetId]);
+			}
 		});
 	}, []);
 
 	const download = async () => {
-		if (HHSBarChartContent) {
-			exportJson(HHSBarChartContent, `hhs-${executionItem.id}`);
+		if (HhsDownload) {
+			await downloadOutputFile(datawolfConfig, HhsDownload, null,
+				`hhs-${executionItem.id}.csv`);
 		}
 	};
 

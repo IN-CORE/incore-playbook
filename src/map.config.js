@@ -1,16 +1,16 @@
-// joplin
-export const mapConfig = {
-	MAP_BOUNDS:[
-		-94.818621,
-		36.816347,
-		-94.192626,
-		37.377222,
-	],
-	MAP_CENTER: [-94.4980, 37.0672],
-	ZOOM: 5,
-	MIN_ZOOM: 4,
-	MAX_ZOOM: 15,
-};
+// // joplin
+// export const mapConfig = {
+// 	MAP_BOUNDS:[
+// 		-94.818621,
+// 		36.816347,
+// 		-94.192626,
+// 		37.377222,
+// 	],
+// 	MAP_CENTER: [-94.4980, 37.0672],
+// 	ZOOM: 5,
+// 	MIN_ZOOM: 4,
+// 	MAX_ZOOM: 15,
+// };
 
 // // seaside
 // export const mapConfig = {
@@ -68,16 +68,16 @@ export const mapConfig = {
 // 	MAX_ZOOM: 15,
 // };
 
-// // Salt Lake City
-// export const mapConfig = {
-// 	MAP_BOUNDS:[
-// 		-114.3762,
-// 		43.2587,
-// 		-109.3762,
-// 		38.2587,
-// 	],
-// 	MAP_CENTER: [-111.8762, 40.7587],
-// 	ZOOM: 5,
-// 	MIN_ZOOM: 4,
-// 	MAX_ZOOM: 15,
-// };
+// Salt Lake City
+export const mapConfig = {
+	MAP_BOUNDS:[
+		-114.3762,
+		43.2587,
+		-109.3762,
+		38.2587,
+	],
+	MAP_CENTER: [-111.8762, 40.7587],
+	ZOOM: 5,
+	MIN_ZOOM: 4,
+	MAX_ZOOM: 15,
+};

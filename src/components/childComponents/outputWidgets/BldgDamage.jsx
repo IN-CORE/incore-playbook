@@ -18,9 +18,8 @@ import { StackedResult } from "../graph/StackedResult";
 import { ResultTable } from "../table/ResultTable";
 import { useSelector } from "react-redux";
 import { applyTransform } from "ol/extent";
-import { getOutputFileContent, getOutputFileContentJSON } from "../../../utils/datawolf";
+import { downloadOutputFile, getOutputFileContent, getOutputFileContentJSON } from "../../../utils/datawolf";
 import { basicLayers, generateLayers } from "../../../utils/map";
-import { downloadDataset } from "../../../utils/dataset";
 import { downloadImg } from "../../../utils/image";
 import GetAppIcon from "@material-ui/icons/GetApp";
 import CameraAltIcon from "@material-ui/icons/CameraAlt";
@@ -38,7 +37,7 @@ export default function BldgDamage(props) {
 	const [selectedExecutionName, setSelectedExecutionName] = useState("");
 	const [runtime, setRuntime] = useState(null);
 	const [bldgDmgSummaryTableContent, setBldgDmgSummaryTableContent] = useState(null);
-	const [bldgMaxDamageStateINCOREId, setBldgMaxDamageStateINCOREId] = useState(null);
+	const [bldgDmgDsResultDownload, setBldgDmgDsResultDownload] = useState(null);
 	const [damageLayers, setDamageLayers] = useState(null);
 
 
@@ -58,7 +57,6 @@ export default function BldgDamage(props) {
 					executionItem,
 					datawolfDatasetConfigItem.datasetId
 				);
-				setBldgMaxDamageStateINCOREId(bldgMaxDamageStateINCOREId);
 				const layerDef = [
 					{
 						"layerId": bldgMaxDamageStateINCOREId,
@@ -74,11 +72,17 @@ export default function BldgDamage(props) {
 			else if (vName === "bldgDmgSummaryTableContent") {
 				setBldgDmgSummaryTableContent(await getOutputFileContentJSON(datawolfConfig, executionItem, datawolfDatasetConfigItem.datasetId));
 			}
+			else if (vName === "bldgDmgDsResultDownload"){
+				setBldgDmgDsResultDownload(executionItem["datasets"][datawolfDatasetConfigItem.datasetId]);
+			}
 		});
 	}, []);
 
 	const download = async () => {
-		if (bldgMaxDamageStateINCOREId) await downloadDataset(globalConfig, bldgMaxDamageStateINCOREId, "bldg-dmg");
+		if (bldgDmgDsResultDownload) {
+			await downloadOutputFile(datawolfConfig, bldgDmgDsResultDownload, null,
+				`bldg-dmg-${executionItem.id}.csv`);
+		}
 	};
 
 	return (
