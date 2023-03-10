@@ -22,6 +22,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Pagination to view datawolf execution [#151](https://github.com/IN-CORE/incore-playbook/issues/151)
 - Admins can see datawolf logs [#147](https://github.com/IN-CORE/incore-playbook/issues/147)
 - Barchart for sector shocks [#157](https://github.com/IN-CORE/incore-playbook/issues/157)
+- Download pyincore CSV output for each output widget [#172](https://github.com/IN-CORE/incore-playbook/issues/172)
 
 ### Changed
 - Renamed master branch to main [#28](https://github.com/IN-CORE/incore-playbook/issues/28)
