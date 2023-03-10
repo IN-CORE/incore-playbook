@@ -18,7 +18,7 @@ import { FunctionalityTable } from "../table/FunctionalityTable";
 import React, { useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
 import { applyTransform } from "ol/extent";
-import { getOutputFileContent, getOutputFileContentJSON } from "../../../utils/datawolf";
+import { downloadOutputFile, getOutputFileContent, getOutputFileContentJSON } from "../../../utils/datawolf";
 import { basicLayers, generateLayers } from "../../../utils/map";
 import { downloadDataset } from "../../../utils/dataset";
 import { IncoreButtonText } from "../../styledComponents/IncoreButtonText";
@@ -37,7 +37,7 @@ export default function BldgMCS(props){
 	const [selectedExecutionName, setSelectedExecutionName] = useState("");
 	const [runtime, setRuntime] = useState(null);
 	const [mcsBldgSummaryTableContent, setMcsBldgSummaryTableContent] = useState(null);
-	const [mcsBldgFailureProbINCOREId, setMcsBldgFailureProbINCOREId] = useState(null);
+	const [mcsBldgFailureProbDownload, setMcsBldgFailureProbDownload] = useState();
 	const [damageLayers, setDamageLayers] = useState(null);
 
 	// print container
@@ -57,7 +57,6 @@ export default function BldgMCS(props){
 					executionItem,
 					datawolfDatasetConfigItem.datasetId
 				);
-				setMcsBldgFailureProbINCOREId(mcsBldgFailureProbINCOREId);
 				const layerDef = [
 					{
 						"layerId": mcsBldgFailureProbINCOREId,
@@ -73,11 +72,17 @@ export default function BldgMCS(props){
 			else if (vName === "mcsBldgSummaryTableContent") {
 				setMcsBldgSummaryTableContent(await getOutputFileContentJSON(datawolfConfig, executionItem, datawolfDatasetConfigItem.datasetId));
 			}
+			else if (vName === "mcsBldgFailureProbDownload"){
+				setMcsBldgFailureProbDownload(executionItem["datasets"][datawolfDatasetConfigItem.datasetId]);
+			}
 		});
 	}, []);
 
 	const download = async () => {
-		if (mcsBldgFailureProbINCOREId) await downloadDataset(globalConfig, mcsBldgFailureProbINCOREId, "bldg-mcs");
+		if (mcsBldgFailureProbDownload) {
+			await downloadOutputFile(datawolfConfig, mcsBldgFailureProbDownload, null,
+				`bldg-fail-prob-${executionItem.id}.csv`);
+		}
 	};
 
 	return (

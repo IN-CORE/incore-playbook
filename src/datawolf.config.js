@@ -1928,6 +1928,15 @@ const datawolfWorkflowConfig =
 							}
 						},
 						{
+							"datasetId": "c6d5e0b3-7416-4f73-eda5-089f9dc94ed2",
+							"datasets": {
+								"step": "Bldg-MonteCarloFailureProbability",
+								"title": "sample_failure_state",
+								"variableName": "mcsBldgFailureProbDownload",
+								"widget": "BldgMCS"
+							}
+						},
+						{
 							"datasetId": "733108d3-6343-4a91-f657-98b36a5647bb",
 							"datasets": {
 								"step": "Building-Dmg-Summary",
@@ -1986,7 +1995,7 @@ const datawolfWorkflowConfig =
 							"datasets": {
 								"step": "CapitalShocks",
 								"title": "sector_shocks",
-								"variableName": "sectorShocksContent",
+								"variableName": "sectorShocksDownload",
 								"widget": "SectorShocks"
 							}
 						},
@@ -2023,6 +2032,15 @@ const datawolfWorkflowConfig =
 								"step": "Bldg-Func-Store Result",
 								"title": "Dataset ID",
 								"variableName": "bldgFuncProbINCOREId",
+								"widget": "BldgFunctionality"
+							}
+						},
+						{
+							"datasetId": "04c0b274-841f-4e8a-dd67-b97a8a5fc235",
+							"datasets": {
+								"step": "BuildingFunctionality-sub-only",
+								"title": "functionality_probability",
+								"variableName": "bldgFuncProbDownload",
 								"widget": "BldgFunctionality"
 							}
 						},

@@ -16,7 +16,7 @@ export default function SectorShocks(props) {
 
 	const [selectedExecutionName, setSelectedExecutionName] = useState("");
 	const [sectorShocksContent, setSectorShocksContent] = useState(null);
-	const [sectorShocksDatasetId, setSectorShocksDatasetId] = useState(null);
+	const [sectorShocksDownload, setSectorShocksDownload] = useState(null);
 
 	// print container
 	const printRef = useRef();
@@ -26,18 +26,18 @@ export default function SectorShocks(props) {
 
 		datawolfDatasetConfigItems.map(async (datawolfDatasetConfigItem) => {
 			const vName = datawolfDatasetConfigItem.datasets.variableName;
-			if (vName === "sectorShocksContent") {
+			if (vName === "sectorShocksDownload") {
 				setSectorShocksContent(
 					await getOutputFileContent(datawolfConfig, executionItem, datawolfDatasetConfigItem.datasetId)
 				);
-				setSectorShocksDatasetId(executionItem["datasets"][datawolfDatasetConfigItem.datasetId]);
+				setSectorShocksDownload(executionItem["datasets"][datawolfDatasetConfigItem.datasetId]);
 			}
 		});
 	}, []);
 
 	const download = async () => {
-		if (sectorShocksDatasetId) {
-			await downloadOutputFile(datawolfConfig, sectorShocksDatasetId, null,
+		if (sectorShocksDownload) {
+			await downloadOutputFile(datawolfConfig, sectorShocksDownload, null,
 				`sector-shocks-${executionItem.id}.csv`);
 		}
 	};
