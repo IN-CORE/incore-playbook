@@ -15,7 +15,7 @@ import CameraAltIcon from "@material-ui/icons/CameraAlt";
 
 export default function PoleDamage(props){
 
-	let {executionItem, previewOn, handlePreviewClose, datawolfDatasetConfigItems, hazardLayers} = props;
+	let {executionItem, previewOn, handlePreviewClose, datawolfDatasetConfigItems, hazardLayers, setDownloadDialogOpen} = props;
 
 	const mapConfig = useSelector((state) => state.config.mapConfig);
 	const datawolfConfig = useSelector((state) => state.config.datawolfConfig);
@@ -58,6 +58,7 @@ export default function PoleDamage(props){
 	}, []);
 
 	const download = async () => {
+		setDownloadDialogOpen(true);
 		if (poleDmgDsResultDownload) {
 			await downloadOutputFile(datawolfConfig, poleDmgDsResultDownload, null,
 				`epf-pole-${executionItem.id}.csv`);

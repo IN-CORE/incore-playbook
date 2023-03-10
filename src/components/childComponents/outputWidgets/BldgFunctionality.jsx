@@ -27,7 +27,8 @@ import CameraAltIcon from "@material-ui/icons/CameraAlt";
 
 export default function BldgFunctionality(props){
 
-	let {executionItem, previewOn, handlePreviewClose, datawolfDatasetConfigItems, hazardType, hazardLayers} = props;
+	let {executionItem, previewOn, handlePreviewClose, datawolfDatasetConfigItems, hazardType, hazardLayers,
+		setDownloadDialogOpen} = props;
 
 	const mapConfig = useSelector((state) => state.config.mapConfig);
 	const datawolfConfig = useSelector((state) => state.config.datawolfConfig);
@@ -78,6 +79,7 @@ export default function BldgFunctionality(props){
 	}, []);
 
 	const download = async () => {
+		setDownloadDialogOpen(true);
 		if (bldgFuncProbDownload) {
 			await downloadOutputFile(datawolfConfig, bldgFuncProbDownload, null,
 				`bldg-func-${executionItem.id}.csv`);

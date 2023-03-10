@@ -10,7 +10,7 @@ import CameraAltIcon from "@material-ui/icons/CameraAlt";
 import SectorShocksBarChart from "../graph/SectorShocksBarChart";
 
 export default function SectorShocks(props) {
-	let { executionItem, previewOn, handlePreviewClose, datawolfDatasetConfigItems } = props;
+	let { executionItem, previewOn, handlePreviewClose, datawolfDatasetConfigItems, setDownloadDialogOpen } = props;
 
 	const datawolfConfig = useSelector((state) => state.config.datawolfConfig);
 
@@ -36,6 +36,7 @@ export default function SectorShocks(props) {
 	}, []);
 
 	const download = async () => {
+		setDownloadDialogOpen(true);
 		if (sectorShocksDownload) {
 			await downloadOutputFile(datawolfConfig, sectorShocksDownload, null,
 				`sector-shocks-${executionItem.id}.csv`);

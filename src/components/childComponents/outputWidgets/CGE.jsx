@@ -15,7 +15,7 @@ import CameraAltIcon from "@material-ui/icons/CameraAlt";
 import { IncoreInputLabel } from "../../styledComponents/IncoreInputLabel";
 
 export default function CGE(props) {
-	let { executionItem, previewOn, handlePreviewClose, datawolfDatasetConfigItems } = props;
+	let { executionItem, previewOn, handlePreviewClose, datawolfDatasetConfigItems, setDownloadDialogOpen} = props;
 
 	const datawolfConfig = useSelector((state) => state.config.datawolfConfig);
 	const globalConfig = useSelector((state) => state.config.globalConfig);
@@ -64,6 +64,7 @@ export default function CGE(props) {
 	}, []);
 
 	const download = async () => {
+		setDownloadDialogOpen(true);
 		if (cgeType === "totalHouseholdIncome" && cgeHouseholdIncomeDownload) {
 			await downloadOutputFile(datawolfConfig, cgeHouseholdIncomeDownload, null,
 				`cge-household-income-${executionItem.id}.csv`);

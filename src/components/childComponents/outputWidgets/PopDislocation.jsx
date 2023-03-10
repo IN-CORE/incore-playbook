@@ -15,7 +15,8 @@ import { downloadImg } from "../../../utils/image";
 import CameraAltIcon from "@material-ui/icons/CameraAlt";
 
 export default function PopDislocation(props) {
-	let { executionItem, previewOn, handlePreviewClose, datawolfDatasetConfigItems, hazardLayers } = props;
+	let { executionItem, previewOn, handlePreviewClose, datawolfDatasetConfigItems, hazardLayers,
+		setDownloadDialogOpen } = props;
 
 	const mapConfig = useSelector((state) => state.config.mapConfig);
 	const datawolfConfig = useSelector((state) => state.config.datawolfConfig);
@@ -107,6 +108,7 @@ export default function PopDislocation(props) {
 	}, []);
 
 	const download = async () => {
+		setDownloadDialogOpen(true);
 		if (populationDislocationDownload) {
 			await downloadOutputFile(datawolfConfig, populationDislocationDownload, null,
 				`population-dislocation-${executionItem.id}.csv`);

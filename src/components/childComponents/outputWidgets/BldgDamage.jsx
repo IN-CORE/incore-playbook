@@ -28,7 +28,8 @@ import { IncoreButtonText } from "../../styledComponents/IncoreButtonText";
 
 export default function BldgDamage(props) {
 
-	let {executionItem, previewOn, handlePreviewClose, datawolfDatasetConfigItems, hazardType, hazardLayers} = props;
+	let {executionItem, previewOn, handlePreviewClose, datawolfDatasetConfigItems, hazardType, hazardLayers,
+		setDownloadDialogOpen} = props;
 
 	const mapConfig = useSelector((state) => state.config.mapConfig);
 	const datawolfConfig = useSelector((state) => state.config.datawolfConfig);
@@ -79,6 +80,7 @@ export default function BldgDamage(props) {
 	}, []);
 
 	const download = async () => {
+		setDownloadDialogOpen(true);
 		if (bldgDmgDsResultDownload) {
 			await downloadOutputFile(datawolfConfig, bldgDmgDsResultDownload, null,
 				`bldg-dmg-${executionItem.id}.csv`);

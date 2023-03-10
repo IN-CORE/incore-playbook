@@ -13,7 +13,7 @@ import { downloadImg } from "../../../utils/image";
 import CameraAltIcon from "@material-ui/icons/CameraAlt";
 
 export default function HHS(props) {
-	let { executionItem, previewOn, handlePreviewClose, datawolfDatasetConfigItems } = props;
+	let { executionItem, previewOn, handlePreviewClose, datawolfDatasetConfigItems, setDownloadDialogOpen } = props;
 
 	const datawolfConfig = useSelector((state) => state.config.datawolfConfig);
 
@@ -40,6 +40,7 @@ export default function HHS(props) {
 	}, []);
 
 	const download = async () => {
+		setDownloadDialogOpen(true);
 		if (HhsDownload) {
 			await downloadOutputFile(datawolfConfig, HhsDownload, null,
 				`hhs-${executionItem.id}.csv`);
