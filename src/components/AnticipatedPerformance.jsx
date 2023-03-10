@@ -6,7 +6,7 @@ import { Layout } from "./Layout";
 import ViewResult from "./childComponents/ViewResult";
 import RunAnalysis from "./childComponents/RunAnalysis";
 import BreadCrumb from "./childComponents/navigation/BreadCrumb";
-import { AlertMessage } from "./childComponents/AlertMessage";
+import { AlertMessage } from "./childComponents/alert/AlertMessage";
 import { fetchExecutions } from "../actions/datawolf";
 import StepStatusDropdown from "./childComponents/step/StepStatusDropdown";
 
