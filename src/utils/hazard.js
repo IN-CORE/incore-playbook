@@ -1,4 +1,5 @@
 import { globals as defaultGlobalConfig } from "../globals";
+import { mapConfig as defaultMapConfig } from "../map.config";
 import { dataURItoFile, getHazardTypePlural, getHeader, round } from "./common";
 
 export async function createModelTornado(
@@ -99,6 +100,7 @@ export async function getHazardMetadata(globalConfig = defaultGlobalConfig, haza
 
 export async function createModelEarthquake(
 	globalConfig = defaultGlobalConfig,
+	mapConfg = defaultMapConfig,
 	name,
 	description,
 	lat,
@@ -127,10 +129,10 @@ export async function createModelEarthquake(
 		visualizationParameters: {
 			demandType: demandType,
 			demandUnits: demandUnits,
-			minX: round(lon - 0.1, 4),
-			minY: round(lat - 0.1, 4),
-			maxX: round(lon + 0.1, 4),
-			maxY: round(lat + 0.1, 4),
+			minX: round(mapConfg.HAZARD_BOUNDS[0], 3),
+			minY: round(mapConfg.HAZARD_BOUNDS[1], 3),
+			maxX: round(mapConfg.HAZARD_BOUNDS[2], 3),
+			maxY: round(mapConfg.HAZARD_BOUNDS[3], 3),
 			numPoints: "1025",
 			amplifyHazard: "true"
 		}

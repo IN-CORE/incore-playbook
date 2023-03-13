@@ -107,6 +107,7 @@ export default function ModelEarthquake(props) {
 		setLoading(true);
 		const eqJson = await createModelEarthquake(
 			globalConfig,
+			mapConfig,
 			name,
 			description,
 			coordLat,
