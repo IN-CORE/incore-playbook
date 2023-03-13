@@ -60,7 +60,10 @@ export default function ModelTornado(props) {
 	const { value, index, startCoordProps, endCoordProps, setStartCoordProps, setEndCoordProps, handleLayerUpdate,
 		handleListUpdate, enableEdit, setEnableEdit, ...other } = props;
 	const classes = useStyles();
+
 	const globalConfig = useSelector((state) => state.config.globalConfig);
+	const mapConfig = useSelector((state) => state.config.mapConfig);
+
 	const [name, setName] = useState("");
 	const [description, setDescription] = useState("");
 	const [rating, setRating] = useState("EF3");

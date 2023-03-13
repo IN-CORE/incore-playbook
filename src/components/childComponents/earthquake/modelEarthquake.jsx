@@ -14,6 +14,7 @@ import { FlatCoordToLonLat, LonLatToFlatCoord, move2TestbedSpace, round } from "
 import LoadingOverlay from "react-loading-overlay";
 import { useSelector } from "react-redux";
 import { IncoreButtonText } from "../../styledComponents/IncoreButtonText";
+import { validateCoord } from "../../../utils/map";
 
 const useStyles = makeStyles({
 	srcLatLabel: {
@@ -58,7 +59,10 @@ export default function ModelEarthquake(props) {
 	const { value, index, srcCoordProps, setSrcCoordProps, handleLayerUpdate, handleListUpdate, enableEdit,
 		setEnableEdit, ...other } = props;
 	const classes = useStyles();
+
 	const globalConfig = useSelector((state) => state.config.globalConfig);
+	const mapConfig = useSelector((state) => state.config.mapConfig);
+
 	const [name, setName] = useState("");
 	const [description, setDescription] = useState("");
 	const [coordLat, setCoordLat] = useState("");
@@ -296,6 +300,14 @@ export default function ModelEarthquake(props) {
 
 						<Box className="inputGroup">
 							<IncoreInputLabel>Draw Earthquake Epicenter</IncoreInputLabel>
+							{
+								validateCoord(coordLon, coordLat, mapConfig.MAP_BOUNDS) ?
+									<></>
+									:
+									<span style={{ color: "Red" }}>
+										Coordinate not valid or outside of the bounding box.
+									</span>
+							}
 							<Box className={classes.coordBox}>
 								<Box display="flex" style={{alignItems:"baseline", justifyContent:"center"}}>
 									<InputLabel className={classes.srcLatLabel}>Lat: </InputLabel>
@@ -320,7 +332,11 @@ export default function ModelEarthquake(props) {
 															  style={{maxWidth:"fit-content"}}>Edit</IncoreButtonText>
 											:
 											<IncoreButtonText onClick={() => {setEnableEdit(false);}}
-															  style={{maxWidth:"fit-content"}}>Save</IncoreButtonText>
+															  style={{maxWidth:"fit-content"}}
+															  disabled={!validateCoord(coordLon, coordLat, mapConfig.MAP_BOUNDS)}
+											>
+												Save
+											</IncoreButtonText>
 									}
 								</Box>
 							</Box>
