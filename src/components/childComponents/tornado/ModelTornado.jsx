@@ -201,7 +201,7 @@ export default function ModelTornado(props) {
 								<Box display="flex" style={{alignItems:"baseline", justifyContent:"center"}}>
 									<InputLabel className={classes.startLabel}>Lat: </InputLabel>
 									<input
-										placeholder="37.071"
+										placeholder={mapConfig.MAP_CENTER[1]}
 										className={!enableEdit? classes.coordInput:classes.coordInputEdit}
 										value={startLatCoord}
 										onChange={(e) => setStartLatCoord(e.target.value)}
@@ -209,7 +209,7 @@ export default function ModelTornado(props) {
 									/>
 									<InputLabel className={classes.startLabel}>Lon: </InputLabel>
 									<input
-										placeholder="-94.579"
+										placeholder={mapConfig.MAP_CENTER[0]}
 										className={!enableEdit? classes.coordInput:classes.coordInputEdit}
 										value={startLonCoord}
 										onChange={(e) => setStartLonCoord(e.target.value)}
@@ -218,7 +218,7 @@ export default function ModelTornado(props) {
 
 									<InputLabel className={classes.endLabel}>Lat: </InputLabel>
 									<input
-										placeholder="37.108"
+										placeholder={mapConfig.MAP_CENTER[1]}
 										className={!enableEdit? classes.coordInput:classes.coordInputEdit}
 										value={endLatCoord}
 										onChange={(e) => setEndLatCoord(e.target.value)}
@@ -226,7 +226,7 @@ export default function ModelTornado(props) {
 									/>
 									<InputLabel className={classes.endLabel}>Lon: </InputLabel>
 									<input
-										placeholder="-94.439"
+										placeholder={mapConfig.MAP_CENTER[0]}
 										className={!enableEdit? classes.coordInput:classes.coordInputEdit}
 										value={endLonCoord}
 										onChange={(e) => setEndLonCoord(e.target.value)}

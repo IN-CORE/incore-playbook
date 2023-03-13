@@ -312,7 +312,7 @@ export default function ModelEarthquake(props) {
 								<Box display="flex" style={{alignItems:"baseline", justifyContent:"center"}}>
 									<InputLabel className={classes.srcLatLabel}>Lat: </InputLabel>
 									<input
-										placeholder="40.851"
+										placeholder={mapConfig.MAP_CENTER[1]}
 										className={!enableEdit? classes.coordInput:classes.coordInputEdit}
 										value={coordLat}
 										onChange={(e) => setCoordLat(e.target.value)}
@@ -320,7 +320,7 @@ export default function ModelEarthquake(props) {
 									/>
 									<InputLabel className={classes.srcLonLabel}>Lon: </InputLabel>
 									<input
-										placeholder="-112.081"
+										placeholder={mapConfig.MAP_CENTER[0]}
 										className={!enableEdit? classes.coordInput:classes.coordInputEdit}
 										value={coordLon}
 										onChange={(e) => setCoordLon(e.target.value)}

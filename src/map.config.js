@@ -76,7 +76,7 @@ export const mapConfig = {
 		-109.3762,
 		38.2587,
 	],
-	MAP_CENTER: [-111.8762, 40.7587],
+	MAP_CENTER: [-111.876, 40.758],
 	ZOOM: 5,
 	MIN_ZOOM: 4,
 	MAX_ZOOM: 15,
