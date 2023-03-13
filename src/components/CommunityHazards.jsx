@@ -38,6 +38,7 @@ import { LineString } from "ol/geom";
 import { useEffectAllDepsChange } from "./customHooks/useEffectAllDeps";
 import { getHazardTypePlural } from "../utils/common";
 import StepStatusDropdown from "./childComponents/step/StepStatusDropdown";
+import { MapDrawPrompt } from "./childComponents/alert/MapDrawPrompt";
 
 
 const useStyles = makeStyles({
@@ -98,6 +99,7 @@ export const CommunityHazards = (props) => {
 	const [offset, setOffset] = React.useState(0);
 	const [olIdLayerMap, setOlIdLayerMap] = React.useState(new Set());
 	const [enableSrcEdit, setEnableSrcEdit] = React.useState(false); // directly edit in the child component geolocation
+	const [mapDialogOpen, setMapDialogOpen] = React.useState(true); // map prompt
 
 	// Cache the drawing
 	const drawSourceRef = React.useRef(new VectorSource({ wrapX: false }));
@@ -176,6 +178,9 @@ export const CommunityHazards = (props) => {
 
 	// Holds an instance of Map component
 	const mapRef = React.useRef();
+
+	// Map Draw Prompt parent Ref
+	const rootRef = React.useRef();
 
 	// When Switching Tab
 	useEffect(() => {
@@ -575,12 +580,19 @@ export const CommunityHazards = (props) => {
 							</Box>
 						</Grid>
 						<Grid item xl={6} lg={6} md={6} sm={6} xs={12} className="gridItem">
-							<Container className={classes.mapContainer} disableGutters style={{position:"relative"}}>
+							<Container className={classes.mapContainer}
+									   disableGutters
+									   style={{position:"relative"}}
+									   ref={rootRef}
+							>
 								<Button variant="outlined" onClick={handleClearAllLayers}
 									style={{position:"absolute", zIndex:100, right:"5px", top: "5px",
 										background: "#FFFFFF"}}>
 									Clear All
 								</Button>
+								<MapDrawPrompt mapDialogOpen={mapDialogOpen}
+											   handleMapDialogClose={()=>{setMapDialogOpen(false);}}
+											   rootRef={rootRef}/>
 								<Map
 									className="fillContainer"
 									zoom={mapConfig.ZOOM}
