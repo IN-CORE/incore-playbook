@@ -10,9 +10,10 @@ import { IncoreTextField } from "../../styledComponents/IncoreInput";
 import { IncoreInputLabel } from "../../styledComponents/IncoreInputLabel";
 
 import { createModelEarthquake } from "../../../utils/hazard";
-import { FlatCoordToLonLat, move2TestbedSpace, round } from "../../../utils/common";
+import { FlatCoordToLonLat, LonLatToFlatCoord, move2TestbedSpace, round } from "../../../utils/common";
 import LoadingOverlay from "react-loading-overlay";
 import { useSelector } from "react-redux";
+import { IncoreButtonInline } from "../../styledComponents/IncoreButtonInline";
 
 const useStyles = makeStyles({
 	srcLatLabel: {
@@ -50,7 +51,7 @@ const useStyles = makeStyles({
 });
 
 export default function ModelEarthquake(props) {
-	const { value, index, srcCoordProps, handleLayerUpdate, handleListUpdate, ...other } = props;
+	const { value, index, srcCoordProps, setSrcCoordProps, handleLayerUpdate, handleListUpdate, ...other } = props;
 	const classes = useStyles();
 	const globalConfig = useSelector((state) => state.config.globalConfig);
 	const [name, setName] = useState("");
@@ -65,6 +66,7 @@ export default function ModelEarthquake(props) {
 	const [faultTypeMap, setFaultTypeMap] = useState("Strike-Slip");
 	const [disabled, setDisabled] = useState(true);
 	const [loading, setLoading] = useState(false);
+	const [enableEdit, setEnableEdit] = useState(false);
 
 	// form check
 	useEffect(() => {
@@ -82,11 +84,17 @@ export default function ModelEarthquake(props) {
 
 	// update start and end based on map click (parent prop change)
 	useEffect(() => {
-		if (srcCoordProps.length > 0) {
+		if (srcCoordProps.length > 0 && !enableEdit) {
 			setCoordLat(round(FlatCoordToLonLat(srcCoordProps)[1], 3));
 			setCoordLon(round(FlatCoordToLonLat(srcCoordProps)[0], 3));
 		}
 	}, [srcCoordProps]);
+
+	useEffect(() => {
+		if (enableEdit && coordLat && coordLon){
+			setSrcCoordProps(LonLatToFlatCoord(coordLon, coordLat));
+		}
+	}, [coordLat, coordLon, enableEdit]);
 
 	const onSave = async () => {
 		setLoading(true);
@@ -284,7 +292,7 @@ export default function ModelEarthquake(props) {
 							)}
 
 						<Box className="inputGroup">
-							<IncoreInputLabel>Earthquake Source</IncoreInputLabel>
+							<IncoreInputLabel>Draw Earthquake Source</IncoreInputLabel>
 							<Box className={classes.coordBox}>
 								<InputLabel className={classes.srcLatLabel}>Lat: </InputLabel>
 								<input
@@ -292,6 +300,7 @@ export default function ModelEarthquake(props) {
 									className={classes.coordInput}
 									value={coordLat}
 									onChange={(e) => setCoordLat(e.target.value)}
+									disabled={!enableEdit}
 								/>
 								<InputLabel className={classes.srcLonLabel}>Lon: </InputLabel>
 								<input
@@ -299,7 +308,9 @@ export default function ModelEarthquake(props) {
 									className={classes.coordInput}
 									value={coordLon}
 									onChange={(e) => setCoordLon(e.target.value)}
+									disabled={!enableEdit}
 								/>
+								<IncoreButtonInline onClick={()=>{setEnableEdit(true);}}>Edit</IncoreButtonInline>
 							</Box>
 						</Box>
 						<Box className="inputGroup">

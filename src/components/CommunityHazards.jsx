@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Box, Container, Grid, Tab, Tabs, makeStyles, Button } from "@material-ui/core";
+import { Box, Button, Container, Grid, makeStyles, Tab, Tabs } from "@material-ui/core";
 import GroupLayer from "ol/layer/Group";
 import TileLayer from "ol/layer/Tile";
 import XYZ from "ol/source/XYZ";
@@ -38,7 +38,6 @@ import { LineString } from "ol/geom";
 import { useEffectAllDepsChange } from "./customHooks/useEffectAllDeps";
 import { getHazardTypePlural } from "../utils/common";
 import StepStatusDropdown from "./childComponents/step/StepStatusDropdown";
-import { IncoreButtonInline } from "./styledComponents/IncoreButtonInline";
 
 
 const useStyles = makeStyles({
@@ -196,31 +195,27 @@ export const CommunityHazards = (props) => {
 			});
 			drawInteractionRef.current.on("drawstart", () => {
 				drawSourceRef.current.clear();
-				drawDisplaySourceRef.current.clear();
 			});
 			drawInteractionRef.current.on("drawend", (event) => {
 				const geometry = event.feature.getGeometry();
 				setStartCoord(geometry.getFirstCoordinate());
 				setEndCoord(geometry.getLastCoordinate());
-				// delete default draw feature
-				// drawSourceRef.current.removeFeature(event.feature);
 			});
-		} else if (selectedHazardType === "earthquake" && currTabIndex === 1) {
+		}
+		else if (selectedHazardType === "earthquake" && currTabIndex === 1) {
 			drawInteractionRef.current = new Draw({
 				source: drawSourceRef.current,
 				type: "Point"
 			});
 			drawInteractionRef.current.on("drawstart", () => {
 				drawSourceRef.current.clear();
-				drawDisplaySourceRef.current.clear();
 			});
 			drawInteractionRef.current.on("drawend", (event) => {
 				const geometry = event.feature.getGeometry();
 				setSrcCoord(geometry.getFlatCoordinates());
-				// delete default draw feature
-				// drawSourceRef.current.removeFeature(event.feature);
 			});
-		} else {
+		}
+		else {
 			drawInteractionRef.current = null;
 		}
 
@@ -233,6 +228,7 @@ export const CommunityHazards = (props) => {
 	// display the line
 	useEffectAllDepsChange(() => {
 		if (startCoord.length > 0 && endCoord.length > 0) {
+			drawDisplaySourceRef.current.clear();
 			syntheticDrawPoints(startCoord, true);
 			syntheticDrawPoints(endCoord, false);
 			syntheticDrawLine(startCoord, endCoord);
@@ -241,7 +237,10 @@ export const CommunityHazards = (props) => {
 
 	// display the dot
 	useEffect(() => {
-		if (srcCoord.length > 0) syntheticDrawPoints(srcCoord, false);
+		if (srcCoord.length > 0) {
+			drawDisplaySourceRef.current.clear();
+			syntheticDrawPoints(srcCoord, false);
+		}
 	}, [srcCoord]);
 
 	const handleLayerUpdate = (json) => {
@@ -424,6 +423,7 @@ export const CommunityHazards = (props) => {
 														handleLayerUpdate={handleLayerUpdate}
 														handleListUpdate={listHazards}
 														srcCoordProps={srcCoord}
+														setSrcCoordProps={setSrcCoord}
 													/>
 												</>
 											);
