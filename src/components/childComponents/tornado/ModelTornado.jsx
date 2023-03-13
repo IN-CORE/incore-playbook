@@ -72,12 +72,12 @@ export default function ModelTornado(props) {
 	useEffect(() => {
 		if (startCoordProps.length > 0) {
 			setStartCoord(
-				`${round(FlatCoordToLonLat(startCoordProps)[1], 4)}, ${round(FlatCoordToLonLat(startCoordProps)[0], 4)}`
+				`${round(FlatCoordToLonLat(startCoordProps)[1], 3)}, ${round(FlatCoordToLonLat(startCoordProps)[0], 3)}`
 			);
 		}
 		if (endCoordProps.length > 0) {
 			setEndCoord(
-				`${round(FlatCoordToLonLat(endCoordProps)[1], 4)},${round(FlatCoordToLonLat(endCoordProps)[0], 4)}`
+				`${round(FlatCoordToLonLat(endCoordProps)[1], 3)},${round(FlatCoordToLonLat(endCoordProps)[0], 3)}`
 			);
 		}
 	}, [startCoordProps, endCoordProps]);

@@ -15,11 +15,17 @@ import LoadingOverlay from "react-loading-overlay";
 import { useSelector } from "react-redux";
 
 const useStyles = makeStyles({
-	srcLabel: {
-		color: "#D63649",
+	srcLatLabel: {
 		height: "18px",
 		display: "inline-block",
-		marginLeft: "11.25px"
+		marginLeft: "11.25px",
+		color: "#D63649",
+	},
+	srcLonLabel: {
+		height: "18px",
+		display: "inline-block",
+		marginLeft: "11.25px",
+		color: "#96B712",
 	},
 	coordInput: {
 		color: "#2E384D",
@@ -49,7 +55,8 @@ export default function ModelEarthquake(props) {
 	const globalConfig = useSelector((state) => state.config.globalConfig);
 	const [name, setName] = useState("");
 	const [description, setDescription] = useState("");
-	const [coord, setCoord] = useState("");
+	const [coordLat, setCoordLat] = useState("");
+	const [coordLon, setCoordLon] = useState("");
 	const [magnitude, setMagnitude] = useState(7.9);
 	const [depth, setDepth] = useState(10);
 	const [demandType, setDemandType] = useState("PGA");
@@ -64,35 +71,31 @@ export default function ModelEarthquake(props) {
 		if (
 			name !== "" &&
 			description !== "" &&
-			coord !== "" &&
-			coord.includes(",") &&
+			coordLat !== "" &&
+			coordLon !== "" &&
 			magnitude !== "" &&
 			depth !== ""
 		)
 			setDisabled(false);
 		else setDisabled(true);
-	}, [name, description, coord]);
+	}, [name, description, coordLat, coordLon]);
 
 	// update start and end based on map click (parent prop change)
 	useEffect(() => {
 		if (srcCoordProps.length > 0) {
-			setCoord(
-				`${round(FlatCoordToLonLat(srcCoordProps)[1], 4)},${round(FlatCoordToLonLat(srcCoordProps)[0], 4)}`
-			);
+			setCoordLat(round(FlatCoordToLonLat(srcCoordProps)[1], 3));
+			setCoordLon(round(FlatCoordToLonLat(srcCoordProps)[0], 3));
 		}
 	}, [srcCoordProps]);
 
 	const onSave = async () => {
 		setLoading(true);
-		let lat = round(FlatCoordToLonLat(srcCoordProps)[1], 4);
-		let lon = round(FlatCoordToLonLat(srcCoordProps)[0], 4);
-
 		const eqJson = await createModelEarthquake(
 			globalConfig,
 			name,
 			description,
-			lat,
-			lon,
+			coordLat,
+			coordLon,
 			magnitude,
 			depth,
 			demandType,
@@ -107,7 +110,8 @@ export default function ModelEarthquake(props) {
 			handleListUpdate(globalConfig, "earthquake");
 			setName("");
 			setDescription("");
-			setCoord("");
+			setCoordLat("");
+			setCoordLon("");
 		}
 		setLoading(false);
 	};
@@ -246,48 +250,55 @@ export default function ModelEarthquake(props) {
 						{attenuations === "ChiouYoungs2014" ||
 						attenuations === "CampbellBozorgnia2014" ||
 						attenuations === "AbrahamsonSilvaKamai2014" ? (
-							<Box className="inputGroup">
-								<IncoreInputLabel>Fault Mechanism</IncoreInputLabel>
-								<IncoreSelectBox
-									labelId="label"
-									id="select"
-									variant="outlined"
-									defaultValue={faultTypeMap}
-									onChange={(e) => setFaultTypeMap(e.target.value)}
-								>
-									<IncoreMenuItem value="Strike-Slip" key="Strike-Slip">
+								<Box className="inputGroup">
+									<IncoreInputLabel>Fault Mechanism</IncoreInputLabel>
+									<IncoreSelectBox
+										labelId="label"
+										id="select"
+										variant="outlined"
+										defaultValue={faultTypeMap}
+										onChange={(e) => setFaultTypeMap(e.target.value)}
+									>
+										<IncoreMenuItem value="Strike-Slip" key="Strike-Slip">
 										Strike-Slip
-									</IncoreMenuItem>
-									<IncoreMenuItem value="Normal" key="Normal">
+										</IncoreMenuItem>
+										<IncoreMenuItem value="Normal" key="Normal">
 										Normal
-									</IncoreMenuItem>
-									<IncoreMenuItem value="Reverse-Thrust" key="Reverse-Thrust">
+										</IncoreMenuItem>
+										<IncoreMenuItem value="Reverse-Thrust" key="Reverse-Thrust">
 										Reverse-Thrust
-									</IncoreMenuItem>
-									<IncoreMenuItem value="Reverse-Slip" key="Reverse-Slip">
+										</IncoreMenuItem>
+										<IncoreMenuItem value="Reverse-Slip" key="Reverse-Slip">
 										Reverse-Slip
-									</IncoreMenuItem>
-									<IncoreMenuItem value="All" key="All">
+										</IncoreMenuItem>
+										<IncoreMenuItem value="All" key="All">
 										All
-									</IncoreMenuItem>
-									<IncoreMenuItem value="Reverse" key="Reverse">
+										</IncoreMenuItem>
+										<IncoreMenuItem value="Reverse" key="Reverse">
 										Reverse
-									</IncoreMenuItem>
-								</IncoreSelectBox>
-							</Box>
-						) : (
-							<></>
-						)}
+										</IncoreMenuItem>
+									</IncoreSelectBox>
+								</Box>
+							) : (
+								<></>
+							)}
 
 						<Box className="inputGroup">
 							<IncoreInputLabel>Earthquake Source</IncoreInputLabel>
 							<Box className={classes.coordBox}>
-								<InputLabel className={classes.srcLabel}>Source: </InputLabel>
+								<InputLabel className={classes.srcLatLabel}>Lat: </InputLabel>
 								<input
-									placeholder="draw epicenter on map"
+									placeholder="40.851"
 									className={classes.coordInput}
-									value={coord}
-									onChange={(e) => setCoord(e.target.value)}
+									value={coordLat}
+									onChange={(e) => setCoordLat(e.target.value)}
+								/>
+								<InputLabel className={classes.srcLonLabel}>Lon: </InputLabel>
+								<input
+									placeholder="-112.081"
+									className={classes.coordInput}
+									value={coordLon}
+									onChange={(e) => setCoordLon(e.target.value)}
 								/>
 							</Box>
 						</Box>
