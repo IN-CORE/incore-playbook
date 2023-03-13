@@ -55,7 +55,8 @@ const useStyles = makeStyles({
 });
 
 export default function ModelEarthquake(props) {
-	const { value, index, srcCoordProps, setSrcCoordProps, handleLayerUpdate, handleListUpdate, ...other } = props;
+	const { value, index, srcCoordProps, setSrcCoordProps, handleLayerUpdate, handleListUpdate, enableEdit,
+		setEnableEdit, ...other } = props;
 	const classes = useStyles();
 	const globalConfig = useSelector((state) => state.config.globalConfig);
 	const [name, setName] = useState("");
@@ -70,7 +71,6 @@ export default function ModelEarthquake(props) {
 	const [faultTypeMap, setFaultTypeMap] = useState("Strike-Slip");
 	const [disabled, setDisabled] = useState(true);
 	const [loading, setLoading] = useState(false);
-	const [enableEdit, setEnableEdit] = useState(false);
 
 	// form check
 	useEffect(() => {

@@ -29,7 +29,7 @@ const useStyles = makeStyles({
 		fontSize: "14px",
 		height: "18px",
 		border: "0 none",
-		maxWidth: "5em",
+		maxWidth: "4.5em",
 		background: "transparent"
 	},
 	coordInputEdit: {
@@ -37,7 +37,7 @@ const useStyles = makeStyles({
 		fontSize: "14px",
 		height: "18px",
 		border: "0 none",
-		maxWidth: "5em",
+		maxWidth: "4.5em",
 		background: "transparent",
 		fontStyle: "italic"
 	},
@@ -58,7 +58,7 @@ const useStyles = makeStyles({
 
 export default function ModelTornado(props) {
 	const { value, index, startCoordProps, endCoordProps, setStartCoordProps, setEndCoordProps, handleLayerUpdate,
-		handleListUpdate, ...other } = props;
+		handleListUpdate, enableEdit, setEnableEdit, ...other } = props;
 	const classes = useStyles();
 	const globalConfig = useSelector((state) => state.config.globalConfig);
 	const [name, setName] = useState("");
@@ -70,7 +70,6 @@ export default function ModelTornado(props) {
 	const [endLonCoord, setEndLonCoord] = useState("");
 	const [disabled, setDisabled] = useState(true);
 	const [loading, setLoading] = useState(false);
-	const [enableEdit, setEnableEdit] = useState(false);
 
 	// form check
 	useEffect(() => {

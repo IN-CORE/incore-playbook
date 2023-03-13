@@ -97,6 +97,7 @@ export const CommunityHazards = (props) => {
 	const [pageNumber, setPageNumber] = React.useState(1);
 	const [offset, setOffset] = React.useState(0);
 	const [olIdLayerMap, setOlIdLayerMap] = React.useState(new Set());
+	const [enableSrcEdit, setEnableSrcEdit] = React.useState(false); // directly edit in the child component geolocation
 
 	// Cache the drawing
 	const drawSourceRef = React.useRef(new VectorSource({ wrapX: false }));
@@ -176,9 +177,14 @@ export const CommunityHazards = (props) => {
 	// Holds an instance of Map component
 	const mapRef = React.useRef();
 
+	// When Switching Tab
 	useEffect(() => {
-		// Important: need to clear previous draw interaction first
 		drawDisplaySourceRef.current.clear();
+		setEnableSrcEdit(false);
+	}, [selectedHazardType, currTabIndex]);
+
+	useEffect(() => {
+		// clear previous draw interaction
 		mapRef.current.getInteractions().forEach((interaction) => {
 			if (interaction instanceof Draw) {
 				mapRef.current.removeInteraction(interaction);
@@ -186,7 +192,8 @@ export const CommunityHazards = (props) => {
 		});
 
 		// construct different draw interactions
-		if (selectedHazardType === "tornado" && currTabIndex === 1) {
+		if (selectedHazardType === "tornado" && currTabIndex === 1 && !enableSrcEdit) {
+			// clear prev draw;
 			drawInteractionRef.current = new Draw({
 				source: drawSourceRef.current,
 				type: "LineString",
@@ -202,7 +209,7 @@ export const CommunityHazards = (props) => {
 				setEndCoord(geometry.getLastCoordinate());
 			});
 		}
-		else if (selectedHazardType === "earthquake" && currTabIndex === 1) {
+		else if (selectedHazardType === "earthquake" && currTabIndex === 1 && !enableSrcEdit) {
 			drawInteractionRef.current = new Draw({
 				source: drawSourceRef.current,
 				type: "Point"
@@ -223,7 +230,58 @@ export const CommunityHazards = (props) => {
 		if (drawInteractionRef.current !== null) {
 			mapRef.current.addInteraction(drawInteractionRef.current);
 		}
-	}, [selectedHazardType, currTabIndex]);
+	}, [selectedHazardType, currTabIndex, enableSrcEdit]);
+
+	useEffect(() => {
+		// Important: need to clear previous draw interaction first
+		// drawDisplaySourceRef.current.clear();
+		mapRef.current.getInteractions().forEach((interaction) => {
+			if (interaction instanceof Draw) {
+				mapRef.current.removeInteraction(interaction);
+			}
+		});
+
+		// construct different draw interactions
+		if (selectedHazardType === "tornado" && currTabIndex === 1 && !enableSrcEdit) {
+			// when edit the textbox doesn't allow draw
+			drawInteractionRef.current = new Draw({
+				source: drawSourceRef.current,
+				type: "LineString",
+				stopClick: true,
+				maxPoints: 2
+			});
+			drawInteractionRef.current.on("drawstart", () => {
+				drawSourceRef.current.clear();
+			});
+			drawInteractionRef.current.on("drawend", (event) => {
+				const geometry = event.feature.getGeometry();
+				setStartCoord(geometry.getFirstCoordinate());
+				setEndCoord(geometry.getLastCoordinate());
+			});
+		}
+		else if (selectedHazardType === "earthquake" && currTabIndex === 1 && !enableSrcEdit) {
+			// when edit the textbox doesn't allow draw
+			drawInteractionRef.current = new Draw({
+				source: drawSourceRef.current,
+				type: "Point"
+			});
+			drawInteractionRef.current.on("drawstart", () => {
+				drawSourceRef.current.clear();
+			});
+			drawInteractionRef.current.on("drawend", (event) => {
+				const geometry = event.feature.getGeometry();
+				setSrcCoord(geometry.getFlatCoordinates());
+			});
+		}
+		else {
+			drawInteractionRef.current = null;
+		}
+
+		// Start the draw interaction...
+		if (drawInteractionRef.current !== null) {
+			mapRef.current.addInteraction(drawInteractionRef.current);
+		}
+	}, [selectedHazardType, currTabIndex, enableSrcEdit]);
 
 	// display the line
 	useEffectAllDepsChange(() => {
@@ -424,6 +482,8 @@ export const CommunityHazards = (props) => {
 														handleListUpdate={listHazards}
 														srcCoordProps={srcCoord}
 														setSrcCoordProps={setSrcCoord}
+														enableEdit={enableSrcEdit}
+														setEnableEdit={setEnableSrcEdit}
 													/>
 												</>
 											);
@@ -445,6 +505,8 @@ export const CommunityHazards = (props) => {
 														endCoordProps={endCoord}
 														setStartCoordProps={setStartCoord}
 														setEndCoordProps={setEndCoord}
+														enableEdit={enableSrcEdit}
+														setEnableEdit={setEnableSrcEdit}
 													/>
 												</>
 											);
