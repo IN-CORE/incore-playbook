@@ -38,7 +38,8 @@ import { LineString } from "ol/geom";
 import { useEffectAllDepsChange } from "./customHooks/useEffectAllDeps";
 import { getHazardTypePlural } from "../utils/common";
 import StepStatusDropdown from "./childComponents/step/StepStatusDropdown";
-import { MapDrawPrompt } from "./childComponents/alert/MapDrawPrompt";
+import { TornadoMapDrawPrompt } from "./childComponents/alert/TornadoMapDrawPrompt";
+import { EqMapDrawPrompt } from "./childComponents/alert/EqMapDrawPrompt";
 
 
 const useStyles = makeStyles({
@@ -100,9 +101,6 @@ export const CommunityHazards = (props) => {
 	const [olIdLayerMap, setOlIdLayerMap] = React.useState(new Set());
 	const [enableSrcEdit, setEnableSrcEdit] = React.useState(false); // directly edit in the child component geolocation
 	const [mapDialogOpen, setMapDialogOpen] = React.useState(false); // map prompt
-	const [promptTitle, setPromptTitle] = useState("");
-	const [promptText, setPromptText] = useState("");
-	const [promptElem, setPromptElem] = useState();
 
 	// Cache the drawing
 	const drawSourceRef = React.useRef(new VectorSource({ wrapX: false }));
@@ -188,51 +186,8 @@ export const CommunityHazards = (props) => {
 		setEnableSrcEdit(false);
 
 		// setup prompt
-		if (selectedHazardType === "tornado" && currTabIndex === 1){
-			setPromptTitle("Define Start and End");
-			setPromptText("Click and drag the circles below to define the start and stop positions of the tornado path that " +
-				"you are defining.The locations will automatically be entered into the form" +
-				"Alternatively, you can directly edit the coordinates.");
-			setPromptElem(
-				<Box display="flex">
-					<Box display="flex" flexDirection="column">
-						<span style={{
-							height: "2em",
-							width: "2em",
-							backgroundColor: "#96B712",
-							borderRadius: "50%",
-							display:"block",
-							margin:"auto"}} />
-						<span>Start</span>
-					</Box>
-					<span style={{
-						height: "20px",
-						width: "100%",
-						borderTop: "0.2em dashed #979797",
-						display:"block",
-						margin:"auto"
-					}} />
-					<Box display="flex" flexDirection="column">
-						<span style={{height: "2em", width: "2em", backgroundColor: "#D63649", borderRadius: "50%",
-							display:"block", margin:"auto"}} />
-						<span>End</span>
-					</Box>
-				</Box>)
-			;
-			setMapDialogOpen(true);
-		}
-		else if (selectedHazardType === "earthquake" && currTabIndex === 1) {
-			setPromptTitle("Define Epicenter");
-			setPromptText("Click on the map to draw the dot below to define the epicenter of an earthquake. " +
-				"The locations will automatically be entered into the form. " +
-				"Alternatively, you can directly edit the coordinates.");
-			setPromptElem(
-				<>
-					<span style={{height: "2em", width: "2em", backgroundColor: "#D63649", borderRadius: "50%",
-						display:"block", margin:"auto"}} />
-					<span>Epicenter</span>
-				</>)
-			;
+		if ((selectedHazardType === "tornado" && currTabIndex === 1)
+			|| (selectedHazardType === "earthquake" && currTabIndex === 1)) {
 			setMapDialogOpen(true);
 		}
 
@@ -639,12 +594,17 @@ export const CommunityHazards = (props) => {
 										background: "#FFFFFF"}}>
 									Clear All
 								</Button>
-								<MapDrawPrompt mapDialogOpen={mapDialogOpen}
-											   handleMapDialogClose={()=>{setMapDialogOpen(false);}}
-											   promptTitle={promptTitle}
-											   promptText={promptText}
-											   promptElem={promptElem}
-								/>
+								{
+									selectedHazardType === "tornado" && currTabIndex === 1 ?
+										<TornadoMapDrawPrompt mapDialogOpen={mapDialogOpen}
+															  handleMapDialogClose={()=>{setMapDialogOpen(false);}} />
+															  :
+										selectedHazardType === "earthquake" && currTabIndex === 1 ?
+											<EqMapDrawPrompt mapDialogOpen={mapDialogOpen}
+															 handleMapDialogClose={()=>{setMapDialogOpen(false);}} />
+															 :
+											<></>
+								}
 								<Map
 									className="fillContainer"
 									zoom={mapConfig.ZOOM}
