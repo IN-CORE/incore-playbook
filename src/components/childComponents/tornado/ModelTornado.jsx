@@ -14,6 +14,7 @@ import { createModelTornado } from "../../../utils/hazard";
 import LoadingOverlay from "react-loading-overlay";
 import { useSelector } from "react-redux";
 import { IncoreButtonText } from "../../styledComponents/IncoreButtonText";
+import { validateCoord } from "../../../utils/map";
 
 const useStyles = makeStyles({
 	startLabel: {
@@ -187,6 +188,15 @@ export default function ModelTornado(props) {
 						</Box>
 						<Box className="inputGroup">
 							<IncoreInputLabel>Draw Tornado Path</IncoreInputLabel>
+							{
+								validateCoord(startLonCoord, startLatCoord, mapConfig.MAP_BOUNDS) &&
+								validateCoord(endLonCoord, endLatCoord, mapConfig.MAP_BOUNDS) ?
+									<></>
+									:
+									<span style={{ color: "Red" }}>
+										Coordinate not valid or outside of the bounding box.
+									</span>
+							}
 							<Box className={classes.coordBox}>
 								<Box display="flex" style={{alignItems:"baseline", justifyContent:"center"}}>
 									<InputLabel className={classes.startLabel}>Lat: </InputLabel>
@@ -228,7 +238,10 @@ export default function ModelTornado(props) {
 															  style={{maxWidth:"fit-content"}}>Edit</IncoreButtonText>
 											:
 											<IncoreButtonText onClick={() => {setEnableEdit(false);}}
-															  style={{maxWidth:"fit-content"}}>Save</IncoreButtonText>
+															  style={{maxWidth:"fit-content"}}
+															  disabled={!(validateCoord(startLonCoord, startLatCoord, mapConfig.MAP_BOUNDS)
+																  && validateCoord(endLonCoord, endLatCoord, mapConfig.MAP_BOUNDS))}
+											>Save</IncoreButtonText>
 									}
 								</Box>
 							</Box>
