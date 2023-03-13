@@ -13,28 +13,31 @@ import { createModelEarthquake } from "../../../utils/hazard";
 import { FlatCoordToLonLat, LonLatToFlatCoord, move2TestbedSpace, round } from "../../../utils/common";
 import LoadingOverlay from "react-loading-overlay";
 import { useSelector } from "react-redux";
-import { IncoreButtonInline } from "../../styledComponents/IncoreButtonInline";
+import { IncoreButtonText } from "../../styledComponents/IncoreButtonText";
 
 const useStyles = makeStyles({
 	srcLatLabel: {
 		height: "18px",
-		display: "inline-block",
-		marginLeft: "11.25px",
 		color: "#D63649",
+		marginleft:"11.25px"
 	},
 	srcLonLabel: {
 		height: "18px",
-		display: "inline-block",
-		marginLeft: "11.25px",
 		color: "#96B712",
 	},
 	coordInput: {
 		color: "#2E384D",
 		fontSize: "14px",
 		height: "18px",
-		margin: "11.25px 0",
-		display: "inline-block",
-		border: "0 none"
+		border: "0 none",
+		background: "transparent"
+	},
+	coordInputEdit: {
+		color: "#00619D",
+		fontSize: "14px",
+		height: "18px",
+		border: "0 none",
+		background: "transparent"
 	},
 	coordBox: {
 		width: "100%",
@@ -46,7 +49,8 @@ const useStyles = makeStyles({
 		backgroundColor: "#FFFFFF",
 		border: "1px solid rgba(0, 0, 0, 0.23)",
 		borderRadius: "4px",
-		textAlign: "center"
+		textAlign: "center",
+		paddingLeft: "11.25px",
 	}
 });
 
@@ -88,12 +92,10 @@ export default function ModelEarthquake(props) {
 			setCoordLat(round(FlatCoordToLonLat(srcCoordProps)[1], 3));
 			setCoordLon(round(FlatCoordToLonLat(srcCoordProps)[0], 3));
 		}
-	}, [srcCoordProps]);
+	}, [srcCoordProps, enableEdit]);
 
 	useEffect(() => {
-		if (enableEdit && coordLat && coordLon){
-			setSrcCoordProps(LonLatToFlatCoord(coordLon, coordLat));
-		}
+		if (coordLat && coordLon && enableEdit) setSrcCoordProps(LonLatToFlatCoord(coordLon, coordLat));
 	}, [coordLat, coordLon, enableEdit]);
 
 	const onSave = async () => {
@@ -294,23 +296,30 @@ export default function ModelEarthquake(props) {
 						<Box className="inputGroup">
 							<IncoreInputLabel>Draw Earthquake Source</IncoreInputLabel>
 							<Box className={classes.coordBox}>
-								<InputLabel className={classes.srcLatLabel}>Lat: </InputLabel>
-								<input
-									placeholder="40.851"
-									className={classes.coordInput}
-									value={coordLat}
-									onChange={(e) => setCoordLat(e.target.value)}
-									disabled={!enableEdit}
-								/>
-								<InputLabel className={classes.srcLonLabel}>Lon: </InputLabel>
-								<input
-									placeholder="-112.081"
-									className={classes.coordInput}
-									value={coordLon}
-									onChange={(e) => setCoordLon(e.target.value)}
-									disabled={!enableEdit}
-								/>
-								<IncoreButtonInline onClick={()=>{setEnableEdit(true);}}>Edit</IncoreButtonInline>
+								<Box display="flex" style={{alignItems:"baseline"}}>
+									<InputLabel className={classes.srcLatLabel}>Lat: </InputLabel>
+									<input
+										placeholder="40.851"
+										className={!enableEdit? classes.coordInput:classes.coordInputEdit}
+										value={coordLat}
+										onChange={(e) => setCoordLat(e.target.value)}
+										disabled={!enableEdit}
+									/>
+									<InputLabel className={classes.srcLonLabel}>Lon: </InputLabel>
+									<input
+										placeholder="-112.081"
+										className={!enableEdit? classes.coordInput:classes.coordInputEdit}
+										value={coordLon}
+										onChange={(e) => setCoordLon(e.target.value)}
+										disabled={!enableEdit}
+									/>
+									{
+										!enableEdit ?
+											<IncoreButtonText onClick={() => {setEnableEdit(true);}}>Edit</IncoreButtonText>
+											:
+											<IncoreButtonText onClick={() => {setEnableEdit(false);}}>Save</IncoreButtonText>
+									}
+								</Box>
 							</Box>
 						</Box>
 						<Box className="inputGroup">
