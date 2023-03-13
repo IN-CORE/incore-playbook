@@ -443,6 +443,8 @@ export const CommunityHazards = (props) => {
 														handleListUpdate={listHazards}
 														startCoordProps={startCoord}
 														endCoordProps={endCoord}
+														setStartCoordProps={setStartCoord}
+														setEndCoordProps={setEndCoord}
 													/>
 												</>
 											);

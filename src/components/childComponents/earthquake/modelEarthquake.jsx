@@ -17,12 +17,11 @@ import { IncoreButtonText } from "../../styledComponents/IncoreButtonText";
 
 const useStyles = makeStyles({
 	srcLatLabel: {
-		height: "18px",
+		fontSize: "14px",
 		color: "#D63649",
-		marginleft:"11.25px"
 	},
 	srcLonLabel: {
-		height: "18px",
+		fontSize: "14px",
 		color: "#96B712",
 	},
 	coordInput: {
@@ -37,7 +36,8 @@ const useStyles = makeStyles({
 		fontSize: "14px",
 		height: "18px",
 		border: "0 none",
-		background: "transparent"
+		background: "transparent",
+		fontStyle: "italic"
 	},
 	coordBox: {
 		width: "100%",
@@ -80,11 +80,12 @@ export default function ModelEarthquake(props) {
 			coordLat !== "" &&
 			coordLon !== "" &&
 			magnitude !== "" &&
-			depth !== ""
+			depth !== "" &&
+			!enableEdit
 		)
 			setDisabled(false);
 		else setDisabled(true);
-	}, [name, description, coordLat, coordLon]);
+	}, [name, description, coordLat, coordLon, enableEdit]);
 
 	// update start and end based on map click (parent prop change)
 	useEffect(() => {
@@ -294,9 +295,9 @@ export default function ModelEarthquake(props) {
 							)}
 
 						<Box className="inputGroup">
-							<IncoreInputLabel>Draw Earthquake Source</IncoreInputLabel>
+							<IncoreInputLabel>Draw Earthquake Epicenter</IncoreInputLabel>
 							<Box className={classes.coordBox}>
-								<Box display="flex" style={{alignItems:"baseline"}}>
+								<Box display="flex" style={{alignItems:"baseline", justifyContent:"center"}}>
 									<InputLabel className={classes.srcLatLabel}>Lat: </InputLabel>
 									<input
 										placeholder="40.851"
@@ -315,9 +316,11 @@ export default function ModelEarthquake(props) {
 									/>
 									{
 										!enableEdit ?
-											<IncoreButtonText onClick={() => {setEnableEdit(true);}}>Edit</IncoreButtonText>
+											<IncoreButtonText onClick={() => {setEnableEdit(true);}}
+															  style={{maxWidth:"fit-content"}}>Edit</IncoreButtonText>
 											:
-											<IncoreButtonText onClick={() => {setEnableEdit(false);}}>Save</IncoreButtonText>
+											<IncoreButtonText onClick={() => {setEnableEdit(false);}}
+															  style={{maxWidth:"fit-content"}}>Save</IncoreButtonText>
 									}
 								</Box>
 							</Box>
