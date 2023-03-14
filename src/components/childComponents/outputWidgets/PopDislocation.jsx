@@ -55,6 +55,20 @@ export default function PopDislocation(props) {
 						zIndex: 1
 					}
 				];
+				const bldgMaxDamageStateINCOREId = await getOutputFileContent(
+					datawolfConfig,
+					executionItem,
+					datawolfDatasetConfigItem.datasetId
+				);
+				const tmpLayerDef = [
+					{
+						layerId: bldgMaxDamageStateINCOREId,
+						layerStyles: "incore:bldg-dmg-summary",
+						title: "Building Damage",
+						opacity: 1,
+						zIndex: 1
+					}
+				];
 				const previewLayers = generateLayers(globalConfig, tmpLayerDef);
 				setDamageLayers1(previewLayers);
 			}
