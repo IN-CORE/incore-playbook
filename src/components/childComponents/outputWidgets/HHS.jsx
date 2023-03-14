@@ -32,8 +32,7 @@ export default function HHS(props) {
 				setHHSBarChartContent(
 					await getOutputFileContentJSON(datawolfConfig, executionItem, datawolfDatasetConfigItem.datasetId)
 				);
-			}
-			else if (vName === "HhsDownload") {
+			} else if (vName === "HhsDownload") {
 				setHhsDownload(executionItem["datasets"][datawolfDatasetConfigItem.datasetId]);
 			}
 		});
@@ -42,8 +41,7 @@ export default function HHS(props) {
 	const download = async () => {
 		setDownloadDialogOpen(true);
 		if (HhsDownload) {
-			await downloadOutputFile(datawolfConfig, HhsDownload, null,
-				`hhs-${executionItem.id}.csv`);
+			await downloadOutputFile(datawolfConfig, HhsDownload, null, `hhs-${executionItem.id}.csv`);
 		}
 	};
 

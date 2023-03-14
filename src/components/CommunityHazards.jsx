@@ -41,7 +41,6 @@ import StepStatusDropdown from "./childComponents/step/StepStatusDropdown";
 import { TornadoMapDrawPrompt } from "./childComponents/alert/TornadoMapDrawPrompt";
 import { EqMapDrawPrompt } from "./childComponents/alert/EqMapDrawPrompt";
 
-
 const useStyles = makeStyles({
 	tabDiv: {
 		margin: "48px 0 0 0",
@@ -146,7 +145,7 @@ export const CommunityHazards = (props) => {
 					title: "Carto",
 					source: new XYZ({
 						url: "https://{a-d}.basemaps.cartocdn.com/rastertiles/light_all/{z}/{x}/{y}.png",
-						attributions: ["&#169; <a href=\"https://www.carto.com\">Carto</a>,", OSM_ATTRIBUTION]
+						attributions: ['&#169; <a href="https://www.carto.com">Carto</a>,', OSM_ATTRIBUTION]
 					})
 				}),
 				new TileLayer({
@@ -326,9 +325,9 @@ export const CommunityHazards = (props) => {
 			layerRef.current.tilelayer.getLayers().clear();
 			setOlIdLayerMap(new Set());
 		}
-		if (layerRef.current.drawlayer.getLayers().getLength() !== 0) {
-			layerRef.current.drawlayer.getLayers().clear();
-		}
+		// to remove the display in clear layers, you don't need to remove the layer
+		// just clear the source
+		drawDisplaySourceRef.current.clear();
 	};
 
 	const hazardIdClick = async (hazard) => {
@@ -336,7 +335,7 @@ export const CommunityHazards = (props) => {
 	};
 
 	const getRow = (selectedHazardType) => {
-		let row = eval(getHazardTypePlural(selectedHazardType)).map(v => ({...v, viewLayer: "view"}));
+		let row = eval(getHazardTypePlural(selectedHazardType)).map((v) => ({ ...v, viewLayer: "view" }));
 		return row;
 	};
 
@@ -365,7 +364,7 @@ export const CommunityHazards = (props) => {
 	const fieldNames = [
 		{
 			prettyName: "NAME",
-			columnName: "name",
+			columnName: "name"
 		},
 		{
 			prettyName: "DESCRIPTION",
@@ -383,7 +382,7 @@ export const CommunityHazards = (props) => {
 			prettyName: "",
 			columnName: "viewLayer",
 			handleClick: hazardIdClick
-		},
+		}
 	];
 
 	const pageChange = (direction) => {
@@ -412,7 +411,11 @@ export const CommunityHazards = (props) => {
 	return (
 		<Layout>
 			<div className="firstDivInContent">
-				<Box display="flex" style={{ alignItem: "center", padding: "1em 0" }} sx={{ justifyContent: "space-between" }}>
+				<Box
+					display="flex"
+					style={{ alignItem: "center", padding: "1em 0" }}
+					sx={{ justifyContent: "space-between" }}
+				>
 					<Box>
 						<BreadCrumb
 							parentStep="Determine Goals & Objectives"
@@ -421,7 +424,7 @@ export const CommunityHazards = (props) => {
 							subtaskNo="3-3"
 						/>
 					</Box>
-					<Box style={{marginRight:"2em"}}>
+					<Box style={{ marginRight: "2em" }}>
 						<StepStatusDropdown step={step} substep={substep} />
 					</Box>
 				</Box>
@@ -458,7 +461,7 @@ export const CommunityHazards = (props) => {
 							{/*Tabs*/}
 							<Box className={classes.tabDiv}>
 								<Tabs
-									TabIndicatorProps={{ style: { background: "#00619D" }}}
+									TabIndicatorProps={{ style: { background: "#00619D" } }}
 									aria-label="create tornado tabs"
 									value={currTabIndex}
 									className={classes.tabs}
@@ -585,13 +588,18 @@ export const CommunityHazards = (props) => {
 							</Box>
 						</Grid>
 						<Grid item xl={6} lg={6} md={6} sm={6} xs={12} className="gridItem">
-							<Container className={classes.mapContainer}
-									   disableGutters
-									   style={{position:"relative"}}
-							>
-								<Button variant="outlined" onClick={handleClearAllLayers}
-									style={{position:"absolute", zIndex:100, right:"5px", top: "5px",
-										background: "#FFFFFF"}}>
+							<Container className={classes.mapContainer} disableGutters style={{ position: "relative" }}>
+								<Button
+									variant="outlined"
+									onClick={handleClearAllLayers}
+									style={{
+										position: "absolute",
+										zIndex: 100,
+										right: "5px",
+										top: "5px",
+										background: "#FFFFFF"
+									}}
+								>
 									Clear All
 								</Button>
 								{
