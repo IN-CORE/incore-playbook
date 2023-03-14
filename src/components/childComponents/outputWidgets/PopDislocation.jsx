@@ -15,8 +15,14 @@ import { downloadImg } from "../../../utils/image";
 import CameraAltIcon from "@material-ui/icons/CameraAlt";
 
 export default function PopDislocation(props) {
-	let { executionItem, previewOn, handlePreviewClose, datawolfDatasetConfigItems, hazardLayers,
-		setDownloadDialogOpen } = props;
+	let {
+		executionItem,
+		previewOn,
+		handlePreviewClose,
+		datawolfDatasetConfigItems,
+		hazardLayers,
+		setDownloadDialogOpen
+	} = props;
 
 	const mapConfig = useSelector((state) => state.config.mapConfig);
 	const datawolfConfig = useSelector((state) => state.config.datawolfConfig);
@@ -55,24 +61,9 @@ export default function PopDislocation(props) {
 						zIndex: 1
 					}
 				];
-				const bldgMaxDamageStateINCOREId = await getOutputFileContent(
-					datawolfConfig,
-					executionItem,
-					datawolfDatasetConfigItem.datasetId
-				);
-				const tmpLayerDef = [
-					{
-						layerId: bldgMaxDamageStateINCOREId,
-						layerStyles: "incore:bldg-dmg-summary",
-						title: "Building Damage",
-						opacity: 1,
-						zIndex: 1
-					}
-				];
 				const previewLayers = generateLayers(globalConfig, tmpLayerDef);
 				setDamageLayers1(previewLayers);
-			}
-			else if (vName === "popdislHeatmapINCOREId") {
+			} else if (vName === "popdislHeatmapINCOREId") {
 				const popdislHeatmapINCOREId = await getOutputFileContent(
 					datawolfConfig,
 					executionItem,
@@ -89,33 +80,27 @@ export default function PopDislocation(props) {
 				];
 				const previewLayers = generateLayers(globalConfig, tmpLayerDef);
 				setDamageLayers2(previewLayers);
-			}
-			else if (vName === "totalDislTableContent") {
+			} else if (vName === "totalDislTableContent") {
 				setTotalDislTableContent(
 					await getOutputFileContentJSON(datawolfConfig, executionItem, datawolfDatasetConfigItem.datasetId)
 				);
-			}
-			else if (vName === "dislocationByRaceContent") {
+			} else if (vName === "dislocationByRaceContent") {
 				setDislocationByRaceContent(
 					await getOutputFileContentJSON(datawolfConfig, executionItem, datawolfDatasetConfigItem.datasetId)
 				);
-			}
-			else if (vName === "dislocationByTenureContent") {
+			} else if (vName === "dislocationByTenureContent") {
 				setDislocationByTenureContent(
 					await getOutputFileContentJSON(datawolfConfig, executionItem, datawolfDatasetConfigItem.datasetId)
 				);
-			}
-			else if (vName === "dislocationByIncomeContent") {
+			} else if (vName === "dislocationByIncomeContent") {
 				setDislocationByIncomeContent(
 					await getOutputFileContentJSON(datawolfConfig, executionItem, datawolfDatasetConfigItem.datasetId)
 				);
-			}
-			else if (vName === "dislocationByHousingTypeContent") {
+			} else if (vName === "dislocationByHousingTypeContent") {
 				setDislocationByHousingTypeContent(
 					await getOutputFileContentJSON(datawolfConfig, executionItem, datawolfDatasetConfigItem.datasetId)
 				);
-			}
-			else if (vName === "populationDislocationDownload"){
+			} else if (vName === "populationDislocationDownload") {
 				setPopulationDislocationDownload(executionItem["datasets"][datawolfDatasetConfigItem.datasetId]);
 			}
 		});
@@ -124,8 +109,12 @@ export default function PopDislocation(props) {
 	const download = async () => {
 		setDownloadDialogOpen(true);
 		if (populationDislocationDownload) {
-			await downloadOutputFile(datawolfConfig, populationDislocationDownload, null,
-				`population-dislocation-${executionItem.id}.csv`);
+			await downloadOutputFile(
+				datawolfConfig,
+				populationDislocationDownload,
+				null,
+				`population-dislocation-${executionItem.id}.csv`
+			);
 		}
 	};
 

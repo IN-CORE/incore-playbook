@@ -19,6 +19,7 @@ export default function HHS(props) {
 
 	const [selectedExecutionName, setSelectedExecutionName] = useState("");
 	const [HHSBarChartContent, setHHSBarChartContent] = useState({ 1: [], 7: [], 13: [], 25: [], 49: [] });
+	const [HhsDownload, setHhsDownload] = useState();
 	const [t, setT] = useState("1");
 
 	const printRef = useRef();
@@ -31,13 +32,16 @@ export default function HHS(props) {
 				setHHSBarChartContent(
 					await getOutputFileContentJSON(datawolfConfig, executionItem, datawolfDatasetConfigItem.datasetId)
 				);
+			} else if (vName === "HhsDownload") {
+				setHhsDownload(executionItem["datasets"][datawolfDatasetConfigItem.datasetId]);
 			}
 		});
 	}, []);
 
 	const download = async () => {
-		if (HHSBarChartContent) {
-			exportJson(HHSBarChartContent, `hhs-${executionItem.id}`);
+		setDownloadDialogOpen(true);
+		if (HhsDownload) {
+			await downloadOutputFile(datawolfConfig, HhsDownload, null, `hhs-${executionItem.id}.csv`);
 		}
 	};
 
@@ -93,6 +97,7 @@ export default function HHS(props) {
 								{HHSBarChartContent ? (
 									<HHSBarChart
 										data={HHSBarChartContent[t]}
+										height={"25em"}
 										xAxisLegend="Housing Recovery Stage"
 										yAxisLegend="Frequency"
 									/>
