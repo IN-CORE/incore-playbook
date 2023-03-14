@@ -583,7 +583,7 @@ const HeaderWithMenu = ({
 					</Link>
 
 					<div className={classes.grow} />
-					<div className={isAuthenticated ? classes.sectionDesktop : classes.hide}>
+					<div className={classes.hide}>  {/* When functionality for mail and notification is added, className ={isAuthenticated ? classes.sectionDesktop : classes.hide} */}
 						<IconButton aria-label="show messages" color="inherit">
 							<Badge variant="dot" color="primary">
 								<MailIcon />
