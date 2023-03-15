@@ -583,17 +583,17 @@ const HeaderWithMenu = ({
 					</Link>
 
 					<div className={classes.grow} />
-					<div className={classes.hide}>  {/* When functionality for mail and notification is added, className ={isAuthenticated ? classes.sectionDesktop : classes.hide} */}
-						<IconButton aria-label="show messages" color="inherit">
-							<Badge variant="dot" color="primary">
-								<MailIcon />
-							</Badge>
-						</IconButton>
-						<IconButton aria-label="show notifications" color="inherit">
-							<Badge variant="dot" color="primary">
-								<NotificationsIcon />
-							</Badge>
-						</IconButton>
+					<div className={isAuthenticated ? classes.sectionDesktop : classes.hide}>
+						{/*<IconButton aria-label="show messages" color="inherit">*/}
+						{/*	<Badge variant="dot" color="primary">*/}
+						{/*		<MailIcon />*/}
+						{/*	</Badge>*/}
+						{/*</IconButton>*/}
+						{/*<IconButton aria-label="show notifications" color="inherit">*/}
+						{/*	<Badge variant="dot" color="primary">*/}
+						{/*		<NotificationsIcon />*/}
+						{/*	</Badge>*/}
+						{/*</IconButton>*/}
 						<IconButton
 							edge="end"
 							aria-label="account of current user"
