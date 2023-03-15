@@ -74,12 +74,12 @@ export default function ViewResult(props) {
 	const [hazardType, setHazardType] = useState(""); // used in runtime table
 	const [previewOn, setPreviewOn] = useState(false); // list vs preview
 	const [datawolfViewAllOn, setDatawolfViewAllOn] = useState(false); // datawolf view
-	const [intervalId, setIntervalId] = useState(0);
+	let interval = 0;
 
 	const _clear_old_timeinterval = () => {
-		if (intervalId) {
-			clearInterval(intervalId);
-			setIntervalId(0);
+		if (interval) {
+			clearInterval(interval);
+			// setIntervalId(0);
 		}
 	};
 
@@ -102,10 +102,10 @@ export default function ViewResult(props) {
 			getExecutionList(datawolfConfig, datawolfViewAllOn);
 
 			// start a new interval timer and register that timer
-			const interval = setInterval(() => {
+			interval = setInterval(() => {
 				getExecutionList(datawolfConfig, datawolfViewAllOn);
 			}, datawolfConfig["retreiveTimeInterval"] ?? 10 * 1000);
-			setIntervalId(interval);
+			// setIntervalId(interval);
 		}
 
 		return () => {
