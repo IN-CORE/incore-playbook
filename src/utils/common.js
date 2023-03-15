@@ -4,7 +4,7 @@ import { globals as defaultGlobalConfig, testUserInfo } from "../globals";
 import { datawolfConfig as defaultDatawolfConfig } from "../datawolf.config.js";
 import { datawolfWorkflowConfig as defaultDatawolfWorkflowConfig } from "../datawolf.config.js";
 import JSSoup from "jssoup";
-import { toLonLat } from "ol/proj";
+import { toLonLat, fromLonLat } from "ol/proj";
 
 const cookies = new Cookies();
 
@@ -178,8 +178,11 @@ export function dataURItoFile(dataURI, filename = "") {
 }
 
 export function FlatCoordToLonLat(flatCoord) {
-	let LonLat = toLonLat(flatCoord);
-	return LonLat;
+	return toLonLat(flatCoord);
+}
+
+export function LonLatToFlatCoord(lon, lat){
+	return fromLonLat([lon, lat]);
 }
 
 export function getHazardTypePlural(hazardType) {

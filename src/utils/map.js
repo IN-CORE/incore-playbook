@@ -124,3 +124,11 @@ export const basicLayers = new GroupLayer({
 		})
 	]
 });
+
+export const validateCoord = (lon, lat, boundingBox) => {
+	return lon && lat && parseFloat(lon) && parseFloat(lat) && !isNaN(parseFloat(lon)) && !isNaN(parseFloat(lat))
+		&& parseFloat(lon) > boundingBox[0]
+		&& parseFloat(lon) < boundingBox[2]
+		&& parseFloat(lat) < boundingBox[1]
+		&& parseFloat(lat) > boundingBox[3];
+};
