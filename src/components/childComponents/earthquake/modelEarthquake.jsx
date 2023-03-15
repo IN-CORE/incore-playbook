@@ -65,8 +65,8 @@ export default function ModelEarthquake(props) {
 
 	const [name, setName] = useState("");
 	const [description, setDescription] = useState("");
-	const [coordLat, setCoordLat] = useState("");
-	const [coordLon, setCoordLon] = useState("");
+	const [coordLat, setCoordLat] = useState(null);
+	const [coordLon, setCoordLon] = useState(null);
 	const [magnitude, setMagnitude] = useState(7.9);
 	const [depth, setDepth] = useState(10);
 	const [demandType, setDemandType] = useState("PGA");
@@ -79,13 +79,7 @@ export default function ModelEarthquake(props) {
 	// form check
 	useEffect(() => {
 		if (
-			name !== "" &&
-			description !== "" &&
-			coordLat !== "" &&
-			coordLon !== "" &&
-			magnitude !== "" &&
-			depth !== "" &&
-			!enableEdit
+			name && description && coordLat && coordLon && magnitude && depth && !enableEdit
 		)
 			setDisabled(false);
 		else setDisabled(true);
@@ -302,12 +296,15 @@ export default function ModelEarthquake(props) {
 						<Box className="inputGroup">
 							<IncoreInputLabel>Draw Earthquake Epicenter</IncoreInputLabel>
 							{
-								validateCoord(coordLon, coordLat, mapConfig.MAP_BOUNDS) ?
-									<></>
+								coordLon !== null && coordLat!== null ?
+									validateCoord(coordLon, coordLat, mapConfig.MAP_BOUNDS) ?
+										<></>
+										:
+										<span style={{ color: "Red" }}>
+											Coordinate not valid or outside of the bounding box.
+										</span>
 									:
-									<span style={{ color: "Red" }}>
-										Coordinate not valid or outside of the bounding box.
-									</span>
+									null
 							}
 							<Box className={classes.coordBox}>
 								<Box display="flex" style={{alignItems:"baseline", justifyContent:"center"}}>

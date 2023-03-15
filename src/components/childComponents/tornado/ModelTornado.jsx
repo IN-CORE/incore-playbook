@@ -68,17 +68,17 @@ export default function ModelTornado(props) {
 	const [name, setName] = useState("");
 	const [description, setDescription] = useState("");
 	const [rating, setRating] = useState("EF3");
-	const [startLatCoord, setStartLatCoord] = useState("");
-	const [startLonCoord, setStartLonCoord] = useState("");
-	const [endLatCoord, setEndLatCoord] = useState("");
-	const [endLonCoord, setEndLonCoord] = useState("");
+	const [startLatCoord, setStartLatCoord] = useState(null);
+	const [startLonCoord, setStartLonCoord] = useState(null);
+	const [endLatCoord, setEndLatCoord] = useState(null);
+	const [endLonCoord, setEndLonCoord] = useState(null);
 	const [disabled, setDisabled] = useState(true);
 	const [loading, setLoading] = useState(false);
 
 	// form check
 	useEffect(() => {
-		if (name !== "" && description !== "" && startLatCoord !== "" && startLonCoord !== "" && endLatCoord !== ""
-			&& endLonCoord !== "" && rating !== "" && !enableEdit)
+		if (name && description && startLatCoord && startLonCoord && endLatCoord && endLonCoord && rating
+			&& !enableEdit)
 			setDisabled(false);
 		else setDisabled(true);
 	}, [name, description, startLatCoord, startLonCoord, endLatCoord, endLonCoord, rating, enableEdit]);
@@ -189,13 +189,16 @@ export default function ModelTornado(props) {
 						<Box className="inputGroup">
 							<IncoreInputLabel>Draw Tornado Path</IncoreInputLabel>
 							{
-								validateCoord(startLonCoord, startLatCoord, mapConfig.MAP_BOUNDS) &&
-								validateCoord(endLonCoord, endLatCoord, mapConfig.MAP_BOUNDS) ?
-									<></>
+								startLonCoord !== null && startLatCoord !== null && endLonCoord !== null && endLatCoord !== null ?
+									validateCoord(startLonCoord, startLatCoord, mapConfig.MAP_BOUNDS) &&
+									validateCoord(endLonCoord, endLatCoord, mapConfig.MAP_BOUNDS) ?
+										<></>
+										:
+										<span style={{ color: "Red" }}>
+											Coordinate not valid or outside of the bounding box.
+										</span>
 									:
-									<span style={{ color: "Red" }}>
-										Coordinate not valid or outside of the bounding box.
-									</span>
+									null
 							}
 							<Box className={classes.coordBox}>
 								<Box display="flex" style={{alignItems:"baseline", justifyContent:"center"}}>
