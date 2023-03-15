@@ -77,29 +77,16 @@ export default function ViewResult(props) {
 	const [hazardType, setHazardType] = useState(""); // used in runtime table
 	const [previewOn, setPreviewOn] = useState(false); // list vs preview
 	const [datawolfViewAllOn, setDatawolfViewAllOn] = useState(false); // datawolf view
-	const [intervalId, setIntervalId] = useState(0);
 	const [downloadDialogOpen, setDownloadDialogOpen] = React.useState(false);
-
-	const _clear_old_timeinterval = () => {
-		if (intervalId) {
-			clearInterval(intervalId);
-			setIntervalId(0);
-		}
-	};
 
 	// component did mount
 	useEffect(() => {
-		_clear_old_timeinterval();
 		getExecutionList(datawolfConfig, datawolfViewAllOn);
-		return () => {
-			_clear_old_timeinterval();
-		};
 	}, []);
 
 	// update datawolf view all on / off;
 	// load executions list periodically every 10 seconds
 	useEffect(() => {
-		_clear_old_timeinterval();
 		// save some traffic; only perform backend GET when on that tab
 		if (value === index) {
 			// immediately fetch new execution list
@@ -109,12 +96,10 @@ export default function ViewResult(props) {
 			const interval = setInterval(() => {
 				getExecutionList(datawolfConfig, datawolfViewAllOn);
 			}, datawolfConfig["retreiveTimeInterval"] ?? 10 * 1000);
-			setIntervalId(interval);
+			return () => {
+				clearInterval(interval);
+			};
 		}
-
-		return () => {
-			_clear_old_timeinterval();
-		};
 	}, [datawolfViewAllOn, value]);
 
 	// update execution statuses upon changing
