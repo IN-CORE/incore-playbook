@@ -114,10 +114,14 @@ export default function ViewResult(props) {
 
 	// form check
 	useEffect(() => {
-		if (Object.keys(datawolfFormState).every((k) => Object.values(datawolfFormState[k])[0] !== null))
+		if (
+			Object.keys(datawolfFormState).every((k) => Object.values(datawolfFormState[k])[0] !== null) &&
+			title !== "" &&
+			description !== ""
+		)
 			setDisabled(false);
 		else setDisabled(true);
-	}, [datawolfFormState]);
+	}, [datawolfFormState, title, description]);
 
 	const handleRunButtonClick = async () => {
 		const datawolfExecutionStatus = await submitExecution(
