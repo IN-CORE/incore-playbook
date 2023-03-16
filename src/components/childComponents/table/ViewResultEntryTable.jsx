@@ -140,16 +140,16 @@ export function ViewResultEntryTable(props) {
 	const { fieldNames, executions, preview } = props;
 	const [widgetList, setWidgetList] = useState([]);
 
-	const [resMatricsStatus, setResMatricsStatus] = useState(false);
-	const [epfPoleDmgStatus, setEpfPoleDmgStatus] = useState(false);
-	const [epfSubDmgStatus, setEpfSubDmgStatus] = useState(false);
-	const [bldgDmgStatus, setBldgDmgStatus] = useState(false);
-	const [bldgFailStatus, setBldgFailStatus] = useState(false);
-	const [bldgFuncStatus, setBldgFuncStatus] = useState(false);
-	const [sectorShockStatus, setSectorShockStatus] = useState(false);
-	const [cgeStatus, setCgeStatus] = useState(false);
-	const [popDislStatus, setPopDislStatus] = useState(false);
-	const [hhrsStatus, setHhrsStatus] = useState(false);
+	const [resMatricsReadiness, setResMatricsReadiness] = useState(false);
+	const [epfPoleDmgReadiness, setEpfPoleDmgReadiness] = useState(false);
+	const [epfSubDmgReadiness, setEpfSubDmgReadiness] = useState(false);
+	const [bldgDmgReadiness, setBldgDmgReadiness] = useState(false);
+	const [bldgFailReadiness, setBldgFailReadiness] = useState(false);
+	const [bldgFuncReadiness, setBldgFuncReadiness] = useState(false);
+	const [sectorShockReadiness, setSectorShockReadiness] = useState(false);
+	const [cgeReadiness, setCgeReadiness] = useState(false);
+	const [popDislReadiness, setPopDislReadiness] = useState(false);
+	const [hhrsReadiness, setHhrsReadiness] = useState(false);
 
 	const [expandId, setExpandId] = useState("");
 	const [collapseId, setCollapseId] = useState("");
@@ -196,16 +196,16 @@ export function ViewResultEntryTable(props) {
 	useEffect(() => {
 		executions.map(async (execution)=>{
 			if (execution["id"] === expandId){
-				setResMatricsStatus(await _checkResultsReady(["CGE", "PopDislocation",], execution.datasets));
-				setEpfPoleDmgStatus(await _checkResultsReady(["PoleDamage"], execution.datasets));
-				setEpfSubDmgStatus(await _checkResultsReady(["SubstationDamage"], execution.datasets));
-				setBldgDmgStatus(await _checkResultsReady(["BldgDamage"], execution.datasets));
-				setBldgFailStatus(await _checkResultsReady(["BldgMCS"], execution.datasets));
-				setBldgFuncStatus(await _checkResultsReady(["BldgFunctionality"], execution.datasets));
-				setSectorShockStatus(await _checkResultsReady(["SectorShocks"], execution.datasets));
-				setCgeStatus(await _checkResultsReady(["CGE"], execution.datasets));
-				setPopDislStatus(await _checkResultsReady(["PopDislocation", "BldgDamage"], execution.datasets));
-				setHhrsStatus(await _checkResultsReady(["HHS"], execution.datasets));
+				setResMatricsReadiness(await _checkResultsReady(["CGE", "PopDislocation",], execution.datasets));
+				setEpfPoleDmgReadiness(await _checkResultsReady(["PoleDamage"], execution.datasets));
+				setEpfSubDmgReadiness(await _checkResultsReady(["SubstationDamage"], execution.datasets));
+				setBldgDmgReadiness(await _checkResultsReady(["BldgDamage"], execution.datasets));
+				setBldgFailReadiness(await _checkResultsReady(["BldgMCS"], execution.datasets));
+				setBldgFuncReadiness(await _checkResultsReady(["BldgFunctionality"], execution.datasets));
+				setSectorShockReadiness(await _checkResultsReady(["SectorShocks"], execution.datasets));
+				setCgeReadiness(await _checkResultsReady(["CGE"], execution.datasets));
+				setPopDislReadiness(await _checkResultsReady(["PopDislocation", "BldgDamage"], execution.datasets));
+				setHhrsReadiness(await _checkResultsReady(["HHS"], execution.datasets));
 			}
 		});
 	}, [executions, expandId]);
@@ -387,7 +387,7 @@ export function ViewResultEntryTable(props) {
 																			preview(execution["id"], "ResilienceMetrics");
 																		}}
 																		className={
-																			resMatricsStatus ? classes.clickableLink
+																			resMatricsReadiness ? classes.clickableLink
 																				: classes.clickableLinkDisabled
 																		}
 																	>
@@ -412,7 +412,7 @@ export function ViewResultEntryTable(props) {
 																		preview(execution["id"], "PoleDamage");
 																	}}
 																	className={
-																		epfPoleDmgStatus
+																		epfPoleDmgReadiness
 																			? classes.clickableLink
 																			: classes.clickableLinkDisabled
 																	}
@@ -437,7 +437,7 @@ export function ViewResultEntryTable(props) {
 																		preview(execution["id"], "SubstationDamage");
 																	}}
 																	className={
-																		epfSubDmgStatus ? classes.clickableLink
+																		epfSubDmgReadiness ? classes.clickableLink
 																			: classes.clickableLinkDisabled
 																	}
 																>
@@ -462,7 +462,7 @@ export function ViewResultEntryTable(props) {
 																		preview(execution["id"], "BldgDamage");
 																	}}
 																	className={
-																		bldgDmgStatus
+																		bldgDmgReadiness
 																			? classes.clickableLink
 																			: classes.clickableLinkDisabled
 																	}
@@ -486,7 +486,7 @@ export function ViewResultEntryTable(props) {
 																		preview(execution["id"], "BldgMCS");
 																	}}
 																	className={
-																		bldgFailStatus
+																		bldgFailReadiness
 																			? classes.clickableLink
 																			: classes.clickableLinkDisabled
 																	}
@@ -515,7 +515,7 @@ export function ViewResultEntryTable(props) {
 																		preview(execution["id"], "BldgFunctionality");
 																	}}
 																	className={
-																		bldgFuncStatus
+																		bldgFuncReadiness
 																			? classes.clickableLink
 																			: classes.clickableLinkDisabled
 																	}
@@ -540,7 +540,7 @@ export function ViewResultEntryTable(props) {
 																		preview(execution["id"], "SectorShocks");
 																	}}
 																	className={
-																		sectorShockStatus
+																		sectorShockReadiness
 																			? classes.clickableLink
 																			: classes.clickableLinkDisabled
 																	}
@@ -562,7 +562,7 @@ export function ViewResultEntryTable(props) {
 																	onClick={() => {
 																		preview(execution["id"], "CGE");
 																	}}
-																	className={cgeStatus
+																	className={cgeReadiness
 																		? classes.clickableLink
 																		: classes.clickableLinkDisabled
 																	}
@@ -589,7 +589,7 @@ export function ViewResultEntryTable(props) {
 																		preview(execution["id"], "PopDislocation");
 																	}}
 																	className={
-																		popDislStatus
+																		popDislReadiness
 																			? classes.clickableLink
 																			: classes.clickableLinkDisabled
 																	}
@@ -612,7 +612,7 @@ export function ViewResultEntryTable(props) {
 																		preview(execution["id"], "HHS");
 																	}}
 																	className={
-																		hhrsStatus
+																		hhrsReadiness
 																			? classes.clickableLink
 																			: classes.clickableLinkDisabled
 																	}
