@@ -5,6 +5,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+
+## [Unreleased]
+- Add title and description to form validaiton in step 3-4 [#191](https://github.com/IN-CORE/incore-playbook/issues/191)
+
+
 ## [0.5.2] - 2023-03-15
 
 ### Changed
