@@ -384,7 +384,7 @@ export function ViewResultEntryTable(props) {
 																	<Link
 																		color="primary"
 																		onClick={() => {
-																			preview(execution["id"], "PoleDamage");
+																			preview(execution["id"], "ResilienceMetrics");
 																		}}
 																		className={
 																			resMatrixStatus ? classes.clickableLink
@@ -562,7 +562,7 @@ export function ViewResultEntryTable(props) {
 																	onClick={() => {
 																		preview(execution["id"], "CGE");
 																	}}
-																	className={ cgeStatus
+																	className={cgeStatus
 																		? classes.clickableLink
 																		: classes.clickableLinkDisabled
 																	}
