@@ -140,7 +140,7 @@ export function ViewResultEntryTable(props) {
 	const { fieldNames, executions, preview } = props;
 	const [widgetList, setWidgetList] = useState([]);
 
-	const [resMatrixStatus, setResMatrixStatus] = useState(false);
+	const [resMatricsStatus, setResMatricsStatus] = useState(false);
 	const [epfPoleDmgStatus, setEpfPoleDmgStatus] = useState(false);
 	const [epfSubDmgStatus, setEpfSubDmgStatus] = useState(false);
 	const [bldgDmgStatus, setBldgDmgStatus] = useState(false);
@@ -196,7 +196,7 @@ export function ViewResultEntryTable(props) {
 	useEffect(() => {
 		executions.map(async (execution)=>{
 			if (execution["id"] === expandId){
-				setResMatrixStatus(await _checkResultsReady(["CGE", "PopDislocation",], execution.datasets));
+				setResMatricsStatus(await _checkResultsReady(["CGE", "PopDislocation",], execution.datasets));
 				setEpfPoleDmgStatus(await _checkResultsReady(["PoleDamage"], execution.datasets));
 				setEpfSubDmgStatus(await _checkResultsReady(["SubstationDamage"], execution.datasets));
 				setBldgDmgStatus(await _checkResultsReady(["BldgDamage"], execution.datasets));
@@ -387,7 +387,7 @@ export function ViewResultEntryTable(props) {
 																			preview(execution["id"], "ResilienceMetrics");
 																		}}
 																		className={
-																			resMatrixStatus ? classes.clickableLink
+																			resMatricsStatus ? classes.clickableLink
 																				: classes.clickableLinkDisabled
 																		}
 																	>
