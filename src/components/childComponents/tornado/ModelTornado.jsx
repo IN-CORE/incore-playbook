@@ -9,31 +9,38 @@ import { IncoreMenuItem, IncoreSelectBox } from "../../styledComponents/IncoreSe
 import { IncoreTextField } from "../../styledComponents/IncoreInput";
 import { IncoreInputLabel } from "../../styledComponents/IncoreInputLabel";
 
-import { FlatCoordToLonLat, move2TestbedSpace, round } from "../../../utils/common";
+import { FlatCoordToLonLat, LonLatToFlatCoord, move2TestbedSpace, round } from "../../../utils/common";
 import { createModelTornado } from "../../../utils/hazard";
 import LoadingOverlay from "react-loading-overlay";
 import { useSelector } from "react-redux";
+import { IncoreButtonText } from "../../styledComponents/IncoreButtonText";
+import { validateCoord } from "../../../utils/map";
 
 const useStyles = makeStyles({
 	startLabel: {
 		color: "#96B712",
-		height: "18px",
-		display: "inline-block",
-		marginLeft: "11.25px"
+		fontSize: "14px",
 	},
 	endLabel: {
 		color: "#D63649",
-		height: "18px",
-		display: "inline-block",
-		marginLeft: "11.25px"
+		fontSize: "14px",
 	},
 	coordInput: {
 		color: "#2E384D",
 		fontSize: "14px",
 		height: "18px",
-		margin: "11.25px 0",
-		display: "inline-block",
-		border: "0 none"
+		border: "0 none",
+		maxWidth: "4.5em",
+		background: "transparent"
+	},
+	coordInputEdit: {
+		color: "#00619D",
+		fontSize: "14px",
+		height: "18px",
+		border: "0 none",
+		maxWidth: "4.5em",
+		background: "transparent",
+		fontStyle: "italic"
 	},
 	coordBox: {
 		width: "100%",
@@ -45,59 +52,68 @@ const useStyles = makeStyles({
 		backgroundColor: "#FFFFFF",
 		border: "1px solid rgba(0, 0, 0, 0.23)",
 		borderRadius: "4px",
-		textAlign: "center"
+		textAlign: "center",
+		paddingLeft: "11.25px",
 	}
 });
 
 export default function ModelTornado(props) {
-	const { value, index, startCoordProps, endCoordProps, handleLayerUpdate, handleListUpdate, ...other } = props;
+	const { value, index, startCoordProps, endCoordProps, setStartCoordProps, setEndCoordProps, handleLayerUpdate,
+		handleListUpdate, enableEdit, setEnableEdit, ...other } = props;
 	const classes = useStyles();
+
 	const globalConfig = useSelector((state) => state.config.globalConfig);
+	const mapConfig = useSelector((state) => state.config.mapConfig);
+
 	const [name, setName] = useState("");
 	const [description, setDescription] = useState("");
 	const [rating, setRating] = useState("EF3");
-	const [startCoord, setStartCoord] = useState("");
-	const [endCoord, setEndCoord] = useState("");
+	const [startLatCoord, setStartLatCoord] = useState(null);
+	const [startLonCoord, setStartLonCoord] = useState(null);
+	const [endLatCoord, setEndLatCoord] = useState(null);
+	const [endLonCoord, setEndLonCoord] = useState(null);
 	const [disabled, setDisabled] = useState(true);
 	const [loading, setLoading] = useState(false);
 
 	// form check
 	useEffect(() => {
-		if (name !== "" && description !== "" && startCoord !== "" && endCoord !== "" && rating !== "")
+		if (name && description && startLatCoord && startLonCoord && endLatCoord && endLonCoord && rating
+			&& !enableEdit)
 			setDisabled(false);
 		else setDisabled(true);
-	}, [name, description, startCoord, endCoord, rating]);
+	}, [name, description, startLatCoord, startLonCoord, endLatCoord, endLonCoord, rating, enableEdit]);
 
 	// update start and end based on map click (parent prop change)
 	useEffect(() => {
-		if (startCoordProps.length > 0) {
-			setStartCoord(
-				`${round(FlatCoordToLonLat(startCoordProps)[1], 4)}, ${round(FlatCoordToLonLat(startCoordProps)[0], 4)}`
-			);
+		if (startCoordProps.length > 0 && !enableEdit) {
+			setStartLatCoord(round(FlatCoordToLonLat(startCoordProps)[1], 3));
+			setStartLonCoord(round(FlatCoordToLonLat(startCoordProps)[0], 3));
 		}
-		if (endCoordProps.length > 0) {
-			setEndCoord(
-				`${round(FlatCoordToLonLat(endCoordProps)[1], 4)},${round(FlatCoordToLonLat(endCoordProps)[0], 4)}`
-			);
+		if (endCoordProps.length > 0 && !enableEdit) {
+			setEndLatCoord(round(FlatCoordToLonLat(endCoordProps)[1], 3));
+			setEndLonCoord(round(FlatCoordToLonLat(endCoordProps)[0], 3));
 		}
-	}, [startCoordProps, endCoordProps]);
+	}, [startCoordProps, endCoordProps, enableEdit]);
+
+	useEffect(() => {
+		if (startLonCoord && startLatCoord && endLatCoord && endLonCoord && enableEdit) {
+			setStartCoordProps(LonLatToFlatCoord(startLonCoord, startLatCoord));
+			setEndCoordProps(LonLatToFlatCoord(endLonCoord, endLatCoord));
+		}
+	}, [startLonCoord, startLatCoord, endLonCoord, endLatCoord, enableEdit]);
 
 	const onSave = async () => {
 		setLoading(true);
-		let startLat = startCoord.split(",")[0];
-		let startLon = startCoord.split(",")[1];
-		let endLat = endCoord.split(",")[0];
-		let endLon = endCoord.split(",")[1];
 
 		const tornadoJson = await createModelTornado(
 			globalConfig,
 			name,
 			description,
 			rating,
-			startLat,
-			startLon,
-			endLat,
-			endLon
+			startLatCoord,
+			startLonCoord,
+			endLatCoord,
+			endLonCoord
 		);
 		if (tornadoJson && tornadoJson["id"]) {
 			// move to testbed space
@@ -106,8 +122,10 @@ export default function ModelTornado(props) {
 			handleListUpdate(globalConfig, "tornado");
 			setName("");
 			setDescription("");
-			setStartCoord("");
-			setEndCoord("");
+			setStartLatCoord("");
+			setStartLonCoord("");
+			setEndLatCoord("");
+			setEndLatCoord("");
 		}
 		setLoading(false);
 	};
@@ -169,22 +187,66 @@ export default function ModelTornado(props) {
 							</IncoreSelectBox>
 						</Box>
 						<Box className="inputGroup">
-							<IncoreInputLabel>Start and End Points</IncoreInputLabel>
+							<IncoreInputLabel>Draw Tornado Path</IncoreInputLabel>
+							{
+								startLonCoord !== null && startLatCoord !== null && endLonCoord !== null && endLatCoord !== null ?
+									validateCoord(startLonCoord, startLatCoord, mapConfig.MAP_BOUNDS) &&
+									validateCoord(endLonCoord, endLatCoord, mapConfig.MAP_BOUNDS) ?
+										<></>
+										:
+										<span style={{ color: "Red" }}>
+											Coordinate not valid or outside of the bounding box.
+										</span>
+									:
+									null
+							}
 							<Box className={classes.coordBox}>
-								<InputLabel className={classes.startLabel}>Start: </InputLabel>
-								<input
-									placeholder="set start on map"
-									className={classes.coordInput}
-									value={startCoord}
-									onChange={(e) => setStartCoord(e.target.value)}
-								/>
-								<InputLabel className={classes.endLabel}>End: </InputLabel>
-								<input
-									placeholder="set end on map"
-									className={classes.coordInput}
-									value={endCoord}
-									onChange={(e) => setEndCoord(e.target.value)}
-								/>
+								<Box display="flex" style={{alignItems:"baseline", justifyContent:"center"}}>
+									<InputLabel className={classes.startLabel}>Lat: </InputLabel>
+									<input
+										placeholder={mapConfig.MAP_CENTER[1]}
+										className={!enableEdit? classes.coordInput:classes.coordInputEdit}
+										value={startLatCoord}
+										onChange={(e) => setStartLatCoord(e.target.value)}
+										disabled={!enableEdit}
+									/>
+									<InputLabel className={classes.startLabel}>Lon: </InputLabel>
+									<input
+										placeholder={mapConfig.MAP_CENTER[0]}
+										className={!enableEdit? classes.coordInput:classes.coordInputEdit}
+										value={startLonCoord}
+										onChange={(e) => setStartLonCoord(e.target.value)}
+										disabled={!enableEdit}
+									/>
+
+									<InputLabel className={classes.endLabel}>Lat: </InputLabel>
+									<input
+										placeholder={mapConfig.MAP_CENTER[1]}
+										className={!enableEdit? classes.coordInput:classes.coordInputEdit}
+										value={endLatCoord}
+										onChange={(e) => setEndLatCoord(e.target.value)}
+										disabled={!enableEdit}
+									/>
+									<InputLabel className={classes.endLabel}>Lon: </InputLabel>
+									<input
+										placeholder={mapConfig.MAP_CENTER[0]}
+										className={!enableEdit? classes.coordInput:classes.coordInputEdit}
+										value={endLonCoord}
+										onChange={(e) => setEndLonCoord(e.target.value)}
+										disabled={!enableEdit}
+									/>
+									{
+										!enableEdit ?
+											<IncoreButtonText onClick={() => {setEnableEdit(true);}}
+															  style={{maxWidth:"fit-content"}}>Edit</IncoreButtonText>
+											:
+											<IncoreButtonText onClick={() => {setEnableEdit(false);}}
+															  style={{maxWidth:"fit-content"}}
+															  disabled={!(validateCoord(startLonCoord, startLatCoord, mapConfig.MAP_BOUNDS)
+																  && validateCoord(endLonCoord, endLatCoord, mapConfig.MAP_BOUNDS))}
+											>Save</IncoreButtonText>
+									}
+								</Box>
 							</Box>
 						</Box>
 						<Box className="inputGroup">
