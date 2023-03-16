@@ -75,6 +75,8 @@ export default function ModelEarthquake(props) {
 	const [faultTypeMap, setFaultTypeMap] = useState("Strike-Slip");
 	const [disabled, setDisabled] = useState(true);
 	const [loading, setLoading] = useState(false);
+	const [validCoord,setValidCoord] = useState(true);
+
 
 	// form check
 	useEffect(() => {
@@ -88,8 +90,11 @@ export default function ModelEarthquake(props) {
 	// update start and end based on map click (parent prop change)
 	useEffect(() => {
 		if (srcCoordProps.length > 0 && !enableEdit) {
-			setCoordLat(round(FlatCoordToLonLat(srcCoordProps)[1], 3));
-			setCoordLon(round(FlatCoordToLonLat(srcCoordProps)[0], 3));
+			const lat = round(FlatCoordToLonLat(srcCoordProps)[1], 3);
+			const long = round(FlatCoordToLonLat(srcCoordProps)[0], 3);
+			setCoordLat(lat);
+			setCoordLon(long);
+			setValidCoord(validateCoord(long, lat, mapConfig.MAP_BOUNDS));
 		}
 	}, [srcCoordProps, enableEdit]);
 
@@ -297,7 +302,7 @@ export default function ModelEarthquake(props) {
 							<IncoreInputLabel>Draw Earthquake Epicenter</IncoreInputLabel>
 							{
 								coordLon !== null && coordLat!== null ?
-									validateCoord(coordLon, coordLat, mapConfig.MAP_BOUNDS) ?
+									validCoord ?
 										<></>
 										:
 										<span style={{ color: "Red" }}>
@@ -329,9 +334,8 @@ export default function ModelEarthquake(props) {
 											<IncoreButtonText onClick={() => {setEnableEdit(true);}}
 															  style={{maxWidth:"fit-content"}}>Edit</IncoreButtonText>
 											:
-											<IncoreButtonText onClick={() => {setEnableEdit(false);}}
+											<IncoreButtonText onClick={() => {setEnableEdit(false); setValidCoord(validateCoord(coordLon, coordLat, mapConfig.MAP_BOUNDS));}}
 															  style={{maxWidth:"fit-content"}}
-															  disabled={!validateCoord(coordLon, coordLat, mapConfig.MAP_BOUNDS)}
 											>
 												Save
 											</IncoreButtonText>
@@ -340,7 +344,7 @@ export default function ModelEarthquake(props) {
 							</Box>
 						</Box>
 						<Box className="inputGroup">
-							<IncoreButton variant="contained" onClick={onSave} disabled={disabled}>
+							<IncoreButton variant="contained" onClick={onSave} disabled={disabled || !validCoord}>
 								Save
 							</IncoreButton>
 						</Box>
