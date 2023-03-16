@@ -176,8 +176,8 @@ export function ViewResultEntryTable(props) {
 		}, []);
 
 		return await requiredDatasetIds.reduce(async (state, reqId) => {
-			return state && reqId in currentExecutionDataset && currentExecutionDataset[reqId] !== "ERROR"
-				&& await (checkFileDescriptors(datawolfConfig, currentExecutionDataset[reqId])) > 0;
+			return reqId in currentExecutionDataset && currentExecutionDataset[reqId] !== "ERROR"
+				&& (await checkFileDescriptors(datawolfConfig, currentExecutionDataset[reqId])) > 0 && state;
 		}, true);
 	};
 
@@ -196,7 +196,7 @@ export function ViewResultEntryTable(props) {
 	useEffect(() => {
 		executions.map(async (execution)=>{
 			if (execution["id"] === expandId){
-				setResMatrixStatus(await _checkResultsReady(["CGE", "PopDislocation", "BldgFunctionality"], execution.datasets));
+				setResMatrixStatus(await _checkResultsReady(["CGE", "PopDislocation",], execution.datasets));
 				setEpfPoleDmgStatus(await _checkResultsReady(["PoleDamage"], execution.datasets));
 				setEpfSubDmgStatus(await _checkResultsReady(["SubstationDamage"], execution.datasets));
 				setBldgDmgStatus(await _checkResultsReady(["BldgDamage"], execution.datasets));
