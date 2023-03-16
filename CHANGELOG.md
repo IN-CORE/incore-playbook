@@ -5,6 +5,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+
+## [Unreleased]
+- Add title and description to form validaiton in step 3-4 [#191](https://github.com/IN-CORE/incore-playbook/issues/191)
+
+
 ## [0.5.2] - 2023-03-15
 
 ### Changed
@@ -56,7 +61,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Occasional interval not working issue with added cleanup [#163](https://github.com/IN-CORE/incore-playbook/issues/163)
 - UI tweaks such as tab indicator color, select box, cge descriptions and etc [#150](https://github.com/IN-CORE/incore-playbook/issues/150)
 - Clear all layers shouldn't prevent new drawing [#175](https://github.com/IN-CORE/incore-playbook/issues/175)
-- Add title and description to form validaiton in step 3-4 [#191](https://github.com/IN-CORE/incore-playbook/issues/191)
 
 
 ## [0.3.0] - 2021-11-16
