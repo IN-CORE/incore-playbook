@@ -8,9 +8,9 @@ import {
 	TableCell,
 	TableContainer,
 	TableHead,
-	TableRow,
-	TableSortLabel,
 	TablePagination,
+	TableRow,
+	TableSortLabel
 } from "@material-ui/core";
 import UnfoldMoreIcon from "@material-ui/icons/UnfoldMore";
 import UnfoldLess from "@material-ui/icons/UnfoldLess";
@@ -19,6 +19,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import { useSelector } from "react-redux";
 
 import { isAdmin, parseDateTime } from "../../../utils/common";
+import { checkFileDescriptors } from "../../../utils/datawolf";
 
 const useStyles = makeStyles({
 	table: {
@@ -139,9 +140,46 @@ export function ViewResultEntryTable(props) {
 	const { fieldNames, executions, preview } = props;
 	const [widgetList, setWidgetList] = useState([]);
 
+	const [resMatricsReadiness, setResMatricsReadiness] = useState(false);
+	const [epfPoleDmgReadiness, setEpfPoleDmgReadiness] = useState(false);
+	const [epfSubDmgReadiness, setEpfSubDmgReadiness] = useState(false);
+	const [bldgDmgReadiness, setBldgDmgReadiness] = useState(false);
+	const [bldgFailReadiness, setBldgFailReadiness] = useState(false);
+	const [bldgFuncReadiness, setBldgFuncReadiness] = useState(false);
+	const [sectorShockReadiness, setSectorShockReadiness] = useState(false);
+	const [cgeReadiness, setCgeReadiness] = useState(false);
+	const [popDislReadiness, setPopDislReadiness] = useState(false);
+	const [hhrsReadiness, setHhrsReadiness] = useState(false);
+
+	const [expandId, setExpandId] = useState("");
+	const [collapseId, setCollapseId] = useState("");
+
+	const [order, setOrder] = useState("desc");
+	const [orderBy, setOrderBy] = React.useState("date");
+
+	const [page, setPage] = React.useState(0);
+	const [rowsPerPage, setRowsPerPage] = React.useState(10);
+
+
 	// list all the widgets from workflow definition
 	const datawolfWorkflowConfig = useSelector((state) => state.config.datawolfWorkflowConfig);
+	const datawolfConfig = useSelector((state) => state.config.datawolfConfig);
 	const globalConfig = useSelector((state) => state.config.globalConfig);
+
+	const _checkResultsReady = async (listWidgets, currentExecutionDataset) => {
+		const requiredDatasetIds = datawolfWorkflowConfig.outputs.datasets[0].datasetsMap.reduce((list, item) => {
+			if (listWidgets.includes(item.datasets.widget)) {
+				return [...list, item.datasetId];
+			}
+
+			return list;
+		}, []);
+
+		return await requiredDatasetIds.reduce(async (state, reqId) => {
+			return reqId in currentExecutionDataset && currentExecutionDataset[reqId] !== "ERROR"
+				&& (await checkFileDescriptors(datawolfConfig, currentExecutionDataset[reqId])) > 0 && state;
+		}, true);
+	};
 
 	useEffect(() => {
 		setWidgetList(
@@ -155,14 +193,22 @@ export function ViewResultEntryTable(props) {
 		);
 	}, []);
 
-	const [expandId, setExpandId] = useState("");
-	const [collapseId, setCollapseId] = useState("");
-
-	const [order, setOrder] = useState("desc");
-	const [orderBy, setOrderBy] = React.useState("date");
-
-	const [page, setPage] = React.useState(0);
-	const [rowsPerPage, setRowsPerPage] = React.useState(10);
+	useEffect(() => {
+		executions.map(async (execution)=>{
+			if (execution["id"] === expandId){
+				setResMatricsReadiness(await _checkResultsReady(["CGE", "PopDislocation",], execution.datasets));
+				setEpfPoleDmgReadiness(await _checkResultsReady(["PoleDamage"], execution.datasets));
+				setEpfSubDmgReadiness(await _checkResultsReady(["SubstationDamage"], execution.datasets));
+				setBldgDmgReadiness(await _checkResultsReady(["BldgDamage"], execution.datasets));
+				setBldgFailReadiness(await _checkResultsReady(["BldgMCS"], execution.datasets));
+				setBldgFuncReadiness(await _checkResultsReady(["BldgFunctionality"], execution.datasets));
+				setSectorShockReadiness(await _checkResultsReady(["SectorShocks"], execution.datasets));
+				setCgeReadiness(await _checkResultsReady(["CGE"], execution.datasets));
+				setPopDislReadiness(await _checkResultsReady(["PopDislocation", "BldgDamage"], execution.datasets));
+				setHhrsReadiness(await _checkResultsReady(["HHS"], execution.datasets));
+			}
+		});
+	}, [executions, expandId]);
 
 	const handleRequestSort = (event, property) => {
 		const isAsc = orderBy === property && order === "asc";
@@ -184,20 +230,6 @@ export function ViewResultEntryTable(props) {
 	};
 	// Avoid a layout jump when reaching the last page with empty rows.
 	const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - executions.length) : 0;
-
-	const checkResultsReady = (listWidgets, currentExecutionDataset) => {
-		const requiredDatasetIds = datawolfWorkflowConfig.outputs.datasets[0].datasetsMap.reduce((list, item) => {
-			if (listWidgets.includes(item.datasets.widget)) {
-				return [...list, item.datasetId];
-			}
-
-			return list;
-		}, []);
-
-		return requiredDatasetIds.every(
-			(reqId) => reqId in currentExecutionDataset && currentExecutionDataset[reqId] !== "ERROR"
-		);
-	};
 
 	const classes = useStyles();
 
@@ -249,7 +281,7 @@ export function ViewResultEntryTable(props) {
 																	);
 																} else if (
 																	execution["finalStatus"].toLowerCase() === "waiting" ||
-															execution["finalStatus"].toLowerCase() === "queued"
+																execution["finalStatus"].toLowerCase() === "queued"
 																) {
 																	return (
 																		<p className={classes.statusWaiting}>
@@ -258,7 +290,7 @@ export function ViewResultEntryTable(props) {
 																	);
 																} else if (
 																	execution["finalStatus"].toLowerCase() === "failed" ||
-															execution["finalStatus"].toLowerCase() === "aborted"
+																execution["finalStatus"].toLowerCase() === "aborted"
 																) {
 																	return (
 																		<p className={classes.statusUnsuccess}>
@@ -299,9 +331,9 @@ export function ViewResultEntryTable(props) {
 															}
 														>
 															{fieldName["columnName"] === "creator" &&
-													execution[fieldName["columnName"]] &&
-													"firstName" in execution[fieldName["columnName"]] &&
-													"lastName" in execution[fieldName["columnName"]]
+														execution[fieldName["columnName"]] &&
+														"firstName" in execution[fieldName["columnName"]] &&
+														"lastName" in execution[fieldName["columnName"]]
 																? `${execution[fieldName["columnName"]].firstName}
 														${execution[fieldName["columnName"]].lastName}`
 																: execution[fieldName["columnName"]]}
@@ -355,15 +387,11 @@ export function ViewResultEntryTable(props) {
 																			preview(execution["id"], "ResilienceMetrics");
 																		}}
 																		className={
-																			checkResultsReady(
-																				["CGE", "PopDislocation", "BldgFunctionality"],
-																				execution.datasets
-																			)
-																				? classes.clickableLink
+																			resMatricsReadiness ? classes.clickableLink
 																				: classes.clickableLinkDisabled
 																		}
 																	>
-																	Resilience Metrics
+																		Resilience Metrics
 																	</Link>
 																</TableCell>
 															</TableRow>
@@ -376,14 +404,15 @@ export function ViewResultEntryTable(props) {
 															className={classes.subBodyRow}
 															key={`${execution["id"]}-epf-pole`}
 														>
-															<TableCell colSpan={6} key={`${execution["id"]}-epf-pole-title`}>
+															<TableCell colSpan={6}
+																	   key={`${execution["id"]}-epf-pole-title`}>
 																<Link
 																	color="primary"
 																	onClick={() => {
 																		preview(execution["id"], "PoleDamage");
 																	}}
 																	className={
-																		checkResultsReady(["PoleDamage"], execution.datasets)
+																		epfPoleDmgReadiness
 																			? classes.clickableLink
 																			: classes.clickableLinkDisabled
 																	}
@@ -400,15 +429,15 @@ export function ViewResultEntryTable(props) {
 															className={classes.subBodyRow}
 															key={`${execution["id"]}-epf-substation`}
 														>
-															<TableCell colSpan={6} key={`${execution["id"]}-epf-substation-title`}>
+															<TableCell colSpan={6}
+																	   key={`${execution["id"]}-epf-substation-title`}>
 																<Link
 																	color="primary"
 																	onClick={() => {
 																		preview(execution["id"], "SubstationDamage");
 																	}}
 																	className={
-																		checkResultsReady(["SubstationDamage"], execution.datasets)
-																			? classes.clickableLink
+																		epfSubDmgReadiness ? classes.clickableLink
 																			: classes.clickableLinkDisabled
 																	}
 																>
@@ -425,14 +454,15 @@ export function ViewResultEntryTable(props) {
 															className={classes.subBodyRow}
 															key={`${execution["id"]}-bldg-dmg`}
 														>
-															<TableCell colSpan={6} key={`${execution["id"]}-bldg-dmg-title`}>
+															<TableCell colSpan={6}
+																	   key={`${execution["id"]}-bldg-dmg-title`}>
 																<Link
 																	color="primary"
 																	onClick={() => {
 																		preview(execution["id"], "BldgDamage");
 																	}}
 																	className={
-																		checkResultsReady(["BldgDamage"], execution.datasets)
+																		bldgDmgReadiness
 																			? classes.clickableLink
 																			: classes.clickableLinkDisabled
 																	}
@@ -447,7 +477,8 @@ export function ViewResultEntryTable(props) {
 
 													{/*mcs*/}
 													{widgetList.includes("BldgMCS") ? (
-														<TableRow className={classes.subBodyRow} key={`${execution["id"]}-mcs`}>
+														<TableRow className={classes.subBodyRow}
+																  key={`${execution["id"]}-mcs`}>
 															<TableCell colSpan={6} key={`${execution["id"]}-mcs-title`}>
 																<Link
 																	color="primary"
@@ -455,12 +486,13 @@ export function ViewResultEntryTable(props) {
 																		preview(execution["id"], "BldgMCS");
 																	}}
 																	className={
-																		checkResultsReady(["BldgMCS"], execution.datasets)
+																		bldgFailReadiness
 																			? classes.clickableLink
 																			: classes.clickableLinkDisabled
 																	}
 																>
-																	Building Functionality (without Electrical Power Dependency)
+																	Building Functionality (without Electrical Power
+																	Dependency)
 																</Link>
 															</TableCell>
 														</TableRow>
@@ -483,12 +515,13 @@ export function ViewResultEntryTable(props) {
 																		preview(execution["id"], "BldgFunctionality");
 																	}}
 																	className={
-																		checkResultsReady(["BldgFunctionality"], execution.datasets)
+																		bldgFuncReadiness
 																			? classes.clickableLink
 																			: classes.clickableLinkDisabled
 																	}
 																>
-																	Building Functionality (with Electrical Power Dependency)
+																	Building Functionality (with Electrical Power
+																	Dependency)
 																</Link>
 															</TableCell>
 														</TableRow>
@@ -497,15 +530,17 @@ export function ViewResultEntryTable(props) {
 													)}
 													{/*Sector Shocks*/}
 													{widgetList.includes("SectorShocks") ? (
-														<TableRow className={classes.subBodyRow} key={`${execution["id"]}-sector-shocks`}>
-															<TableCell colSpan={6} key={`${execution["id"]}-sector-shocks-title`}>
+														<TableRow className={classes.subBodyRow}
+																  key={`${execution["id"]}-sector-shocks`}>
+															<TableCell colSpan={6}
+																	   key={`${execution["id"]}-sector-shocks-title`}>
 																<Link
 																	color="primary"
 																	onClick={() => {
 																		preview(execution["id"], "SectorShocks");
 																	}}
 																	className={
-																		checkResultsReady(["SectorShocks"], execution.datasets)
+																		sectorShockReadiness
 																			? classes.clickableLink
 																			: classes.clickableLinkDisabled
 																	}
@@ -519,20 +554,21 @@ export function ViewResultEntryTable(props) {
 													)}
 													{/*CGE*/}
 													{widgetList.includes("CGE") ? (
-														<TableRow className={classes.subBodyRow} key={`${execution["id"]}-cge`}>
+														<TableRow className={classes.subBodyRow}
+																  key={`${execution["id"]}-cge`}>
 															<TableCell colSpan={6} key={`${execution["id"]}-cge-title`}>
 																<Link
 																	color="primary"
 																	onClick={() => {
 																		preview(execution["id"], "CGE");
 																	}}
-																	className={
-																		checkResultsReady(["CGE"], execution.datasets)
-																			? classes.clickableLink
-																			: classes.clickableLinkDisabled
+																	className={cgeReadiness
+																		? classes.clickableLink
+																		: classes.clickableLinkDisabled
 																	}
 																>
-																	Economic Prediction Model (Computable General Equilibrium)
+																	Economic Prediction Model (Computable General
+																	Equilibrium)
 																</Link>
 															</TableCell>
 														</TableRow>
@@ -545,14 +581,15 @@ export function ViewResultEntryTable(props) {
 															className={classes.subBodyRow}
 															key={`${execution["id"]}-popdislocation`}
 														>
-															<TableCell colSpan={6} key={`${execution["id"]}-popdislocation-title`}>
+															<TableCell colSpan={6}
+																	   key={`${execution["id"]}-popdislocation-title`}>
 																<Link
 																	color="primary"
 																	onClick={() => {
 																		preview(execution["id"], "PopDislocation");
 																	}}
 																	className={
-																		checkResultsReady(["PopDislocation", "BldgDamage"], execution.datasets)
+																		popDislReadiness
 																			? classes.clickableLink
 																			: classes.clickableLinkDisabled
 																	}
@@ -566,7 +603,8 @@ export function ViewResultEntryTable(props) {
 													)}
 													{/*Housing Recover*/}
 													{widgetList.includes("HHS") ? (
-														<TableRow className={classes.subBodyRow} key={`${execution["id"]}-HHS`}>
+														<TableRow className={classes.subBodyRow}
+																  key={`${execution["id"]}-HHS`}>
 															<TableCell colSpan={6} key={`${execution["id"]}-HHS-title`}>
 																<Link
 																	color="primary"
@@ -574,7 +612,7 @@ export function ViewResultEntryTable(props) {
 																		preview(execution["id"], "HHS");
 																	}}
 																	className={
-																		checkResultsReady(["HHS"], execution.datasets)
+																		hhrsReadiness
 																			? classes.clickableLink
 																			: classes.clickableLinkDisabled
 																	}
@@ -589,8 +627,9 @@ export function ViewResultEntryTable(props) {
 
 													{/*Logs: Only allow the admin to see the logs*/}
 													{/*Always show logs*/}
-													{widgetList.includes("Log") && isAdmin(globalConfig.hostname)? (
-														<TableRow className={classes.subBodyRow} key={`${execution["id"]}-Log`}>
+													{widgetList.includes("Log") && isAdmin(globalConfig.hostname) ? (
+														<TableRow className={classes.subBodyRow}
+																  key={`${execution["id"]}-Log`}>
 															<TableCell colSpan={6} key={`${execution["id"]}-Log-title`}>
 																<Link
 																	color="primary"
@@ -617,10 +656,10 @@ export function ViewResultEntryTable(props) {
 					{emptyRows > 0 && (
 						<TableRow
 							style={{
-								height: (53) * emptyRows,
+								height: (53) * emptyRows
 							}}
 						>
-							<TableCell colSpan={6}/>
+							<TableCell colSpan={6} />
 						</TableRow>
 					)}
 				</TableBody>
