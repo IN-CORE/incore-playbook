@@ -37,7 +37,7 @@ const useStyles = makeStyles({
 		fontSize: "14px",
 		height: "18px",
 		border: "0 none",
-		background: "transparent",
+		backgroundColor: "#FFFFFF",
 		fontStyle: "italic"
 	},
 	coordBox: {
@@ -47,7 +47,7 @@ const useStyles = makeStyles({
 		fontWeight: "500",
 		lineHeight: "18px",
 		letterSpacing: 0,
-		backgroundColor: "#FFFFFF",
+		backgroundColor: "#EDF5F5",
 		border: "1px solid rgba(0, 0, 0, 0.23)",
 		borderRadius: "4px",
 		textAlign: "center",
