@@ -156,12 +156,12 @@ export default function ViewResult(props) {
 			columnName: "title"
 		},
 		{
-			prettyName: "CREATED BY",
-			columnName: "creator"
-		},
-		{
 			prettyName: "DESCRIPTION",
 			columnName: "description"
+		},
+		{
+			prettyName: "CREATED BY",
+			columnName: "creator"
 		},
 		{
 			prettyName: "HAZARD TYPE",
