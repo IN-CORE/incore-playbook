@@ -39,7 +39,7 @@ const useStyles = makeStyles({
 		height: "18px",
 		border: "0 none",
 		maxWidth: "4.5em",
-		background: "transparent",
+		background: "#FFFFFF",
 		fontStyle: "italic"
 	},
 	coordBox: {
@@ -49,7 +49,7 @@ const useStyles = makeStyles({
 		fontWeight: "500",
 		lineHeight: "18px",
 		letterSpacing: 0,
-		backgroundColor: "#FFFFFF",
+		backgroundColor: "#EDF5F5",
 		border: "1px solid rgba(0, 0, 0, 0.23)",
 		borderRadius: "4px",
 		textAlign: "center",
@@ -74,6 +74,21 @@ export default function ModelTornado(props) {
 	const [endLonCoord, setEndLonCoord] = useState(null);
 	const [disabled, setDisabled] = useState(true);
 	const [loading, setLoading] = useState(false);
+	const [validStartCoord,setValidStartCoord] = useState(true);
+	const [validEndCoord,setValidEndCoord] = useState(true);
+
+	//function to check before setting coordinates
+
+	const checkSetCoord = (lon, lat, setLon, setLat,setValidCoord) => {
+		if(validateCoord(lon,lat,mapConfig.MAP_BOUNDS)){
+			setLat(lat);
+			setLon(lon);
+			setValidCoord(true);
+		}
+		else{
+			setValidCoord(false);
+		}
+	};
 
 	// form check
 	useEffect(() => {
@@ -86,12 +101,14 @@ export default function ModelTornado(props) {
 	// update start and end based on map click (parent prop change)
 	useEffect(() => {
 		if (startCoordProps.length > 0 && !enableEdit) {
-			setStartLatCoord(round(FlatCoordToLonLat(startCoordProps)[1], 3));
-			setStartLonCoord(round(FlatCoordToLonLat(startCoordProps)[0], 3));
+			const startLat = round(FlatCoordToLonLat(startCoordProps)[1], 3);
+			const startLon = round(FlatCoordToLonLat(startCoordProps)[0], 3);
+			checkSetCoord(startLon,startLat,setStartLonCoord,setStartLatCoord,setValidStartCoord);
 		}
 		if (endCoordProps.length > 0 && !enableEdit) {
-			setEndLatCoord(round(FlatCoordToLonLat(endCoordProps)[1], 3));
-			setEndLonCoord(round(FlatCoordToLonLat(endCoordProps)[0], 3));
+			const endLat = round(FlatCoordToLonLat(endCoordProps)[1], 3);
+			const endLon = round(FlatCoordToLonLat(endCoordProps)[0], 3);
+			checkSetCoord(endLon,endLat,setEndLonCoord,setEndLatCoord,setValidEndCoord);
 		}
 	}, [startCoordProps, endCoordProps, enableEdit]);
 
@@ -190,8 +207,8 @@ export default function ModelTornado(props) {
 							<IncoreInputLabel>Draw Tornado Path</IncoreInputLabel>
 							{
 								startLonCoord !== null && startLatCoord !== null && endLonCoord !== null && endLatCoord !== null ?
-									validateCoord(startLonCoord, startLatCoord, mapConfig.MAP_BOUNDS) &&
-									validateCoord(endLonCoord, endLatCoord, mapConfig.MAP_BOUNDS) ?
+									validStartCoord &&
+									validEndCoord ?
 										<></>
 										:
 										<span style={{ color: "Red" }}>
@@ -240,17 +257,19 @@ export default function ModelTornado(props) {
 											<IncoreButtonText onClick={() => {setEnableEdit(true);}}
 															  style={{maxWidth:"fit-content"}}>Edit</IncoreButtonText>
 											:
-											<IncoreButtonText onClick={() => {setEnableEdit(false);}}
+											<IncoreButtonText onClick={() => {
+												setEnableEdit(false);
+												setValidStartCoord(validateCoord(startLonCoord, startLatCoord, mapConfig.MAP_BOUNDS));
+												setValidEndCoord(validateCoord(endLonCoord, endLatCoord, mapConfig.MAP_BOUNDS));
+											}}
 															  style={{maxWidth:"fit-content"}}
-															  disabled={!(validateCoord(startLonCoord, startLatCoord, mapConfig.MAP_BOUNDS)
-																  && validateCoord(endLonCoord, endLatCoord, mapConfig.MAP_BOUNDS))}
 											>Save</IncoreButtonText>
 									}
 								</Box>
 							</Box>
 						</Box>
 						<Box className="inputGroup">
-							<IncoreButton variant="contained" onClick={onSave} disabled={disabled}>
+							<IncoreButton variant="contained" onClick={onSave} disabled={disabled || !(validStartCoord && validEndCoord)}>
 								Save
 							</IncoreButton>
 						</Box>
