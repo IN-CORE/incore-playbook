@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 
 ## [Unreleased]
+
+### Changed
 - Add title and description to form validaiton in step 3-4 [#191](https://github.com/IN-CORE/incore-playbook/issues/191)
 - UI Changes according to several feedbacks from stress test session [#195](https://github.com/IN-CORE/incore-playbook/issues/195)
 - Change sorting logic for step 3-3 to view created hazards first [#197](https://github.com/IN-CORE/incore-playbook/issues/197)
