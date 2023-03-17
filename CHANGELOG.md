@@ -8,7 +8,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 - Add title and description to form validaiton in step 3-4 [#191](https://github.com/IN-CORE/incore-playbook/issues/191)
-
+- Add validation and styling for coordinates entered in Step 3-3 for tornado and earthquake [#189](https://github.com/IN-CORE/incore-playbook/issues/189)
 
 ## [0.5.2] - 2023-03-15
 
