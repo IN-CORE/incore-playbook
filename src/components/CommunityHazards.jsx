@@ -98,11 +98,9 @@ export const CommunityHazards = (props) => {
 
 	const [selectedHazardType, setSelectedHazardType] = useState(allowedHazardTypes[0]);
 
-	const [fields, setFields] = React.useState([]);
 	const [dataPerPage, setDataPerPage] = React.useState(5);
-	// use limit for getting data and data to be displayed per page separately
-	const [limit, setDataLimit] = React.useState(200);
 	const [pageNumber, setPageNumber] = React.useState(1);
+	const [offset, setOffset] = React.useState(0);
 	const [olIdLayerMap, setOlIdLayerMap] = React.useState(new Set());
 	const [enableSrcEdit, setEnableSrcEdit] = React.useState(false); // directly edit in the child component geolocation
 	const [mapDialogOpen, setMapDialogOpen] = React.useState(false); // map prompt
@@ -390,23 +388,26 @@ export const CommunityHazards = (props) => {
 
 	const pageChange = (direction) => {
 		if (direction === "previous") {
+			setOffset((pageNumber - 2) * dataPerPage);
 			setPageNumber(pageNumber - 1);
 		} else if (direction === "next") {
+			setOffset(pageNumber * dataPerPage);
 			setPageNumber(pageNumber + 1);
 		}
 	};
 
 	// change hazard type
 	useEffect(() => {
+		setOffset(0);
 		setPageNumber(1);
 		// start from page 1 again
-		listHazards(globalConfig, selectedHazardType, limit, 0);
+		listHazards(globalConfig, selectedHazardType, dataPerPage, offset);
 	}, [selectedHazardType]);
 
 	// page changes
 	useEffect(() => {
-		setFields(getRow(selectedHazardType));
-	}, [pageNumber, earthquakes, tornadoes, hurricanes, tsunamis, floods]);
+		listHazards(globalConfig, selectedHazardType, dataPerPage, offset);
+	}, [offset, dataPerPage]);
 
 	return (
 		<Layout>
@@ -461,9 +462,7 @@ export const CommunityHazards = (props) => {
 							{/*Tabs*/}
 							<Box className={classes.tabDiv}>
 								<Tabs
-									TabIndicatorProps={{
-										style: { background: "#00619D" }
-									}}
+									TabIndicatorProps={{ style: { background: "#00619D" } }}
 									selectionFollowsFocus={true}
 									aria-label="create tornado tabs"
 									value={currTabIndex}
@@ -585,11 +584,7 @@ export const CommunityHazards = (props) => {
 													<>
 														<EntryTable
 															fieldNames={fieldNames}
-															// fields={getRow(selectedHazardType)}
-															fields={fields}
-															pageNum={pageNumber}
-															dataPerPage={dataPerPage}
-															setPageNum={setPageNumber}
+															fields={getRow(selectedHazardType)}
 														/>
 														<Pagination
 															pageNumber={pageNumber}

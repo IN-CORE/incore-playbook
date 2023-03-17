@@ -85,7 +85,7 @@ function prettifyDate(date) {
 }
 
 export function EntryTable(props) {
-	const { fieldNames, fields, pageNum, dataPerPage, setPageNum } = props;
+	const { fieldNames, fields } = props;
 
 	const [order, setOrder] = useState("desc");
 	const [orderBy, setOrderBy] = React.useState("date");
@@ -97,17 +97,10 @@ export function EntryTable(props) {
 	};
 
 	const createSortHandler = (property) => (event) => {
-		setPageNum(1);
 		handleRequestSort(event, property);
 	};
 
-	const sortedFields = stableSort(fields, getComparator(order, orderBy)).slice(
-		(pageNum - 1) * dataPerPage,
-		(pageNum - 1) * dataPerPage + dataPerPage
-	);
-
 	const classes = useStyles();
-	console.log(fields);
 
 	return (
 		<TableContainer>
@@ -136,7 +129,7 @@ export function EntryTable(props) {
 					</TableRow>
 				</TableHead>
 				<TableBody>
-					{sortedFields.map((field) => {
+					{stableSort(fields, getComparator(order, orderBy)).map((field) => {
 						return (
 							<TableRow className={classes.tableBodyRow} key={field["id"]}>
 								{fieldNames.map((fieldName, idx) => {

@@ -165,7 +165,7 @@ export default function ModelEarthquake(props) {
 								value={magnitude}
 								type={"number"}
 								variant="outlined"
-								onChange={(e) => setMagnitude(e.target.value)}
+								onChange={(e) => setMagnitude(e.target.value < 0 ? 0 : e.target.value)}
 							/>
 						</Box>
 						<Box className="inputGroup">
@@ -174,7 +174,7 @@ export default function ModelEarthquake(props) {
 								value={depth}
 								type={"number"}
 								variant="outlined"
-								onChange={(e) => setDepth(e.target.value)}
+								onChange={(e) => setDepth(e.target.value < 0 ? 0 : e.target.value)}
 							/>
 						</Box>
 						<Box className="inputGroup">

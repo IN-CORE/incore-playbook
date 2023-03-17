@@ -6,7 +6,9 @@ import React from "react";
 export const CustomTextInput = (item) => {
 	return (
 		<Box style={{ marginTop: "10px" }}>
-			<IncoreInputLabel>{item.schema.title}</IncoreInputLabel>
+			<IncoreInputLabel className={item.schema.required ? "required-field" : ""}>
+				{item.schema.title}
+			</IncoreInputLabel>
 			<IncoreTextField
 				value={item.value}
 				variant="outlined"
