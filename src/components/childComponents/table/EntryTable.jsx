@@ -6,7 +6,7 @@ import { Table, TableBody, TableCell, TableSortLabel, TableContainer, TableHead,
 import { makeStyles } from "@material-ui/core/styles";
 import { IncoreLinkSmall } from "../../styledComponents/IncoreLinkSmall";
 
-const useStyles = makeStyles({
+export const useStyles = makeStyles({
 	table: {
 		minWidth: 650
 	},
@@ -64,13 +64,13 @@ function descendingComparator(a, b, orderBy) {
 	return 0;
 }
 
-function getComparator(order, orderBy) {
+export function getComparator(order, orderBy) {
 	return order === "desc"
 		? (a, b) => descendingComparator(a, b, orderBy)
 		: (a, b) => -descendingComparator(a, b, orderBy);
 }
 
-function stableSort(array, comparator) {
+export function stableSort(array, comparator) {
 	const stabilizedThis = array.map((el, index) => [el, index]);
 	stabilizedThis.sort((a, b) => {
 		const order = comparator(a[0], b[0]);
@@ -80,7 +80,7 @@ function stableSort(array, comparator) {
 	return stabilizedThis.map((el) => el[0]);
 }
 
-function prettifyDate(date) {
+export function prettifyDate(date) {
 	return date.slice(0, 10);
 }
 
