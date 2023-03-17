@@ -1,14 +1,6 @@
 import React, { useState } from "react";
 
-import {
-	Table,
-	TableBody,
-	TableCell,
-	TableSortLabel,
-	TableContainer,
-	TableHead,
-	TableRow,
-} from "@material-ui/core";
+import { Table, TableBody, TableCell, TableSortLabel, TableContainer, TableHead, TableRow } from "@material-ui/core";
 // import MoreHorizIcon from "@material-ui/icons/MoreHoriz";
 
 import { makeStyles } from "@material-ui/core/styles";
