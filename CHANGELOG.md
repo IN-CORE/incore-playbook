@@ -11,7 +11,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Changed
 - Add title and description to form validaiton in step 3-4 [#191](https://github.com/IN-CORE/incore-playbook/issues/191)
 - UI Changes according to several feedbacks from stress test session [#195](https://github.com/IN-CORE/incore-playbook/issues/195)
-
+- Removed linking for steps from static html pages [#198](https://github.com/IN-CORE/incore-playbook/issues/198)
+- Add validation and styling for coordinates entered in Step 3-3 for tornado and earthquake [#189](https://github.com/IN-CORE/incore-playbook/issues/189)
+- Add column to display link to download data and reordered columns [#196](https://github.com/IN-CORE/incore-playbook/issues/196)
 
 ## [0.5.2] - 2023-03-15
 
