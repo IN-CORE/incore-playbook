@@ -1,14 +1,6 @@
 import React, { useState } from "react";
 
-import {
-	Table,
-	TableBody,
-	TableCell,
-	TableSortLabel,
-	TableContainer,
-	TableHead,
-	TableRow,
-} from "@material-ui/core";
+import { Table, TableBody, TableCell, TableSortLabel, TableContainer, TableHead, TableRow } from "@material-ui/core";
 // import MoreHorizIcon from "@material-ui/icons/MoreHoriz";
 
 import { makeStyles } from "@material-ui/core/styles";
@@ -93,7 +85,7 @@ function prettifyDate(date) {
 }
 
 export function EntryTable(props) {
-	const { fieldNames, fields } = props;
+	const { fieldNames, fields, pageNum, dataPerPage, setPageNum } = props;
 
 	const [order, setOrder] = useState("desc");
 	const [orderBy, setOrderBy] = React.useState("date");
@@ -105,10 +97,17 @@ export function EntryTable(props) {
 	};
 
 	const createSortHandler = (property) => (event) => {
+		setPageNum(1);
 		handleRequestSort(event, property);
 	};
 
+	const sortedFields = stableSort(fields, getComparator(order, orderBy)).slice(
+		(pageNum - 1) * dataPerPage,
+		(pageNum - 1) * dataPerPage + dataPerPage
+	);
+
 	const classes = useStyles();
+	console.log(fields);
 
 	return (
 		<TableContainer>
@@ -137,7 +136,7 @@ export function EntryTable(props) {
 					</TableRow>
 				</TableHead>
 				<TableBody>
-					{stableSort(fields, getComparator(order, orderBy)).map((field) => {
+					{sortedFields.map((field) => {
 						return (
 							<TableRow className={classes.tableBodyRow} key={field["id"]}>
 								{fieldNames.map((fieldName, idx) => {

@@ -169,7 +169,7 @@ export default function ViewResult(props) {
 			<Grid container spacing={3}>
 				<Grid item xl={7} lg={7} md={7} sm={7} xs={12}>
 					<Box className="inputGroup" style={{ height: "auto" }}>
-						<IncoreInputLabel>Title</IncoreInputLabel>
+						<IncoreInputLabel className="required-field">Title</IncoreInputLabel>
 						<IncoreTextField
 							variant="outlined"
 							value={title}
@@ -179,7 +179,7 @@ export default function ViewResult(props) {
 						/>
 					</Box>
 					<Box className="inputGroup" style={{ height: "auto" }}>
-						<IncoreInputLabel>Description</IncoreInputLabel>
+						<IncoreInputLabel className="required-field">Description</IncoreInputLabel>
 						<IncoreTextField
 							variant="outlined"
 							value={description}
@@ -192,7 +192,7 @@ export default function ViewResult(props) {
 						if (!item.hidden) {
 							return (
 								<Box className="inputGroup" style={{ height: "auto" }}>
-									<IncoreInputLabel>{item.title}</IncoreInputLabel>
+									<IncoreInputLabel className="required-field">{item.title}</IncoreInputLabel>
 									{(() => {
 										// instantiate widget based on definitions
 										return React.cloneElement(registeredWidgets[item.widget], {
