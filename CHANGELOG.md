@@ -8,7 +8,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 - Add title and description to form validaiton in step 3-4 [#191](https://github.com/IN-CORE/incore-playbook/issues/191)
-
+- Removed linking for steps from static html pages [#198](https://github.com/IN-CORE/incore-playbook/issues/198)
 
 ## [0.5.2] - 2023-03-15
 
