@@ -15,7 +15,8 @@ const useStyles = makeStyles({
 		letterSpacing: 0,
 		lineHeight: "22px",
 		display: "inline-block",
-		padding: "0 17px"
+		padding: "0 17px",
+		textTransform: "capitalize"
 	},
 	breadcrumbText: {
 		display: "inline",
