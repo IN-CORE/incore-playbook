@@ -12,10 +12,6 @@ import { IncoreButtonText } from "../../styledComponents/IncoreButtonText";
 import { downloadImg } from "../../../utils/image";
 import CameraAltIcon from "@material-ui/icons/CameraAlt";
 import FormLabel from "@material-ui/core/FormLabel";
-import FormControl from "@material-ui/core/FormControl";
-import RadioGroup from "@material-ui/core/RadioGroup";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import Radio from "@material-ui/core/Radio";
 import { IncoreRadioGroup } from "../form/IncoreRadioGroup";
 
 
@@ -23,7 +19,7 @@ const useStyles = makeStyles({
 	tableEntry: {
 		display: "block",
 		margin: "50px auto",
-		textAlign: "center"
+		textAlign: "center",
 	},
 	title: {
 		height: "19px",
