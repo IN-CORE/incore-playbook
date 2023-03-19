@@ -15,7 +15,7 @@ export const TeamMember = ({ step, substep }) => {
 					<Box>
 						<BreadCrumb
 							parentStep="Form a Collaborative Planning Team"
-							childStep="Identify collaborative planning team members and their respective roles and responsibilities"
+							childStep="Identify collaborative planning team members"
 							taskNo="1"
 							subtaskNo="1-2"
 						/>
