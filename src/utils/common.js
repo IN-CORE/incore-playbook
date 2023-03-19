@@ -65,6 +65,18 @@ export function getCurrUsername(hostname = "") {
 		}
 	}
 }
+// get current user's full name
+export function getCurrUserFullname(hostname = "") {
+	if (hostname === "http://localhost:8080") {
+		return testUserInfo;
+	} else {
+		let cookie = cookies.get("Authorization");
+		if (cookie !== undefined && cookie !== "" && cookie.split(" ").length > 0) {
+			let userInfo = jwt_decode(cookie.split(" ")[1]);
+			return `${userInfo["given_name"]} ${userInfo["family_name"]}`;
+		}
+	}
+}
 
 // get current users id from datawolf
 export async function getCurrUserDatawolfId(email, datawolfConfig = defaultDatawolfConfig, datawolfWorkflowConfig = defaultDatawolfWorkflowConfig) {
