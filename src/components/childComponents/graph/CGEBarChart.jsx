@@ -12,7 +12,7 @@ const ParseData = (data, region=null) => {
 	}
 
 	const chartData = [];
-	chartData.push(["", "Before Event", "After Event"]);
+	chartData.push(["Million of $", "Before Event", "After Event"]);
 
 	for (const key in beforeEvent) {
 		chartData.push([key, beforeEvent[key], afterEvent[key]]);
@@ -37,11 +37,11 @@ export default function CGEBarChart(props) {
 					colors: ["#A1BE2E", "#DB4F60"],
 					hAxis: {
 						title: xAxisLegend,
-						minValue: 0
 					},
 					vAxis: {
 						title: yAxisLegend
-					}
+					},
+					bars: "horizontal"
 				}}
 				// For tests
 				rootProps={{ "data-testid": "1" }}
