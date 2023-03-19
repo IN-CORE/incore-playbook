@@ -42,4 +42,4 @@ export const Welcome = () => {
 			</Box>
 		</Container>
 	);
-}
+};
