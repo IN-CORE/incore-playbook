@@ -100,7 +100,16 @@ export const UserInfo = () => {
 								Name
 							</TableSortLabel>
 						</TableCell>
-						<TableCell align="center" style={{minWidth:"150px"}}>Role</TableCell>
+						<TableCell align="center" style={{minWidth:"150px"}}
+								   sortDirection={orderBy === "role.name" ? order : false}>
+							<TableSortLabel
+								active={orderBy === "role.name"}
+								direction={orderBy === "role.name" ? order : "asc"}
+								onClick={createSortHandler("role.name")}
+							>
+								Role
+							</TableSortLabel>
+						</TableCell>
 					</TableRow>
 				</TableHead>
 				<TableBody>
