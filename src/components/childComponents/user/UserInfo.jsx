@@ -33,8 +33,10 @@ const useStyles = makeStyles({
 /**
  * Generate a user info form
  */
-export const UserInfo = () => {
+export const UserInfo = (props) => {
 	const classes = useStyles();
+
+	const {editable} = props;
 
 	const dispatch = useDispatch();
 	const getPlaybookUserList = () => dispatch(fetchUserList());
@@ -44,7 +46,7 @@ export const UserInfo = () => {
 	const roles = useSelector((state) => state.user.roles);
 
 	const [order, setOrder] = useState("asc");
-	const [orderBy, setOrderBy] = React.useState("email");
+	const [orderBy, setOrderBy] = React.useState("role.name");
 	const [page, setPage] = React.useState(0);
 	const [rowsPerPage, setRowsPerPage] = React.useState(10);
 
@@ -118,8 +120,7 @@ export const UserInfo = () => {
 							.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
 							.map((user, index) => (
 								<TableRow key={index}>
-									<TableCell component="th" scope="row" align="left" style={{padding: 0, maxWidth: "100%",
-										whiteSpace: "nowrap"}}>
+									<TableCell component="th" scope="row" align="left" style={{maxWidth: "100%", whiteSpace: "nowrap"}}>
 										<Tooltip title={user["username"] ?? ""}>
 											{user["email"] !== undefined ? (
 												<Gravatar className={classes.avatarImg} email={user["email"]} rating="g" />
@@ -135,7 +136,7 @@ export const UserInfo = () => {
 										{user["firstName"]} {user["lastName"]}
 									</TableCell>
 									<TableCell align="center" style={{fontWeight:500}}>
-										<Role roles={roles} user={user} />
+										<Role roles={roles} user={user} editable={editable}/>
 									</TableCell>
 								</TableRow>
 							))}

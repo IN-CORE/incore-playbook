@@ -6,6 +6,7 @@ import { BuiltEnvironment } from "./components/BuiltEnvironment";
 import { CommunityHazards } from "./components/CommunityHazards";
 import { AnticipatedPerformance } from "./components/AnticipatedPerformance";
 import { Login } from "./components/Login";
+import TeamMember from "./components/TeamMember";
 
 const routes = {
 	"/": {
@@ -39,7 +40,7 @@ const routes = {
 		exact: false,
 		component: () => {
 			sessionStorage.setItem("menu", "1-2");
-			return <StaticSubStep menu={"1-2"} step={1} substep={2} />;
+			return <TeamMember step={1} substep={2} />;
 		}
 	},
 	"/create-team-scope": {
