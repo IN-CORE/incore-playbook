@@ -1,32 +1,29 @@
 import React, { useEffect } from "react";
 
-import { Box, Container, Table, TableBody, TableCell, TableHead, TableRow } from "@material-ui/core";
+import { Container, Table, TableBody, TableCell, TableHead, TableRow, Tooltip } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import { useDispatch, useSelector } from "react-redux";
 import Gravatar from "react-gravatar";
 import AccountCircle from "@material-ui/icons/AccountCircle";
 import { fetchRoles, fetchUserList } from "../../../actions/user";
 import { Role } from "./Role";
+import { IncoreLinkSmall } from "../../styledComponents/IncoreLinkSmall";
 
 const useStyles = makeStyles({
-	defaultProfileImage: {
-		height: "200px",
-		width: "200px"
-	},
 	avatarImg: {
 		width: "32px",
 		height: "32px",
 		borderRadius: "50%"
 	},
 	table: {
-		wordBreak: "break-all"
+		wordBreak: "break-all",
 	}
 });
 
 /**
  * Generate a user info form
  */
-export const UserInfo = (props) => {
+export const UserInfo = () => {
 	const classes = useStyles();
 
 	const dispatch = useDispatch();
@@ -42,40 +39,41 @@ export const UserInfo = (props) => {
 
 	return (
 		<Container>
-			<Box className="inputGroup">
-				<Table size="small" className={classes.table} aria-label="simple table">
-					<TableHead>
-						<TableRow>
-							<TableCell align="center" />
-							<TableCell align="center">Username</TableCell>
-							<TableCell align="center">Email</TableCell>
-							<TableCell align="center">Name</TableCell>
-							<TableCell align="center" style={{minWidth:"150px"}}>Role</TableCell>
-						</TableRow>
-					</TableHead>
-					<TableBody>
-						{userList.map((user, index) => (
-							<TableRow key={index}>
-								<TableCell component="th" scope="row" align="center">
+			<Table size="small" className={classes.table} aria-label="simple table">
+				<TableHead>
+					<TableRow>
+						<TableCell align="left" />
+						<TableCell align="left">Email</TableCell>
+						<TableCell align="left">Name</TableCell>
+						<TableCell align="center" style={{minWidth:"150px"}}>Role</TableCell>
+					</TableRow>
+				</TableHead>
+				<TableBody>
+					{userList.map((user, index) => (
+						<TableRow key={index}>
+							<TableCell component="th" scope="row" align="left" style={{padding: 0, maxWidth: "100%",
+								whiteSpace: "nowrap"}}>
+								<Tooltip title={user["username"] ?? ""}>
 									{user["email"] !== undefined ? (
 										<Gravatar className={classes.avatarImg} email={user["email"]} rating="g" />
 									) : (
 										<AccountCircle fontSize="small" />
 									)}
-								</TableCell>
-								<TableCell align="center">{user["username"]}</TableCell>
-								<TableCell align="center">{user["email"]}</TableCell>
-								<TableCell align="center">
-									{user["firstName"]} {user["lastName"]}
-								</TableCell>
-								<TableCell align="center">
-									<Role roles={roles} user={user} />
-								</TableCell>
-							</TableRow>
-						))}
-					</TableBody>
-				</Table>
-			</Box>
+								</Tooltip>
+							</TableCell>
+							<TableCell align="left">
+								<IncoreLinkSmall href={`mailto:${user["email"]}`} style={{fontWeight:400}}>
+									{user["email"]}</IncoreLinkSmall></TableCell>
+							<TableCell align="left">
+								{user["firstName"]} {user["lastName"]}
+							</TableCell>
+							<TableCell align="center" style={{fontWeight:500}}>
+								<Role roles={roles} user={user} />
+							</TableCell>
+						</TableRow>
+					))}
+				</TableBody>
+			</Table>
 		</Container>
 	);
 };
