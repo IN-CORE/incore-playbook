@@ -6,7 +6,7 @@ import { Table, TableBody, TableCell, TableSortLabel, TableContainer, TableHead,
 import { makeStyles } from "@material-ui/core/styles";
 import { IncoreLinkSmall } from "../../styledComponents/IncoreLinkSmall";
 
-import { getComparator, stableSort, prettifyDate } from "./EntryTable";
+import { getComparator, stableSort, prettifyDate } from "../../../utils/common";
 
 const useStyles = makeStyles({
 	table: {
