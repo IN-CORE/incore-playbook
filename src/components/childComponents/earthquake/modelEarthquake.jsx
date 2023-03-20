@@ -97,9 +97,12 @@ export default function ModelEarthquake(props) {
 		if (srcCoordProps.length > 0 && !enableEdit) {
 			const lat = round(FlatCoordToLonLat(srcCoordProps)[1], 3);
 			const long = round(FlatCoordToLonLat(srcCoordProps)[0], 3);
-			setCoordLat(lat);
-			setCoordLon(long);
-			setValidCoord(validateCoord(long, lat, mapConfig.MAP_BOUNDS));
+			if (validateCoord(long, lat, mapConfig.MAP_BOUNDS)){
+				setCoordLat(lat);
+				setCoordLon(long);
+				setValidCoord(true);
+			}
+			else setValidCoord(false);
 		}
 	}, [srcCoordProps, enableEdit]);
 

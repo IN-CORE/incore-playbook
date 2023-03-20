@@ -160,7 +160,7 @@ export default function ModelTornado(props) {
 			setStartLatCoord("");
 			setStartLonCoord("");
 			setEndLatCoord("");
-			setEndLatCoord("");
+			setEndLonCoord("");
 		}
 		setLoading(false);
 	};
