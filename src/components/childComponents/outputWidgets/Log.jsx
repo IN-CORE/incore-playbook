@@ -74,7 +74,7 @@ export default function Log(props) {
 			</DialogContent>
 			<DialogActions>
 				<IncoreButtonText onClick={download} startIcon={<GetAppIcon />}>
-					Download Report
+					Download
 				</IncoreButtonText>
 				<IncoreButtonText onClick={handlePreviewClose} startIcon={<CloseIcon />}>
 					Close

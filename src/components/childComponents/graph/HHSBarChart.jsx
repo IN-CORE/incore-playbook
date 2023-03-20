@@ -17,23 +17,26 @@ export default function HHSBarChart(props) {
 	const { height, width, data, title } = props;
 
 	return (
-		<div className="barChart">
-			<Chart
-				width={width}
-				height={height}
-				chartType="ColumnChart"
-				loader={<div>Loading Chart</div>}
-				data={ParseData(data)}
-				options={{
-					title: title,
-					legend: { position: "none" },
-					bar:{ groupWidth: "50%" },
-					vAxis: {
-						title: "Frequency",
-						titleTextStyle:{ italic: false }
-					},
-				}}
-			/>
-		</div>
+		data ?
+			<div className="barChart">
+				<Chart
+					width={width}
+					height={height}
+					chartType="ColumnChart"
+					loader={<div>Loading Chart</div>}
+					data={ParseData(data)}
+					options={{
+						title: title,
+						legend: { position: "none" },
+						bar:{ groupWidth: "50%" },
+						vAxis: {
+							title: "Frequency",
+							titleTextStyle:{ italic: false }
+						},
+					}}
+				/>
+			</div>
+			:
+			<></>
 	);
 }

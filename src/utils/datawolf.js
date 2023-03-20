@@ -2,6 +2,24 @@ import { getHeader, getCurrUsername, getIncoreTokenFile, getCurrUserDatawolfId }
 import { datawolfConfig as defaultDatawolfConfig } from "../datawolf.config.js";
 import { datawolfWorkflowConfig as defaultDatawolfWorkflowConfig } from "../datawolf.config.js";
 
+export async function checkFileDescriptors(datawolfConfig = defaultDatawolfConfig, datasetId) {
+	let authHeader = getHeader(datawolfConfig.hostname);
+
+	// Get - Result Dataset
+	const datasetResponse = await fetch(`${datawolfConfig["datasetBaseURL"]}/${datasetId}`, {
+		method: "GET",
+		headers: authHeader,
+		mode: "cors"
+	});
+
+	if (datasetResponse.status === 200) {
+		const resultDataset = await datasetResponse.json();
+		return resultDataset.fileDescriptors.length;
+	}
+
+	else return 0;
+}
+
 export async function getOutputFileText(datawolfConfig = defaultDatawolfConfig, datasetId, outputFileName = null) {
 	let authHeader = getHeader(datawolfConfig.hostname);
 
