@@ -30,7 +30,17 @@ export const StaticSubStep = ({ menu, step, substep }) => {
 	let fullHtml = fullHtml00;
 	let breadCrumb = null;
 
-	if (menu === "1-3") {
+	if (menu === "1-2") {
+		fullHtml = fullHtml12;
+		breadCrumb = (
+			<BreadCrumb
+				parentStep="Form a Collaborative Planning Team"
+				childStep="Identify a Resilience Leader for the Community"
+				taskNo="1"
+				subtaskNo="1-2"
+			/>
+		);
+	} else if (menu === "1-3") {
 		fullHtml = fullHtml13;
 		breadCrumb = (
 			<BreadCrumb
@@ -95,7 +105,7 @@ export const StaticSubStep = ({ menu, step, substep }) => {
 		breadCrumb = (
 			<BreadCrumb
 				parentStep="Determine Goals & Objectives"
-				childStep="Identify long-term community goals"
+				childStep="Identify a Resilience Leader for the Community"
 				taskNo="3"
 				subtaskNo="3-1"
 			/>
@@ -105,7 +115,7 @@ export const StaticSubStep = ({ menu, step, substep }) => {
 		breadCrumb = (
 			<BreadCrumb
 				parentStep="Determine Goals & Objectives"
-				childStep="Determine desired performance goals for buildings and infrastructure systems"
+				childStep="Identify a Resilience Leader for the Community"
 				taskNo="3"
 				subtaskNo="3-2"
 			/>

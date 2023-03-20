@@ -65,18 +65,6 @@ export function getCurrUsername(hostname = "") {
 		}
 	}
 }
-// get current user's full name
-export function getCurrUserFullname(hostname = "") {
-	if (hostname === "http://localhost:8080") {
-		return testUserInfo;
-	} else {
-		let cookie = cookies.get("Authorization");
-		if (cookie !== undefined && cookie !== "" && cookie.split(" ").length > 0) {
-			let userInfo = jwt_decode(cookie.split(" ")[1]);
-			return `${userInfo["given_name"]} ${userInfo["family_name"]}`;
-		}
-	}
-}
 
 // get current users id from datawolf
 export async function getCurrUserDatawolfId(email, datawolfConfig = defaultDatawolfConfig, datawolfWorkflowConfig = defaultDatawolfWorkflowConfig) {
@@ -285,53 +273,4 @@ export function csvToArray(str, delimiter = ",", includeHeader=true) {
 	// return the array
 	if (includeHeader) return [headers, ...rows_arr];
 	else return rows_arr;
-}
-
-
-export function stableSort(array, comparator) {
-	const stabilizedThis = array.map((el, index) => [el, index]);
-	stabilizedThis.sort((a, b) => {
-		const order = comparator(a[0], b[0]);
-		if (order !== 0) return order;
-		return a[1] - b[1];
-	});
-	return stabilizedThis.map((el) => el[0]);
-}
-
-
-export function getComparator(order, orderBy) {
-	return order === "desc"
-		? (a, b) => descendingComparator(a, b, orderBy)
-		: (a, b) => -descendingComparator(a, b, orderBy);
-}
-
-export function descendingComparator(a, b, orderBy) {
-	// if (b[orderBy] < a[orderBy]) {
-	if (ObjectByString(b, orderBy) < ObjectByString(a, orderBy)) {
-		return -1;
-	}
-	// if (b[orderBy] > a[orderBy]) {
-	if (ObjectByString(b, orderBy) > ObjectByString(a, orderBy)) {
-		return 1;
-	}
-	return 0;
-}
-
-export function prettifyDate(date) {
-	return date.slice(0, 10);
-}
-
-function ObjectByString(o, s) {
-	s = s.replace(/\[(\w+)\]/g, ".$1"); // convert indexes to properties
-	s = s.replace(/^\./, "");           // strip a leading dot
-	const a = s.split(".");
-	for (let i = 0, n = a.length; i < n; ++i) {
-		let k = a[i];
-		if (k in o) {
-			o = o[k];
-		} else {
-			return;
-		}
-	}
-	return o;
 }

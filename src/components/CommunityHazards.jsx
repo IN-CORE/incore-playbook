@@ -24,7 +24,7 @@ import { getHazardGroupLayers } from "../utils/map";
 
 import Pagination from "./childComponents/navigation/Pagination";
 
-import { SortedEntryTable } from "./childComponents/table/SortedEntryTable";
+import { EntryTable } from "./childComponents/table/EntryTable";
 import BreadCrumb from "./childComponents/navigation/BreadCrumb";
 import fullHtml from "../public/steps/3-3.html";
 import StepInfo from "./StepInfo";
@@ -52,16 +52,12 @@ const useStyles = makeStyles({
 	},
 	tab: {
 		height: "17px",
-		color: "rgb(0, 97, 157)",
-		backgroundColor: "#f2f4ff",
+		color: "#69707F",
 		fontSize: "14px",
 		fontWeight: 500,
 		letterSpacing: 0,
 		lineHeight: "17px",
 		textTransform: "None"
-	},
-	selectedTab: {
-		backgroundColor: "#eaedff"
 	},
 	mapContainer: {
 		height: "700px"
@@ -98,11 +94,9 @@ export const CommunityHazards = (props) => {
 
 	const [selectedHazardType, setSelectedHazardType] = useState(allowedHazardTypes[0]);
 
-	const [fields, setFields] = React.useState([]);
 	const [dataPerPage, setDataPerPage] = React.useState(5);
-	// use limit for getting data and data to be displayed per page separately
-	const [limit, setDataLimit] = React.useState(200);
 	const [pageNumber, setPageNumber] = React.useState(1);
+	const [offset, setOffset] = React.useState(0);
 	const [olIdLayerMap, setOlIdLayerMap] = React.useState(new Set());
 	const [enableSrcEdit, setEnableSrcEdit] = React.useState(false); // directly edit in the child component geolocation
 	const [mapDialogOpen, setMapDialogOpen] = React.useState(false); // map prompt
@@ -191,12 +185,11 @@ export const CommunityHazards = (props) => {
 		setEnableSrcEdit(false);
 
 		// setup prompt
-		if (
-			(selectedHazardType === "tornado" && currTabIndex === 1) ||
-			(selectedHazardType === "earthquake" && currTabIndex === 1)
-		) {
+		if ((selectedHazardType === "tornado" && currTabIndex === 1)
+			|| (selectedHazardType === "earthquake" && currTabIndex === 1)) {
 			setMapDialogOpen(true);
 		}
+
 	}, [selectedHazardType, currTabIndex]);
 
 	useEffect(() => {
@@ -224,7 +217,8 @@ export const CommunityHazards = (props) => {
 				setStartCoord(geometry.getFirstCoordinate());
 				setEndCoord(geometry.getLastCoordinate());
 			});
-		} else if (selectedHazardType === "earthquake" && currTabIndex === 1 && !enableSrcEdit) {
+		}
+		else if (selectedHazardType === "earthquake" && currTabIndex === 1 && !enableSrcEdit) {
 			drawInteractionRef.current = new Draw({
 				source: drawSourceRef.current,
 				type: "Point"
@@ -236,7 +230,8 @@ export const CommunityHazards = (props) => {
 				const geometry = event.feature.getGeometry();
 				setSrcCoord(geometry.getFlatCoordinates());
 			});
-		} else {
+		}
+		else {
 			drawInteractionRef.current = null;
 		}
 
@@ -272,7 +267,8 @@ export const CommunityHazards = (props) => {
 				setStartCoord(geometry.getFirstCoordinate());
 				setEndCoord(geometry.getLastCoordinate());
 			});
-		} else if (selectedHazardType === "earthquake" && currTabIndex === 1 && !enableSrcEdit) {
+		}
+		else if (selectedHazardType === "earthquake" && currTabIndex === 1 && !enableSrcEdit) {
 			// when edit the textbox doesn't allow draw
 			drawInteractionRef.current = new Draw({
 				source: drawSourceRef.current,
@@ -285,7 +281,8 @@ export const CommunityHazards = (props) => {
 				const geometry = event.feature.getGeometry();
 				setSrcCoord(geometry.getFlatCoordinates());
 			});
-		} else {
+		}
+		else {
 			drawInteractionRef.current = null;
 		}
 
@@ -390,23 +387,26 @@ export const CommunityHazards = (props) => {
 
 	const pageChange = (direction) => {
 		if (direction === "previous") {
+			setOffset((pageNumber - 2) * dataPerPage);
 			setPageNumber(pageNumber - 1);
 		} else if (direction === "next") {
+			setOffset(pageNumber * dataPerPage);
 			setPageNumber(pageNumber + 1);
 		}
 	};
 
 	// change hazard type
 	useEffect(() => {
+		setOffset(0);
 		setPageNumber(1);
 		// start from page 1 again
-		listHazards(globalConfig, selectedHazardType, limit, 0);
+		listHazards(globalConfig, selectedHazardType, dataPerPage, offset);
 	}, [selectedHazardType]);
 
 	// page changes
 	useEffect(() => {
-		setFields(getRow(selectedHazardType));
-	}, [pageNumber, earthquakes, tornadoes, hurricanes, tsunamis, floods]);
+		listHazards(globalConfig, selectedHazardType, dataPerPage, offset);
+	}, [offset, dataPerPage]);
 
 	return (
 		<Layout>
@@ -461,10 +461,7 @@ export const CommunityHazards = (props) => {
 							{/*Tabs*/}
 							<Box className={classes.tabDiv}>
 								<Tabs
-									TabIndicatorProps={{
-										style: { background: "#00619D" }
-									}}
-									selectionFollowsFocus={true}
+									TabIndicatorProps={{ style: { background: "#00619D" } }}
 									aria-label="create tornado tabs"
 									value={currTabIndex}
 									className={classes.tabs}
@@ -473,23 +470,11 @@ export const CommunityHazards = (props) => {
 									}}
 								>
 									{/*only certain hazard type has model based creation*/}
-									<Tab
-										label="Upload a Hazard Dataset"
-										className={classes.tab}
-										classes={{ selected: classes.selectedTab }}
-									/>
+									<Tab label="Upload a Hazard Dataset" className={classes.tab} />
 									{selectedHazardType === "tornado" || selectedHazardType === "earthquake" ? (
-										<Tab
-											label="Create a Hazard"
-											className={classes.tab}
-											classes={{ selected: classes.selectedTab }}
-										/>
+										<Tab label="Create a Hazard" className={classes.tab} />
 									) : null}
-									<Tab
-										label="View Created"
-										className={classes.tab}
-										classes={{ selected: classes.selectedTab }}
-									/>
+									<Tab label="View Created" className={classes.tab} />
 								</Tabs>
 								{
 									// different hazard type will have different UI
@@ -583,13 +568,9 @@ export const CommunityHazards = (props) => {
 												// selectedHazardType: are earthquake, flood, hurricane, tsunami, tornado
 												selectedHazardType !== "" ? (
 													<>
-														<SortedEntryTable
+														<EntryTable
 															fieldNames={fieldNames}
-															// fields={getRow(selectedHazardType)}
-															fields={fields}
-															pageNum={pageNumber}
-															dataPerPage={dataPerPage}
-															setPageNum={setPageNumber}
+															fields={getRow(selectedHazardType)}
 														/>
 														<Pagination
 															pageNumber={pageNumber}
@@ -621,23 +602,17 @@ export const CommunityHazards = (props) => {
 								>
 									Clear All
 								</Button>
-								{selectedHazardType === "tornado" && currTabIndex === 1 ? (
-									<TornadoMapDrawPrompt
-										mapDialogOpen={mapDialogOpen}
-										handleMapDialogClose={() => {
-											setMapDialogOpen(false);
-										}}
-									/>
-								) : selectedHazardType === "earthquake" && currTabIndex === 1 ? (
-									<EqMapDrawPrompt
-										mapDialogOpen={mapDialogOpen}
-										handleMapDialogClose={() => {
-											setMapDialogOpen(false);
-										}}
-									/>
-								) : (
-									<></>
-								)}
+								{
+									selectedHazardType === "tornado" && currTabIndex === 1 ?
+										<TornadoMapDrawPrompt mapDialogOpen={mapDialogOpen}
+															  handleMapDialogClose={()=>{setMapDialogOpen(false);}} />
+															  :
+										selectedHazardType === "earthquake" && currTabIndex === 1 ?
+											<EqMapDrawPrompt mapDialogOpen={mapDialogOpen}
+															 handleMapDialogClose={()=>{setMapDialogOpen(false);}} />
+															 :
+											<></>
+								}
 								<Map
 									className="fillContainer"
 									zoom={mapConfig.ZOOM}

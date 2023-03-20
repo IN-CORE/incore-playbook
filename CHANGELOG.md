@@ -5,29 +5,6 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
-
-## [0.5.3] - 2023-03-20
-
-### Added
-
-- Added grouping logic in capital shock's bar chart and added colors [#201](https://github.com/IN-CORE/incore-playbook/issues/201)
-
-### Changed
-- Add title and description to form validaiton in step 3-4 [#191](https://github.com/IN-CORE/incore-playbook/issues/191)
-- UI Changes according to several feedbacks from stress test session [#195](https://github.com/IN-CORE/incore-playbook/issues/195)
-- Change sorting logic for step 3-3 to view created hazards first [#197](https://github.com/IN-CORE/incore-playbook/issues/197)
-- Removed linking for steps from static html pages [#198](https://github.com/IN-CORE/incore-playbook/issues/198)
-- Add validation and styling for coordinates entered in Step 3-3 for tornado and earthquake [#189](https://github.com/IN-CORE/incore-playbook/issues/189)
-- Add column to display link to download data and reordered columns [#196](https://github.com/IN-CORE/incore-playbook/issues/196)
-- Fixed bounding box error jump to random number when typing weird value [#207](https://github.com/IN-CORE/incore-playbook/pull/207)
-
-
-## [0.5.2] - 2023-03-15
-
-### Changed
-- Check datawolf dataset file descriptor lengths to decide if render widget or not
-
-
 ## [0.5.1] - 2023-03-15
 
 ### Added

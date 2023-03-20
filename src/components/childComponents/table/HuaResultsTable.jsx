@@ -9,7 +9,6 @@ import FormControl from "@material-ui/core/FormControl";
 import FormLabel from "@material-ui/core/FormLabel";
 import { makeStyles } from "@material-ui/core/styles";
 import { round } from "../../../utils/common";
-import { IncoreRadioGroup } from "../form/IncoreRadioGroup";
 
 const tableColumnHead = {
 	color: "#69707F",
@@ -108,28 +107,6 @@ const useStyles = makeStyles({
 
 export function HuaResultsTable(props) {
 	const [huaBy, setHuaBy] = React.useState("tenure");
-	const [filterOptions, setFilterOptions] = React.useState([
-		{
-			"value": "tenure",
-			"name": "by Tenure"
-		},
-		{
-			"value": "race",
-			"name": "by Race / Ethnicity"
-		},
-		{
-			"value": "income",
-			"name": "by Household Income Level"
-		},
-		{
-			"value": "housingType",
-			"name": "by Housing Type"
-		},
-		{
-			"value": "disability",
-			"name": "by Disability"
-		},
-	]);
 
 	const handleChange = (event) => {
 		setHuaBy(event.target.value);
@@ -148,15 +125,50 @@ export function HuaResultsTable(props) {
 
 	const classes = useStyles();
 
-
-
 	return (
 		<div>
 			<div style={{ paddingLeft: "6px" }}>
 				<FormLabel component="legend" className={classes.title}>
 					Household Dislocation
 				</FormLabel>
-				<IncoreRadioGroup options={filterOptions} value={huaBy} handleChange={handleChange} />
+
+				<FormControl component="fieldset">
+					<RadioGroup
+						row
+						aria-label="Household Dislocation"
+						name="huaBy"
+						value={huaBy}
+						className={classes.radio}
+						onChange={handleChange}
+					>
+						<FormControlLabel
+							value="tenure"
+							control={<Radio color="primary" size="small" />}
+							className={classes.label}
+							label={<Typography className={classes.label}>by Tenure</Typography>}
+						/>
+						<FormControlLabel
+							value="race"
+							control={<Radio color="primary" size="small" />}
+							label={<Typography className={classes.label}>by Race / Ethnicity</Typography>}
+						/>
+						<FormControlLabel
+							value="income"
+							control={<Radio color="primary" size="small" />}
+							label={<Typography className={classes.label}>by Household Income Level</Typography>}
+						/>
+						<FormControlLabel
+							value="housingType"
+							control={<Radio color="primary" size="small" />}
+							label={<Typography className={classes.label}>by Housing Type</Typography>}
+						/>
+						<FormControlLabel
+							value="disability"
+							control={<Radio color="primary" size="small" />}
+							label={<Typography className={classes.label}>by Disability</Typography>}
+						/>
+					</RadioGroup>
+				</FormControl>
 			</div>
 
 			{resultsJson !== undefined ? (
