@@ -1,9 +1,8 @@
 import React, { useEffect, useRef, useState } from "react";
 
-import { Box, Dialog, DialogActions, DialogContent, Grid, IconButton, Typography } from "@material-ui/core";
+import { Box, Container, Dialog, DialogActions, DialogContent, Grid, IconButton, Typography } from "@material-ui/core";
 import CloseIcon from "@material-ui/icons/Close";
 import HHSBarChart from "../graph/HHSBarChart";
-import { IncoreMenuItem, IncoreSelectBox } from "../../styledComponents/IncoreSelect";
 import { downloadOutputFile, getOutputFileContentJSON } from "../../../utils/datawolf";
 import { useSelector } from "react-redux";
 import { IncoreButtonText } from "../../styledComponents/IncoreButtonText";
@@ -11,6 +10,9 @@ import GetAppIcon from "@material-ui/icons/GetApp";
 import HhsDescription from "../step/HhsDescription";
 import { downloadImg } from "../../../utils/image";
 import CameraAltIcon from "@material-ui/icons/CameraAlt";
+import HhsSlider from "../form/HhsSlider";
+import { IncoreTitle } from "../../styledComponents/IncoreTitle";
+import { IncoreInputLabel } from "../../styledComponents/IncoreInputLabel";
 
 export default function HHS(props) {
 	let { executionItem, previewOn, handlePreviewClose, datawolfDatasetConfigItems, setDownloadDialogOpen } = props;
@@ -18,6 +20,29 @@ export default function HHS(props) {
 	const datawolfConfig = useSelector((state) => state.config.datawolfConfig);
 
 	const [selectedExecutionName, setSelectedExecutionName] = useState("");
+	const [marks, setMarks] = useState([
+		{
+			value: 1,
+			label: "0",
+		},
+		{
+			value: 7,
+			label: "6",
+		},
+		{
+			value: 13,
+			label: "12",
+		},
+		{
+			value: 25,
+			label: "24",
+		},
+		{
+			value: 49,
+			label: "48",
+		},
+	]);
+
 	const [HHSBarChartContent, setHHSBarChartContent] = useState({ 1: [], 7: [], 13: [], 25: [], 49: [] });
 	const [HhsDownload, setHhsDownload] = useState();
 	const [t, setT] = useState("1");
@@ -64,36 +89,16 @@ export default function HHS(props) {
 				<Box style={{ padding: "5px 25px 25px 25px" }}>
 					<Grid container spacing={3} justify="center">
 						<Grid item xs={12} sm={12} md={8} lg={8} xl={8}>
-							{/*dropdown*/}
-							<IncoreSelectBox
-								labelId="label"
-								id="select"
-								variant="outlined"
-								onChange={(e) => {
-									setT(e.target.value);
-								}}
-								value={t}
-								style={{ maxWidth: "500px" }}
-							>
-								<IncoreMenuItem value="1" key="1">
-									Immediately after the disaster
-								</IncoreMenuItem>
-								<IncoreMenuItem value="7" key="7">
-									6 month post-disaster
-								</IncoreMenuItem>
-								<IncoreMenuItem value="13" key="13">
-									12 months post-disaster
-								</IncoreMenuItem>
-								<IncoreMenuItem value="25" key="25">
-									24 months post-disaster
-								</IncoreMenuItem>
-								<IncoreMenuItem value="49" key="49">
-									48 months post-disaster
-								</IncoreMenuItem>
-							</IncoreSelectBox>
-
-							{/*table and barchart*/}
-							<Box style={{ margin: "50px 0", maxWidth: "700px" }}>
+							<Box style={{ maxWidth: "700px" }}>
+								{/*Sliders*/}
+								<Container style={{width: "80%", margin: 0}}>
+									<IncoreInputLabel id="discrete-slider-restrict" gutterBottom>
+										Months after the disaster
+									</IncoreInputLabel>
+									<HhsSlider marks={marks}
+											   value={t}
+											   handleChange={(e, newValue) => {setT(newValue);}}/>
+								</Container>
 								{HHSBarChartContent ? (
 									<HHSBarChart
 										data={HHSBarChartContent[t]}
@@ -121,7 +126,7 @@ export default function HHS(props) {
 					Image
 				</IncoreButtonText>
 				<IncoreButtonText onClick={download} startIcon={<GetAppIcon />}>
-					Download Report
+					Download
 				</IncoreButtonText>
 				<IncoreButtonText onClick={handlePreviewClose} startIcon={<CloseIcon />}>
 					Close

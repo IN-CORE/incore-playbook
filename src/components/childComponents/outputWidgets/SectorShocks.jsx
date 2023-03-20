@@ -56,8 +56,7 @@ export default function SectorShocks(props) {
 					<Typography className="previewTitle">{selectedExecutionName}</Typography>
 					<Typography className="previewTitle">Select Data: Sector Shocks Results</Typography>
 				</Box>
-
-				<Box style={{ padding: "2em" }}>
+				<Box>
 					{/*table and barchart*/}
 					{(() => {
 						if (sectorShocksContent) {

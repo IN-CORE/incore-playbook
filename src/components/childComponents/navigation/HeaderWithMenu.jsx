@@ -6,13 +6,13 @@ import clsx from "clsx";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import IconButton from "@material-ui/core/IconButton";
-import Badge from "@material-ui/core/Badge";
+// import Badge from "@material-ui/core/Badge";
 import MenuItem from "@material-ui/core/MenuItem";
 import Menu from "@material-ui/core/Menu";
 import MenuIcon from "@material-ui/icons/Menu";
 import AccountCircle from "@material-ui/icons/AccountCircle";
-import MailIcon from "@material-ui/icons/Mail";
-import NotificationsIcon from "@material-ui/icons/Notifications";
+// import MailIcon from "@material-ui/icons/Mail";
+// import NotificationsIcon from "@material-ui/icons/Notifications";
 import Box from "@material-ui/core/Box";
 
 import Drawer from "@material-ui/core/Drawer";
@@ -41,6 +41,7 @@ import Gravatar from "react-gravatar";
 
 import "../../../styles/main.css";
 import { getCurrEmail } from "../../../utils/common";
+import { Welcome } from "../user/Welcome";
 
 const cookies = new Cookies();
 
@@ -54,7 +55,11 @@ const useStyles = makeStyles((theme) => ({
 		transition: theme.transitions.create(["margin", "width"], {
 			easing: theme.transitions.easing.sharp,
 			duration: theme.transitions.duration.leavingScreen
-		})
+		}),
+		background: "#FFFFFF",
+		boxShadow: "none",
+		borderBottom: "solid 1px #E4E8F0",
+		padding:"0.5em",
 	},
 	appBarShift: {
 		width: `calc(100% - ${drawerWidth}px)`,
@@ -62,7 +67,7 @@ const useStyles = makeStyles((theme) => ({
 		transition: theme.transitions.create(["margin", "width"], {
 			easing: theme.transitions.easing.easeOut,
 			duration: theme.transitions.duration.enteringScreen
-		})
+		}),
 	},
 	drawer: {
 		width: drawerWidth,
@@ -86,8 +91,9 @@ const useStyles = makeStyles((theme) => ({
 		marginRight: theme.spacing(0.5)
 	},
 	menuIcon: {
-		height: 36,
-		width: 36
+		height: "32px",
+		width: "32px",
+		color: "#69707F",
 	},
 	statusIcon: {
 		color: "#00619D",
@@ -126,8 +132,8 @@ const useStyles = makeStyles((theme) => ({
 		textTransform: "capitalize"
 	},
 	avatarImg: {
-		width: "1.5rem",
-		height: "1.5rem",
+		width: "32px",
+		height: "32px",
 		borderRadius: "50%"
 	}
 }));
@@ -635,6 +641,9 @@ const HeaderWithMenu = ({
 					aria-labelledby="nested-list-subheader"
 					style={{ padding: 0 }}
 				>
+					{/*Welcome Section*/}
+					<Welcome />
+
 					{menus}
 				</List>
 			</Drawer>

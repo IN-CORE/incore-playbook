@@ -11,15 +11,15 @@ import { useSelector } from "react-redux";
 import { IncoreButtonText } from "../../styledComponents/IncoreButtonText";
 import { downloadImg } from "../../../utils/image";
 import CameraAltIcon from "@material-ui/icons/CameraAlt";
-import { IncoreInputLabel } from "../../styledComponents/IncoreInputLabel";
-import { IncoreMenuItem, IncoreSelectBox } from "../../styledComponents/IncoreSelect";
+import FormLabel from "@material-ui/core/FormLabel";
+import { IncoreRadioGroup } from "../form/IncoreRadioGroup";
 
 
 const useStyles = makeStyles({
 	tableEntry: {
 		display: "block",
 		margin: "50px auto",
-		textAlign: "center"
+		textAlign: "center",
 	},
 	title: {
 		height: "19px",
@@ -41,6 +41,12 @@ const useStyles = makeStyles({
 		lineHeight: "22px",
 		textAlign: "center",
 		textTransform: "capitalize"
+	},
+	radio: {
+		color: "#69707F"
+	},
+	label: {
+		fontSize: "12px"
 	}
 });
 
@@ -64,10 +70,20 @@ export default function ResilienceMetrics(props) {
 	const [cgeDomesticSupplyContent, setCgeDomesticSupplyContent] = useState(null);
 	const [cgeEmploymentContent, setCgeEmploymentContent] = useState(null);
 	const [bldgFuncSummaryTableContent, setBldgFuncSummaryTableContent] = useState(null);
-	const [region, setRegion] = useState(globalConfig["allowedRegions"] ? globalConfig["allowedRegions"][0] : null);
+	const [cgeHhIncomeRegion, setCgeHhIncomeRegion] = useState(globalConfig["allowedRegions"] ? globalConfig["allowedRegions"][0] : null);
+	const [cgeDomesticSupplyRegion, setCgeDomesticSupplyRegion] = useState(globalConfig["allowedRegions"] ? globalConfig["allowedRegions"][0] : null);
+	const [cgeEmploymentRegion, setCgeEmploymentRegion] = useState(globalConfig["allowedRegions"] ? globalConfig["allowedRegions"][0] : null);
+
+	const [cgeFilterOptions, setCgeFilterOptions] = useState(globalConfig["allowedRegions"] ?
+		globalConfig["allowedRegions"].reduce((state, region)=>{
+			return [...state, {"name": region, "value": region}];
+		}, [])
+		:
+		[]);
 
 	// print container
 	const printRef = useRef();
+
 
 	useEffect(()=> {
 		setSelectedExecutionName(executionItem["title"]);
@@ -209,59 +225,44 @@ export default function ResilienceMetrics(props) {
 					id="tabpanel-economic-stability"
 					aria-labelledby="economic stability"
 				>
-					{/*regions*/}
-					{
-						globalConfig["allowedRegions"] ?
-							<Box style={{margin: "1em auto"}}>
-								<IncoreInputLabel>Select A Region</IncoreInputLabel>
-								<IncoreSelectBox
-									labelId="label"
-									id="select"
-									variant="outlined"
-									onChange={(e) => {
-										setRegion(e.target.value);
-									}}
-									value={region}
-									style={{ maxWidth: "500px" }}
-								>
-									{
-										globalConfig["allowedRegions"] ? globalConfig["allowedRegions"].map((allowedRegion) => {
-											return (<IncoreMenuItem value={allowedRegion} key={allowedRegion}>
-												{allowedRegion}
-											</IncoreMenuItem>);
-										})
-											:
-											null
-									}
-								</IncoreSelectBox>
-							</Box>
-							:
-							null
-					}
 					{cgeHouseholdIncomeContent ? (
 						<Box className={classes.tableEntry}>
-							<Typography className={classes.title}>Household Income</Typography>
-							<CgeResultsTable resultsJson={cgeHouseholdIncomeContent} isMetrics={true} region={region}/>
+							<div style={{ paddingLeft: "6px" }}>
+								<FormLabel component="legend" className={classes.title}>
+									Household Income
+								</FormLabel>
+								<IncoreRadioGroup options={cgeFilterOptions} value={cgeHhIncomeRegion}
+												  handleChange={(e) => { setCgeHhIncomeRegion(e.target.value);}} />
+							</div>
+							<CgeResultsTable resultsJson={cgeHouseholdIncomeContent} isMetrics={true} region={cgeHhIncomeRegion}/>
 						</Box>
 					) : (
 						<></>
 					)}
 					{cgeEmploymentContent ? (
 						<Box className={classes.tableEntry}>
-							<Typography className={classes.title}>Employment</Typography>
-							<CgeResultsTable resultsJson={cgeEmploymentContent} isMetrics={true} region={region}/>
+							<FormLabel component="legend" className={classes.title}>
+								Employment
+							</FormLabel>
+							<IncoreRadioGroup options={cgeFilterOptions} value={cgeEmploymentRegion}
+											  handleChange={(e) => { setCgeEmploymentRegion(e.target.value);}} />
+							<CgeResultsTable resultsJson={cgeEmploymentContent} isMetrics={true} region={cgeEmploymentRegion}/>
 						</Box>
 					) : (
 						<></>
 					)}
 					{cgeDomesticSupplyContent ? (
 						<Box className={classes.tableEntry}>
-							<Typography className={classes.title}>Community-level GDP</Typography>
+							<FormLabel component="legend" className={classes.title}>
+								Community-level GDP
+							</FormLabel>
+							<IncoreRadioGroup options={cgeFilterOptions} value={cgeDomesticSupplyRegion}
+											  handleChange={(e) => { setCgeDomesticSupplyRegion(e.target.value);}} />
 							<CgeResultsTable
 								resultsJson={cgeDomesticSupplyContent}
 								yAxisLegend="Person"
 								isMetrics={true}
-								region={region}
+								region={cgeDomesticSupplyRegion}
 							/>
 						</Box>
 					) : (

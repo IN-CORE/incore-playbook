@@ -14,12 +14,16 @@ const useStyles = makeStyles({
 	tab: {
 		height: "22px",
 		color: "#69707F",
+		backgroundColor: "#f2f4ff",
 		fontSize: "18px",
 		fontWeight: "500",
 		letterSpacing: 0,
 		lineHeight: "22px",
 		textAlign: "center",
 		textTransform: "capitalize"
+	},
+	selectedTab: {
+		backgroundColor: "#eaedff"
 	}
 });
 
@@ -41,7 +45,11 @@ export const AnticipatedPerformance = (props) => {
 	return (
 		<Layout>
 			<div className="firstDivInContent">
-				<Box display="flex" style={{alignItem:"center", padding:"1em 0"}} sx={{ justifyContent: "space-between" }}>
+				<Box
+					display="flex"
+					style={{ alignItem: "center", padding: "1em 0" }}
+					sx={{ justifyContent: "space-between" }}
+				>
 					<Box>
 						<BreadCrumb
 							parentStep="Determine Goals & Objectives"
@@ -50,8 +58,8 @@ export const AnticipatedPerformance = (props) => {
 							subtaskNo="3-4"
 						/>
 					</Box>
-					<Box style={{marginRight:"2em"}}>
-						<StepStatusDropdown step={step} substep={substep} style={{marginLeft:"auto"}}/>
+					<Box style={{ marginRight: "2em" }}>
+						<StepStatusDropdown step={step} substep={substep} style={{ marginLeft: "auto" }} />
 					</Box>
 				</Box>
 				<Box className="outerBox">
@@ -70,11 +78,13 @@ export const AnticipatedPerformance = (props) => {
 									label="run analysis"
 									className={classes.tab}
 									style={currTabIndex === 0 ? { color: "#00619D" } : {}}
+									classes={{ selected: classes.selectedTab }}
 								/>
 								<Tab
 									label="view results"
 									className={classes.tab}
 									style={currTabIndex === 1 ? { color: "#00619D" } : {}}
+									classes={{ selected: classes.selectedTab }}
 								/>
 							</Tabs>
 							<RunAnalysis
