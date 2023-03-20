@@ -114,14 +114,10 @@ export default function ViewResult(props) {
 
 	// form check
 	useEffect(() => {
-		if (
-			Object.keys(datawolfFormState).every((k) => Object.values(datawolfFormState[k])[0] !== null) &&
-			title !== "" &&
-			description !== ""
-		)
+		if (Object.keys(datawolfFormState).every((k) => Object.values(datawolfFormState[k])[0] !== null))
 			setDisabled(false);
 		else setDisabled(true);
-	}, [datawolfFormState, title, description]);
+	}, [datawolfFormState]);
 
 	const handleRunButtonClick = async () => {
 		const datawolfExecutionStatus = await submitExecution(
@@ -169,7 +165,7 @@ export default function ViewResult(props) {
 			<Grid container spacing={3}>
 				<Grid item xl={7} lg={7} md={7} sm={7} xs={12}>
 					<Box className="inputGroup" style={{ height: "auto" }}>
-						<IncoreInputLabel className="required-field">Title</IncoreInputLabel>
+						<IncoreInputLabel>Title</IncoreInputLabel>
 						<IncoreTextField
 							variant="outlined"
 							value={title}
@@ -179,7 +175,7 @@ export default function ViewResult(props) {
 						/>
 					</Box>
 					<Box className="inputGroup" style={{ height: "auto" }}>
-						<IncoreInputLabel className="required-field">Description</IncoreInputLabel>
+						<IncoreInputLabel>Description</IncoreInputLabel>
 						<IncoreTextField
 							variant="outlined"
 							value={description}
@@ -192,7 +188,7 @@ export default function ViewResult(props) {
 						if (!item.hidden) {
 							return (
 								<Box className="inputGroup" style={{ height: "auto" }}>
-									<IncoreInputLabel className="required-field">{item.title}</IncoreInputLabel>
+									<IncoreInputLabel>{item.title}</IncoreInputLabel>
 									{(() => {
 										// instantiate widget based on definitions
 										return React.cloneElement(registeredWidgets[item.widget], {

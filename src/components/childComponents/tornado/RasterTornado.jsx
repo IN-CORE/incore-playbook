@@ -71,7 +71,7 @@ export default function RasterTornado(props) {
 				<Container>
 					<LoadingOverlay active={loading} spinner text="Saving...">
 						<Box className="inputGroup">
-							<IncoreInputLabel className="required-field">Name</IncoreInputLabel>
+							<IncoreInputLabel>Name</IncoreInputLabel>
 							<IncoreTextField
 								value={name}
 								variant="outlined"
@@ -79,7 +79,7 @@ export default function RasterTornado(props) {
 							/>
 						</Box>
 						<Box className="inputGroup">
-							<IncoreInputLabel className="required-field">Description</IncoreInputLabel>
+							<IncoreInputLabel>Description</IncoreInputLabel>
 							<IncoreTextField
 								value={description}
 								variant="outlined"
@@ -88,7 +88,6 @@ export default function RasterTornado(props) {
 						</Box>
 						<Box className="inputGroup">
 							<FileUploadDrop
-								className="required-field"
 								onDrop={onDrop}
 								onFileInputChange={onFileInputChange}
 								fileInput={fileInputRef}

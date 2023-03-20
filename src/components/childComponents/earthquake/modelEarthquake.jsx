@@ -19,11 +19,11 @@ import { validateCoord } from "../../../utils/map";
 const useStyles = makeStyles({
 	srcLatLabel: {
 		fontSize: "14px",
-		color: "#D63649"
+		color: "#D63649",
 	},
 	srcLonLabel: {
 		fontSize: "14px",
-		color: "#96B712"
+		color: "#96B712",
 	},
 	coordInput: {
 		color: "#2E384D",
@@ -37,7 +37,7 @@ const useStyles = makeStyles({
 		fontSize: "14px",
 		height: "18px",
 		border: "0 none",
-		backgroundColor: "#FFFFFF",
+		background: "transparent",
 		fontStyle: "italic"
 	},
 	coordBox: {
@@ -47,26 +47,17 @@ const useStyles = makeStyles({
 		fontWeight: "500",
 		lineHeight: "18px",
 		letterSpacing: 0,
-		// backgroundColor: "#EDF5F5",
+		backgroundColor: "#FFFFFF",
 		border: "1px solid rgba(0, 0, 0, 0.23)",
 		borderRadius: "4px",
 		textAlign: "center",
-		paddingLeft: "11.25px"
+		paddingLeft: "11.25px",
 	}
 });
 
 export default function ModelEarthquake(props) {
-	const {
-		value,
-		index,
-		srcCoordProps,
-		setSrcCoordProps,
-		handleLayerUpdate,
-		handleListUpdate,
-		enableEdit,
-		setEnableEdit,
-		...other
-	} = props;
+	const { value, index, srcCoordProps, setSrcCoordProps, handleLayerUpdate, handleListUpdate, enableEdit,
+		setEnableEdit, ...other } = props;
 	const classes = useStyles();
 
 	const globalConfig = useSelector((state) => state.config.globalConfig);
@@ -76,7 +67,7 @@ export default function ModelEarthquake(props) {
 	const [description, setDescription] = useState("");
 	const [coordLat, setCoordLat] = useState(null);
 	const [coordLon, setCoordLon] = useState(null);
-	const [magnitude, setMagnitude] = useState(6.2);
+	const [magnitude, setMagnitude] = useState(7.9);
 	const [depth, setDepth] = useState(10);
 	const [demandType, setDemandType] = useState("PGA");
 	const [demandUnits, setDemandUnits] = useState("g");
@@ -84,25 +75,21 @@ export default function ModelEarthquake(props) {
 	const [faultTypeMap, setFaultTypeMap] = useState("Strike-Slip");
 	const [disabled, setDisabled] = useState(true);
 	const [loading, setLoading] = useState(false);
-	const [validCoord, setValidCoord] = useState(true);
 
 	// form check
 	useEffect(() => {
-		if (name && description && coordLat && coordLon && magnitude && depth && !enableEdit) setDisabled(false);
+		if (
+			name && description && coordLat && coordLon && magnitude && depth && !enableEdit
+		)
+			setDisabled(false);
 		else setDisabled(true);
 	}, [name, description, coordLat, coordLon, enableEdit]);
 
 	// update start and end based on map click (parent prop change)
 	useEffect(() => {
 		if (srcCoordProps.length > 0 && !enableEdit) {
-			const lat = round(FlatCoordToLonLat(srcCoordProps)[1], 3);
-			const long = round(FlatCoordToLonLat(srcCoordProps)[0], 3);
-			if (validateCoord(long, lat, mapConfig.MAP_BOUNDS)){
-				setCoordLat(lat);
-				setCoordLon(long);
-				setValidCoord(true);
-			}
-			else setValidCoord(false);
+			setCoordLat(round(FlatCoordToLonLat(srcCoordProps)[1], 3));
+			setCoordLon(round(FlatCoordToLonLat(srcCoordProps)[0], 3));
 		}
 	}, [srcCoordProps, enableEdit]);
 
@@ -151,7 +138,7 @@ export default function ModelEarthquake(props) {
 				<Container>
 					<LoadingOverlay active={loading} spinner text="Saving...">
 						<Box className="inputGroup">
-							<IncoreInputLabel className="required-field">Name</IncoreInputLabel>
+							<IncoreInputLabel>Name</IncoreInputLabel>
 							<IncoreTextField
 								value={name}
 								variant="outlined"
@@ -159,7 +146,7 @@ export default function ModelEarthquake(props) {
 							/>
 						</Box>
 						<Box className="inputGroup">
-							<IncoreInputLabel className="required-field">Description</IncoreInputLabel>
+							<IncoreInputLabel>Description</IncoreInputLabel>
 							<IncoreTextField
 								value={description}
 								variant="outlined"
@@ -167,25 +154,23 @@ export default function ModelEarthquake(props) {
 							/>
 						</Box>
 						<Box className="inputGroup">
-							<IncoreInputLabel className="required-field">Magnitude</IncoreInputLabel>
+							<IncoreInputLabel>Magnitude</IncoreInputLabel>
 							<IncoreTextField
 								value={magnitude}
-								type={"number"}
 								variant="outlined"
-								onChange={(e) => setMagnitude(e.target.value < 0 ? 0 : e.target.value)}
+								onChange={(e) => setMagnitude(e.target.value)}
 							/>
 						</Box>
 						<Box className="inputGroup">
-							<IncoreInputLabel className="required-field">Depth</IncoreInputLabel>
+							<IncoreInputLabel>Depth</IncoreInputLabel>
 							<IncoreTextField
 								value={depth}
-								type={"number"}
 								variant="outlined"
-								onChange={(e) => setDepth(e.target.value < 0 ? 0 : e.target.value)}
+								onChange={(e) => setDepth(e.target.value)}
 							/>
 						</Box>
 						<Box className="inputGroup">
-							<IncoreInputLabel className="required-field">Demand Type</IncoreInputLabel>
+							<IncoreInputLabel>Demand Type</IncoreInputLabel>
 							<IncoreSelectBox
 								labelId="label"
 								id="select"
@@ -217,7 +202,7 @@ export default function ModelEarthquake(props) {
 							</IncoreSelectBox>
 						</Box>
 						<Box className="inputGroup">
-							<IncoreInputLabel className="required-field">Demand Units</IncoreInputLabel>
+							<IncoreInputLabel>Demand Units</IncoreInputLabel>
 							<IncoreSelectBox
 								labelId="label"
 								id="select"
@@ -246,7 +231,7 @@ export default function ModelEarthquake(props) {
 							</IncoreSelectBox>
 						</Box>
 						<Box className="inputGroup">
-							<IncoreInputLabel className="required-field">Attenuation Model</IncoreInputLabel>
+							<IncoreInputLabel>Attenuation Model</IncoreInputLabel>
 							<IncoreSelectBox
 								labelId="label"
 								id="select"
@@ -275,95 +260,87 @@ export default function ModelEarthquake(props) {
 						{attenuations === "ChiouYoungs2014" ||
 						attenuations === "CampbellBozorgnia2014" ||
 						attenuations === "AbrahamsonSilvaKamai2014" ? (
-							<Box className="inputGroup">
-								<IncoreInputLabel className="required-field">Fault Mechanism</IncoreInputLabel>
-								<IncoreSelectBox
-									labelId="label"
-									id="select"
-									variant="outlined"
-									defaultValue={faultTypeMap}
-									onChange={(e) => setFaultTypeMap(e.target.value)}
-								>
-									<IncoreMenuItem value="Strike-Slip" key="Strike-Slip">
+								<Box className="inputGroup">
+									<IncoreInputLabel>Fault Mechanism</IncoreInputLabel>
+									<IncoreSelectBox
+										labelId="label"
+										id="select"
+										variant="outlined"
+										defaultValue={faultTypeMap}
+										onChange={(e) => setFaultTypeMap(e.target.value)}
+									>
+										<IncoreMenuItem value="Strike-Slip" key="Strike-Slip">
 										Strike-Slip
-									</IncoreMenuItem>
-									<IncoreMenuItem value="Normal" key="Normal">
+										</IncoreMenuItem>
+										<IncoreMenuItem value="Normal" key="Normal">
 										Normal
-									</IncoreMenuItem>
-									<IncoreMenuItem value="Reverse-Thrust" key="Reverse-Thrust">
+										</IncoreMenuItem>
+										<IncoreMenuItem value="Reverse-Thrust" key="Reverse-Thrust">
 										Reverse-Thrust
-									</IncoreMenuItem>
-									<IncoreMenuItem value="Reverse-Slip" key="Reverse-Slip">
+										</IncoreMenuItem>
+										<IncoreMenuItem value="Reverse-Slip" key="Reverse-Slip">
 										Reverse-Slip
-									</IncoreMenuItem>
-									<IncoreMenuItem value="All" key="All">
+										</IncoreMenuItem>
+										<IncoreMenuItem value="All" key="All">
 										All
-									</IncoreMenuItem>
-									<IncoreMenuItem value="Reverse" key="Reverse">
+										</IncoreMenuItem>
+										<IncoreMenuItem value="Reverse" key="Reverse">
 										Reverse
-									</IncoreMenuItem>
-								</IncoreSelectBox>
-							</Box>
-						) : (
-							<></>
-						)}
+										</IncoreMenuItem>
+									</IncoreSelectBox>
+								</Box>
+							) : (
+								<></>
+							)}
 
 						<Box className="inputGroup">
 							<IncoreInputLabel>Draw Earthquake Epicenter</IncoreInputLabel>
-							{coordLon !== null && coordLat !== null ? (
-								validCoord ? (
-									<></>
-								) : (
-									<span style={{ color: "Red" }}>
-										Coordinate not valid or outside of the bounding box.
-									</span>
-								)
-							) : null}
+							{
+								coordLon !== null && coordLat!== null ?
+									validateCoord(coordLon, coordLat, mapConfig.MAP_BOUNDS) ?
+										<></>
+										:
+										<span style={{ color: "Red" }}>
+											Coordinate not valid or outside of the bounding box.
+										</span>
+									:
+									null
+							}
 							<Box className={classes.coordBox}>
-								<Box display="flex" style={{ alignItems: "baseline", justifyContent: "center" }}>
+								<Box display="flex" style={{alignItems:"baseline", justifyContent:"center"}}>
 									<InputLabel className={classes.srcLatLabel}>Lat: </InputLabel>
 									<input
 										placeholder={mapConfig.MAP_CENTER[1]}
-										className={!enableEdit ? classes.coordInput : classes.coordInputEdit}
+										className={!enableEdit? classes.coordInput:classes.coordInputEdit}
 										value={coordLat}
-										type={"number"}
 										onChange={(e) => setCoordLat(e.target.value)}
 										disabled={!enableEdit}
 									/>
 									<InputLabel className={classes.srcLonLabel}>Lon: </InputLabel>
 									<input
 										placeholder={mapConfig.MAP_CENTER[0]}
-										className={!enableEdit ? classes.coordInput : classes.coordInputEdit}
+										className={!enableEdit? classes.coordInput:classes.coordInputEdit}
 										value={coordLon}
-										type={"number"}
 										onChange={(e) => setCoordLon(e.target.value)}
 										disabled={!enableEdit}
 									/>
-									{!enableEdit ? (
-										<IncoreButtonText
-											onClick={() => {
-												setEnableEdit(true);
-											}}
-											style={{ maxWidth: "fit-content" }}
-										>
-											Edit
-										</IncoreButtonText>
-									) : (
-										<IncoreButtonText
-											onClick={() => {
-												setEnableEdit(false);
-												setValidCoord(validateCoord(coordLon, coordLat, mapConfig.MAP_BOUNDS));
-											}}
-											style={{ maxWidth: "fit-content" }}
-										>
-											Save
-										</IncoreButtonText>
-									)}
+									{
+										!enableEdit ?
+											<IncoreButtonText onClick={() => {setEnableEdit(true);}}
+															  style={{maxWidth:"fit-content"}}>Edit</IncoreButtonText>
+											:
+											<IncoreButtonText onClick={() => {setEnableEdit(false);}}
+															  style={{maxWidth:"fit-content"}}
+															  disabled={!validateCoord(coordLon, coordLat, mapConfig.MAP_BOUNDS)}
+											>
+												Save
+											</IncoreButtonText>
+									}
 								</Box>
 							</Box>
 						</Box>
 						<Box className="inputGroup">
-							<IncoreButton variant="contained" onClick={onSave} disabled={disabled || !validCoord}>
+							<IncoreButton variant="contained" onClick={onSave} disabled={disabled}>
 								Save
 							</IncoreButton>
 						</Box>

@@ -48,7 +48,7 @@ const StepInfo = (props) => {
 				</DialogContent>
 
 				<DialogActions>
-					<Button onClick={handleClose} style={{ color: "#00619D" }}>
+					<Button onClick={handleClose} color="primary">
 						Close
 					</Button>
 				</DialogActions>

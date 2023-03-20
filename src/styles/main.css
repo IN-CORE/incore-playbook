@@ -51,6 +51,7 @@ body {
 
 .gridItem {
 	margin: 36px 15px;
+	min-width: 500px;
 	width:100%;
 }
 
@@ -257,12 +258,6 @@ body {
 	vertical-align: super;
 }
 
-/* For required field asterisk */
-.required-field::after {
-	content: "*";
-	color: red;
-	margin-left: 2px
-}
 
 .statTitle{
 	margin: 55px auto;

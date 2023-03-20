@@ -23,8 +23,7 @@ export default function Hazards(props) {
 
 	useEffect(() => {
 		alllowedHazardTypes.map((hazardType) => {
-			// limit set to 200, for future reference, might change
-			listHazards(globalConfig, hazardType, 200);
+			listHazards(globalConfig, hazardType);
 		});
 	}, []);
 
