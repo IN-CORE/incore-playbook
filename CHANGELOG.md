@@ -8,6 +8,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+### Added
+
+- Added grouping logic in capital shock's bar chart and added colors [#201](https://github.com/IN-CORE/incore-playbook/issues/201)
+
 ### Changed
 - Add title and description to form validaiton in step 3-4 [#191](https://github.com/IN-CORE/incore-playbook/issues/191)
 - UI Changes according to several feedbacks from stress test session [#195](https://github.com/IN-CORE/incore-playbook/issues/195)
