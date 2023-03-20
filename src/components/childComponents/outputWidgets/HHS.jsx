@@ -93,7 +93,7 @@ export default function HHS(props) {
 								{/*Sliders*/}
 								<Container style={{width: "80%", margin: 0}}>
 									<IncoreInputLabel id="discrete-slider-restrict" gutterBottom>
-										Month(s) after the disaster
+										Months after the disaster
 									</IncoreInputLabel>
 									<HhsSlider marks={marks}
 											   value={t}
