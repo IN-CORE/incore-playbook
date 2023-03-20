@@ -74,6 +74,8 @@ export default function ModelEarthquake(props) {
 
 	const [name, setName] = useState("");
 	const [description, setDescription] = useState("");
+	const [inputLat, setInputLat] = useState(null);
+	const [inputLon, setInputLon] = useState(null);
 	const [coordLat, setCoordLat] = useState(null);
 	const [coordLon, setCoordLon] = useState(null);
 	const [magnitude, setMagnitude] = useState(6.2);
@@ -98,10 +100,12 @@ export default function ModelEarthquake(props) {
 			const lat = round(FlatCoordToLonLat(srcCoordProps)[1], 3);
 			const long = round(FlatCoordToLonLat(srcCoordProps)[0], 3);
 			setCoordLat(lat);
+			setInputLat(lat);
 			setCoordLon(long);
+			setInputLon(long);
 			setValidCoord(validateCoord(long, lat, mapConfig.MAP_BOUNDS));
 		}
-	}, [srcCoordProps, enableEdit]);
+	}, [srcCoordProps]);
 
 	useEffect(() => {
 		if (coordLat && coordLon && enableEdit) setSrcCoordProps(LonLatToFlatCoord(coordLon, coordLat));
@@ -272,42 +276,42 @@ export default function ModelEarthquake(props) {
 						{attenuations === "ChiouYoungs2014" ||
 						attenuations === "CampbellBozorgnia2014" ||
 						attenuations === "AbrahamsonSilvaKamai2014" ? (
-							<Box className="inputGroup">
-								<IncoreInputLabel className="required-field">Fault Mechanism</IncoreInputLabel>
-								<IncoreSelectBox
-									labelId="label"
-									id="select"
-									variant="outlined"
-									defaultValue={faultTypeMap}
-									onChange={(e) => setFaultTypeMap(e.target.value)}
-								>
-									<IncoreMenuItem value="Strike-Slip" key="Strike-Slip">
+								<Box className="inputGroup">
+									<IncoreInputLabel className="required-field">Fault Mechanism</IncoreInputLabel>
+									<IncoreSelectBox
+										labelId="label"
+										id="select"
+										variant="outlined"
+										defaultValue={faultTypeMap}
+										onChange={(e) => setFaultTypeMap(e.target.value)}
+									>
+										<IncoreMenuItem value="Strike-Slip" key="Strike-Slip">
 										Strike-Slip
-									</IncoreMenuItem>
-									<IncoreMenuItem value="Normal" key="Normal">
+										</IncoreMenuItem>
+										<IncoreMenuItem value="Normal" key="Normal">
 										Normal
-									</IncoreMenuItem>
-									<IncoreMenuItem value="Reverse-Thrust" key="Reverse-Thrust">
+										</IncoreMenuItem>
+										<IncoreMenuItem value="Reverse-Thrust" key="Reverse-Thrust">
 										Reverse-Thrust
-									</IncoreMenuItem>
-									<IncoreMenuItem value="Reverse-Slip" key="Reverse-Slip">
+										</IncoreMenuItem>
+										<IncoreMenuItem value="Reverse-Slip" key="Reverse-Slip">
 										Reverse-Slip
-									</IncoreMenuItem>
-									<IncoreMenuItem value="All" key="All">
+										</IncoreMenuItem>
+										<IncoreMenuItem value="All" key="All">
 										All
-									</IncoreMenuItem>
-									<IncoreMenuItem value="Reverse" key="Reverse">
+										</IncoreMenuItem>
+										<IncoreMenuItem value="Reverse" key="Reverse">
 										Reverse
-									</IncoreMenuItem>
-								</IncoreSelectBox>
-							</Box>
-						) : (
-							<></>
-						)}
+										</IncoreMenuItem>
+									</IncoreSelectBox>
+								</Box>
+							) : (
+								<></>
+							)}
 
 						<Box className="inputGroup">
 							<IncoreInputLabel>Draw Earthquake Epicenter</IncoreInputLabel>
-							{coordLon !== null && coordLat !== null ? (
+							{inputLon !== null && inputLat !== null ? (
 								validCoord ? (
 									<></>
 								) : (
@@ -322,18 +326,18 @@ export default function ModelEarthquake(props) {
 									<input
 										placeholder={mapConfig.MAP_CENTER[1]}
 										className={!enableEdit ? classes.coordInput : classes.coordInputEdit}
-										value={coordLat}
+										value={inputLat}
 										type={"number"}
-										onChange={(e) => setCoordLat(e.target.value)}
+										onChange={(e) => setInputLat(e.target.value)}
 										disabled={!enableEdit}
 									/>
 									<InputLabel className={classes.srcLonLabel}>Lon: </InputLabel>
 									<input
 										placeholder={mapConfig.MAP_CENTER[0]}
 										className={!enableEdit ? classes.coordInput : classes.coordInputEdit}
-										value={coordLon}
+										value={inputLon}
 										type={"number"}
-										onChange={(e) => setCoordLon(e.target.value)}
+										onChange={(e) => setInputLon(e.target.value)}
 										disabled={!enableEdit}
 									/>
 									{!enableEdit ? (
@@ -349,7 +353,14 @@ export default function ModelEarthquake(props) {
 										<IncoreButtonText
 											onClick={() => {
 												setEnableEdit(false);
-												setValidCoord(validateCoord(coordLon, coordLat, mapConfig.MAP_BOUNDS));
+												if(validateCoord(inputLon, inputLat, mapConfig.MAP_BOUNDS)){
+													setValidCoord(true);
+													setCoordLat(inputLat);
+													setCoordLon(inputLon);
+												}
+												else {
+													setValidCoord(false);
+												}
 											}}
 											style={{ maxWidth: "fit-content" }}
 										>
