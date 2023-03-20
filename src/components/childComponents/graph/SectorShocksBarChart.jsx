@@ -4,13 +4,46 @@ import { csvToArray } from "../../../utils/common";
 
 const ParseData = (data) => {
 	const chartData = [];
-	chartData.push(["Sector", "Ratio of Capital Remaining"]);
+	const chartDataObj = {};
+	const colors = ["#DB4F60", "#ff7e0f", "#A1BE2E", "#1e77b4", "#3fbecf"];
+	chartData.push(["Sector", "Ratio of Capital Remaining", { role: "style" }]);
 
 	// without header
 	const dataArr = csvToArray(data, ",", false);
-	for (let i=0; i< dataArr.length; i++) {
-		chartData.push([dataArr[i][0], parseFloat(dataArr[i][1])]);
+
+	if (dataArr[0][0].lastIndexOf("_") === -1) {
+		for (let i = 0; i < dataArr.length; i++) {
+			chartData.push([dataArr[i][0], parseFloat(dataArr[i][1]), colors[i % 4]]);
+		}
+		return chartData;
 	}
+
+	for (let i = 0; i < dataArr.length; i++) {
+		let last_idx_ = dataArr[i][0].lastIndexOf("_");
+		let key = dataArr[i][0].slice(0, last_idx_);
+		let subKey = dataArr[i][0].slice(last_idx_ + 1);
+
+		if (chartDataObj[key] !== undefined) {
+			chartDataObj[key].push([subKey, parseFloat(dataArr[i][1])]);
+		} else {
+			chartDataObj[key] = [[subKey, parseFloat(dataArr[i][1])]];
+		}
+	}
+
+	let i = 0;
+	for (let [key, regions] of Object.entries(chartDataObj)) {
+		regions = regions.sort((a, b) => {
+			if (a[0] < b[0]) return -1;
+			if (a[0] > b[0]) return +1;
+			return 0;
+		});
+
+		for (const [subKey, value] of regions) {
+			chartData.push([`${key}_${subKey}`, value, colors[i % 4]]);
+		}
+		i += 1;
+	}
+
 	return chartData;
 };
 
@@ -32,16 +65,16 @@ export default function SectorShocksBarChart(props) {
 					height: "25em",
 					hAxis: {
 						title: xAxisLegend,
-						textStyle : {
-							fontSize: 10, // or the number you want
+						textStyle: {
+							fontSize: 10 // or the number you want
 						}
 					},
 					vAxis: {
 						title: yAxisLegend,
-						titleTextStyle:{ italic: false },
+						titleTextStyle: { italic: false },
 						minValue: 0,
-						maxValue: 1,
-					},
+						maxValue: 1
+					}
 				}}
 				// For tests
 				rootProps={{ "data-testid": "1" }}
