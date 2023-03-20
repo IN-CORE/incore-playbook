@@ -49,7 +49,7 @@ const useStyles = makeStyles({
 		fontWeight: "500",
 		lineHeight: "18px",
 		letterSpacing: 0,
-		backgroundColor: "#EDF5F5",
+		// backgroundColor: "#EDF5F5",
 		border: "1px solid rgba(0, 0, 0, 0.23)",
 		borderRadius: "4px",
 		textAlign: "center",

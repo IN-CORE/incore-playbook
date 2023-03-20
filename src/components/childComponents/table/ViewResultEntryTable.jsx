@@ -18,7 +18,7 @@ import UnfoldLess from "@material-ui/icons/UnfoldLess";
 import { makeStyles } from "@material-ui/core/styles";
 import { useSelector } from "react-redux";
 
-import { isAdmin, parseDateTime } from "../../../utils/common";
+import { getComparator, isAdmin, parseDateTime, stableSort } from "../../../utils/common";
 import { checkFileDescriptors } from "../../../utils/datawolf";
 
 const useStyles = makeStyles({
@@ -91,7 +91,7 @@ const useStyles = makeStyles({
 		backgroundColor: "rgba(255,255,255,0.6)",
 		borderBottom: "2px solid #D9E8F1",
 		borderTop: "2px solid #D9E8F1",
-		minHeight: "34px"
+		minHeight: "34px",
 	},
 	clickableLink: {
 		"&:hover": {
@@ -99,42 +99,17 @@ const useStyles = makeStyles({
 		},
 		"color": "#00619D",
 		"fontWeight": 500,
-		"margin": "auto auto"
+		"margin": "auto 2em"
 	},
 	clickableLinkDisabled: {
 		pointerEvents: "none",
 		textDecoration: "none",
 		color: "#9E9E9E",
 		fontWeight: 500,
-		margin: "auto auto"
+		margin: "auto 2em"
 	}
 });
 
-function descendingComparator(a, b, orderBy) {
-	if (b[orderBy] < a[orderBy]) {
-		return -1;
-	}
-	if (b[orderBy] > a[orderBy]) {
-		return 1;
-	}
-	return 0;
-}
-
-function getComparator(order, orderBy) {
-	return order === "desc"
-		? (a, b) => descendingComparator(a, b, orderBy)
-		: (a, b) => -descendingComparator(a, b, orderBy);
-}
-
-function stableSort(array, comparator) {
-	const stabilizedThis = array.map((el, index) => [el, index]);
-	stabilizedThis.sort((a, b) => {
-		const order = comparator(a[0], b[0]);
-		if (order !== 0) return order;
-		return a[1] - b[1];
-	});
-	return stabilizedThis.map((el) => el[0]);
-}
 
 export function ViewResultEntryTable(props) {
 	const { fieldNames, executions, preview } = props;
@@ -378,7 +353,7 @@ export function ViewResultEntryTable(props) {
 																key={`${execution["id"]}-resilience-metrics`}
 															>
 																<TableCell
-																	colSpan={6}
+																	colSpan={7}
 																	key={`${execution["id"]}-resilience-metrics-title`}
 																>
 																	<Link
@@ -404,7 +379,7 @@ export function ViewResultEntryTable(props) {
 															className={classes.subBodyRow}
 															key={`${execution["id"]}-epf-pole`}
 														>
-															<TableCell colSpan={6}
+															<TableCell colSpan={7}
 																	   key={`${execution["id"]}-epf-pole-title`}>
 																<Link
 																	color="primary"
@@ -429,7 +404,7 @@ export function ViewResultEntryTable(props) {
 															className={classes.subBodyRow}
 															key={`${execution["id"]}-epf-substation`}
 														>
-															<TableCell colSpan={6}
+															<TableCell colSpan={7}
 																	   key={`${execution["id"]}-epf-substation-title`}>
 																<Link
 																	color="primary"
@@ -454,7 +429,7 @@ export function ViewResultEntryTable(props) {
 															className={classes.subBodyRow}
 															key={`${execution["id"]}-bldg-dmg`}
 														>
-															<TableCell colSpan={6}
+															<TableCell colSpan={7}
 																	   key={`${execution["id"]}-bldg-dmg-title`}>
 																<Link
 																	color="primary"
@@ -479,7 +454,7 @@ export function ViewResultEntryTable(props) {
 													{widgetList.includes("BldgMCS") ? (
 														<TableRow className={classes.subBodyRow}
 																  key={`${execution["id"]}-mcs`}>
-															<TableCell colSpan={6} key={`${execution["id"]}-mcs-title`}>
+															<TableCell colSpan={7} key={`${execution["id"]}-mcs-title`}>
 																<Link
 																	color="primary"
 																	onClick={() => {
@@ -506,7 +481,7 @@ export function ViewResultEntryTable(props) {
 															key={`${execution["id"]}-bldg-functionality`}
 														>
 															<TableCell
-																colSpan={6}
+																colSpan={7}
 																key={`${execution["id"]}-bldg-functionality-title`}
 															>
 																<Link
@@ -532,7 +507,7 @@ export function ViewResultEntryTable(props) {
 													{widgetList.includes("SectorShocks") ? (
 														<TableRow className={classes.subBodyRow}
 																  key={`${execution["id"]}-sector-shocks`}>
-															<TableCell colSpan={6}
+															<TableCell colSpan={7}
 																	   key={`${execution["id"]}-sector-shocks-title`}>
 																<Link
 																	color="primary"
@@ -556,7 +531,7 @@ export function ViewResultEntryTable(props) {
 													{widgetList.includes("CGE") ? (
 														<TableRow className={classes.subBodyRow}
 																  key={`${execution["id"]}-cge`}>
-															<TableCell colSpan={6} key={`${execution["id"]}-cge-title`}>
+															<TableCell colSpan={7} key={`${execution["id"]}-cge-title`}>
 																<Link
 																	color="primary"
 																	onClick={() => {
@@ -581,7 +556,7 @@ export function ViewResultEntryTable(props) {
 															className={classes.subBodyRow}
 															key={`${execution["id"]}-popdislocation`}
 														>
-															<TableCell colSpan={6}
+															<TableCell colSpan={7}
 																	   key={`${execution["id"]}-popdislocation-title`}>
 																<Link
 																	color="primary"
@@ -605,7 +580,7 @@ export function ViewResultEntryTable(props) {
 													{widgetList.includes("HHS") ? (
 														<TableRow className={classes.subBodyRow}
 																  key={`${execution["id"]}-HHS`}>
-															<TableCell colSpan={6} key={`${execution["id"]}-HHS-title`}>
+															<TableCell colSpan={7} key={`${execution["id"]}-HHS-title`}>
 																<Link
 																	color="primary"
 																	onClick={() => {
@@ -630,7 +605,7 @@ export function ViewResultEntryTable(props) {
 													{widgetList.includes("Log") && isAdmin(globalConfig.hostname) ? (
 														<TableRow className={classes.subBodyRow}
 																  key={`${execution["id"]}-Log`}>
-															<TableCell colSpan={6} key={`${execution["id"]}-Log-title`}>
+															<TableCell colSpan={7} key={`${execution["id"]}-Log-title`}>
 																<Link
 																	color="primary"
 																	onClick={() => {
@@ -659,7 +634,7 @@ export function ViewResultEntryTable(props) {
 								height: (53) * emptyRows
 							}}
 						>
-							<TableCell colSpan={6} />
+							<TableCell colSpan={7} />
 						</TableRow>
 					)}
 				</TableBody>

@@ -5,7 +5,7 @@ import { assignUserRole } from "../../../actions/user";
 import { useDispatch, useSelector } from "react-redux";
 
 export const Role = (props) => {
-	const { roles, user } = props;
+	const { roles, user, editable } = props;
 
 	const dispatch = useDispatch();
 
@@ -83,21 +83,26 @@ export const Role = (props) => {
 				<>
 					{selectedRoleId
 						? roles.map((role) => {
-								if (role["id"] === selectedRoleId) {
-									return role["name"];
-								}
+							if (role["id"] === selectedRoleId) {
+								return role["name"];
+							}
 						  })
 						: "None"}
-					<Box style={{ display: "block" }}>
-						<Button
-							style={{ fontSize: "12px", color: "#00619D" }}
-							onClick={() => {
-								setEditRoleOn(true);
-							}}
-						>
-							Change
-						</Button>
-					</Box>
+					{
+						editable ?
+							<Box style={{ display: "block" }}>
+								<Button
+									style={{ fontSize: "12px", color: "#00619D" }}
+									onClick={() => {
+										setEditRoleOn(true);
+									}}
+								>
+								Change
+								</Button>
+							</Box>
+							:
+							<></>
+					}
 				</>
 			)}
 		</>
