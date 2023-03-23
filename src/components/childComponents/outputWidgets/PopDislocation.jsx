@@ -78,7 +78,7 @@ export default function PopDislocation(props) {
 						zIndex: 2
 					}
 				];
-				const previewLayers = generateLayers(globalConfig, tmpLayerDef, "Population Dislocation");
+				const previewLayers = generateLayers(globalConfig, tmpLayerDef);
 				setDamageLayers2(previewLayers);
 			} else if (vName === "totalDislTableContent") {
 				setTotalDislTableContent(
