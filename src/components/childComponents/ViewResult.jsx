@@ -243,7 +243,7 @@ export default function ViewResult(props) {
 
 		const hazardInfo = _getHazardInfo(selectedExecutionItem);
 		let hazardMetadata = await getHazardMetadata(globalConfig, hazardInfo.hazardType, hazardInfo.hazardId);
-		setHazardGroupLayer(getHazardGroupLayers(globalConfig, hazardMetadata, hazardInfo.hazardType, 3, 0.5));
+		setHazardGroupLayer(getHazardGroupLayers(globalConfig, hazardMetadata, hazardInfo.hazardType, 0, 0.5));
 		setHazardType(hazardInfo["hazardType"]);
 
 		// dialog on

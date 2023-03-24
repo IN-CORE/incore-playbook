@@ -102,8 +102,8 @@ export default function SubstationDamage(props) {
 								center={fromLonLat(mapConfig.MAP_CENTER)}
 								layers={[
 									basicLayers,
+									hazardLayers,
 									damageLayers,
-									hazardLayers
 								]}
 								layerSwitcherOptions={{}}
 							/>
