@@ -12,6 +12,7 @@ import HeaderWithMenu from "../components/childComponents/navigation/HeaderWithM
 import { isAuthorized } from "../utils/common";
 
 import { useDispatch, useSelector } from "react-redux";
+import { IncoreLink } from "./styledComponents/IncoreLink";
 
 const cookies = new Cookies();
 
@@ -73,11 +74,11 @@ const useStyles = makeStyles((theme) => ({
 		marginBottom: theme.spacing(0.5)
 	},
 	loginLinks: {
-		color: "#00619D",
 		fontSize: "15px",
-		fontWeight: 400,
-		marginBottom: theme.spacing(0.5),
-		paddingLeft: theme.spacing(0.5)
+		paddingLeft: theme.spacing(0.5),
+		textDecoration: "none",
+		letterSpacing: 0,
+		lineHeight: "15px"
 	},
 	loginTextField: {
 		boxSizing: "border-box",
@@ -91,7 +92,6 @@ const useStyles = makeStyles((theme) => ({
 		fontSize: "15px",
 		letterSpacing: 0,
 		lineHeight: "15px",
-		marginBottom: theme.spacing(2)
 	}
 }));
 
@@ -211,7 +211,7 @@ export const Login = () => {
 										<InputLabel className={classes.loginLabel}>PASSWORD</InputLabel>
 									</Grid>
 									<Grid item xs={8} style={{ textAlign: "right" }}>
-										<InputLabel className={classes.loginLinks}>Forgot Password?</InputLabel>
+										<IncoreLink className={classes.loginLinks} href={globalConfig.resetPassword} target="_blank">Forgot Password?</IncoreLink>
 									</Grid>
 								</Grid>
 								<TextField
@@ -232,12 +232,12 @@ export const Login = () => {
 								</IncoreButton>
 							</Box>
 
-							<Grid container>
+							<Grid container style={{alignItems: "center"}}>
 								<Grid item xs={8} style={{ textAlign: "right" }}>
-									<InputLabel className={classes.signupMsg}>Don't have an account? </InputLabel>
+									<InputLabel className={classes.signupMsg}>Don't have an account?</InputLabel>
 								</Grid>
 								<Grid item xs={4} style={{ textAlign: "left" }}>
-									<InputLabel className={classes.loginLinks}>Sign up</InputLabel>
+									<IncoreLink className={classes.loginLinks} href={globalConfig.registerNewUser} target="_blank">Sign up</IncoreLink>
 								</Grid>
 							</Grid>
 						</Container>
