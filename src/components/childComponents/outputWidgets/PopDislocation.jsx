@@ -142,7 +142,7 @@ export default function PopDislocation(props) {
 							maxZoom={mapConfig.MAX_ZOOM}
 							extent={applyTransform(mapConfig.MAP_BOUNDS, getTransform("EPSG:4326", "EPSG:3857"))}
 							center={fromLonLat(mapConfig.MAP_CENTER)}
-							layers={[basicLayers, damageLayers1, damageLayers2, hazardLayers]}
+							layers={[basicLayers, hazardLayers, damageLayers1, damageLayers2]}
 							layerSwitcherOptions={{}}
 						/>
 					</Container>

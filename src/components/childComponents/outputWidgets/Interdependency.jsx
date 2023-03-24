@@ -98,8 +98,8 @@ export default function Interdependency(props) {
 								center={fromLonLat(mapConfig.MAP_CENTER)}
 								layers={[
 									basicLayers,
-									damageLayers,
 									hazardLayers,
+									damageLayers,
 								]}
 								layerSwitcherOptions={{}}
 							/>
