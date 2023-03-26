@@ -478,13 +478,13 @@ export const CommunityHazards = (props) => {
 										className={classes.tab}
 										classes={{ selected: classes.selectedTab }}
 									/>
-									{selectedHazardType === "tornado" || selectedHazardType === "earthquake" ? (
-										<Tab
-											label="Create a Hazard"
-											className={classes.tab}
-											classes={{ selected: classes.selectedTab }}
-										/>
-									) : null}
+									<Tab
+										label="Create a Hazard"
+										className={classes.tab}
+										classes={{ selected: classes.selectedTab }}
+										style={{display: selectedHazardType === "tornado" || selectedHazardType ===
+											"earthquake" ? "auto":"none"}}
+									/>
 									<Tab
 										label="View Created"
 										className={classes.tab}
