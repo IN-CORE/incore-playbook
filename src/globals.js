@@ -15,10 +15,15 @@ globals["allowUpload"] = true;
 // globals["testbedSpace"] = "commresiliencejoplin";
 // globals["testbedGroup"] = "incore_joplin_user"; // incore_galveston_user, incore_joplin_user, incore_slc_user
 
+// globals["maestroServiceBase"] = `${hostname}/maestro/slc/`;
+// globals["allowedRegions"] = ["R1", "R2"];
+// globals["testbedSpace"] = "commresilienceslc";
+// globals["testbedGroup"] = "incore_slc_user"; // incore_galveston_user, incore_joplin_user, incore_slc_user
+
 globals["maestroServiceBase"] = `${hostname}/maestro/slc/`;
 globals["allowedRegions"] = ["R1", "R2"];
-globals["testbedSpace"] = "commresilienceslc";
-globals["testbedGroup"] = "incore_slc_user"; // incore_galveston_user, incore_joplin_user, incore_slc_user
+globals["testbedSpace"] = "commresiliencegal";
+globals["testbedGroup"] = "incore_galveston_user"; // incore_galveston_user, incore_joplin_user, incore_slc_user
 
 
 export { globals };

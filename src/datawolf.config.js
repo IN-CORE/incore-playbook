@@ -283,7 +283,7 @@ const datawolfWorkflowConfig =
 					"variableName": "mcsSamples",
 					"widget": null,
 					"hidden": true,
-					"defaultValue": 500,
+					"defaultValue": 100,
 					"parametersMap": [
 						{
 							"paramId": "a45d5c3a-dd94-4780-a366-adda08b7c9a4",
@@ -577,7 +577,7 @@ const datawolfWorkflowConfig =
 					"variableName": "useLiquefaction",
 					"widget": null,
 					"hidden": true,
-					"defaultValue": "",
+					"defaultValue": "true",
 					"parametersMap": [
 						{
 							"paramId": "80231a18-429b-43fa-de34-c8ab054b417e",
@@ -601,7 +601,7 @@ const datawolfWorkflowConfig =
 					"variableName": "liquefactionGeologyDataset",
 					"widget": null,
 					"hidden": true,
-					"defaultValue": "",
+					"defaultValue": "6335ae58ac33a63950a9d8a1",
 					"parametersMap": [
 						{
 							"paramId": "e0a8a11f-ed36-49b4-a6e8-a3c92c939bb6",
@@ -1928,10 +1928,10 @@ const datawolfWorkflowConfig =
 							}
 						},
 						{
-							"datasetId": "c6d5e0b3-7416-4f73-eda5-089f9dc94ed2",
+							"datasetId": "4a7456d5-3153-4074-ac04-988d52a867e7",
 							"datasets": {
 								"step": "Bldg-MonteCarloFailureProbability",
-								"title": "sample_failure_state",
+								"title": "failure_probability",
 								"variableName": "mcsBldgFailureProbDownload",
 								"widget": "BldgMCS"
 							}
