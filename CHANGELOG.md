@@ -6,6 +6,16 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 
+## [Unreleased]
+
+### Fixed
+- View created hurricane tab content not showing [#226](https://github.com/IN-CORE/incore-playbook/issues/226)
+- Fixed wrong layer group name [#211](https://github.com/IN-CORE/incore-playbook/issues/211)
+
+### Changed
+- Changed the order of layers on community app [#212](https://github.com/IN-CORE/incore-playbook/issues/212)
+
+
 ## [0.5.3] - 2023-03-20
 
 ### Added
@@ -20,8 +30,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Add validation and styling for coordinates entered in Step 3-3 for tornado and earthquake [#189](https://github.com/IN-CORE/incore-playbook/issues/189)
 - Add column to display link to download data and reordered columns [#196](https://github.com/IN-CORE/incore-playbook/issues/196)
 - Fixed bounding box error jump to random number when typing weird value [#207](https://github.com/IN-CORE/incore-playbook/pull/207)
-- Fixed wrong layer group name [#211](https://github.com/IN-CORE/incore-playbook/issues/211)
-- Changed the order of layers on community app [#212](https://github.com/IN-CORE/incore-playbook/issues/212)
 
 
 ## [0.5.2] - 2023-03-15
