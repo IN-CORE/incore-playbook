@@ -6,10 +6,20 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 
+## [Unreleased]
+
+### Fixed
+- Fixed wrong layer group name [#211](https://github.com/IN-CORE/incore-playbook/issues/211)
+
+
+### Changed
+- Changed the order of layers on community app [#212](https://github.com/IN-CORE/incore-playbook/issues/212)
+- Allow overwrite of different incore dataset types [#225](https://github.com/IN-CORE/incore-playbook/issues/225)
+
+
 ## [0.5.3] - 2023-03-20
 
 ### Added
-
 - Added grouping logic in capital shock's bar chart and added colors [#201](https://github.com/IN-CORE/incore-playbook/issues/201)
 
 ### Changed
