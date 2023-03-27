@@ -20,8 +20,8 @@ globals["allowUpload"] = true;
 // globals["testbedSpace"] = "commresilienceslc";
 // globals["testbedGroup"] = "incore_slc_user"; // incore_galveston_user, incore_joplin_user, incore_slc_user
 
-globals["maestroServiceBase"] = `${hostname}/maestro/slc/`;
-globals["allowedRegions"] = ["R1", "R2"];
+globals["maestroServiceBase"] = `${hostname}/maestro/galveston/`;
+globals["allowedRegions"] = ["R1", "R2", "R3", "R4", "R5", "R6", "R7"];
 globals["testbedSpace"] = "commresiliencegal";
 globals["testbedGroup"] = "incore_galveston_user"; // incore_galveston_user, incore_joplin_user, incore_slc_user
 

@@ -596,10 +596,10 @@ const datawolfWorkflowConfig =
 				{
 					"title": "fragility_key",
 					"description": "fragility_key",
-					"variableName": "fragilityKey",
+					"variableName": "epfFragilityKey",
 					"widget": null,
 					"hidden": true,
-					"defaultValue": "",
+					"defaultValue": "Non-Retrofit Fragility ID Code",
 					"parametersMap": [
 						{
 							"paramId": "43c0d905-d219-40c1-a95a-aabbc164f59c",
@@ -607,7 +607,17 @@ const datawolfWorkflowConfig =
 								"step": "Pole-EpfDamage",
 								"title": "fragility_key"
 							}
-						},
+						}
+					]
+				},
+				{
+					"title": "fragility_key",
+					"description": "fragility_key",
+					"variableName": "bldgFragilityKey",
+					"widget": null,
+					"hidden": true,
+					"defaultValue": "",
+					"parametersMap": [
 						{
 							"paramId": "28e71889-26b7-4178-b3c3-55b71b18d6bc",
 							"parameters": {
@@ -998,7 +1008,7 @@ const datawolfWorkflowConfig =
 					"variableName": "regions",
 					"widget": null,
 					"hidden": true,
-					"defaultValue": "R1,R2,R3,R4,R5,R6,R7",
+					"defaultValue": "",
 					"parametersMap": [
 						{
 							"paramId": "46509d68-7f9e-447f-eb76-de5a884cf3b0",
@@ -1015,7 +1025,7 @@ const datawolfWorkflowConfig =
 					"variableName": "hhCategories",
 					"widget": null,
 					"hidden": true,
-					"defaultValue": "HH1,HH2,HH3,HH4",
+					"defaultValue": "IHH1,IHH2,IHH3,IHH4,IHH5,MHH1,MHH2,MHH3,MHH4,MHH5",
 					"parametersMap": [
 						{
 							"paramId": "fc7b149e-61be-4b34-a884-1234af9e98b0",
@@ -1032,7 +1042,7 @@ const datawolfWorkflowConfig =
 					"variableName": "demCategories",
 					"widget": null,
 					"hidden": true,
-					"defaultValue": "AG_MI,UTIL,CONS,MANU,COMMER,EDU,HEALTH,ART_ACC,RELIG",
+					"defaultValue": "IAGMIN,IUTIL,ICONS,IMANU,IWHOLE,IRETAIL,ITRANS,IPROFSER,IREALE,IEDU,IHEALTH,IART,IACCO,MAGMIN,MUTIL,MCONS,MMANU,MWHOLE,MRETAIL,MTRANS,MPROFSER,MREALE,MEDU,MHEALTH,MART,MACCO,HS1I,HS2I,HS3I,HS1M,HS2M,HS3M",
 					"parametersMap": [
 						{
 							"paramId": "e838c579-15d3-43e7-dada-0f8345e15b21",
@@ -1049,7 +1059,7 @@ const datawolfWorkflowConfig =
 					"variableName": "supCategories",
 					"widget": null,
 					"hidden": true,
-					"defaultValue": "AG_MI,UTIL,CONS,MANU,COMMER,EDU,HEALTH,ART_ACC,RELIG,HS1,HS2,HS3",
+					"defaultValue": "IAGMIN,IUTIL,ICONS,IMANU,IWHOLE,IRETAIL,ITRANS,IPROFSER,IREALE,IEDU,IHEALTH,IART,IACCO,MAGMIN,MUTIL,MCONS,MMANU,MWHOLE,MRETAIL,MTRANS,MPROFSER,MREALE,MEDU,MHEALTH,MART,MACCO,HS1I,HS2I,HS3I,HS1M,HS2M,HS3M",
 					"parametersMap": [
 						{
 							"paramId": "7c88cdbf-3801-4371-e709-50be083c7f75",
@@ -1097,7 +1107,7 @@ const datawolfWorkflowConfig =
 					"variableName": "clusterColumn",
 					"widget": null,
 					"hidden": true,
-					"defaultValue": "archetype",
+					"defaultValue": "arch_wind",
 					"parametersMap": [
 						{
 							"paramId": "fa7e3420-a267-4196-d09b-5dca688a37ed",
@@ -2106,15 +2116,6 @@ const datawolfWorkflowConfig =
 							}
 						},
 						{
-							"datasetId": "4e4aa0c6-59fe-4d4a-cb34-f9a0f6a7ea28",
-							"datasets": {
-								"step": "BuildingDamage-Surge",
-								"title": "ds_result",
-								"variableName": "bldgDmgSurgeWaveDsResultDownload",
-								"widget": "BldgDamage"
-							}
-						},
-						{
 							"datasetId": "6fa73a0f-414c-4a92-8004-825863bace39",
 							"datasets": {
 								"step": "CapitalShocks",
@@ -2268,30 +2269,12 @@ const datawolfWorkflowConfig =
 							}
 						},
 						{
-							"datasetId": "7c702eb1-9b4f-4e4c-8581-9e1ffdb21b15",
-							"datasets": {
-								"step": "BuildingDamage-Wind",
-								"title": "ds_result",
-								"variableName": "bldgDmgWindDsResultDownload",
-								"widget": "BldgDamage"
-							}
-						},
-						{
 							"datasetId": "fe79ef7a-06cc-438c-be0f-4f5c61351185",
 							"datasets": {
 								"step": "BuildingDamage-Flood",
 								"title": "BuildingDamage-Flood",
 								"variableName": "BuildingDamageFloodLog",
 								"widget": "Log"
-							}
-						},
-						{
-							"datasetId": "cd88fcee-4f66-4854-e679-ddef13e8c0b5",
-							"datasets": {
-								"step": "BuildingDamage-Flood",
-								"title": "ds_result",
-								"variableName": "bldgDmgFloodDsResultDownload",
-								"widget": "BldgDamage"
 							}
 						},
 						{
