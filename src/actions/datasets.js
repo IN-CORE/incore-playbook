@@ -1,5 +1,4 @@
 import {getHeader} from "../utils/common";
-import {inputDatasetTypes} from "../globals";
 import {globals as defaultGlobalConfig} from "../globals";
 
 export const LOGIN_ERROR = "LOGIN_ERROR";
@@ -24,8 +23,8 @@ export function fetchDatasets(globalConfig=defaultGlobalConfig, limit=20, offset
 		const response = await fetch(endpoint, { mode: "cors", headers: getHeader(globalConfig.hostname) });
 		if (response.status === 200) {
 			response.json().then(json => {
-				Object.keys(inputDatasetTypes).map((key) => {
-					inputDatasetTypes[key].map((inputDatasetType) => {
+				Object.keys(globalConfig.inputDatasetTypes).map((key) => {
+					globalConfig.inputDatasetTypes[key].map((inputDatasetType) => {
 						if (inputDatasetType["type"] === type) {
 							dispatch(receiveDatasets(inputDatasetType["dispatchKey"], json));
 						}
@@ -38,8 +37,8 @@ export function fetchDatasets(globalConfig=defaultGlobalConfig, limit=20, offset
 			dispatch(receiveDatasets(LOGIN_ERROR, []));
 		}
 		else {
-			Object.keys(inputDatasetTypes).map((key_1) => {
-				inputDatasetTypes[key_1].map((inputDatasetType_1) => {
+			Object.keys(globalConfig.inputDatasetTypes).map((key_1) => {
+				globalConfig.inputDatasetTypes[key_1].map((inputDatasetType_1) => {
 					if (inputDatasetType_1["type"] === type) {
 						dispatch(receiveDatasets(inputDatasetType_1["dispatchKey"], []));
 					}

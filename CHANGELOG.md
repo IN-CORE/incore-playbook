@@ -15,7 +15,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Changed
 - Changed the order of layers on community app [#212](https://github.com/IN-CORE/incore-playbook/issues/212)
+- Allow overwrite of different incore dataset types [#225](https://github.com/IN-CORE/incore-playbook/issues/225)
 - Unified the date formats on tables in Step 2-4 [#232](https://github.com/IN-CORE/incore-playbook/issues/232)
+
 
 ## [0.5.3] - 2023-03-20
 

@@ -1,7 +1,6 @@
 import React, { useEffect } from "react";
 import { IncoreMenuItem, IncoreSelectBox } from "../../styledComponents/IncoreSelect";
 import { useDispatch, useSelector } from "react-redux";
-import { inputDatasetTypes } from "../../../globals";
 import { fetchDatasets } from "../../../actions/datasets";
 
 export default function InterdNetworks(props) {
@@ -13,7 +12,7 @@ export default function InterdNetworks(props) {
 	const interdNetworks = useSelector((state) => state.dataset.interdNetworks);
 
 	useEffect(() => {
-		inputDatasetTypes.interdNetworks.map((inputDatasetType) => {
+		globalConfig.inputDatasetTypes.interdNetworks.map((inputDatasetType) => {
 			listDatasets(globalConfig, inputDatasetType["num"], 0, inputDatasetType["type"]);
 		});
 	}, []);
