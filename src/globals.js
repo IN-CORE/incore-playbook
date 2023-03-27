@@ -20,44 +20,8 @@ globals["allowedRegions"] = ["R1", "R2"];
 globals["testbedSpace"] = "commresilienceslc";
 globals["testbedGroup"] = "incore_slc_user"; // incore_galveston_user, incore_joplin_user, incore_slc_user
 
-
-export { globals };
-
-export const testUserInfo = "commresilience";
-
-export const menuWidth = 300;
-
-export const ARCHETYPE = {
-	1: "Wood Residential Building - small rectangular plan, garble roof, 1 story",
-	2: "Wood Residential Building - small rectangular plan, garble roof, 2 story",
-	3: "Wood Residential Building - medium rectangular plan, hip roof, 2 story",
-	4: "Wood Residential Building - medium rectangular plan, garble roof, 2 story",
-	5: "Wood Residential Building - large rectangular plan, garble roof, 2 story",
-	6: "Business and Retail Building",
-	7: "Light Industrial Building",
-	8: "Heavy Industrial Building",
-	9: "Elementary/Middle School",
-	10: "High School",
-	11: "Fire-police station",
-	12: "Hospital",
-	13: "Community Center/Church",
-	14: "Government Building",
-	15: "Large big-box",
-	16: "Small big-box",
-	17: "Mobile Home",
-	18: "Shopping Center",
-	19: "Office Building"
-};
-
-export const processStatus = [
-	{ name: "PENDING", key: "pending" },
-	{ name: "IN PROGRESS", key: "in_progress" },
-	{ name: "COMPLETE", key: "complete" }
-];
-
-
 // might have multiple versions in the future
-export const inputDatasetTypes = {
+globals["inputDatasetTypes"] = {
 	buildings: [
 		{
 			type: "ergo:buildingInventoryVer6",
@@ -236,3 +200,38 @@ export const inputDatasetTypes = {
 		}
 	]
 };
+
+
+export { globals };
+
+export const testUserInfo = "commresilience";
+
+export const menuWidth = 300;
+
+export const ARCHETYPE = {
+	1: "Wood Residential Building - small rectangular plan, garble roof, 1 story",
+	2: "Wood Residential Building - small rectangular plan, garble roof, 2 story",
+	3: "Wood Residential Building - medium rectangular plan, hip roof, 2 story",
+	4: "Wood Residential Building - medium rectangular plan, garble roof, 2 story",
+	5: "Wood Residential Building - large rectangular plan, garble roof, 2 story",
+	6: "Business and Retail Building",
+	7: "Light Industrial Building",
+	8: "Heavy Industrial Building",
+	9: "Elementary/Middle School",
+	10: "High School",
+	11: "Fire-police station",
+	12: "Hospital",
+	13: "Community Center/Church",
+	14: "Government Building",
+	15: "Large big-box",
+	16: "Small big-box",
+	17: "Mobile Home",
+	18: "Shopping Center",
+	19: "Office Building"
+};
+
+export const processStatus = [
+	{ name: "PENDING", key: "pending" },
+	{ name: "IN PROGRESS", key: "in_progress" },
+	{ name: "COMPLETE", key: "complete" }
+];

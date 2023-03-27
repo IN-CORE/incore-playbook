@@ -1,7 +1,6 @@
 import React, { useEffect } from "react";
 import { IncoreMenuItem, IncoreSelectBox } from "../../styledComponents/IncoreSelect";
 import { useDispatch, useSelector } from "react-redux";
-import { inputDatasetTypes } from "../../../globals";
 import { fetchDatasets } from "../../../actions/datasets";
 
 export default function BlockGroups(props) {
@@ -13,7 +12,7 @@ export default function BlockGroups(props) {
 	const blockGroups = useSelector((state) => state.dataset.blockGroups);
 
 	useEffect(() => {
-		inputDatasetTypes.blockGroups.map((inputDatasetType) => {
+		globalConfig.inputDatasetTypes.blockGroups.map((inputDatasetType) => {
 			listDatasets(globalConfig, inputDatasetType["num"], 0, inputDatasetType["type"]);
 		});
 	}, []);
