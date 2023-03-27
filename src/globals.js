@@ -25,6 +25,8 @@ globals["allowedRegions"] = ["R1", "R2", "R3", "R4", "R5", "R6", "R7"];
 globals["testbedSpace"] = "commresiliencegal";
 globals["testbedGroup"] = "incore_galveston_user"; // incore_galveston_user, incore_joplin_user, incore_slc_user
 
+globals["registerNewUserURL"] = "https://identity.ncsa.illinois.edu/register/BSKC2UKQPU";
+globals["resetPasswordURL"] = "https://identity.ncsa.illinois.edu/reset";
 
 export { globals };
 
