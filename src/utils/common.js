@@ -317,10 +317,6 @@ export function descendingComparator(a, b, orderBy) {
 	return 0;
 }
 
-export function prettifyDate(date) {
-	return date.slice(0, 10);
-}
-
 function ObjectByString(o, s) {
 	s = s.replace(/\[(\w+)\]/g, ".$1"); // convert indexes to properties
 	s = s.replace(/^\./, "");           // strip a leading dot
