@@ -327,8 +327,12 @@ function ObjectByString(o, s) {
 	const a = s.split(".");
 	for (let i = 0, n = a.length; i < n; ++i) {
 		let k = a[i];
-		if (k in o) {
-			o = o[k];
+		if (o !== null && o !== undefined) {
+			if (k in o) {
+				o = o[k];
+			} else {
+				return;
+			}
 		} else {
 			return;
 		}

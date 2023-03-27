@@ -11,9 +11,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Fixed
 - Fixed wrong layer group name [#211](https://github.com/IN-CORE/incore-playbook/issues/211)
 - Reset password link and register new user link [#221](https://github.com/IN-CORE/incore-playbook/issues/221)
+- Fixed the function sorting on roles [#219](https://github.com/IN-CORE/incore-playbook/issues/219)
 
 ### Changed
 - Changed the order of layers on community app [#212](https://github.com/IN-CORE/incore-playbook/issues/212)
+- Changed the buttons from texts to icons (change, save, cancel) for roles [#219](https://github.com/IN-CORE/incore-playbook/issues/219)
 
 
 ## [0.5.3] - 2023-03-20
