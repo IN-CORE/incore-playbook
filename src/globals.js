@@ -60,7 +60,7 @@ export const processStatus = [
 export const inputDatasetTypes = {
 	buildings: [
 		{
-			type: "ergo:buildingInventoryVer7",
+			type: "ergo:buildingInventoryVer6",
 			format: "shapefile",
 			num: 20,
 			isSocioeconomics: false,
