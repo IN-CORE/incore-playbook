@@ -1,5 +1,18 @@
+const layerStyles = {
+	BldgDamage: "incore:bldg-dmg-summary",
+	BldgFunctionality: "incore:joplin-bldg-func",
+	BldgMCS: "incore:joplin-bldg-mcs",
+	Interdependency: "incore:joplin-substations-label",
+	PoleDamage: "incore:epf-dmg-summary",
+	PopulationDislocation: {
+		bldgMaxDamageStateINCOREId: "incore:bldg-dmg-summary",
+		popdislHeatmapINCOREId: "incore:heatmap"
+	},
+	SubstationDamage: "incore:epf-dmg-summary"
+};
+
 // // joplin
-// export const mapConfig = {
+// const mapConfig = {
 // 	MAP_BOUNDS:[
 // 		-94.818621,
 // 		36.816347,
@@ -10,10 +23,11 @@
 // 	ZOOM: 5,
 // 	MIN_ZOOM: 4,
 // 	MAX_ZOOM: 15,
+// 	LAYER_STYLES: layerStyles
 // };
 
 // // seaside
-// export const mapConfig = {
+// const mapConfig = {
 // 	MAP_BOUNDS:[
 // 		-122.108613,
 // 		36.299902,
@@ -24,10 +38,11 @@
 // 	ZOOM: 5,
 // 	MIN_ZOOM: 4,
 // 	MAX_ZOOM: 15,
+// 	LAYER_STYLES: layerStyles
 // };
 
 // // memphis
-// export const mapConfig = {
+// const mapConfig = {
 // 	MAP_BOUNDS:[
 // 		-90.347817,
 // 		34.836082,
@@ -38,10 +53,11 @@
 // 	ZOOM: 5,
 // 	MIN_ZOOM: 4,
 // 	MAX_ZOOM: 15,
+// 	LAYER_STYLES: layerStyles
 // };
 
 // // galveston
-// export const mapConfig = {
+// const mapConfig = {
 // 	MAP_BOUNDS:[
 // 		-96.211436,
 // 		27.941297,
@@ -52,10 +68,11 @@
 // 	ZOOM: 5,
 // 	MIN_ZOOM: 4,
 // 	MAX_ZOOM: 15,
+// 	LAYER_STYLES: layerStyles
 // };
 
 // // lumberton
-// export const mapConfig = {
+// const mapConfig = {
 // 	MAP_BOUNDS:[
 // 		-79.306172,
 // 		34.933583,
@@ -66,24 +83,16 @@
 // 	ZOOM: 5,
 // 	MIN_ZOOM: 4,
 // 	MAX_ZOOM: 15,
+// 	LAYER_STYLES: layerStyles
 // };
 
 // Salt Lake City
 export const mapConfig = {
-	MAP_BOUNDS:[
-		-112.625,
-		41.240,
-		-111.282,
-		40.126,
-	],
-	HAZARD_BOUNDS:[
-		-112.312,
-		41,
-		-111.462,
-		40.277
-	],
+	MAP_BOUNDS: [-112.625, 41.24, -111.282, 40.126],
+	HAZARD_BOUNDS: [-112.312, 41, -111.462, 40.277],
 	MAP_CENTER: [-111.954, 40.683],
 	ZOOM: 5,
 	MIN_ZOOM: 4,
 	MAX_ZOOM: 15,
+	LAYER_STYLES: layerStyles
 };

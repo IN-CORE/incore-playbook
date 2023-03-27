@@ -55,7 +55,7 @@ export default function PopDislocation(props) {
 				const tmpLayerDef = [
 					{
 						layerId: bldgMaxDamageStateINCOREId,
-						layerStyles: "incore:bldg-dmg-summary",
+						layerStyles: mapConfig.LAYER_STYLES.PopDislocation.bldgMaxDamageStateINCOREId,
 						title: "Building Damage",
 						opacity: 1,
 						zIndex: 1
@@ -72,7 +72,7 @@ export default function PopDislocation(props) {
 				const tmpLayerDef = [
 					{
 						layerId: popdislHeatmapINCOREId,
-						layerStyles: "incore:heatmap",
+						layerStyles: mapConfig.LAYER_STYLES.PopDislocation.popdislHeatmapINCOREId,
 						title: "Population Dislocation Heatmap",
 						opacity: 0.8,
 						zIndex: 2

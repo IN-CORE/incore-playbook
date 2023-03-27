@@ -26,10 +26,16 @@ import GetAppIcon from "@material-ui/icons/GetApp";
 import { downloadImg } from "../../../utils/image";
 import CameraAltIcon from "@material-ui/icons/CameraAlt";
 
-export default function BldgMCS(props){
-
-	let {executionItem, previewOn, handlePreviewClose, datawolfDatasetConfigItems, hazardType, hazardLayers,
-		setDownloadDialogOpen} = props;
+export default function BldgMCS(props) {
+	let {
+		executionItem,
+		previewOn,
+		handlePreviewClose,
+		datawolfDatasetConfigItems,
+		hazardType,
+		hazardLayers,
+		setDownloadDialogOpen
+	} = props;
 
 	const mapConfig = useSelector((state) => state.config.mapConfig);
 	const datawolfConfig = useSelector((state) => state.config.datawolfConfig);
@@ -60,20 +66,20 @@ export default function BldgMCS(props){
 				);
 				const layerDef = [
 					{
-						"layerId": mcsBldgFailureProbINCOREId,
-						"layerStyles": "incore:joplin-bldg-mcs",
-						"title": "Building Functionality Probability without Interdependency",
-						"opacity": 1,
-						"zIndex": 1
+						layerId: mcsBldgFailureProbINCOREId,
+						layerStyles: mapConfig.LAYER_STYLES.BldgMCS,
+						title: "Building Functionality Probability without Interdependency",
+						opacity: 1,
+						zIndex: 1
 					}
 				];
 				const previewLayers = generateLayers(globalConfig, layerDef);
 				setDamageLayers(previewLayers);
-			}
-			else if (vName === "mcsBldgSummaryTableContent") {
-				setMcsBldgSummaryTableContent(await getOutputFileContentJSON(datawolfConfig, executionItem, datawolfDatasetConfigItem.datasetId));
-			}
-			else if (vName === "mcsBldgFailureProbDownload"){
+			} else if (vName === "mcsBldgSummaryTableContent") {
+				setMcsBldgSummaryTableContent(
+					await getOutputFileContentJSON(datawolfConfig, executionItem, datawolfDatasetConfigItem.datasetId)
+				);
+			} else if (vName === "mcsBldgFailureProbDownload") {
 				setMcsBldgFailureProbDownload(executionItem["datasets"][datawolfDatasetConfigItem.datasetId]);
 			}
 		});
@@ -82,25 +88,19 @@ export default function BldgMCS(props){
 	const download = async () => {
 		setDownloadDialogOpen(true);
 		if (mcsBldgFailureProbDownload) {
-			await downloadOutputFile(datawolfConfig, mcsBldgFailureProbDownload, null,
-				`bldg-fail-prob-${executionItem.id}.csv`);
+			await downloadOutputFile(
+				datawolfConfig,
+				mcsBldgFailureProbDownload,
+				null,
+				`bldg-fail-prob-${executionItem.id}.csv`
+			);
 		}
 	};
 
 	return (
-		<Dialog
-			open={previewOn}
-			onClose={handlePreviewClose}
-			maxWidth="lg"
-			fullWidth
-			scroll="paper"
-		>
+		<Dialog open={previewOn} onClose={handlePreviewClose} maxWidth="lg" fullWidth scroll="paper">
 			<DialogContent className="previewModal" ref={printRef}>
-				<IconButton
-					aria-label="Close"
-					onClick={handlePreviewClose}
-					style={{ float: "right" }}
-				>
+				<IconButton aria-label="Close" onClick={handlePreviewClose} style={{ float: "right" }}>
 					<CloseIcon fontSize="small" />
 				</IconButton>
 
@@ -146,28 +146,22 @@ export default function BldgMCS(props){
 				</Box>
 
 				{/*for map*/}
-				{
-					basicLayers && hazardLayers && damageLayers ?
-						<Container className="mapContainer" disableGutters>
-							<Map
-								className="fillContainer"
-								zoom={mapConfig.ZOOM}
-								minZoom={mapConfig.MIN_ZOOM}
-								maxZoom={mapConfig.MAX_ZOOM}
-								extent={applyTransform(mapConfig.MAP_BOUNDS, getTransform("EPSG:4326", "EPSG:3857"))}
-								center={fromLonLat(mapConfig.MAP_CENTER)}
-								layers={[
-									basicLayers,
-									hazardLayers,
-									damageLayers,
-								]}
-								layerSwitcherOptions={{}}
-							/>
-						</Container>
-						:
-						<></>
-				}
-
+				{basicLayers && hazardLayers && damageLayers ? (
+					<Container className="mapContainer" disableGutters>
+						<Map
+							className="fillContainer"
+							zoom={mapConfig.ZOOM}
+							minZoom={mapConfig.MIN_ZOOM}
+							maxZoom={mapConfig.MAX_ZOOM}
+							extent={applyTransform(mapConfig.MAP_BOUNDS, getTransform("EPSG:4326", "EPSG:3857"))}
+							center={fromLonLat(mapConfig.MAP_CENTER)}
+							layers={[basicLayers, hazardLayers, damageLayers]}
+							layerSwitcherOptions={{}}
+						/>
+					</Container>
+				) : (
+					<></>
+				)}
 
 				{/*for table*/}
 				{mcsBldgSummaryTableContent ? (
@@ -179,10 +173,20 @@ export default function BldgMCS(props){
 				)}
 			</DialogContent>
 			<DialogActions>
-				<IncoreButtonText onClick={()=>{downloadImg(printRef.current, "Building_Monte_Carlo_Simulation");}}
-								  startIcon={<CameraAltIcon/>}>Image</IncoreButtonText>
-				<IncoreButtonText onClick={download} startIcon={<GetAppIcon/>}>Data</IncoreButtonText>
-				<IncoreButtonText onClick={handlePreviewClose} startIcon={<CloseIcon/>}>Close</IncoreButtonText>
+				<IncoreButtonText
+					onClick={() => {
+						downloadImg(printRef.current, "Building_Monte_Carlo_Simulation");
+					}}
+					startIcon={<CameraAltIcon />}
+				>
+					Image
+				</IncoreButtonText>
+				<IncoreButtonText onClick={download} startIcon={<GetAppIcon />}>
+					Data
+				</IncoreButtonText>
+				<IncoreButtonText onClick={handlePreviewClose} startIcon={<CloseIcon />}>
+					Close
+				</IncoreButtonText>
 			</DialogActions>
 		</Dialog>
 	);
