@@ -6,7 +6,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 
-## [Unreleased]
+## [0.5.3] - 2023-03-20
 
 ### Added
 
@@ -22,6 +22,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Fixed bounding box error jump to random number when typing weird value [#207](https://github.com/IN-CORE/incore-playbook/pull/207)
 - Fixed wrong layer group name [#211](https://github.com/IN-CORE/incore-playbook/issues/211)
 - Changed the order of layers on community app [#212](https://github.com/IN-CORE/incore-playbook/issues/212)
+
 
 ## [0.5.2] - 2023-03-15
 
