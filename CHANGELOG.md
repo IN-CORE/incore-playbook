@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Changed
 - Changed the order of layers on community app [#212](https://github.com/IN-CORE/incore-playbook/issues/212)
+- Add geoserver style name to config file and connect to redux [#231](https://github.com/IN-CORE/incore-playbook/issues/231)
 
 
 ## [0.5.3] - 2023-03-20
