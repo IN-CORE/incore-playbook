@@ -19,7 +19,6 @@ import fullHtml from "../public/steps/2-4.html";
 import CloseIcon from "@material-ui/icons/Close";
 import FileUploadDrop from "./childComponents/form/FileUploadDrop";
 import { makeStyles } from "@material-ui/core/styles";
-import { inputDatasetTypes } from "../globals";
 import { IncoreMenuItem, IncoreSelectBox } from "./styledComponents/IncoreSelect";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchDatasets } from "../actions/datasets";
@@ -126,8 +125,8 @@ export const BuiltEnvironment = ({ step, substep }) => {
 
 	// load uploaded dataset
 	useEffect(() => {
-		Object.keys(inputDatasetTypes).map((key) => {
-			inputDatasetTypes[key].map((inputDatasetType) => {
+		Object.keys(globalConfig.inputDatasetTypes).map((key) => {
+			globalConfig.inputDatasetTypes[key].map((inputDatasetType) => {
 				listDatasets(globalConfig, dataPerPage, 0, inputDatasetType["type"]);
 			});
 		});
@@ -157,8 +156,8 @@ export const BuiltEnvironment = ({ step, substep }) => {
 
 		let format = "shapefile";
 		// determine format based on datasetTypes
-		Object.keys(inputDatasetTypes).map((key) => {
-			inputDatasetTypes[key].map((inputDatasetType) => {
+		Object.keys(globalConfig.inputDatasetTypes).map((key) => {
+			globalConfig.inputDatasetTypes[key].map((inputDatasetType) => {
 				if (inputDatasetType["type"] === datasetType) format = inputDatasetType["format"];
 			});
 		});
@@ -231,43 +230,43 @@ export const BuiltEnvironment = ({ step, substep }) => {
 	};
 
 	useEffect(() => {
-		inputDatasetTypes["buildings"].map((inputDatasetType) => {
+		globalConfig.inputDatasetTypes["buildings"].map((inputDatasetType) => {
 			listDatasets(globalConfig, dataPerPage, offsetBuilding, inputDatasetType["type"]);
 		});
 	}, [offsetBuilding, dataPerPage]);
 
 	useEffect(() => {
-		inputDatasetTypes["epfs"].map((inputDatasetType) => {
+		globalConfig.inputDatasetTypes["epfs"].map((inputDatasetType) => {
 			listDatasets(globalConfig, dataPerPage, offsetEpf, inputDatasetType["type"]);
 		});
 	}, [offsetEpf, dataPerPage]);
 
 	useEffect(() => {
-		inputDatasetTypes["interdNetworks"].map((inputDatasetType) => {
+		globalConfig.inputDatasetTypes["interdNetworks"].map((inputDatasetType) => {
 			listDatasets(globalConfig, dataPerPage, offsetInterdNetwork, inputDatasetType["type"]);
 		});
 	}, [offsetInterdNetwork, dataPerPage]);
 
 	useEffect(() => {
-		inputDatasetTypes["sectorShocks"].map((inputDatasetType) => {
+		globalConfig.inputDatasetTypes["sectorShocks"].map((inputDatasetType) => {
 			listDatasets(globalConfig, dataPerPage, offsetSectorShocks, inputDatasetType["type"]);
 		});
 	}, [offsetSectorShocks, dataPerPage]);
 
 	useEffect(() => {
-		inputDatasetTypes["huas"].map((inputDatasetType) => {
+		globalConfig.inputDatasetTypes["huas"].map((inputDatasetType) => {
 			listDatasets(globalConfig, dataPerPage, offsetHuas, inputDatasetType["type"]);
 		});
 	}, [offsetHuas, dataPerPage]);
 
 	useEffect(() => {
-		inputDatasetTypes["blockGroups"].map((inputDatasetType) => {
+		globalConfig.inputDatasetTypes["blockGroups"].map((inputDatasetType) => {
 			listDatasets(globalConfig, dataPerPage, offsetBlockGroups, inputDatasetType["type"]);
 		});
 	}, [offsetBlockGroups, dataPerPage]);
 
 	useEffect(() => {
-		inputDatasetTypes["valueLosses"].map((inputDatasetType) => {
+		globalConfig.inputDatasetTypes["valueLosses"].map((inputDatasetType) => {
 			listDatasets(globalConfig, dataPerPage, offsetValueLosses, inputDatasetType["type"]);
 		});
 	}, [offsetValueLosses, dataPerPage]);
@@ -603,8 +602,8 @@ export const BuiltEnvironment = ({ step, substep }) => {
 											}}
 											value={datasetType}
 										>
-											{Object.keys(inputDatasetTypes).map((key) => {
-												return inputDatasetTypes[key].map((inputDatasetType) => {
+											{Object.keys(globalConfig.inputDatasetTypes).map((key) => {
+												return globalConfig.inputDatasetTypes[key].map((inputDatasetType) => {
 													return inputDatasetType["isSocioeconomics"] ? (
 														<IncoreMenuItem
 															value={inputDatasetType["type"]}
