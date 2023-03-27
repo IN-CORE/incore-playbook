@@ -11,10 +11,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Fixed
 - View created hurricane tab content not showing [#226](https://github.com/IN-CORE/incore-playbook/issues/226)
 - Fixed wrong layer group name [#211](https://github.com/IN-CORE/incore-playbook/issues/211)
+- Reset password link and register new user link [#221](https://github.com/IN-CORE/incore-playbook/issues/221)
+- Map bounding box need to flip X_max with X_min [#235](https://github.com/IN-CORE/incore-playbook/issues/235)
+- Fixed wrong layer group name [#211](https://github.com/IN-CORE/incore-playbook/issues/211)
 
 ### Changed
 - Changed the order of layers on community app [#212](https://github.com/IN-CORE/incore-playbook/issues/212)
-- Fixed wrong layer group name [#211](https://github.com/IN-CORE/incore-playbook/issues/211)
 - Reset password link and register new user link [#221](https://github.com/IN-CORE/incore-playbook/issues/221)
 - Unified the date formats on tables in Step 2-4 [#232](https://github.com/IN-CORE/incore-playbook/issues/232)
 
