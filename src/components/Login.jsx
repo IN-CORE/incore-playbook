@@ -211,7 +211,7 @@ export const Login = () => {
 										<InputLabel className={classes.loginLabel}>PASSWORD</InputLabel>
 									</Grid>
 									<Grid item xs={8} style={{ textAlign: "right" }}>
-										<IncoreLink className={classes.loginLinks} href={globalConfig.resetPassword} target="_blank">Forgot Password?</IncoreLink>
+										<IncoreLink className={classes.loginLinks} href={globalConfig.resetPasswordURL} target="_blank">Forgot Password?</IncoreLink>
 									</Grid>
 								</Grid>
 								<TextField
@@ -237,7 +237,7 @@ export const Login = () => {
 									<InputLabel className={classes.signupMsg}>Don't have an account?</InputLabel>
 								</Grid>
 								<Grid item xs={4} style={{ textAlign: "left" }}>
-									<IncoreLink className={classes.loginLinks} href={globalConfig.registerNewUser} target="_blank">Sign up</IncoreLink>
+									<IncoreLink className={classes.loginLinks} href={globalConfig.registerNewUserURL} target="_blank">Sign up</IncoreLink>
 								</Grid>
 							</Grid>
 						</Container>

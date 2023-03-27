@@ -8,8 +8,17 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
-### Added
+### Fixed
+- Fixed wrong layer group name [#211](https://github.com/IN-CORE/incore-playbook/issues/211)
+- Reset password link and register new user link [#221](https://github.com/IN-CORE/incore-playbook/issues/221)
 
+### Changed
+- Changed the order of layers on community app [#212](https://github.com/IN-CORE/incore-playbook/issues/212)
+
+
+## [0.5.3] - 2023-03-20
+
+### Added
 - Added grouping logic in capital shock's bar chart and added colors [#201](https://github.com/IN-CORE/incore-playbook/issues/201)
 
 ### Changed
@@ -22,6 +31,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Fixed bounding box error jump to random number when typing weird value [#207](https://github.com/IN-CORE/incore-playbook/pull/207)
 - Fixed wrong layer group name [#211](https://github.com/IN-CORE/incore-playbook/issues/211)
 - Changed the order of layers on community app [#212](https://github.com/IN-CORE/incore-playbook/issues/212)
+
 
 ## [0.5.2] - 2023-03-15
 
