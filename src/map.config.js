@@ -8,7 +8,12 @@ const layerStyles = {
 		bldgMaxDamageStateINCOREId: "incore:bldg-dmg-summary",
 		popdislHeatmapINCOREId: "incore:heatmap"
 	},
-	SubstationDamage: "incore:epf-dmg-summary"
+	SubstationDamage: "incore:epf-dmg-summary",
+	MapUtil: {
+		earthquake: "incore:earthquake-pga-g",
+		tornado: "incore:tornado",
+		hurricane: "incore:hurricane-wind"
+	}
 };
 
 // // joplin

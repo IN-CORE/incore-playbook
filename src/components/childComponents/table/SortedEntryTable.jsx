@@ -79,7 +79,6 @@ export function SortedEntryTable(props) {
 	);
 
 	const classes = useStyles();
-	console.log(fields);
 
 	return (
 		<TableContainer>

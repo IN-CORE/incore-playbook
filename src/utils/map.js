@@ -2,10 +2,11 @@ import TileWMS from "ol/source/TileWMS";
 import TileLayer from "ol/layer/Tile";
 import GroupLayer from "ol/layer/Group";
 import { globals as defaultGlobalConfig } from "../globals";
+import { mapConfig as defaultMapConfig } from "../map.config";
 import XYZ from "ol/source/XYZ";
-import OSM, {ATTRIBUTION as OSM_ATTRIBUTION} from "ol/source/OSM";
+import OSM, { ATTRIBUTION as OSM_ATTRIBUTION } from "ol/source/OSM";
 
-export const generateLayers = (globalConfig = defaultGlobalConfig, layerDef, layerGroupTitle="Damage") => {
+export const generateLayers = (globalConfig = defaultGlobalConfig, layerDef, layerGroupTitle = "Damage") => {
 	return layerDef.reduce((previewLayers, layerDefinition) => {
 		const source = new TileWMS({
 			url: `${globalConfig.geoServerWMS}`,
@@ -23,19 +24,25 @@ export const generateLayers = (globalConfig = defaultGlobalConfig, layerDef, lay
 		});
 		return new GroupLayer({
 			title: layerGroupTitle,
-			layers:  [...previewLayers, previewLayer]
+			layers: [...previewLayers, previewLayer]
 		});
 	}, []);
 };
 
 // helper function to construct a single layer of tilelayer
-const _constructHazardLayer = (globalConfig=defaultGlobalConfig, layerId, layerTitle, style,
-									  zIndex=1, opacity=1) => {
+const _constructHazardLayer = (
+	globalConfig = defaultGlobalConfig,
+	layerId,
+	layerTitle,
+	style,
+	zIndex = 1,
+	opacity = 1
+) => {
 	let HazardMapLayer;
 	if (layerId && layerTitle) {
 		const source = new TileWMS({
 			url: `${globalConfig.geoServerWMS}`,
-			params: {LAYERS: layerId, STYLES: style},
+			params: { LAYERS: layerId, STYLES: style },
 			ratio: 1,
 			transition: 0,
 			serverType: "geoserver",
@@ -51,29 +58,34 @@ const _constructHazardLayer = (globalConfig=defaultGlobalConfig, layerId, layerT
 	return HazardMapLayer;
 };
 
-
 // helper function to construct the layer
-export const getHazardGroupLayers = (globalConfig=defaultGlobalConfig, json, htype, zIndex=1,
-						  opacity=1) => {
+export const getHazardGroupLayers = (
+	globalConfig = defaultGlobalConfig,
+	mapConfig = defaultMapConfig,
+	json,
+	htype,
+	zIndex = 1,
+	opacity = 1
+) => {
 	let layerId;
 	let layerTitle;
-	let style;
+	let style = mapConfig.LAYER_STYLES.MapUtil[htype];
 
-	if (htype === "earthquake") style = "incore:earthquake-pga-g";
-	else if (htype === "tornado") style = "incore:tornado";
-	else if (htype === "hurricane") style = "incore:hurricane-wind";
+	// if (htype === "earthquake") style = "incore:earthquake-pga-g";
+	// else if (htype === "tornado") style = "incore:tornado";
+	// else if (htype === "hurricane") style = "incore:hurricane-wind";
 
 	let HazardMapLayers = [];
 
 	// for earthquake
-	if ( "rasterDataset" in json && json["rasterDataset"]["datasetId"] !== undefined){
+	if ("rasterDataset" in json && json["rasterDataset"]["datasetId"] !== undefined) {
 		layerId = json["rasterDataset"]["datasetId"];
 		layerTitle = `${json["name"]} - ${json["rasterDataset"]["demandType"]}`;
 		HazardMapLayers.push(_constructHazardLayer(globalConfig, layerId, layerTitle, style, zIndex, opacity));
 	}
 	// tsunami, hurricane, flood all has multiple layers
-	else if ( "hazardDatasets" in json && json["hazardDatasets"].length > 0){
-		json["hazardDatasets"].map((hazardDataset) =>{
+	else if ("hazardDatasets" in json && json["hazardDatasets"].length > 0) {
+		json["hazardDatasets"].map((hazardDataset) => {
 			layerId = hazardDataset["datasetId"];
 			layerTitle = `${json["name"]} - ${hazardDataset["demandType"]}`;
 			HazardMapLayers.push(_constructHazardLayer(globalConfig, layerId, layerTitle, style, zIndex, opacity));
@@ -89,22 +101,18 @@ export const getHazardGroupLayers = (globalConfig=defaultGlobalConfig, json, hty
 	return new GroupLayer({ title: json["name"], layers: HazardMapLayers });
 };
 
-
 export const basicLayers = new GroupLayer({
 	title: "Base Maps",
 	layers: [
 		new TileLayer({
 			type: "base",
 			title: "OSM",
-			visible:false,
+			visible: false,
 			source: new XYZ({
 				url: "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
 				attributions: [
 					OSM_ATTRIBUTION,
-					"Tiles courtesy of " +
-					"<a href=\"http://openstreetmap.org\">" +
-					"OpenStreetMap" +
-					"</a>"
+					"Tiles courtesy of " + '<a href="http://openstreetmap.org">' + "OpenStreetMap" + "</a>"
 				],
 				crossOrigin: "anonymous"
 			})
@@ -112,13 +120,10 @@ export const basicLayers = new GroupLayer({
 		new TileLayer({
 			type: "base",
 			title: "Carto",
-			visible:true,
+			visible: true,
 			source: new XYZ({
 				url: "https://{a-d}.basemaps.cartocdn.com/rastertiles/light_all/{z}/{x}/{y}.png",
-				attributions: [
-					"&#169; <a href=\"https://www.carto.com\">Carto</a>,",
-					OSM_ATTRIBUTION
-				],
+				attributions: ['&#169; <a href="https://www.carto.com">Carto</a>,', OSM_ATTRIBUTION],
 				crossOrigin: "anonymous"
 			})
 		})
@@ -126,9 +131,16 @@ export const basicLayers = new GroupLayer({
 });
 
 export const validateCoord = (lon, lat, boundingBox) => {
-	return lon && lat && parseFloat(lon) && parseFloat(lat) && !isNaN(parseFloat(lon)) && !isNaN(parseFloat(lat))
-		&& parseFloat(lon) > boundingBox[0]
-		&& parseFloat(lon) < boundingBox[2]
-		&& parseFloat(lat) < boundingBox[1]
-		&& parseFloat(lat) > boundingBox[3];
+	return (
+		lon &&
+		lat &&
+		parseFloat(lon) &&
+		parseFloat(lat) &&
+		!isNaN(parseFloat(lon)) &&
+		!isNaN(parseFloat(lat)) &&
+		parseFloat(lon) > boundingBox[0] &&
+		parseFloat(lon) < boundingBox[2] &&
+		parseFloat(lat) < boundingBox[1] &&
+		parseFloat(lat) > boundingBox[3]
+	);
 };
