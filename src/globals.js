@@ -21,7 +21,7 @@ globals["allowUpload"] = true;
 // globals["testbedGroup"] = "incore_slc_user"; // incore_galveston_user, incore_joplin_user, incore_slc_user
 
 globals["maestroServiceBase"] = `${hostname}/maestro/galveston/`;
-globals["allowedRegions"] = ["R1", "R2", "R3", "R4", "R5", "R6", "R7"];
+globals["allowedRegions"] = null;
 globals["testbedSpace"] = "commresiliencegal";
 globals["testbedGroup"] = "incore_galveston_user"; // incore_galveston_user, incore_joplin_user, incore_slc_user
 
@@ -33,6 +33,7 @@ globals["inputDatasetTypes"] = {
 	buildings: [
 		{
 			type: "ergo:buildingInventoryVer6",
+			// type: "ergo:buildingInventoryVer7",
 			format: "shapefile",
 			num: 20,
 			isSocioeconomics: false,

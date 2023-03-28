@@ -65,7 +65,7 @@ const layerStyles = {
 export const mapConfig = {
 	MAP_BOUNDS:[
 		-96.211436,
-    30.541297,
+		30.541297,
 		-93.611436,
 		27.941297,
 	],
@@ -73,6 +73,7 @@ export const mapConfig = {
 	ZOOM: 5,
 	MIN_ZOOM: 4,
 	MAX_ZOOM: 15,
+	LAYER_STYLES: layerStyles
 };
 
 // // lumberton
@@ -108,4 +109,5 @@ export const mapConfig = {
 // 	ZOOM: 5,
 // 	MIN_ZOOM: 4,
 // 	MAX_ZOOM: 15,
+//  LAYER_STYLES: layerStyles
 // };
