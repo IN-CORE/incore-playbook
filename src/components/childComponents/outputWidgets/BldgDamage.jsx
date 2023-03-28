@@ -81,7 +81,7 @@ export default function BldgDamage(props) {
 				setBldgDmgDsResultDownload(executionItem["datasets"][datawolfDatasetConfigItem.datasetId]);
 			}
 		});
-	}, [mapConfig]);
+	}, []);
 
 	const download = async () => {
 		setDownloadDialogOpen(true);
