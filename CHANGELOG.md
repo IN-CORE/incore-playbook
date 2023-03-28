@@ -18,7 +18,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Changed
 - Changed the order of layers on community app [#212](https://github.com/IN-CORE/incore-playbook/issues/212)
-- Reset password link and register new user link [#221](https://github.com/IN-CORE/incore-playbook/issues/221)
 - Changed the buttons from texts to icons (change, save, cancel) for roles [#219](https://github.com/IN-CORE/incore-playbook/issues/219)
 - Allow overwrite of different incore dataset types [#225](https://github.com/IN-CORE/incore-playbook/issues/225)
 - Unified the date formats on tables in Step 2-4 [#232](https://github.com/IN-CORE/incore-playbook/issues/232)

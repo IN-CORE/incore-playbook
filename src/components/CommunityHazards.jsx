@@ -185,6 +185,16 @@ export const CommunityHazards = (props) => {
 	// Holds an instance of Map component
 	const mapRef = React.useRef();
 
+	// change hazard type
+	useEffect(() => {
+		setPageNumber(1);
+		// start from page 1 again
+		listHazards(globalConfig, selectedHazardType, limit, 0);
+		// reset to the first tab
+		setCurrTabIndex(0);
+	}, [selectedHazardType]);
+
+
 	// When Switching Tab
 	useEffect(() => {
 		drawDisplaySourceRef.current.clear();
@@ -199,52 +209,10 @@ export const CommunityHazards = (props) => {
 		}
 	}, [selectedHazardType, currTabIndex]);
 
+	// page changes
 	useEffect(() => {
-		// clear previous draw interaction
-		mapRef.current.getInteractions().forEach((interaction) => {
-			if (interaction instanceof Draw) {
-				mapRef.current.removeInteraction(interaction);
-			}
-		});
-
-		// construct different draw interactions
-		if (selectedHazardType === "tornado" && currTabIndex === 1 && !enableSrcEdit) {
-			// clear prev draw;
-			drawInteractionRef.current = new Draw({
-				source: drawSourceRef.current,
-				type: "LineString",
-				stopClick: true,
-				maxPoints: 2
-			});
-			drawInteractionRef.current.on("drawstart", () => {
-				drawSourceRef.current.clear();
-			});
-			drawInteractionRef.current.on("drawend", (event) => {
-				const geometry = event.feature.getGeometry();
-				setStartCoord(geometry.getFirstCoordinate());
-				setEndCoord(geometry.getLastCoordinate());
-			});
-		} else if (selectedHazardType === "earthquake" && currTabIndex === 1 && !enableSrcEdit) {
-			drawInteractionRef.current = new Draw({
-				source: drawSourceRef.current,
-				type: "Point"
-			});
-			drawInteractionRef.current.on("drawstart", () => {
-				drawSourceRef.current.clear();
-			});
-			drawInteractionRef.current.on("drawend", (event) => {
-				const geometry = event.feature.getGeometry();
-				setSrcCoord(geometry.getFlatCoordinates());
-			});
-		} else {
-			drawInteractionRef.current = null;
-		}
-
-		// Start the draw interaction...
-		if (drawInteractionRef.current !== null) {
-			mapRef.current.addInteraction(drawInteractionRef.current);
-		}
-	}, [selectedHazardType, currTabIndex, enableSrcEdit]);
+		setFields(getRow(selectedHazardType));
+	}, [pageNumber, earthquakes, tornadoes, hurricanes, tsunamis, floods]);
 
 	useEffect(() => {
 		// Important: need to clear previous draw interaction first
@@ -396,18 +364,6 @@ export const CommunityHazards = (props) => {
 		}
 	};
 
-	// change hazard type
-	useEffect(() => {
-		setPageNumber(1);
-		// start from page 1 again
-		listHazards(globalConfig, selectedHazardType, limit, 0);
-	}, [selectedHazardType]);
-
-	// page changes
-	useEffect(() => {
-		setFields(getRow(selectedHazardType));
-	}, [pageNumber, earthquakes, tornadoes, hurricanes, tsunamis, floods]);
-
 	return (
 		<Layout>
 			<div className="firstDivInContent">
@@ -483,7 +439,7 @@ export const CommunityHazards = (props) => {
 										className={classes.tab}
 										classes={{ selected: classes.selectedTab }}
 										style={{display: selectedHazardType === "tornado" || selectedHazardType ===
-											"earthquake" ? "auto":"none"}}
+											"earthquake" ? "block":"none"}}
 									/>
 									<Tab
 										label="View Created"
@@ -585,7 +541,6 @@ export const CommunityHazards = (props) => {
 													<>
 														<SortedEntryTable
 															fieldNames={fieldNames}
-															// fields={getRow(selectedHazardType)}
 															fields={fields}
 															pageNum={pageNumber}
 															dataPerPage={dataPerPage}
