@@ -5,7 +5,7 @@ import { csvToArray } from "../../../utils/common";
 const ParseData = (data) => {
 	const chartData = [];
 	const chartDataObj = {};
-	const colors = ["#DB4F60", "#ff7e0f", "#A1BE2E", "#1e77b4", "#3fbecf"];
+	const colors = ["#aededb","#2d8686","#00619D","#2c698d","#272643",];
 	chartData.push(["Sector", "Ratio of Capital Remaining", { role: "style" }]);
 
 	// without header
@@ -13,7 +13,7 @@ const ParseData = (data) => {
 
 	if (dataArr[0][0].lastIndexOf("_") === -1) {
 		for (let i = 0; i < dataArr.length; i++) {
-			chartData.push([dataArr[i][0], parseFloat(dataArr[i][1]), colors[i % 4]]);
+			chartData.push([dataArr[i][0], parseFloat(dataArr[i][1]), colors[i % 5]]);
 		}
 		return chartData;
 	}
@@ -39,7 +39,7 @@ const ParseData = (data) => {
 		});
 
 		for (const [subKey, value] of regions) {
-			chartData.push([`${key}_${subKey}`, value, colors[i % 4]]);
+			chartData.push([`${key}_${subKey}`, value, colors[i % 5]]);
 		}
 		i += 1;
 	}
@@ -73,7 +73,7 @@ export default function SectorShocksBarChart(props) {
 						titleTextStyle: { italic: false },
 						minValue: 0,
 						maxValue: 1
-					}
+					},
 				}}
 				// For tests
 				rootProps={{ "data-testid": "1" }}
