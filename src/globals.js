@@ -15,10 +15,15 @@ globals["allowUpload"] = true;
 // globals["testbedSpace"] = "commresiliencejoplin";
 // globals["testbedGroup"] = "incore_joplin_user"; // incore_galveston_user, incore_joplin_user, incore_slc_user
 
-globals["maestroServiceBase"] = `${hostname}/maestro/slc/`;
-globals["allowedRegions"] = ["R1", "R2"];
-globals["testbedSpace"] = "commresilienceslc";
-globals["testbedGroup"] = "incore_slc_user"; // incore_galveston_user, incore_joplin_user, incore_slc_user
+// globals["maestroServiceBase"] = `${hostname}/maestro/slc/`;
+// globals["allowedRegions"] = ["R1", "R2"];
+// globals["testbedSpace"] = "commresilienceslc";
+// globals["testbedGroup"] = "incore_slc_user"; // incore_galveston_user, incore_joplin_user, incore_slc_user
+
+globals["maestroServiceBase"] = `${hostname}/maestro/galveston/`;
+globals["allowedRegions"] = null;
+globals["testbedSpace"] = "commresiliencegal";
+globals["testbedGroup"] = "incore_galveston_user"; // incore_galveston_user, incore_joplin_user, incore_slc_user
 
 globals["registerNewUserURL"] = "https://identity.ncsa.illinois.edu/register/BSKC2UKQPU";
 globals["resetPasswordURL"] = "https://identity.ncsa.illinois.edu/reset";
@@ -27,7 +32,8 @@ globals["resetPasswordURL"] = "https://identity.ncsa.illinois.edu/reset";
 globals["inputDatasetTypes"] = {
 	buildings: [
 		{
-			type: "ergo:buildingInventoryVer6",
+			// type: "ergo:buildingInventoryVer6",
+			type: "ergo:buildingInventoryVer7",
 			format: "shapefile",
 			num: 20,
 			isSocioeconomics: false,
