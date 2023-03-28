@@ -3,6 +3,9 @@ import { IncoreMenuItem, IncoreSelectBox } from "../../styledComponents/IncoreSe
 import { Box, Button, ButtonGroup } from "@material-ui/core";
 import { assignUserRole } from "../../../actions/user";
 import { useDispatch, useSelector } from "react-redux";
+import CancelIcon from "@material-ui/icons/Clear";
+import SaveIcon from "@material-ui/icons/Check";
+import EditIcon from "@material-ui/icons/Edit";
 
 export const Role = (props) => {
 	const { roles, user, editable } = props;
@@ -67,14 +70,14 @@ export const Role = (props) => {
 								style={{ fontSize: "12px", color: "#00619D" }}
 								onClick={handleRoleSave}
 							>
-								Save
+								<SaveIcon />
 							</Button>
 							<Button
 								color="Secondary"
 								style={{ fontSize: "12px", color: "#00619D" }}
 								onClick={handleRoleCancel}
 							>
-								Cancel
+								<CancelIcon />
 							</Button>
 						</ButtonGroup>
 					</Box>
@@ -97,7 +100,7 @@ export const Role = (props) => {
 										setEditRoleOn(true);
 									}}
 								>
-								Change
+								    <EditIcon fontSize="small" />
 								</Button>
 							</Box>
 							:
