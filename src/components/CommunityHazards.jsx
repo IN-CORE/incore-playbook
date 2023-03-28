@@ -316,7 +316,7 @@ export const CommunityHazards = (props) => {
 	const handleLayerUpdate = (json) => {
 		// if not already added, then add, else ignore.
 		if (!olIdLayerMap.has(json.id)) {
-			const HazardMapGroupLayers = getHazardGroupLayers(globalConfig, json, selectedHazardType);
+			const HazardMapGroupLayers = getHazardGroupLayers(globalConfig, mapConfig, json, selectedHazardType);
 			layerRef.current.tilelayer.getLayers().push(HazardMapGroupLayers);
 
 			setOlIdLayerMap((olIdLayerMap) => olIdLayerMap.add(json.id));

@@ -1,7 +1,6 @@
 import React, { useEffect } from "react";
 import { IncoreMenuItem, IncoreSelectBox } from "../../styledComponents/IncoreSelect";
 import { useDispatch, useSelector } from "react-redux";
-import { inputDatasetTypes } from "../../../globals";
 import { fetchDatasets } from "../../../actions/datasets";
 
 export default function Epfs(props) {
@@ -13,7 +12,7 @@ export default function Epfs(props) {
 	const epfs = useSelector((state) => state.dataset.epfs);
 
 	useEffect(() => {
-		inputDatasetTypes.epfs.map((inputDatasetType) => {
+		globalConfig.inputDatasetTypes.epfs.map((inputDatasetType) => {
 			listDatasets(globalConfig, inputDatasetType["num"], 0, inputDatasetType["type"]);
 		});
 	}, []);

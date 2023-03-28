@@ -12,18 +12,25 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - View created hurricane tab content not showing [#226](https://github.com/IN-CORE/incore-playbook/issues/226)
 - Fixed wrong layer group name [#211](https://github.com/IN-CORE/incore-playbook/issues/211)
 - Reset password link and register new user link [#221](https://github.com/IN-CORE/incore-playbook/issues/221)
+- Fixed the function sorting on roles [#219](https://github.com/IN-CORE/incore-playbook/issues/219)
 - Map bounding box need to flip X_max with X_min [#235](https://github.com/IN-CORE/incore-playbook/issues/235)
 - Fixed wrong layer group name [#211](https://github.com/IN-CORE/incore-playbook/issues/211)
+
 
 ### Changed
 - Changed the order of layers on community app [#212](https://github.com/IN-CORE/incore-playbook/issues/212)
 - Reset password link and register new user link [#221](https://github.com/IN-CORE/incore-playbook/issues/221)
+- Changed the buttons from texts to icons (change, save, cancel) for roles [#219](https://github.com/IN-CORE/incore-playbook/issues/219)
+- Allow overwrite of different incore dataset types [#225](https://github.com/IN-CORE/incore-playbook/issues/225)
 - Unified the date formats on tables in Step 2-4 [#232](https://github.com/IN-CORE/incore-playbook/issues/232)
+- Add geoserver style name to config file and connect to redux [#231](https://github.com/IN-CORE/incore-playbook/issues/231)
+
 
 
 ## [0.5.3] - 2023-03-20
 
 ### Added
+
 - Added grouping logic in capital shock's bar chart and added colors [#201](https://github.com/IN-CORE/incore-playbook/issues/201)
 
 ### Changed

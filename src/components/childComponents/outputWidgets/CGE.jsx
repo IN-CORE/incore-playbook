@@ -7,7 +7,6 @@ import React, { useEffect, useState, useRef } from "react";
 import { IncoreMenuItem, IncoreSelectBox } from "../../styledComponents/IncoreSelect";
 import { downloadOutputFile, getOutputFileContentJSON } from "../../../utils/datawolf";
 import { useSelector } from "react-redux";
-import { exportJson } from "../../../utils/common";
 import { IncoreButtonText } from "../../styledComponents/IncoreButtonText";
 import GetAppIcon from "@material-ui/icons/GetApp";
 import { downloadImg } from "../../../utils/image";
