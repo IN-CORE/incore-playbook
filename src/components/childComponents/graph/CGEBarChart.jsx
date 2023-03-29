@@ -1,14 +1,21 @@
 import React from "react";
 import Chart from "react-google-charts";
 
-const ParseData = (data, region=null) => {
-
+const ParseData = (data, region = null) => {
 	let beforeEvent = data["beforeEvent"];
 	let afterEvent = data["afterEvent"];
 
-	if (region){
-		beforeEvent = Object.fromEntries(Object.entries(beforeEvent).filter(([key]) => key.endsWith(region)));
-		afterEvent = Object.fromEntries(Object.entries(afterEvent).filter(([key]) => key.endsWith(region)));
+	if (region) {
+		let filterFunc = ([key]) => {
+			if (region.startsWith("R") || (key.startsWith("H") && !/\d$/.test(key))) {
+				return key.endsWith(region);
+			}
+
+			return key.startsWith(region);
+		};
+
+		beforeEvent = Object.fromEntries(Object.entries(beforeEvent).filter(filterFunc));
+		afterEvent = Object.fromEntries(Object.entries(afterEvent).filter(filterFunc));
 	}
 
 	const chartData = [];
@@ -21,7 +28,7 @@ const ParseData = (data, region=null) => {
 };
 
 export default function CGEBarChart(props) {
-	const { height, width, data, title, xAxisLegend, yAxisLegend, region} = props;
+	const { height, width, data, title, xAxisLegend, yAxisLegend, region } = props;
 
 	return (
 		<div className="barChart">
@@ -36,7 +43,7 @@ export default function CGEBarChart(props) {
 					legend: { position: "none" },
 					colors: ["#A1BE2E", "#DB4F60"],
 					hAxis: {
-						title: xAxisLegend,
+						title: xAxisLegend
 					},
 					vAxis: {
 						title: yAxisLegend
