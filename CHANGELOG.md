@@ -22,6 +22,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Allow overwrite of different incore dataset types [#225](https://github.com/IN-CORE/incore-playbook/issues/225)
 - Unified the date formats on tables in Step 2-4 [#232](https://github.com/IN-CORE/incore-playbook/issues/232)
 - Add geoserver style name to config file and connect to redux [#231](https://github.com/IN-CORE/incore-playbook/issues/231)
+- Galveston CGE region label i vs m different than SLC [#239](https://github.com/IN-CORE/incore-playbook/issues/239)
 
 
 ## [0.5.3] - 2023-03-20
