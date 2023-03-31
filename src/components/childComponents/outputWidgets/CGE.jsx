@@ -180,7 +180,6 @@ export default function CGE(props) {
 								if (cgeType === "totalHouseholdIncome" && cgeHouseholdIncomeContent) {
 									return (
 										<>
-											{console.log("This is here")}
 											<Box style={{ margin: "50px 0", maxWidth: "700px" }}>
 												<CGEBarChart
 													region={region}
@@ -204,6 +203,7 @@ export default function CGE(props) {
 													region={region}
 													data={cgeDomesticSupplyContent}
 													yAxisLegend="Million of $"
+													height="25em"
 												/>
 											</Box>
 											<Box>
@@ -223,6 +223,7 @@ export default function CGE(props) {
 													region={region}
 													data={cgeEmploymentContent}
 													title="Employment"
+													height="25em"
 												/>
 											</Box>
 											<Box>
