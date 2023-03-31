@@ -6,11 +6,11 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 
-## [Unreleased]
+## [0.5.5] - 2023-03-31
 
 ### Changed
-
 - Galveston CGE region label i vs m different than SLC [#239](https://github.com/IN-CORE/incore-playbook/issues/239)
+
 
 ## [0.5.4] - 2023-03-27
 
