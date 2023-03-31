@@ -6,7 +6,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 
-## [Unreleased]
+## [0.5.4] - 2023-03-27
 
 ### Fixed
 - View created hurricane tab content not showing [#226](https://github.com/IN-CORE/incore-playbook/issues/226)
@@ -14,7 +14,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Reset password link and register new user link [#221](https://github.com/IN-CORE/incore-playbook/issues/221)
 - Fixed the function sorting on roles [#219](https://github.com/IN-CORE/incore-playbook/issues/219)
 - Map bounding box need to flip X_max with X_min [#235](https://github.com/IN-CORE/incore-playbook/issues/235)
-
 
 ### Changed
 - Changed the order of layers on community app [#212](https://github.com/IN-CORE/incore-playbook/issues/212)
