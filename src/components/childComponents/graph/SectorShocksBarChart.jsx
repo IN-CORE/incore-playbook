@@ -5,7 +5,11 @@ import { csvToArray } from "../../../utils/common";
 const ParseData = (data) => {
 	const chartData = [];
 	const chartDataObj = {};
+<<<<<<< HEAD
 	const colors = ["#aededb", "#2d8686", "#00619D", "#2c698d", "#272643"];
+=======
+	const colors = ["#DB4F60", "#ff7e0f", "#A1BE2E", "#1e77b4", "#3fbecf"];
+>>>>>>> develop
 	chartData.push(["Sector", "Ratio of Capital Remaining", { role: "style" }]);
 
 	// without header
@@ -65,7 +69,7 @@ const ParseData = (data) => {
 		regions = regions.sort(sortFunc);
 
 		for (const [subKey, value] of regions) {
-			chartData.push([`${key}_${subKey}`, value, colors[i % 5]]);
+			chartData.push([`${key}_${subKey}`, value, colors[i % 4]]);
 		}
 		i += 1;
 	}
