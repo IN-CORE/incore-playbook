@@ -70,13 +70,13 @@ export default function ResilienceMetrics(props) {
 	const [cgeDomesticSupplyContent, setCgeDomesticSupplyContent] = useState(null);
 	const [cgeEmploymentContent, setCgeEmploymentContent] = useState(null);
 	const [bldgFuncSummaryTableContent, setBldgFuncSummaryTableContent] = useState(null);
-	const [cgeHhIncomeRegion, setCgeHhIncomeRegion] = useState(globalConfig["allowedRegions"] ? globalConfig["allowedRegions"][0] : null);
-	const [cgeDomesticSupplyRegion, setCgeDomesticSupplyRegion] = useState(globalConfig["allowedRegions"] ? globalConfig["allowedRegions"][0] : null);
-	const [cgeEmploymentRegion, setCgeEmploymentRegion] = useState(globalConfig["allowedRegions"] ? globalConfig["allowedRegions"][0] : null);
+	const [cgeHhIncomeRegion, setCgeHhIncomeRegion] = useState(globalConfig["allowedRegions"] ? globalConfig["allowedRegions"][0].value : null);
+	const [cgeDomesticSupplyRegion, setCgeDomesticSupplyRegion] = useState(globalConfig["allowedRegions"] ? globalConfig["allowedRegions"][0].value : null);
+	const [cgeEmploymentRegion, setCgeEmploymentRegion] = useState(globalConfig["allowedRegions"] ? globalConfig["allowedRegions"][0].value : null);
 
 	const [cgeFilterOptions, setCgeFilterOptions] = useState(globalConfig["allowedRegions"] ?
 		globalConfig["allowedRegions"].reduce((state, region)=>{
-			return [...state, {"name": region, "value": region}];
+			return [...state, {"name": region.name, "value": region.value}];
 		}, [])
 		:
 		[]);
