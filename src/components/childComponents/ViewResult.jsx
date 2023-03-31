@@ -65,6 +65,7 @@ export default function ViewResult(props) {
 
 	const datawolfConfig = useSelector((state) => state.config.datawolfConfig);
 	const globalConfig = useSelector((state) => state.config.globalConfig);
+	const mapConfig = useSelector((state) => state.config.mapConfig);
 	const datawolfWorkflowConfig = useSelector((state) => state.config.datawolfWorkflowConfig);
 
 	// states
@@ -243,7 +244,9 @@ export default function ViewResult(props) {
 
 		const hazardInfo = _getHazardInfo(selectedExecutionItem);
 		let hazardMetadata = await getHazardMetadata(globalConfig, hazardInfo.hazardType, hazardInfo.hazardId);
-		setHazardGroupLayer(getHazardGroupLayers(globalConfig, hazardMetadata, hazardInfo.hazardType, 3, 0.5));
+		setHazardGroupLayer(
+			getHazardGroupLayers(globalConfig, mapConfig, hazardMetadata, hazardInfo.hazardType, 0, 0.5)
+		);
 		setHazardType(hazardInfo["hazardType"]);
 
 		// dialog on
@@ -263,8 +266,12 @@ export default function ViewResult(props) {
 			{...other}
 		>
 			{/*Download alerts*/}
-			<DownloadAlert downloadDialogOpen={downloadDialogOpen}
-						   handleDownloadDialogClose={() => {setDownloadDialogOpen(false);}} />
+			<DownloadAlert
+				downloadDialogOpen={downloadDialogOpen}
+				handleDownloadDialogClose={() => {
+					setDownloadDialogOpen(false);
+				}}
+			/>
 			{/*for analysis list*/}
 			<Box>
 				<Box className={classes.statTitle}>

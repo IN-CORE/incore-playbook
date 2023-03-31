@@ -25,11 +25,16 @@ import GetAppIcon from "@material-ui/icons/GetApp";
 import CameraAltIcon from "@material-ui/icons/CameraAlt";
 import { IncoreButtonText } from "../../styledComponents/IncoreButtonText";
 
-
 export default function BldgDamage(props) {
-
-	let {executionItem, previewOn, handlePreviewClose, datawolfDatasetConfigItems, hazardType, hazardLayers,
-		setDownloadDialogOpen} = props;
+	let {
+		executionItem,
+		previewOn,
+		handlePreviewClose,
+		datawolfDatasetConfigItems,
+		hazardType,
+		hazardLayers,
+		setDownloadDialogOpen
+	} = props;
 
 	const mapConfig = useSelector((state) => state.config.mapConfig);
 	const datawolfConfig = useSelector((state) => state.config.datawolfConfig);
@@ -40,7 +45,6 @@ export default function BldgDamage(props) {
 	const [bldgDmgSummaryTableContent, setBldgDmgSummaryTableContent] = useState(null);
 	const [bldgDmgDsResultDownload, setBldgDmgDsResultDownload] = useState(null);
 	const [damageLayers, setDamageLayers] = useState(null);
-
 
 	const printRef = useRef();
 
@@ -60,20 +64,20 @@ export default function BldgDamage(props) {
 				);
 				const layerDef = [
 					{
-						"layerId": bldgMaxDamageStateINCOREId,
-						"layerStyles": "incore:bldg-dmg-summary",
-						"title": "Building Damage",
-						"opacity": 1,
-						"zIndex": 1
+						layerId: bldgMaxDamageStateINCOREId,
+						layerStyles: mapConfig.LAYER_STYLES.BldgDamage,
+						title: "Building Damage",
+						opacity: 1,
+						zIndex: 1
 					}
 				];
 				const previewLayers = generateLayers(globalConfig, layerDef);
 				setDamageLayers(previewLayers);
-			}
-			else if (vName === "bldgDmgSummaryTableContent") {
-				setBldgDmgSummaryTableContent(await getOutputFileContentJSON(datawolfConfig, executionItem, datawolfDatasetConfigItem.datasetId));
-			}
-			else if (vName === "bldgDmgDsResultDownload"){
+			} else if (vName === "bldgDmgSummaryTableContent") {
+				setBldgDmgSummaryTableContent(
+					await getOutputFileContentJSON(datawolfConfig, executionItem, datawolfDatasetConfigItem.datasetId)
+				);
+			} else if (vName === "bldgDmgDsResultDownload") {
 				setBldgDmgDsResultDownload(executionItem["datasets"][datawolfDatasetConfigItem.datasetId]);
 			}
 		});
@@ -82,25 +86,14 @@ export default function BldgDamage(props) {
 	const download = async () => {
 		setDownloadDialogOpen(true);
 		if (bldgDmgDsResultDownload) {
-			await downloadOutputFile(datawolfConfig, bldgDmgDsResultDownload, null,
-				`bldg-dmg-${executionItem.id}.csv`);
+			await downloadOutputFile(datawolfConfig, bldgDmgDsResultDownload, null, `bldg-dmg-${executionItem.id}.csv`);
 		}
 	};
 
 	return (
-		<Dialog
-			open={previewOn}
-			onClose={handlePreviewClose}
-			maxWidth="lg"
-			fullWidth
-			scroll="paper"
-		>
+		<Dialog open={previewOn} onClose={handlePreviewClose} maxWidth="lg" fullWidth scroll="paper">
 			<DialogContent className="previewModal" ref={printRef}>
-				<IconButton
-					aria-label="Close"
-					onClick={handlePreviewClose}
-					style={{ float: "right" }}
-				>
+				<IconButton aria-label="Close" onClick={handlePreviewClose} style={{ float: "right" }}>
 					<CloseIcon fontSize="small" />
 				</IconButton>
 
@@ -144,27 +137,22 @@ export default function BldgDamage(props) {
 				</Box>
 
 				{/*for map*/}
-				{
-					basicLayers && hazardLayers && damageLayers ?
-						<Container className="mapContainer" disableGutters>
-							<Map
-								className="fillContainer-BldgDamage"
-								zoom={mapConfig.ZOOM}
-								minZoom={mapConfig.MIN_ZOOM}
-								maxZoom={mapConfig.MAX_ZOOM}
-								extent={applyTransform(mapConfig.MAP_BOUNDS, getTransform("EPSG:4326", "EPSG:3857"))}
-								center={fromLonLat(mapConfig.MAP_CENTER)}
-								layers={[
-									basicLayers,
-									damageLayers,
-									hazardLayers,
-								]}
-								layerSwitcherOptions={{}}
-							/>
-						</Container>
-						:
-						<></>
-				}
+				{basicLayers && hazardLayers && damageLayers ? (
+					<Container className="mapContainer" disableGutters>
+						<Map
+							className="fillContainer-BldgDamage"
+							zoom={mapConfig.ZOOM}
+							minZoom={mapConfig.MIN_ZOOM}
+							maxZoom={mapConfig.MAX_ZOOM}
+							extent={applyTransform(mapConfig.MAP_BOUNDS, getTransform("EPSG:4326", "EPSG:3857"))}
+							center={fromLonLat(mapConfig.MAP_CENTER)}
+							layers={[basicLayers, hazardLayers, damageLayers]}
+							layerSwitcherOptions={{}}
+						/>
+					</Container>
+				) : (
+					<></>
+				)}
 
 				{/*for table*/}
 				{bldgDmgSummaryTableContent ? (
@@ -176,10 +164,20 @@ export default function BldgDamage(props) {
 				)}
 			</DialogContent>
 			<DialogActions>
-				<IncoreButtonText onClick={()=>{downloadImg(printRef.current, "Building_Damage");}}
-								  startIcon={<CameraAltIcon/>}>Image</IncoreButtonText>
-				<IncoreButtonText onClick={download} startIcon={<GetAppIcon/>}>Data</IncoreButtonText>
-				<IncoreButtonText onClick={handlePreviewClose} startIcon={<CloseIcon/>}>Close</IncoreButtonText>
+				<IncoreButtonText
+					onClick={() => {
+						downloadImg(printRef.current, "Building_Damage");
+					}}
+					startIcon={<CameraAltIcon />}
+				>
+					Image
+				</IncoreButtonText>
+				<IncoreButtonText onClick={download} startIcon={<GetAppIcon />}>
+					Data
+				</IncoreButtonText>
+				<IncoreButtonText onClick={handlePreviewClose} startIcon={<CloseIcon />}>
+					Close
+				</IncoreButtonText>
 			</DialogActions>
 		</Dialog>
 	);

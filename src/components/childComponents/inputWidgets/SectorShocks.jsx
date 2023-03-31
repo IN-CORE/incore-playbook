@@ -1,7 +1,6 @@
 import React, { useEffect } from "react";
 import { IncoreMenuItem, IncoreSelectBox } from "../../styledComponents/IncoreSelect";
 import { useDispatch, useSelector } from "react-redux";
-import { inputDatasetTypes } from "../../../globals";
 import { fetchDatasets } from "../../../actions/datasets";
 
 export default function SectorShocks(props) {
@@ -13,7 +12,7 @@ export default function SectorShocks(props) {
 	const sectorShocks = useSelector((state) => state.dataset.sectorShocks);
 
 	useEffect(() => {
-		inputDatasetTypes.sectorShocks.map((inputDatasetType) => {
+		globalConfig.inputDatasetTypes.sectorShocks.map((inputDatasetType) => {
 			listDatasets(globalConfig, inputDatasetType["num"], 0, inputDatasetType["type"]);
 		});
 	}, []);

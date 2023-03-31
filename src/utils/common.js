@@ -317,18 +317,18 @@ export function descendingComparator(a, b, orderBy) {
 	return 0;
 }
 
-export function prettifyDate(date) {
-	return date.slice(0, 10);
-}
-
 function ObjectByString(o, s) {
 	s = s.replace(/\[(\w+)\]/g, ".$1"); // convert indexes to properties
 	s = s.replace(/^\./, "");           // strip a leading dot
 	const a = s.split(".");
 	for (let i = 0, n = a.length; i < n; ++i) {
 		let k = a[i];
-		if (k in o) {
-			o = o[k];
+		if (o !== null && o !== undefined) {
+			if (k in o) {
+				o = o[k];
+			} else {
+				return;
+			}
 		} else {
 			return;
 		}

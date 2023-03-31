@@ -1,7 +1,6 @@
 import React, { useEffect } from "react";
 import { IncoreMenuItem, IncoreSelectBox } from "../../styledComponents/IncoreSelect";
 import { useDispatch, useSelector } from "react-redux";
-import { inputDatasetTypes } from "../../../globals";
 import { fetchDatasets } from "../../../actions/datasets";
 
 export default function Buildings(props) {
@@ -13,7 +12,7 @@ export default function Buildings(props) {
 	const buildings = useSelector((state) => state.dataset.buildings);
 
 	useEffect(() => {
-		inputDatasetTypes.buildings.map((inputDatasetType) => {
+		globalConfig.inputDatasetTypes.buildings.map((inputDatasetType) => {
 			listDatasets(globalConfig, inputDatasetType["num"], 0, inputDatasetType["type"]);
 		});
 	}, []);

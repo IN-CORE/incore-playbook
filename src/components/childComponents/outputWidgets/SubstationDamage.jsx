@@ -12,10 +12,15 @@ import GetAppIcon from "@material-ui/icons/GetApp";
 import { downloadImg } from "../../../utils/image";
 import CameraAltIcon from "@material-ui/icons/CameraAlt";
 
-
 export default function SubstationDamage(props) {
-
-	let { executionItem, previewOn, handlePreviewClose, datawolfDatasetConfigItems, hazardLayers, setDownloadDialogOpen } = props;
+	let {
+		executionItem,
+		previewOn,
+		handlePreviewClose,
+		datawolfDatasetConfigItems,
+		hazardLayers,
+		setDownloadDialogOpen
+	} = props;
 
 	const mapConfig = useSelector((state) => state.config.mapConfig);
 	const datawolfConfig = useSelector((state) => state.config.datawolfConfig);
@@ -42,7 +47,7 @@ export default function SubstationDamage(props) {
 				const layerDef = [
 					{
 						layerId: substationMaxDmgStateINCOREId,
-						layerStyles: "incore:epf-dmg-summary",
+						layerStyles: mapConfig.LAYER_STYLES.SubstationDamage,
 						title: "EPF Damage (Substation)",
 						opacity: 1,
 						zIndex: 1
@@ -50,8 +55,7 @@ export default function SubstationDamage(props) {
 				];
 				const previewLayers = generateLayers(globalConfig, layerDef);
 				setDamageLayers(previewLayers);
-			}
-			else if (vName === "substationDmgDsResultDownload") {
+			} else if (vName === "substationDmgDsResultDownload") {
 				setSubstationDmgDsResultDownload(executionItem["datasets"][datawolfDatasetConfigItem.datasetId]);
 			}
 		});
@@ -60,25 +64,19 @@ export default function SubstationDamage(props) {
 	const download = async () => {
 		setDownloadDialogOpen(true);
 		if (substationDmgDsResultDownload) {
-			await downloadOutputFile(datawolfConfig, substationDmgDsResultDownload, null,
-				`epf-substation-${executionItem.id}.csv`);
+			await downloadOutputFile(
+				datawolfConfig,
+				substationDmgDsResultDownload,
+				null,
+				`epf-substation-${executionItem.id}.csv`
+			);
 		}
 	};
 
 	return (
-		<Dialog
-			open={previewOn}
-			onClose={handlePreviewClose}
-			maxWidth="lg"
-			fullWidth
-			scroll="paper"
-		>
+		<Dialog open={previewOn} onClose={handlePreviewClose} maxWidth="lg" fullWidth scroll="paper">
 			<DialogContent className="previewModal" ref={printRef}>
-				<IconButton
-					aria-label="Close"
-					onClick={handlePreviewClose}
-					style={{ float: "right" }}
-				>
+				<IconButton aria-label="Close" onClick={handlePreviewClose} style={{ float: "right" }}>
 					<CloseIcon fontSize="small" />
 				</IconButton>
 
@@ -90,34 +88,38 @@ export default function SubstationDamage(props) {
 				</Box>
 
 				{/*for map*/}
-				{
-					basicLayers && hazardLayers && damageLayers ?
-						<Container className="mapContainer" disableGutters>
-							<Map
-								className="fillContainer"
-								zoom={mapConfig.ZOOM}
-								minZoom={mapConfig.MIN_ZOOM}
-								maxZoom={mapConfig.MAX_ZOOM}
-								extent={applyTransform(mapConfig.MAP_BOUNDS, getTransform("EPSG:4326", "EPSG:3857"))}
-								center={fromLonLat(mapConfig.MAP_CENTER)}
-								layers={[
-									basicLayers,
-									damageLayers,
-									hazardLayers
-								]}
-								layerSwitcherOptions={{}}
-							/>
-						</Container>
-						:
-						<></>
-				}
-
+				{basicLayers && hazardLayers && damageLayers ? (
+					<Container className="mapContainer" disableGutters>
+						<Map
+							className="fillContainer"
+							zoom={mapConfig.ZOOM}
+							minZoom={mapConfig.MIN_ZOOM}
+							maxZoom={mapConfig.MAX_ZOOM}
+							extent={applyTransform(mapConfig.MAP_BOUNDS, getTransform("EPSG:4326", "EPSG:3857"))}
+							center={fromLonLat(mapConfig.MAP_CENTER)}
+							layers={[basicLayers, hazardLayers, damageLayers]}
+							layerSwitcherOptions={{}}
+						/>
+					</Container>
+				) : (
+					<></>
+				)}
 			</DialogContent>
 			<DialogActions>
-				<IncoreButtonText onClick={() => {downloadImg(printRef.current, "Electric_Power_Substation_Damage");}}
-								  startIcon={<CameraAltIcon />}>Image</IncoreButtonText>
-				<IncoreButtonText onClick={download} startIcon={<GetAppIcon />}>Data</IncoreButtonText>
-				<IncoreButtonText onClick={handlePreviewClose} startIcon={<CloseIcon />}>Close</IncoreButtonText>
+				<IncoreButtonText
+					onClick={() => {
+						downloadImg(printRef.current, "Electric_Power_Substation_Damage");
+					}}
+					startIcon={<CameraAltIcon />}
+				>
+					Image
+				</IncoreButtonText>
+				<IncoreButtonText onClick={download} startIcon={<GetAppIcon />}>
+					Data
+				</IncoreButtonText>
+				<IncoreButtonText onClick={handlePreviewClose} startIcon={<CloseIcon />}>
+					Close
+				</IncoreButtonText>
 			</DialogActions>
 		</Dialog>
 	);

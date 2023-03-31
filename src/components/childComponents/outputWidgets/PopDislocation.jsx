@@ -55,7 +55,7 @@ export default function PopDislocation(props) {
 				const tmpLayerDef = [
 					{
 						layerId: bldgMaxDamageStateINCOREId,
-						layerStyles: "incore:bldg-dmg-summary",
+						layerStyles: mapConfig.LAYER_STYLES.PopulationDislocation.bldgMaxDamageStateINCOREId,
 						title: "Building Damage",
 						opacity: 1,
 						zIndex: 1
@@ -72,13 +72,13 @@ export default function PopDislocation(props) {
 				const tmpLayerDef = [
 					{
 						layerId: popdislHeatmapINCOREId,
-						layerStyles: "incore:heatmap",
+						layerStyles: mapConfig.LAYER_STYLES.PopulationDislocation.popdislHeatmapINCOREId,
 						title: "Population Dislocation Heatmap",
 						opacity: 0.8,
 						zIndex: 2
 					}
 				];
-				const previewLayers = generateLayers(globalConfig, tmpLayerDef);
+				const previewLayers = generateLayers(globalConfig, tmpLayerDef, "Population Dislocation");
 				setDamageLayers2(previewLayers);
 			} else if (vName === "totalDislTableContent") {
 				setTotalDislTableContent(
@@ -142,7 +142,7 @@ export default function PopDislocation(props) {
 							maxZoom={mapConfig.MAX_ZOOM}
 							extent={applyTransform(mapConfig.MAP_BOUNDS, getTransform("EPSG:4326", "EPSG:3857"))}
 							center={fromLonLat(mapConfig.MAP_CENTER)}
-							layers={[basicLayers, damageLayers1, damageLayers2, hazardLayers]}
+							layers={[basicLayers, hazardLayers, damageLayers1, damageLayers2]}
 							layerSwitcherOptions={{}}
 						/>
 					</Container>

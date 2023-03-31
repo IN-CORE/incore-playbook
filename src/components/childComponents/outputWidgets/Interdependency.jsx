@@ -46,7 +46,7 @@ export default function Interdependency(props) {
 					},
 					{
 						layerId: substationMaxDmgStateINCOREId,
-						layerStyles: "incore:joplin-substations-label",
+						layerStyles: mapConfig.LAYER_STYLES.Interdependency,
 						title: "EPF Substations",
 						opacity: 1,
 						zIndex: 2
@@ -69,11 +69,7 @@ export default function Interdependency(props) {
 			scroll="paper"
 		>
 			<DialogContent className="previewModal" ref={printRef}>
-				<IconButton
-					aria-label="Close"
-					onClick={handlePreviewClose}
-					style={{ float: "right" }}
-				>
+				<IconButton aria-label="Close" onClick={handlePreviewClose} style={{ float: "right" }}>
 					<CloseIcon fontSize="small" />
 				</IconButton>
 				{/*title*/}
@@ -86,32 +82,35 @@ export default function Interdependency(props) {
 				</Box>
 
 				{/*map*/}
-				{
-					basicLayers && damageLayers ?
-						<Container className="mapContainerFull" disableGutters>
-							<Map
-								className="fillContainer"
-								zoom={mapConfig.ZOOM}
-								minZoom={mapConfig.MIN_ZOOM}
-								maxZoom={mapConfig.MAX_ZOOM}
-								extent={applyTransform(mapConfig.MAP_BOUNDS, getTransform("EPSG:4326", "EPSG:3857"))}
-								center={fromLonLat(mapConfig.MAP_CENTER)}
-								layers={[
-									basicLayers,
-									damageLayers,
-									hazardLayers,
-								]}
-								layerSwitcherOptions={{}}
-							/>
-						</Container>
-						:
-						<></>
-				}
+				{basicLayers && damageLayers ? (
+					<Container className="mapContainerFull" disableGutters>
+						<Map
+							className="fillContainer"
+							zoom={mapConfig.ZOOM}
+							minZoom={mapConfig.MIN_ZOOM}
+							maxZoom={mapConfig.MAX_ZOOM}
+							extent={applyTransform(mapConfig.MAP_BOUNDS, getTransform("EPSG:4326", "EPSG:3857"))}
+							center={fromLonLat(mapConfig.MAP_CENTER)}
+							layers={[basicLayers, hazardLayers, damageLayers]}
+							layerSwitcherOptions={{}}
+						/>
+					</Container>
+				) : (
+					<></>
+				)}
 			</DialogContent>
 			<DialogActions>
-				<IncoreButtonText onClick={()=>{downloadImg(printRef.current, "Interdependency");}}
-								  startIcon={<CameraAltIcon/>}>Image</IncoreButtonText>
-				<IncoreButtonText onClick={handlePreviewClose} startIcon={<CloseIcon/>}>Close</IncoreButtonText>
+				<IncoreButtonText
+					onClick={() => {
+						downloadImg(printRef.current, "Interdependency");
+					}}
+					startIcon={<CameraAltIcon />}
+				>
+					Image
+				</IncoreButtonText>
+				<IncoreButtonText onClick={handlePreviewClose} startIcon={<CloseIcon />}>
+					Close
+				</IncoreButtonText>
 			</DialogActions>
 		</Dialog>
 	);

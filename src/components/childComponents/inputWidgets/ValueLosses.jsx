@@ -1,7 +1,6 @@
 import React, { useEffect } from "react";
 import { IncoreMenuItem, IncoreSelectBox } from "../../styledComponents/IncoreSelect";
 import { useDispatch, useSelector } from "react-redux";
-import { inputDatasetTypes } from "../../../globals";
 import { fetchDatasets } from "../../../actions/datasets";
 
 export default function ValueLosses(props) {
@@ -13,7 +12,7 @@ export default function ValueLosses(props) {
 	const valueLosses = useSelector((state) => state.dataset.valueLosses);
 
 	useEffect(() => {
-		inputDatasetTypes.valueLosses.map((inputDatasetType) => {
+		globalConfig.inputDatasetTypes.valueLosses.map((inputDatasetType) => {
 			listDatasets(globalConfig, inputDatasetType["num"], 0, inputDatasetType["type"]);
 		});
 	}, []);

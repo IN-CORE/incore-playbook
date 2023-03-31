@@ -6,7 +6,7 @@ import { Table, TableBody, TableCell, TableSortLabel, TableContainer, TableHead,
 import { makeStyles } from "@material-ui/core/styles";
 import { IncoreLinkSmall } from "../../styledComponents/IncoreLinkSmall";
 
-import { getComparator, stableSort, prettifyDate } from "../../../utils/common";
+import { getComparator, stableSort, parseDateTime } from "../../../utils/common";
 
 const useStyles = makeStyles({
 	table: {
@@ -79,7 +79,6 @@ export function SortedEntryTable(props) {
 	);
 
 	const classes = useStyles();
-	console.log(fields);
 
 	return (
 		<TableContainer>
@@ -136,7 +135,7 @@ export function SortedEntryTable(props) {
 									return (
 										<TableCell key={idx} className={classes.tableBodyCell}>
 											{fieldName["columnName"] === "date"
-												? prettifyDate(field[fieldName["columnName"]])
+												? parseDateTime(field[fieldName["columnName"]])
 												: field[fieldName["columnName"]]}
 										</TableCell>
 									);
