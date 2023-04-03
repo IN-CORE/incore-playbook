@@ -12,35 +12,16 @@ globals["spaceServiceBase"] = `${hostname}/space/api/`;
 globals["setGravatarURL"] = "https://en.gravatar.com/support/activating-your-account/";
 globals["allowUpload"] = true;
 // globals["maestroServiceBase"] = `${hostname}/maestro/joplin/`;
-// globals["allowedRegions"] = null;
 // globals["testbedSpace"] = "commresiliencejoplin";
 // globals["testbedGroup"] = "incore_joplin_user"; // incore_galveston_user, incore_joplin_user, incore_slc_user
 
 // globals["maestroServiceBase"] = `${hostname}/maestro/slc/`;
-// globals["allowedRegions"] = [
-// 	{
-// 		name: "R1",
-// 		value: "R1"
-// 	},
-// 	{
-// 		name: "R2",
-// 		value: "R2"
-// 	}
-// ];
+// globals["allowedRegions"] = ["R1", "R2"];
 // globals["testbedSpace"] = "commresilienceslc";
 // globals["testbedGroup"] = "incore_slc_user"; // incore_galveston_user, incore_joplin_user, incore_slc_user
 
 globals["maestroServiceBase"] = `${hostname}/maestro/galveston/`;
-globals["allowedRegions"] = [
-	{
-		name: "Island",
-		value: "I"
-	},
-	{
-		name: "Mainland",
-		value: "M"
-	}
-];
+globals["allowedRegions"] = null;
 globals["testbedSpace"] = "commresiliencegal";
 globals["testbedGroup"] = "incore_galveston_user"; // incore_galveston_user, incore_joplin_user, incore_slc_user
 
@@ -228,6 +209,7 @@ globals["inputDatasetTypes"] = {
 		}
 	]
 };
+
 
 export { globals };
 
