@@ -77,10 +77,18 @@ export function CgeResultsTable(props) {
 	let afterJson = resultsJson["afterEvent"];
 	let percentageChange = resultsJson["%_change"];
 
-	if (region){
-		beforeJson = Object.fromEntries(Object.entries(beforeJson).filter(([key]) => key.endsWith(region)));
-		afterJson = Object.fromEntries(Object.entries(afterJson).filter(([key]) => key.endsWith(region)));
-		percentageChange = Object.fromEntries(Object.entries(percentageChange).filter(([key]) => key.endsWith(region)));
+	if (region) {
+		let filterFunc = ([key]) => {
+			if (region.startsWith("R") || (key.startsWith("H") && !/\d$/.test(key))) {
+				return key.endsWith(region);
+			}
+
+			return key.startsWith(region);
+		};
+
+		beforeJson = Object.fromEntries(Object.entries(beforeJson).filter(filterFunc));
+		afterJson = Object.fromEntries(Object.entries(afterJson).filter(filterFunc));
+		percentageChange = Object.fromEntries(Object.entries(percentageChange).filter(filterFunc));
 	}
 
 	// Eliminate duplicate keys. Also, handles the case where before and after has different number of groups
