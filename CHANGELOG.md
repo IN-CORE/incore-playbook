@@ -6,6 +6,12 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 
+## [0.5.6] - 2023-04-03
+
+### Fixed
+- Remove hardfixed config
+
+
 ## [0.5.5] - 2023-03-31
 
 ### Changed

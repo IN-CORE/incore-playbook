@@ -39,11 +39,13 @@ export const UserInfo = (props) => {
 	const {editable} = props;
 
 	const dispatch = useDispatch();
-	const getPlaybookUserList = () => dispatch(fetchUserList());
-	const getPlaybookRoles = () => dispatch(fetchRoles());
+	const getPlaybookUserList = (globalConfig, limit, skip) => dispatch(fetchUserList(globalConfig, limit, skip));
+	const getPlaybookRoles = (globalConfig, limit, skip) => dispatch(fetchRoles(globalConfig, limit, skip));
+
 	const userList = useSelector((state) => state.user.userList);
 	const userChanged = useSelector((state) => state.user.user);
 	const roles = useSelector((state) => state.user.roles);
+	const globalConfig = useSelector((state) => state.config.globalConfig);
 
 	const [order, setOrder] = useState("asc");
 	const [orderBy, setOrderBy] = React.useState("role.name");
@@ -70,12 +72,12 @@ export const UserInfo = (props) => {
 	};
 
 	useEffect(() => {
-		getPlaybookUserList();
-		getPlaybookRoles();
+		getPlaybookUserList(globalConfig, 100, 0);
+		getPlaybookRoles(globalConfig, 100, 0);
 	}, []);
 
 	useEffect(() => {
-		getPlaybookUserList();
+		getPlaybookUserList(globalConfig, 100, 0);
 	}, [userChanged]);
 
 	return (
