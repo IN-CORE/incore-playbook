@@ -88,7 +88,8 @@ export const getHazardGroupLayers = (
 		json["hazardDatasets"].map((hazardDataset) => {
 			layerId = hazardDataset["datasetId"];
 			layerTitle = `${json["name"]} - ${hazardDataset["demandType"]}`;
-			HazardMapLayers.push(_constructHazardLayer(globalConfig, layerId, layerTitle, style, zIndex, opacity));
+			HazardMapLayers.push(_constructHazardLayer(globalConfig, layerId, layerTitle,
+				style[hazardDataset["demandType"]], zIndex, opacity));
 		});
 	}
 	// tornado has single layer

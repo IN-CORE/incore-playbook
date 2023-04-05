@@ -5,6 +5,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [0.5.7] - 2023-04-05
+
+### Fixed
+- Multiple layer hazards such as hurricane, tsunami and flood would need to have each layer style correspondingly. [#250](https://github.com/IN-CORE/incore-playbook/issues/250)
+
 
 ## [0.5.6] - 2023-04-03
 
