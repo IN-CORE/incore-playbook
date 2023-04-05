@@ -12,7 +12,22 @@ const layerStyles = {
 	MapUtil: {
 		earthquake: "incore:earthquake-pga-g",
 		tornado: "incore:tornado",
-		hurricane: "incore:hurricane-wind"
+		hurricane: {
+			"waveHeight": "incore:hurricaneWaveHeight",
+			"surgeLevel": "incore:hurricaneSurgeLevel",
+			"inundationDuration": "incore:hurricaneInundationDuration",
+			"inundationDepth": "incore:hurricaneInundationDepth",
+			"wavePeriod": "incore:hurricaneWavePeriod",
+			"waveDirection": "incore:hurricaneWaveDirection",
+			"waterVelocity": "incore:hurricaneWaterVelocity",
+			"windVelocity": "incore:hurricaneWindVelocity",
+		},
+		tsunami: {
+
+		},
+		floods: {
+
+		}
 	}
 };
 
