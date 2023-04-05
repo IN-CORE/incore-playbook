@@ -19,12 +19,10 @@ const cookies = new Cookies();
 const useStyles = makeStyles((theme) => ({
 	leftGrid: {
 		height: "100vh",
-		width: "45vw",
 		backgroundColor: "White"
 	},
 	rightGrid: {
 		height: "100vh",
-		width: "55vw",
 		backgroundSize: "cover",
 		backgroundPosition: "0 -150px"
 	},
@@ -91,7 +89,7 @@ const useStyles = makeStyles((theme) => ({
 		color: "#BOBAC9",
 		fontSize: "15px",
 		letterSpacing: 0,
-		lineHeight: "15px",
+		lineHeight: "15px"
 	}
 }));
 
@@ -160,12 +158,11 @@ export const Login = () => {
 			});
 
 			// set auth flag
-			if (isAuthorized(globalConfig["hostname"], globalConfig["testbedGroup"])){
+			if (isAuthorized(globalConfig["hostname"], globalConfig["testbedGroup"])) {
 				setAuthFail(false);
 				dispatch(setMenuState(true));
 				history.push("/");
-			}
-			else{
+			} else {
 				setAuthFail(true);
 			}
 		} else {
@@ -177,8 +174,12 @@ export const Login = () => {
 	let userMessageContent = <span> Please enter your credentials to proceed </span>;
 
 	if (isAuthFail === true) {
-		userMessageContent = <span style={{ color: "Red" }}>Login Error: Invalid username or password. Please try
-			again or contact us if you believe you should have access.</span>;
+		userMessageContent = (
+			<span style={{ color: "Red" }}>
+				Login Error: Invalid username or password. Please try again or contact us if you believe you should have
+				access.
+			</span>
+		);
 	} else if (isAuthFail === false) {
 		// This message will never be seen on frontend, only for testing
 		userMessageContent = <span style={{ color: "Green" }}> Login Success. </span>;
@@ -186,7 +187,7 @@ export const Login = () => {
 
 	return (
 		<Grid container>
-			<Grid item className={classes.leftGrid}>
+			<Grid item className={classes.leftGrid} xs={4}>
 				<div className={classes.loginComponent}>
 					<div className={classes.loginContainer}>
 						<div className={classes.title}>Sign In</div>
@@ -211,7 +212,13 @@ export const Login = () => {
 										<InputLabel className={classes.loginLabel}>PASSWORD</InputLabel>
 									</Grid>
 									<Grid item xs={8} style={{ textAlign: "right" }}>
-										<IncoreLink className={classes.loginLinks} href={globalConfig.resetPasswordURL} target="_blank">Forgot Password?</IncoreLink>
+										<IncoreLink
+											className={classes.loginLinks}
+											href={globalConfig.resetPasswordURL}
+											target="_blank"
+										>
+											Forgot Password?
+										</IncoreLink>
 									</Grid>
 								</Grid>
 								<TextField
@@ -232,12 +239,18 @@ export const Login = () => {
 								</IncoreButton>
 							</Box>
 
-							<Grid container style={{alignItems: "center"}}>
+							<Grid container style={{ alignItems: "center" }}>
 								<Grid item xs={8} style={{ textAlign: "right" }}>
 									<InputLabel className={classes.signupMsg}>Don't have an account?</InputLabel>
 								</Grid>
 								<Grid item xs={4} style={{ textAlign: "left" }}>
-									<IncoreLink className={classes.loginLinks} href={globalConfig.registerNewUserURL} target="_blank">Sign up</IncoreLink>
+									<IncoreLink
+										className={classes.loginLinks}
+										href={globalConfig.registerNewUserURL}
+										target="_blank"
+									>
+										Sign up
+									</IncoreLink>
 								</Grid>
 							</Grid>
 						</Container>
@@ -249,6 +262,7 @@ export const Login = () => {
 				item
 				className={classes.rightGrid}
 				style={{ backgroundImage: `url(${assetConfig.loginBackgroundImg})` }}
+				xs={8}
 			>
 				<img src={assetConfig.poweredByLogo} alt="" style={{ margin: "40px" }} />
 			</Grid>
