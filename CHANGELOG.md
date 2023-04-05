@@ -8,18 +8,31 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## [Unreleased]
 
 ### Fixed
-- Remove hardfixed config
 
+- Fix the login component CSS to correctly display elements side by side.
+
+## [0.5.7] - 2023-04-05
+
+### Fixed
+
+- Multiple layer hazards such as hurricane, tsunami and flood would need to have each layer style correspondingly. [#250](https://github.com/IN-CORE/incore-playbook/issues/250)
+
+## [0.5.6] - 2023-04-03
+
+### Fixed
+
+- Remove hardfixed config
 
 ## [0.5.5] - 2023-03-31
 
 ### Changed
-- Galveston CGE region label i vs m different than SLC [#239](https://github.com/IN-CORE/incore-playbook/issues/239)
 
+- Galveston CGE region label i vs m different than SLC [#239](https://github.com/IN-CORE/incore-playbook/issues/239)
 
 ## [0.5.4] - 2023-03-27
 
 ### Fixed
+
 - View created hurricane tab content not showing [#226](https://github.com/IN-CORE/incore-playbook/issues/226)
 - Fixed wrong layer group name [#211](https://github.com/IN-CORE/incore-playbook/issues/211)
 - Reset password link and register new user link [#221](https://github.com/IN-CORE/incore-playbook/issues/221)
@@ -27,12 +40,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Map bounding box need to flip X_max with X_min [#235](https://github.com/IN-CORE/incore-playbook/issues/235)
 
 ### Changed
+
 - Changed the order of layers on community app [#212](https://github.com/IN-CORE/incore-playbook/issues/212)
 - Changed the buttons from texts to icons (change, save, cancel) for roles [#219](https://github.com/IN-CORE/incore-playbook/issues/219)
 - Allow overwrite of different incore dataset types [#225](https://github.com/IN-CORE/incore-playbook/issues/225)
 - Unified the date formats on tables in Step 2-4 [#232](https://github.com/IN-CORE/incore-playbook/issues/232)
 - Add geoserver style name to config file and connect to redux [#231](https://github.com/IN-CORE/incore-playbook/issues/231)
-
 
 ## [0.5.3] - 2023-03-20
 
@@ -41,6 +54,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Added grouping logic in capital shock's bar chart and added colors [#201](https://github.com/IN-CORE/incore-playbook/issues/201)
 
 ### Changed
+
 - Add title and description to form validaiton in step 3-4 [#191](https://github.com/IN-CORE/incore-playbook/issues/191)
 - UI Changes according to several feedbacks from stress test session [#195](https://github.com/IN-CORE/incore-playbook/issues/195)
 - Change sorting logic for step 3-3 to view created hazards first [#197](https://github.com/IN-CORE/incore-playbook/issues/197)
@@ -49,16 +63,16 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Add column to display link to download data and reordered columns [#196](https://github.com/IN-CORE/incore-playbook/issues/196)
 - Fixed bounding box error jump to random number when typing weird value [#207](https://github.com/IN-CORE/incore-playbook/pull/207)
 
-
 ## [0.5.2] - 2023-03-15
 
 ### Changed
-- Check datawolf dataset file descriptor lengths to decide if render widget or not
 
+- Check datawolf dataset file descriptor lengths to decide if render widget or not
 
 ## [0.5.1] - 2023-03-15
 
 ### Added
+
 - Pagination of list dataset and hazard [#70](https://github.com/IN-CORE/incore-playbook/issues/70)
 - Toggle switch for showing all datawolf flows [#74](https://github.com/IN-CORE/incore-playbook/issues/74)
 - Move created dataset and hazard into a common testbed space [#87](https://github.com/IN-CORE/incore-playbook/issues/87)
@@ -76,6 +90,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Download pyincore CSV output for each output widget [#172](https://github.com/IN-CORE/incore-playbook/issues/172)
 
 ### Changed
+
 - Renamed master branch to main [#28](https://github.com/IN-CORE/incore-playbook/issues/28)
 - Made data upload button on and off [#73](https://github.com/IN-CORE/incore-playbook/issues/73)
 - Display multiple layers of hazard [#63](https://github.com/IN-CORE/incore-playbook/issues/63)
@@ -87,6 +102,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - UI Changes to navigational sidebar [#141](https://github.com/IN-CORE/incore-playbook/pull/141)
 
 ### Fixed
+
 - First time load map layers at step 3-4 "view results" does not show correctly sometimes [#97](https://github.com/IN-CORE/incore-playbook/issues/97)
 - Properly check the remote hostname [#104](https://github.com/IN-CORE/incore-playbook/issues/104)
 - Logout do not need to call GET in steps [#93](https://github.com/IN-CORE/incore-playbook/issues/93)
@@ -102,10 +118,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - UI tweaks such as tab indicator color, select box, cge descriptions and etc [#150](https://github.com/IN-CORE/incore-playbook/issues/150)
 - Clear all layers shouldn't prevent new drawing [#175](https://github.com/IN-CORE/incore-playbook/issues/175)
 
-
 ## [0.3.0] - 2021-11-16
 
 ### Added
+
 - Description component for CGE data [#2](https://github.com/IN-CORE/incore-playbook/issues/2)
 - CGE and Population Dislocation table components [#1](https://github.com/IN-CORE/incore-playbook/issues/1)
 - Connect "run analysis" with datawolf workflow [#7](https://github.com/IN-CORE/incore-playbook/issues/7)
@@ -114,15 +130,17 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Enable Download of CGE and Population Dislocation outputs [#16](https://github.com/IN-CORE/incore-playbook/issues/16)
 
 ### Fixed
+
 - Fix ESlint warnings and errors [#10](https://github.com/IN-CORE/incore-playbook/issues/10)
 
 ### Changed
-- CGE and Population Dislocation table with additional column and rows [#13](https://github.com/IN-CORE/incore-playbook/issues/13)
 
+- CGE and Population Dislocation table with additional column and rows [#13](https://github.com/IN-CORE/incore-playbook/issues/13)
 
 ## [0.2.0] - 2021-04-22
 
 ### Added
+
 - Included HTML content for each step of the playbook on the steps pages. Enabled all the menu items [INCORE1-1045](https://opensource.ncsa.illinois.edu/jira/browse/INCORE1-1045)
 - Introduction HTML explaining each section of the playbook steps [INCORE1-1090](https://opensource.ncsa.illinois.edu/jira/browse/INCORE1-1090)
 - Ability to upload datasets related to EPF and interdependency [INCORE1-1119](https://opensource.ncsa.illinois.edu/jira/browse/INCORE1-1119)
@@ -132,18 +150,20 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Visualization for Building Functionality without Interdependency [INCORE1-1129](https://opensource.ncsa.illinois.edu/jira/browse/INCORE1-1129)
 
 ### Updated
+
 - Results View screen to include all the analyses related to Building Functionality [INCORE1-1091](https://opensource.ncsa.illinois.edu/jira/browse/INCORE1-1091)
 - Improvements to "Create Datasets" screens to support other datatypes [INCORE1-1074](https://opensource.ncsa.illinois.edu/jira/browse/INCORE1-1074)
 - "Run Analysis" functinality to use the new datawold workflow that runs all the analyses related to Building Functionality [INCORE1-1100](https://opensource.ncsa.illinois.edu/jira/browse/INCORE1-1100)
 - Margins and whitespaces to make the content more compact and scale better to screen sizes [INCORE1-1094](https://opensource.ncsa.illinois.edu/jira/browse/INCORE1-1094)
 
 ### Fixed
-- Bug related to logout not clearing the cookie when the cookie is set from homepage login [INCORE1-1114](https://opensource.ncsa.illinois.edu/jira/browse/INCORE1-1114)
 
+- Bug related to logout not clearing the cookie when the cookie is set from homepage login [INCORE1-1114](https://opensource.ncsa.illinois.edu/jira/browse/INCORE1-1114)
 
 ## [0.1.0] - 2020-11-11
 
 ### Added
+
 - Initial setups for the repository [INCORE1-804](https://opensource.ncsa.illinois.edu/jira/browse/INCORE1-804)
 - Create login component [INCORE1-812](https://opensource.ncsa.illinois.edu/jira/browse/INCORE1-812)
 - Add playbook app layout with header, footer and sidebar [INCORE1-813](https://opensource.ncsa.illinois.edu/jira/browse/INCORE1-813)
@@ -161,4 +181,3 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Stacked barchart component for displaying grouped damage results [INCORE1-855](https://opensource.ncsa.illinois.edu/jira/browse/INCORE1-855)
 - Adjust the CSS styles [INCORE1-856](https://opensource.ncsa.illinois.edu/jira/browse/INCORE1-856)
 - Adjust the styles of breadcrumbs, menu items and etc [INCORE1-858](https://opensource.ncsa.illinois.edu/jira/browse/INCORE1-858)
-
