@@ -16,11 +16,11 @@ const layerStyles = {
 			"waveHeight": "incore:hurricane-wave-height",
 			"surgeLevel": "incore:hurricane-surge-level",
 			"inundationDuration": "incore:hurricane-inundation-duration",
-			"inundationDepth": "",
-			"wavePeriod": "",
-			"waveDirection": "",
-			"waterVelocity": "",
-			"windVelocity": "incore:hurricane-wind",
+			"inundationDepth": "incore:hurricane-inundation-depth",
+			"wavePeriod": "incore:hurricane-wave-period",
+			"waveDirection": "incore:hurricane-wave-direction",
+			"waterVelocity": "incore:hurricane-water-velocity",
+			"windVelocity": "incore:hurricane-wind"
 		},
 		tsunami: {
 
