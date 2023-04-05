@@ -13,14 +13,14 @@ const layerStyles = {
 		earthquake: "incore:earthquake-pga-g",
 		tornado: "incore:tornado",
 		hurricane: {
-			"waveHeight": "incore:hurricaneWaveHeight",
-			"surgeLevel": "incore:hurricaneSurgeLevel",
-			"inundationDuration": "incore:hurricaneInundationDuration",
-			"inundationDepth": "incore:hurricaneInundationDepth",
-			"wavePeriod": "incore:hurricaneWavePeriod",
-			"waveDirection": "incore:hurricaneWaveDirection",
-			"waterVelocity": "incore:hurricaneWaterVelocity",
-			"windVelocity": "incore:hurricaneWindVelocity",
+			"waveHeight": "incore:hurricane-wave-height",
+			"surgeLevel": "incore:hurricane-surge-level",
+			"inundationDuration": "incore:hurricane-inundation-duration",
+			"inundationDepth": "",
+			"wavePeriod": "",
+			"waveDirection": "",
+			"waterVelocity": "",
+			"windVelocity": "incore:hurricane-wind",
 		},
 		tsunami: {
 
