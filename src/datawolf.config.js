@@ -518,7 +518,7 @@ const datawolfWorkflowConfig =
 					]
 				},
 				{
-					"title": "hazard_type",
+					"title": "Hazard Type",
 					"description": "hazard_type",
 					"variableName": "selectedHazardType",
 					"widget": "AllowedHazardTypes",
@@ -556,7 +556,7 @@ const datawolfWorkflowConfig =
 					]
 				},
 				{
-					"title": "hazard_id",
+					"title": "Hazard ID",
 					"description": "hazard_id",
 					"variableName": "selectedHazardId",
 					"widget": "Hazards",
@@ -952,7 +952,7 @@ const datawolfWorkflowConfig =
 					]
 				},
 				{
-					"title": "housing_unit_allocation",
+					"title": "Housing Unit Allocation",
 					"description": "housing_unit_allocation",
 					"variableName": "selectedHuaId",
 					"widget": "Huas",
@@ -969,7 +969,7 @@ const datawolfWorkflowConfig =
 					]
 				},
 				{
-					"title": "block_group_data",
+					"title": "Block Group Data",
 					"description": "block_group_data",
 					"variableName": "selectedBlockGroupId",
 					"widget": "BlockGroups",
@@ -986,7 +986,7 @@ const datawolfWorkflowConfig =
 					]
 				},
 				{
-					"title": "value_loss_param",
+					"title": "Value Loss Parameter",
 					"description": "value_loss_param",
 					"variableName": "valueLosses",
 					"widget": "ValueLosses",
@@ -1232,7 +1232,7 @@ const datawolfWorkflowConfig =
 					]
 				},
 				{
-					"title": "buildings_to_sectors",
+					"title": "Buildings to Sectors Table",
 					"description": "buildings_to_sectors",
 					"variableName": "selectedBldgToSector",
 					"widget": "SectorShocks",
@@ -1509,7 +1509,7 @@ const datawolfWorkflowConfig =
 					]
 				},
 				{
-					"title": "interdependency_dictionary",
+					"title": "Network Interdependency",
 					"description": "interdependency_dictionary",
 					"variableName": "selectedInterdNetworkId",
 					"widget": "InterdNetworks",
