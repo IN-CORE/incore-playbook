@@ -5,6 +5,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## Unreleased
+
+### Fixed
+- Added Satellite imagery layer to the map [#260](https://github.com/IN-CORE/incore-playbook/issues/260)
+
 ## [0.5.7] - 2023-04-05
 
 ### Fixed
