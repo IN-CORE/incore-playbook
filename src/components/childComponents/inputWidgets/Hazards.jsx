@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { IncoreAutocomplete, IncoreTextField } from "../../styledComponents/IncoreSelect";
+import { IncoreAutocomplete } from "../../styledComponents/IncoreAutocomplete";
+import { IncoreTextField } from "../../styledComponents/IncoreInput";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchHazards } from "../../../actions/hazards";
 import { getHazardTypePlural } from "../../../utils/common";
-import { TextField } from "@material-ui/core";
 
 export default function Hazards(props) {
 	const { setDatawolfFormState, datawolfFormState, datawolfParamConfigItem } = props;
@@ -55,6 +55,7 @@ export default function Hazards(props) {
 					return { ...prevState, [datawolfParamConfigItem.variableName]: mapState };
 				});
 			}}
+
             options={hazards}
 	        getOptionLabel={(option) => option.name}
 			getOptionSelected={(option, value) => option.id === value.id}
@@ -62,14 +63,15 @@ export default function Hazards(props) {
 				<IncoreTextField {...params}
 						   InputProps={{ ...params.InputProps,
 							   disableUnderline: true,
-							   style: {height: "41px",
-								       width: "100%",
-									   color: "#2E384D",
-									   fontSize: "15px",
+							   style: {fontSize: "15px",
 									   fontWeight: 500,
 									   letterSpacing: 0,
 									   lineHeight: "18px",
-									   backgroundColor: "#FFFFFF"
+								       paddingLeft: "12px",
+								       boxSizing: "border-box",
+								       border: "solid 1px",
+								       borderColor: "#DCDCDC",
+								       borderRadius: "4px",
 								   }}} />}
         />
 	);
