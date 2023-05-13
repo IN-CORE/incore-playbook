@@ -70,7 +70,7 @@ export default function Hazards(props) {
 								       paddingLeft: "12px",
 								       boxSizing: "border-box",
 								       border: "solid 1px",
-								       borderColor: "#DCDCDC",
+								       borderColor: "#D3D3D3",
 								       borderRadius: "4px",
 								   }}} />}
         />
