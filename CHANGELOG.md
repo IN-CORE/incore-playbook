@@ -13,15 +13,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Changed
 - Changed the dropdown component in step 3-4. [#214](https://github.com/IN-CORE/incore-playbook/issues/214)
 
-## Unreleased
-
-### Fixed
-- Added Satellite imagery layer to the map [#260](https://github.com/IN-CORE/incore-playbook/issues/260)
-
-## [0.5.7] - 2023-04-05
-
-### Fixed
-- Multiple layer hazards such as hurricane, tsunami and flood would need to have each layer style correspondingly. [#250](https://github.com/IN-CORE/incore-playbook/issues/250)
 
 ## [0.5.8] - 2023-04-05
 
