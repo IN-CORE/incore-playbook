@@ -120,6 +120,16 @@ export const basicLayers = new GroupLayer({
 		}),
 		new TileLayer({
 			type: "base",
+			title: "Esri Satellite Layer",
+			visible: true,
+			source: new XYZ({
+				url: "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
+				attributions: ['&#169; <a href="https://www.esri.com">Esri</a>,', OSM_ATTRIBUTION],
+				crossOrigin: "anonymous"
+			})
+		}),
+		new TileLayer({
+			type: "base",
 			title: "Carto",
 			visible: true,
 			source: new XYZ({
