@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { IncoreMenuItem, IncoreSelectBox } from "../../styledComponents/IncoreSelect";
+import { IncoreAutocomplete } from "../../styledComponents/IncoreAutocomplete";
+import { IncoreTextField } from "../../styledComponents/IncoreInput";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchHazards } from "../../../actions/hazards";
 import { getHazardTypePlural } from "../../../utils/common";
@@ -39,12 +40,13 @@ export default function Hazards(props) {
 	}, [datawolfFormState.selectedHazardType]);
 
 	return (
-		<IncoreSelectBox
-			labelId="label"
-			id="select"
+		<IncoreAutocomplete
+			disablePortal
+            labelId="label"
+            id="select"
 			variant="outlined"
-			onChange={(e) => {
-				let currentVal = e.target.value;
+			onChange={(event, newValue) => {
+				let currentVal = newValue.id;
 				setDatawolfFormState((prevState) => {
 					let mapState = {};
 					datawolfParamConfigItem.parametersMap.map((pm) => {
@@ -53,20 +55,24 @@ export default function Hazards(props) {
 					return { ...prevState, [datawolfParamConfigItem.variableName]: mapState };
 				});
 			}}
-			// parameters belong to the same variable should have the same value; just pick one
-			value={
-				datawolfFormState[datawolfParamConfigItem.variableName][
-					Object.keys(datawolfFormState[datawolfParamConfigItem.variableName])[0]
-				] ?? ""
-			}
-		>
-			{hazards.map((option) => {
-				return (
-					<IncoreMenuItem value={option["id"]} key={option["id"]}>
-						{option["name"]}
-					</IncoreMenuItem>
-				);
-			})}
-		</IncoreSelectBox>
+
+            options={hazards}
+	        getOptionLabel={(option) => option.name}
+			getOptionSelected={(option, value) => option.id === value.id}
+			renderInput={(params) =>
+				<IncoreTextField {...params}
+						   InputProps={{ ...params.InputProps,
+							   disableUnderline: true,
+							   style: {fontSize: "15px",
+									   fontWeight: 500,
+									   letterSpacing: 0,
+									   lineHeight: "18px",
+								       paddingLeft: "12px",
+								       boxSizing: "border-box",
+								       border: "solid 1px",
+								       borderColor: "#D3D3D3",
+								       borderRadius: "4px",
+								   }}} />}
+        />
 	);
 }
