@@ -31,8 +31,8 @@
 			"enumNames": ["Wave Height", "Surge Level", "Inundation Duration",
 			  "Inundation Depth", "Wave Period", "Wave Direction",
 			  "Water Velocity", "Wind Velocity"],
-			"enum": ["waveHeight", "surgeLevel", "innundationDuration", "innundationDepth", "wavePeriod",
-			  "waveDirection", "waveVelocity", "windVelocity"],
+			"enum": ["waveHeight", "surgeLevel", "inundationDuration", "innundationDepth", "wavePeriod",
+			  "waveDirection", "waterVelocity", "windVelocity"],
 			"default":"waveHeight"
 		  },
 		  "demandUnits":{
@@ -61,7 +61,7 @@
 			  "model":{
 				"title": "Model",
 				"enum": ["Kriging", "ADCIRCSWAN"],
-				"default":"Kriging"
+				"default":"ADCIRCSWAN"
 			  }
 			}
 		  }
