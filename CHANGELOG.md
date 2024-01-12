@@ -11,6 +11,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 - Adding % (# of building) to table of building damage output. [#261](https://github.com/IN-CORE/incore-playbook/issues/261)
 
+### Fixed
+- Update hazard previewing due to model change [#269](https://github.com/IN-CORE/incore-playbook/issues/269)
 
 ## [0.5.7] - 2023-04-05
 
