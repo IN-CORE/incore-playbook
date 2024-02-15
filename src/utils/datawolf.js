@@ -1,6 +1,8 @@
-import { getHeader, getCurrUsername, getIncoreTokenFile, getCurrUserDatawolfId } from "./common";
-import { datawolfConfig as defaultDatawolfConfig } from "../datawolf.config.js";
-import { datawolfWorkflowConfig as defaultDatawolfWorkflowConfig } from "../datawolf.config.js";
+import { getCurrUserDatawolfId, getCurrUsername, getHeader, getIncoreTokenFile } from "./common";
+import {
+	datawolfConfig as defaultDatawolfConfig,
+	datawolfWorkflowConfig as defaultDatawolfWorkflowConfig
+} from "../datawolf.config.js";
 
 export async function checkFileDescriptors(datawolfConfig = defaultDatawolfConfig, datasetId) {
 	let authHeader = getHeader(datawolfConfig.hostname);
@@ -15,9 +17,7 @@ export async function checkFileDescriptors(datawolfConfig = defaultDatawolfConfi
 	if (datasetResponse.status === 200) {
 		const resultDataset = await datasetResponse.json();
 		return resultDataset.fileDescriptors.length;
-	}
-
-	else return 0;
+	} else return 0;
 }
 
 export async function getOutputFileText(datawolfConfig = defaultDatawolfConfig, datasetId, outputFileName = null) {
@@ -30,7 +30,7 @@ export async function getOutputFileText(datawolfConfig = defaultDatawolfConfig, 
 		mode: "cors"
 	});
 
-	if (datasetResponse.status === 200){
+	if (datasetResponse.status === 200) {
 		const resultDataset = await datasetResponse.json();
 		let fileId = -1;
 
@@ -61,8 +61,7 @@ export async function getOutputFileText(datawolfConfig = defaultDatawolfConfig, 
 		} else {
 			return "No Content available...";
 		}
-	}
-	else{
+	} else {
 		return "No Content available...";
 	}
 }
@@ -156,7 +155,7 @@ export async function downloadOutputFile(datawolfConfig = defaultDatawolfConfig,
 		mode: "cors"
 	});
 
-	if (datasetResponse.status === 200){
+	if (datasetResponse.status === 200) {
 		const resultDataset = await datasetResponse.json();
 		let fileId = -1;
 
@@ -186,11 +185,11 @@ export async function downloadOutputFile(datawolfConfig = defaultDatawolfConfig,
 			if (fileDownloadResponse.status === 200) {
 				let blob = await fileDownloadResponse.blob();
 				if (window.navigator.msSaveOrOpenBlob) {
-					window.navigator.msSaveBlob(blob, saveFileName ? saveFileName: resultDataset.fileDescriptors[0].filename);
+					window.navigator.msSaveBlob(blob, saveFileName ? saveFileName : resultDataset.fileDescriptors[0].filename);
 				} else {
 					let anchor = window.document.createElement("a");
 					anchor.href = window.URL.createObjectURL(blob);
-					anchor.download = saveFileName ? saveFileName: resultDataset.fileDescriptors[0].filename;
+					anchor.download = saveFileName ? saveFileName : resultDataset.fileDescriptors[0].filename;
 					document.body.appendChild(anchor);
 					anchor.click();
 					document.body.removeChild(anchor);
@@ -205,8 +204,7 @@ export async function downloadOutputFile(datawolfConfig = defaultDatawolfConfig,
 		} else {
 			return null;
 		}
-	}
-	else{
+	} else {
 		return null;
 	}
 }
@@ -220,4 +218,16 @@ export const getOutputFileContentJSON = async (datawolfConfig = defaultDatawolfC
 export const getOutputFileContent = async (datawolfConfig = defaultDatawolfConfig, executionItem, dwDatasetId) => {
 	let datawolfId = executionItem["datasets"][dwDatasetId];
 	return await getOutputFileText(datawolfConfig, datawolfId);
+};
+
+export const getExecution = async (datawolfConfig, executionId) => {
+	let endpoint = `${datawolfConfig.executionGetURL}/${executionId}`;
+	const response = await fetch(endpoint, { mode: "cors", headers: getHeader(datawolfConfig.hostname) });
+	if (response.status === 200) {
+		return response.json();
+	} else if (response.status === 401) {
+		return null;
+	} else {
+		return null;
+	}
 };
