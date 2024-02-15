@@ -111,6 +111,18 @@ export function ResultTable(props) {
 
 	const classes = useStyles();
 
+
+	let tableHeaders = ["Insignificant", "Moderate", "Extensive", "Complete"];
+	let tableKeys = ["DS_0", "DS_1", "DS_2", "DS_3"]
+
+	if (fields && "Insignificant" in fields["by_category"][0]) {
+		tableKeys = ["Insignificant", "Moderate", "Extensive", "Complete"];
+	}
+	if (fields && ("Affected" in fields["by_category"][0])) {
+		tableHeaders = ["Affected", "Minor", "Major", "Destroyed"];
+		tableKeys = ["Affected", "Minor", "Major", "Destroyed"];
+	}
+
 	return (
 		<TableContainer>
 			<Box style={{ float: "right" }}>
@@ -132,7 +144,6 @@ export function ResultTable(props) {
 			</Box>
 			<Table className={classes.table} size="small" aria-label="a dense table">
 				<TableHead>
-					{/*["playbook builidng clusters", "DS_0", "DS_1", "DS_2", "DS_3"];*/}
 					<TableRow className={classes.tableHeaderRow} key="hdrRow">
 						<TableCell
 							style={{ width: "647px", backgroundColor: "#EFF2FF", color: "#69707F" }}
@@ -147,28 +158,28 @@ export function ResultTable(props) {
 							className={classes.tableHeaderCell}
 							key="DS_0"
 						>
-							Insignificant
+							{tableHeaders[0]}
 						</TableCell>
 						<TableCell
 							style={{ width: "121px", backgroundColor: "#F7C137" }}
 							className={classes.tableHeaderCell}
 							key="DS_1"
 						>
-							Moderate
+							{tableHeaders[1]}
 						</TableCell>
 						<TableCell
 							style={{ width: "121px", backgroundColor: "#ED8036" }}
 							className={classes.tableHeaderCell}
 							key="DS_2"
 						>
-							Extensive
+							{tableHeaders[2]}
 						</TableCell>
 						<TableCell
 							style={{ width: "121px", backgroundColor: "#D63649" }}
 							className={classes.tableHeaderCell}
 							key="DS_3"
 						>
-							Complete
+							{tableHeaders[3]}
 						</TableCell>
 					</TableRow>
 				</TableHead>
@@ -199,20 +210,20 @@ export function ResultTable(props) {
 													</TableCell>
 													<TableCell key={`${idxx}-insig`} className={classes.tableBodyCell}>
 														<td>
-															{clusterItem["DS_0"] === NA_value ? "-" : clusterItem["DS_0"]}
+															{clusterItem[tableKeys[0]] === NA_value ? "-" : clusterItem[tableKeys[0]]}
 														</td>
 														<td style={ percentOn ?
 															{ visibility: "visible", color:"#A9A9A9" }: { visibility: "hidden"}}>
-															{calcPercentage(clusterItem["DS_0"], categoryItem["DS_0"])}
+															{calcPercentage(clusterItem[tableKeys[0]], categoryItem[tableKeys[0]])}
 														</td>
 													</TableCell>
 													<TableCell key={`${idxx}-mod`} className={classes.tableBodyCell}>
 														<td>
-															{clusterItem["DS_1"] === NA_value ? "-" : clusterItem["DS_1"]}
+															{clusterItem[tableKeys[1]] === NA_value ? "-" : clusterItem[tableKeys[1]]}
 														</td>
 														<td style={ percentOn ?
 															{ visibility: "visible", color:"#A9A9A9" }: { visibility: "hidden"}}>
-															{calcPercentage(clusterItem["DS_1"], categoryItem["DS_1"])}
+															{calcPercentage(clusterItem[tableKeys[1]], categoryItem[tableKeys[1]])}
 														</td>
 													</TableCell>
 													<TableCell
@@ -220,20 +231,20 @@ export function ResultTable(props) {
 														className={classes.tableBodyCell}
 													>
 														<td>
-															{clusterItem["DS_2"] === NA_value ? "-" : clusterItem["DS_2"]}
+															{clusterItem[tableKeys[2]] === NA_value ? "-" : clusterItem[tableKeys[2]]}
 														</td>
 														<td style={ percentOn ?
 															{ visibility: "visible", color:"#A9A9A9" }: { visibility: "hidden"}}>
-															{calcPercentage(clusterItem["DS_2"], categoryItem["DS_2"])}
+															{calcPercentage(clusterItem[tableKeys[2]], categoryItem[tableKeys[2]])}
 														</td>
 													</TableCell>
 													<TableCell key={`${idxx}-comp`} className={classes.tableBodyCell}>
 														<td>
-															{clusterItem["DS_3"] === NA_value ? "-" : clusterItem["DS_3"]}
+															{clusterItem[tableKeys[3]] === NA_value ? "-" : clusterItem[tableKeys[3]]}
 														</td>
 														<td style={ percentOn ?
 															{ visibility: "visible", color:"#A9A9A9" }: { visibility: "hidden"}}>
-															{calcPercentage(clusterItem["DS_3"], categoryItem["DS_3"])}
+															{calcPercentage(clusterItem[tableKeys[3]], categoryItem[tableKeys[3]])}
 														</td>
 													</TableCell>
 												</TableRow>
@@ -253,10 +264,10 @@ export function ResultTable(props) {
 											className={classes.tableBodyCell}
 											style={{ fontWeight: 500, backgroundColor: "#EEF3F5" }}
 										>
-											<td>{categoryItem["DS_0"] === NA_value ? "-" : categoryItem["DS_0"]}</td>
+											<td>{categoryItem[tableKeys[0]] === NA_value ? "-" : categoryItem[tableKeys[0]]}</td>
 											<td style={ percentOn ?
 												{ visibility: "visible", color:"#A9A9A9" }: { visibility: "hidden"}}>
-												{categoryItem["DS_0"] === NA_value ? "" : "(100%)"}
+												{categoryItem[tableKeys[0]] === NA_value ? "" : "(100%)"}
 											</td>
 										</TableCell>
 										<TableCell
@@ -264,10 +275,10 @@ export function ResultTable(props) {
 											className={classes.tableBodyCell}
 											style={{ fontWeight: 500, backgroundColor: "#EEF3F5" }}
 										>
-											<td>{categoryItem["DS_1"] === NA_value ? "-" : categoryItem["DS_1"]}</td>
+											<td>{categoryItem[tableKeys[1]] === NA_value ? "-" : categoryItem[tableKeys[1]]}</td>
 											<td style={ percentOn ?
 												{ visibility: "visible", color:"#A9A9A9" }: { visibility: "hidden"}}>
-												{categoryItem["DS_1"] === NA_value ? "" : "(100%)"}
+												{categoryItem[tableKeys[1]] === NA_value ? "" : "(100%)"}
 											</td>
 										</TableCell>
 										<TableCell
@@ -275,10 +286,10 @@ export function ResultTable(props) {
 											className={classes.tableBodyCell}
 											style={{ fontWeight: 500, backgroundColor: "#EEF3F5" }}
 										>
-											<td>{categoryItem["DS_2"] === NA_value ? "-" : categoryItem["DS_2"]}</td>
+											<td>{categoryItem[tableKeys[2]] === NA_value ? "-" : categoryItem[tableKeys[2]]}</td>
 											<td style={ percentOn ?
 												{ visibility: "visible", color:"#A9A9A9" }: { visibility: "hidden"}}>
-												{categoryItem["DS_2"] === NA_value ? "" : "(100%)"}
+												{categoryItem[tableKeys[2]] === NA_value ? "" : "(100%)"}
 											</td>
 										</TableCell>
 										<TableCell
@@ -286,10 +297,10 @@ export function ResultTable(props) {
 											className={classes.tableBodyCell}
 											style={{ fontWeight: 500, backgroundColor: "#EEF3F5" }}
 										>
-											<td>{categoryItem["DS_3"] === NA_value ? "-" : categoryItem["DS_3"]}</td>
+											<td>{categoryItem[tableKeys[3]] === NA_value ? "-" : categoryItem[tableKeys[3]]}</td>
 											<td style={ percentOn ?
 												{ visibility: "visible", color:"#A9A9A9" }: { visibility: "hidden"}}>
-												{categoryItem["DS_3"] === NA_value ? "" : "(100%)"}
+												{categoryItem[tableKeys[3]] === NA_value ? "" : "(100%)"}
 											</td>
 										</TableCell>
 									</TableRow>
