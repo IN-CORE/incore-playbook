@@ -221,7 +221,7 @@ export const getOutputFileContent = async (datawolfConfig = defaultDatawolfConfi
 };
 
 export const getExecution = async (datawolfConfig, executionId) => {
-	let endpoint = `${datawolfConfig.executionGetURL}/${executionId}`;
+	let endpoint = `${datawolfConfig.executionPostURL}/${executionId}`;
 	const response = await fetch(endpoint, { mode: "cors", headers: getHeader(datawolfConfig.hostname) });
 	if (response.status === 200) {
 		return response.json();

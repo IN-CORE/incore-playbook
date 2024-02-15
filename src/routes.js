@@ -7,6 +7,7 @@ import { CommunityHazards } from "./components/CommunityHazards";
 import { AnticipatedPerformance } from "./components/AnticipatedPerformance";
 import { Login } from "./components/Login";
 import TeamMember from "./components/TeamMember";
+import { CompareAnalyses } from "./components/CompareAnalyses";
 
 const routes = {
 	"/": {
@@ -132,6 +133,13 @@ const routes = {
 		component: () => {
 			sessionStorage.setItem("menu", "3-4");
 			return <AnticipatedPerformance step={3} substep={4} />;
+		}
+	},
+	"/compare-analyses": {
+		exact: false,
+		component: () => {
+			sessionStorage.setItem("menu", "3-4");
+			return <CompareAnalyses />;
 		}
 	},
 	"/goal-objective-result": {
