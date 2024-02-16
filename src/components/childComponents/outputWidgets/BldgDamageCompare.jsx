@@ -66,7 +66,7 @@ export default function BldgDamageCompare(props) {
 	}, []);
 
 	return (
-		<>
+		<Box ref={printRef}>
 			{/*for chart*/}
 			<Box className="chartContainer">
 				<Grid container spacing={3} justify="center">
@@ -89,19 +89,24 @@ export default function BldgDamageCompare(props) {
 			</Box>
 
 			{/*/!*for map*!/*/}
-			{/*{basicLayers && hazardLayers && damageLayers ? (*/}
-			{/*	<Container className="mapContainer" disableGutters>*/}
-			{/*		<Map*/}
-			{/*			className="fillContainer-BldgDamage"*/}
-			{/*			zoom={mapConfig.ZOOM}*/}
-			{/*			minZoom={mapConfig.MIN_ZOOM}*/}
-			{/*			maxZoom={mapConfig.MAX_ZOOM}*/}
-			{/*			extent={applyTransform(mapConfig.MAP_BOUNDS, getTransform("EPSG:4326", "EPSG:3857"))}*/}
-			{/*			center={fromLonLat(mapConfig.MAP_CENTER)}*/}
-			{/*			layers={[basicLayers, hazardLayers["A"], damageLayers["A"]]}*/}
-			{/*			layerSwitcherOptions={{}}*/}
-			{/*		/>*/}
-			{/*	</Container>*/}
+			{/*{basicLayers && Object.keys(hazardLayers).length > 0 && Object.keys(damageLayers).length > 0 ? (*/}
+			{/*	Object.keys(hazardLayers).map(key => (*/}
+			{/*		<Container className={`mapContainer-${key}`} disableGutters>*/}
+			{/*			<div className={`mapsWrapper-${key}`}>*/}
+			{/*				<Map*/}
+			{/*					key={`hazard-${key}`}*/}
+			{/*					// className="mapColumn"*/}
+			{/*					zoom={mapConfig.ZOOM}*/}
+			{/*					minZoom={mapConfig.MIN_ZOOM}*/}
+			{/*					maxZoom={mapConfig.MAX_ZOOM}*/}
+			{/*					extent={applyTransform(mapConfig.MAP_BOUNDS, getTransform("EPSG:4326", "EPSG:3857"))}*/}
+			{/*					center={fromLonLat(mapConfig.MAP_CENTER)}*/}
+			{/*					layers={[basicLayers, hazardLayers[key], damageLayers[key]]}*/}
+			{/*					layerSwitcherOptions={{}}*/}
+			{/*				/>*/}
+			{/*			</div>*/}
+			{/*		</Container>*/}
+			{/*	))*/}
 			{/*) : (*/}
 			{/*	<></>*/}
 			{/*)}*/}
@@ -124,6 +129,6 @@ export default function BldgDamageCompare(props) {
 			>
 				Image
 			</IncoreButtonText>
-		</>
+		</Box>
 	);
 }
