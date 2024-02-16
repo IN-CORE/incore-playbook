@@ -1,8 +1,6 @@
 import React, { useState } from "react";
-import { Box, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@material-ui/core";
+import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import Switch from "@material-ui/core/Switch";
 
 const useStyles = makeStyles({
 	table: {
@@ -88,7 +86,7 @@ function calcPercentage(partialValue, totalValue) {
 	if (partialValue === NA_value) {
 		return "";
 	}
-	if (totalValue == 0) {
+	if (totalValue === 0) {
 		return " (0%)";
 	}
 	return ` (${parseFloat((100 * partialValue / totalValue).toFixed(2))}%)`;
@@ -96,7 +94,7 @@ function calcPercentage(partialValue, totalValue) {
 
 export function BuildingClusterTableCompare(props) {
 	const { fieldsA, fieldsB } = props;
-	const [percentOn, setPercentOn] = useState(true);
+	const [percentOn, setPercentOn] = useState(false);
 
 	function handleChange() {
 		setPercentOn((percentOn) => !percentOn);
@@ -114,23 +112,23 @@ export function BuildingClusterTableCompare(props) {
 
 	return (
 		<TableContainer>
-			<Box style={{ float: "right" }}>
-				<FormControlLabel
-					control={
-						<Switch
-							checked={percentOn}
-							onChange={(e) => handleChange()}
-							color="default"
-							classes={{
-								switchBase: classes.switchBase,
-								checked: classes.checked,
-								track: classes.track
-							}}
-						/>
-					}
-					label="View Percentage"
-				/>
-			</Box>
+			{/*<Box style={{ float: "right" }}>*/}
+			{/*	<FormControlLabel*/}
+			{/*		control={*/}
+			{/*			<Switch*/}
+			{/*				checked={percentOn}*/}
+			{/*				onChange={(e) => handleChange()}*/}
+			{/*				color="default"*/}
+			{/*				classes={{*/}
+			{/*					switchBase: classes.switchBase,*/}
+			{/*					checked: classes.checked,*/}
+			{/*					track: classes.track*/}
+			{/*				}}*/}
+			{/*			/>*/}
+			{/*		}*/}
+			{/*		label="View Percentage"*/}
+			{/*	/>*/}
+			{/*</Box>*/}
 			<Table className={classes.table} size="small" aria-label="a dense table">
 				<TableHead>
 					{/*["playbook builidng clusters", "DS_0", "DS_1", "DS_2", "DS_3"];*/}
@@ -141,35 +139,35 @@ export function BuildingClusterTableCompare(props) {
 							className={classes.tableHeaderCell}
 							key="playbook-building-clusters"
 						>
-							playbook builidng clusters
+                            playbook builidng clusters
 						</TableCell>
 						<TableCell
 							style={{ width: "121px", backgroundColor: "#96B712" }}
 							className={classes.tableHeaderCell}
 							key="DS_0"
 						>
-							Insignificant
+                            Insignificant
 						</TableCell>
 						<TableCell
 							style={{ width: "121px", backgroundColor: "#F7C137" }}
 							className={classes.tableHeaderCell}
 							key="DS_1"
 						>
-							Moderate
+                            Moderate
 						</TableCell>
 						<TableCell
 							style={{ width: "121px", backgroundColor: "#ED8036" }}
 							className={classes.tableHeaderCell}
 							key="DS_2"
 						>
-							Extensive
+                            Extensive
 						</TableCell>
 						<TableCell
 							style={{ width: "121px", backgroundColor: "#D63649" }}
 							className={classes.tableHeaderCell}
 							key="DS_3"
 						>
-							Complete
+                            Complete
 						</TableCell>
 					</TableRow>
 				</TableHead>
@@ -188,7 +186,7 @@ export function BuildingClusterTableCompare(props) {
 												<>
 													{/*A:*/}
 													<TableRow className={classes.tableBodyRow}
-															  key={clusterItemA["cluster"]}>
+														key={clusterItemA["cluster"]}>
 														{idxx === firstMatchIdxx ? (
 															<TableCell
 																rowSpan={(clusterNumInCategory[categoryItemA["category"]] + 1) * 2}
@@ -200,11 +198,11 @@ export function BuildingClusterTableCompare(props) {
 															</TableCell>
 														) : null}
 														<TableCell key={idxx} className={classes.tableBodyClusterCell}
-																   rowSpan={2}>
+															rowSpan={2}>
 															{clusterItemA["cluster"]}
 														</TableCell>
 														<TableCell key={`${idxx}-insig`}
-																   className={classes.tableBodyCell}>
+															className={classes.tableBodyCell}>
 															<td>
 																{clusterItemA["DS_0"] === NA_value ? "-" : clusterItemA["DS_0"]}
 															</td>
@@ -217,7 +215,7 @@ export function BuildingClusterTableCompare(props) {
 															</td>
 														</TableCell>
 														<TableCell key={`${idxx}-mod`}
-																   className={classes.tableBodyCell}>
+															className={classes.tableBodyCell}>
 															<td>
 																{clusterItemA["DS_1"] === NA_value ? "-" : clusterItemA["DS_1"]}
 															</td>
@@ -245,7 +243,7 @@ export function BuildingClusterTableCompare(props) {
 															</td>
 														</TableCell>
 														<TableCell key={`${idxx}-comp`}
-																   className={classes.tableBodyCell}>
+															className={classes.tableBodyCell}>
 															<td>
 																{clusterItemA["DS_3"] === NA_value ? "-" : clusterItemA["DS_3"]}
 															</td>
@@ -260,9 +258,9 @@ export function BuildingClusterTableCompare(props) {
 													</TableRow>
 													{/*B:*/}
 													<TableRow className={classes.tableBodyRow}
-															  key={clusterItemB["cluster"]}>
+														key={clusterItemB["cluster"]}>
 														<TableCell key={`${idxx}-insig`}
-																   className={classes.tableBodyCell}>
+															className={classes.tableBodyCell}>
 															<td>
 																{clusterItemB["DS_0"] === NA_value ? "-" : clusterItemB["DS_0"]}
 															</td>
@@ -275,7 +273,7 @@ export function BuildingClusterTableCompare(props) {
 															</td>
 														</TableCell>
 														<TableCell key={`${idxx}-mod`}
-																   className={classes.tableBodyCell}>
+															className={classes.tableBodyCell}>
 															<td>
 																{clusterItemB["DS_1"] === NA_value ? "-" : clusterItemB["DS_1"]}
 															</td>
@@ -303,7 +301,7 @@ export function BuildingClusterTableCompare(props) {
 															</td>
 														</TableCell>
 														<TableCell key={`${idxx}-comp`}
-																   className={classes.tableBodyCell}>
+															className={classes.tableBodyCell}>
 															<td>
 																{clusterItemB["DS_3"] === NA_value ? "-" : clusterItemB["DS_3"]}
 															</td>
@@ -328,7 +326,7 @@ export function BuildingClusterTableCompare(props) {
 											style={{ fontWeight: 500, textAlign: "right", backgroundColor: "#EEF3F5" }}
 											rowSpan={2}
 										>
-											TOTAL
+                                            TOTAL
 										</TableCell>
 										<TableCell
 											key="total-insig"

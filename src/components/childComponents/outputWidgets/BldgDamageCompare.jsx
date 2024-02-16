@@ -1,6 +1,5 @@
-import { Box, Divider, Grid, Typography } from "@material-ui/core";
+import { Box } from "@material-ui/core";
 import React, { useEffect, useRef, useState } from "react";
-import { StackedResult } from "../graph/StackedResult";
 import { useSelector } from "react-redux";
 import { getOutputFileContent, getOutputFileContentJSON } from "../../../utils/datawolf";
 import { generateLayers } from "../../../utils/map";
@@ -68,25 +67,25 @@ export default function BldgDamageCompare(props) {
 	return (
 		<Box ref={printRef}>
 			{/*for chart*/}
-			<Box className="chartContainer">
-				<Grid container spacing={3} justify="center">
-					<Divider orientation="vertical" flexItem />
-					{/*barchart*/}
-					{Object.keys(bldgDmgSummaryTableContents).length >= 2 ? (
-						<Grid item style={{ minWidth: "804px" }}>
-							<Typography className="previewSubTitle">
-								Anticipated Performance - Building Clusters
-							</Typography>
-							<Box style={{ marginTop: "38px" }}>
-								<StackedResult categorySummary={bldgDmgSummaryTableContents["A"]["by_category"]} />
-							</Box>
-						</Grid>
-					) : (
-						<></>
-					)}
-				</Grid>
-				<Divider orientation="horizontal" />
-			</Box>
+			{/*<Box className="chartContainer">*/}
+			{/*	<Grid container spacing={3} justify="center">*/}
+			{/*		<Divider orientation="vertical" flexItem />*/}
+			{/*		/!*barchart*!/*/}
+			{/*		{Object.keys(bldgDmgSummaryTableContents).length >= 2 ? (*/}
+			{/*			<Grid item style={{ minWidth: "804px" }}>*/}
+			{/*				<Typography className="previewSubTitle">*/}
+			{/*					Anticipated Performance - Building Clusters*/}
+			{/*				</Typography>*/}
+			{/*				<Box style={{ marginTop: "38px" }}>*/}
+			{/*					<StackedResult categorySummary={bldgDmgSummaryTableContents["A"]["by_category"]} />*/}
+			{/*				</Box>*/}
+			{/*			</Grid>*/}
+			{/*		) : (*/}
+			{/*			<></>*/}
+			{/*		)}*/}
+			{/*	</Grid>*/}
+			{/*	<Divider orientation="horizontal" />*/}
+			{/*</Box>*/}
 
 			{/*/!*for map*!/*/}
 			{/*{basicLayers && Object.keys(hazardLayers).length > 0 && Object.keys(damageLayers).length > 0 ? (*/}
@@ -115,7 +114,7 @@ export default function BldgDamageCompare(props) {
 			{Object.keys(bldgDmgSummaryTableContents).length >= 2 ? (
 				<Box>
 					<BuildingClusterTableCompare fieldsA={bldgDmgSummaryTableContents[comparisonKey[0]]}
-												 fieldsB={bldgDmgSummaryTableContents[comparisonKey[1]]} />
+						fieldsB={bldgDmgSummaryTableContents[comparisonKey[1]]} />
 				</Box>
 			) : (
 				<></>
@@ -128,7 +127,7 @@ export default function BldgDamageCompare(props) {
 				}}
 				startIcon={<CameraAltIcon />}
 			>
-				Image
+                Image
 			</IncoreButtonText>
 		</Box>
 	);

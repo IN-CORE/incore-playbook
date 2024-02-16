@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Box, Grid } from "@material-ui/core";
+import { Box } from "@material-ui/core";
 import { IncoreTitle } from "./styledComponents/IncoreTitle";
 import { getExecution } from "../utils/datawolf";
 import { useQuery } from "./customHooks/useQuery";
@@ -8,14 +8,16 @@ import { getHazardMetadata } from "../utils/hazard";
 import { getHazardGroupLayers } from "../utils/map";
 import { registeredCompareWidgets } from "./childComponents/outputWidgets/RegisteredCompareWidgets";
 import { comparisonKey } from "../globals";
+import { IncoreMenuItem, IncoreSelectBox } from "./styledComponents/IncoreSelect";
+import { IncoreInputLabel } from "./styledComponents/IncoreInputLabel";
 
 export const CompareAnalyses = () => {
 
-	const [errorAlertOpen, setErrorAlertOpen] = useState(false);
 	const [executionsCompared, setExecutionsCompared] = useState([]);
 	const [hazardGroupLayers, setHazardGroupLayers] = useState({}); // group layers of hazard to overlay on the map
-	const [widgetName, setWidgetName] = useState("BldgDamage"); // outputWidgets name
+	const [selectedWidgetName, setSelectedWidgetName] = useState("BldgDamage"); // outputWidgets name
 	const [datawolfDatasetConfigItems, setDatawolfDatasetConfigItems] = useState([]); // datawolf dataset config items
+	const [widgetList, setWidgetList] = useState([]); // list of outputWidgets names
 
 	const query = useQuery();
 	const datawolfConfig = useSelector((state) => state.config.datawolfConfig);
@@ -35,6 +37,16 @@ export const CompareAnalyses = () => {
 		};
 
 		fetchExecutions();
+
+		setWidgetList(
+			datawolfWorkflowConfig.outputs.datasets[0].datasetsMap.reduce((list, item) => {
+				if (!list.includes(item.datasets.widget)) {
+					return [...list, item.datasets.widget];
+				} else {
+					return list;
+				}
+			}, [])
+		);
 	}, []);
 
 	useEffect(() => {
@@ -58,26 +70,26 @@ export const CompareAnalyses = () => {
 	useEffect(() => {
 		setDatawolfDatasetConfigItems(
 			datawolfWorkflowConfig.outputs.datasets[0].datasetsMap.reduce((list, item) => {
-				if (widgetName === "ResilienceMetrics") {
+				if (selectedWidgetName === "ResilienceMetrics") {
 					if (
 						item.datasets.widget === "CGE" ||
-						item.datasets.widget === "PopDislocation" ||
-						item.datasets.widget === "BldgFunctionality"
+                        item.datasets.widget === "PopDislocation" ||
+                        item.datasets.widget === "BldgFunctionality"
 					) {
 						return [...list, item];
 					}
 				}
-				if (widgetName === "Interdependency") {
+				if (selectedWidgetName === "Interdependency") {
 					if (item.datasets.widget === "SubstationDamage") {
 						return [...list, item];
 					}
 				}
-				if (widgetName === "PopDislocation") {
-					if (item.datasets.widget === widgetName || item.datasets.widget === "BldgDamage") {
+				if (selectedWidgetName === "PopDislocation") {
+					if (item.datasets.widget === selectedWidgetName || item.datasets.widget === "BldgDamage") {
 						return [...list, item];
 					}
 				} else {
-					if (item.datasets.widget === widgetName) {
+					if (item.datasets.widget === selectedWidgetName) {
 						return [...list, item];
 					}
 				}
@@ -85,7 +97,7 @@ export const CompareAnalyses = () => {
 				return list;
 			}, [])
 		);
-	}, [widgetName]);
+	}, [selectedWidgetName]);
 
 	const _getHazardInfo = (executionItem) => {
 		return datawolfWorkflowConfig.inputs.parameters.reduce((hazardInfo, p) => {
@@ -102,30 +114,108 @@ export const CompareAnalyses = () => {
 	return (
 		<div className="firstDivInContent">
 			<Box className="outerBox">
-				<Grid container spacing={3} className="innerBox">
+				<Box className="innerBox">
 					{
 						executionsCompared && executionsCompared.length >= 2 ?
-							<IncoreTitle>Compare
-								Analyses {comparisonKey[0]}: {executionsCompared[0]["title"] ?? ""} and
-							{comparisonKey[1]}: {executionsCompared[1]["title"] ?? ""}</IncoreTitle> :
+							<Box display="flex" sx={{ justifyContent: "space-between" }}>
+								<Box>
+									<IncoreTitle>Compare
+                                        Analyses {comparisonKey[0]}: {executionsCompared[0]["title"] ?? ""} and
+									{comparisonKey[1]}: {executionsCompared[1]["title"] ?? ""}</IncoreTitle>
+								</Box>
+								{/*select compare analysis result*/}
+								<Box>
+									<IncoreInputLabel>Select Analysis Result</IncoreInputLabel>
+									<IncoreSelectBox
+										labelId="label"
+										id="select"
+										variant="outlined"
+										onChange={(e) => {
+											setSelectedWidgetName(e.target.value);
+										}}
+										value={selectedWidgetName}
+									>
+										{
+											widgetList.includes("CGE") &&
+                                            widgetList.includes("PopDislocation") &&
+                                            widgetList.includes("BldgFunctionality") ?
+												<IncoreMenuItem key="ResilienceMetrics" value="ResilienceMetrics">
+                                                    Resilience Metrics
+												</IncoreMenuItem> : <></>
+										}
+										{
+											widgetList.includes("SubstationDamage") ?
+												<IncoreMenuItem key="SubstationDamage" value="SubstationDamage">
+                                                    Substation Damage (Electrical Power Network)
+												</IncoreMenuItem> : <></>
+										}
+										{
+											widgetList.includes("BldgDamage") ?
+												<IncoreMenuItem key="BldgDamage" value="BldgDamage">
+                                                    Building Damage
+												</IncoreMenuItem> : <></>
+										}
+										{
+											widgetList.includes("BldgMCS") ?
+												<IncoreMenuItem key="BldgMCS" value="BldgMCS">
+                                                    Building Functionality (without Electrical Power Dependency)
+												</IncoreMenuItem> : <></>
+										}
+										{
+											widgetList.includes("BldgFunctionality") ?
+												<IncoreMenuItem key="BldgFunctionality" value="BldgFunctionality">
+                                                    Building Functionality (with Electrical Power Dependency)
+												</IncoreMenuItem> : <></>
+										}
+										{
+											widgetList.includes("SectorShocks") ?
+												<IncoreMenuItem key="SectorShocks" value="SectorShocks">
+                                                    Capital Shocks
+												</IncoreMenuItem> : <></>
+										}
+										{
+											widgetList.includes("CGE") ?
+												<IncoreMenuItem key="CGE" value="CGE">
+                                                    Economic Prediction Model (Computable General Equilibrium)
+												</IncoreMenuItem> : <></>
+										}
+										{
+											widgetList.includes("PopDislocation") ?
+												<IncoreMenuItem key="PopDislocation" value="PopDislocation">
+                                                    Population Dislocation
+												</IncoreMenuItem> : <></>
+										}
+										{
+											widgetList.includes("HHS") ?
+												<IncoreMenuItem key="HHS" value="HHS">
+                                                    Housing Recovery
+												</IncoreMenuItem> : <></>
+										}
+									</IncoreSelectBox>
+								</Box>
+							</Box>
+							:
 							<></>
 					}
 					{/*for individual analysis result preview*/}
-					{widgetName &&
-					executionsCompared && executionsCompared.length >= 2 &&
-					datawolfDatasetConfigItems.length > 0 &&
-					Object.keys(hazardGroupLayers).length > 0 ? (
-							(() => {
-								return React.cloneElement(registeredCompareWidgets[widgetName], {
-									executionItems: executionsCompared,
-									datawolfDatasetConfigItems: datawolfDatasetConfigItems,
-									hazardLayers: hazardGroupLayers
-								});
-							})()
+					{selectedWidgetName &&
+                    executionsCompared && executionsCompared.length >= 2 &&
+                    datawolfDatasetConfigItems.length > 0 &&
+                    Object.keys(hazardGroupLayers).length > 0 ? (
+							<Box style={{ margin: "2em" }}>
+								{(() => {
+									return React.cloneElement(registeredCompareWidgets[selectedWidgetName], {
+										executionItems: executionsCompared,
+										datawolfDatasetConfigItems: datawolfDatasetConfigItems,
+										hazardLayers: hazardGroupLayers
+									});
+								})()
+								}
+							</Box>
 						) : (
 							<></>
 						)}
-				</Grid>
+				</Box>
 			</Box>
 		</div>
 	);
