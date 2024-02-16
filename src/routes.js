@@ -138,7 +138,6 @@ const routes = {
 	"/compare-analyses": {
 		exact: false,
 		component: () => {
-			sessionStorage.setItem("menu", "3-4");
 			return <CompareAnalyses />;
 		}
 	},

@@ -7,7 +7,7 @@ import { downloadImg } from "../../../utils/image";
 import CameraAltIcon from "@material-ui/icons/CameraAlt";
 import { IncoreButtonText } from "../../styledComponents/IncoreButtonText";
 import { comparisonKey } from "../../../globals";
-import { BuildingClusterTableCompare } from "../table/BuildingClusterTableCompare";
+import { BldgDamageTableCompare } from "../table/BldgDamageTableCompare";
 
 export default function BldgDamageCompare(props) {
 	let {
@@ -113,7 +113,7 @@ export default function BldgDamageCompare(props) {
 			{/*for table*/}
 			{Object.keys(bldgDmgSummaryTableContents).length >= 2 ? (
 				<Box>
-					<BuildingClusterTableCompare fieldsA={bldgDmgSummaryTableContents[comparisonKey[0]]}
+					<BldgDamageTableCompare fieldsA={bldgDmgSummaryTableContents[comparisonKey[0]]}
 						fieldsB={bldgDmgSummaryTableContents[comparisonKey[1]]} />
 				</Box>
 			) : (

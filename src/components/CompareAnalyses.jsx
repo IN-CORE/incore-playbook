@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Box } from "@material-ui/core";
+import { Box, Typography } from "@material-ui/core";
 import { IncoreTitle } from "./styledComponents/IncoreTitle";
 import { getExecution } from "../utils/datawolf";
 import { useQuery } from "./customHooks/useQuery";
@@ -119,9 +119,15 @@ export const CompareAnalyses = () => {
 						executionsCompared && executionsCompared.length >= 2 ?
 							<Box display="flex" sx={{ justifyContent: "space-between" }}>
 								<Box>
-									<IncoreTitle>Compare
-                                        Analyses {comparisonKey[0]}: {executionsCompared[0]["title"] ?? ""} and
-									{comparisonKey[1]}: {executionsCompared[1]["title"] ?? ""}</IncoreTitle>
+									<IncoreTitle style={{ display: "inline" }}>
+                                        Compare Analyses {comparisonKey[0]}:&nbsp;
+										<Typography style={{ display: "inline", color: "#00619D", fontWeight: 500 }}>
+											{executionsCompared[0]["title"] ?? ""}
+										</Typography> and {comparisonKey[1]}:&nbsp;
+										<Typography style={{ display: "inline", color: "#00619D", fontWeight: 500 }}>
+											{executionsCompared[1]["title"] ?? ""}
+										</Typography>
+									</IncoreTitle>
 								</Box>
 								{/*select compare analysis result*/}
 								<Box>

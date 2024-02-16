@@ -92,7 +92,7 @@ function calcPercentage(partialValue, totalValue) {
 	return ` (${parseFloat((100 * partialValue / totalValue).toFixed(2))}%)`;
 }
 
-export function BuildingClusterTableCompare(props) {
+export function BldgDamageTableCompare(props) {
 	const { fieldsA, fieldsB } = props;
 	const [percentOn, setPercentOn] = useState(false);
 
@@ -189,7 +189,7 @@ export function BuildingClusterTableCompare(props) {
 														key={clusterItemA["cluster"]}>
 														{idxx === firstMatchIdxx ? (
 															<TableCell
-																rowSpan={(clusterNumInCategory[categoryItemA["category"]] + 1) * 2}
+																rowSpan={(clusterNumInCategory[categoryItemA["category"]] + 1) * 3}
 																align="center"
 																className={classes.tableBodyCategoryCell}
 																style={{ fontWeight: 500, textAlign: "left" }}
@@ -198,7 +198,7 @@ export function BuildingClusterTableCompare(props) {
 															</TableCell>
 														) : null}
 														<TableCell key={idxx} className={classes.tableBodyClusterCell}
-															rowSpan={2}>
+															rowSpan={3}>
 															{clusterItemA["cluster"]}
 														</TableCell>
 														<TableCell key={`${idxx}-insig`}
@@ -314,6 +314,68 @@ export function BuildingClusterTableCompare(props) {
 															</td>
 														</TableCell>
 													</TableRow>
+													{/*Diff:*/}
+													<TableRow className={classes.tableBodyRow}
+														key={`${clusterItemB["cluster"]}-diff`}>
+														<TableCell key={`${idxx}-insig`}
+															className={classes.tableBodyCell}>
+															<td>
+																{clusterItemB["DS_0"] === NA_value || clusterItemA["DS_0"] === NA_value ?
+																	"-" : parseFloat(clusterItemB["DS_0"]) - parseFloat(clusterItemA["DS_0"])}
+															</td>
+															<td style={percentOn ?
+																{
+																	visibility: "visible",
+																	color: "#A9A9A9"
+																} : { visibility: "hidden" }}>
+																{calcPercentage(clusterItemB["DS_0"], categoryItemB["DS_0"])}
+															</td>
+														</TableCell>
+														<TableCell key={`${idxx}-mod`}
+															className={classes.tableBodyCell}>
+															<td>
+																{clusterItemB["DS_1"] === NA_value || clusterItemA["DS_1"] === NA_value ?
+																	"-" : parseFloat(clusterItemB["DS_1"]) - parseFloat(clusterItemA["DS_1"])}
+															</td>
+															<td style={percentOn ?
+																{
+																	visibility: "visible",
+																	color: "#A9A9A9"
+																} : { visibility: "hidden" }}>
+																{calcPercentage(clusterItemB["DS_1"], clusterItemB["DS_1"])}
+															</td>
+														</TableCell>
+														<TableCell
+															key={`${idxx}-extensi`}
+															className={classes.tableBodyCell}
+														>
+															<td>
+																{clusterItemB["DS_2"] === NA_value || clusterItemA["DS_2"] === NA_value ?
+																	"-" : parseFloat(clusterItemB["DS_2"]) - parseFloat(clusterItemA["DS_2"])}
+															</td>
+															<td style={percentOn ?
+																{
+																	visibility: "visible",
+																	color: "#A9A9A9"
+																} : { visibility: "hidden" }}>
+																{calcPercentage(clusterItemB["DS_2"], clusterItemB["DS_2"])}
+															</td>
+														</TableCell>
+														<TableCell key={`${idxx}-comp`}
+															className={classes.tableBodyCell}>
+															<td>
+																{clusterItemB["DS_3"] === NA_value || clusterItemA["DS_3"] === NA_value ?
+																	"-" : parseFloat(clusterItemB["DS_3"]) - parseFloat(clusterItemA["DS_3"])}
+															</td>
+															<td style={percentOn ?
+																{
+																	visibility: "visible",
+																	color: "#A9A9A9"
+																} : { visibility: "hidden" }}>
+																{calcPercentage(clusterItemB["DS_3"], categoryItemB["DS_3"])}
+															</td>
+														</TableCell>
+													</TableRow>
 												</>
 											);
 										}
@@ -324,7 +386,7 @@ export function BuildingClusterTableCompare(props) {
 											key="total"
 											className={classes.tableBodyClusterCell}
 											style={{ fontWeight: 500, textAlign: "right", backgroundColor: "#EEF3F5" }}
-											rowSpan={2}
+											rowSpan={3}
 										>
                                             TOTAL
 										</TableCell>
@@ -414,6 +476,57 @@ export function BuildingClusterTableCompare(props) {
 											style={{ fontWeight: 500, backgroundColor: "#EEF3F5" }}
 										>
 											<td>{categoryItemB["DS_3"] === NA_value ? "-" : categoryItemB["DS_3"]}</td>
+											<td style={percentOn ?
+												{ visibility: "visible", color: "#A9A9A9" } : { visibility: "hidden" }}>
+												{categoryItemB["DS_3"] === NA_value ? "" : "(100%)"}
+											</td>
+										</TableCell>
+									</TableRow>
+									{/*Diff:*/}
+									<TableRow className={classes.tableBodyRow} key={`${categoryItemB["id"]}-diff`}>
+										<TableCell
+											key="total-insig"
+											className={classes.tableBodyCell}
+											style={{ fontWeight: 500, backgroundColor: "#EEF3F5" }}
+										>
+											<td>{categoryItemA["DS_0"] === NA_value || categoryItemB["DS_0"] === NA_value ?
+												"-" : parseFloat(categoryItemB["DS_0"]) - parseFloat(categoryItemA["DS_0"])}</td>
+											<td style={percentOn ?
+												{ visibility: "visible", color: "#A9A9A9" } : { visibility: "hidden" }}>
+												{categoryItemB["DS_0"] === NA_value ? "" : "(100%)"}
+											</td>
+										</TableCell>
+										<TableCell
+											key="total-mod"
+											className={classes.tableBodyCell}
+											style={{ fontWeight: 500, backgroundColor: "#EEF3F5" }}
+										>
+											<td>{categoryItemA["DS_1"] === NA_value || categoryItemB["DS_1"] === NA_value ?
+												"-" : parseFloat(categoryItemB["DS_1"]) - parseFloat(categoryItemA["DS_1"])}</td>
+											<td style={percentOn ?
+												{ visibility: "visible", color: "#A9A9A9" } : { visibility: "hidden" }}>
+												{categoryItemB["DS_1"] === NA_value ? "" : "(100%)"}
+											</td>
+										</TableCell>
+										<TableCell
+											key="total-extensi"
+											className={classes.tableBodyCell}
+											style={{ fontWeight: 500, backgroundColor: "#EEF3F5" }}
+										>
+											<td>{categoryItemA["DS_2"] === NA_value || categoryItemB["DS_2"] === NA_value ?
+												"-" : parseFloat(categoryItemB["DS_2"]) - parseFloat(categoryItemA["DS_2"])}</td>
+											<td style={percentOn ?
+												{ visibility: "visible", color: "#A9A9A9" } : { visibility: "hidden" }}>
+												{categoryItemB["DS_2"] === NA_value ? "" : "(100%)"}
+											</td>
+										</TableCell>
+										<TableCell
+											key="total-comp"
+											className={classes.tableBodyCell}
+											style={{ fontWeight: 500, backgroundColor: "#EEF3F5" }}
+										>
+											<td>{categoryItemA["DS_3"] === NA_value || categoryItemB["DS_3"] === NA_value ?
+												"-" : parseFloat(categoryItemB["DS_3"]) - parseFloat(categoryItemA["DS_3"])}</td>
 											<td style={percentOn ?
 												{ visibility: "visible", color: "#A9A9A9" } : { visibility: "hidden" }}>
 												{categoryItemB["DS_3"] === NA_value ? "" : "(100%)"}

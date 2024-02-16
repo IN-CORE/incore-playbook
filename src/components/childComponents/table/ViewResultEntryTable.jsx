@@ -23,7 +23,7 @@ import { useSelector } from "react-redux";
 
 import { getComparator, isAdmin, parseDateTime, stableSort } from "../../../utils/common";
 import { checkFileDescriptors } from "../../../utils/datawolf";
-import { useHistory } from "react-router-dom";
+import { useLocation, useRouteMatch } from "react-router-dom";
 
 const useStyles = makeStyles({
 	table: {
@@ -161,7 +161,8 @@ export function ViewResultEntryTable(props) {
 	const datawolfConfig = useSelector((state) => state.config.datawolfConfig);
 	const globalConfig = useSelector((state) => state.config.globalConfig);
 
-	const history = useHistory();
+	const location = useLocation();
+	const match = useRouteMatch(); // No arguments to match the current route
 
 	const _checkResultsReady = async (listWidgets, currentExecutionDataset) => {
 		const requiredDatasetIds = datawolfWorkflowConfig.outputs.datasets[0].datasetsMap.reduce((list, item) => {
@@ -211,6 +212,9 @@ export function ViewResultEntryTable(props) {
 		});
 	}, [executions, expandId]);
 
+	// if flipping pages or changing page rows; reset the compare items
+	useEffect(() => {setCompareItems({});}, [rowsPerPage, page]);
+
 	useEffect(() => {
 		// Only allow two item to be compared
 		Object.keys(compareItems).length === 2 ? setCompareDisabled(false) : setCompareDisabled(true);
@@ -250,7 +254,15 @@ export function ViewResultEntryTable(props) {
 	};
 
 	const handleCompareButtonClick = () => {
-		history.push(`/compare-analyses?executionIds=${Object.keys(compareItems).join(",")}`);
+		// Get the current location because we have baseRoute in each application
+		const currentLocation = window.location;
+
+		// Construct the new URL by replacing the current path with the new path
+		const basePath = currentLocation.pathname.substring(0, currentLocation.pathname.lastIndexOf("/"));
+		const newUrl = `${currentLocation.origin}${basePath}/compare-analyses?executionIds=${Object.keys(compareItems).join(",")}`;
+		// Open the new URL in a new tab
+		window.open(newUrl, "_blank");
+
 	};
 
 	// Avoid a layout jump when reaching the last page with empty rows.

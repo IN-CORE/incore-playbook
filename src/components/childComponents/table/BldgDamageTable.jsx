@@ -91,10 +91,10 @@ function calcPercentage(partialValue, totalValue) {
 	if (totalValue == 0) {
 		return " (0%)";
 	}
-	return ` (${  parseFloat((100 * partialValue / totalValue).toFixed(2))  }%)`;
+	return ` (${parseFloat((100 * partialValue / totalValue).toFixed(2))}%)`;
 }
 
-export function BuildingClusterTable(props) {
+export function BldgDamageTable(props) {
 	const { fields } = props;
 	const [percentOn, setPercentOn] = useState(true);
 
@@ -140,35 +140,35 @@ export function BuildingClusterTable(props) {
 							className={classes.tableHeaderCell}
 							key="playbook-building-clusters"
 						>
-							playbook builidng clusters
+                            playbook builidng clusters
 						</TableCell>
 						<TableCell
 							style={{ width: "121px", backgroundColor: "#96B712" }}
 							className={classes.tableHeaderCell}
 							key="DS_0"
 						>
-							Insignificant
+                            Insignificant
 						</TableCell>
 						<TableCell
 							style={{ width: "121px", backgroundColor: "#F7C137" }}
 							className={classes.tableHeaderCell}
 							key="DS_1"
 						>
-							Moderate
+                            Moderate
 						</TableCell>
 						<TableCell
 							style={{ width: "121px", backgroundColor: "#ED8036" }}
 							className={classes.tableHeaderCell}
 							key="DS_2"
 						>
-							Extensive
+                            Extensive
 						</TableCell>
 						<TableCell
 							style={{ width: "121px", backgroundColor: "#D63649" }}
 							className={classes.tableHeaderCell}
 							key="DS_3"
 						>
-							Complete
+                            Complete
 						</TableCell>
 					</TableRow>
 				</TableHead>
@@ -258,7 +258,7 @@ export function BuildingClusterTable(props) {
 											className={classes.tableBodyClusterCell}
 											style={{ fontWeight: 500, textAlign: "right", backgroundColor: "#EEF3F5" }}
 										>
-											TOTAL
+                                            TOTAL
 										</TableCell>
 										<TableCell
 											key="total-insig"
