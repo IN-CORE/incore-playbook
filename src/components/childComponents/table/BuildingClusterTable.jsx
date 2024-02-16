@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Box, Table, TableBody,	TableCell, TableContainer, TableHead, TableRow } from "@material-ui/core";
+import { Box, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Switch from "@material-ui/core/Switch";
@@ -86,15 +86,15 @@ function calcClusterNumInCategory(fields) {
 
 function calcPercentage(partialValue, totalValue) {
 	if (partialValue === NA_value) {
-		return ""
+		return "";
 	}
 	if (totalValue == 0) {
-		return " (0%)"
+		return " (0%)";
 	}
-	return " ("+parseFloat((100 * partialValue/totalValue).toFixed(2)) + "%)"
+	return ` (${  parseFloat((100 * partialValue / totalValue).toFixed(2))  }%)`;
 }
 
-export function ResultTable(props) {
+export function BuildingClusterTable(props) {
 	const { fields } = props;
 	const [percentOn, setPercentOn] = useState(true);
 
@@ -201,8 +201,11 @@ export function ResultTable(props) {
 														<td>
 															{clusterItem["DS_0"] === NA_value ? "-" : clusterItem["DS_0"]}
 														</td>
-														<td style={ percentOn ?
-															{ visibility: "visible", color:"#A9A9A9" }: { visibility: "hidden"}}>
+														<td style={percentOn ?
+															{
+																visibility: "visible",
+																color: "#A9A9A9"
+															} : { visibility: "hidden" }}>
 															{calcPercentage(clusterItem["DS_0"], categoryItem["DS_0"])}
 														</td>
 													</TableCell>
@@ -210,8 +213,11 @@ export function ResultTable(props) {
 														<td>
 															{clusterItem["DS_1"] === NA_value ? "-" : clusterItem["DS_1"]}
 														</td>
-														<td style={ percentOn ?
-															{ visibility: "visible", color:"#A9A9A9" }: { visibility: "hidden"}}>
+														<td style={percentOn ?
+															{
+																visibility: "visible",
+																color: "#A9A9A9"
+															} : { visibility: "hidden" }}>
 															{calcPercentage(clusterItem["DS_1"], categoryItem["DS_1"])}
 														</td>
 													</TableCell>
@@ -222,8 +228,11 @@ export function ResultTable(props) {
 														<td>
 															{clusterItem["DS_2"] === NA_value ? "-" : clusterItem["DS_2"]}
 														</td>
-														<td style={ percentOn ?
-															{ visibility: "visible", color:"#A9A9A9" }: { visibility: "hidden"}}>
+														<td style={percentOn ?
+															{
+																visibility: "visible",
+																color: "#A9A9A9"
+															} : { visibility: "hidden" }}>
 															{calcPercentage(clusterItem["DS_2"], categoryItem["DS_2"])}
 														</td>
 													</TableCell>
@@ -231,8 +240,11 @@ export function ResultTable(props) {
 														<td>
 															{clusterItem["DS_3"] === NA_value ? "-" : clusterItem["DS_3"]}
 														</td>
-														<td style={ percentOn ?
-															{ visibility: "visible", color:"#A9A9A9" }: { visibility: "hidden"}}>
+														<td style={percentOn ?
+															{
+																visibility: "visible",
+																color: "#A9A9A9"
+															} : { visibility: "hidden" }}>
 															{calcPercentage(clusterItem["DS_3"], categoryItem["DS_3"])}
 														</td>
 													</TableCell>
@@ -254,8 +266,8 @@ export function ResultTable(props) {
 											style={{ fontWeight: 500, backgroundColor: "#EEF3F5" }}
 										>
 											<td>{categoryItem["DS_0"] === NA_value ? "-" : categoryItem["DS_0"]}</td>
-											<td style={ percentOn ?
-												{ visibility: "visible", color:"#A9A9A9" }: { visibility: "hidden"}}>
+											<td style={percentOn ?
+												{ visibility: "visible", color: "#A9A9A9" } : { visibility: "hidden" }}>
 												{categoryItem["DS_0"] === NA_value ? "" : "(100%)"}
 											</td>
 										</TableCell>
@@ -265,8 +277,8 @@ export function ResultTable(props) {
 											style={{ fontWeight: 500, backgroundColor: "#EEF3F5" }}
 										>
 											<td>{categoryItem["DS_1"] === NA_value ? "-" : categoryItem["DS_1"]}</td>
-											<td style={ percentOn ?
-												{ visibility: "visible", color:"#A9A9A9" }: { visibility: "hidden"}}>
+											<td style={percentOn ?
+												{ visibility: "visible", color: "#A9A9A9" } : { visibility: "hidden" }}>
 												{categoryItem["DS_1"] === NA_value ? "" : "(100%)"}
 											</td>
 										</TableCell>
@@ -276,8 +288,8 @@ export function ResultTable(props) {
 											style={{ fontWeight: 500, backgroundColor: "#EEF3F5" }}
 										>
 											<td>{categoryItem["DS_2"] === NA_value ? "-" : categoryItem["DS_2"]}</td>
-											<td style={ percentOn ?
-												{ visibility: "visible", color:"#A9A9A9" }: { visibility: "hidden"}}>
+											<td style={percentOn ?
+												{ visibility: "visible", color: "#A9A9A9" } : { visibility: "hidden" }}>
 												{categoryItem["DS_2"] === NA_value ? "" : "(100%)"}
 											</td>
 										</TableCell>
@@ -287,8 +299,8 @@ export function ResultTable(props) {
 											style={{ fontWeight: 500, backgroundColor: "#EEF3F5" }}
 										>
 											<td>{categoryItem["DS_3"] === NA_value ? "-" : categoryItem["DS_3"]}</td>
-											<td style={ percentOn ?
-												{ visibility: "visible", color:"#A9A9A9" }: { visibility: "hidden"}}>
+											<td style={percentOn ?
+												{ visibility: "visible", color: "#A9A9A9" } : { visibility: "hidden" }}>
 												{categoryItem["DS_3"] === NA_value ? "" : "(100%)"}
 											</td>
 										</TableCell>

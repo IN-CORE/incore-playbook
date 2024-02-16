@@ -1,7 +1,6 @@
 import { Box, Divider, Grid, Typography } from "@material-ui/core";
 import React, { useEffect, useRef, useState } from "react";
 import { StackedResult } from "../graph/StackedResult";
-import { ResultTable } from "../table/ResultTable";
 import { useSelector } from "react-redux";
 import { getOutputFileContent, getOutputFileContentJSON } from "../../../utils/datawolf";
 import { generateLayers } from "../../../utils/map";
@@ -9,6 +8,7 @@ import { downloadImg } from "../../../utils/image";
 import CameraAltIcon from "@material-ui/icons/CameraAlt";
 import { IncoreButtonText } from "../../styledComponents/IncoreButtonText";
 import { comparisonKey } from "../../../globals";
+import { BuildingClusterTableCompare } from "../table/BuildingClusterTableCompare";
 
 export default function BldgDamageCompare(props) {
 	let {
@@ -72,7 +72,7 @@ export default function BldgDamageCompare(props) {
 				<Grid container spacing={3} justify="center">
 					<Divider orientation="vertical" flexItem />
 					{/*barchart*/}
-					{Object.keys(bldgDmgSummaryTableContents).length > 0 ? (
+					{Object.keys(bldgDmgSummaryTableContents).length >= 2 ? (
 						<Grid item style={{ minWidth: "804px" }}>
 							<Typography className="previewSubTitle">
 								Anticipated Performance - Building Clusters
@@ -112,9 +112,10 @@ export default function BldgDamageCompare(props) {
 			{/*)}*/}
 
 			{/*for table*/}
-			{Object.keys(bldgDmgSummaryTableContents).length > 0 ? (
+			{Object.keys(bldgDmgSummaryTableContents).length >= 2 ? (
 				<Box>
-					<ResultTable fields={bldgDmgSummaryTableContents["A"]} />
+					<BuildingClusterTableCompare fieldsA={bldgDmgSummaryTableContents[comparisonKey[0]]}
+												 fieldsB={bldgDmgSummaryTableContents[comparisonKey[1]]} />
 				</Box>
 			) : (
 				<></>

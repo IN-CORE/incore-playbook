@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { Box, Grid } from "@material-ui/core";
-import { Layout } from "./Layout";
 import { IncoreTitle } from "./styledComponents/IncoreTitle";
 import { getExecution } from "../utils/datawolf";
 import { useQuery } from "./customHooks/useQuery";
@@ -101,34 +100,33 @@ export const CompareAnalyses = () => {
 	};
 
 	return (
-		<Layout>
-			<div className="firstDivInContent">
-				<Box className="outerBox">
-					<Grid container spacing={3} className="innerBox">
-						{
-							executionsCompared && executionsCompared.length >= 2 ?
-								<IncoreTitle>Compare Analyses A: {executionsCompared[0]["title"] ?? ""} and
-									B: {executionsCompared[1]["title"] ?? ""}</IncoreTitle> :
-								<></>
-						}
-						{/*for individual analysis result preview*/}
-						{widgetName &&
-						executionsCompared && executionsCompared.length >= 2 &&
-						datawolfDatasetConfigItems.length > 0 &&
-						Object.keys(hazardGroupLayers).length > 0 ? (
-								(() => {
-									return React.cloneElement(registeredCompareWidgets[widgetName], {
-										executionItems: executionsCompared,
-										datawolfDatasetConfigItems: datawolfDatasetConfigItems,
-										hazardLayers: hazardGroupLayers
-									});
-								})()
-							) : (
-								<></>
-							)}
-					</Grid>
-				</Box>
-			</div>
-		</Layout>
+		<div className="firstDivInContent">
+			<Box className="outerBox">
+				<Grid container spacing={3} className="innerBox">
+					{
+						executionsCompared && executionsCompared.length >= 2 ?
+							<IncoreTitle>Compare
+								Analyses {comparisonKey[0]}: {executionsCompared[0]["title"] ?? ""} and
+							{comparisonKey[1]}: {executionsCompared[1]["title"] ?? ""}</IncoreTitle> :
+							<></>
+					}
+					{/*for individual analysis result preview*/}
+					{widgetName &&
+					executionsCompared && executionsCompared.length >= 2 &&
+					datawolfDatasetConfigItems.length > 0 &&
+					Object.keys(hazardGroupLayers).length > 0 ? (
+							(() => {
+								return React.cloneElement(registeredCompareWidgets[widgetName], {
+									executionItems: executionsCompared,
+									datawolfDatasetConfigItems: datawolfDatasetConfigItems,
+									hazardLayers: hazardGroupLayers
+								});
+							})()
+						) : (
+							<></>
+						)}
+				</Grid>
+			</Box>
+		</div>
 	);
 };
