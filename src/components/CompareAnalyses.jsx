@@ -1,24 +1,20 @@
 import React, { useEffect, useState } from "react";
 import { Box, Grid } from "@material-ui/core";
 import { Layout } from "./Layout";
-
-import { AlertMessage } from "./childComponents/alert/AlertMessage";
 import { IncoreTitle } from "./styledComponents/IncoreTitle";
 import { getExecution } from "../utils/datawolf";
 import { useQuery } from "./customHooks/useQuery";
 import { useSelector } from "react-redux";
-import { registeredWidgets } from "./childComponents/outputWidgets/RegisteredWidgets";
 import { getHazardMetadata } from "../utils/hazard";
 import { getHazardGroupLayers } from "../utils/map";
+import { registeredCompareWidgets } from "./childComponents/outputWidgets/RegisteredCompareWidgets";
+import { comparisonKey } from "../globals";
 
 export const CompareAnalyses = () => {
 
 	const [errorAlertOpen, setErrorAlertOpen] = useState(false);
-	const [errorStatus, setErrorStatus] = useState(null);
-	const [errorMessage, setErrorMessage] = useState("");
 	const [executionsCompared, setExecutionsCompared] = useState([]);
-	const [hazardGroupLayer, setHazardGroupLayer] = useState(); // group layer of hazard to overlay on the map
-	const [hazardType, setHazardType] = useState(""); // used in runtime table
+	const [hazardGroupLayers, setHazardGroupLayers] = useState({}); // group layers of hazard to overlay on the map
 	const [widgetName, setWidgetName] = useState("BldgDamage"); // outputWidgets name
 	const [datawolfDatasetConfigItems, setDatawolfDatasetConfigItems] = useState([]); // datawolf dataset config items
 
@@ -44,12 +40,17 @@ export const CompareAnalyses = () => {
 
 	useEffect(() => {
 		const gatherHazardInfo = async () => {
-			const hazardInfo = _getHazardInfo(executionsCompared[0]);
-			let hazardMetadata = await getHazardMetadata(globalConfig, hazardInfo.hazardType, hazardInfo.hazardId);
-			setHazardGroupLayer(
-				getHazardGroupLayers(globalConfig, mapConfig, hazardMetadata, hazardInfo.hazardType, 0, 0.5)
-			);
-			setHazardType(hazardInfo["hazardType"]);
+			if (executionsCompared && executionsCompared.length >= 2) {
+
+				for (let i = 0; i < executionsCompared.length; i++) {
+					const hazardInfo = _getHazardInfo(executionsCompared[i]);
+					const hazardMetadata = await getHazardMetadata(globalConfig, hazardInfo.hazardType, hazardInfo.hazardId);
+					setHazardGroupLayers(prevState => ({
+						...prevState,
+						[comparisonKey[i]]: getHazardGroupLayers(globalConfig, mapConfig, hazardMetadata, hazardInfo.hazardType, 0, 0.5)
+					}));
+				}
+			}
 		};
 
 		gatherHazardInfo();
@@ -61,8 +62,8 @@ export const CompareAnalyses = () => {
 				if (widgetName === "ResilienceMetrics") {
 					if (
 						item.datasets.widget === "CGE" ||
-                        item.datasets.widget === "PopDislocation" ||
-                        item.datasets.widget === "BldgFunctionality"
+						item.datasets.widget === "PopDislocation" ||
+						item.datasets.widget === "BldgFunctionality"
 					) {
 						return [...list, item];
 					}
@@ -107,37 +108,24 @@ export const CompareAnalyses = () => {
 						{
 							executionsCompared && executionsCompared.length >= 2 ?
 								<IncoreTitle>Compare Analyses A: {executionsCompared[0]["title"] ?? ""} and
-                                    B: {executionsCompared[1]["title"] ?? ""}</IncoreTitle> :
+									B: {executionsCompared[1]["title"] ?? ""}</IncoreTitle> :
 								<></>
 						}
 						{/*for individual analysis result preview*/}
 						{widgetName &&
-                        executionsCompared && executionsCompared.length >= 2 &&
-                        datawolfDatasetConfigItems.length > 0 &&
-                        hazardType &&
-                        hazardGroupLayer ? (
+						executionsCompared && executionsCompared.length >= 2 &&
+						datawolfDatasetConfigItems.length > 0 &&
+						Object.keys(hazardGroupLayers).length > 0 ? (
 								(() => {
-									return React.cloneElement(registeredWidgets[widgetName], {
-										executionItem: executionsCompared[0],
-										getExecution: getExecution,
-										previewOn: true,
-										handlePreviewClose: null,
+									return React.cloneElement(registeredCompareWidgets[widgetName], {
+										executionItems: executionsCompared,
 										datawolfDatasetConfigItems: datawolfDatasetConfigItems,
-										hazardType: hazardType,
-										hazardLayers: hazardGroupLayer,
-										setDownloadDialogOpen: false
+										hazardLayers: hazardGroupLayers
 									});
 								})()
 							) : (
 								<></>
 							)}
-						<AlertMessage
-							open={errorAlertOpen}
-							setOpen={setErrorAlertOpen}
-							message={errorMessage}
-							alertSeverity={"error"}
-							status={errorStatus}
-						/>
 					</Grid>
 				</Box>
 			</div>
