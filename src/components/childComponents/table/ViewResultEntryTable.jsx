@@ -723,8 +723,8 @@ export function ViewResultEntryTable(props) {
 				count={executions.length}
 				rowsPerPage={rowsPerPage}
 				page={page}
-				onPageChange={handleChangePage}
-				onRowsPerPageChange={handleChangeRowsPerPage}
+				onChangePage={handleChangePage}
+				onChangeRowsPerPage={handleChangeRowsPerPage}
 			/>
 		</TableContainer>
 	);
