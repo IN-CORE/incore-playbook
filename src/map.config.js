@@ -80,9 +80,9 @@ const layerStyles = {
 export const mapConfig = {
 	MAP_BOUNDS:[
 		-96.211436,
-		30.541297,
-		-93.611436,
 		27.941297,
+		-93.611436,
+		30.541297,
 	],
 	MAP_CENTER: [-94.911436, 29.241297],
 	ZOOM: 5,

@@ -8,9 +8,25 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
-### Changed
+### Added
+- Adding % (# of building) to table of building damage output. [#261](https://github.com/IN-CORE/incore-playbook/issues/261)
 
-- Increase the max zoom level for the map [#278](https://github.com/IN-CORE/incore-playbook/issues/278)
+### Fixed
+- Default mapping bounding box coordinates need to flip order [#272](https://github.com/IN-CORE/incore-playbook/issues/272)
+- Update hazard previewing due to model change [#269](https://github.com/IN-CORE/incore-playbook/issues/269)
+
+### Changed
+- Replaced Node-Sass with Sass for better platform reliability [#275](https://github.com/IN-CORE/incore-playbook/issues/275)
+- - Increase the max zoom level for the map [#278](https://github.com/IN-CORE/incore-playbook/issues/278)
+
+
+## [0.5.7] - 2023-04-05
+
+### Fixed
+- Added Satellite imagery layer to the map [#260](https://github.com/IN-CORE/incore-playbook/issues/260)
+
+### Changed
+- Changed the dropdown component in step 3-4. [#214](https://github.com/IN-CORE/incore-playbook/issues/214)
 
 ## [0.5.8] - 2023-04-05
 

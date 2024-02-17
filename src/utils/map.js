@@ -71,32 +71,15 @@ export const getHazardGroupLayers = (
 	let layerTitle;
 	let style = mapConfig.LAYER_STYLES.MapUtil[htype];
 
-	// if (htype === "earthquake") style = "incore:earthquake-pga-g";
-	// else if (htype === "tornado") style = "incore:tornado";
-	// else if (htype === "hurricane") style = "incore:hurricane-wind";
-
 	let HazardMapLayers = [];
 
-	// for earthquake
-	if ("rasterDataset" in json && json["rasterDataset"]["datasetId"] !== undefined) {
-		layerId = json["rasterDataset"]["datasetId"];
-		layerTitle = `${json["name"]} - ${json["rasterDataset"]["demandType"]}`;
-		HazardMapLayers.push(_constructHazardLayer(globalConfig, layerId, layerTitle, style, zIndex, opacity));
-	}
-	// tsunami, hurricane, flood all has multiple layers
-	else if ("hazardDatasets" in json && json["hazardDatasets"].length > 0) {
+	if ("hazardDatasets" in json && json["hazardDatasets"].length > 0) {
 		json["hazardDatasets"].map((hazardDataset) => {
 			layerId = hazardDataset["datasetId"];
 			layerTitle = `${json["name"]} - ${hazardDataset["demandType"]}`;
 			HazardMapLayers.push(_constructHazardLayer(globalConfig, layerId, layerTitle,
 				style[hazardDataset["demandType"]], zIndex, opacity));
 		});
-	}
-	// tornado has single layer
-	else {
-		layerId = json["datasetId"];
-		layerTitle = json["name"];
-		HazardMapLayers.push(_constructHazardLayer(globalConfig, layerId, layerTitle, style, zIndex, opacity));
 	}
 
 	return new GroupLayer({ title: json["name"], layers: HazardMapLayers });
@@ -115,6 +98,16 @@ export const basicLayers = new GroupLayer({
 					OSM_ATTRIBUTION,
 					"Tiles courtesy of " + '<a href="http://openstreetmap.org">' + "OpenStreetMap" + "</a>"
 				],
+				crossOrigin: "anonymous"
+			})
+		}),
+		new TileLayer({
+			type: "base",
+			title: "Esri Satellite Layer",
+			visible: true,
+			source: new XYZ({
+				url: "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
+				attributions: ['&#169; <a href="https://www.esri.com">Esri</a>,', OSM_ATTRIBUTION],
 				crossOrigin: "anonymous"
 			})
 		}),
