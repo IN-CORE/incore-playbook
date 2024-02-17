@@ -6,6 +6,12 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 
+## [Unreleased]
+
+### Changed
+
+- Increase the max zoom level for the map [#278](https://github.com/IN-CORE/incore-playbook/issues/278)
+
 ## [0.5.8] - 2023-04-05
 
 ### Fixed

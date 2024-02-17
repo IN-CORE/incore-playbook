@@ -42,7 +42,7 @@ const layerStyles = {
 // 	MAP_CENTER: [-94.4980, 37.0672],
 // 	ZOOM: 5,
 // 	MIN_ZOOM: 4,
-// 	MAX_ZOOM: 15,
+// 	MAX_ZOOM: 19,
 // 	LAYER_STYLES: layerStyles
 // };
 
@@ -57,7 +57,7 @@ const layerStyles = {
 // 	MAP_CENTER: [-121.808613, 36.599902],
 // 	ZOOM: 5,
 // 	MIN_ZOOM: 4,
-// 	MAX_ZOOM: 15,
+// 	MAX_ZOOM: 19,
 // 	LAYER_STYLES: layerStyles
 // };
 
@@ -72,7 +72,7 @@ const layerStyles = {
 // 	MAP_CENTER: [-90.047817, 35.136082],
 // 	ZOOM: 5,
 // 	MIN_ZOOM: 4,
-// 	MAX_ZOOM: 15,
+// 	MAX_ZOOM: 19,
 // 	LAYER_STYLES: layerStyles
 // };
 
@@ -87,7 +87,7 @@ export const mapConfig = {
 	MAP_CENTER: [-94.911436, 29.241297],
 	ZOOM: 5,
 	MIN_ZOOM: 4,
-	MAX_ZOOM: 15,
+	MAX_ZOOM: 19,
 	LAYER_STYLES: layerStyles
 };
 
@@ -102,7 +102,7 @@ export const mapConfig = {
 // 	MAP_CENTER: [-79.006172, 34.633583],
 // 	ZOOM: 5,
 // 	MIN_ZOOM: 4,
-// 	MAX_ZOOM: 15,
+// 	MAX_ZOOM: 19,
 // 	LAYER_STYLES: layerStyles
 // };
 
@@ -123,6 +123,6 @@ export const mapConfig = {
 // 	MAP_CENTER: [-111.954, 40.683],
 // 	ZOOM: 5,
 // 	MIN_ZOOM: 4,
-// 	MAX_ZOOM: 15,
+// 	MAX_ZOOM: 19,
 //  LAYER_STYLES: layerStyles
 // };
