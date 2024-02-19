@@ -112,7 +112,12 @@ export function ResultTable(props) {
 	const classes = useStyles();
 
 
-	let tableHeaders = Object.keys(fields["by_category"][0]).slice(-4);
+	let tableHeaders = ["Insignificant", "Moderate", "Extensive", "Complete"]
+	if (fields && ("Insignificant" in fields["by_category"][0])) {
+		tableHeaders = ["Insignificant", "Moderate", "Extensive", "Complete"];
+	} else if (fields && ("Affected" in fields["by_category"][0])) {
+		tableHeaders = ["Affected", "Minor", "Major", "Destroyed"];
+	}
 	
 	return (
 		<TableContainer>
