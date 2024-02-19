@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Added
 - Adding % (# of building) to table of building damage output. [#261](https://github.com/IN-CORE/incore-playbook/issues/261)
+- Add click on map to view more details for a building on output widgets [#284](https://github.com/IN-CORE/incore-playbook/issues/284)
 
 ### Fixed
 - Default mapping bounding box coordinates need to flip order [#272](https://github.com/IN-CORE/incore-playbook/issues/272)

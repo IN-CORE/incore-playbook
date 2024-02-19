@@ -15,6 +15,7 @@ import { FunctionalityGraph } from "../graph/FunctionalityGraph";
 import Map from "../map/Map";
 import { fromLonLat, getTransform } from "ol/proj";
 import { FunctionalityTable } from "../table/FunctionalityTable";
+import { BuildingInfoTable } from "../table/BuildingInfoTable";
 import React, { useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
 import { applyTransform } from "ol/extent";
@@ -45,9 +46,44 @@ export default function BldgFunctionality(props) {
 	const [bldgFuncSummaryTableContent, setBldgFuncSummaryTableContent] = useState(null);
 	const [bldgFuncProbDownload, setBldgFuncProbDownload] = useState();
 	const [damageLayers, setDamageLayers] = useState(null);
+	const [selectedBuilding, setSelectedBuilding] = useState(null);
 
 	// print container
 	const printRef = useRef();
+
+	const onMapLoad = (map) => {
+		const view  = map.getView();
+		const viewProjection = view.getProjection();
+    	const viewResolution = view.getResolution();
+
+		const damageLayer = damageLayers.getLayers().getArray()[0]
+		const damageLayerSource = damageLayer.getSource()
+
+		map.on('singleclick', (evt) => {
+			const url = damageLayerSource.getFeatureInfoUrl(
+			  evt.coordinate,
+			  viewResolution,
+			  viewProjection,
+			  {'INFO_FORMAT': 'application/json'}
+			);
+			if (url) {
+			  fetch(url)
+				.then((response) => response.json())
+				.then((json) => {
+					setSelectedBuilding(json.features[0].properties)
+				});
+			}
+		  });
+		  
+		  map.on('pointermove', (evt) => {
+			if (evt.dragging) {
+			  return;
+			}
+			const data = damageLayer.getData(evt.pixel);
+			const hit = data && data[3] > 0; // transparent pixels have zero for data[3]
+			map.getTargetElement().style.cursor = hit ? 'pointer' : '';
+		  });
+	}
 
 	useEffect(() => {
 		setSelectedExecutionName(executionItem["title"]);
@@ -149,10 +185,20 @@ export default function BldgFunctionality(props) {
 							center={fromLonLat(mapConfig.MAP_CENTER)}
 							layers={[basicLayers, hazardLayers, damageLayers]}
 							layerSwitcherOptions={{}}
+							updateMap={onMapLoad}
 						/>
 					</Container>
 				) : (
 					<></>
+				)}
+
+				{selectedBuilding !== null ? 
+					<BuildingInfoTable buildingData={selectedBuilding} setSelectedBuilding={setSelectedBuilding}/> : (
+						<Box>
+							<Typography className="previewSubTitle">
+								Please click on a building to view its information
+							</Typography>
+						</Box>
 				)}
 
 				{/*for table*/}
