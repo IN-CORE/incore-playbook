@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Adding % (# of building) to table of building damage output. [#261](https://github.com/IN-CORE/incore-playbook/issues/261)
 
 ### Fixed
+- Default mapping bounding box coordinates need to flip order [#272](https://github.com/IN-CORE/incore-playbook/issues/272)
 - Update hazard previewing due to model change [#269](https://github.com/IN-CORE/incore-playbook/issues/269)
 
 ### Changed
@@ -26,7 +27,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Changed
 - Changed the dropdown component in step 3-4. [#214](https://github.com/IN-CORE/incore-playbook/issues/214)
-
 
 ## [0.5.8] - 2023-04-05
 
