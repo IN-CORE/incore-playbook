@@ -16,7 +16,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Update hazard previewing due to model change [#269](https://github.com/IN-CORE/incore-playbook/issues/269)
 
 ### Changed
-- Replaced Node-Sass with Sass for better platform reliability [#275](https://github.com/IN-CORE/incore-playbook/issues/275)
+- Replaced Node-Sass with Sass for better platfrom reliablility [#275](https://github.com/IN-CORE/incore-playbook/issues/275)
+- Update the ResultTable to use keys dynamically for the FEMA table headers [#285](https://github.com/IN-CORE/incore-playbook/issues/285)
 
 
 ## [0.5.7] - 2023-04-05
