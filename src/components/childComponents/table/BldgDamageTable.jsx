@@ -5,319 +5,320 @@ import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Switch from "@material-ui/core/Switch";
 
 const useStyles = makeStyles({
-    table: {
-        backgroundColor: "#FFFFFF",
-        minWidth: "1135px"
-    },
-    tableHeaderRow: {
-        height: "34px"
-    },
-    tableHeaderCell: {
-        height: "14px",
-        width: "37px",
-        color: "#FFFFFF",
-        fontSize: "12px",
-        fontWeight: 500,
-        letterSpacing: "1.13px",
-        lineHeight: "14px",
-        textAlign: "center",
-        textTransform: "uppercase"
-    },
-    tableBodyRow: {
-        height: "28px"
-    },
-    tableBodyCell: {
-        height: "21px",
-        width: "123px",
-        color: "#2E384D",
-        fontSize: "15px",
-        letterSpacing: 0,
-        lineHeight: "18px",
-        border: "1px solid rgba(46,91,255,0.08)"
-    },
-    tableBodyCategoryCell: {
-        height: "21px",
-        width: "209px",
-        color: "#2E384D",
-        fontSize: "18px",
-        fontWeight: 500,
-        letterSpacing: 0,
-        lineHeight: "18px",
-        textTransform: "capitalize",
-        border: "1px solid rgba(46,91,255,0.08)"
-    },
-    tableBodyClusterCell: {
-        height: "21px",
-        width: "440px",
-        color: "#2E384D",
-        fontSize: "15px",
-        letterSpacing: 0,
-        lineHeight: "18px",
-        border: "1px solid rgba(46,91,255,0.08)"
-    },
-    switchBase: {
-        "&$checked": {
-            color: "#00619D"
-        },
-        "&$checked + $track": {
-            backgroundColor: "#00619D"
-        }
-    },
-    checked: {},
-    track: {}
+	table: {
+		backgroundColor: "#FFFFFF",
+		minWidth: "1135px"
+	},
+	tableHeaderRow: {
+		height: "34px"
+	},
+	tableHeaderCell: {
+		height: "14px",
+		width: "37px",
+		color: "#FFFFFF",
+		fontSize: "12px",
+		fontWeight: 500,
+		letterSpacing: "1.13px",
+		lineHeight: "14px",
+		textAlign: "center",
+		textTransform: "uppercase"
+	},
+	tableBodyRow: {
+		height: "28px"
+	},
+	tableBodyCell: {
+		height: "21px",
+		width: "123px",
+		color: "#2E384D",
+		fontSize: "15px",
+		letterSpacing: 0,
+		lineHeight: "18px",
+		border: "1px solid rgba(46,91,255,0.08)"
+	},
+	tableBodyCategoryCell: {
+		height: "21px",
+		width: "209px",
+		color: "#2E384D",
+		fontSize: "18px",
+		fontWeight: 500,
+		letterSpacing: 0,
+		lineHeight: "18px",
+		textTransform: "capitalize",
+		border: "1px solid rgba(46,91,255,0.08)"
+	},
+	tableBodyClusterCell: {
+		height: "21px",
+		width: "440px",
+		color: "#2E384D",
+		fontSize: "15px",
+		letterSpacing: 0,
+		lineHeight: "18px",
+		border: "1px solid rgba(46,91,255,0.08)"
+	},
+	switchBase: {
+		"&$checked": {
+			color: "#00619D"
+		},
+		"&$checked + $track": {
+			backgroundColor: "#00619D"
+		}
+	},
+	checked: {},
+	track: {}
 });
 
 const NA_value = -1; // TODO need to change to -1
 
 function calcClusterNumInCategory(fields) {
-    let count = {};
-    fields["by_category"].map((categoryItem) => {
-        count[categoryItem["category"]] = 0;
+	let count = {};
+	fields["by_category"].map((categoryItem) => {
+		count[categoryItem["category"]] = 0;
 
-        fields["by_cluster"].map((clusterItem) => {
-            if (clusterItem["category"] === categoryItem["category"]) {
-                count[categoryItem["category"]] += 1;
-            }
-        });
-    });
+		fields["by_cluster"].map((clusterItem) => {
+			if (clusterItem["category"] === categoryItem["category"]) {
+				count[categoryItem["category"]] += 1;
+			}
+		});
+	});
 
-    return count;
+	return count;
 }
 
 function calcPercentage(partialValue, totalValue) {
-    if (partialValue === NA_value) {
-        return "";
-    }
-    if (totalValue == 0) {
-        return " (0%)";
-    }
-    return ` (${parseFloat((100 * partialValue / totalValue).toFixed(2))}%)`;
+	if (partialValue === NA_value) {
+		return "";
+	}
+	if (totalValue === 0) {
+		return " (0%)";
+	}
+	return ` (${parseFloat((100 * partialValue / totalValue).toFixed(2))}%)`;
 }
 
 export function BldgDamageTable(props) {
-    const { fields } = props;
-    const [percentOn, setPercentOn] = useState(true);
+	const { fields } = props;
+	const [percentOn, setPercentOn] = useState(true);
 
-    function handleChange() {
-        setPercentOn((percentOn) => !percentOn);
-    }
+	function handleChange() {
+		setPercentOn((percentOn) => !percentOn);
+	}
 
-    // e.g.
-    // Community Recovery: 5
-    // Critical Facilities: 4
-    // "Emergency Housing ": 3
-    // Housing / Neighborhood: 7
-    let clusterNumInCategory = calcClusterNumInCategory(fields);
+	// e.g.
+	// Community Recovery: 5
+	// Critical Facilities: 4
+	// "Emergency Housing ": 3
+	// Housing / Neighborhood: 7
+	let clusterNumInCategory = calcClusterNumInCategory(fields);
 
-    const classes = useStyles();
+	const classes = useStyles();
 
+	let tableHeaders = ["Insignificant", "Moderate", "Extensive", "Complete"];
+	if (fields && ("Insignificant" in fields["by_category"][0])) {
+		tableHeaders = ["Insignificant", "Moderate", "Extensive", "Complete"];
+	} else if (fields && ("Affected" in fields["by_category"][0])) {
+		tableHeaders = ["Affected", "Minor", "Major", "Destroyed"];
+	} else {
+		tableHeaders = ["DS_0", "DS_1", "DS_2", "DS_3"];
+	}
 
-    let tableHeaders = ["Insignificant", "Moderate", "Extensive", "Complete"];
-    if (fields && ("Insignificant" in fields["by_category"][0])) {
-        tableHeaders = ["Insignificant", "Moderate", "Extensive", "Complete"];
-    } else if (fields && ("Affected" in fields["by_category"][0])) {
-        tableHeaders = ["Affected", "Minor", "Major", "Destroyed"];
-    }
-
-    return (
-        <TableContainer>
-            <Box style={{ float: "right" }}>
-                <FormControlLabel
-                    control={
-                        <Switch
-                            checked={percentOn}
-                            onChange={(e) => handleChange()}
-                            color="default"
-                            classes={{
-                                switchBase: classes.switchBase,
-                                checked: classes.checked,
-                                track: classes.track
-                            }}
-                        />
-                    }
-                    label="View Percentage"
-                />
-            </Box>
-            <Table className={classes.table} size="small" aria-label="a dense table">
-                <TableHead>
-                    <TableRow className={classes.tableHeaderRow} key="hdrRow">
-                        <TableCell
-                            style={{ width: "647px", backgroundColor: "#EFF2FF", color: "#69707F" }}
-                            colSpan={2}
-                            className={classes.tableHeaderCell}
-                            key="playbook-building-clusters"
-                        >
+	return (
+		<TableContainer>
+			<Box style={{ float: "right" }}>
+				<FormControlLabel
+					control={
+						<Switch
+							checked={percentOn}
+							onChange={(e) => handleChange()}
+							color="default"
+							classes={{
+								switchBase: classes.switchBase,
+								checked: classes.checked,
+								track: classes.track
+							}}
+						/>
+					}
+					label="View Percentage"
+				/>
+			</Box>
+			<Table className={classes.table} size="small" aria-label="a dense table">
+				<TableHead>
+					<TableRow className={classes.tableHeaderRow} key="hdrRow">
+						<TableCell
+							style={{ width: "647px", backgroundColor: "#EFF2FF", color: "#69707F" }}
+							colSpan={2}
+							className={classes.tableHeaderCell}
+							key="playbook-building-clusters"
+						>
                             playbook builidng clusters
-                        </TableCell>
-                        <TableCell
-                            style={{ width: "121px", backgroundColor: "#96B712" }}
-                            className={classes.tableHeaderCell}
-                            key="DS_0"
-                        >
-                            {tableHeaders[0]}
-                        </TableCell>
-                        <TableCell
-                            style={{ width: "121px", backgroundColor: "#F7C137" }}
-                            className={classes.tableHeaderCell}
-                            key="DS_1"
-                        >
-                            {tableHeaders[1]}
-                        </TableCell>
-                        <TableCell
-                            style={{ width: "121px", backgroundColor: "#ED8036" }}
-                            className={classes.tableHeaderCell}
-                            key="DS_2"
-                        >
-                            {tableHeaders[2]}
-                        </TableCell>
-                        <TableCell
-                            style={{ width: "121px", backgroundColor: "#D63649" }}
-                            className={classes.tableHeaderCell}
-                            key="DS_3"
-                        >
-                            {tableHeaders[3]}
-                        </TableCell>
-                    </TableRow>
-                </TableHead>
-                <TableBody>
-                    {
-                        // TODO this is not working
-                        fields["by_category"].map((categoryItem, _) => {
-                            let firstMatchIdxx = -1;
-                            return (
-                                <>
-                                    {fields["by_cluster"].map((clusterItem, idxx) => {
-                                        if (clusterItem["category"] === categoryItem["category"]) {
-                                            if (firstMatchIdxx < 0) firstMatchIdxx = idxx;
-                                            return (
-                                                <TableRow className={classes.tableBodyRow} key={clusterItem["cluster"]}>
-                                                    {idxx === firstMatchIdxx ? (
-                                                        <TableCell
-                                                            rowSpan={clusterNumInCategory[categoryItem["category"]] + 1}
-                                                            align="center"
-                                                            className={classes.tableBodyCategoryCell}
-                                                            style={{ fontWeight: 500, textAlign: "left" }}
-                                                        >
-                                                            {categoryItem["category"]}
-                                                        </TableCell>
-                                                    ) : null}
-                                                    <TableCell key={idxx} className={classes.tableBodyClusterCell}>
-                                                        {clusterItem["cluster"]}
-                                                    </TableCell>
-                                                    <TableCell key={`${idxx}-insig`} className={classes.tableBodyCell}>
-                                                        <td>
-                                                            {clusterItem[tableHeaders[0]] === NA_value ? "-" : clusterItem[tableHeaders[0]]}
-                                                        </td>
-                                                        <td style={percentOn ?
-                                                            {
-                                                                visibility: "visible",
-                                                                color: "#A9A9A9"
-                                                            } : { visibility: "hidden" }}>
-                                                            {calcPercentage(clusterItem[tableHeaders[0]], categoryItem[tableHeaders[0]])}
-                                                        </td>
-                                                    </TableCell>
-                                                    <TableCell key={`${idxx}-mod`} className={classes.tableBodyCell}>
-                                                        <td>
-                                                            {clusterItem[tableHeaders[1]] === NA_value ? "-" : clusterItem[tableHeaders[1]]}
-                                                        </td>
-                                                        <td style={percentOn ?
-                                                            {
-                                                                visibility: "visible",
-                                                                color: "#A9A9A9"
-                                                            } : { visibility: "hidden" }}>
-                                                            {calcPercentage(clusterItem[tableHeaders[1]], categoryItem[tableHeaders[1]])}
-                                                        </td>
-                                                    </TableCell>
-                                                    <TableCell
-                                                        key={`${idxx}-extensi`}
-                                                        className={classes.tableBodyCell}
-                                                    >
-                                                        <td>
-                                                            {clusterItem[tableHeaders[2]] === NA_value ? "-" : clusterItem[tableHeaders[2]]}
-                                                        </td>
-                                                        <td style={percentOn ?
-                                                            {
-                                                                visibility: "visible",
-                                                                color: "#A9A9A9"
-                                                            } : { visibility: "hidden" }}>
-                                                            {calcPercentage(clusterItem[tableHeaders[2]], categoryItem[tableHeaders[2]])}
-                                                        </td>
-                                                    </TableCell>
-                                                    <TableCell key={`${idxx}-comp`} className={classes.tableBodyCell}>
-                                                        <td>
-                                                            {clusterItem[tableHeaders[3]] === NA_value ? "-" : clusterItem[tableHeaders[3]]}
-                                                        </td>
-                                                        <td style={percentOn ?
-                                                            {
-                                                                visibility: "visible",
-                                                                color: "#A9A9A9"
-                                                            } : { visibility: "hidden" }}>
-                                                            {calcPercentage(clusterItem[tableHeaders[3]], categoryItem[tableHeaders[3]])}
-                                                        </td>
-                                                    </TableCell>
-                                                </TableRow>
-                                            );
-                                        }
-                                    })}
-                                    <TableRow className={classes.tableBodyRow} key={categoryItem["id"]}>
-                                        <TableCell
-                                            key="total"
-                                            className={classes.tableBodyClusterCell}
-                                            style={{ fontWeight: 500, textAlign: "right", backgroundColor: "#EEF3F5" }}
-                                        >
+						</TableCell>
+						<TableCell
+							style={{ width: "121px", backgroundColor: "#96B712" }}
+							className={classes.tableHeaderCell}
+							key={tableHeaders[0]}
+						>
+							{tableHeaders[0]}
+						</TableCell>
+						<TableCell
+							style={{ width: "121px", backgroundColor: "#F7C137" }}
+							className={classes.tableHeaderCell}
+							key={tableHeaders[1]}
+						>
+							{tableHeaders[1]}
+						</TableCell>
+						<TableCell
+							style={{ width: "121px", backgroundColor: "#ED8036" }}
+							className={classes.tableHeaderCell}
+							key={tableHeaders[2]}
+						>
+							{tableHeaders[2]}
+						</TableCell>
+						<TableCell
+							style={{ width: "121px", backgroundColor: "#D63649" }}
+							className={classes.tableHeaderCell}
+							key={tableHeaders[3]}
+						>
+							{tableHeaders[3]}
+						</TableCell>
+					</TableRow>
+				</TableHead>
+				<TableBody>
+					{
+						// TODO this is not working
+						fields["by_category"].map((categoryItem, _) => {
+							let firstMatchIdxx = -1;
+							return (
+								<>
+									{fields["by_cluster"].map((clusterItem, idxx) => {
+										if (clusterItem["category"] === categoryItem["category"]) {
+											if (firstMatchIdxx < 0) firstMatchIdxx = idxx;
+											return (
+												<TableRow className={classes.tableBodyRow} key={clusterItem["cluster"]}>
+													{idxx === firstMatchIdxx ? (
+														<TableCell
+															rowSpan={clusterNumInCategory[categoryItem["category"]] + 1}
+															align="center"
+															className={classes.tableBodyCategoryCell}
+															style={{ fontWeight: 500, textAlign: "left" }}
+														>
+															{categoryItem["category"]}
+														</TableCell>
+													) : null}
+													<TableCell key={idxx} className={classes.tableBodyClusterCell}>
+														{clusterItem["cluster"]}
+													</TableCell>
+													<TableCell key={`${idxx}-insig`} className={classes.tableBodyCell}>
+														<td>
+															{clusterItem[tableHeaders[0]] === NA_value ? "-" : clusterItem[tableHeaders[0]]}
+														</td>
+														<td style={percentOn ?
+															{
+																visibility: "visible",
+																color: "#A9A9A9"
+															} : { visibility: "hidden" }}>
+															{calcPercentage(clusterItem[tableHeaders[0]], categoryItem[tableHeaders[0]])}
+														</td>
+													</TableCell>
+													<TableCell key={`${idxx}-mod`} className={classes.tableBodyCell}>
+														<td>
+															{clusterItem[tableHeaders[1]] === NA_value ? "-" : clusterItem[tableHeaders[1]]}
+														</td>
+														<td style={percentOn ?
+															{
+																visibility: "visible",
+																color: "#A9A9A9"
+															} : { visibility: "hidden" }}>
+															{calcPercentage(clusterItem[tableHeaders[1]], categoryItem[tableHeaders[1]])}
+														</td>
+													</TableCell>
+													<TableCell
+														key={`${idxx}-extensi`}
+														className={classes.tableBodyCell}
+													>
+														<td>
+															{clusterItem[tableHeaders[2]] === NA_value ? "-" : clusterItem[tableHeaders[2]]}
+														</td>
+														<td style={percentOn ?
+															{
+																visibility: "visible",
+																color: "#A9A9A9"
+															} : { visibility: "hidden" }}>
+															{calcPercentage(clusterItem[tableHeaders[2]], categoryItem[tableHeaders[2]])}
+														</td>
+													</TableCell>
+													<TableCell key={`${idxx}-comp`} className={classes.tableBodyCell}>
+														<td>
+															{clusterItem[tableHeaders[3]] === NA_value ? "-" : clusterItem[tableHeaders[3]]}
+														</td>
+														<td style={percentOn ?
+															{
+																visibility: "visible",
+																color: "#A9A9A9"
+															} : { visibility: "hidden" }}>
+															{calcPercentage(clusterItem[tableHeaders[3]], categoryItem[tableHeaders[3]])}
+														</td>
+													</TableCell>
+												</TableRow>
+											);
+										}
+									})}
+									<TableRow className={classes.tableBodyRow} key={categoryItem["id"]}>
+										<TableCell
+											key="total"
+											className={classes.tableBodyClusterCell}
+											style={{ fontWeight: 500, textAlign: "right", backgroundColor: "#EEF3F5" }}
+										>
                                             TOTAL
-                                        </TableCell>
-                                        <TableCell
-                                            key="total-insig"
-                                            className={classes.tableBodyCell}
-                                            style={{ fontWeight: 500, backgroundColor: "#EEF3F5" }}
-                                        >
-                                            <td>{categoryItem[tableHeaders[0]] === NA_value ? "-" : categoryItem[tableHeaders[0]]}</td>
-                                            <td style={percentOn ?
-                                                { visibility: "visible", color: "#A9A9A9" } : { visibility: "hidden" }}>
-                                                {categoryItem[tableHeaders[0]] === NA_value ? "" : "(100%)"}
-                                            </td>
-                                        </TableCell>
-                                        <TableCell
-                                            key="total-mod"
-                                            className={classes.tableBodyCell}
-                                            style={{ fontWeight: 500, backgroundColor: "#EEF3F5" }}
-                                        >
-                                            <td>{categoryItem[tableHeaders[1]] === NA_value ? "-" : categoryItem[tableHeaders[1]]}</td>
-                                            <td style={percentOn ?
-                                                { visibility: "visible", color: "#A9A9A9" } : { visibility: "hidden" }}>
-                                                {categoryItem[tableHeaders[1]] === NA_value ? "" : "(100%)"}
-                                            </td>
-                                        </TableCell>
-                                        <TableCell
-                                            key="total-extensi"
-                                            className={classes.tableBodyCell}
-                                            style={{ fontWeight: 500, backgroundColor: "#EEF3F5" }}
-                                        >
-                                            <td>{categoryItem[tableHeaders[2]] === NA_value ? "-" : categoryItem[tableHeaders[2]]}</td>
-                                            <td style={percentOn ?
-                                                { visibility: "visible", color: "#A9A9A9" } : { visibility: "hidden" }}>
-                                                {categoryItem[tableHeaders[2]] === NA_value ? "" : "(100%)"}
-                                            </td>
-                                        </TableCell>
-                                        <TableCell
-                                            key="total-comp"
-                                            className={classes.tableBodyCell}
-                                            style={{ fontWeight: 500, backgroundColor: "#EEF3F5" }}
-                                        >
-                                            <td>{categoryItem[tableHeaders[3]] === NA_value ? "-" : categoryItem[tableHeaders[3]]}</td>
-                                            <td style={percentOn ?
-                                                { visibility: "visible", color: "#A9A9A9" } : { visibility: "hidden" }}>
-                                                {categoryItem[tableHeaders[3]] === NA_value ? "" : "(100%)"}
-                                            </td>
-                                        </TableCell>
-                                    </TableRow>
-                                </>
-                            );
-                        })
-                    }
-                </TableBody>
-            </Table>
-        </TableContainer>
-    );
+										</TableCell>
+										<TableCell
+											key="total-insig"
+											className={classes.tableBodyCell}
+											style={{ fontWeight: 500, backgroundColor: "#EEF3F5" }}
+										>
+											<td>{categoryItem[tableHeaders[0]] === NA_value ? "-" : categoryItem[tableHeaders[0]]}</td>
+											<td style={percentOn ?
+												{ visibility: "visible", color: "#A9A9A9" } : { visibility: "hidden" }}>
+												{categoryItem[tableHeaders[0]] === NA_value ? "" : "(100%)"}
+											</td>
+										</TableCell>
+										<TableCell
+											key="total-mod"
+											className={classes.tableBodyCell}
+											style={{ fontWeight: 500, backgroundColor: "#EEF3F5" }}
+										>
+											<td>{categoryItem[tableHeaders[1]] === NA_value ? "-" : categoryItem[tableHeaders[1]]}</td>
+											<td style={percentOn ?
+												{ visibility: "visible", color: "#A9A9A9" } : { visibility: "hidden" }}>
+												{categoryItem[tableHeaders[1]] === NA_value ? "" : "(100%)"}
+											</td>
+										</TableCell>
+										<TableCell
+											key="total-extensi"
+											className={classes.tableBodyCell}
+											style={{ fontWeight: 500, backgroundColor: "#EEF3F5" }}
+										>
+											<td>{categoryItem[tableHeaders[2]] === NA_value ? "-" : categoryItem[tableHeaders[2]]}</td>
+											<td style={percentOn ?
+												{ visibility: "visible", color: "#A9A9A9" } : { visibility: "hidden" }}>
+												{categoryItem[tableHeaders[2]] === NA_value ? "" : "(100%)"}
+											</td>
+										</TableCell>
+										<TableCell
+											key="total-comp"
+											className={classes.tableBodyCell}
+											style={{ fontWeight: 500, backgroundColor: "#EEF3F5" }}
+										>
+											<td>{categoryItem[tableHeaders[3]] === NA_value ? "-" : categoryItem[tableHeaders[3]]}</td>
+											<td style={percentOn ?
+												{ visibility: "visible", color: "#A9A9A9" } : { visibility: "hidden" }}>
+												{categoryItem[tableHeaders[3]] === NA_value ? "" : "(100%)"}
+											</td>
+										</TableCell>
+									</TableRow>
+								</>
+							);
+						})
+					}
+				</TableBody>
+			</Table>
+		</TableContainer>
+	);
 }
