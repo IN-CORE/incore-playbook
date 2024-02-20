@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from "react";
 
 import {
+	Box,
+	Button,
+	Checkbox,
 	IconButton,
 	Link,
 	Table,
@@ -20,6 +23,7 @@ import { useSelector } from "react-redux";
 
 import { getComparator, isAdmin, parseDateTime, stableSort } from "../../../utils/common";
 import { checkFileDescriptors } from "../../../utils/datawolf";
+import { useLocation, useRouteMatch } from "react-router-dom";
 
 const useStyles = makeStyles({
 	table: {
@@ -40,6 +44,12 @@ const useStyles = makeStyles({
 	},
 	tableBodyRow: {
 		backgroundColor: "#FFFFFF",
+		borderBottom: "2px solid #D9E8F1",
+		borderTop: "2px solid #D9E8F1",
+		minHeight: "65px"
+	},
+	tableBodyRowChecked: {
+		backgroundColor: "#e5eff5",
 		borderBottom: "2px solid #D9E8F1",
 		borderTop: "2px solid #D9E8F1",
 		minHeight: "65px"
@@ -107,6 +117,16 @@ const useStyles = makeStyles({
 		color: "#9E9E9E",
 		fontWeight: 500,
 		margin: "auto 2em"
+	},
+	compareButton: {
+		"fontSize": "16px",
+		"fontWeight": 500,
+		"backgroundColor": "#00619D",
+		"&:hover": {
+			backgroundColor: "#2C4170"
+		},
+		"color": "#ffffff",
+		"textTransform": "capitalize"
 	}
 });
 
@@ -132,12 +152,17 @@ export function ViewResultEntryTable(props) {
 	const [orderBy, setOrderBy] = React.useState("date");
 
 	const [page, setPage] = React.useState(0);
-	const [rowsPerPage, setRowsPerPage] = React.useState(10);
+	const [rowsPerPage, setRowsPerPage] = React.useState(5);
 
+	const [compareDisabled, setCompareDisabled] = React.useState(true);
+	const [compareItems, setCompareItems] = React.useState({});
 	// list all the widgets from workflow definition
 	const datawolfWorkflowConfig = useSelector((state) => state.config.datawolfWorkflowConfig);
 	const datawolfConfig = useSelector((state) => state.config.datawolfConfig);
 	const globalConfig = useSelector((state) => state.config.globalConfig);
+
+	const location = useLocation();
+	const match = useRouteMatch(); // No arguments to match the current route
 
 	const _checkResultsReady = async (listWidgets, currentExecutionDataset) => {
 		const requiredDatasetIds = datawolfWorkflowConfig.outputs.datasets[0].datasetsMap.reduce((list, item) => {
@@ -151,9 +176,9 @@ export function ViewResultEntryTable(props) {
 		return await requiredDatasetIds.reduce(async (state, reqId) => {
 			return (
 				reqId in currentExecutionDataset &&
-				currentExecutionDataset[reqId] !== "ERROR" &&
-				(await checkFileDescriptors(datawolfConfig, currentExecutionDataset[reqId])) > 0 &&
-				state
+                currentExecutionDataset[reqId] !== "ERROR" &&
+                (await checkFileDescriptors(datawolfConfig, currentExecutionDataset[reqId])) > 0 &&
+                state
 			);
 		}, true);
 	};
@@ -187,6 +212,14 @@ export function ViewResultEntryTable(props) {
 		});
 	}, [executions, expandId]);
 
+	// if flipping pages or changing page rows; reset the compare items
+	useEffect(() => {setCompareItems({});}, [rowsPerPage, page]);
+
+	useEffect(() => {
+		// Only allow two item to be compared
+		Object.keys(compareItems).length === 2 ? setCompareDisabled(false) : setCompareDisabled(true);
+	}, [compareItems]);
+
 	const handleRequestSort = (event, property) => {
 		const isAsc = orderBy === property && order === "asc";
 		setOrder(isAsc ? "desc" : "asc");
@@ -205,6 +238,33 @@ export function ViewResultEntryTable(props) {
 		setRowsPerPage(parseInt(event.target.value, 10));
 		setPage(0);
 	};
+
+	const handleChecked = (event) => {
+		// If the checkbox is checked, add/update the item in the state
+		if (event.target.checked) {
+			setCompareItems(prevState => ({ ...prevState, [event.target.name]: event.target.checked }));
+		} else {
+			// If the checkbox is unchecked, create a copy of the state without the item
+			setCompareItems(prevState => {
+				const newState = { ...prevState }; // Copy the existing state
+				delete newState[event.target.name]; // Remove the item corresponding to the unchecked checkbox
+				return newState;
+			});
+		}
+	};
+
+	const handleCompareButtonClick = () => {
+		// Get the current location because we have baseRoute in each application
+		const currentLocation = window.location;
+
+		// Construct the new URL by replacing the current path with the new path
+		const basePath = currentLocation.pathname.substring(0, currentLocation.pathname.lastIndexOf("/"));
+		const newUrl = `${currentLocation.origin}${basePath}/compare-analyses?executionIds=${Object.keys(compareItems).join(",")}`;
+		// Open the new URL in a new tab
+		window.open(newUrl, "_blank");
+
+	};
+
 	// Avoid a layout jump when reaching the last page with empty rows.
 	const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - executions.length) : 0;
 
@@ -216,6 +276,10 @@ export function ViewResultEntryTable(props) {
 			<Table className={classes.table} size="small" aria-label="a dense table">
 				<TableHead>
 					<TableRow className={classes.tableHeaderRow} key="hdrRow">
+						<TableCell
+							className={classes.tableHeaderCell}
+							key="checkbox"
+						/>
 						{fieldNames.map((fieldName) => {
 							return (
 								<TableCell
@@ -243,7 +307,17 @@ export function ViewResultEntryTable(props) {
 						.map((execution) => {
 							return (
 								<>
-									<TableRow className={classes.tableBodyRow} key={execution["id"]}>
+									<TableRow
+										className={compareItems.hasOwnProperty(execution.id) && compareItems[execution.id] ?
+											classes.tableBodyRowChecked : classes.tableBodyRow} key={execution["id"]}>
+										<TableCell key={`${execution["id"]}-checkbox`} align="right">
+											<Checkbox
+												onChange={handleChecked}
+												name={execution.id}
+												checked={compareItems.hasOwnProperty(execution.id) ?
+													compareItems[execution.id] : false}
+											/>
+										</TableCell>
 										{fieldNames.map((fieldName, idx) => {
 											if (fieldName["columnName"] === "finalStatus") {
 												return (
@@ -257,7 +331,7 @@ export function ViewResultEntryTable(props) {
 																);
 															} else if (
 																execution["finalStatus"].toLowerCase() === "waiting" ||
-																execution["finalStatus"].toLowerCase() === "queued"
+                                                            execution["finalStatus"].toLowerCase() === "queued"
 															) {
 																return (
 																	<p className={classes.statusWaiting}>
@@ -266,7 +340,7 @@ export function ViewResultEntryTable(props) {
 																);
 															} else if (
 																execution["finalStatus"].toLowerCase() === "failed" ||
-																execution["finalStatus"].toLowerCase() === "aborted"
+                                                            execution["finalStatus"].toLowerCase() === "aborted"
 															) {
 																return (
 																	<p className={classes.statusUnsuccess}>
@@ -311,9 +385,9 @@ export function ViewResultEntryTable(props) {
 														}
 													>
 														{fieldName["columnName"] === "creator" &&
-														execution[fieldName["columnName"]] &&
-														"firstName" in execution[fieldName["columnName"]] &&
-														"lastName" in execution[fieldName["columnName"]]
+                                                    execution[fieldName["columnName"]] &&
+                                                    "firstName" in execution[fieldName["columnName"]] &&
+                                                    "lastName" in execution[fieldName["columnName"]]
 															? `${execution[fieldName["columnName"]].firstName}
 														${execution[fieldName["columnName"]].lastName}`
 															: execution[fieldName["columnName"]]}
@@ -350,34 +424,34 @@ export function ViewResultEntryTable(props) {
 											{/* {console.log(execution)} */}
 											{/*resilience metrics*/}
 											{widgetList.includes("CGE") &&
-											widgetList.includes("PopDislocation") &&
-											widgetList.includes("BldgFunctionality") ? (
-												<TableRow
-													className={classes.subBodyRow}
-													key={`${execution["id"]}-resilience-metrics`}
-												>
-													<TableCell
-														colSpan={7}
-														key={`${execution["id"]}-resilience-metrics-title`}
+                                        widgetList.includes("PopDislocation") &&
+                                        widgetList.includes("BldgFunctionality") ? (
+													<TableRow
+														className={classes.subBodyRow}
+														key={`${execution["id"]}-resilience-metrics`}
 													>
-														<Link
-															color="primary"
-															onClick={() => {
-																preview(execution["id"], "ResilienceMetrics");
-															}}
-															className={
-																resMatricsReadiness
-																	? classes.clickableLink
-																	: classes.clickableLinkDisabled
-															}
+														<TableCell
+															colSpan={7}
+															key={`${execution["id"]}-resilience-metrics-title`}
 														>
-															Resilience Metrics
-														</Link>
-													</TableCell>
-												</TableRow>
-											) : (
-												<></>
-											)}
+															<Link
+																color="primary"
+																onClick={() => {
+																	preview(execution["id"], "ResilienceMetrics");
+																}}
+																className={
+																	resMatricsReadiness
+																		? classes.clickableLink
+																		: classes.clickableLinkDisabled
+																}
+															>
+                                                        Resilience Metrics
+															</Link>
+														</TableCell>
+													</TableRow>
+												) : (
+													<></>
+												)}
 											{/*EPF damage*/}
 											{widgetList.includes("PoleDamage") ? (
 												<TableRow
@@ -396,7 +470,7 @@ export function ViewResultEntryTable(props) {
 																	: classes.clickableLinkDisabled
 															}
 														>
-															Pole Damage (Electrical Power Network)
+                                                        Pole Damage (Electrical Power Network)
 														</Link>
 													</TableCell>
 												</TableRow>
@@ -423,7 +497,7 @@ export function ViewResultEntryTable(props) {
 																	: classes.clickableLinkDisabled
 															}
 														>
-															Substation Damage (Electrical Power Network)
+                                                        Substation Damage (Electrical Power Network)
 														</Link>
 													</TableCell>
 												</TableRow>
@@ -448,7 +522,7 @@ export function ViewResultEntryTable(props) {
 																	: classes.clickableLinkDisabled
 															}
 														>
-															Building Damage
+                                                        Building Damage
 														</Link>
 													</TableCell>
 												</TableRow>
@@ -471,7 +545,7 @@ export function ViewResultEntryTable(props) {
 																	: classes.clickableLinkDisabled
 															}
 														>
-															Building Functionality (without Electrical Power Dependency)
+                                                        Building Functionality (without Electrical Power Dependency)
 														</Link>
 													</TableCell>
 												</TableRow>
@@ -499,7 +573,7 @@ export function ViewResultEntryTable(props) {
 																	: classes.clickableLinkDisabled
 															}
 														>
-															Building Functionality (with Electrical Power Dependency)
+                                                        Building Functionality (with Electrical Power Dependency)
 														</Link>
 													</TableCell>
 												</TableRow>
@@ -527,7 +601,7 @@ export function ViewResultEntryTable(props) {
 																	: classes.clickableLinkDisabled
 															}
 														>
-															Capital Shocks
+                                                        Capital Shocks
 														</Link>
 													</TableCell>
 												</TableRow>
@@ -549,7 +623,7 @@ export function ViewResultEntryTable(props) {
 																	: classes.clickableLinkDisabled
 															}
 														>
-															Economic Prediction Model (Computable General Equilibrium)
+                                                        Economic Prediction Model (Computable General Equilibrium)
 														</Link>
 													</TableCell>
 												</TableRow>
@@ -577,7 +651,7 @@ export function ViewResultEntryTable(props) {
 																	: classes.clickableLinkDisabled
 															}
 														>
-															Population Dislocation
+                                                        Population Dislocation
 														</Link>
 													</TableCell>
 												</TableRow>
@@ -599,7 +673,7 @@ export function ViewResultEntryTable(props) {
 																	: classes.clickableLinkDisabled
 															}
 														>
-															Housing Recovery
+                                                        Housing Recovery
 														</Link>
 													</TableCell>
 												</TableRow>
@@ -619,7 +693,7 @@ export function ViewResultEntryTable(props) {
 															}}
 															className={classes.clickableLink}
 														>
-															Logs
+                                                        Logs
 														</Link>
 													</TableCell>
 												</TableRow>
@@ -644,14 +718,25 @@ export function ViewResultEntryTable(props) {
 					)}
 				</TableBody>
 			</Table>
+			<Box className="inputGroup" style={{ height: "auto", textAlign: "center" }}>
+				<Button
+					variant="contained"
+					color="primary"
+					onClick={handleCompareButtonClick}
+					disabled={compareDisabled}
+					classes={{ root: classes.compareButton }}
+				>
+                    COMPARE TWO SCENARIOS
+				</Button>
+			</Box>
 			<TablePagination
 				rowsPerPageOptions={[5, 10, 25]}
 				component="div"
 				count={executions.length}
 				rowsPerPage={rowsPerPage}
 				page={page}
-				onPageChange={handleChangePage}
-				onRowsPerPageChange={handleChangeRowsPerPage}
+				onChangePage={handleChangePage}
+				onChangeRowsPerPage={handleChangeRowsPerPage}
 			/>
 		</TableContainer>
 	);
