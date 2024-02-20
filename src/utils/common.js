@@ -139,15 +139,15 @@ export function getShortHTML(html) {
 // }
 
 export function round(num, scale) {
-	if(!("" + num).includes("e")) {
-		return +(Math.round(num + "e+" + scale)  + "e-" + scale);
+	if(!(`${  num}`).includes("e")) {
+		return +(`${Math.round(`${num  }e+${  scale}`)   }e-${  scale}`);
 	} else {
-		let arr = ("" + num).split("e");
+		let arr = (`${  num}`).split("e");
 		let sig = "";
 		if(+arr[1] + scale > 0) {
 			sig = "+";
 		}
-		return +(Math.round(+arr[0] + "e" + sig + (+arr[1] + scale)) + "e-" + scale);
+		return +(`${Math.round(`${+arr[0]  }e${  sig  }${+arr[1] + scale}`)  }e-${  scale}`);
 	}
 }
 
