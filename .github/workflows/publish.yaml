@@ -20,10 +20,10 @@ jobs:
       fail-fast: false
       matrix:
         node:
-          # - "12"
+          - "12"
           # this should be only one build because the second build, regardless node version
           # will have the conflict due to the same version already exists
-          - "14"
+          # - "14"
 
     steps:
       # checkout source code
