@@ -5,6 +5,9 @@ on:
     branches:
       - main
 
+  pull_request:
+
+
 env:
   MAIN_REPO: IN-CORE/incore-playbook
   NPM_TOKEN: ${{ secrets.GITHUB_TOKEN }}
