@@ -59,7 +59,7 @@ export default function HHSCompare(props) {
 		};
 
 		fetchData();
-	}, []);
+	}, [executionItems, datawolfDatasetConfigItems]);
 
 	return (
 		<Box style={{ padding: "5px 25px 25px 25px" }}>
