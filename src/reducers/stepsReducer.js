@@ -26,22 +26,22 @@ const defaultState = {
 
 const stepsReducer = (state = defaultState, action) => {
 	switch (action.type) {
-		case "UPDATE_STEP":
-			return {
-				...state,
-				[action.step_id]: action.step
-			};
-		case "UPDATE_ALL_STEPS":
-			return {
-				...state,
-				...action.steps
-			};
-		case "LOGIN_ERROR":
-			return {
-				...state
-			};
-		default:
-			return state;
+	case "UPDATE_STEP":
+		return {
+			...state,
+			[action.step_id]: action.step
+		};
+	case "UPDATE_ALL_STEPS":
+		return {
+			...state,
+			...action.steps
+		};
+	case "LOGIN_ERROR":
+		return {
+			...state
+		};
+	default:
+		return state;
 	}
 };
 
