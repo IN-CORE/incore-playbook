@@ -309,21 +309,21 @@ export default function ViewResult(props) {
 			datawolfDatasetConfigItems.length > 0 &&
 			hazardType &&
 			hazardGroupLayer ? (
-				(() => {
-					return React.cloneElement(registeredWidgets[widgetName], {
-						executionItem: selectedExecutionItem,
-						getExecution: getExecution,
-						previewOn: previewOn,
-						handlePreviewClose: handlePreviewClose,
-						datawolfDatasetConfigItems: datawolfDatasetConfigItems,
-						hazardType: hazardType,
-						hazardLayers: hazardGroupLayer,
-						setDownloadDialogOpen: setDownloadDialogOpen
-					});
-				})()
-			) : (
-				<></>
-			)}
+					(() => {
+						return React.cloneElement(registeredWidgets[widgetName], {
+							executionItem: selectedExecutionItem,
+							getExecution: getExecution,
+							previewOn: previewOn,
+							handlePreviewClose: handlePreviewClose,
+							datawolfDatasetConfigItems: datawolfDatasetConfigItems,
+							hazardType: hazardType,
+							hazardLayers: hazardGroupLayer,
+							setDownloadDialogOpen: setDownloadDialogOpen
+						});
+					})()
+				) : (
+					<></>
+				)}
 		</div>
 	);
 }

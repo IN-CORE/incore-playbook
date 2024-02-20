@@ -158,14 +158,14 @@ export default function CGE(props) {
 											>
 												{globalConfig["allowedRegions"]
 													? globalConfig["allowedRegions"].map((allowedRegion) => {
-															return (
-																<IncoreMenuItem
-																	value={allowedRegion.value}
-																	key={allowedRegion}
-																>
-																	{allowedRegion.name}
-																</IncoreMenuItem>
-															);
+														return (
+															<IncoreMenuItem
+																value={allowedRegion.value}
+																key={allowedRegion}
+															>
+																{allowedRegion.name}
+															</IncoreMenuItem>
+														);
 													  })
 													: null}
 											</IncoreSelectBox>

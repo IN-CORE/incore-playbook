@@ -151,7 +151,7 @@ export const CommunityHazards = (props) => {
 					title: "Carto",
 					source: new XYZ({
 						url: "https://{a-d}.basemaps.cartocdn.com/rastertiles/light_all/{z}/{x}/{y}.png",
-						attributions: ['&#169; <a href="https://www.carto.com">Carto</a>,', OSM_ATTRIBUTION]
+						attributions: ["&#169; <a href=\"https://www.carto.com\">Carto</a>,", OSM_ATTRIBUTION]
 					})
 				}),
 				new TileLayer({
@@ -160,7 +160,7 @@ export const CommunityHazards = (props) => {
 					visible: true,
 					source: new XYZ({
 						url: "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
-						attributions: ['&#169; <a href="https://www.esri.com">Esri</a>,', OSM_ATTRIBUTION],
+						attributions: ["&#169; <a href=\"https://www.esri.com\">Esri</a>,", OSM_ATTRIBUTION],
 						crossOrigin: "anonymous"
 					})
 				}),

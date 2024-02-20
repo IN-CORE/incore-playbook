@@ -275,38 +275,38 @@ export default function ModelEarthquake(props) {
 						{attenuations === "ChiouYoungs2014" ||
 						attenuations === "CampbellBozorgnia2014" ||
 						attenuations === "AbrahamsonSilvaKamai2014" ? (
-							<Box className="inputGroup">
-								<IncoreInputLabel className="required-field">Fault Mechanism</IncoreInputLabel>
-								<IncoreSelectBox
-									labelId="label"
-									id="select"
-									variant="outlined"
-									defaultValue={faultTypeMap}
-									onChange={(e) => setFaultTypeMap(e.target.value)}
-								>
-									<IncoreMenuItem value="Strike-Slip" key="Strike-Slip">
+								<Box className="inputGroup">
+									<IncoreInputLabel className="required-field">Fault Mechanism</IncoreInputLabel>
+									<IncoreSelectBox
+										labelId="label"
+										id="select"
+										variant="outlined"
+										defaultValue={faultTypeMap}
+										onChange={(e) => setFaultTypeMap(e.target.value)}
+									>
+										<IncoreMenuItem value="Strike-Slip" key="Strike-Slip">
 										Strike-Slip
-									</IncoreMenuItem>
-									<IncoreMenuItem value="Normal" key="Normal">
+										</IncoreMenuItem>
+										<IncoreMenuItem value="Normal" key="Normal">
 										Normal
-									</IncoreMenuItem>
-									<IncoreMenuItem value="Reverse-Thrust" key="Reverse-Thrust">
+										</IncoreMenuItem>
+										<IncoreMenuItem value="Reverse-Thrust" key="Reverse-Thrust">
 										Reverse-Thrust
-									</IncoreMenuItem>
-									<IncoreMenuItem value="Reverse-Slip" key="Reverse-Slip">
+										</IncoreMenuItem>
+										<IncoreMenuItem value="Reverse-Slip" key="Reverse-Slip">
 										Reverse-Slip
-									</IncoreMenuItem>
-									<IncoreMenuItem value="All" key="All">
+										</IncoreMenuItem>
+										<IncoreMenuItem value="All" key="All">
 										All
-									</IncoreMenuItem>
-									<IncoreMenuItem value="Reverse" key="Reverse">
+										</IncoreMenuItem>
+										<IncoreMenuItem value="Reverse" key="Reverse">
 										Reverse
-									</IncoreMenuItem>
-								</IncoreSelectBox>
-							</Box>
-						) : (
-							<></>
-						)}
+										</IncoreMenuItem>
+									</IncoreSelectBox>
+								</Box>
+							) : (
+								<></>
+							)}
 
 						<Box className="inputGroup">
 							<IncoreInputLabel>Draw Earthquake Epicenter</IncoreInputLabel>

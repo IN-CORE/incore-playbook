@@ -42,8 +42,8 @@ export default function Hazards(props) {
 	return (
 		<IncoreAutocomplete
 			disablePortal
-            labelId="label"
-            id="select"
+			labelId="label"
+			id="select"
 			variant="outlined"
 			onChange={(event, newValue) => {
 				let currentVal = newValue.id;
@@ -56,7 +56,7 @@ export default function Hazards(props) {
 				});
 			}}
 
-            options={hazards}
+			options={hazards}
 	        getOptionLabel={(option) => option.name}
 			getOptionSelected={(option, value) => option.id === value.id}
 			renderInput={(params) =>
@@ -73,6 +73,6 @@ export default function Hazards(props) {
 								       borderColor: "#D3D3D3",
 								       borderRadius: "4px",
 								   }}} />}
-        />
+		/>
 	);
 }
