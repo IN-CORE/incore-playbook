@@ -178,17 +178,17 @@ export default function PopDislocation(props) {
 							dislocationByRaceContent &&
 							dislocationByTenureContent &&
 							dislocationByHousingTypeContent ? (
-								<HuaResultsTable
-									resultsJson={{
-										income: dislocationByIncomeContent,
-										race: dislocationByRaceContent,
-										tenure: dislocationByTenureContent,
-										housingType: dislocationByHousingTypeContent
-									}}
-								/>
-							) : (
-								<></>
-							)}
+									<HuaResultsTable
+										resultsJson={{
+											income: dislocationByIncomeContent,
+											race: dislocationByRaceContent,
+											tenure: dislocationByTenureContent,
+											housingType: dislocationByHousingTypeContent
+										}}
+									/>
+								) : (
+									<></>
+								)}
 						</Grid>
 					</Grid>
 				</Box>

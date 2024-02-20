@@ -86,12 +86,12 @@ function calcClusterNumInCategory(fields) {
 
 function calcPercentage(partialValue, totalValue) {
 	if (partialValue === NA_value) {
-		return ""
+		return "";
 	}
-	if (totalValue == 0) {
-		return " (0%)"
+	if (totalValue === 0) {
+		return " (0%)";
 	}
-	return " ("+parseFloat((100 * partialValue/totalValue).toFixed(2)) + "%)"
+	return ` (${parseFloat((100 * partialValue/totalValue).toFixed(2))  }%)`;
 }
 
 export function ResultTable(props) {
@@ -112,7 +112,7 @@ export function ResultTable(props) {
 	const classes = useStyles();
 
 
-	let tableHeaders = ["Insignificant", "Moderate", "Extensive", "Complete"]
+	let tableHeaders = ["Insignificant", "Moderate", "Extensive", "Complete"];
 	if (fields && ("Insignificant" in fields["by_category"][0])) {
 		tableHeaders = ["Insignificant", "Moderate", "Extensive", "Complete"];
 	} else if (fields && ("Affected" in fields["by_category"][0])) {
