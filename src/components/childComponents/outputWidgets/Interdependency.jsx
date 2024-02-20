@@ -5,7 +5,7 @@ import { fromLonLat, getTransform } from "ol/proj";
 import React, { useEffect, useState, useRef } from "react";
 import { useSelector } from "react-redux";
 import { applyTransform } from "ol/extent";
-import { basicLayers, generateLayers } from "../../../utils/map";
+import { basicLayers, hazardLayers, generateLayers } from "../../../utils/map";
 import { getOutputFileContent } from "../../../utils/datawolf";
 import { IncoreButtonText } from "../../styledComponents/IncoreButtonText";
 import { downloadImg } from "../../../utils/image";
