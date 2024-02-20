@@ -156,6 +156,12 @@ export const CompareAnalyses = () => {
 												</IncoreMenuItem> : <></>
 										}
 										{
+											widgetList.includes("PoleDamage") ?
+												<IncoreMenuItem key="PoleDamage" value="PoleDamage">
+                                                    Pole Damage (Electrical Power Network)
+												</IncoreMenuItem> : <></>
+										}
+										{
 											widgetList.includes("BldgDamage") ?
 												<IncoreMenuItem key="BldgDamage" value="BldgDamage">
                                                     Building Damage
