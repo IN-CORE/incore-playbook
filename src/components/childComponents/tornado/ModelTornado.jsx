@@ -227,14 +227,14 @@ export default function ModelTornado(props) {
 							startLatCoord !== null &&
 							endLonCoord !== null &&
 							endLatCoord !== null ? (
-								validStartCoord && validEndCoord ? (
-									<></>
-								) : (
-									<span style={{ color: "Red" }}>
+									validStartCoord && validEndCoord ? (
+										<></>
+									) : (
+										<span style={{ color: "Red" }}>
 										Coordinate not valid or outside of the bounding box.
-									</span>
-								)
-							) : null}
+										</span>
+									)
+								) : null}
 							<Box className={classes.coordBox}>
 								<Box display="flex" style={{ alignItems: "baseline", justifyContent: "center" }}>
 									<InputLabel className={classes.startLabel}>Lat: </InputLabel>

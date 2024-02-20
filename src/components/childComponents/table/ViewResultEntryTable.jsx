@@ -352,32 +352,32 @@ export function ViewResultEntryTable(props) {
 											{widgetList.includes("CGE") &&
 											widgetList.includes("PopDislocation") &&
 											widgetList.includes("BldgFunctionality") ? (
-												<TableRow
-													className={classes.subBodyRow}
-													key={`${execution["id"]}-resilience-metrics`}
-												>
-													<TableCell
-														colSpan={7}
-														key={`${execution["id"]}-resilience-metrics-title`}
+													<TableRow
+														className={classes.subBodyRow}
+														key={`${execution["id"]}-resilience-metrics`}
 													>
-														<Link
-															color="primary"
-															onClick={() => {
-																preview(execution["id"], "ResilienceMetrics");
-															}}
-															className={
-																resMatricsReadiness
-																	? classes.clickableLink
-																	: classes.clickableLinkDisabled
-															}
+														<TableCell
+															colSpan={7}
+															key={`${execution["id"]}-resilience-metrics-title`}
 														>
+															<Link
+																color="primary"
+																onClick={() => {
+																	preview(execution["id"], "ResilienceMetrics");
+																}}
+																className={
+																	resMatricsReadiness
+																		? classes.clickableLink
+																		: classes.clickableLinkDisabled
+																}
+															>
 															Resilience Metrics
-														</Link>
-													</TableCell>
-												</TableRow>
-											) : (
-												<></>
-											)}
+															</Link>
+														</TableCell>
+													</TableRow>
+												) : (
+													<></>
+												)}
 											{/*EPF damage*/}
 											{widgetList.includes("PoleDamage") ? (
 												<TableRow
