@@ -6,9 +6,9 @@ import CGE from "./CGE";
 import PopDislocation from "./PopDislocation";
 import ResilienceMetrics from "./ResilienceMetrics";
 import SubstationDamage from "./SubstationDamage";
-import HHS from "./HHS";
 import SectorShocks from "./SectorShocks";
 import BldgDamageCompare from "./BldgDamageCompare";
+import HHSCompare from "./HHSCompare";
 
 export const registeredCompareWidgets = {
 	BldgDamage: <BldgDamageCompare />,
@@ -21,6 +21,6 @@ export const registeredCompareWidgets = {
 	ResilienceMetrics: <ResilienceMetrics />,
 	SubstationDamage: <SubstationDamage />,
 	// eslint-disable-next-line react/jsx-pascal-case
-	HHS: <HHS />,
+	HHS: <HHSCompare />,
 	SectorShocks: <SectorShocks />
 };
