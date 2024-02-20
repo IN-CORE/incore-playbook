@@ -50,6 +50,8 @@
 		"react-gravatar": "^2.6.3",
 		"react-loading-overlay": "^1.0.1",
 		"react-redux": "~7.1.0",
+		"react-router-dom": "~5.2.0",
+		"react-thunk": "~1.0.0",
 		"regenerator-runtime": "^0.14.1",
 		"universal-cookie": "~4.0.4",
 		"whatwg-fetch": "2.0.2"
@@ -62,7 +64,7 @@
 		"react-redux": "~7.1.0",
 		"react-router-dom": "~5.2.0",
 		"redux": "~4.0.1",
-		"redux-thunk": "~2.3.0"
+		"redux-thunk": "~1.0.0"
 	},
 	"devDependencies": {
 		"@babel/cli": "^7.0.0",
