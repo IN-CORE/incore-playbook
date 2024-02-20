@@ -62,7 +62,7 @@ export default function BldgDamageCompare(props) {
 		};
 
 		fetchData();
-	}, []);
+	}, [executionItems, datawolfDatasetConfigItems]);
 
 	return (
 		<Box ref={printRef}>
