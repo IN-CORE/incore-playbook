@@ -34,14 +34,6 @@ jobs:
         with:
           node-version: ${{ matrix.node }}
 
-      # install dependencies
-      - name: install dependencies
-        run: npm install
-
-      # compile UI
-      - name: build
-        run: npm run build
-
       # push NPM package
       - name: publish
         run: npm publish
