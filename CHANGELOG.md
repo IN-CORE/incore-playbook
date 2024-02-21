@@ -11,14 +11,17 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 - Adding % (# of building) to table of building damage output. [#261](https://github.com/IN-CORE/incore-playbook/issues/261)
 - Add HHRS bar chart comparison components [#290](https://github.com/IN-CORE/incore-playbook/issues/290)
+- Add CGE Bar Char comparison components [#289](https://github.com/IN-CORE/incore-playbook/issues/289)
 
 ### Fixed
 - Default mapping bounding box coordinates need to flip order [#272](https://github.com/IN-CORE/incore-playbook/issues/272)
 - Update hazard previewing due to model change [#269](https://github.com/IN-CORE/incore-playbook/issues/269)
 
 ### Changed
+ 
 - Replaced Node-Sass with Sass for better platfrom reliablility [#275](https://github.com/IN-CORE/incore-playbook/issues/275)
 - Update the ResultTable to use keys dynamically for the FEMA table headers [#285](https://github.com/IN-CORE/incore-playbook/issues/285)
+- Increase the max zoom level for the map [#278](https://github.com/IN-CORE/incore-playbook/issues/278)
 
 
 ## [0.5.7] - 2023-04-05
