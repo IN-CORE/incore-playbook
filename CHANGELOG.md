@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 - Adding % (# of building) to table of building damage output. [#261](https://github.com/IN-CORE/incore-playbook/issues/261)
 - Add HHRS bar chart comparison components [#290](https://github.com/IN-CORE/incore-playbook/issues/290)
+- Add CGE Bar Char comparison components [#289](https://github.com/IN-CORE/incore-playbook/issues/289)
 
 ### Fixed
 - Default mapping bounding box coordinates need to flip order [#272](https://github.com/IN-CORE/incore-playbook/issues/272)
