@@ -3,7 +3,7 @@ name: publish
 on:
   push:
     branches:
-      - "test-publish-GH-action"
+      - main
 
 env:
   MAIN_REPO: IN-CORE/incore-playbook
