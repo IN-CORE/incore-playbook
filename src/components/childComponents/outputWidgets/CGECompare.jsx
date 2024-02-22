@@ -4,7 +4,7 @@ import { Box, Container, Grid } from "@material-ui/core";
 
 import CgeDescription from "../step/CgeDescription";
 import CGEBarChartCompare from "../graph/CGEBarChartCompare";
-// import { CgeResultsTable } from "../table/CgeResultsTable";
+import { CGEResultsTableCompare } from "../table/CGEResultsTableCompare";
 import { IncoreMenuItem, IncoreSelectBox } from "../../styledComponents/IncoreSelect";
 import { IncoreInputLabel } from "../../styledComponents/IncoreInputLabel";
 import { getOutputFileContentJSON } from "../../../utils/datawolf";
@@ -151,15 +151,15 @@ export default function CGECompare({ executionItems, datawolfDatasetConfigItems 
 											region={region}
 											data={[cgeHouseholdIncomeContentA, cgeHouseholdIncomeContentB]}
                                             executionTitles={selectedExecutionNames}
-											height="40em"
+											height="30em"
 										/>
 									</Box>
-									{/* <Box>
-										<CgeResultsTable
+									<Box>
+										<CGEResultsTableCompare
 											region={region}
-											resultsJson={cgeHouseholdIncomeContent}
+											resultsJsonArr={[cgeHouseholdIncomeContentA, cgeHouseholdIncomeContentB]}
 										/>
-									</Box> */}
+									</Box>
 								</>
 							);
 						} else if (cgeType === "domesticSupply" && cgeDomesticSupplyContentA && cgeDomesticSupplyContentB) {
@@ -171,16 +171,16 @@ export default function CGECompare({ executionItems, datawolfDatasetConfigItems 
 											data={[cgeDomesticSupplyContentA, cgeDomesticSupplyContentB]}
                                             executionTitles={selectedExecutionNames}
 											yAxisLegend="Million of $"
-											height="40em"
+											height="30em"
 										/>
 									</Box>
-									{/* <Box>
-										<CgeResultsTable
+									<Box>
+										<CGEResultsTableCompare
 											region={region}
-											resultsJson={cgeDomesticSupplyContent}
+											resultsJsonArr={[cgeDomesticSupplyContentA, cgeDomesticSupplyContentB]}
 											yAxisLegend="Person"
 										/>
-									</Box> */}
+									</Box>
 								</>
 							);
 						} else if (cgeType === "employment" && cgeEmploymentContentA && cgeEmploymentContentB) {
@@ -192,12 +192,12 @@ export default function CGECompare({ executionItems, datawolfDatasetConfigItems 
 											data={[cgeEmploymentContentA, cgeEmploymentContentB]}
                                             executionTitles={selectedExecutionNames}
 											title="Employment"
-											height="40em"
+											height="30em"
 										/>
 									</Box>
-									{/* <Box>
-										<CgeResultsTable region={region} resultsJson={cgeEmploymentContent} />
-									</Box> */}
+									<Box>
+										<CGEResultsTableCompare region={region} resultsJsonArr={[cgeEmploymentContentA, cgeEmploymentContentB]} />
+									</Box>
 								</>
 							);
 						}

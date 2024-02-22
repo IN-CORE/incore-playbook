@@ -45,7 +45,7 @@ export default function CGEBarChartCompare(props) {
 				options={{
 					title: title,
 					legend: { position: "none" },
-					colors: ["#A1BE2E", "#DB4F60", "#FF6347"],
+					colors: ["#A1BE2E", "#CB5963", "#833841"],
 					hAxis: {
 						title: xAxisLegend
 					},
