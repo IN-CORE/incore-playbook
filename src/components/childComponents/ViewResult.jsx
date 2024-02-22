@@ -2,28 +2,17 @@ import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 
 import { makeStyles } from "@material-ui/core/styles";
-import { Box, Grid } from "@material-ui/core";
+import { Box } from "@material-ui/core";
 
 import { IncoreInputLabel } from "../styledComponents/IncoreInputLabel";
 import { getHazardMetadata } from "../../utils/hazard";
 import { ViewResultEntryTable } from "./table/ViewResultEntryTable";
-import Interdependency from "./outputWidgets/Interdependency";
-import BldgDamage from "./outputWidgets/BldgDamage";
-import PoleDamage from "./outputWidgets/PoleDamage";
-import BldgMCS from "./outputWidgets/BldgMCS";
-import BldgFunctionality from "./outputWidgets/BldgFunctionality";
-import CGE from "./outputWidgets/CGE";
-import PopDislocation from "./outputWidgets/PopDislocation";
-import ResilienceMetrics from "./outputWidgets/ResilienceMetrics";
-import SubstationDamage from "./outputWidgets/SubstationDamage";
 
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Switch from "@material-ui/core/Switch";
 import { getHazardGroupLayers } from "../../utils/map";
-import HHS from "./outputWidgets/HHS";
-import Log from "./outputWidgets/Log";
-import SectorShocks from "./outputWidgets/SectorShocks";
 import { DownloadAlert } from "./alert/DownloadAlert";
+import { registeredWidgets } from "./outputWidgets/RegisteredWidgets";
 
 const useStyles = makeStyles({
 	statTitle: {
@@ -40,24 +29,6 @@ const useStyles = makeStyles({
 	checked: {},
 	track: {}
 });
-
-// TODO move this registration somewhere else?
-const registeredWidgets = {
-	Interdependency: <Interdependency />,
-	BldgDamage: <BldgDamage />,
-	PoleDamage: <PoleDamage />,
-	BldgMCS: <BldgMCS />,
-	BldgFunctionality: <BldgFunctionality />,
-	// eslint-disable-next-line react/jsx-pascal-case
-	CGE: <CGE />,
-	PopDislocation: <PopDislocation />,
-	ResilienceMetrics: <ResilienceMetrics />,
-	SubstationDamage: <SubstationDamage />,
-	// eslint-disable-next-line react/jsx-pascal-case
-	HHS: <HHS />,
-	Log: <Log />,
-	SectorShocks: <SectorShocks />
-};
 
 export default function ViewResult(props) {
 	const { value, index, getExecutionList, executions, ...other } = props;
@@ -217,8 +188,8 @@ export default function ViewResult(props) {
 				if (widgetName === "ResilienceMetrics") {
 					if (
 						item.datasets.widget === "CGE" ||
-						item.datasets.widget === "PopDislocation" ||
-						item.datasets.widget === "BldgFunctionality"
+                        item.datasets.widget === "PopDislocation" ||
+                        item.datasets.widget === "BldgFunctionality"
 					) {
 						return [...list, item];
 					}
@@ -304,26 +275,26 @@ export default function ViewResult(props) {
 
 			{/*for individual analysis result preview*/}
 			{widgetName &&
-			selectedExecutionItem &&
-			previewOn &&
-			datawolfDatasetConfigItems.length > 0 &&
-			hazardType &&
-			hazardGroupLayer ? (
-				(() => {
-					return React.cloneElement(registeredWidgets[widgetName], {
-						executionItem: selectedExecutionItem,
-						getExecution: getExecution,
-						previewOn: previewOn,
-						handlePreviewClose: handlePreviewClose,
-						datawolfDatasetConfigItems: datawolfDatasetConfigItems,
-						hazardType: hazardType,
-						hazardLayers: hazardGroupLayer,
-						setDownloadDialogOpen: setDownloadDialogOpen
-					});
-				})()
-			) : (
-				<></>
-			)}
+            selectedExecutionItem &&
+            previewOn &&
+            datawolfDatasetConfigItems.length > 0 &&
+            hazardType &&
+            hazardGroupLayer ? (
+					(() => {
+						return React.cloneElement(registeredWidgets[widgetName], {
+							executionItem: selectedExecutionItem,
+							getExecution: getExecution,
+							previewOn: previewOn,
+							handlePreviewClose: handlePreviewClose,
+							datawolfDatasetConfigItems: datawolfDatasetConfigItems,
+							hazardType: hazardType,
+							hazardLayers: hazardGroupLayer,
+							setDownloadDialogOpen: setDownloadDialogOpen
+						});
+					})()
+				) : (
+					<></>
+				)}
 		</div>
 	);
 }
