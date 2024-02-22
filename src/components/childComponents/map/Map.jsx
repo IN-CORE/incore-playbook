@@ -27,8 +27,11 @@ const Map = (props) => {
 			layers,
 			layerSwitcherOptions,
 			updateMap,
-			events
+			events,
+			allowBuildingSelection,
+			setSelectedBuilding
 		} = props;
+		
 
 		const map = new OLMap({
 			target: mapContainer || fallbackContainer.current,
@@ -60,9 +63,53 @@ const Map = (props) => {
 			});
 		}
 
+
 		if (layerSwitcherOptions) {
 			const layerSwitcher = new LayerSwitcher(layerSwitcherOptions);
 			map.addControl(layerSwitcher);
+		}
+
+		let damageLayerGrp = null;
+		layers.forEach((layerGrp) => {
+			if (layerGrp.getProperties().title === "Damage") {
+				damageLayerGrp = layerGrp
+			}
+		})
+
+		if ((damageLayerGrp !== null) && allowBuildingSelection && setSelectedBuilding !== undefined) {
+			const view  = map.getView();
+			const viewProjection = view.getProjection();
+    		const viewResolution = view.getResolution();
+
+			const damageLayer = damageLayerGrp.getLayers().getArray()[0]
+			const damageLayerSource = damageLayer.getSource()
+
+			map.on('singleclick', (evt) => {
+				const url = damageLayerSource.getFeatureInfoUrl(
+				  evt.coordinate,
+				  viewResolution,
+				  viewProjection,
+				  {'INFO_FORMAT': 'application/json'}
+				);
+				if (url) {
+				  fetch(url)
+					.then((response) => response.json())
+					.then((json) => {
+						setSelectedBuilding(json.features[0].properties)
+					});
+				}
+			});
+
+			map.on('pointermove', (evt) => {
+				if (evt.dragging) {
+					return;
+				}
+				const data = damageLayer.getData(evt.pixel);
+				const hit = data && data[3] > 0; // transparent pixels have zero for data[3]
+				map.getTargetElement().style.cursor = hit ? 'pointer' : '';
+			});
+		} else if (allowBuildingSelection && setSelectedBuilding === undefined) {
+			console.error("If allowBuildingSelection is true, setSelectedBuilding must be passed as a prop.")
 		}
 
 		if (updateMap) {

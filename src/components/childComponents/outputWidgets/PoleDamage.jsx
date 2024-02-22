@@ -35,40 +35,6 @@ export default function PoleDamage(props) {
 	// print container
 	const printRef = useRef();
 
-	const onMapLoad = (map) => {
-		const view  = map.getView();
-		const viewProjection = view.getProjection();
-    	const viewResolution = view.getResolution();
-
-		const damageLayer = damageLayers.getLayers().getArray()[0]
-		const damageLayerSource = damageLayer.getSource()
-
-		map.on('singleclick', (evt) => {
-			const url = damageLayerSource.getFeatureInfoUrl(
-			  evt.coordinate,
-			  viewResolution,
-			  viewProjection,
-			  {'INFO_FORMAT': 'application/json'}
-			);
-			if (url) {
-			  fetch(url)
-				.then((response) => response.json())
-				.then((json) => {
-					setSelectedBuilding(json.features[0].properties)
-				});
-			}
-		  });
-		  
-		  map.on('pointermove', (evt) => {
-			if (evt.dragging) {
-			  return;
-			}
-			const data = damageLayer.getData(evt.pixel);
-			const hit = data && data[3] > 0; // transparent pixels have zero for data[3]
-			map.getTargetElement().style.cursor = hit ? 'pointer' : '';
-		  });
-	}
-
 	useEffect(() => {
 		setSelectedExecutionName(executionItem["title"]);
 
@@ -130,7 +96,8 @@ export default function PoleDamage(props) {
 							center={fromLonLat(mapConfig.MAP_CENTER)}
 							layers={[basicLayers, hazardLayers, damageLayers]}
 							layerSwitcherOptions={{}}
-							updateMap={onMapLoad}
+							allowBuildingSelection={true}
+							setSelectedBuilding={setSelectedBuilding}
 						/>
 					</Container>
 				) : (
