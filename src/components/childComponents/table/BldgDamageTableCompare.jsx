@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 
@@ -94,11 +94,6 @@ function calcPercentage(partialValue, totalValue) {
 
 export function BldgDamageTableCompare(props) {
 	const { fieldsA, fieldsB } = props;
-	const [percentOn, setPercentOn] = useState(false);
-
-	function handleChange() {
-		setPercentOn((percentOn) => !percentOn);
-	}
 
 	// e.g.
 	// Community Recovery: 5
@@ -121,23 +116,6 @@ export function BldgDamageTableCompare(props) {
 
 	return (
 		<TableContainer>
-			{/*<Box style={{ float: "right" }}>*/}
-			{/*	<FormControlLabel*/}
-			{/*		control={*/}
-			{/*			<Switch*/}
-			{/*				checked={percentOn}*/}
-			{/*				onChange={(e) => handleChange()}*/}
-			{/*				color="default"*/}
-			{/*				classes={{*/}
-			{/*					switchBase: classes.switchBase,*/}
-			{/*					checked: classes.checked,*/}
-			{/*					track: classes.track*/}
-			{/*				}}*/}
-			{/*			/>*/}
-			{/*		}*/}
-			{/*		label="View Percentage"*/}
-			{/*	/>*/}
-			{/*</Box>*/}
 			<Table className={classes.table} size="small" aria-label="a dense table">
 				<TableHead>
 					{/*["playbook builidng clusters", "DS_0", "DS_1", "DS_2", "DS_3"];*/}
@@ -215,25 +193,11 @@ export function BldgDamageTableCompare(props) {
 															<td>
 																{clusterItemA[tableHeaders[0]] === NA_value ? "-" : clusterItemA[tableHeaders[0]]}
 															</td>
-															<td style={percentOn ?
-																{
-																	visibility: "visible",
-																	color: "#A9A9A9"
-																} : { visibility: "hidden" }}>
-																{calcPercentage(clusterItemA[tableHeaders[0]], categoryItemA[tableHeaders[0]])}
-															</td>
 														</TableCell>
 														<TableCell key={`${idxx}-mod`}
 															className={classes.tableBodyCell}>
 															<td>
 																{clusterItemA[tableHeaders[1]] === NA_value ? "-" : clusterItemA[tableHeaders[1]]}
-															</td>
-															<td style={percentOn ?
-																{
-																	visibility: "visible",
-																	color: "#A9A9A9"
-																} : { visibility: "hidden" }}>
-																{calcPercentage(clusterItemA[tableHeaders[1]], categoryItemA[tableHeaders[1]])}
 															</td>
 														</TableCell>
 														<TableCell
@@ -243,55 +207,33 @@ export function BldgDamageTableCompare(props) {
 															<td>
 																{clusterItemA[tableHeaders[2]] === NA_value ? "-" : clusterItemA[tableHeaders[2]]}
 															</td>
-															<td style={percentOn ?
-																{
-																	visibility: "visible",
-																	color: "#A9A9A9"
-																} : { visibility: "hidden" }}>
-																{calcPercentage(clusterItemA[tableHeaders[2]], categoryItemA[tableHeaders[2]])}
-															</td>
 														</TableCell>
 														<TableCell key={`${idxx}-comp`}
 															className={classes.tableBodyCell}>
 															<td>
 																{clusterItemA[tableHeaders[3]] === NA_value ? "-" : clusterItemA[tableHeaders[3]]}
 															</td>
-															<td style={percentOn ?
-																{
-																	visibility: "visible",
-																	color: "#A9A9A9"
-																} : { visibility: "hidden" }}>
-																{calcPercentage(clusterItemA[tableHeaders[3]], categoryItemA[tableHeaders[3]])}
-															</td>
 														</TableCell>
 													</TableRow>
 													{/*B:*/}
 													<TableRow className={classes.tableBodyRow}
 														key={clusterItemB["cluster"]}>
+														<TableCell key={`${idxx}-A`}
+															className={classes.tableBodyCell}>
+															<td>
+                                                                A
+															</td>
+														</TableCell>
 														<TableCell key={`${idxx}-insig`}
 															className={classes.tableBodyCell}>
 															<td>
 																{clusterItemB[tableHeaders[0]] === NA_value ? "-" : clusterItemB[tableHeaders[0]]}
-															</td>
-															<td style={percentOn ?
-																{
-																	visibility: "visible",
-																	color: "#A9A9A9"
-																} : { visibility: "hidden" }}>
-																{calcPercentage(clusterItemB[tableHeaders[0]], categoryItemB[tableHeaders[0]])}
 															</td>
 														</TableCell>
 														<TableCell key={`${idxx}-mod`}
 															className={classes.tableBodyCell}>
 															<td>
 																{clusterItemB[tableHeaders[1]] === NA_value ? "-" : clusterItemB[tableHeaders[1]]}
-															</td>
-															<td style={percentOn ?
-																{
-																	visibility: "visible",
-																	color: "#A9A9A9"
-																} : { visibility: "hidden" }}>
-																{calcPercentage(clusterItemB[tableHeaders[1]], clusterItemB[tableHeaders[1]])}
 															</td>
 														</TableCell>
 														<TableCell
@@ -301,25 +243,11 @@ export function BldgDamageTableCompare(props) {
 															<td>
 																{clusterItemB[tableHeaders[2]] === NA_value ? "-" : clusterItemB[tableHeaders[2]]}
 															</td>
-															<td style={percentOn ?
-																{
-																	visibility: "visible",
-																	color: "#A9A9A9"
-																} : { visibility: "hidden" }}>
-																{calcPercentage(clusterItemB[tableHeaders[2]], clusterItemB[tableHeaders[2]])}
-															</td>
 														</TableCell>
 														<TableCell key={`${idxx}-comp`}
 															className={classes.tableBodyCell}>
 															<td>
 																{clusterItemB[tableHeaders[3]] === NA_value ? "-" : clusterItemB[tableHeaders[3]]}
-															</td>
-															<td style={percentOn ?
-																{
-																	visibility: "visible",
-																	color: "#A9A9A9"
-																} : { visibility: "hidden" }}>
-																{calcPercentage(clusterItemB[tableHeaders[3]], categoryItemB[tableHeaders[3]])}
 															</td>
 														</TableCell>
 													</TableRow>
@@ -332,26 +260,12 @@ export function BldgDamageTableCompare(props) {
 																{clusterItemB[tableHeaders[0]] === NA_value || clusterItemA[tableHeaders[0]] === NA_value ?
 																	"-" : parseFloat(clusterItemB[tableHeaders[0]]) - parseFloat(clusterItemA[tableHeaders[0]])}
 															</td>
-															<td style={percentOn ?
-																{
-																	visibility: "visible",
-																	color: "#A9A9A9"
-																} : { visibility: "hidden" }}>
-																{calcPercentage(clusterItemB[tableHeaders[0]], categoryItemB[tableHeaders[0]])}
-															</td>
 														</TableCell>
 														<TableCell key={`${idxx}-mod`}
 															className={classes.tableBodyCell}>
 															<td>
 																{clusterItemB[tableHeaders[1]] === NA_value || clusterItemA[tableHeaders[1]] === NA_value ?
 																	"-" : parseFloat(clusterItemB[tableHeaders[1]]) - parseFloat(clusterItemA[tableHeaders[1]])}
-															</td>
-															<td style={percentOn ?
-																{
-																	visibility: "visible",
-																	color: "#A9A9A9"
-																} : { visibility: "hidden" }}>
-																{calcPercentage(clusterItemB[tableHeaders[1]], clusterItemB[tableHeaders[1]])}
 															</td>
 														</TableCell>
 														<TableCell
@@ -362,26 +276,12 @@ export function BldgDamageTableCompare(props) {
 																{clusterItemB[tableHeaders[2]] === NA_value || clusterItemA[tableHeaders[2]] === NA_value ?
 																	"-" : parseFloat(clusterItemB[tableHeaders[2]]) - parseFloat(clusterItemA[tableHeaders[2]])}
 															</td>
-															<td style={percentOn ?
-																{
-																	visibility: "visible",
-																	color: "#A9A9A9"
-																} : { visibility: "hidden" }}>
-																{calcPercentage(clusterItemB[tableHeaders[2]], clusterItemB[tableHeaders[2]])}
-															</td>
 														</TableCell>
 														<TableCell key={`${idxx}-comp`}
 															className={classes.tableBodyCell}>
 															<td>
 																{clusterItemB[tableHeaders[3]] === NA_value || clusterItemA[tableHeaders[3]] === NA_value ?
 																	"-" : parseFloat(clusterItemB[tableHeaders[3]]) - parseFloat(clusterItemA[tableHeaders[3]])}
-															</td>
-															<td style={percentOn ?
-																{
-																	visibility: "visible",
-																	color: "#A9A9A9"
-																} : { visibility: "hidden" }}>
-																{calcPercentage(clusterItemB[tableHeaders[3]], categoryItemB[tableHeaders[3]])}
 															</td>
 														</TableCell>
 													</TableRow>
@@ -405,10 +305,6 @@ export function BldgDamageTableCompare(props) {
 											style={{ fontWeight: 500, backgroundColor: "#EEF3F5" }}
 										>
 											<td>{categoryItemA[tableHeaders[0]] === NA_value ? "-" : categoryItemA[tableHeaders[0]]}</td>
-											<td style={percentOn ?
-												{ visibility: "visible", color: "#A9A9A9" } : { visibility: "hidden" }}>
-												{categoryItemA[tableHeaders[0]] === NA_value ? "" : "(100%)"}
-											</td>
 										</TableCell>
 										<TableCell
 											key="total-mod"
@@ -416,10 +312,6 @@ export function BldgDamageTableCompare(props) {
 											style={{ fontWeight: 500, backgroundColor: "#EEF3F5" }}
 										>
 											<td>{categoryItemA[tableHeaders[1]] === NA_value ? "-" : categoryItemA[tableHeaders[1]]}</td>
-											<td style={percentOn ?
-												{ visibility: "visible", color: "#A9A9A9" } : { visibility: "hidden" }}>
-												{categoryItemA[tableHeaders[1]] === NA_value ? "" : "(100%)"}
-											</td>
 										</TableCell>
 										<TableCell
 											key="total-extensi"
@@ -427,10 +319,6 @@ export function BldgDamageTableCompare(props) {
 											style={{ fontWeight: 500, backgroundColor: "#EEF3F5" }}
 										>
 											<td>{categoryItemA[tableHeaders[2]] === NA_value ? "-" : categoryItemA[tableHeaders[2]]}</td>
-											<td style={percentOn ?
-												{ visibility: "visible", color: "#A9A9A9" } : { visibility: "hidden" }}>
-												{categoryItemA[tableHeaders[2]] === NA_value ? "" : "(100%)"}
-											</td>
 										</TableCell>
 										<TableCell
 											key="total-comp"
@@ -438,10 +326,6 @@ export function BldgDamageTableCompare(props) {
 											style={{ fontWeight: 500, backgroundColor: "#EEF3F5" }}
 										>
 											<td>{categoryItemA[tableHeaders[3]] === NA_value ? "-" : categoryItemA[tableHeaders[3]]}</td>
-											<td style={percentOn ?
-												{ visibility: "visible", color: "#A9A9A9" } : { visibility: "hidden" }}>
-												{categoryItemA[tableHeaders[3]] === NA_value ? "" : "(100%)"}
-											</td>
 										</TableCell>
 									</TableRow>
 									{/*B:*/}
@@ -452,10 +336,6 @@ export function BldgDamageTableCompare(props) {
 											style={{ fontWeight: 500, backgroundColor: "#EEF3F5" }}
 										>
 											<td>{categoryItemB[tableHeaders[0]] === NA_value ? "-" : categoryItemB[tableHeaders[0]]}</td>
-											<td style={percentOn ?
-												{ visibility: "visible", color: "#A9A9A9" } : { visibility: "hidden" }}>
-												{categoryItemB[tableHeaders[0]] === NA_value ? "" : "(100%)"}
-											</td>
 										</TableCell>
 										<TableCell
 											key="total-mod"
@@ -463,10 +343,6 @@ export function BldgDamageTableCompare(props) {
 											style={{ fontWeight: 500, backgroundColor: "#EEF3F5" }}
 										>
 											<td>{categoryItemB[tableHeaders[1]] === NA_value ? "-" : categoryItemB[tableHeaders[1]]}</td>
-											<td style={percentOn ?
-												{ visibility: "visible", color: "#A9A9A9" } : { visibility: "hidden" }}>
-												{categoryItemB[tableHeaders[1]] === NA_value ? "" : "(100%)"}
-											</td>
 										</TableCell>
 										<TableCell
 											key="total-extensi"
@@ -474,10 +350,6 @@ export function BldgDamageTableCompare(props) {
 											style={{ fontWeight: 500, backgroundColor: "#EEF3F5" }}
 										>
 											<td>{categoryItemB[tableHeaders[2]] === NA_value ? "-" : categoryItemB[tableHeaders[2]]}</td>
-											<td style={percentOn ?
-												{ visibility: "visible", color: "#A9A9A9" } : { visibility: "hidden" }}>
-												{categoryItemB[tableHeaders[2]] === NA_value ? "" : "(100%)"}
-											</td>
 										</TableCell>
 										<TableCell
 											key="total-comp"
@@ -485,10 +357,6 @@ export function BldgDamageTableCompare(props) {
 											style={{ fontWeight: 500, backgroundColor: "#EEF3F5" }}
 										>
 											<td>{categoryItemB[tableHeaders[3]] === NA_value ? "-" : categoryItemB[tableHeaders[3]]}</td>
-											<td style={percentOn ?
-												{ visibility: "visible", color: "#A9A9A9" } : { visibility: "hidden" }}>
-												{categoryItemB[tableHeaders[3]] === NA_value ? "" : "(100%)"}
-											</td>
 										</TableCell>
 									</TableRow>
 									{/*Diff:*/}
@@ -500,10 +368,6 @@ export function BldgDamageTableCompare(props) {
 										>
 											<td>{categoryItemA[tableHeaders[0]] === NA_value || categoryItemB[tableHeaders[0]] === NA_value ?
 												"-" : parseFloat(categoryItemB[tableHeaders[0]]) - parseFloat(categoryItemA[tableHeaders[0]])}</td>
-											<td style={percentOn ?
-												{ visibility: "visible", color: "#A9A9A9" } : { visibility: "hidden" }}>
-												{categoryItemB[tableHeaders[0]] === NA_value ? "" : "(100%)"}
-											</td>
 										</TableCell>
 										<TableCell
 											key="total-mod"
@@ -512,10 +376,6 @@ export function BldgDamageTableCompare(props) {
 										>
 											<td>{categoryItemA[tableHeaders[1]] === NA_value || categoryItemB[tableHeaders[1]] === NA_value ?
 												"-" : parseFloat(categoryItemB[tableHeaders[1]]) - parseFloat(categoryItemA[tableHeaders[1]])}</td>
-											<td style={percentOn ?
-												{ visibility: "visible", color: "#A9A9A9" } : { visibility: "hidden" }}>
-												{categoryItemB[tableHeaders[1]] === NA_value ? "" : "(100%)"}
-											</td>
 										</TableCell>
 										<TableCell
 											key="total-extensi"
@@ -524,10 +384,6 @@ export function BldgDamageTableCompare(props) {
 										>
 											<td>{categoryItemA[tableHeaders[2]] === NA_value || categoryItemB[tableHeaders[2]] === NA_value ?
 												"-" : parseFloat(categoryItemB[tableHeaders[2]]) - parseFloat(categoryItemA[tableHeaders[2]])}</td>
-											<td style={percentOn ?
-												{ visibility: "visible", color: "#A9A9A9" } : { visibility: "hidden" }}>
-												{categoryItemB[tableHeaders[2]] === NA_value ? "" : "(100%)"}
-											</td>
 										</TableCell>
 										<TableCell
 											key="total-comp"
@@ -536,10 +392,6 @@ export function BldgDamageTableCompare(props) {
 										>
 											<td>{categoryItemA[tableHeaders[3]] === NA_value || categoryItemB[tableHeaders[3]] === NA_value ?
 												"-" : parseFloat(categoryItemB[tableHeaders[3]]) - parseFloat(categoryItemA[tableHeaders[3]])}</td>
-											<td style={percentOn ?
-												{ visibility: "visible", color: "#A9A9A9" } : { visibility: "hidden" }}>
-												{categoryItemB[tableHeaders[3]] === NA_value ? "" : "(100%)"}
-											</td>
 										</TableCell>
 									</TableRow>
 								</>
