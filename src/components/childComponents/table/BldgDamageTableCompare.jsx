@@ -2,6 +2,7 @@ import React from "react";
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import CompareArrowsIcon from "@material-ui/icons/CompareArrows";
+import BldgDmgDiffBarChart from "../graph/BldgDmgDiffBarChart";
 
 const useStyles = makeStyles({
 	table: {
@@ -157,6 +158,13 @@ export function BldgDamageTableCompare(props) {
 						>
 							{tableHeaders[3]}
 						</TableCell>
+						<TableCell
+							style={{ width: "300px", backgroundColor: "#EFF2FF", color: "#69707F" }}
+							className={classes.tableHeaderCell}
+							key="percent-change"
+						>
+                            % of Change
+						</TableCell>
 					</TableRow>
 				</TableHead>
 				<TableBody>
@@ -219,6 +227,32 @@ export function BldgDamageTableCompare(props) {
 															className={classes.tableBodyCell}>
 															<td>
 																{clusterItemA[tableHeaders[3]] === NA_value ? "-" : clusterItemA[tableHeaders[3]]}
+															</td>
+														</TableCell>
+														{/*barchart*/}
+														<TableCell key={`${idxx}-barchart`}
+															className={classes.tableBodyCell} rowSpan={3}>
+															<td>
+																{
+																	clusterItemA[tableHeaders[0]] !== NA_value &&
+                                                                    clusterItemB[tableHeaders[0]] !== NA_value &&
+                                                                    clusterItemA[tableHeaders[1]] !== NA_value &&
+                                                                    clusterItemB[tableHeaders[1]] !== NA_value &&
+                                                                    clusterItemA[tableHeaders[2]] !== NA_value &&
+                                                                    clusterItemB[tableHeaders[2]] !== NA_value &&
+                                                                    clusterItemA[tableHeaders[3]] !== NA_value &&
+                                                                    clusterItemB[tableHeaders[3]] !== NA_value ?
+																		<BldgDmgDiffBarChart
+																			headers={tableHeaders}
+																			data={[
+																				(parseFloat(clusterItemB[tableHeaders[0]]) - parseFloat(categoryItemA[tableHeaders[0]])) / parseFloat(clusterItemA[tableHeaders[0]]),
+																				(parseFloat(clusterItemB[tableHeaders[1]]) - parseFloat(categoryItemA[tableHeaders[1]])) / parseFloat(clusterItemA[tableHeaders[1]]),
+																				(parseFloat(clusterItemB[tableHeaders[2]]) - parseFloat(categoryItemA[tableHeaders[2]])) / parseFloat(clusterItemA[tableHeaders[2]]),
+																				(parseFloat(clusterItemB[tableHeaders[3]]) - parseFloat(categoryItemA[tableHeaders[3]])) / parseFloat(clusterItemA[tableHeaders[3]])
+																			]} />
+																		:
+																		<></>
+																}
 															</td>
 														</TableCell>
 													</TableRow>
@@ -363,6 +397,32 @@ export function BldgDamageTableCompare(props) {
 											style={{ fontWeight: 500, backgroundColor: "#EEF3F5" }}
 										>
 											<td>{categoryItemA[tableHeaders[3]] === NA_value ? "-" : categoryItemA[tableHeaders[3]]}</td>
+										</TableCell>
+										{/*barchart*/}
+										<TableCell key="total-barchart" className={classes.tableBodyCell}
+											style={{ fontWeight: 500, backgroundColor: "#EEF3F5" }} rowSpan={3}>
+											<td>
+												{
+													categoryItemA[tableHeaders[0]] !== NA_value &&
+                                                    categoryItemB[tableHeaders[0]] !== NA_value &&
+                                                    categoryItemA[tableHeaders[1]] !== NA_value &&
+                                                    categoryItemB[tableHeaders[1]] !== NA_value &&
+                                                    categoryItemA[tableHeaders[2]] !== NA_value &&
+                                                    categoryItemB[tableHeaders[2]] !== NA_value &&
+                                                    categoryItemA[tableHeaders[3]] !== NA_value &&
+                                                    categoryItemB[tableHeaders[3]] !== NA_value ?
+														<BldgDmgDiffBarChart
+															headers={tableHeaders}
+															data={[
+																(parseFloat(categoryItemB[tableHeaders[0]]) - parseFloat(categoryItemA[tableHeaders[0]])) / parseFloat(categoryItemA[tableHeaders[0]]),
+																(parseFloat(categoryItemB[tableHeaders[1]]) - parseFloat(categoryItemA[tableHeaders[1]])) / parseFloat(categoryItemA[tableHeaders[1]]),
+																(parseFloat(categoryItemB[tableHeaders[2]]) - parseFloat(categoryItemA[tableHeaders[2]])) / parseFloat(categoryItemA[tableHeaders[2]]),
+																(parseFloat(categoryItemB[tableHeaders[3]]) - parseFloat(categoryItemA[tableHeaders[3]])) / parseFloat(categoryItemA[tableHeaders[3]])
+															]} />
+														:
+														<></>
+												}
+											</td>
 										</TableCell>
 									</TableRow>
 									{/*B:*/}
