@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Add HHRS bar chart comparison components [#290](https://github.com/IN-CORE/incore-playbook/issues/290)
 - Add CGE Bar Char comparison components [#289](https://github.com/IN-CORE/incore-playbook/issues/289)
 - Add CGE Table Comparison [#291](https://github.com/IN-CORE/incore-playbook/issues/291)
+- Building Damage Comparison Table [#307](https://github.com/IN-CORE/incore-playbook/issues/307)
 - Github action to publish @incore/incore-playbook to Github package registry [#283](https://github.com/IN-CORE/incore-playbook/issues/283)
 
 ### Fixed
