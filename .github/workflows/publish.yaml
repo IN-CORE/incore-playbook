@@ -34,13 +34,9 @@ jobs:
         with:
           node-version: ${{ matrix.node }}
 
-      # install dependencies
-      - name: install dependencies
-        run: npm install
-
-      # compile UI
-      - name: build
-        run: npm run build
+      # generate npmrc file to login to github package registry
+      - name: Login to GitHub Package Registry
+        run: echo "//npm.pkg.github.com/:_authToken=${NPM_TOKEN}" > .npmrc
 
       # push NPM package
       - name: publish
