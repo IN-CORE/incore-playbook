@@ -1,5 +1,5 @@
 import React from "react";
-import PoleDamage from "./PoleDamage";
+import PoleDamageCompare from "./PoleDamageCompare";
 import BldgMCS from "./BldgMCS";
 import BldgFunctionality from "./BldgFunctionality";
 import CGE from "./CGE";
@@ -12,7 +12,7 @@ import HHSCompare from "./HHSCompare";
 
 export const registeredCompareWidgets = {
 	BldgDamage: <BldgDamageCompare />,
-	PoleDamage: <PoleDamage />,
+	PoleDamage: <PoleDamageCompare />,
 	BldgMCS: <BldgMCS />,
 	BldgFunctionality: <BldgFunctionality />,
 	// eslint-disable-next-line react/jsx-pascal-case

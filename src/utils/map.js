@@ -96,7 +96,7 @@ export const basicLayers = new GroupLayer({
 				url: "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
 				attributions: [
 					OSM_ATTRIBUTION,
-					"Tiles courtesy of " + '<a href="http://openstreetmap.org">' + "OpenStreetMap" + "</a>"
+					"Tiles courtesy of " + "<a href=\"http://openstreetmap.org\">" + "OpenStreetMap" + "</a>"
 				],
 				crossOrigin: "anonymous"
 			})
@@ -107,7 +107,7 @@ export const basicLayers = new GroupLayer({
 			visible: true,
 			source: new XYZ({
 				url: "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
-				attributions: ['&#169; <a href="https://www.esri.com">Esri</a>,', OSM_ATTRIBUTION],
+				attributions: ["&#169; <a href=\"https://www.esri.com\">Esri</a>,", OSM_ATTRIBUTION],
 				crossOrigin: "anonymous"
 			})
 		}),
@@ -117,7 +117,7 @@ export const basicLayers = new GroupLayer({
 			visible: true,
 			source: new XYZ({
 				url: "https://{a-d}.basemaps.cartocdn.com/rastertiles/light_all/{z}/{x}/{y}.png",
-				attributions: ['&#169; <a href="https://www.carto.com">Carto</a>,', OSM_ATTRIBUTION],
+				attributions: ["&#169; <a href=\"https://www.carto.com\">Carto</a>,", OSM_ATTRIBUTION],
 				crossOrigin: "anonymous"
 			})
 		})
@@ -138,3 +138,45 @@ export const validateCoord = (lon, lat, boundingBox) => {
 		parseFloat(lat) > boundingBox[3]
 	);
 };
+
+// Function to generate basicLayers objects
+export function createBasicLayers(title) {
+	return new GroupLayer({
+		title: title,
+		layers: [
+			new TileLayer({
+				type: "base",
+				title: "OSM",
+				visible: false,
+				source: new XYZ({
+					url: "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
+					attributions: [
+						OSM_ATTRIBUTION,
+						"Tiles courtesy of " + "<a href=\"http://openstreetmap.org\">" + "OpenStreetMap" + "</a>"
+					],
+					crossOrigin: "anonymous"
+				})
+			}),
+			new TileLayer({
+				type: "base",
+				title: "Esri Satellite Layer",
+				visible: true,
+				source: new XYZ({
+					url: "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
+					attributions: ["&#169; <a href=\"https://www.esri.com\">Esri</a>,", OSM_ATTRIBUTION],
+					crossOrigin: "anonymous"
+				})
+			}),
+			new TileLayer({
+				type: "base",
+				title: "Carto",
+				visible: true,
+				source: new XYZ({
+					url: "https://{a-d}.basemaps.cartocdn.com/rastertiles/light_all/{z}/{x}/{y}.png",
+					attributions: ["&#169; <a href=\"https://www.carto.com\">Carto</a>,", OSM_ATTRIBUTION],
+					crossOrigin: "anonymous"
+				})
+			})
+		]
+	});
+}
