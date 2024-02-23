@@ -64,7 +64,7 @@ export default function PoleDamageCompare(props) {
 		<Box style={{ padding: "5px 25px 25px 25px" }}>
 			<Grid container spacing={3} justify="center">
 				{/*for map*/}
-				{basicLayers && hazardLayers && damageLayersA && damageLayersB ? (
+				{basicLayersA && basicLayersB && hazardLayers && damageLayersA && damageLayersB ? (
 					<Container className="mapContainer" disableGutters>
 						<MapCompare
 							className="fillContainer"
