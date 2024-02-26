@@ -4,8 +4,6 @@ import { csvToArray } from "../../../utils/common";
 
 const ParseData = (dataA, dataB) => {
 	const chartData = [];
-	let chartDataObjA = {};
-	let chartDataObjB = {};
 	const colorsA = ["#aededb", "#2d8686", "#00619D", "#2c698d", "#272643"];
 	const colorsB = ["#F9E79F", "#F1C40F", "#7D6608", "#784212", "#641E16"];
 	chartData.push(["Sector", "Ratio of Capital Remaining A", { role: "style" }, "Ratio of Capital Remaining B", { role: "style" }]);
@@ -44,8 +42,8 @@ const ParseData = (dataA, dataB) => {
 		return chartData;
 	}
 
-	chartDataObjA = generateChartDataObj(dataArrA);
-	chartDataObjB = generateChartDataObj(dataArrB);
+	let chartDataObjA = generateChartDataObj(dataArrA);
+	let chartDataObjB = generateChartDataObj(dataArrB);
 
 	// Make sure both objects have the same keys
 	const keys = Object.keys(chartDataObjA);
@@ -60,7 +58,6 @@ const ParseData = (dataA, dataB) => {
 		regionsA.forEach((objA, i) => {
 			const subKeyA = objA.subKey;
 			const valueA = objA.value;
-
 			const objB = regionsB[i];
 			const valueB = objB.value;
 
