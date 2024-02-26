@@ -19,6 +19,7 @@ import SectorShocks from "./inputWidgets/SectorShocks";
 import ValueLosses from "./inputWidgets/ValueLosses";
 import InputTextField from "./inputWidgets/InputTextField";
 import { IncoreTextField } from "../styledComponents/IncoreInput";
+import RetrofitStrategies from "./inputWidgets/RetrofitStrategies";
 
 const useStyles = makeStyles({
 	runButton: {

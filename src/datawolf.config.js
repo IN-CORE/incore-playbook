@@ -860,6 +860,37 @@ const datawolfWorkflowConfig =
     				]
     			},
     			{
+    				"title": "retrofit strategy",
+    				"description": "retrofit_strategy",
+    				"variableName": "selectedRetrofitStrategyId",
+    				"widget": "RetrofitStrategies",
+    				"hidden": false,
+    				"defaultValue": "",
+    				"parametersMap": [
+    					{
+    						"paramId": "3091cc60-86cf-44ce-9dcf-2ef2b227aab4",
+    						"parameters": {
+    							"step": "BuildingDamage-Surge",
+    							"title": "retrofit_strategy"
+    						}
+    					},
+    					{
+    						"paramId": "1ebbf186-ddba-45b4-c570-0406915a37ab",
+    						"parameters": {
+    							"step": "BuildingDamage-Wind",
+    							"title": "retrofit_strategy"
+    						}
+    					},
+    					{
+    						"paramId": "36b8c16f-9dc7-4d3e-f1fe-36c978b9f84c",
+    						"parameters": {
+    							"step": "BuildingDamage-Flood",
+    							"title": "retrofit_strategy"
+    						}
+    					}
+    				]
+    			},
+    			{
     				"title": "epfs pole",
     				"description": "epfs pole",
     				"variableName": "selectedPoleId",
@@ -1196,37 +1227,6 @@ const datawolfWorkflowConfig =
     						"parameters": {
     							"step": "BuildingDamage-Flood",
     							"title": "dfr3_mapping_set"
-    						}
-    					}
-    				]
-    			},
-    			{
-    				"title": "retrofit_strategy",
-    				"description": "retrofit_strategy",
-    				"variableName": "selectedRetrofitStrategyId",
-    				"widget": "RetrofitStrategies",
-    				"hidden": false,
-    				"defaultValue": "",
-    				"parametersMap": [
-    					{
-    						"paramId": "3091cc60-86cf-44ce-9dcf-2ef2b227aab4",
-    						"parameters": {
-    							"step": "BuildingDamage-Surge",
-    							"title": "retrofit_strategy"
-    						}
-    					},
-    					{
-    						"paramId": "1ebbf186-ddba-45b4-c570-0406915a37ab",
-    						"parameters": {
-    							"step": "BuildingDamage-Wind",
-    							"title": "retrofit_strategy"
-    						}
-    					},
-    					{
-    						"paramId": "36b8c16f-9dc7-4d3e-f1fe-36c978b9f84c",
-    						"parameters": {
-    							"step": "BuildingDamage-Flood",
-    							"title": "retrofit_strategy"
     						}
     					}
     				]

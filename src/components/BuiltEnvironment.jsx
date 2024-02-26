@@ -89,6 +89,7 @@ export const BuiltEnvironment = ({ step, substep }) => {
 	const globalConfig = useSelector((state) => state.config.globalConfig);
 
 	const buildings = useSelector((state) => state.dataset.buildings);
+	const retrofitStrategies = useSelector((state) => state.dataset.retrofitStrategies);
 	const epfs = useSelector((state) => state.dataset.epfs);
 	const interdNetworks = useSelector((state) => state.dataset.interdNetworks);
 	const sectorShocks = useSelector((state) => state.dataset.sectorShocks);
@@ -109,6 +110,8 @@ export const BuiltEnvironment = ({ step, substep }) => {
 	const [dataPerPage, setDataPerPage] = React.useState(2);
 	const [offsetBuilding, setOffsetBuilding] = React.useState(0);
 	const [pageNumberBuilding, setPageNumberBuilding] = React.useState(1);
+	const [offsetRetrofitStrategies, setOffsetRetrofitStrategies] = React.useState(0);
+	const [pageNumberRetrofitStrategies, setPageNumberRetrofitStrategies] = React.useState(1);
 	const [offsetEpf, setOffsetEpf] = React.useState(0);
 	const [pageNumberEpf, setPageNumberEpf] = React.useState(1);
 	const [offsetInterdNetwork, setOffsetInterdNetwork] = React.useState(0);
@@ -200,6 +203,10 @@ export const BuiltEnvironment = ({ step, substep }) => {
 			_pageChangeHelper(direction, dataPerPage, setOffsetBuilding, pageNumberBuilding,
 				setPageNumberBuilding);
 		}
+		if (key === "retrofitStrategies") {
+			_pageChangeHelper(direction, dataPerPage, offsetRetrofitStrategies, pageNumberRetrofitStrategies,
+				setPageNumberRetrofitStrategies);
+		}
 		if (key === "epf") {
 			_pageChangeHelper(direction, dataPerPage, setOffsetEpf, pageNumberEpf, setPageNumberEpf);
 		}
@@ -225,7 +232,7 @@ export const BuiltEnvironment = ({ step, substep }) => {
 	};
 
 	const getRow = (fields) => {
-		let row = fields.map(v => ({...v, download: "Download"}));
+		let row = fields.map(v => ({ ...v, download: "Download" }));
 		return row;
 	};
 
@@ -234,6 +241,12 @@ export const BuiltEnvironment = ({ step, substep }) => {
 			listDatasets(globalConfig, dataPerPage, offsetBuilding, inputDatasetType["type"]);
 		});
 	}, [offsetBuilding, dataPerPage]);
+
+	useEffect(() => {
+		globalConfig.inputDatasetTypes["retrofitStrategies"].map((inputDatasetType) => {
+			listDatasets(globalConfig, dataPerPage, offsetRetrofitStrategies, inputDatasetType["type"]);
+		});
+	}, [offsetRetrofitStrategies, dataPerPage]);
 
 	useEffect(() => {
 		globalConfig.inputDatasetTypes["epfs"].map((inputDatasetType) => {
@@ -282,7 +295,7 @@ export const BuiltEnvironment = ({ step, substep }) => {
 	const fieldNames = [
 		{
 			prettyName: "NAME",
-			columnName: "title",
+			columnName: "title"
 		},
 		{
 			prettyName: "",
@@ -303,7 +316,7 @@ export const BuiltEnvironment = ({ step, substep }) => {
 		<Layout>
 			<div className="firstDivInContent">
 				<Box display="flex" style={{ alignItem: "center", padding: "1em 0" }}
-					 sx={{ justifyContent: "space-between" }}>
+					sx={{ justifyContent: "space-between" }}>
 					<Box>
 						<BreadCrumb
 							parentStep="Understand the Situation"
@@ -320,7 +333,7 @@ export const BuiltEnvironment = ({ step, substep }) => {
 					<Grid container spacing={3} className="innerBox">
 						{/*Download alerts*/}
 						<DownloadAlert downloadDialogOpen={downloadDialogOpen}
-									   handleDownloadDialogClose={() => {setDownloadDialogOpen(false);}} />
+							handleDownloadDialogClose={() => {setDownloadDialogOpen(false);}} />
 						<Grid item xl={8} lg={8} md={8} sm={12} xs={12} className="gridItem">
 							<LoadingOverlay active={loading} spinner text="Saving...">
 								<div>
@@ -332,7 +345,7 @@ export const BuiltEnvironment = ({ step, substep }) => {
 												<Box className={classes.subUploadSection}>
 													<Box className={classes.subTitleRow}>
 														<IncoreInputLabel className={classes.subTitle}>
-															Building Inventory
+                                                            Building Inventory
 														</IncoreInputLabel>
 														{
 															globalConfig.allowUpload ?
@@ -348,12 +361,13 @@ export const BuiltEnvironment = ({ step, substep }) => {
 																null
 														}
 														<Divider orientation="horizontal"
-																 className={classes.subDivider}
-																 flexItem
+															className={classes.subDivider}
+															flexItem
 														/>
 													</Box>
 													<Box className="entryTable">
-														<EntryTable fieldNames={fieldNames} fields={getRow(buildings)} />
+														<EntryTable fieldNames={fieldNames}
+															fields={getRow(buildings)} />
 													</Box>
 													<Pagination
 														pageNumber={pageNumberBuilding}
@@ -366,6 +380,47 @@ export const BuiltEnvironment = ({ step, substep }) => {
 												:
 												null
 										}
+										{/*list of uploaded building retrofit strategies*/}
+										{
+											allowedDataTypes.retrofitStrategies ?
+												<Box className={classes.subUploadSection}>
+													<Box className={classes.subTitleRow}>
+														<IncoreInputLabel className={classes.subTitle}>
+                                                            Building Retrofit Plans
+														</IncoreInputLabel>
+														{
+															globalConfig.allowUpload ?
+																<IconButton className={classes.plusButton}
+																	onClick={() => {
+																		setUploadModalStatus(true);
+																		setDatasetType("incore:retrofitStrategies");
+																		setCategory("retrofitStrategies");
+																	}}>
+																	<AddCircleOutlineIcon />
+																</IconButton>
+																:
+																null
+														}
+														<Divider orientation="horizontal"
+															className={classes.subDivider}
+															flexItem
+														/>
+													</Box>
+													<Box className="entryTable">
+														<EntryTable fieldNames={fieldNames}
+															fields={getRow(retrofitStrategies)} />
+													</Box>
+													<Pagination
+														pageNumber={pageNumberRetrofitStrategies}
+														data={retrofitStrategies}
+														dataPerPage={dataPerPage}
+														previous={() => pageChange("previous", "retrofitStrategies")}
+														next={() => pageChange("next", "retrofitStrategies")}
+													/>
+												</Box>
+												:
+												null
+										}
 
 										{/*list of uploaded EPF inventory*/}
 										{
@@ -373,7 +428,7 @@ export const BuiltEnvironment = ({ step, substep }) => {
 												<Box className={classes.subUploadSection}>
 													<Box className={classes.subTitleRow}>
 														<IncoreInputLabel className={classes.subTitle}>Electric Power
-															Facility</IncoreInputLabel>
+                                                            Facility</IncoreInputLabel>
 														{
 															globalConfig.allowUpload ?
 																<IconButton className={classes.plusButton}
@@ -388,7 +443,7 @@ export const BuiltEnvironment = ({ step, substep }) => {
 																null
 														}
 														<Divider orientation="horizontal" className={classes.subDivider}
-																 flexItem />
+															flexItem />
 													</Box>
 													<Box className="entryTable">
 														<EntryTable fieldNames={fieldNames} fields={getRow(epfs)} />
@@ -411,7 +466,7 @@ export const BuiltEnvironment = ({ step, substep }) => {
 												<Box className={classes.subUploadSection}>
 													<Box className={classes.subTitleRow}>
 														<IncoreInputLabel className={classes.subTitle}>Interdependency
-															Network</IncoreInputLabel>
+                                                            Network</IncoreInputLabel>
 														{
 															globalConfig.allowUpload ?
 																<IconButton className={classes.plusButton}
@@ -426,10 +481,11 @@ export const BuiltEnvironment = ({ step, substep }) => {
 																null
 														}
 														<Divider orientation="horizontal" className={classes.subDivider}
-																 flexItem />
+															flexItem />
 													</Box>
 													<Box className="entryTable">
-														<EntryTable fieldNames={fieldNames} fields={getRow(interdNetworks)} />
+														<EntryTable fieldNames={fieldNames}
+															fields={getRow(interdNetworks)} />
 													</Box>
 													<Pagination
 														pageNumber={pageNumberInterdNetwork}
@@ -449,7 +505,7 @@ export const BuiltEnvironment = ({ step, substep }) => {
 												<Box className={classes.subUploadSection}>
 													<Box className={classes.subTitleRow}>
 														<IncoreInputLabel className={classes.subTitle}>Socioeconomics
-															Datasets</IncoreInputLabel>
+                                                            Datasets</IncoreInputLabel>
 														{
 															globalConfig.allowUpload ?
 																<IconButton className={classes.plusButton}
@@ -465,12 +521,12 @@ export const BuiltEnvironment = ({ step, substep }) => {
 																null
 														}
 														<Divider orientation="horizontal" className={classes.subDivider}
-																 flexItem />
+															flexItem />
 													</Box>
 													{/*sector shocks*/}
 													<Box className={classes.socioeconomicsSubBox}>
 														<IncoreInputLabel className={classes.socioeconomicsSubTitle}>
-															Sector Shocks
+                                                            Sector Shocks
 														</IncoreInputLabel>
 														<Box className="entryTable">
 															<EntryTable
@@ -489,7 +545,7 @@ export const BuiltEnvironment = ({ step, substep }) => {
 													{/*huas*/}
 													<Box className={classes.socioeconomicsSubBox}>
 														<IncoreInputLabel className={classes.socioeconomicsSubTitle}>
-															Housing Unit Allocations
+                                                            Housing Unit Allocations
 														</IncoreInputLabel>
 														<Box className="entryTable">
 															<EntryTable
@@ -508,7 +564,7 @@ export const BuiltEnvironment = ({ step, substep }) => {
 													{/*block groups*/}
 													<Box className={classes.socioeconomicsSubBox}>
 														<IncoreInputLabel className={classes.socioeconomicsSubTitle}>
-															Block Groups
+                                                            Block Groups
 														</IncoreInputLabel>
 														<Box className="entryTable">
 															<EntryTable
@@ -527,7 +583,7 @@ export const BuiltEnvironment = ({ step, substep }) => {
 													{/*value losses*/}
 													<Box className={classes.socioeconomicsSubBox}>
 														<IncoreInputLabel className={classes.socioeconomicsSubTitle}>
-															Value Losses
+                                                            Value Losses
 														</IncoreInputLabel>
 														<Box className="entryTable">
 															<EntryTable
@@ -619,7 +675,7 @@ export const BuiltEnvironment = ({ step, substep }) => {
 								) : null}
 								<Box className="inputGroup">
 									<IncoreButton variant="contained" onClick={onSave} disabled={disabled}>
-										Save
+                                        Save
 									</IncoreButton>
 								</Box>
 							</>
