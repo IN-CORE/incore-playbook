@@ -3,6 +3,7 @@ import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from
 
 import { makeStyles } from "@material-ui/core/styles";
 import { formatProbToPercent } from "../../../utils/common";
+import CompareArrowsIcon from "@material-ui/icons/CompareArrows";
 
 const useStyles = makeStyles({
 	table: {
@@ -34,7 +35,6 @@ const useStyles = makeStyles({
 	},
 	tableBodyCell: {
 		height: "21px",
-		width: "123px",
 		color: "#2E384D",
 		fontSize: "15px",
 		letterSpacing: 0,
@@ -93,7 +93,7 @@ export function FunctionalityTableCompare(props) {
 			<Table className={classes.table} size="small" aria-label="a dense table">
 				<TableHead>
 					<TableRow>
-						<TableCell colSpan={2}> </TableCell>
+						<TableCell colSpan={3}> </TableCell>
 						<TableCell colSpan={2} className={classes.tableTopHeaderRow}>
 							{" "}
                             Percent (%){" "}
@@ -107,7 +107,7 @@ export function FunctionalityTableCompare(props) {
 					<TableRow className={classes.tableHeaderRow} key="hdrRow">
 						<TableCell
 							style={{ width: "647px", backgroundColor: "#EFF2FF", color: "#69707F" }}
-							colSpan={2}
+							colSpan={3}
 							className={classes.tableHeaderCell}
 							key="playbook-building-clusters"
 						>
@@ -140,13 +140,6 @@ export function FunctionalityTableCompare(props) {
 							key="nonFuncNum"
 						>
                             Non-Functional
-						</TableCell>
-						<TableCell
-							style={{ width: "25%", backgroundColor: "#EFF2FF", color: "#69707F" }}
-							className={classes.tableHeaderCell}
-							key="percent-change"
-						>
-                            % of Change
 						</TableCell>
 					</TableRow>
 				</TableHead>
@@ -211,11 +204,6 @@ export function FunctionalityTableCompare(props) {
 															? "-"
 															: clusterItemA["num_non_functional"]}
 													</TableCell>
-													{/*barchart*/}
-													<TableCell key={`${idxx}-barchart`}
-														className={classes.tableBodyCell} rowSpan={3}>
-                                                        Barchart
-													</TableCell>
 												</TableRow>
 												{/*B:*/}
 												<TableRow className={classes.tableBodyRow}
@@ -273,16 +261,16 @@ export function FunctionalityTableCompare(props) {
 														{clusterItemA["num_functional"] === NA_value || clusterItemB["num_functional"] === NA_value ?
 															"-" :
 															(parseFloat(clusterItemB["num_functional"]) - parseFloat(clusterItemA["num_functional"])) > 0 ?
-																`+${formatProbToPercent(parseFloat(clusterItemB["num_functional"]) - parseFloat(clusterItemA["num_functional"]), 1)}` :
-																(formatProbToPercent(parseFloat(clusterItemB["num_functional"]) - parseFloat(clusterItemA["num_functional"]), 1))
+																`+${parseFloat(clusterItemB["num_functional"]) - parseFloat(clusterItemA["num_functional"])}` :
+																(parseFloat(clusterItemB["num_functional"]) - parseFloat(clusterItemA["num_functional"]))
 														}
 													</TableCell>
 													<TableCell key={`${idxx}-nf2`} className={classes.tableBodyCell}>
 														{clusterItemA["num_non_functional"] === NA_value || clusterItemB["num_non_functional"] === NA_value ?
 															"-" :
 															(parseFloat(clusterItemB["num_non_functional"]) - parseFloat(clusterItemA["num_non_functional"])) > 0 ?
-																`+${formatProbToPercent(parseFloat(clusterItemB["num_non_functional"]) - parseFloat(clusterItemA["num_non_functional"]), 1)}` :
-																(formatProbToPercent(parseFloat(clusterItemB["num_non_functional"]) - parseFloat(clusterItemA["num_non_functional"]), 1))
+																`+${parseFloat(clusterItemB["num_non_functional"]) - parseFloat(clusterItemA["num_non_functional"])}` :
+																(parseFloat(clusterItemB["num_non_functional"]) - parseFloat(clusterItemA["num_non_functional"]))
 														}
 													</TableCell>
 												</TableRow>
@@ -341,10 +329,6 @@ export function FunctionalityTableCompare(props) {
 										{categoryItemA["num_non_functional"] === NA_value
 											? "-"
 											: categoryItemA["num_non_functional"]}
-									</TableCell>
-									<TableCell key="total-barchart" className={classes.tableBodyCell}
-										style={{ fontWeight: 500, backgroundColor: "#EEF3F5" }} rowSpan={3}>
-                                        Barchart
 									</TableCell>
 								</TableRow>
 								{/*TOTAL B:*/}
@@ -431,8 +415,8 @@ export function FunctionalityTableCompare(props) {
 										{categoryItemA["num_functional"] === NA_value || categoryItemB["num_functional"] === NA_value ?
 											"-" :
 											(parseFloat(categoryItemB["num_functional"]) - parseFloat(categoryItemA["num_functional"])) > 0 ?
-												`+${formatProbToPercent(parseFloat(categoryItemB["num_functional"]) - parseFloat(categoryItemA["num_functional"]), 1)}` :
-												(formatProbToPercent(parseFloat(categoryItemB["num_functional"]) - parseFloat(categoryItemA["num_functional"]), 1))
+												`+${parseFloat(categoryItemB["num_functional"]) - parseFloat(categoryItemA["num_functional"])}` :
+												(parseFloat(categoryItemB["num_functional"]) - parseFloat(categoryItemA["num_functional"]))
 										}
 									</TableCell>
 									<TableCell
@@ -443,8 +427,8 @@ export function FunctionalityTableCompare(props) {
 										{categoryItemA["num_non_functional"] === NA_value || categoryItemB["num_non_functional"] === NA_value ?
 											"-" :
 											(parseFloat(categoryItemB["num_non_functional"]) - parseFloat(categoryItemA["num_non_functional"])) > 0 ?
-												`+${formatProbToPercent(parseFloat(categoryItemB["num_non_functional"]) - parseFloat(categoryItemA["num_non_functional"]), 1)}` :
-												(formatProbToPercent(parseFloat(categoryItemB["num_non_functional"]) - parseFloat(categoryItemA["num_non_functional"]), 1))
+												`+${parseFloat(categoryItemB["num_non_functional"]) - parseFloat(categoryItemA["num_non_functional"])}` :
+												(parseFloat(categoryItemB["num_non_functional"]) - parseFloat(categoryItemA["num_non_functional"]))
 										}
 									</TableCell>
 								</TableRow>

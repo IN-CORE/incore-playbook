@@ -17,7 +17,7 @@ export default function BldgMCSCompare(props) {
 	const datawolfConfig = useSelector((state) => state.config.datawolfConfig);
 	const globalConfig = useSelector((state) => state.config.globalConfig);
 
-	const [mcsBldgSummaryTableContents, setMcsBldgSummaryTableContents] = useState(null);
+	const [mcsBldgSummaryTableContents, setMcsBldgSummaryTableContents] = useState({});
 	const [damageLayers, setDamageLayers] = useState(null);
 
 	// print container
@@ -51,7 +51,7 @@ export default function BldgMCSCompare(props) {
 						}));
 					} else if (vName === "mcsBldgSummaryTableContent") {
 						const content = await getOutputFileContentJSON(datawolfConfig, executionItems[i], datawolfDatasetConfigItem.datasetId);
-						setMcsBldgSummaryTableContent(prevState => ({
+						setMcsBldgSummaryTableContents(prevState => ({
 							...prevState,
 							[comparisonKey[i]]: content
 						}));

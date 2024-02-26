@@ -7,6 +7,8 @@ import SubstationDamage from "./SubstationDamage";
 import SectorShocks from "./SectorShocks";
 import BldgDamageCompare from "./BldgDamageCompare";
 import HHSCompare from "./HHSCompare";
+import BldgMCSCompare from "./BldgMCSCompare";
+import BldgFunctionalityCompare from "./BldgFunctionalityCompare";
 
 export const registeredCompareWidgets = {
 	BldgDamage: <BldgDamageCompare />,
