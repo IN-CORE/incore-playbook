@@ -29,7 +29,8 @@ const Map = (props) => {
 			updateMap,
 			events,
 			allowBuildingSelection,
-			setSelectedBuilding
+			setSelectedBuilding,
+			setLoading
 		} = props;
 		
 
@@ -85,18 +86,23 @@ const Map = (props) => {
 			const damageLayerSource = damageLayer.getSource()
 
 			map.on('singleclick', (evt) => {
+				console.log(evt.coordinate)
 				const url = damageLayerSource.getFeatureInfoUrl(
-				  evt.coordinate,
-				  viewResolution,
-				  viewProjection,
-				  {'INFO_FORMAT': 'application/json'}
+				  	evt.coordinate,
+				  	viewResolution,
+				  	viewProjection,
+				  	{'INFO_FORMAT': 'application/json', 'FEATURE_COUNT': 50}
 				);
 				if (url) {
-				  fetch(url)
-					.then((response) => response.json())
-					.then((json) => {
-						setSelectedBuilding(json.features[0].properties)
-					});
+					setLoading(true)
+				  	fetch(url)
+						.then((response) => response.json())
+						.then((json) => {
+							setSelectedBuilding(json.features[0].properties)
+							setLoading(false)
+						});
+				} else {
+					setSelectedBuilding(null)
 				}
 			});
 

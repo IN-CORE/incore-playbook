@@ -1,6 +1,7 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import { Box, IconButton, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@material-ui/core";
+import { IconButton, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@material-ui/core";
+import LoadingOverlay from "react-loading-overlay";
 import CloseIcon from "@material-ui/icons/Close";
 
 const useStyles = makeStyles({
@@ -93,9 +94,11 @@ const useStyles = makeStyles({
 export function BuildingInfoTable({
     buildingData, 
     setSelectedBuilding, 
+	loading
     // component 
     }) {
 	const classes = useStyles();
+	
 
 	//modify list to adjust what to show and in what order
 	let columnOrder = Object.keys(buildingData)
@@ -108,6 +111,7 @@ export function BuildingInfoTable({
 
 	return (
 		<TableContainer>
+		<LoadingOverlay active={loading} spinner text="Loading...">
 			<Table className={classes.table} size="small" aria-label="a dense table">
 				<TableHead>
 					<TableRow className={classes.tableHeaderRow} key="hdrRow">
@@ -149,6 +153,7 @@ export function BuildingInfoTable({
 					</TableRow>
 				</TableBody>
 			</Table>
+			</LoadingOverlay>
 		</TableContainer>
 	);
 }
