@@ -1,4 +1,4 @@
-import { Box, Grid, Typography } from "@material-ui/core";
+import { Box, Grid } from "@material-ui/core";
 import React, { useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
 import { getOutputFileContent, getOutputFileContentJSON } from "../../../utils/datawolf";
@@ -74,14 +74,9 @@ export default function BldgFunctionality(props) {
                         bldgFuncSummaryTableContents[comparisonKey[0]]["by_category"] &&
                         bldgFuncSummaryTableContents[comparisonKey[1]]["by_category"] ?
 							<Grid item style={{ minWidth: "90%" }}>
-								<Typography className="previewSubTitle">
-                                    Anticipated Performance - Building Clusters
-								</Typography>
-								<Box style={{ marginTop: "38px" }}>
-									<FunctionalityGraphCompare
-										categorySummaryA={bldgFuncSummaryTableContents[comparisonKey[0]]["by_category"]}
-										categorySummaryB={bldgFuncSummaryTableContents[comparisonKey[1]]["by_category"]} />
-								</Box>
+								<FunctionalityGraphCompare
+									categorySummaryA={bldgFuncSummaryTableContents[comparisonKey[0]]["by_category"]}
+									categorySummaryB={bldgFuncSummaryTableContents[comparisonKey[1]]["by_category"]} />
 							</Grid>
 							:
 							<></>

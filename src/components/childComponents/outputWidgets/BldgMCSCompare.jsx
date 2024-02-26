@@ -1,4 +1,4 @@
-import { Box, Grid, Typography } from "@material-ui/core";
+import { Box, Grid } from "@material-ui/core";
 import React, { useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
 import { getOutputFileContent, getOutputFileContentJSON } from "../../../utils/datawolf";
@@ -75,14 +75,9 @@ export default function BldgMCSCompare(props) {
                         mcsBldgSummaryTableContents[comparisonKey[0]]["by_category"] &&
                         mcsBldgSummaryTableContents[comparisonKey[1]]["by_category"] ?
 							<Grid item style={{ minWidth: "90%" }}>
-								<Typography className="previewSubTitle">
-                                    Anticipated Performance - Building Clusters
-								</Typography>
-								<Box style={{ marginTop: "38px" }}>
-									<FunctionalityGraphCompare
-										categorySummaryA={mcsBldgSummaryTableContents[comparisonKey[0]]["by_category"]}
-										categorySummaryB={mcsBldgSummaryTableContents[comparisonKey[1]]["by_category"]} />
-								</Box>
+								<FunctionalityGraphCompare
+									categorySummaryA={mcsBldgSummaryTableContents[comparisonKey[0]]["by_category"]}
+									categorySummaryB={mcsBldgSummaryTableContents[comparisonKey[1]]["by_category"]} />
 							</Grid>
 							:
 							<></>

@@ -49,14 +49,14 @@ export function FunctionalityGraphCompare(props) {
 				data: funcPercentA
 			},
 			{
-				label: "Functional Percentage B",
-				backgroundColor: "#2E5232",
-				data: funcPercentB
-			},
-			{
 				label: "Non-Functional Percentage A",
 				backgroundColor: "#D63649",
 				data: nonFuncPercentA
+			},
+			{
+				label: "Functional Percentage B",
+				backgroundColor: "#2E5232",
+				data: funcPercentB
 			},
 			{
 				label: "Non-Functional Percentage B",
@@ -69,13 +69,13 @@ export function FunctionalityGraphCompare(props) {
 				hidden: true
 			},
 			{
-				label: "Functional Building Num B",
-				data: funcCountB,
+				label: "Non-Functional Building Num A",
+				data: nonFuncCountA,
 				hidden: true
 			},
 			{
-				label: "Non-Functional Building Num A",
-				data: nonFuncCountA,
+				label: "Functional Building Num B",
+				data: funcCountB,
 				hidden: true
 			},
 			{
@@ -155,7 +155,7 @@ export function FunctionalityGraphCompare(props) {
                     Reset Zoom
 				</Button>
 			</div>
-			<div style={{ height: "180px" }}>
+			<div style={{ height: "250px" }}>
 				<Bar data={data} options={options} ref={ref} />
 			</div>
 		</div>
