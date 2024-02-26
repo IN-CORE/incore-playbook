@@ -1,4 +1,4 @@
-import { Box } from "@material-ui/core";
+import { Box, Grid, Typography } from "@material-ui/core";
 import React, { useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
 import { getOutputFileContent, getOutputFileContentJSON } from "../../../utils/datawolf";
@@ -8,6 +8,7 @@ import { IncoreButtonText } from "../../styledComponents/IncoreButtonText";
 import { downloadImg } from "../../../utils/image";
 import CameraAltIcon from "@material-ui/icons/CameraAlt";
 import { FunctionalityTableCompare } from "../table/FunctionalityTableCompare";
+import { FunctionalityGraphCompare } from "../graph/FunctionalityGraphCompare";
 
 export default function BldgFunctionality(props) {
 	let {
@@ -65,6 +66,29 @@ export default function BldgFunctionality(props) {
 
 	return (
 		<Box ref={printRef}>
+			{/*for chart*/}
+			<Box className="chartContainer">
+				<Grid container spacing={3} justify="center">
+					{
+						Object.keys(bldgFuncSummaryTableContents).length >= 2 &&
+                        bldgFuncSummaryTableContents[comparisonKey[0]]["by_category"] &&
+                        bldgFuncSummaryTableContents[comparisonKey[1]]["by_category"] ?
+							<Grid item style={{ minWidth: "90%" }}>
+								<Typography className="previewSubTitle">
+                                    Anticipated Performance - Building Clusters
+								</Typography>
+								<Box style={{ marginTop: "38px" }}>
+									<FunctionalityGraphCompare
+										categorySummaryA={bldgFuncSummaryTableContents[comparisonKey[0]]["by_category"]}
+										categorySummaryB={bldgFuncSummaryTableContents[comparisonKey[1]]["by_category"]} />
+								</Box>
+							</Grid>
+							:
+							<></>
+					}
+				</Grid>
+			</Box>
+
 			{/*/!*for map*!/*/}
 			{/*{basicLayers && hazardLayers && damageLayers ? (*/}
 			{/*	<Container className="mapContainer" disableGutters>*/}
@@ -90,7 +114,7 @@ export default function BldgFunctionality(props) {
 						funcResultsB={bldgFuncSummaryTableContents[comparisonKey[1]]} />
 				</Box>
 			) : (
-				<>/</>
+				<></>
 			)}
 
 			{/*Print*/}

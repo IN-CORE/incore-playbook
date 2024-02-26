@@ -1,10 +1,11 @@
-import { Box } from "@material-ui/core";
+import { Box, Grid, Typography } from "@material-ui/core";
 import React, { useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
-import { downloadOutputFile, getOutputFileContent, getOutputFileContentJSON } from "../../../utils/datawolf";
+import { getOutputFileContent, getOutputFileContentJSON } from "../../../utils/datawolf";
 import { generateLayers } from "../../../utils/map";
 import { comparisonKey } from "../../../globals";
 import { FunctionalityTableCompare } from "../table/FunctionalityTableCompare";
+import { FunctionalityGraphCompare } from "../graph/FunctionalityGraphCompare";
 
 export default function BldgMCSCompare(props) {
 	let {
@@ -64,20 +65,30 @@ export default function BldgMCSCompare(props) {
 
 	}, [executionItems, datawolfDatasetConfigItems]);
 
-	const download = async () => {
-		setDownloadDialogOpen(true);
-		if (mcsBldgFailureProbDownload) {
-			await downloadOutputFile(
-				datawolfConfig,
-				mcsBldgFailureProbDownload,
-				null,
-				`bldg-fail-prob-${executionItem.id}.csv`
-			);
-		}
-	};
-
 	return (
 		<Box ref={printRef}>
+			{/*for chart*/}
+			<Box className="chartContainer">
+				<Grid container spacing={3} justify="center">
+					{
+						Object.keys(mcsBldgSummaryTableContents).length >= 2 &&
+                        mcsBldgSummaryTableContents[comparisonKey[0]]["by_category"] &&
+                        mcsBldgSummaryTableContents[comparisonKey[1]]["by_category"] ?
+							<Grid item style={{ minWidth: "90%" }}>
+								<Typography className="previewSubTitle">
+                                    Anticipated Performance - Building Clusters
+								</Typography>
+								<Box style={{ marginTop: "38px" }}>
+									<FunctionalityGraphCompare
+										categorySummaryA={mcsBldgSummaryTableContents[comparisonKey[0]]["by_category"]}
+										categorySummaryB={mcsBldgSummaryTableContents[comparisonKey[1]]["by_category"]} />
+								</Box>
+							</Grid>
+							:
+							<></>
+					}
+				</Grid>
+			</Box>
 			{/*/!*for map*!/*/}
 			{/*{basicLayers && hazardLayers && damageLayers ? (*/}
 			{/*	<Container className="mapContainer" disableGutters>*/}
