@@ -59,6 +59,15 @@ globals["inputDatasetTypes"] = {
 			dispatchKey: "RECEIVE_BLDGS"
 		}
 	],
+	retrofitStrategies: [
+		{
+			type: "incore:retrofitStrategy",
+			format: "table",
+			num: 50,
+			isSocioeconomics: false,
+			dispatchKey: "RECEIVE_RETROFIT_STRATEGIES"
+		}
+	],
 	epfs: [
 		{
 			type: "incore:epf",
