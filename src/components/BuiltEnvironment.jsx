@@ -204,7 +204,7 @@ export const BuiltEnvironment = ({ step, substep }) => {
 				setPageNumberBuilding);
 		}
 		if (key === "retrofitStrategies") {
-			_pageChangeHelper(direction, dataPerPage, offsetRetrofitStrategies, pageNumberRetrofitStrategies,
+			_pageChangeHelper(direction, dataPerPage, setOffsetRetrofitStrategies, pageNumberRetrofitStrategies,
 				setPageNumberRetrofitStrategies);
 		}
 		if (key === "epf") {
@@ -393,7 +393,7 @@ export const BuiltEnvironment = ({ step, substep }) => {
 																<IconButton className={classes.plusButton}
 																	onClick={() => {
 																		setUploadModalStatus(true);
-																		setDatasetType("incore:retrofitStrategies");
+																		setDatasetType("incore:retrofitStrategy");
 																		setCategory("retrofitStrategies");
 																	}}>
 																	<AddCircleOutlineIcon />
