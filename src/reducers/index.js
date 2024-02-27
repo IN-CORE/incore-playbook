@@ -6,6 +6,7 @@ import hazards from "./hazards";
 import datasets from "./dataset";
 import config from "./config";
 import stepsReducer from "./stepsReducer";
+import mapReducer from "./map"
 
 const rootReducer = {
 	user: users,
@@ -15,7 +16,8 @@ const rootReducer = {
 	hazard: hazards,
 	dataset: datasets,
 	config: config,
-	steps: stepsReducer
+	steps: stepsReducer,
+	maps: mapReducer
 };
 
 export default rootReducer;
