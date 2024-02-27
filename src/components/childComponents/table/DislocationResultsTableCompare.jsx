@@ -64,19 +64,16 @@ const useStyles = makeStyles({
 		backgroundColor: "#DB4F60"
 	},
 	tableDataCell: {
-		width: "100px",
 		textAlign: "center",
 		border: "solid 1px rgba(46,91,255,0.08)"
 	},
 	tableDataCellDislocated: {
-		width: "100px",
 		textAlign: "center",
 		border: "solid 1px rgba(46,91,255,0.08)",
 		backgroundColor: "#FEEFF1"
 	},
 	title: {
 		height: "19px",
-		// width: "460px",
 		color: "#2E384D",
 		fontSize: "16px",
 		fontWeight: "500",

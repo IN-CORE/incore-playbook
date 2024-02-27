@@ -13,7 +13,6 @@ const tableColumnHead = {
 	textAlign: "right",
 	border: "solid 1px rgba(46,91,255,0.08)",
 	borderRadius: "1px",
-	width: "185px",
 	backgroundColor: "rgba(234,238,255, 0.6)"
 };
 
@@ -70,19 +69,16 @@ const useStyles = makeStyles({
 		backgroundColor: "rgba(234, 238, 255, 0.6)"
 	},
 	tableDataCell: {
-		width: "100px",
 		textAlign: "center",
 		border: "solid 1px rgba(46,91,255,0.08)"
 	},
 	tableDataCellRed: {
-		width: "100px",
 		textAlign: "center",
 		border: "solid 1px rgba(46,91,255,0.08)",
 		backgroundColor: "#FEEFF1"
 	},
 	title: {
 		height: "19px",
-		// width: "460px",
 		color: "#2E384D",
 		fontSize: "16px",
 		fontWeight: "500",
@@ -94,7 +90,6 @@ const useStyles = makeStyles({
 	},
 	radio: {
 		color: "#69707F"
-		// letterSpacing: "0.53px"
 	},
 	label: {
 		fontSize: "12px"
@@ -204,7 +199,8 @@ export function HuaResultsTableCompare(props) {
 												idx === resultsJsonA.length - 1
 													? classes.tableColumnHeadTotal
 													: classes.tableColumnHeadCharacteristics
-											}>
+											} style={{ textAlign: "center" }}
+											>
 												A
 											</TableCell>
 											<TableCell className={classes.tableDataCellRed} key={`2_${idx.toString()}`}>
@@ -224,7 +220,7 @@ export function HuaResultsTableCompare(props) {
 												idx === resultsJsonA.length - 1
 													? classes.tableColumnHeadTotal
 													: classes.tableColumnHeadCharacteristics
-											}>
+											} style={{ textAlign: "center" }}>
 												B
 											</TableCell>
 											<TableCell className={classes.tableDataCellRed} key={`2_${idx.toString()}`}>
@@ -244,7 +240,7 @@ export function HuaResultsTableCompare(props) {
 												idx === resultsJsonA.length - 1
 													? classes.tableColumnHeadTotal
 													: classes.tableColumnHeadCharacteristics
-											}>
+											} style={{ textAlign: "center" }}>
 												<CompareArrowsIcon style={{ transform: "rotate(90deg)" }}/>
 											</TableCell>
 											<TableCell className={classes.tableDataCellRed} key={`2_${idx.toString()}`}>
