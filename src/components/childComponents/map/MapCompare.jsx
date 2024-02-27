@@ -111,10 +111,10 @@ const MapCompare = (props) => {
 
 	return (
 		<div style={{ width: "100%", height: "400px", display: "flex" }}>
-			<div className={`ol-map ${className}`} ref={fallbackContainerA} style={{ width: "50%", height: "400px" }}>
+			<div className={`ol-map ${className}`} ref={fallbackContainerA} style={{ width: "50%", height: "400px", marginRight: "5px" }}>
 				<MapContext.Provider value={{ map: mapRefA.current }}>{children}</MapContext.Provider>
 			</div>
-			<div className={`ol-map ${className}`} ref={fallbackContainerB} style={{ width: "50%", height: "400px" }}>
+			<div className={`ol-map ${className}`} ref={fallbackContainerB} style={{ width: "50%", height: "400px", marginLeft: "5px" }}>
 				<MapContext.Provider value={{ map: mapRefB.current }}>{children}</MapContext.Provider>
 			</div>
 		</div>
