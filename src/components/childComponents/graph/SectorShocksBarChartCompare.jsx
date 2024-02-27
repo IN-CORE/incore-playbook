@@ -5,7 +5,7 @@ import { csvToArray } from "../../../utils/common";
 const ParseData = (dataA, dataB) => {
 	const chartData = [];
 	const colorsA = ["#aededb", "#2d8686", "#00619D", "#2c698d", "#272643"];
-	const colorsB = ["#F9E79F", "#F1C40F", "#7D6608", "#784212", "#641E16"];
+	const colorsB = ["#c1f0e5", "#3daaaa", "#0080bf", "#3e8caa", "#34385a"];
 	chartData.push(["Sector", "Ratio of Capital Remaining A", { role: "style" }, "Ratio of Capital Remaining B", { role: "style" }]);
 
 	// without header
@@ -109,12 +109,8 @@ export default function SectorShocksBarChartCompare(props) {
 				data={ParseData(dataA, dataB)}
 				options={{
 					title: title,
-					legend: { position: "top", alignment: "center" },
-					series: {
-					  0: { color: "#2d8686" }, // Color for the first data series
-					  1: { color: "#F1C40F" }  // Color for the second data series
-					},
-					height: "25em",
+					legend: { position: "none" },
+					height: "40em",
 					hAxis: {
 						title: xAxisLegend,
 						textStyle: {
