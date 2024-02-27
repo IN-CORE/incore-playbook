@@ -1,9 +1,9 @@
 import React from "react";
-import PoleDamage from "./PoleDamage";
+import PoleDamageCompare from "./PoleDamageCompare";
 import BldgMCS from "./BldgMCS";
 import BldgFunctionality from "./BldgFunctionality";
 import CGECompare from "./CGECompare";
-import PopDislocation from "./PopDislocation";
+import PopDislocationCompare from "./PopDislocationCompare";
 import ResilienceMetrics from "./ResilienceMetrics";
 import SubstationDamage from "./SubstationDamage";
 import SectorShocksCompare from "./SectorShocksCompare";
@@ -12,12 +12,12 @@ import HHSCompare from "./HHSCompare";
 
 export const registeredCompareWidgets = {
 	BldgDamage: <BldgDamageCompare />,
-	PoleDamage: <PoleDamage />,
+	PoleDamage: <PoleDamageCompare />,
 	BldgMCS: <BldgMCS />,
 	BldgFunctionality: <BldgFunctionality />,
 	// eslint-disable-next-line react/jsx-pascal-case
 	CGE: <CGECompare />,
-	PopDislocation: <PopDislocation />,
+	PopDislocation: <PopDislocationCompare />,
 	ResilienceMetrics: <ResilienceMetrics />,
 	SubstationDamage: <SubstationDamage />,
 	// eslint-disable-next-line react/jsx-pascal-case
