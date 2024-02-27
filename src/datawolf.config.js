@@ -875,16 +875,26 @@ const datawolfWorkflowConfig =
     						}
     					},
     					{
-    						"paramId": "1ebbf186-ddba-45b4-c570-0406915a37ab",
-    						"parameters": {
-    							"step": "BuildingDamage-Wind",
-    							"title": "retrofit_strategy"
-    						}
-    					},
-    					{
     						"paramId": "36b8c16f-9dc7-4d3e-f1fe-36c978b9f84c",
     						"parameters": {
     							"step": "BuildingDamage-Flood",
+    							"title": "retrofit_strategy"
+    						}
+    					}
+    				]
+    			},
+    			{
+    				"title": "retrofit strategy not needed",
+    				"description": "retrofit_strategy not needed",
+    				"variableName": "selectedRetrofitStrategyId",
+    				"widget": null,
+    				"hidden": true,
+    				"defaultValue": "",
+    				"parametersMap": [
+    					{
+    						"paramId": "1ebbf186-ddba-45b4-c570-0406915a37ab",
+    						"parameters": {
+    							"step": "BuildingDamage-Wind",
     							"title": "retrofit_strategy"
     						}
     					}
