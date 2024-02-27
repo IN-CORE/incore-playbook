@@ -16,6 +16,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Add CGE Bar Char comparison components [#289](https://github.com/IN-CORE/incore-playbook/issues/289)
 - Add CGE Table Comparison [#291](https://github.com/IN-CORE/incore-playbook/issues/291)
 - Github action to publish @incore/incore-playbook to Github package registry [#283](https://github.com/IN-CORE/incore-playbook/issues/283)
+- Add Population Dislocation comparison tables [#292](https://github.com/IN-CORE/incore-playbook/issues/292)
 
 ### Fixed
 - Default mapping bounding box coordinates need to flip order [#272](https://github.com/IN-CORE/incore-playbook/issues/272)
