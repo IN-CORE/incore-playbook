@@ -16,7 +16,6 @@ import React, { useEffect, useRef, useState } from "react";
 import { ResultSummaryTable } from "../table/ResultSummaryTable";
 import { StackedResult } from "../graph/StackedResult";
 import { ResultTable } from "../table/ResultTable";
-import { BuildingInfoTable } from "../table/BuildingInfoTable";
 import { useSelector } from "react-redux";
 import { applyTransform } from "ol/extent";
 import { downloadOutputFile, getOutputFileContent, getOutputFileContentJSON } from "../../../utils/datawolf";
