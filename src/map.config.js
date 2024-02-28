@@ -22,12 +22,8 @@ const layerStyles = {
 			"waterVelocity": "incore:hurricane-water-velocity",
 			"windVelocity": "incore:hurricane-wind"
 		},
-		tsunami: {
-
-		},
-		floods: {
-
-		}
+		tsunami: {},
+		floods: {}
 	}
 };
 
@@ -77,19 +73,19 @@ const layerStyles = {
 // };
 
 // galveston
-export const mapConfig = {
-	MAP_BOUNDS:[
-		-96.211436,
-		27.941297,
-		-93.611436,
-		30.541297,
-	],
-	MAP_CENTER: [-94.911436, 29.241297],
-	ZOOM: 5,
-	MIN_ZOOM: 4,
-	MAX_ZOOM: 19,
-	LAYER_STYLES: layerStyles
-};
+// export const mapConfig = {
+// 	MAP_BOUNDS:[
+// 		-96.211436,
+// 		27.941297,
+// 		-93.611436,
+// 		30.541297,
+// 	],
+// 	MAP_CENTER: [-94.911436, 29.241297],
+// 	ZOOM: 5,
+// 	MIN_ZOOM: 4,
+// 	MAX_ZOOM: 19,
+// 	LAYER_STYLES: layerStyles
+// };
 
 // // lumberton
 // const mapConfig = {
@@ -106,23 +102,24 @@ export const mapConfig = {
 // 	LAYER_STYLES: layerStyles
 // };
 
-// // Salt Lake City
-// export const mapConfig = {
-// 	MAP_BOUNDS:[
-// 		-112.625,
-// 		41.240,
-// 		-111.282,
-// 		40.126,
-// 	],
-// 	HAZARD_BOUNDS:[
-// 		-112.312,
-// 		41,
-// 		-111.462,
-// 		40.277
-// 	],
-// 	MAP_CENTER: [-111.954, 40.683],
-// 	ZOOM: 5,
-// 	MIN_ZOOM: 4,
-// 	MAX_ZOOM: 19,
-//  LAYER_STYLES: layerStyles
-// };
+// Salt Lake City
+export const mapConfig = {
+	MAP_BOUNDS: [
+		-112.625,
+		40.126
+        - 111.282,
+		41.240
+
+	],
+	HAZARD_BOUNDS: [
+		-112.312,
+		40.277
+        - 111.462,
+		41
+	],
+	MAP_CENTER: [-111.954, 40.683],
+	ZOOM: 5,
+	MIN_ZOOM: 4,
+	MAX_ZOOM: 19,
+	LAYER_STYLES: layerStyles
+};
