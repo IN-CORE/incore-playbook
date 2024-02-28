@@ -179,6 +179,9 @@ const Map = (props) => {
 						.then((response) => response.json())
 						.then((json) => {
 							let bldg = json.features;
+							if (bldg.length > 0) {
+								console.log(bldg[0].geometry.coordinates);
+							}
 							var markerGeometry = new Point(coordinate);
 							if (bldg.length > 0) {
 								markerFeature.setGeometry(markerGeometry);
@@ -248,10 +251,10 @@ const Map = (props) => {
 						"padding": "5px",
 						"overflow": "scroll",
 						"scrollBehavior": "smooth",
-						"&::-webkit-scrollbar": {
+						"&::WebkitScrollbar": {
 							display: "none" // Hide the scrollbar for WebKit browsers (Chrome, Safari, Edge, etc.)
 						},
-						"&-ms-overflow-style:": {
+						"&MsOverflowStyle:": {
 							display: "none" // Hide the scrollbar for IE
 						}
 					}}
