@@ -1,6 +1,8 @@
-import React, { useState } from "react";
+import React from "react";
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
+import CompareArrowsIcon from "@material-ui/icons/CompareArrows";
+import BldgDmgDiffBarChart from "../graph/BldgDmgDiffBarChart";
 
 const useStyles = makeStyles({
 	table: {
@@ -26,12 +28,12 @@ const useStyles = makeStyles({
 	},
 	tableBodyCell: {
 		height: "21px",
-		width: "123px",
 		color: "#2E384D",
 		fontSize: "15px",
 		letterSpacing: 0,
 		lineHeight: "18px",
-		border: "1px solid rgba(46,91,255,0.08)"
+		border: "1px solid rgba(46,91,255,0.08)",
+		textAlign: "center"
 	},
 	tableBodyCategoryCell: {
 		height: "21px",
@@ -52,17 +54,7 @@ const useStyles = makeStyles({
 		letterSpacing: 0,
 		lineHeight: "18px",
 		border: "1px solid rgba(46,91,255,0.08)"
-	},
-	switchBase: {
-		"&$checked": {
-			color: "#00619D"
-		},
-		"&$checked + $track": {
-			backgroundColor: "#00619D"
-		}
-	},
-	checked: {},
-	track: {}
+	}
 });
 
 const NA_value = -1; // TODO need to change to -1
@@ -94,11 +86,6 @@ function calcPercentage(partialValue, totalValue) {
 
 export function BldgDamageTableCompare(props) {
 	const { fieldsA, fieldsB } = props;
-	const [percentOn, setPercentOn] = useState(false);
-
-	function handleChange() {
-		setPercentOn((percentOn) => !percentOn);
-	}
 
 	// e.g.
 	// Community Recovery: 5
@@ -110,41 +97,33 @@ export function BldgDamageTableCompare(props) {
 
 	const classes = useStyles();
 
-	let tableHeaders = ["Insignificant", "Moderate", "Extensive", "Complete"];
+	// backward compatibility with different table headers
+	let tableHeadersA = ["Insignificant", "Moderate", "Extensive", "Complete"];
+	let tableHeadersB = ["Insignificant", "Moderate", "Extensive", "Complete"];
 	if (fieldsA && ("Insignificant" in fieldsA["by_category"][0])) {
-		tableHeaders = ["Insignificant", "Moderate", "Extensive", "Complete"];
+		tableHeadersA = ["Insignificant", "Moderate", "Extensive", "Complete"];
 	} else if (fieldsA && ("Affected" in fieldsA["by_category"][0])) {
-		tableHeaders = ["Affected", "Minor", "Major", "Destroyed"];
+		tableHeadersA = ["Affected", "Minor", "Major", "Destroyed"];
 	} else {
-		tableHeaders = ["DS_0", "DS_1", "DS_2", "DS_3"];
+		tableHeadersA = ["DS_0", "DS_1", "DS_2", "DS_3"];
+	}
+	if (fieldsB && ("Insignificant" in fieldsB["by_category"][0])) {
+		tableHeadersB = ["Insignificant", "Moderate", "Extensive", "Complete"];
+	} else if (fieldsB && ("Affected" in fieldsB["by_category"][0])) {
+		tableHeadersB = ["Affected", "Minor", "Major", "Destroyed"];
+	} else {
+		tableHeadersB = ["DS_0", "DS_1", "DS_2", "DS_3"];
 	}
 
 	return (
 		<TableContainer>
-			{/*<Box style={{ float: "right" }}>*/}
-			{/*	<FormControlLabel*/}
-			{/*		control={*/}
-			{/*			<Switch*/}
-			{/*				checked={percentOn}*/}
-			{/*				onChange={(e) => handleChange()}*/}
-			{/*				color="default"*/}
-			{/*				classes={{*/}
-			{/*					switchBase: classes.switchBase,*/}
-			{/*					checked: classes.checked,*/}
-			{/*					track: classes.track*/}
-			{/*				}}*/}
-			{/*			/>*/}
-			{/*		}*/}
-			{/*		label="View Percentage"*/}
-			{/*	/>*/}
-			{/*</Box>*/}
 			<Table className={classes.table} size="small" aria-label="a dense table">
 				<TableHead>
 					{/*["playbook builidng clusters", "DS_0", "DS_1", "DS_2", "DS_3"];*/}
 					<TableRow className={classes.tableHeaderRow} key="hdrRow">
 						<TableCell
 							style={{ width: "647px", backgroundColor: "#EFF2FF", color: "#69707F" }}
-							colSpan={2}
+							colSpan={3}
 							className={classes.tableHeaderCell}
 							key="playbook-building-clusters"
 						>
@@ -153,30 +132,37 @@ export function BldgDamageTableCompare(props) {
 						<TableCell
 							style={{ width: "121px", backgroundColor: "#96B712" }}
 							className={classes.tableHeaderCell}
-							key={tableHeaders[0]}
+							key={tableHeadersA[0]}
 						>
-							{tableHeaders[0]}
+							{tableHeadersA[0]}
 						</TableCell>
 						<TableCell
 							style={{ width: "121px", backgroundColor: "#F7C137" }}
 							className={classes.tableHeaderCell}
-							key={tableHeaders[1]}
+							key={tableHeadersA[1]}
 						>
-							{tableHeaders[1]}
+							{tableHeadersA[1]}
 						</TableCell>
 						<TableCell
 							style={{ width: "121px", backgroundColor: "#ED8036" }}
 							className={classes.tableHeaderCell}
-							key={tableHeaders[2]}
+							key={tableHeadersA[2]}
 						>
-							{tableHeaders[2]}
+							{tableHeadersA[2]}
 						</TableCell>
 						<TableCell
 							style={{ width: "121px", backgroundColor: "#D63649" }}
 							className={classes.tableHeaderCell}
-							key={tableHeaders[3]}
+							key={tableHeadersA[3]}
 						>
-							{tableHeaders[3]}
+							{tableHeadersA[3]}
+						</TableCell>
+						<TableCell
+							style={{ width: "25%", backgroundColor: "#EFF2FF", color: "#69707F" }}
+							className={classes.tableHeaderCell}
+							key="percent-change"
+						>
+                            % of Change
 						</TableCell>
 					</TableRow>
 				</TableHead>
@@ -210,179 +196,128 @@ export function BldgDamageTableCompare(props) {
 															rowSpan={3}>
 															{clusterItemA["cluster"]}
 														</TableCell>
+														<TableCell key={`${idxx}-A`}
+															className={classes.tableBodyCell}>
+                                                            A
+														</TableCell>
 														<TableCell key={`${idxx}-insig`}
 															className={classes.tableBodyCell}>
-															<td>
-																{clusterItemA[tableHeaders[0]] === NA_value ? "-" : clusterItemA[tableHeaders[0]]}
-															</td>
-															<td style={percentOn ?
-																{
-																	visibility: "visible",
-																	color: "#A9A9A9"
-																} : { visibility: "hidden" }}>
-																{calcPercentage(clusterItemA[tableHeaders[0]], categoryItemA[tableHeaders[0]])}
-															</td>
+
+															{clusterItemA[tableHeadersA[0]] === NA_value ? "-" : clusterItemA[tableHeadersA[0]]}
+
 														</TableCell>
 														<TableCell key={`${idxx}-mod`}
 															className={classes.tableBodyCell}>
-															<td>
-																{clusterItemA[tableHeaders[1]] === NA_value ? "-" : clusterItemA[tableHeaders[1]]}
-															</td>
-															<td style={percentOn ?
-																{
-																	visibility: "visible",
-																	color: "#A9A9A9"
-																} : { visibility: "hidden" }}>
-																{calcPercentage(clusterItemA[tableHeaders[1]], categoryItemA[tableHeaders[1]])}
-															</td>
+															{clusterItemA[tableHeadersA[1]] === NA_value ? "-" : clusterItemA[tableHeadersA[1]]}
 														</TableCell>
 														<TableCell
 															key={`${idxx}-extensi`}
 															className={classes.tableBodyCell}
 														>
-															<td>
-																{clusterItemA[tableHeaders[2]] === NA_value ? "-" : clusterItemA[tableHeaders[2]]}
-															</td>
-															<td style={percentOn ?
-																{
-																	visibility: "visible",
-																	color: "#A9A9A9"
-																} : { visibility: "hidden" }}>
-																{calcPercentage(clusterItemA[tableHeaders[2]], categoryItemA[tableHeaders[2]])}
-															</td>
+															{clusterItemA[tableHeadersA[2]] === NA_value ? "-" : clusterItemA[tableHeadersA[2]]}
 														</TableCell>
 														<TableCell key={`${idxx}-comp`}
 															className={classes.tableBodyCell}>
-															<td>
-																{clusterItemA[tableHeaders[3]] === NA_value ? "-" : clusterItemA[tableHeaders[3]]}
-															</td>
-															<td style={percentOn ?
-																{
-																	visibility: "visible",
-																	color: "#A9A9A9"
-																} : { visibility: "hidden" }}>
-																{calcPercentage(clusterItemA[tableHeaders[3]], categoryItemA[tableHeaders[3]])}
-															</td>
+															{clusterItemA[tableHeadersA[3]] === NA_value ? "-" : clusterItemA[tableHeadersA[3]]}
+														</TableCell>
+														{/*barchart*/}
+														<TableCell key={`${idxx}-barchart`}
+															className={classes.tableBodyCell} rowSpan={3}>
+															{
+																clusterItemA[tableHeadersA[0]] !== NA_value &&
+                                                                clusterItemB[tableHeadersB[0]] !== NA_value &&
+                                                                clusterItemA[tableHeadersA[1]] !== NA_value &&
+                                                                clusterItemB[tableHeadersB[1]] !== NA_value &&
+                                                                clusterItemA[tableHeadersA[2]] !== NA_value &&
+                                                                clusterItemB[tableHeadersB[2]] !== NA_value &&
+                                                                clusterItemA[tableHeadersA[3]] !== NA_value &&
+                                                                clusterItemB[tableHeadersB[3]] !== NA_value ?
+																	<BldgDmgDiffBarChart
+																		headers={tableHeadersA}
+																		data={[
+																			parseFloat(clusterItemB[tableHeadersB[0]]) - parseFloat(clusterItemA[tableHeadersA[0]]),
+																			parseFloat(clusterItemB[tableHeadersB[1]]) - parseFloat(clusterItemA[tableHeadersA[1]]),
+																			parseFloat(clusterItemB[tableHeadersB[2]]) - parseFloat(clusterItemA[tableHeadersA[2]]),
+																			parseFloat(clusterItemB[tableHeadersB[3]]) - parseFloat(clusterItemA[tableHeadersA[3]])
+																		]} />
+																	:
+																	<></>
+															}
 														</TableCell>
 													</TableRow>
 													{/*B:*/}
 													<TableRow className={classes.tableBodyRow}
 														key={clusterItemB["cluster"]}>
+														<TableCell key={`${idxx}-B`}
+															className={classes.tableBodyCell}>
+
+                                                            B
+
+														</TableCell>
 														<TableCell key={`${idxx}-insig`}
 															className={classes.tableBodyCell}>
-															<td>
-																{clusterItemB[tableHeaders[0]] === NA_value ? "-" : clusterItemB[tableHeaders[0]]}
-															</td>
-															<td style={percentOn ?
-																{
-																	visibility: "visible",
-																	color: "#A9A9A9"
-																} : { visibility: "hidden" }}>
-																{calcPercentage(clusterItemB[tableHeaders[0]], categoryItemB[tableHeaders[0]])}
-															</td>
+															{clusterItemB[tableHeadersB[0]] === NA_value ? "-" : clusterItemB[tableHeadersB[0]]}
 														</TableCell>
 														<TableCell key={`${idxx}-mod`}
 															className={classes.tableBodyCell}>
-															<td>
-																{clusterItemB[tableHeaders[1]] === NA_value ? "-" : clusterItemB[tableHeaders[1]]}
-															</td>
-															<td style={percentOn ?
-																{
-																	visibility: "visible",
-																	color: "#A9A9A9"
-																} : { visibility: "hidden" }}>
-																{calcPercentage(clusterItemB[tableHeaders[1]], clusterItemB[tableHeaders[1]])}
-															</td>
+															{clusterItemB[tableHeadersB[1]] === NA_value ? "-" : clusterItemB[tableHeadersB[1]]}
 														</TableCell>
 														<TableCell
 															key={`${idxx}-extensi`}
 															className={classes.tableBodyCell}
 														>
-															<td>
-																{clusterItemB[tableHeaders[2]] === NA_value ? "-" : clusterItemB[tableHeaders[2]]}
-															</td>
-															<td style={percentOn ?
-																{
-																	visibility: "visible",
-																	color: "#A9A9A9"
-																} : { visibility: "hidden" }}>
-																{calcPercentage(clusterItemB[tableHeaders[2]], clusterItemB[tableHeaders[2]])}
-															</td>
+															{clusterItemB[tableHeadersB[2]] === NA_value ? "-" : clusterItemB[tableHeadersB[2]]}
 														</TableCell>
 														<TableCell key={`${idxx}-comp`}
 															className={classes.tableBodyCell}>
-															<td>
-																{clusterItemB[tableHeaders[3]] === NA_value ? "-" : clusterItemB[tableHeaders[3]]}
-															</td>
-															<td style={percentOn ?
-																{
-																	visibility: "visible",
-																	color: "#A9A9A9"
-																} : { visibility: "hidden" }}>
-																{calcPercentage(clusterItemB[tableHeaders[3]], categoryItemB[tableHeaders[3]])}
-															</td>
+															{clusterItemB[tableHeadersB[3]] === NA_value ? "-" : clusterItemB[tableHeadersB[3]]}
 														</TableCell>
 													</TableRow>
 													{/*Diff:*/}
 													<TableRow className={classes.tableBodyRow}
 														key={`${clusterItemB["cluster"]}-diff`}>
+														<TableCell key={`${idxx}-diff`}
+															className={classes.tableBodyCell}>
+															<CompareArrowsIcon
+																style={{ transform: "rotate(90deg)" }} />
+														</TableCell>
 														<TableCell key={`${idxx}-insig`}
 															className={classes.tableBodyCell}>
-															<td>
-																{clusterItemB[tableHeaders[0]] === NA_value || clusterItemA[tableHeaders[0]] === NA_value ?
-																	"-" : parseFloat(clusterItemB[tableHeaders[0]]) - parseFloat(clusterItemA[tableHeaders[0]])}
-															</td>
-															<td style={percentOn ?
-																{
-																	visibility: "visible",
-																	color: "#A9A9A9"
-																} : { visibility: "hidden" }}>
-																{calcPercentage(clusterItemB[tableHeaders[0]], categoryItemB[tableHeaders[0]])}
-															</td>
+															{clusterItemA[tableHeadersA[0]] === NA_value || clusterItemB[tableHeadersB[0]] === NA_value ?
+																"-" :
+																(parseFloat(clusterItemB[tableHeadersB[0]]) - parseFloat(clusterItemA[tableHeadersA[0]])) > 0 ?
+																	`+${parseFloat(clusterItemB[tableHeadersB[0]]) - parseFloat(clusterItemA[tableHeadersA[0]])}` :
+																	(parseFloat(clusterItemB[tableHeadersB[0]]) - parseFloat(clusterItemA[tableHeadersA[0]]))
+															}
 														</TableCell>
 														<TableCell key={`${idxx}-mod`}
 															className={classes.tableBodyCell}>
-															<td>
-																{clusterItemB[tableHeaders[1]] === NA_value || clusterItemA[tableHeaders[1]] === NA_value ?
-																	"-" : parseFloat(clusterItemB[tableHeaders[1]]) - parseFloat(clusterItemA[tableHeaders[1]])}
-															</td>
-															<td style={percentOn ?
-																{
-																	visibility: "visible",
-																	color: "#A9A9A9"
-																} : { visibility: "hidden" }}>
-																{calcPercentage(clusterItemB[tableHeaders[1]], clusterItemB[tableHeaders[1]])}
-															</td>
+															{clusterItemA[tableHeadersA[1]] === NA_value || clusterItemB[tableHeadersB[1]] === NA_value ?
+																"-" :
+																(parseFloat(clusterItemB[tableHeadersB[1]]) - parseFloat(clusterItemA[tableHeadersA[1]])) > 0 ?
+																	`+${parseFloat(clusterItemB[tableHeadersB[1]]) - parseFloat(clusterItemA[tableHeadersA[1]])}` :
+																	(parseFloat(clusterItemB[tableHeadersB[1]]) - parseFloat(clusterItemA[tableHeadersA[1]]))
+															}
 														</TableCell>
 														<TableCell
 															key={`${idxx}-extensi`}
 															className={classes.tableBodyCell}
 														>
-															<td>
-																{clusterItemB[tableHeaders[2]] === NA_value || clusterItemA[tableHeaders[2]] === NA_value ?
-																	"-" : parseFloat(clusterItemB[tableHeaders[2]]) - parseFloat(clusterItemA[tableHeaders[2]])}
-															</td>
-															<td style={percentOn ?
-																{
-																	visibility: "visible",
-																	color: "#A9A9A9"
-																} : { visibility: "hidden" }}>
-																{calcPercentage(clusterItemB[tableHeaders[2]], clusterItemB[tableHeaders[2]])}
-															</td>
+															{clusterItemA[tableHeadersA[2]] === NA_value || clusterItemB[tableHeadersB[2]] === NA_value ?
+																"-" :
+																(parseFloat(clusterItemB[tableHeadersB[2]]) - parseFloat(clusterItemA[tableHeadersA[2]])) > 0 ?
+																	`+${parseFloat(clusterItemB[tableHeadersB[2]]) - parseFloat(clusterItemA[tableHeadersA[2]])}` :
+																	(parseFloat(clusterItemB[tableHeadersB[2]]) - parseFloat(clusterItemA[tableHeadersA[2]]))
+															}
 														</TableCell>
 														<TableCell key={`${idxx}-comp`}
 															className={classes.tableBodyCell}>
-															<td>
-																{clusterItemB[tableHeaders[3]] === NA_value || clusterItemA[tableHeaders[3]] === NA_value ?
-																	"-" : parseFloat(clusterItemB[tableHeaders[3]]) - parseFloat(clusterItemA[tableHeaders[3]])}
-															</td>
-															<td style={percentOn ?
-																{
-																	visibility: "visible",
-																	color: "#A9A9A9"
-																} : { visibility: "hidden" }}>
-																{calcPercentage(clusterItemB[tableHeaders[3]], categoryItemB[tableHeaders[3]])}
-															</td>
+															{clusterItemA[tableHeadersA[3]] === NA_value || clusterItemB[tableHeadersB[3]] === NA_value ?
+																"-" :
+																(parseFloat(clusterItemB[tableHeadersA[3]]) - parseFloat(clusterItemA[tableHeadersA[3]])) > 0 ?
+																	`+${parseFloat(clusterItemB[tableHeadersB[3]]) - parseFloat(clusterItemA[tableHeadersA[3]])}` :
+																	(parseFloat(clusterItemB[tableHeadersB[3]]) - parseFloat(clusterItemA[tableHeadersA[3]]))
+															}
 														</TableCell>
 													</TableRow>
 												</>
@@ -400,146 +335,159 @@ export function BldgDamageTableCompare(props) {
                                             TOTAL
 										</TableCell>
 										<TableCell
+											key="total-A"
+											className={classes.tableBodyCell}
+											style={{ fontWeight: 500, backgroundColor: "#EEF3F5" }}
+										>
+                                            A
+										</TableCell>
+										<TableCell
 											key="total-insig"
 											className={classes.tableBodyCell}
 											style={{ fontWeight: 500, backgroundColor: "#EEF3F5" }}
 										>
-											<td>{categoryItemA[tableHeaders[0]] === NA_value ? "-" : categoryItemA[tableHeaders[0]]}</td>
-											<td style={percentOn ?
-												{ visibility: "visible", color: "#A9A9A9" } : { visibility: "hidden" }}>
-												{categoryItemA[tableHeaders[0]] === NA_value ? "" : "(100%)"}
-											</td>
+											{categoryItemA[tableHeadersA[0]] === NA_value ? "-" : categoryItemA[tableHeadersA[0]]}
 										</TableCell>
 										<TableCell
 											key="total-mod"
 											className={classes.tableBodyCell}
 											style={{ fontWeight: 500, backgroundColor: "#EEF3F5" }}
 										>
-											<td>{categoryItemA[tableHeaders[1]] === NA_value ? "-" : categoryItemA[tableHeaders[1]]}</td>
-											<td style={percentOn ?
-												{ visibility: "visible", color: "#A9A9A9" } : { visibility: "hidden" }}>
-												{categoryItemA[tableHeaders[1]] === NA_value ? "" : "(100%)"}
-											</td>
+											{categoryItemA[tableHeadersA[1]] === NA_value ? "-" : categoryItemA[tableHeadersA[1]]}
 										</TableCell>
 										<TableCell
 											key="total-extensi"
 											className={classes.tableBodyCell}
 											style={{ fontWeight: 500, backgroundColor: "#EEF3F5" }}
 										>
-											<td>{categoryItemA[tableHeaders[2]] === NA_value ? "-" : categoryItemA[tableHeaders[2]]}</td>
-											<td style={percentOn ?
-												{ visibility: "visible", color: "#A9A9A9" } : { visibility: "hidden" }}>
-												{categoryItemA[tableHeaders[2]] === NA_value ? "" : "(100%)"}
-											</td>
+											{categoryItemA[tableHeadersA[2]] === NA_value ? "-" : categoryItemA[tableHeadersA[2]]}
 										</TableCell>
 										<TableCell
 											key="total-comp"
 											className={classes.tableBodyCell}
 											style={{ fontWeight: 500, backgroundColor: "#EEF3F5" }}
 										>
-											<td>{categoryItemA[tableHeaders[3]] === NA_value ? "-" : categoryItemA[tableHeaders[3]]}</td>
-											<td style={percentOn ?
-												{ visibility: "visible", color: "#A9A9A9" } : { visibility: "hidden" }}>
-												{categoryItemA[tableHeaders[3]] === NA_value ? "" : "(100%)"}
-											</td>
+											{categoryItemA[tableHeadersA[3]] === NA_value ? "-" : categoryItemA[tableHeadersA[3]]}
+										</TableCell>
+										{/*barchart*/}
+										<TableCell key="total-barchart" className={classes.tableBodyCell}
+											style={{ fontWeight: 500, backgroundColor: "#EEF3F5" }} rowSpan={3}>
+											{
+												categoryItemA[tableHeadersA[0]] !== NA_value &&
+                                                categoryItemB[tableHeadersB[0]] !== NA_value &&
+                                                categoryItemA[tableHeadersA[1]] !== NA_value &&
+                                                categoryItemB[tableHeadersB[1]] !== NA_value &&
+                                                categoryItemA[tableHeadersA[2]] !== NA_value &&
+                                                categoryItemB[tableHeadersB[2]] !== NA_value &&
+                                                categoryItemA[tableHeadersA[3]] !== NA_value &&
+                                                categoryItemB[tableHeadersB[3]] !== NA_value ?
+													<BldgDmgDiffBarChart
+														headers={tableHeadersA}
+														data={[
+															parseFloat(categoryItemB[tableHeadersB[0]]) - parseFloat(categoryItemA[tableHeadersA[0]]),
+															parseFloat(categoryItemB[tableHeadersB[1]]) - parseFloat(categoryItemA[tableHeadersA[1]]),
+															parseFloat(categoryItemB[tableHeadersB[2]]) - parseFloat(categoryItemA[tableHeadersA[2]]),
+															parseFloat(categoryItemB[tableHeadersB[3]]) - parseFloat(categoryItemA[tableHeadersA[3]])
+														]} />
+													:
+													<></>
+											}
 										</TableCell>
 									</TableRow>
 									{/*B:*/}
 									<TableRow className={classes.tableBodyRow} key={categoryItemB["id"]}>
 										<TableCell
+											key="total-B"
+											className={classes.tableBodyCell}
+											style={{ fontWeight: 500, backgroundColor: "#EEF3F5" }}
+										>
+                                            B
+										</TableCell>
+										<TableCell
 											key="total-insig"
 											className={classes.tableBodyCell}
 											style={{ fontWeight: 500, backgroundColor: "#EEF3F5" }}
 										>
-											<td>{categoryItemB[tableHeaders[0]] === NA_value ? "-" : categoryItemB[tableHeaders[0]]}</td>
-											<td style={percentOn ?
-												{ visibility: "visible", color: "#A9A9A9" } : { visibility: "hidden" }}>
-												{categoryItemB[tableHeaders[0]] === NA_value ? "" : "(100%)"}
-											</td>
+											{categoryItemB[tableHeadersB[0]] === NA_value ? "-" : categoryItemB[tableHeadersB[0]]}
 										</TableCell>
 										<TableCell
 											key="total-mod"
 											className={classes.tableBodyCell}
 											style={{ fontWeight: 500, backgroundColor: "#EEF3F5" }}
 										>
-											<td>{categoryItemB[tableHeaders[1]] === NA_value ? "-" : categoryItemB[tableHeaders[1]]}</td>
-											<td style={percentOn ?
-												{ visibility: "visible", color: "#A9A9A9" } : { visibility: "hidden" }}>
-												{categoryItemB[tableHeaders[1]] === NA_value ? "" : "(100%)"}
-											</td>
+											{categoryItemB[tableHeadersB[1]] === NA_value ? "-" : categoryItemB[tableHeadersB[1]]}
 										</TableCell>
 										<TableCell
 											key="total-extensi"
 											className={classes.tableBodyCell}
 											style={{ fontWeight: 500, backgroundColor: "#EEF3F5" }}
 										>
-											<td>{categoryItemB[tableHeaders[2]] === NA_value ? "-" : categoryItemB[tableHeaders[2]]}</td>
-											<td style={percentOn ?
-												{ visibility: "visible", color: "#A9A9A9" } : { visibility: "hidden" }}>
-												{categoryItemB[tableHeaders[2]] === NA_value ? "" : "(100%)"}
-											</td>
+											{categoryItemB[tableHeadersB[2]] === NA_value ? "-" : categoryItemB[tableHeadersB[2]]}
 										</TableCell>
 										<TableCell
 											key="total-comp"
 											className={classes.tableBodyCell}
 											style={{ fontWeight: 500, backgroundColor: "#EEF3F5" }}
 										>
-											<td>{categoryItemB[tableHeaders[3]] === NA_value ? "-" : categoryItemB[tableHeaders[3]]}</td>
-											<td style={percentOn ?
-												{ visibility: "visible", color: "#A9A9A9" } : { visibility: "hidden" }}>
-												{categoryItemB[tableHeaders[3]] === NA_value ? "" : "(100%)"}
-											</td>
+											{categoryItemB[tableHeadersB[3]] === NA_value ? "-" : categoryItemB[tableHeadersB[3]]}
 										</TableCell>
 									</TableRow>
 									{/*Diff:*/}
 									<TableRow className={classes.tableBodyRow} key={`${categoryItemB["id"]}-diff`}>
 										<TableCell
+											key="total-diff"
+											className={classes.tableBodyCell}
+											style={{ fontWeight: 500, backgroundColor: "#EEF3F5" }}
+										>
+											<CompareArrowsIcon style={{ transform: "rotate(90deg)" }} />
+										</TableCell>
+										<TableCell
 											key="total-insig"
 											className={classes.tableBodyCell}
 											style={{ fontWeight: 500, backgroundColor: "#EEF3F5" }}
 										>
-											<td>{categoryItemA[tableHeaders[0]] === NA_value || categoryItemB[tableHeaders[0]] === NA_value ?
-												"-" : parseFloat(categoryItemB[tableHeaders[0]]) - parseFloat(categoryItemA[tableHeaders[0]])}</td>
-											<td style={percentOn ?
-												{ visibility: "visible", color: "#A9A9A9" } : { visibility: "hidden" }}>
-												{categoryItemB[tableHeaders[0]] === NA_value ? "" : "(100%)"}
-											</td>
+											{categoryItemA[tableHeadersA[0]] === NA_value || categoryItemB[tableHeadersB[0]] === NA_value ?
+												"-" :
+												(parseFloat(categoryItemB[tableHeadersB[0]]) - parseFloat(categoryItemA[tableHeadersA[0]])) > 0 ?
+													`+${parseFloat(categoryItemB[tableHeadersB[0]]) - parseFloat(categoryItemA[tableHeadersA[0]])}` :
+													(parseFloat(categoryItemB[tableHeadersB[0]]) - parseFloat(categoryItemA[tableHeadersA[0]]))
+											}
 										</TableCell>
 										<TableCell
 											key="total-mod"
 											className={classes.tableBodyCell}
 											style={{ fontWeight: 500, backgroundColor: "#EEF3F5" }}
 										>
-											<td>{categoryItemA[tableHeaders[1]] === NA_value || categoryItemB[tableHeaders[1]] === NA_value ?
-												"-" : parseFloat(categoryItemB[tableHeaders[1]]) - parseFloat(categoryItemA[tableHeaders[1]])}</td>
-											<td style={percentOn ?
-												{ visibility: "visible", color: "#A9A9A9" } : { visibility: "hidden" }}>
-												{categoryItemB[tableHeaders[1]] === NA_value ? "" : "(100%)"}
-											</td>
+											{categoryItemA[tableHeadersA[1]] === NA_value || categoryItemB[tableHeadersB[1]] === NA_value ?
+												"-" :
+												(parseFloat(categoryItemB[tableHeadersB[1]]) - parseFloat(categoryItemA[tableHeadersA[1]])) > 0 ?
+													`+${parseFloat(categoryItemB[tableHeadersB[1]]) - parseFloat(categoryItemA[tableHeadersA[1]])}` :
+													(parseFloat(categoryItemB[tableHeadersB[1]]) - parseFloat(categoryItemA[tableHeadersA[1]]))
+											}
 										</TableCell>
 										<TableCell
 											key="total-extensi"
 											className={classes.tableBodyCell}
 											style={{ fontWeight: 500, backgroundColor: "#EEF3F5" }}
 										>
-											<td>{categoryItemA[tableHeaders[2]] === NA_value || categoryItemB[tableHeaders[2]] === NA_value ?
-												"-" : parseFloat(categoryItemB[tableHeaders[2]]) - parseFloat(categoryItemA[tableHeaders[2]])}</td>
-											<td style={percentOn ?
-												{ visibility: "visible", color: "#A9A9A9" } : { visibility: "hidden" }}>
-												{categoryItemB[tableHeaders[2]] === NA_value ? "" : "(100%)"}
-											</td>
+											{categoryItemA[tableHeadersA[2]] === NA_value || categoryItemB[tableHeadersB[2]] === NA_value ?
+												"-" :
+												(parseFloat(categoryItemB[tableHeadersB[2]]) - parseFloat(categoryItemA[tableHeadersA[2]])) > 0 ?
+													`+${parseFloat(categoryItemB[tableHeadersB[2]]) - parseFloat(categoryItemA[tableHeadersA[2]])}` :
+													(parseFloat(categoryItemB[tableHeadersB[2]]) - parseFloat(categoryItemA[tableHeadersA[2]]))
+											}
 										</TableCell>
 										<TableCell
 											key="total-comp"
 											className={classes.tableBodyCell}
 											style={{ fontWeight: 500, backgroundColor: "#EEF3F5" }}
 										>
-											<td>{categoryItemA[tableHeaders[3]] === NA_value || categoryItemB[tableHeaders[3]] === NA_value ?
-												"-" : parseFloat(categoryItemB[tableHeaders[3]]) - parseFloat(categoryItemA[tableHeaders[3]])}</td>
-											<td style={percentOn ?
-												{ visibility: "visible", color: "#A9A9A9" } : { visibility: "hidden" }}>
-												{categoryItemB[tableHeaders[3]] === NA_value ? "" : "(100%)"}
-											</td>
+											{categoryItemA[tableHeadersA[3]] === NA_value || categoryItemB[tableHeadersB[3]] === NA_value ?
+												"-" :
+												(parseFloat(categoryItemB[tableHeadersB[3]]) - parseFloat(categoryItemA[tableHeadersA[3]])) > 0 ?
+													`+${parseFloat(categoryItemB[tableHeadersB[3]]) - parseFloat(categoryItemA[tableHeadersA[3]])}` :
+													(parseFloat(categoryItemB[tableHeadersB[3]]) - parseFloat(categoryItemA[tableHeadersA[3]]))
+											}
 										</TableCell>
 									</TableRow>
 								</>
