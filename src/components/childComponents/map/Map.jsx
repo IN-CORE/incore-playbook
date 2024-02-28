@@ -182,7 +182,7 @@ const Map = (props) => {
 							var markerGeometry = new Point(coordinate);
 							if (bldg.length > 0) {
 								markerFeature.setGeometry(markerGeometry);
-								markerFeature.setStyle(markerStyle);
+								// markerFeature.setStyle(markerStyle);
 
 								setSelectedBuilding(bldg[0].properties);
 							} else if (bldg.length === 0) {
