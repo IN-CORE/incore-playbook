@@ -16,8 +16,10 @@ import React, { useEffect, useRef, useState } from "react";
 import { ResultSummaryTable } from "../table/ResultSummaryTable";
 import { StackedResult } from "../graph/StackedResult";
 import { ResultTable } from "../table/ResultTable";
+import { BuildingInfoTable } from "../table/BuildingInfoTable";
 import { useSelector } from "react-redux";
 import { applyTransform } from "ol/extent";
+import { Projection } from "ol/proj";
 import { downloadOutputFile, getOutputFileContent, getOutputFileContentJSON } from "../../../utils/datawolf";
 import { basicLayers, generateLayers } from "../../../utils/map";
 import { downloadImg } from "../../../utils/image";
@@ -45,6 +47,9 @@ export default function BldgDamage(props) {
 	const [bldgDmgSummaryTableContent, setBldgDmgSummaryTableContent] = useState(null);
 	const [bldgDmgDsResultDownload, setBldgDmgDsResultDownload] = useState(null);
 	const [damageLayers, setDamageLayers] = useState(null);
+	const [selectedBuilding, setSelectedBuilding] = useState(null);
+
+	const [loading, setLoading] = React.useState(false);
 
 	const printRef = useRef();
 
@@ -144,14 +149,36 @@ export default function BldgDamage(props) {
 							zoom={mapConfig.ZOOM}
 							minZoom={mapConfig.MIN_ZOOM}
 							maxZoom={mapConfig.MAX_ZOOM}
-							extent={applyTransform(mapConfig.MAP_BOUNDS, getTransform("EPSG:4326", "EPSG:3857"))}
-							center={fromLonLat(mapConfig.MAP_CENTER)}
+							// extent={applyTransform(mapConfig.MAP_BOUNDS, getTransform("EPSG:4326", "EPSG:3857"))}
+							extent={mapConfig.MAP_BOUNDS}
+							// center={fromLonLat(mapConfig.MAP_CENTER, "EPSG:4326")}
+							center={mapConfig.MAP_CENTER}
+							projection={
+								new Projection({
+      							    code: 'EPSG:4326',
+      							    units: 'degrees',
+      							    axisOrientation: 'neu',
+      							    global: true
+      							})
+							}
 							layers={[basicLayers, hazardLayers, damageLayers]}
 							layerSwitcherOptions={{}}
+							allowBuildingSelection={true}
+							setSelectedBuilding={setSelectedBuilding}
+							setLoading={setLoading}
 						/>
 					</Container>
 				) : (
 					<></>
+				)}
+				
+				{selectedBuilding !== null ? 
+					<BuildingInfoTable buildingData={selectedBuilding} setSelectedBuilding={setSelectedBuilding} loading={loading}/> : (
+						<Box>
+							<Typography className="previewSubTitle">
+								Please click on a building to view its information
+							</Typography>
+						</Box>
 				)}
 
 				{/*for table*/}

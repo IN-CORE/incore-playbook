@@ -12,6 +12,7 @@ import {
 import CloseIcon from "@material-ui/icons/Close";
 import { ResultSummaryTable } from "../table/ResultSummaryTable";
 import { FunctionalityGraph } from "../graph/FunctionalityGraph";
+import { BuildingInfoTable } from "../table/BuildingInfoTable";
 import Map from "../map/Map";
 import { fromLonLat, getTransform } from "ol/proj";
 import { FunctionalityTable } from "../table/FunctionalityTable";
@@ -20,7 +21,6 @@ import { useSelector } from "react-redux";
 import { applyTransform } from "ol/extent";
 import { downloadOutputFile, getOutputFileContent, getOutputFileContentJSON } from "../../../utils/datawolf";
 import { basicLayers, generateLayers } from "../../../utils/map";
-import { downloadDataset } from "../../../utils/dataset";
 import { IncoreButtonText } from "../../styledComponents/IncoreButtonText";
 import GetAppIcon from "@material-ui/icons/GetApp";
 import { downloadImg } from "../../../utils/image";
@@ -46,6 +46,8 @@ export default function BldgMCS(props) {
 	const [mcsBldgSummaryTableContent, setMcsBldgSummaryTableContent] = useState(null);
 	const [mcsBldgFailureProbDownload, setMcsBldgFailureProbDownload] = useState();
 	const [damageLayers, setDamageLayers] = useState(null);
+	const [selectedBuilding, setSelectedBuilding] = useState(null);
+	const [loading, setLoading] = React.useState(false);
 
 	// print container
 	const printRef = useRef();
@@ -157,10 +159,22 @@ export default function BldgMCS(props) {
 							center={fromLonLat(mapConfig.MAP_CENTER)}
 							layers={[basicLayers, hazardLayers, damageLayers]}
 							layerSwitcherOptions={{}}
+							allowBuildingSelection={true}
+							setSelectedBuilding={setSelectedBuilding}
+							setLoading={setLoading}
 						/>
 					</Container>
 				) : (
 					<></>
+				)}
+
+				{selectedBuilding !== null ? 
+					<BuildingInfoTable buildingData={selectedBuilding} setSelectedBuilding={setSelectedBuilding} loading={loading} /> : (
+						<Box>
+							<Typography className="previewSubTitle">
+								Please click on a building to view its information
+							</Typography>
+						</Box>
 				)}
 
 				{/*for table*/}

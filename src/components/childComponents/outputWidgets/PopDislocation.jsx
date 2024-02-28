@@ -3,6 +3,7 @@ import CloseIcon from "@material-ui/icons/Close";
 import Map from "../map/Map";
 import { fromLonLat, getTransform } from "ol/proj";
 import { DislocationResultsTable } from "../table/DislocationResultsTable";
+import { BuildingInfoTable } from "../table/BuildingInfoTable";
 import { HuaResultsTable } from "../table/HuaResultsTable";
 import React, { useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
@@ -37,6 +38,9 @@ export default function PopDislocation(props) {
 	const [damageLayers1, setDamageLayers1] = useState(null);
 	const [damageLayers2, setDamageLayers2] = useState(null);
 	const [populationDislocationDownload, setPopulationDislocationDownload] = useState();
+	const [selectedBuilding, setSelectedBuilding] = useState(null);
+
+	const [loading, setLoading] = React.useState(false);
 
 	// print container
 	const printRef = useRef();
@@ -144,10 +148,22 @@ export default function PopDislocation(props) {
 							center={fromLonLat(mapConfig.MAP_CENTER)}
 							layers={[basicLayers, hazardLayers, damageLayers1, damageLayers2]}
 							layerSwitcherOptions={{}}
+							allowBuildingSelection={true}
+							setSelectedBuilding={setSelectedBuilding}
+							setLoading={setLoading}
 						/>
 					</Container>
 				) : (
 					<></>
+				)}
+
+				{selectedBuilding !== null ? 
+					<BuildingInfoTable buildingData={selectedBuilding} setSelectedBuilding={setSelectedBuilding} loading={loading} /> : (
+						<Box>
+							<Typography className="previewSubTitle">
+								Please click on a building to view its information
+							</Typography>
+						</Box>
 				)}
 
 				{/*for table*/}

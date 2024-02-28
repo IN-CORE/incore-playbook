@@ -7,6 +7,7 @@ import { useSelector } from "react-redux";
 import { applyTransform } from "ol/extent";
 import { downloadOutputFile, getOutputFileContent } from "../../../utils/datawolf";
 import { basicLayers, generateLayers } from "../../../utils/map";
+import { BuildingInfoTable } from "../table/BuildingInfoTable";
 import { IncoreButtonText } from "../../styledComponents/IncoreButtonText";
 import GetAppIcon from "@material-ui/icons/GetApp";
 import { downloadImg } from "../../../utils/image";
@@ -29,6 +30,9 @@ export default function PoleDamage(props) {
 	const [selectedExecutionName, setSelectedExecutionName] = useState("");
 	const [poleDmgDsResultDownload, setPoleDmgDsResultDownload] = useState();
 	const [damageLayers, setDamageLayers] = useState(null);
+	const [selectedBuilding, setSelectedBuilding] = useState(null);
+
+	const [loading, setLoading] = React.useState(false);
 
 	// print container
 	const printRef = useRef();
@@ -94,10 +98,22 @@ export default function PoleDamage(props) {
 							center={fromLonLat(mapConfig.MAP_CENTER)}
 							layers={[basicLayers, hazardLayers, damageLayers]}
 							layerSwitcherOptions={{}}
+							allowBuildingSelection={true}
+							setSelectedBuilding={setSelectedBuilding}
+							setLoading={setLoading}
 						/>
 					</Container>
 				) : (
 					<></>
+				)}
+
+				{selectedBuilding !== null ? 
+					<BuildingInfoTable buildingData={selectedBuilding} setSelectedBuilding={setSelectedBuilding} loading={loading} /> : (
+						<Box>
+							<Typography className="previewSubTitle">
+								Please click on a building to view its information
+							</Typography>
+						</Box>
 				)}
 			</DialogContent>
 			<DialogActions>

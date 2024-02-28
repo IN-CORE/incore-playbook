@@ -40,8 +40,12 @@ const Map = (props) => {
 			layers,
 			layerSwitcherOptions,
 			updateMap,
-			events
+			events,
+			allowBuildingSelection,
+			setSelectedBuilding,
+			setLoading
 		} = props;
+
 
 		const map = new OLMap({
 			target: mapContainer || fallbackContainer.current,
@@ -73,29 +77,22 @@ const Map = (props) => {
 			});
 		}
 
+
 		if (layerSwitcherOptions) {
 			const layerSwitcher = new LayerSwitcher(layerSwitcherOptions);
 			map.addControl(layerSwitcher);
 		}
 
-<<<<<<< Updated upstream
-=======
 		let damageLayerGrp = null;
 		layers.forEach((layerGrp) => {
 			if (layerGrp.getProperties().title === "Damage") {
-				damageLayerGrp = layerGrp
+				damageLayerGrp = layerGrp;
 			}
-		})
-
-		
+		});
 
 		if ((damageLayerGrp !== null) && allowBuildingSelection && setSelectedBuilding !== undefined) {
-			const view  = map.getView();
-			const viewProjection = view.getProjection();
-    		const viewResolution = view.getResolution();
-
-			const damageLayer = damageLayerGrp.getLayers().getArray()[0]
-			const damageLayerSource = damageLayer.getSource()
+			const damageLayer = damageLayerGrp.getLayers().getArray()[0];
+			const damageLayerSource = damageLayer.getSource();
 
 			var markerStyle = new Style({
 				image: new CircleStyle({
@@ -119,27 +116,29 @@ const Map = (props) => {
 
 			map.addLayer(markerLayer);
 
-			map.on('singleclick', (evt) => {
-				console.log(evt.coordinate)
+			map.on("singleclick", (evt) => {
+				let coordinate = map.getCoordinateFromPixel(evt.pixel);
+				const view = map.getView();
+				const viewProjection = view.getProjection();
+				const viewResolution = view.getResolution();
 
-				var markerGeometry = new Point(evt.coordinate);
+				var markerGeometry = new Point(coordinate);
 				var markerFeature = new Feature({
 					geometry: markerGeometry,
 					visible: true
 				});
 
 				markerFeature.setStyle(markerStyle);
-				
 
 				const url = damageLayerSource.getFeatureInfoUrl(
-				  	evt.coordinate,
-				  	viewResolution,
-				  	viewProjection,
-				  	{'INFO_FORMAT': 'application/json', 'FEATURE_COUNT': 50}
+					coordinate,
+					viewResolution,
+					viewProjection,
+					{ "INFO_FORMAT": "application/json", "FEATURE_COUNT": 1 }
 				);
 				if (url) {
-					setLoading(true)
-				  	fetch(url)
+					setLoading(true);
+					fetch(url)
 						.then((response) => response.json())
 						.then((json) => {
 							vectorSource.addFeature(markerFeature);
@@ -148,24 +147,24 @@ const Map = (props) => {
 							setLoading(false)
 						});
 				} else {
-					setSelectedBuilding(null)
+					setSelectedBuilding(null);
 					vectorSource.clear();
 				}
 			});
 
-			map.on('pointermove', (evt) => {
+			map.on("pointermove", (evt) => {
 				if (evt.dragging) {
 					return;
 				}
 				const data = damageLayer.getData(evt.pixel);
 				const hit = data && data[3] > 0; // transparent pixels have zero for data[3]
-				map.getTargetElement().style.cursor = hit ? 'pointer' : '';
+				map.getTargetElement().style.cursor = hit ? "pointer" : "";
 			});
 		} else if (allowBuildingSelection && setSelectedBuilding === undefined) {
-			console.error("If allowBuildingSelection is true, setSelectedBuilding must be passed as a prop.")
+			console.error("If allowBuildingSelection is true, setSelectedBuilding must be passed as a prop.");
 		}
 
->>>>>>> Stashed changes
+
 		if (updateMap) {
 			updateMap(map);
 		}

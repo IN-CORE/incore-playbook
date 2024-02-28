@@ -15,6 +15,7 @@ import { FunctionalityGraph } from "../graph/FunctionalityGraph";
 import Map from "../map/Map";
 import { fromLonLat, getTransform } from "ol/proj";
 import { FunctionalityTable } from "../table/FunctionalityTable";
+import { BuildingInfoTable } from "../table/BuildingInfoTable";
 import React, { useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
 import { applyTransform } from "ol/extent";
@@ -45,6 +46,9 @@ export default function BldgFunctionality(props) {
 	const [bldgFuncSummaryTableContent, setBldgFuncSummaryTableContent] = useState(null);
 	const [bldgFuncProbDownload, setBldgFuncProbDownload] = useState();
 	const [damageLayers, setDamageLayers] = useState(null);
+	const [selectedBuilding, setSelectedBuilding] = useState(null);
+
+	const [loading, setLoading] = React.useState(false);
 
 	// print container
 	const printRef = useRef();
@@ -149,10 +153,22 @@ export default function BldgFunctionality(props) {
 							center={fromLonLat(mapConfig.MAP_CENTER)}
 							layers={[basicLayers, hazardLayers, damageLayers]}
 							layerSwitcherOptions={{}}
+							allowBuildingSelection={true}
+							setSelectedBuilding={setSelectedBuilding}
+							setLoading={setLoading}
 						/>
 					</Container>
 				) : (
 					<></>
+				)}
+
+				{selectedBuilding !== null ? 
+					<BuildingInfoTable buildingData={selectedBuilding} setSelectedBuilding={setSelectedBuilding} loading={loading} /> : (
+						<Box>
+							<Typography className="previewSubTitle">
+								Please click on a building to view its information
+							</Typography>
+						</Box>
 				)}
 
 				{/*for table*/}
