@@ -2,7 +2,7 @@ import React from "react";
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@material-ui/core";
 import FormLabel from "@material-ui/core/FormLabel";
 import { makeStyles } from "@material-ui/core/styles";
-import { round, diff } from "../../../utils/common";
+import { diff, round } from "../../../utils/common";
 import { IncoreRadioGroup } from "../form/IncoreRadioGroup";
 import CompareArrowsIcon from "@material-ui/icons/CompareArrows";
 
@@ -118,7 +118,7 @@ export function HuaResultsTableCompare(props) {
 		{
 			"value": "disability",
 			"name": "by Disability"
-		},
+		}
 	]);
 
 	const handleChange = (event) => {
@@ -132,7 +132,6 @@ export function HuaResultsTableCompare(props) {
 
 	let headers = [
 		"HOUSEHOLD CHARACTERISTICS",
-		" ",
 		"# HOUSEHOLDS DISLOCATED",
 		"TOTAL HOUSEHOLDS",
 		"% HOUSEHOLDS DISLOCATED"
@@ -144,12 +143,12 @@ export function HuaResultsTableCompare(props) {
 		<div>
 			<div style={{ paddingLeft: "6px" }}>
 				<FormLabel component="legend" className={classes.title}>
-					Household Dislocation
+                    Household Dislocation
 				</FormLabel>
 				<IncoreRadioGroup options={filterOptions} value={huaBy} handleChange={handleChange} />
 			</div>
 
-			{resultsJsonA !== undefined && resultsJsonB !== undefined? (
+			{resultsJsonA !== undefined && resultsJsonB !== undefined ? (
 				<TableContainer>
 					<Table
 						className={isMetrics ? classes.metricsTable : classes.table}
@@ -160,16 +159,20 @@ export function HuaResultsTableCompare(props) {
 							<TableRow>
 								{headers.map((header, idx) => {
 									let headClass = classes.tableRowHead;
+									let colSpan = 1;
 									if (idx === 0) {
 										headClass = classes.tableRowHeadFirst;
+										colSpan = 2;
 									} else if (header !== "# HOUSEHOLDS DISLOCATED") {
 										headClass = classes.tableRowHeadRight;
+										colSpan = 1;
 									}
 									return (
 										<TableCell
 											className={headClass}
 											key={idx}
 											style={isMetrics ? { minWidth: "200px" } : {}}
+											colSpan={colSpan}
 										>
 											{header}
 										</TableCell>
@@ -201,7 +204,7 @@ export function HuaResultsTableCompare(props) {
 													: classes.tableColumnHeadCharacteristics
 											} style={{ textAlign: "center" }}
 											>
-												A
+                                                A
 											</TableCell>
 											<TableCell className={classes.tableDataCellRed} key={`2_${idx.toString()}`}>
 												{resA["household_dislocated"].toLocaleString("en-US")}
@@ -221,7 +224,7 @@ export function HuaResultsTableCompare(props) {
 													? classes.tableColumnHeadTotal
 													: classes.tableColumnHeadCharacteristics
 											} style={{ textAlign: "center" }}>
-												B
+                                                B
 											</TableCell>
 											<TableCell className={classes.tableDataCellRed} key={`2_${idx.toString()}`}>
 												{resB["household_dislocated"].toLocaleString("en-US")}
@@ -241,7 +244,7 @@ export function HuaResultsTableCompare(props) {
 													? classes.tableColumnHeadTotal
 													: classes.tableColumnHeadCharacteristics
 											} style={{ textAlign: "center" }}>
-												<CompareArrowsIcon style={{ transform: "rotate(90deg)" }}/>
+												<CompareArrowsIcon style={{ transform: "rotate(90deg)" }} />
 											</TableCell>
 											<TableCell className={classes.tableDataCellRed} key={`2_${idx.toString()}`}>
 												{diff(resA["household_dislocated"], resB["household_dislocated"]).toLocaleString("en-US")}

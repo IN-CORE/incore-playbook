@@ -104,7 +104,7 @@ export function DislocationResultsTableCompare(props) {
 					<TableHead>
 						<TableRow>
 							<TableCell
-								className={classes.tableRowHeadRight}
+								className={classes.tableRowHeadFirst}
 								style={isMetrics ? { minWidth: "200px" } : {}}
 								colSpan={2}
 							/>
