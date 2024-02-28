@@ -13,7 +13,7 @@ import {
 	TableHead,
 	TablePagination,
 	TableRow,
-	TableSortLabel
+	TableSortLabel, Typography
 } from "@material-ui/core";
 import UnfoldMoreIcon from "@material-ui/icons/UnfoldMore";
 import UnfoldLess from "@material-ui/icons/UnfoldLess";
@@ -24,6 +24,7 @@ import { useSelector } from "react-redux";
 import { getComparator, isAdmin, parseDateTime, stableSort } from "../../../utils/common";
 import { checkFileDescriptors } from "../../../utils/datawolf";
 import { useLocation, useRouteMatch } from "react-router-dom";
+import { IncoreTitle } from "../../styledComponents/IncoreTitle";
 
 const useStyles = makeStyles({
 	table: {
@@ -156,6 +157,8 @@ export function ViewResultEntryTable(props) {
 
 	const [compareDisabled, setCompareDisabled] = React.useState(true);
 	const [compareItems, setCompareItems] = React.useState({});
+	const [compareItemNames, setCompareItemNames] = React.useState([]);
+
 	// list all the widgets from workflow definition
 	const datawolfWorkflowConfig = useSelector((state) => state.config.datawolfWorkflowConfig);
 	const datawolfConfig = useSelector((state) => state.config.datawolfConfig);
@@ -212,9 +215,6 @@ export function ViewResultEntryTable(props) {
 		});
 	}, [executions, expandId]);
 
-	// if flipping pages or changing page rows; reset the compare items
-	useEffect(() => {setCompareItems({});}, [rowsPerPage, page]);
-
 	useEffect(() => {
 		// Only allow two item to be compared
 		Object.keys(compareItems).length === 2 ? setCompareDisabled(false) : setCompareDisabled(true);
@@ -239,15 +239,21 @@ export function ViewResultEntryTable(props) {
 		setPage(0);
 	};
 
-	const handleChecked = (event) => {
+	const handleChecked = (event, id, title) => {
 		// If the checkbox is checked, add/update the item in the state
 		if (event.target.checked) {
-			setCompareItems(prevState => ({ ...prevState, [event.target.name]: event.target.checked }));
+			setCompareItems(prevState => ({ ...prevState, [id]: true }));
+			setCompareItemNames(prevState => ({ ...prevState, [title]: true }));
 		} else {
 			// If the checkbox is unchecked, create a copy of the state without the item
 			setCompareItems(prevState => {
 				const newState = { ...prevState }; // Copy the existing state
-				delete newState[event.target.name]; // Remove the item corresponding to the unchecked checkbox
+				delete newState[id]; // Remove the item corresponding to the unchecked checkbox
+				return newState;
+			});
+			setCompareItemNames(prevState => {
+				const newState = { ...prevState }; // Copy the existing state
+				delete newState[title]; // Remove the item corresponding to the unchecked checkbox
 				return newState;
 			});
 		}
@@ -271,473 +277,492 @@ export function ViewResultEntryTable(props) {
 	const classes = useStyles();
 
 	return (
-		<TableContainer>
-			{/* {console.log(widgetList)} */}
-			<Table className={classes.table} size="small" aria-label="a dense table">
-				<TableHead>
-					<TableRow className={classes.tableHeaderRow} key="hdrRow">
-						<TableCell
-							className={classes.tableHeaderCell}
-							key="checkbox"
-						/>
-						{fieldNames.map((fieldName) => {
-							return (
-								<TableCell
-									className={classes.tableHeaderCell}
-									key={fieldName["columnName"]}
-									sortDirection={orderBy === fieldName["columnName"] ? order : false}
-								>
-									<TableSortLabel
-										active={orderBy === fieldName["columnName"]}
-										direction={orderBy === fieldName["columnName"] ? order : "asc"}
-										onClick={createSortHandler(fieldName["columnName"])}
-									>
-										{fieldName["prettyName"]}
-									</TableSortLabel>
-								</TableCell>
-							);
-						})}
-						{/*TODO implement expending*/}
-						<TableCell className={classes.tableHeaderCell} key="dot" />
-					</TableRow>
-				</TableHead>
-				<TableBody>
-					{stableSort(executions, getComparator(order, orderBy))
-						.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-						.map((execution) => {
-							return (
-								<>
-									<TableRow
-										className={compareItems.hasOwnProperty(execution.id) && compareItems[execution.id] ?
-											classes.tableBodyRowChecked : classes.tableBodyRow} key={execution["id"]}>
-										<TableCell key={`${execution["id"]}-checkbox`} align="right">
-											<Checkbox
-												onChange={handleChecked}
-												name={execution.id}
-												checked={compareItems.hasOwnProperty(execution.id) ?
-													compareItems[execution.id] : false}
-											/>
-										</TableCell>
-										{fieldNames.map((fieldName, idx) => {
-											if (fieldName["columnName"] === "finalStatus") {
-												return (
-													<TableCell key={`${execution["id"]}-${idx}`}>
-														{(() => {
-															if (execution["finalStatus"].toLowerCase() === "finished") {
-																return (
-																	<p className={classes.statusFinished}>
-																		{execution[fieldName["columnName"]]}
-																	</p>
-																);
-															} else if (
-																execution["finalStatus"].toLowerCase() === "waiting" ||
-                                                            execution["finalStatus"].toLowerCase() === "queued"
-															) {
-																return (
-																	<p className={classes.statusWaiting}>
-																		{execution[fieldName["columnName"]]}
-																	</p>
-																);
-															} else if (
-																execution["finalStatus"].toLowerCase() === "failed" ||
-                                                            execution["finalStatus"].toLowerCase() === "aborted"
-															) {
-																return (
-																	<p className={classes.statusUnsuccess}>
-																		{execution[fieldName["columnName"]]}
-																	</p>
-																);
-															} else if (
-																execution["finalStatus"].toLowerCase() === "running"
-															) {
-																return (
-																	<p className={classes.statusRunning}>
-																		{execution[fieldName["columnName"]]}
-																	</p>
-																);
-															} else {
-																return <p>{execution[fieldName["columnName"]]}</p>;
-															}
-														})()}
-													</TableCell>
-												);
-											} else if (fieldName["columnName"] === "date") {
-												return (
-													<TableCell
-														key={`${execution["id"]}-${idx}`}
-														className={
-															idx === 0
-																? classes.firstTableBodyCell
-																: classes.tableBodyCell
-														}
-													>
-														{parseDateTime(execution[fieldName["columnName"]])}
-													</TableCell>
-												);
-											} else {
-												return (
-													<TableCell
-														key={`${execution["id"]}-${idx}`}
-														className={
-															idx === 0
-																? classes.firstTableBodyCell
-																: classes.tableBodyCell
-														}
-													>
-														{fieldName["columnName"] === "creator" &&
-                                                    execution[fieldName["columnName"]] &&
-                                                    "firstName" in execution[fieldName["columnName"]] &&
-                                                    "lastName" in execution[fieldName["columnName"]]
-															? `${execution[fieldName["columnName"]].firstName}
-														${execution[fieldName["columnName"]].lastName}`
-															: execution[fieldName["columnName"]]}
-													</TableCell>
-												);
-											}
-										})}
-										<TableCell className={classes.tableBodyCell} key={`${execution["id"]}-unfold`}>
-											{execution["id"] === expandId && execution["id"] !== collapseId ? (
-												<IconButton
-													aria-label="unfold"
-													onClick={() => {
-														setCollapseId(execution["id"]);
-														setExpandId("");
-													}}
-												>
-													<UnfoldLess />
-												</IconButton>
-											) : (
-												<IconButton
-													aria-label="unfold"
-													onClick={() => {
-														setExpandId(execution["id"]);
-														setCollapseId("");
-													}}
-												>
-													<UnfoldMoreIcon />
-												</IconButton>
-											)}
-										</TableCell>
-									</TableRow>
-									{execution["id"] === expandId && execution["id"] !== collapseId ? (
-										<>
-											{/* {console.log(execution)} */}
-											{/*resilience metrics*/}
-											{widgetList.includes("CGE") &&
-                                        widgetList.includes("PopDislocation") &&
-                                        widgetList.includes("BldgFunctionality") ? (
-													<TableRow
-														className={classes.subBodyRow}
-														key={`${execution["id"]}-resilience-metrics`}
-													>
-														<TableCell
-															colSpan={7}
-															key={`${execution["id"]}-resilience-metrics-title`}
-														>
-															<Link
-																color="primary"
-																onClick={() => {
-																	preview(execution["id"], "ResilienceMetrics");
-																}}
-																className={
-																	resMatricsReadiness
-																		? classes.clickableLink
-																		: classes.clickableLinkDisabled
-																}
-															>
-                                                        Resilience Metrics
-															</Link>
-														</TableCell>
-													</TableRow>
-												) : (
-													<></>
-												)}
-											{/*EPF damage*/}
-											{widgetList.includes("PoleDamage") ? (
-												<TableRow
-													className={classes.subBodyRow}
-													key={`${execution["id"]}-epf-pole`}
-												>
-													<TableCell colSpan={7} key={`${execution["id"]}-epf-pole-title`}>
-														<Link
-															color="primary"
-															onClick={() => {
-																preview(execution["id"], "PoleDamage");
-															}}
-															className={
-																epfPoleDmgReadiness
-																	? classes.clickableLink
-																	: classes.clickableLinkDisabled
-															}
-														>
-                                                        Pole Damage (Electrical Power Network)
-														</Link>
-													</TableCell>
-												</TableRow>
-											) : (
-												<></>
-											)}
-											{widgetList.includes("SubstationDamage") ? (
-												<TableRow
-													className={classes.subBodyRow}
-													key={`${execution["id"]}-epf-substation`}
-												>
-													<TableCell
-														colSpan={7}
-														key={`${execution["id"]}-epf-substation-title`}
-													>
-														<Link
-															color="primary"
-															onClick={() => {
-																preview(execution["id"], "SubstationDamage");
-															}}
-															className={
-																epfSubDmgReadiness
-																	? classes.clickableLink
-																	: classes.clickableLinkDisabled
-															}
-														>
-                                                        Substation Damage (Electrical Power Network)
-														</Link>
-													</TableCell>
-												</TableRow>
-											) : (
-												<></>
-											)}
-											{/*building damage*/}
-											{widgetList.includes("BldgDamage") ? (
-												<TableRow
-													className={classes.subBodyRow}
-													key={`${execution["id"]}-bldg-dmg`}
-												>
-													<TableCell colSpan={7} key={`${execution["id"]}-bldg-dmg-title`}>
-														<Link
-															color="primary"
-															onClick={() => {
-																preview(execution["id"], "BldgDamage");
-															}}
-															className={
-																bldgDmgReadiness
-																	? classes.clickableLink
-																	: classes.clickableLinkDisabled
-															}
-														>
-                                                        Building Damage
-														</Link>
-													</TableCell>
-												</TableRow>
-											) : (
-												<></>
-											)}
-
-											{/*mcs*/}
-											{widgetList.includes("BldgMCS") ? (
-												<TableRow className={classes.subBodyRow} key={`${execution["id"]}-mcs`}>
-													<TableCell colSpan={7} key={`${execution["id"]}-mcs-title`}>
-														<Link
-															color="primary"
-															onClick={() => {
-																preview(execution["id"], "BldgMCS");
-															}}
-															className={
-																bldgFailReadiness
-																	? classes.clickableLink
-																	: classes.clickableLinkDisabled
-															}
-														>
-                                                        Building Functionality (without Electrical Power Dependency)
-														</Link>
-													</TableCell>
-												</TableRow>
-											) : (
-												<></>
-											)}
-											{/*bldg functionality*/}
-											{widgetList.includes("BldgFunctionality") ? (
-												<TableRow
-													className={classes.subBodyRow}
-													key={`${execution["id"]}-bldg-functionality`}
-												>
-													<TableCell
-														colSpan={7}
-														key={`${execution["id"]}-bldg-functionality-title`}
-													>
-														<Link
-															color="primary"
-															onClick={() => {
-																preview(execution["id"], "BldgFunctionality");
-															}}
-															className={
-																bldgFuncReadiness
-																	? classes.clickableLink
-																	: classes.clickableLinkDisabled
-															}
-														>
-                                                        Building Functionality (with Electrical Power Dependency)
-														</Link>
-													</TableCell>
-												</TableRow>
-											) : (
-												<></>
-											)}
-											{/*Sector Shocks*/}
-											{widgetList.includes("SectorShocks") ? (
-												<TableRow
-													className={classes.subBodyRow}
-													key={`${execution["id"]}-sector-shocks`}
-												>
-													<TableCell
-														colSpan={7}
-														key={`${execution["id"]}-sector-shocks-title`}
-													>
-														<Link
-															color="primary"
-															onClick={() => {
-																preview(execution["id"], "SectorShocks");
-															}}
-															className={
-																sectorShockReadiness
-																	? classes.clickableLink
-																	: classes.clickableLinkDisabled
-															}
-														>
-                                                        Capital Shocks
-														</Link>
-													</TableCell>
-												</TableRow>
-											) : (
-												<></>
-											)}
-											{/*CGE*/}
-											{widgetList.includes("CGE") ? (
-												<TableRow className={classes.subBodyRow} key={`${execution["id"]}-cge`}>
-													<TableCell colSpan={7} key={`${execution["id"]}-cge-title`}>
-														<Link
-															color="primary"
-															onClick={() => {
-																preview(execution["id"], "CGE");
-															}}
-															className={
-																cgeReadiness
-																	? classes.clickableLink
-																	: classes.clickableLinkDisabled
-															}
-														>
-                                                        Economic Prediction Model (Computable General Equilibrium)
-														</Link>
-													</TableCell>
-												</TableRow>
-											) : (
-												<></>
-											)}
-											{/*population dislocation*/}
-											{widgetList.includes("PopDislocation") ? (
-												<TableRow
-													className={classes.subBodyRow}
-													key={`${execution["id"]}-popdislocation`}
-												>
-													<TableCell
-														colSpan={7}
-														key={`${execution["id"]}-popdislocation-title`}
-													>
-														<Link
-															color="primary"
-															onClick={() => {
-																preview(execution["id"], "PopDislocation");
-															}}
-															className={
-																popDislReadiness
-																	? classes.clickableLink
-																	: classes.clickableLinkDisabled
-															}
-														>
-                                                        Population Dislocation
-														</Link>
-													</TableCell>
-												</TableRow>
-											) : (
-												<></>
-											)}
-											{/*Housing Recover*/}
-											{widgetList.includes("HHS") ? (
-												<TableRow className={classes.subBodyRow} key={`${execution["id"]}-HHS`}>
-													<TableCell colSpan={7} key={`${execution["id"]}-HHS-title`}>
-														<Link
-															color="primary"
-															onClick={() => {
-																preview(execution["id"], "HHS");
-															}}
-															className={
-																hhrsReadiness
-																	? classes.clickableLink
-																	: classes.clickableLinkDisabled
-															}
-														>
-                                                        Housing Recovery
-														</Link>
-													</TableCell>
-												</TableRow>
-											) : (
-												<></>
-											)}
-
-											{/*Logs: Only allow the admin to see the logs*/}
-											{/*Always show logs*/}
-											{widgetList.includes("Log") && isAdmin(globalConfig.hostname) ? (
-												<TableRow className={classes.subBodyRow} key={`${execution["id"]}-Log`}>
-													<TableCell colSpan={7} key={`${execution["id"]}-Log-title`}>
-														<Link
-															color="primary"
-															onClick={() => {
-																preview(execution["id"], "Log");
-															}}
-															className={classes.clickableLink}
-														>
-                                                        Logs
-														</Link>
-													</TableCell>
-												</TableRow>
-											) : (
-												<></>
-											)}
-										</>
-									) : (
-										<></>
-									)}
-								</>
-							);
-						})}
-					{emptyRows > 0 && (
-						<TableRow
-							style={{
-								height: 53 * emptyRows
-							}}
-						>
-							<TableCell colSpan={7} />
-						</TableRow>
-					)}
-				</TableBody>
-			</Table>
-			<Box className="inputGroup" style={{ height: "auto", textAlign: "center" }}>
+		<>
+			<Box display="flex" justifyContent="space-between">
+				{
+					compareItemNames ?
+						<Box display="flex" style={{ float: "right" }}>
+							<Box>
+								<IncoreTitle style={{ display: "inline" }}>
+                                        Compare Analyses A:&nbsp;
+									<Typography style={{ display: "inline", color: "#00619D", fontWeight: 500 }}>
+										{Object.keys(compareItemNames).at(0) ?? "[ ]"}
+									</Typography> and B:&nbsp;
+									<Typography style={{ display: "inline", color: "#00619D", fontWeight: 500 }}>
+										{Object.keys(compareItemNames).at(1) ?? "[ ]"}
+									</Typography>
+								</IncoreTitle>
+							</Box>
+						</Box>:<></>}
 				<Button
 					variant="contained"
 					color="primary"
 					onClick={handleCompareButtonClick}
 					disabled={compareDisabled}
 					classes={{ root: classes.compareButton }}
+					style={{ float: "left" }}
 				>
                     COMPARE TWO SCENARIOS
 				</Button>
 			</Box>
-			<TablePagination
-				rowsPerPageOptions={[5, 10, 25]}
-				component="div"
-				count={executions.length}
-				rowsPerPage={rowsPerPage}
-				page={page}
-				onChangePage={handleChangePage}
-				onChangeRowsPerPage={handleChangeRowsPerPage}
-			/>
-		</TableContainer>
+			<TableContainer>
+				{/* {console.log(widgetList)} */}
+				<Table className={classes.table} size="small" aria-label="a dense table">
+					<TableHead>
+						<TableRow className={classes.tableHeaderRow} key="hdrRow">
+							<TableCell
+								className={classes.tableHeaderCell}
+								key="checkbox"
+							/>
+							{fieldNames.map((fieldName) => {
+								return (
+									<TableCell
+										className={classes.tableHeaderCell}
+										key={fieldName["columnName"]}
+										sortDirection={orderBy === fieldName["columnName"] ? order : false}
+									>
+										<TableSortLabel
+											active={orderBy === fieldName["columnName"]}
+											direction={orderBy === fieldName["columnName"] ? order : "asc"}
+											onClick={createSortHandler(fieldName["columnName"])}
+										>
+											{fieldName["prettyName"]}
+										</TableSortLabel>
+									</TableCell>
+								);
+							})}
+							{/*TODO implement expending*/}
+							<TableCell className={classes.tableHeaderCell} key="dot" />
+						</TableRow>
+					</TableHead>
+					<TableBody>
+						{stableSort(executions, getComparator(order, orderBy))
+							.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+							.map((execution) => {
+								return (
+									<>
+										<TableRow
+											className={compareItems.hasOwnProperty(execution.id) && compareItems[execution.id] ?
+												classes.tableBodyRowChecked : classes.tableBodyRow} key={execution["id"]}>
+											<TableCell key={`${execution["id"]}-checkbox`} align="right">
+												<Checkbox
+													onChange={(event) =>
+														handleChecked(event, execution.id, execution["title"])}
+													id={execution.id}
+													checked={compareItems.hasOwnProperty(execution.id) ? compareItems[execution.id] : false}
+													disabled={execution["finalStatus"].toLowerCase() != "finished"}
+												/>
+											</TableCell>
+											{fieldNames.map((fieldName, idx) => {
+												if (fieldName["columnName"] === "finalStatus") {
+													return (
+														<TableCell key={`${execution["id"]}-${idx}`}>
+															{(() => {
+																if (execution["finalStatus"].toLowerCase() === "finished") {
+																	return (
+																		<p className={classes.statusFinished}>
+																			{execution[fieldName["columnName"]]}
+																		</p>
+																	);
+																} else if (
+																	execution["finalStatus"].toLowerCase() === "waiting" ||
+                                                            execution["finalStatus"].toLowerCase() === "queued"
+																) {
+																	return (
+																		<p className={classes.statusWaiting}>
+																			{execution[fieldName["columnName"]]}
+																		</p>
+																	);
+																} else if (
+																	execution["finalStatus"].toLowerCase() === "failed" ||
+                                                            execution["finalStatus"].toLowerCase() === "aborted"
+																) {
+																	return (
+																		<p className={classes.statusUnsuccess}>
+																			{execution[fieldName["columnName"]]}
+																		</p>
+																	);
+																} else if (
+																	execution["finalStatus"].toLowerCase() === "running"
+																) {
+																	return (
+																		<p className={classes.statusRunning}>
+																			{execution[fieldName["columnName"]]}
+																		</p>
+																	);
+																} else {
+																	return <p>{execution[fieldName["columnName"]]}</p>;
+																}
+															})()}
+														</TableCell>
+													);
+												} else if (fieldName["columnName"] === "date") {
+													return (
+														<TableCell
+															key={`${execution["id"]}-${idx}`}
+															className={
+																idx === 0
+																	? classes.firstTableBodyCell
+																	: classes.tableBodyCell
+															}
+														>
+															{parseDateTime(execution[fieldName["columnName"]])}
+														</TableCell>
+													);
+												} else {
+													return (
+														<TableCell
+															key={`${execution["id"]}-${idx}`}
+															className={
+																idx === 0
+																	? classes.firstTableBodyCell
+																	: classes.tableBodyCell
+															}
+														>
+															{fieldName["columnName"] === "creator" &&
+                                                    execution[fieldName["columnName"]] &&
+                                                    "firstName" in execution[fieldName["columnName"]] &&
+                                                    "lastName" in execution[fieldName["columnName"]]
+																? `${execution[fieldName["columnName"]].firstName}
+														${execution[fieldName["columnName"]].lastName}`
+																: execution[fieldName["columnName"]]}
+														</TableCell>
+													);
+												}
+											})}
+											<TableCell className={classes.tableBodyCell} key={`${execution["id"]}-unfold`}>
+												{execution["id"] === expandId && execution["id"] !== collapseId ? (
+													<IconButton
+														aria-label="unfold"
+														onClick={() => {
+															setCollapseId(execution["id"]);
+															setExpandId("");
+														}}
+													>
+														<UnfoldLess />
+													</IconButton>
+												) : (
+													<IconButton
+														aria-label="unfold"
+														onClick={() => {
+															setExpandId(execution["id"]);
+															setCollapseId("");
+														}}
+													>
+														<UnfoldMoreIcon />
+													</IconButton>
+												)}
+											</TableCell>
+										</TableRow>
+										{execution["id"] === expandId && execution["id"] !== collapseId ? (
+											<>
+												{/* {console.log(execution)} */}
+												{/*resilience metrics*/}
+												{widgetList.includes("CGE") &&
+                                        widgetList.includes("PopDislocation") &&
+                                        widgetList.includes("BldgFunctionality") ? (
+														<TableRow
+															className={classes.subBodyRow}
+															key={`${execution["id"]}-resilience-metrics`}
+														>
+															<TableCell
+																colSpan={7}
+																key={`${execution["id"]}-resilience-metrics-title`}
+															>
+																<Link
+																	color="primary"
+																	onClick={() => {
+																		preview(execution["id"], "ResilienceMetrics");
+																	}}
+																	className={
+																		resMatricsReadiness
+																			? classes.clickableLink
+																			: classes.clickableLinkDisabled
+																	}
+																>
+                                                        Resilience Metrics
+																</Link>
+															</TableCell>
+														</TableRow>
+													) : (
+														<></>
+													)}
+												{/*EPF damage*/}
+												{widgetList.includes("PoleDamage") ? (
+													<TableRow
+														className={classes.subBodyRow}
+														key={`${execution["id"]}-epf-pole`}
+													>
+														<TableCell colSpan={7} key={`${execution["id"]}-epf-pole-title`}>
+															<Link
+																color="primary"
+																onClick={() => {
+																	preview(execution["id"], "PoleDamage");
+																}}
+																className={
+																	epfPoleDmgReadiness
+																		? classes.clickableLink
+																		: classes.clickableLinkDisabled
+																}
+															>
+                                                        Pole Damage (Electrical Power Network)
+															</Link>
+														</TableCell>
+													</TableRow>
+												) : (
+													<></>
+												)}
+												{widgetList.includes("SubstationDamage") ? (
+													<TableRow
+														className={classes.subBodyRow}
+														key={`${execution["id"]}-epf-substation`}
+													>
+														<TableCell
+															colSpan={7}
+															key={`${execution["id"]}-epf-substation-title`}
+														>
+															<Link
+																color="primary"
+																onClick={() => {
+																	preview(execution["id"], "SubstationDamage");
+																}}
+																className={
+																	epfSubDmgReadiness
+																		? classes.clickableLink
+																		: classes.clickableLinkDisabled
+																}
+															>
+                                                        Substation Damage (Electrical Power Network)
+															</Link>
+														</TableCell>
+													</TableRow>
+												) : (
+													<></>
+												)}
+												{/*building damage*/}
+												{widgetList.includes("BldgDamage") ? (
+													<TableRow
+														className={classes.subBodyRow}
+														key={`${execution["id"]}-bldg-dmg`}
+													>
+														<TableCell colSpan={7} key={`${execution["id"]}-bldg-dmg-title`}>
+															<Link
+																color="primary"
+																onClick={() => {
+																	preview(execution["id"], "BldgDamage");
+																}}
+																className={
+																	bldgDmgReadiness
+																		? classes.clickableLink
+																		: classes.clickableLinkDisabled
+																}
+															>
+                                                        Building Damage
+															</Link>
+														</TableCell>
+													</TableRow>
+												) : (
+													<></>
+												)}
+
+												{/*mcs*/}
+												{widgetList.includes("BldgMCS") ? (
+													<TableRow className={classes.subBodyRow} key={`${execution["id"]}-mcs`}>
+														<TableCell colSpan={7} key={`${execution["id"]}-mcs-title`}>
+															<Link
+																color="primary"
+																onClick={() => {
+																	preview(execution["id"], "BldgMCS");
+																}}
+																className={
+																	bldgFailReadiness
+																		? classes.clickableLink
+																		: classes.clickableLinkDisabled
+																}
+															>
+                                                        Building Functionality (without Electrical Power Dependency)
+															</Link>
+														</TableCell>
+													</TableRow>
+												) : (
+													<></>
+												)}
+												{/*bldg functionality*/}
+												{widgetList.includes("BldgFunctionality") ? (
+													<TableRow
+														className={classes.subBodyRow}
+														key={`${execution["id"]}-bldg-functionality`}
+													>
+														<TableCell
+															colSpan={7}
+															key={`${execution["id"]}-bldg-functionality-title`}
+														>
+															<Link
+																color="primary"
+																onClick={() => {
+																	preview(execution["id"], "BldgFunctionality");
+																}}
+																className={
+																	bldgFuncReadiness
+																		? classes.clickableLink
+																		: classes.clickableLinkDisabled
+																}
+															>
+                                                        Building Functionality (with Electrical Power Dependency)
+															</Link>
+														</TableCell>
+													</TableRow>
+												) : (
+													<></>
+												)}
+												{/*Sector Shocks*/}
+												{widgetList.includes("SectorShocks") ? (
+													<TableRow
+														className={classes.subBodyRow}
+														key={`${execution["id"]}-sector-shocks`}
+													>
+														<TableCell
+															colSpan={7}
+															key={`${execution["id"]}-sector-shocks-title`}
+														>
+															<Link
+																color="primary"
+																onClick={() => {
+																	preview(execution["id"], "SectorShocks");
+																}}
+																className={
+																	sectorShockReadiness
+																		? classes.clickableLink
+																		: classes.clickableLinkDisabled
+																}
+															>
+                                                        Capital Shocks
+															</Link>
+														</TableCell>
+													</TableRow>
+												) : (
+													<></>
+												)}
+												{/*CGE*/}
+												{widgetList.includes("CGE") ? (
+													<TableRow className={classes.subBodyRow} key={`${execution["id"]}-cge`}>
+														<TableCell colSpan={7} key={`${execution["id"]}-cge-title`}>
+															<Link
+																color="primary"
+																onClick={() => {
+																	preview(execution["id"], "CGE");
+																}}
+																className={
+																	cgeReadiness
+																		? classes.clickableLink
+																		: classes.clickableLinkDisabled
+																}
+															>
+                                                        Economic Prediction Model (Computable General Equilibrium)
+															</Link>
+														</TableCell>
+													</TableRow>
+												) : (
+													<></>
+												)}
+												{/*population dislocation*/}
+												{widgetList.includes("PopDislocation") ? (
+													<TableRow
+														className={classes.subBodyRow}
+														key={`${execution["id"]}-popdislocation`}
+													>
+														<TableCell
+															colSpan={7}
+															key={`${execution["id"]}-popdislocation-title`}
+														>
+															<Link
+																color="primary"
+																onClick={() => {
+																	preview(execution["id"], "PopDislocation");
+																}}
+																className={
+																	popDislReadiness
+																		? classes.clickableLink
+																		: classes.clickableLinkDisabled
+																}
+															>
+                                                        Population Dislocation
+															</Link>
+														</TableCell>
+													</TableRow>
+												) : (
+													<></>
+												)}
+												{/*Housing Recover*/}
+												{widgetList.includes("HHS") ? (
+													<TableRow className={classes.subBodyRow} key={`${execution["id"]}-HHS`}>
+														<TableCell colSpan={7} key={`${execution["id"]}-HHS-title`}>
+															<Link
+																color="primary"
+																onClick={() => {
+																	preview(execution["id"], "HHS");
+																}}
+																className={
+																	hhrsReadiness
+																		? classes.clickableLink
+																		: classes.clickableLinkDisabled
+																}
+															>
+                                                        Housing Recovery
+															</Link>
+														</TableCell>
+													</TableRow>
+												) : (
+													<></>
+												)}
+
+												{/*Logs: Only allow the admin to see the logs*/}
+												{/*Always show logs*/}
+												{widgetList.includes("Log") && isAdmin(globalConfig.hostname) ? (
+													<TableRow className={classes.subBodyRow} key={`${execution["id"]}-Log`}>
+														<TableCell colSpan={7} key={`${execution["id"]}-Log-title`}>
+															<Link
+																color="primary"
+																onClick={() => {
+																	preview(execution["id"], "Log");
+																}}
+																className={classes.clickableLink}
+															>
+                                                        Logs
+															</Link>
+														</TableCell>
+													</TableRow>
+												) : (
+													<></>
+												)}
+											</>
+										) : (
+											<></>
+										)}
+									</>
+								);
+							})}
+						{emptyRows > 0 && (
+							<TableRow
+								style={{
+									height: 53 * emptyRows
+								}}
+							>
+								<TableCell colSpan={7} />
+							</TableRow>
+						)}
+					</TableBody>
+				</Table>
+				<TablePagination
+					rowsPerPageOptions={[5, 10, 25]}
+					component="div"
+					count={executions.length}
+					rowsPerPage={rowsPerPage}
+					page={page}
+					onChangePage={handleChangePage}
+					onChangeRowsPerPage={handleChangeRowsPerPage}
+				/>
+			</TableContainer>
+		</>
 	);
 }
