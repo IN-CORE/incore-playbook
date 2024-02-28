@@ -58,43 +58,37 @@ const Map = (props) => {
 	const { children, id, className, allowBuildingSelection } = props;
 	const classes = useStyles();
 
-	let columnOrder = [];
-
 	const [selectedBuilding, setSelectedBuilding] = React.useState(null);
 	const [loading, setLoading] = React.useState(false);
-
-	if (allowBuildingSelection && selectedBuilding) {
-		columnOrder = Object.keys(selectedBuilding);
-	}
 
 	const fallbackContainer = React.useRef();
 
 	const mapRef = React.useRef();
 
-	var markerStyle = new Style({
-		image: new CircleStyle({
-			radius: 7,
-			fill: new Fill({ color: "black" }),
-			stroke: new Stroke({
-				color: "white",
-				width: 2
-			})
-		})
-	});
+	// var markerStyle = new Style({
+	// 	image: new CircleStyle({
+	// 		radius: 7,
+	// 		fill: new Fill({ color: "black" }),
+	// 		stroke: new Stroke({
+	// 			color: "white",
+	// 			width: 2
+	// 		})
+	// 	})
+	// });
 
-	var markerFeature = new Feature({
-		id: "marker",
-		visible: true
-	});
+	// var markerFeature = new Feature({
+	// 	id: "marker",
+	// 	visible: true
+	// });
 
-	var vectorSource = new VectorSource({
-		features: [markerFeature]
-	});
+	// var vectorSource = new VectorSource({
+	// 	features: [markerFeature]
+	// });
 
-	var markerLayer = new VectorLayer({
-		title: "BuildingPointMarker",
-		source: vectorSource
-	});
+	// var markerLayer = new VectorLayer({
+	// 	title: "BuildingPointMarker",
+	// 	source: vectorSource
+	// });
 
 	React.useEffect(() => {
 		const {
@@ -159,7 +153,7 @@ const Map = (props) => {
 			const damageLayer = damageLayerGrp.getLayers().getArray()[0];
 			const damageLayerSource = damageLayer.getSource();
 
-			map.addLayer(markerLayer);
+			// map.addLayer(markerLayer);
 
 			map.on("singleclick", (evt) => {
 				// clear out the previous marker if any
@@ -179,26 +173,24 @@ const Map = (props) => {
 						.then((response) => response.json())
 						.then((json) => {
 							let bldg = json.features;
+							// var markerGeometry = new Point(coordinate);
 							if (bldg.length > 0) {
-								console.log(bldg[0].geometry.coordinates);
-							}
-							var markerGeometry = new Point(coordinate);
-							if (bldg.length > 0) {
-								markerFeature.setGeometry(markerGeometry);
+								// TODO: add a marker to the building
+								// markerFeature.setGeometry(markerGeometry);
 								// markerFeature.setStyle(markerStyle);
 
 								setSelectedBuilding(bldg[0].properties);
 							} else if (bldg.length === 0) {
-								markerFeature.setGeometry(undefined);
-								markerFeature.setStyle(undefined);
+								// markerFeature.setGeometry(undefined);
+								// markerFeature.setStyle(undefined);
 								setSelectedBuilding(null);
 							}
 							setLoading(false);
 						});
 				} else {
 					setSelectedBuilding(null);
-					markerFeature.setStyle(null);
-					markerFeature.setGeometry(undefined);
+					// markerFeature.setStyle(null);
+					// markerFeature.setGeometry(undefined);
 				}
 			});
 
