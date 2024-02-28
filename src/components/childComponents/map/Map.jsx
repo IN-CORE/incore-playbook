@@ -182,29 +182,20 @@ const Map = (props) => {
 							var markerGeometry = new Point(coordinate);
 							if (bldg.length > 0) {
 								markerFeature.setGeometry(markerGeometry);
-								// markerFeature.setStyle(markerStyle);
+								markerFeature.setStyle(markerStyle);
 
 								setSelectedBuilding(bldg[0].properties);
 							} else if (bldg.length === 0) {
 								markerFeature.setGeometry(undefined);
 								markerFeature.setStyle(undefined);
 								setSelectedBuilding(null);
-								// vectorSource.clear();
-								// vectorSource.addFeature(
-								// 	new Feature({
-								// 		id: "marker",
-								// 		visible: false
-								// 	})
-								// );
 							}
-							// }
 							setLoading(false);
 						});
 				} else {
 					setSelectedBuilding(null);
 					markerFeature.setStyle(null);
 					markerFeature.setGeometry(undefined);
-					// vectorSource.clear();
 				}
 			});
 
@@ -268,7 +259,8 @@ const Map = (props) => {
 					<LoadingOverlay active={loading} spinner text="Loading...">
 						<Table className={classes.table} size="small" aria-label="a dense table">
 							<TableHead>
-								<TableRow
+							{/* keeping this here to be added back in the future */}
+								{/* <TableRow
 								>
 									<TableCell
 										align="center"
@@ -281,15 +273,6 @@ const Map = (props) => {
 												markerFeature.setStyle(new Style(null));
 												markerFeature.set("visible", false);
 												setSelectedBuilding(null);
-												// vectorSource.clear();
-												// console.log("clearing marker");
-												// vectorSource.addFeature(
-												// 	new Feature({
-												// 		id: "marker",
-												// 		visible: false,
-												// 		style: new Style(null)
-												// 	})
-												// );
 											}}
 										>
 											<CloseIcon fontSize="inherit" />
@@ -298,7 +281,7 @@ const Map = (props) => {
 									<TableCell
 										align="center"
 									></TableCell>
-								</TableRow>
+								</TableRow> */}
 								<TableRow
 									key="hdrRow"
 								>
