@@ -1,26 +1,27 @@
 import React from "react";
-import PoleDamage from "./PoleDamage";
+import PoleDamageCompare from "./PoleDamageCompare";
 import BldgMCS from "./BldgMCS";
-import BldgFunctionality from "./BldgFunctionality";
 import CGECompare from "./CGECompare";
-import PopDislocation from "./PopDislocation";
+import PopDislocationCompare from "./PopDislocationCompare";
 import ResilienceMetrics from "./ResilienceMetrics";
 import SubstationDamage from "./SubstationDamage";
-import SectorShocks from "./SectorShocks";
+import SectorShocksCompare from "./SectorShocksCompare";
 import BldgDamageCompare from "./BldgDamageCompare";
 import HHSCompare from "./HHSCompare";
+import BldgMCSCompare from "./BldgMCSCompare";
+import BldgFunctionalityCompare from "./BldgFunctionalityCompare";
 
 export const registeredCompareWidgets = {
 	BldgDamage: <BldgDamageCompare />,
-	PoleDamage: <PoleDamage />,
-	BldgMCS: <BldgMCS />,
-	BldgFunctionality: <BldgFunctionality />,
+	BldgMCS: <BldgMCSCompare />,
+	BldgFunctionality: <BldgFunctionalityCompare />,
+	PoleDamage: <PoleDamageCompare />,
 	// eslint-disable-next-line react/jsx-pascal-case
 	CGE: <CGECompare />,
-	PopDislocation: <PopDislocation />,
+	PopDislocation: <PopDislocationCompare />,
 	ResilienceMetrics: <ResilienceMetrics />,
 	SubstationDamage: <SubstationDamage />,
 	// eslint-disable-next-line react/jsx-pascal-case
 	HHS: <HHSCompare />,
-	SectorShocks: <SectorShocks />
+	SectorShocks: <SectorShocksCompare />
 };

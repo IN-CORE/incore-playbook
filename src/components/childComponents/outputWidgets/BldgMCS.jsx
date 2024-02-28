@@ -20,7 +20,6 @@ import { useSelector } from "react-redux";
 import { applyTransform } from "ol/extent";
 import { downloadOutputFile, getOutputFileContent, getOutputFileContentJSON } from "../../../utils/datawolf";
 import { basicLayers, generateLayers } from "../../../utils/map";
-import { downloadDataset } from "../../../utils/dataset";
 import { IncoreButtonText } from "../../styledComponents/IncoreButtonText";
 import GetAppIcon from "@material-ui/icons/GetApp";
 import { downloadImg } from "../../../utils/image";
@@ -109,7 +108,7 @@ export default function BldgMCS(props) {
 				<Box className="previewTitleSection">
 					<Typography className="previewTitle">{selectedExecutionName}</Typography>
 					<Typography className="previewTitle">
-						Select Data: Building Functionality without Interdependency
+                        Select Data: Building Functionality without Interdependency
 					</Typography>
 				</Box>
 
@@ -132,7 +131,7 @@ export default function BldgMCS(props) {
 						{mcsBldgSummaryTableContent && mcsBldgSummaryTableContent["by_category"] ? (
 							<Grid item style={{ minWidth: "804px" }}>
 								<Typography className="previewSubTitle">
-									Anticipated Performance - Building Clusters
+                                    Anticipated Performance - Building Clusters
 								</Typography>
 								<Box style={{ marginTop: "38px" }}>
 									<FunctionalityGraph categorySummary={mcsBldgSummaryTableContent["by_category"]} />
@@ -169,7 +168,7 @@ export default function BldgMCS(props) {
 						<FunctionalityTable funcResults={mcsBldgSummaryTableContent} />
 					</Box>
 				) : (
-					<>/</>
+					<></>
 				)}
 			</DialogContent>
 			<DialogActions>
@@ -179,13 +178,13 @@ export default function BldgMCS(props) {
 					}}
 					startIcon={<CameraAltIcon />}
 				>
-					Image
+                    Image
 				</IncoreButtonText>
 				<IncoreButtonText onClick={download} startIcon={<GetAppIcon />}>
-					Data
+                    Data
 				</IncoreButtonText>
 				<IncoreButtonText onClick={handlePreviewClose} startIcon={<CloseIcon />}>
-					Close
+                    Close
 				</IncoreButtonText>
 			</DialogActions>
 		</Dialog>
