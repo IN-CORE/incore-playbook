@@ -18,6 +18,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Add CGE Table Comparison [#291](https://github.com/IN-CORE/incore-playbook/issues/291)
 - Add Sector Shock Bar Chart Comparison [#305](https://github.com/IN-CORE/incore-playbook/issues/305)
 - Add Population Dislocation comparison tables [#292](https://github.com/IN-CORE/incore-playbook/issues/292)
+- Add Resilience Metrics comparisons [#322](https://github.com/IN-CORE/incore-playbook/issues/322)
 - Building Damage Comparison Table [#307](https://github.com/IN-CORE/incore-playbook/issues/307)
 - Refactor compare selection improvement [#298](https://github.com/IN-CORE/incore-playbook/issues/298)
 
