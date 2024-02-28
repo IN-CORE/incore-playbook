@@ -81,7 +81,6 @@ const Map = (props) => {
 			const damageLayerSource = damageLayer.getSource();
 
 			map.on("singleclick", (evt) => {
-				// console.log(evt.coordinate);
 				let coordinate = map.getCoordinateFromPixel(evt.pixel);
 				const view = map.getView();
 				const viewProjection = view.getProjection();
