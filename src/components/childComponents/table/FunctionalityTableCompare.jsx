@@ -39,11 +39,11 @@ const useStyles = makeStyles({
 		fontSize: "15px",
 		letterSpacing: 0,
 		lineHeight: "18px",
-		border: "1px solid rgba(46,91,255,0.08)"
+		border: "1px solid rgba(46,91,255,0.08)",
+		textAlign: "center"
 	},
 	tableBodyCategoryCell: {
 		height: "21px",
-		width: "209px",
 		color: "#2E384D",
 		fontSize: "18px",
 		fontWeight: 500,
@@ -54,14 +54,11 @@ const useStyles = makeStyles({
 	},
 	tableBodyClusterCell: {
 		height: "21px",
-		width: "440px",
 		color: "#2E384D",
 		fontSize: "15px",
 		letterSpacing: 0,
 		lineHeight: "18px",
 		border: "1px solid rgba(46,91,255,0.08)"
-		// display: "flex",
-		// width: "100%"
 	}
 });
 
