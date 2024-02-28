@@ -1,7 +1,7 @@
 import React from "react";
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
-import { diff, round } from "../../../utils/common";
+import { diff, percentDiff, round } from "../../../utils/common";
 import CompareArrowsIcon from "@material-ui/icons/CompareArrows";
 
 const tableColumnHead = {
@@ -162,13 +162,13 @@ export function DislocationResultsTableCompare(props) {
 							</TableCell>
 							<TableCell className={classes.tableDataCellDislocated}>
 								{"households" in resultsJsonA["dislocated"] && "households" in resultsJsonB["dislocated"]
-									? diff(resultsJsonA["dislocated"]["households"], resultsJsonB["dislocated"]["households"]).toLocaleString("en-US")
-									: diff(resultsJsonA["dislocated"]["population"], resultsJsonB["dislocated"]["population"]).toLocaleString("en-US")}
+									? diff(resultsJsonB["dislocated"]["households"], resultsJsonA["dislocated"]["households"])
+									: diff(resultsJsonB["dislocated"]["population"], resultsJsonA["dislocated"]["population"])}
 							</TableCell>
 							<TableCell className={classes.tableDataCellDislocated}>
 								{"percent_of_households" in resultsJsonA["dislocated"]
-									? round(diff(resultsJsonA["dislocated"]["percent_of_households"], resultsJsonB["dislocated"]["percent_of_households"]), 1)
-									: round(diff(resultsJsonA["dislocated"]["percent_of_population"], resultsJsonB["dislocated"]["percent_of_population"]), 1)}
+									? percentDiff(resultsJsonB["dislocated"]["percent_of_households"], resultsJsonA["dislocated"]["percent_of_households"])
+									: percentDiff(resultsJsonB["dislocated"]["percent_of_population"], resultsJsonA["dislocated"]["percent_of_population"])}
                                 %
 							</TableCell>
 						</TableRow>
@@ -213,18 +213,19 @@ export function DislocationResultsTableCompare(props) {
 							</TableCell>
 							<TableCell className={classes.tableDataCell}>
 								{"households" in resultsJsonA["not_dislocated"] && "households" in resultsJsonB["not_dislocated"]
-									? diff(resultsJsonA["not_dislocated"]["households"],
-										resultsJsonB["not_dislocated"]["households"]).toLocaleString("en-US")
-									: diff(resultsJsonA["not_dislocated"]["population"],
-										resultsJsonB["not_dislocated"]["population"]).toLocaleString("en-US")}
+									? diff(resultsJsonB["not_dislocated"]["households"],
+										resultsJsonA["not_dislocated"]["households"])
+									: diff(resultsJsonB["not_dislocated"]["population"],
+										resultsJsonA["not_dislocated"]["population"])
+								}
 							</TableCell>
 							<TableCell className={classes.tableDataCell}>
 								{"percent_of_households" in resultsJsonA["not_dislocated"] && "percent_of_households" in resultsJsonB["not_dislocated"]
-									? round(diff(resultsJsonA["not_dislocated"]["percent_of_households"],
-										resultsJsonB["not_dislocated"]["percent_of_households"]), 1)
-									: round(diff(resultsJsonA["not_dislocated"]["percent_of_population"],
-										resultsJsonB["not_dislocated"]["percent_of_population"]), 1)}
-                                %
+									? percentDiff(resultsJsonB["not_dislocated"]["percent_of_households"],
+										resultsJsonA["not_dislocated"]["percent_of_households"])
+									: percentDiff(resultsJsonB["not_dislocated"]["percent_of_population"],
+										resultsJsonA["not_dislocated"]["percent_of_population"])
+								}
 							</TableCell>
 						</TableRow>
 
@@ -258,8 +259,9 @@ export function DislocationResultsTableCompare(props) {
 							</TableCell>
 							<TableCell className={classes.tableDataCell}>
 								{"households" in resultsJsonA["total"] && "households" in resultsJsonB["total"]
-									? diff(resultsJsonA["total"]["households"], resultsJsonB["total"]["households"]).toLocaleString("en-US")
-									: diff(resultsJsonA["total"]["population"], resultsJsonB["total"]["population"]).toLocaleString("en-US")}
+									? diff(resultsJsonB["total"]["households"], resultsJsonA["total"]["households"])
+									: diff(resultsJsonB["total"]["population"], resultsJsonA["total"]["population"])
+								}
 							</TableCell>
 							<TableCell className={classes.tableDataCell} />
 						</TableRow>

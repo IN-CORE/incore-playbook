@@ -2,7 +2,7 @@ import React from "react";
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@material-ui/core";
 import FormLabel from "@material-ui/core/FormLabel";
 import { makeStyles } from "@material-ui/core/styles";
-import { diff, round } from "../../../utils/common";
+import { diff, percentDiff, round } from "../../../utils/common";
 import { IncoreRadioGroup } from "../form/IncoreRadioGroup";
 import CompareArrowsIcon from "@material-ui/icons/CompareArrows";
 
@@ -247,13 +247,13 @@ export function HuaResultsTableCompare(props) {
 												<CompareArrowsIcon style={{ transform: "rotate(90deg)" }} />
 											</TableCell>
 											<TableCell className={classes.tableDataCellRed} key={`2_${idx.toString()}`}>
-												{diff(resA["household_dislocated"], resB["household_dislocated"]).toLocaleString("en-US")}
+												{diff(resB["household_dislocated"], resA["household_dislocated"])}
 											</TableCell>
 											<TableCell className={classes.tableDataCell} key={`3_${idx.toString()}`}>
-												{diff(resA["total_households"], resB["total_households"]).toLocaleString("en-US")}
+												{diff(resB["total_households"], resA["total_households"])}
 											</TableCell>
 											<TableCell className={classes.tableDataCell} key={`4_${idx.toString()}`}>
-												{round(diff(resA["percent_household_dislocated"], resB["percent_household_dislocated"]), 1)}%
+												{percentDiff(resB["percent_household_dislocated"], resA["percent_household_dislocated"])}
 											</TableCell>
 										</TableRow>
 									</>
