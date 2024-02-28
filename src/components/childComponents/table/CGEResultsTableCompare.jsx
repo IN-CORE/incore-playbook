@@ -200,12 +200,16 @@ export function CGEResultsTableCompare(props) {
 						</TableRow>
 
 						<TableRow>
-							<TableCell className={classes.tableRowHead}> Difference between before and
-                                after </TableCell>
+							<TableCell className={classes.tableRowHead}> Difference between A and B </TableCell>
 							{headers.slice(1).map((header, idx) => {
 								return (
 									<TableCell className={classes.tableDataCell} key={idx}>
-										{((afterJsonA[header] !== undefined) && (afterJsonB[header] !== undefined)) ? round(afterJsonA[header] - afterJsonB[header], 1) : "-"}
+										{afterJsonA[header] === undefined && afterJsonB[header] === undefined ?
+											"-" :
+											round(afterJsonA[header] - afterJsonB[header], 1) > 0 ?
+												`+${round(afterJsonA[header] - afterJsonB[header], 1)}` :
+												round(afterJsonA[header] - afterJsonB[header], 1)
+										}
 									</TableCell>
 								);
 							})}
