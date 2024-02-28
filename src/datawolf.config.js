@@ -716,6 +716,23 @@ const datawolfWorkflowConfig = {
 				]
 			},
 			{
+				"title": "retrofit strategies",
+				"description": "retrofit_strategy",
+				"variableName": "selectedRetrofitStrategyId",
+				"widget": "RetrofitStrategies",
+				"hidden": false,
+				"defaultValue": "",
+				"parametersMap": [
+					{
+						"paramId": "3091cc60-86cf-44ce-9dcf-2ef2b227aab4",
+						"parameters": {
+							"step": "BuildingDamage",
+							"title": "retrofit_strategy"
+						}
+					}
+				]
+			},
+			{
 				"title": "Electric Power Substations",
 				"description": "epfs",
 				"variableName": "selectedSubstationId",
@@ -1052,23 +1069,6 @@ const datawolfWorkflowConfig = {
 						"parameters": {
 							"step": "BuildingDamage",
 							"title": "dfr3_mapping_set"
-						}
-					}
-				]
-			},
-			{
-				"title": "retrofit_strategy",
-				"description": "retrofit_strategy",
-				"variableName": "selectedRetrofitStrategyId",
-				"widget": "RetrofitStrategies",
-				"hidden": false,
-				"defaultValue": "",
-				"parametersMap": [
-					{
-						"paramId": "3091cc60-86cf-44ce-9dcf-2ef2b227aab4",
-						"parameters": {
-							"step": "BuildingDamage",
-							"title": "retrofit_strategy"
 						}
 					}
 				]
@@ -2132,15 +2132,15 @@ const datawolfWorkflowConfig = {
 	"metadata": []
 };
 
-let datawolfConfigGalveston = {};
+let datawolfConfig = {};
 let hostname = process.env.INCORE_REMOTE_HOSTNAME || "";
 
 // use default
-datawolfConfigGalveston["hostname"] = hostname;
-datawolfConfigGalveston["executionGetURL"] = `${hostname}/datawolf/workflows/${datawolfWorkflowConfig["wfId"]}/executions`;
-datawolfConfigGalveston["executionPostURL"] = `${hostname}/datawolf/executions`;
-datawolfConfigGalveston["datasetBaseURL"] = `${hostname}/datawolf/datasets`;
-datawolfConfigGalveston["datawolfPersonsDetail"] = `${hostname}/datawolf/persons?email=`;
-datawolfConfigGalveston["retreiveTimeInterval"] = 10 * 1000;
+datawolfConfig["hostname"] = hostname;
+datawolfConfig["executionGetURL"] = `${hostname}/datawolf/workflows/${datawolfWorkflowConfig["wfId"]}/executions`;
+datawolfConfig["executionPostURL"] = `${hostname}/datawolf/executions`;
+datawolfConfig["datasetBaseURL"] = `${hostname}/datawolf/datasets`;
+datawolfConfig["datawolfPersonsDetail"] = `${hostname}/datawolf/persons?email=`;
+datawolfConfig["retreiveTimeInterval"] = 10 * 1000;
 
-export { datawolfWorkflowConfig, datawolfConfigGalveston };
+export { datawolfWorkflowConfig, datawolfConfig };

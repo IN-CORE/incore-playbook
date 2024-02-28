@@ -52,8 +52,8 @@ globals["resetPasswordURL"] = "https://identity.ncsa.illinois.edu/reset";
 globals["inputDatasetTypes"] = {
 	buildings: [
 		{
-			// type: "ergo:buildingInventoryVer6",
-			type: "ergo:buildingInventoryVer7",
+			type: "ergo:buildingInventoryVer6",
+			// type: "ergo:buildingInventoryVer7",
 			format: "shapefile",
 			num: 20,
 			isSocioeconomics: false,
