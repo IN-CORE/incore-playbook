@@ -9,7 +9,7 @@ export const MapContext = React.createContext({});
 
 const Map = (props) => {
 	const { children, id, className } = props;
-
+	const [viewResolution, setViewResolution] = React.useState(0);
 	const fallbackContainer = React.useRef();
 
 	const mapRef = React.useRef();
@@ -32,7 +32,7 @@ const Map = (props) => {
 			setSelectedBuilding,
 			setLoading
 		} = props;
-		
+
 
 		const map = new OLMap({
 			target: mapContainer || fallbackContainer.current,
@@ -73,49 +73,50 @@ const Map = (props) => {
 		let damageLayerGrp = null;
 		layers.forEach((layerGrp) => {
 			if (layerGrp.getProperties().title === "Damage") {
-				damageLayerGrp = layerGrp
+				damageLayerGrp = layerGrp;
 			}
-		})
+		});
 
 		if ((damageLayerGrp !== null) && allowBuildingSelection && setSelectedBuilding !== undefined) {
-			const view  = map.getView();
-			const viewProjection = view.getProjection();
-    		const viewResolution = view.getResolution();
+			const damageLayer = damageLayerGrp.getLayers().getArray()[0];
+			const damageLayerSource = damageLayer.getSource();
 
-			const damageLayer = damageLayerGrp.getLayers().getArray()[0]
-			const damageLayerSource = damageLayer.getSource()
+			map.on("singleclick", (evt) => {
+				// console.log(evt.coordinate);
+				let coordinate = map.getCoordinateFromPixel(evt.pixel);
+				const view = map.getView();
+				const viewProjection = view.getProjection();
+				const viewResolution = view.getResolution();
 
-			map.on('singleclick', (evt) => {
-				console.log(evt.coordinate)
 				const url = damageLayerSource.getFeatureInfoUrl(
-				  	evt.coordinate,
-				  	viewResolution,
-				  	viewProjection,
-				  	{'INFO_FORMAT': 'application/json', 'FEATURE_COUNT': 50}
+					coordinate,
+					viewResolution,
+					viewProjection,
+					{ "INFO_FORMAT": "application/json", "FEATURE_COUNT": 1 }
 				);
 				if (url) {
-					setLoading(true)
-				  	fetch(url)
+					setLoading(true);
+					fetch(url)
 						.then((response) => response.json())
 						.then((json) => {
-							setSelectedBuilding(json.features[0].properties)
-							setLoading(false)
+							setSelectedBuilding(json.features[0].properties);
+							setLoading(false);
 						});
 				} else {
-					setSelectedBuilding(null)
+					setSelectedBuilding(null);
 				}
 			});
 
-			map.on('pointermove', (evt) => {
+			map.on("pointermove", (evt) => {
 				if (evt.dragging) {
 					return;
 				}
 				const data = damageLayer.getData(evt.pixel);
 				const hit = data && data[3] > 0; // transparent pixels have zero for data[3]
-				map.getTargetElement().style.cursor = hit ? 'pointer' : '';
+				map.getTargetElement().style.cursor = hit ? "pointer" : "";
 			});
 		} else if (allowBuildingSelection && setSelectedBuilding === undefined) {
-			console.error("If allowBuildingSelection is true, setSelectedBuilding must be passed as a prop.")
+			console.error("If allowBuildingSelection is true, setSelectedBuilding must be passed as a prop.");
 		}
 
 		if (updateMap) {
