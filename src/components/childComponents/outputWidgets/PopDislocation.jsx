@@ -40,6 +40,8 @@ export default function PopDislocation(props) {
 	const [populationDislocationDownload, setPopulationDislocationDownload] = useState();
 	const [selectedBuilding, setSelectedBuilding] = useState(null);
 
+	const [loading, setLoading] = React.useState(false);
+
 	// print container
 	const printRef = useRef();
 
@@ -148,6 +150,7 @@ export default function PopDislocation(props) {
 							layerSwitcherOptions={{}}
 							allowBuildingSelection={true}
 							setSelectedBuilding={setSelectedBuilding}
+							setLoading={setLoading}
 						/>
 					</Container>
 				) : (
@@ -155,7 +158,7 @@ export default function PopDislocation(props) {
 				)}
 
 				{selectedBuilding !== null ? 
-					<BuildingInfoTable buildingData={selectedBuilding} setSelectedBuilding={setSelectedBuilding}/> : (
+					<BuildingInfoTable buildingData={selectedBuilding} setSelectedBuilding={setSelectedBuilding} loading={loading} /> : (
 						<Box>
 							<Typography className="previewSubTitle">
 								Please click on a building to view its information

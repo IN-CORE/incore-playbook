@@ -48,6 +48,8 @@ export default function BldgFunctionality(props) {
 	const [damageLayers, setDamageLayers] = useState(null);
 	const [selectedBuilding, setSelectedBuilding] = useState(null);
 
+	const [loading, setLoading] = React.useState(false);
+
 	// print container
 	const printRef = useRef();
 
@@ -153,6 +155,7 @@ export default function BldgFunctionality(props) {
 							layerSwitcherOptions={{}}
 							allowBuildingSelection={true}
 							setSelectedBuilding={setSelectedBuilding}
+							setLoading={setLoading}
 						/>
 					</Container>
 				) : (
@@ -160,7 +163,7 @@ export default function BldgFunctionality(props) {
 				)}
 
 				{selectedBuilding !== null ? 
-					<BuildingInfoTable buildingData={selectedBuilding} setSelectedBuilding={setSelectedBuilding}/> : (
+					<BuildingInfoTable buildingData={selectedBuilding} setSelectedBuilding={setSelectedBuilding} loading={loading} /> : (
 						<Box>
 							<Typography className="previewSubTitle">
 								Please click on a building to view its information
