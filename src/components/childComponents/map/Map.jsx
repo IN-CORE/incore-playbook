@@ -9,7 +9,6 @@ export const MapContext = React.createContext({});
 
 const Map = (props) => {
 	const { children, id, className } = props;
-	const [viewResolution, setViewResolution] = React.useState(0);
 	const fallbackContainer = React.useRef();
 
 	const mapRef = React.useRef();
