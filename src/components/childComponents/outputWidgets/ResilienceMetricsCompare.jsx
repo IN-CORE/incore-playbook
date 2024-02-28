@@ -59,15 +59,15 @@ export default function ResilienceMetricsCompare(props) {
 	const globalConfig = useSelector((state) => state.config.globalConfig);
 
 	const [currTabIndex, setCurrTabIndex] = useState(0);
-	const [totalDislTableContents, setTotalDislTableContents] = useState(null);
-	const [dislocationByRaceContents, setDislocationByRaceContents] = useState(null);
-	const [dislocationByTenureContents, setDislocationByTenureContents] = useState(null);
-	const [dislocationByIncomeContents, setDislocationByIncomeContents] = useState(null);
-	const [dislocationByHousingTypeContents, setDislocationByHousingTypeContents] = useState(null);
-	const [cgeHouseholdIncomeContents, setCgeHouseholdIncomeContents] = useState(null);
-	const [cgeDomesticSupplyContents, setCgeDomesticSupplyContents] = useState(null);
-	const [cgeEmploymentContents, setCgeEmploymentContents] = useState(null);
-	const [bldgFuncSummaryTableContents, setBldgFuncSummaryTableContents] = useState(null);
+	const [totalDislTableContents, setTotalDislTableContents] = useState({});
+	const [dislocationByRaceContents, setDislocationByRaceContents] = useState({});
+	const [dislocationByTenureContents, setDislocationByTenureContents] = useState({});
+	const [dislocationByIncomeContents, setDislocationByIncomeContents] = useState({});
+	const [dislocationByHousingTypeContents, setDislocationByHousingTypeContents] = useState({});
+	const [cgeHouseholdIncomeContents, setCgeHouseholdIncomeContents] = useState({});
+	const [cgeDomesticSupplyContents, setCgeDomesticSupplyContents] = useState({});
+	const [cgeEmploymentContents, setCgeEmploymentContents] = useState({});
+	const [bldgFuncSummaryTableContents, setBldgFuncSummaryTableContents] = useState({});
 	const [cgeHhIncomeRegion, setCgeHhIncomeRegion] = useState(globalConfig["allowedRegions"] ? globalConfig["allowedRegions"][0].value : null);
 	const [cgeDomesticSupplyRegion, setCgeDomesticSupplyRegion] = useState(globalConfig["allowedRegions"] ? globalConfig["allowedRegions"][0].value : null);
 	const [cgeEmploymentRegion, setCgeEmploymentRegion] = useState(globalConfig["allowedRegions"] ? globalConfig["allowedRegions"][0].value : null);
@@ -89,55 +89,55 @@ export default function ResilienceMetricsCompare(props) {
 				datawolfDatasetConfigItems.map(async (datawolfDatasetConfigItem) => {
 					const vName = datawolfDatasetConfigItem.datasets.variableName;
 					if (vName === "totalDislTableContent") {
-						const content = await getOutputFileContentJSON(datawolfConfig, executionItems, datawolfDatasetConfigItem.datasetId);
+						const content = await getOutputFileContentJSON(datawolfConfig, executionItems[i], datawolfDatasetConfigItem.datasetId);
 						setTotalDislTableContents(prevState => ({
 							...prevState,
 							[comparisonKey[i]]: content
 						}));
 					} else if (vName === "dislocationByRaceContent") {
-						const content = await getOutputFileContentJSON(datawolfConfig, executionItems, datawolfDatasetConfigItem.datasetId);
+						const content = await getOutputFileContentJSON(datawolfConfig, executionItems[i], datawolfDatasetConfigItem.datasetId);
 						setDislocationByRaceContents(prevState => ({
 							...prevState,
 							[comparisonKey[i]]: content
 						}));
 					} else if (vName === "dislocationByTenureContent") {
-						const content = await getOutputFileContentJSON(datawolfConfig, executionItems, datawolfDatasetConfigItem.datasetId);
+						const content = await getOutputFileContentJSON(datawolfConfig, executionItems[i], datawolfDatasetConfigItem.datasetId);
 						setDislocationByTenureContents(prevState => ({
 							...prevState,
 							[comparisonKey[i]]: content
 						}));
 					} else if (vName === "dislocationByIncomeContent") {
-						const content = await getOutputFileContentJSON(datawolfConfig, executionItems, datawolfDatasetConfigItem.datasetId);
+						const content = await getOutputFileContentJSON(datawolfConfig, executionItems[i], datawolfDatasetConfigItem.datasetId);
 						setDislocationByIncomeContents(prevState => ({
 							...prevState,
 							[comparisonKey[i]]: content
 						}));
 					} else if (vName === "dislocationByHousingTypeContent") {
-						const content = await getOutputFileContentJSON(datawolfConfig, executionItems, datawolfDatasetConfigItem.datasetId);
+						const content = await getOutputFileContentJSON(datawolfConfig, executionItems[i], datawolfDatasetConfigItem.datasetId);
 						setDislocationByHousingTypeContents(prevState => ({
 							...prevState,
 							[comparisonKey[i]]: content
 						}));
 					} else if (vName === "cgeHouseholdIncomeContent") {
-						const content = await getOutputFileContentJSON(datawolfConfig, executionItems, datawolfDatasetConfigItem.datasetId);
+						const content = await getOutputFileContentJSON(datawolfConfig, executionItems[i], datawolfDatasetConfigItem.datasetId);
 						setCgeHouseholdIncomeContents(prevState => ({
 							...prevState,
 							[comparisonKey[i]]: content
 						}));
 					} else if (vName === "cgeDomesticSupplyContent") {
-						const content = await getOutputFileContentJSON(datawolfConfig, executionItems, datawolfDatasetConfigItem.datasetId);
+						const content = await getOutputFileContentJSON(datawolfConfig, executionItems[i], datawolfDatasetConfigItem.datasetId);
 						setCgeDomesticSupplyContents(prevState => ({
 							...prevState,
 							[comparisonKey[i]]: content
 						}));
 					} else if (vName === "cgeEmploymentContent") {
-						const content = await getOutputFileContentJSON(datawolfConfig, executionItems, datawolfDatasetConfigItem.datasetId);
+						const content = await getOutputFileContentJSON(datawolfConfig, executionItems[i], datawolfDatasetConfigItem.datasetId);
 						setCgeEmploymentContents(prevState => ({
 							...prevState,
 							[comparisonKey[i]]: content
 						}));
 					} else if (vName === "bldgFuncSummaryTableContent") {
-						const content = await getOutputFileContentJSON(datawolfConfig, executionItems, datawolfDatasetConfigItem.datasetId);
+						const content = await getOutputFileContentJSON(datawolfConfig, executionItems[i], datawolfDatasetConfigItem.datasetId);
 						setBldgFuncSummaryTableContents(prevState => ({
 							...prevState,
 							[comparisonKey[i]]: content
@@ -193,16 +193,16 @@ export default function ResilienceMetricsCompare(props) {
 							<Box className={classes.tableEntry}>
 								<HuaResultsTableCompare
 									resultsJsonA={{
-										income: dislocationByIncomeContents[0],
-										race: dislocationByRaceContents[0],
-										tenure: dislocationByTenureContents[0],
-										housingType: dislocationByHousingTypeContents[0]
+										income: dislocationByIncomeContents[comparisonKey[0]],
+										race: dislocationByRaceContents[comparisonKey[0]],
+										tenure: dislocationByTenureContents[comparisonKey[0]],
+										housingType: dislocationByHousingTypeContents[comparisonKey[0]]
 									}}
 									resultsJsonB={{
-										income: dislocationByIncomeContents[1],
-										race: dislocationByRaceContents[1],
-										tenure: dislocationByTenureContents[1],
-										housingType: dislocationByHousingTypeContents[1]
+										income: dislocationByIncomeContents[comparisonKey[1]],
+										race: dislocationByRaceContents[comparisonKey[1]],
+										tenure: dislocationByTenureContents[comparisonKey[1]],
+										housingType: dislocationByHousingTypeContents[comparisonKey[1]]
 									}}
 									isMetrics={true}
 								/>
@@ -212,13 +212,13 @@ export default function ResilienceMetricsCompare(props) {
 						)}
 				{
 					Object.keys(totalDislTableContents).length >= 2 &&
-                    totalDislTableContents[0]["population_dislocation_in_total"] &&
-                    totalDislTableContents[1]["population_dislocation_in_total"]
+                    totalDislTableContents[comparisonKey[0]]["population_dislocation_in_total"] &&
+                    totalDislTableContents[comparisonKey[1]]["population_dislocation_in_total"]
 						? (
 							<Box className={classes.tableEntry}>
 								<DislocationResultsTableCompare
-									resultsJsonA={totalDislTableContents[0]["population_dislocation_in_total"]}
-									resultsJsonB={totalDislTableContents[1]["population_dislocation_in_total"]}
+									resultsJsonA={totalDislTableContents[comparisonKey[0]]["population_dislocation_in_total"]}
+									resultsJsonB={totalDislTableContents[comparisonKey[1]]["population_dislocation_in_total"]}
 									headers={["POPULATION", "% of POPULATION"]}
 									title={"Population Dislocation - in Total"}
 									isMetrics={true}
@@ -229,13 +229,13 @@ export default function ResilienceMetricsCompare(props) {
 						)}
 				{
 					Object.keys(totalDislTableContents).length >= 2 &&
-                    totalDislTableContents[0]["household_dislocation_in_total"] &&
-                    totalDislTableContents[1]["household_dislocation_in_total"]
+                    totalDislTableContents[comparisonKey[0]]["household_dislocation_in_total"] &&
+                    totalDislTableContents[comparisonKey[1]]["household_dislocation_in_total"]
 						? (
 							<Box className={classes.tableEntry}>
 								<DislocationResultsTableCompare
-									resultsJsonA={totalDislTableContents[0]["household_dislocation_in_total"]}
-									resultsJsonB={totalDislTableContents[1]["household_dislocation_in_total"]}
+									resultsJsonA={totalDislTableContents[comparisonKey[0]]["household_dislocation_in_total"]}
+									resultsJsonB={totalDislTableContents[comparisonKey[1]]["household_dislocation_in_total"]}
 									headers={["HOUSEHOLD", "% of HOUSEHOLD"]}
 									title={"Household Dislocation - in Total"}
 									isMetrics={true}
@@ -261,8 +261,10 @@ export default function ResilienceMetricsCompare(props) {
 								<IncoreRadioGroup options={cgeFilterOptions} value={cgeHhIncomeRegion}
 									handleChange={(e) => { setCgeHhIncomeRegion(e.target.value);}} />
 							</div>
-							<CGEResultsTableCompare resultsJsonA={cgeHouseholdIncomeContents[0]}
-								resultsJsonB={cgeHouseholdIncomeContents[1]} isMetrics={true}
+							<CGEResultsTableCompare
+								resultsJsonArr={[cgeHouseholdIncomeContents[comparisonKey[0]],
+									cgeHouseholdIncomeContents[comparisonKey[1]]]}
+								isMetrics={true}
 								region={cgeHhIncomeRegion} />
 						</Box>
 					) : (
@@ -276,8 +278,10 @@ export default function ResilienceMetricsCompare(props) {
 							</FormLabel>
 							<IncoreRadioGroup options={cgeFilterOptions} value={cgeEmploymentRegion}
 								handleChange={(e) => { setCgeEmploymentRegion(e.target.value);}} />
-							<CGEResultsTableCompare resultsJsonA={cgeEmploymentContents[0]}
-								resultsJsonB={cgeEmploymentContents[1]} isMetrics={true}
+							<CGEResultsTableCompare
+								resultsJsonArr={[cgeEmploymentContents[comparisonKey[0]],
+									cgeEmploymentContents[comparisonKey[1]]]}
+								isMetrics={true}
 								region={cgeEmploymentRegion} />
 						</Box>
 					) : (
@@ -291,8 +295,8 @@ export default function ResilienceMetricsCompare(props) {
 						<IncoreRadioGroup options={cgeFilterOptions} value={cgeDomesticSupplyRegion}
 							handleChange={(e) => { setCgeDomesticSupplyRegion(e.target.value);}} />
 						<CGEResultsTableCompare
-							resultsJsonA={cgeDomesticSupplyContents[0]}
-							resultsJsonB={cgeDomesticSupplyContents[1]}
+							resultsJsonArr={[cgeDomesticSupplyContents[comparisonKey[0]],
+								cgeDomesticSupplyContents[comparisonKey[1]]]}
 							yAxisLegend="Person"
 							isMetrics={true}
 							region={cgeDomesticSupplyRegion}
@@ -312,8 +316,8 @@ export default function ResilienceMetricsCompare(props) {
 				{Object.keys(bldgFuncSummaryTableContents).length >= 2 ? (
 					<Box className={classes.tableEntry}>
 						<Typography className={classes.title}>Count of Functional Buildings</Typography>
-						<FunctionalityTableCompare funcResultsA={bldgFuncSummaryTableContents[0]}
-							funcResultsB={bldgFuncSummaryTableContents[1]} />
+						<FunctionalityTableCompare funcResultsA={bldgFuncSummaryTableContents[comparisonKey[0]]}
+							funcResultsB={bldgFuncSummaryTableContents[comparisonKey[1]]} />
 					</Box>
 				) : (
 					<></>
