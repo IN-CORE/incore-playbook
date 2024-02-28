@@ -2,7 +2,7 @@ import { Box, Grid } from "@material-ui/core";
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { getOutputFileContent, getOutputFileContentJSON } from "../../../utils/datawolf";
-import { basicLayers, generateLayers } from "../../../utils/map";
+import { generateLayers } from "../../../utils/map";
 import { DislocationResultsTableCompare } from "../table/DislocationResultsTableCompare";
 import { HuaResultsTableCompare } from "../table/HuaResultsTableCompare";
 import { comparisonKey } from "../../../globals";
@@ -67,11 +67,11 @@ export default function PopDislocationCompare(props) {
 						const previewLayers = generateLayers(globalConfig, tmpLayerDef, "Population Dislocation");
 						setDamageLayers2(previewLayers);
 					} else if (vName === "totalDislTableContent") {
-						if ( i === 0) {
+						if (i === 0) {
 							setTotalDislTableContentA(
 								await getOutputFileContentJSON(datawolfConfig, executionItems[i], datawolfDatasetConfigItem.datasetId)
 							);
-						} else if ( i === 1 ) {
+						} else if (i === 1) {
 							setTotalDislTableContentB(
 								await getOutputFileContentJSON(datawolfConfig, executionItems[i], datawolfDatasetConfigItem.datasetId)
 							);
@@ -113,26 +113,26 @@ export default function PopDislocationCompare(props) {
 			<Grid container spacing={2} justify="center">
 				<Grid item xs={12} sm={12} md={5} lg={5} xl={5}>
 					{totalDislTableContentA && totalDislTableContentB &&
-					totalDislTableContentA["household_dislocation_in_total"] &&
-					totalDislTableContentB["household_dislocation_in_total"]
+                    totalDislTableContentA["household_dislocation_in_total"] &&
+                    totalDislTableContentB["household_dislocation_in_total"]
 						? (
 							<DislocationResultsTableCompare
 								resultsJsonA={totalDislTableContentA["household_dislocation_in_total"]}
 								resultsJsonB={totalDislTableContentB["household_dislocation_in_total"]}
-								headers={[" ", "HOUSEHOLD", "% of HOUSEHOLD"]}
+								headers={["HOUSEHOLD", "% of HOUSEHOLD"]}
 								title={"Household Dislocation - in Total"}
 							/>
 						) : (
 							<></>
 						)}
 					{totalDislTableContentA && totalDislTableContentB &&
-					totalDislTableContentA["population_dislocation_in_total"] &&
-					totalDislTableContentB["population_dislocation_in_total"]
+                    totalDislTableContentA["population_dislocation_in_total"] &&
+                    totalDislTableContentB["population_dislocation_in_total"]
 						? (
 							<DislocationResultsTableCompare
 								resultsJsonA={totalDislTableContentA["population_dislocation_in_total"]}
 								resultsJsonB={totalDislTableContentB["population_dislocation_in_total"]}
-								headers={[" ", "POPULATION", "% of POPULATION"]}
+								headers={["POPULATION", "% of POPULATION"]}
 								title={"Population Dislocation - in Total"}
 							/>
 						) : (
@@ -141,9 +141,9 @@ export default function PopDislocationCompare(props) {
 				</Grid>
 				<Grid item xs={12} sm={12} md={7} lg={7} xl={7}>
 					{dislocationByIncomeContent &&
-					dislocationByRaceContent &&
-					dislocationByTenureContent &&
-					dislocationByHousingTypeContent ? (
+                    dislocationByRaceContent &&
+                    dislocationByTenureContent &&
+                    dislocationByHousingTypeContent ? (
 							<HuaResultsTableCompare
 								resultsJsonA={{
 									income: dislocationByIncomeContent[comparisonKey[0]],
