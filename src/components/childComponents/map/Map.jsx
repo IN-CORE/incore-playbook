@@ -1,31 +1,100 @@
 import * as React from "react";
-import { useDispatch, useSelector } from "react-redux";
 import { Map as OLMap, View, Feature } from "ol";
 // import {defaults as defaultControls} from "ol/control";
 import Overlay from "ol/Overlay";
 import { Point } from "ol/geom";
 import Style from "ol/style/Style";
-import CircleStyle from 'ol/style/Circle';
-import Fill from 'ol/style/Fill';
+import CircleStyle from "ol/style/Circle";
+import Fill from "ol/style/Fill";
 import Stroke from "ol/style/Stroke";
-import {VectorLayer} from "ol/layer";
+import VectorLayer from "ol/layer/Vector";
 import VectorSource from "ol/source/Vector";
 
+import { makeStyles } from "@material-ui/core/styles";
+import { IconButton, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@material-ui/core";
+import LoadingOverlay from "react-loading-overlay";
+import CloseIcon from "@material-ui/icons/Close";
 
 import LayerSwitcher from "./LayerSwitcher";
-import { setMarkerFeature } from "../../../actions/map";
+
+const useStyles = makeStyles({
+	table: {
+		backgroundColor: "#FFFFFF",
+		minWidth: "265px",
+		maxHeight: "356px",
+		overflowY: "auto"
+	},
+	tableHeaderRow: {
+		height: "34px"
+	},
+	tableHeaderCell: {
+		height: "14px",
+		width: "37px",
+		color: "#FFFFFF",
+		fontSize: "12px",
+		fontWeight: 500,
+		letterSpacing: "1.13px",
+		lineHeight: "14px",
+		textAlign: "center",
+		textTransform: "uppercase"
+	},
+	tableBodyRow: {
+		height: "28px"
+	},
+	tableBodyCell: {
+		height: "21px",
+		width: "123px",
+		color: "#2E384D",
+		fontSize: "15px",
+		letterSpacing: 0,
+		lineHeight: "18px",
+		border: "1px solid rgba(46,91,255,0.08)"
+	}
+});
 
 export const MapContext = React.createContext({});
 
 const Map = (props) => {
-	const { children, id, className } = props;
+	const { children, id, className, allowBuildingSelection } = props;
+	const classes = useStyles();
 
-	const markerFeature = useSelector((state) => state.maps.markerFeature);
-	const dispatch = useDispatch();
+	let columnOrder = [];
+
+	const [selectedBuilding, setSelectedBuilding] = React.useState(null);
+	const [loading, setLoading] = React.useState(false);
+
+	if (allowBuildingSelection && selectedBuilding) {
+		columnOrder = Object.keys(selectedBuilding);
+	}
 
 	const fallbackContainer = React.useRef();
 
 	const mapRef = React.useRef();
+
+	var markerStyle = new Style({
+		image: new CircleStyle({
+			radius: 7,
+			fill: new Fill({ color: "black" }),
+			stroke: new Stroke({
+				color: "white",
+				width: 2
+			})
+		})
+	});
+
+	var markerFeature = new Feature({
+		id: "marker",
+		visible: true
+	});
+
+	var vectorSource = new VectorSource({
+		features: [markerFeature]
+	});
+
+	var markerLayer = new VectorLayer({
+		title: "BuildingPointMarker",
+		source: vectorSource
+	});
 
 	React.useEffect(() => {
 		const {
@@ -41,11 +110,8 @@ const Map = (props) => {
 			layerSwitcherOptions,
 			updateMap,
 			events,
-			allowBuildingSelection,
-			setSelectedBuilding,
-			setLoading
+			allowBuildingSelection
 		} = props;
-
 
 		const map = new OLMap({
 			target: mapContainer || fallbackContainer.current,
@@ -77,7 +143,6 @@ const Map = (props) => {
 			});
 		}
 
-
 		if (layerSwitcherOptions) {
 			const layerSwitcher = new LayerSwitcher(layerSwitcherOptions);
 			map.addControl(layerSwitcher);
@@ -90,65 +155,56 @@ const Map = (props) => {
 			}
 		});
 
-		if ((damageLayerGrp !== null) && allowBuildingSelection && setSelectedBuilding !== undefined) {
+		if (damageLayerGrp !== null && allowBuildingSelection) {
 			const damageLayer = damageLayerGrp.getLayers().getArray()[0];
 			const damageLayerSource = damageLayer.getSource();
-
-			var markerStyle = new Style({
-				image: new CircleStyle({
-					  radius: 7,
-					  fill: new Fill({color: 'black'}),
-					  stroke: new Stroke({
-						color: 'white',
-						width: 2,
-					  }),
-				}),
-			})
-
-			var vectorSource = new VectorSource({
-				features: []
-			});
-			
-			var markerLayer = new VectorLayer({
-				title: "BuildingPointMarker",
-				source: vectorSource
-			});
 
 			map.addLayer(markerLayer);
 
 			map.on("singleclick", (evt) => {
+				// clear out the previous marker if any
+
 				let coordinate = map.getCoordinateFromPixel(evt.pixel);
 				const view = map.getView();
 				const viewProjection = view.getProjection();
 				const viewResolution = view.getResolution();
 
-				var markerGeometry = new Point(coordinate);
-				var markerFeature = new Feature({
-					geometry: markerGeometry,
-					visible: true
+				const url = damageLayerSource.getFeatureInfoUrl(coordinate, viewResolution, viewProjection, {
+					INFO_FORMAT: "application/json",
+					FEATURE_COUNT: 1
 				});
-
-				markerFeature.setStyle(markerStyle);
-
-				const url = damageLayerSource.getFeatureInfoUrl(
-					coordinate,
-					viewResolution,
-					viewProjection,
-					{ "INFO_FORMAT": "application/json", "FEATURE_COUNT": 1 }
-				);
 				if (url) {
 					setLoading(true);
 					fetch(url)
 						.then((response) => response.json())
 						.then((json) => {
-							vectorSource.addFeature(markerFeature);
-							setSelectedBuilding(json.features[0].properties)
-							dispatch(setMarkerFeature(markerFeature));
-							setLoading(false)
+							let bldg = json.features;
+							var markerGeometry = new Point(coordinate);
+							if (bldg.length > 0) {
+								markerFeature.setGeometry(markerGeometry);
+								// markerFeature.setStyle(markerStyle);
+
+								setSelectedBuilding(bldg[0].properties);
+							} else if (bldg.length === 0) {
+								markerFeature.setGeometry(undefined);
+								markerFeature.setStyle(undefined);
+								setSelectedBuilding(null);
+								// vectorSource.clear();
+								// vectorSource.addFeature(
+								// 	new Feature({
+								// 		id: "marker",
+								// 		visible: false
+								// 	})
+								// );
+							}
+							// }
+							setLoading(false);
 						});
 				} else {
 					setSelectedBuilding(null);
-					vectorSource.clear();
+					markerFeature.setStyle(null);
+					markerFeature.setGeometry(undefined);
+					// vectorSource.clear();
 				}
 			});
 
@@ -160,10 +216,7 @@ const Map = (props) => {
 				const hit = data && data[3] > 0; // transparent pixels have zero for data[3]
 				map.getTargetElement().style.cursor = hit ? "pointer" : "";
 			});
-		} else if (allowBuildingSelection && setSelectedBuilding === undefined) {
-			console.error("If allowBuildingSelection is true, setSelectedBuilding must be passed as a prop.");
 		}
-
 
 		if (updateMap) {
 			updateMap(map);
@@ -183,8 +236,117 @@ const Map = (props) => {
 	}, []);
 
 	return (
-		<div id={id} className={`ol-map ${className}`} ref={fallbackContainer}>
-			<MapContext.Provider value={{ map: mapRef.current }}>{children}</MapContext.Provider>
+		<div style={{ position: "relative" }}>
+			<div
+				id={id}
+				style={{ width: "100%", height: "366px" }}
+				className={`ol-map ${className}`}
+				ref={fallbackContainer}
+			>
+				<MapContext.Provider value={{ map: mapRef.current }}>{children}</MapContext.Provider>
+			</div>
+			{allowBuildingSelection && selectedBuilding ? (
+				<TableContainer
+					style={{
+						"position": "absolute",
+						"width": "300px",
+						"maxHeight": "356px",
+						"top": "5px",
+						"left": "30px",
+						"Zindex": 5000,
+						"padding": "5px",
+						"overflow": "scroll",
+						"scrollBehavior": "smooth",
+						"&::-webkit-scrollbar": {
+							display: "none" // Hide the scrollbar for WebKit browsers (Chrome, Safari, Edge, etc.)
+						},
+						"&-ms-overflow-style:": {
+							display: "none" // Hide the scrollbar for IE
+						}
+					}}
+				>
+					<LoadingOverlay active={loading} spinner text="Loading...">
+						<Table className={classes.table} size="small" aria-label="a dense table">
+							<TableHead>
+								<TableRow
+								>
+									<TableCell
+										align="center"
+									>
+										<IconButton
+											aria-label="close"
+											size="small"
+											onClick={() => {
+												markerFeature.setGeometry(undefined);
+												markerFeature.setStyle(new Style(null));
+												markerFeature.set("visible", false);
+												setSelectedBuilding(null);
+												// vectorSource.clear();
+												// console.log("clearing marker");
+												// vectorSource.addFeature(
+												// 	new Feature({
+												// 		id: "marker",
+												// 		visible: false,
+												// 		style: new Style(null)
+												// 	})
+												// );
+											}}
+										>
+											<CloseIcon fontSize="inherit" />
+										</IconButton>
+									</TableCell>
+									<TableCell
+										align="center"
+									></TableCell>
+								</TableRow>
+								<TableRow
+									key="hdrRow"
+								>
+									<TableCell
+										align="center"
+										style={{ backgroundColor: "#EFF2FF", color: "#69707F" }}
+									>
+										Attribute
+									</TableCell>
+									<TableCell
+										align="center"
+										style={{ backgroundColor: "#EFF2FF", color: "#69707F" }}
+									>
+										Value
+									</TableCell>
+								</TableRow>
+							</TableHead>
+							<TableBody>
+								{Object.keys(selectedBuilding).map((colName) => {
+									if (colName === "guid") {
+										return null;
+									}
+									return (
+										<TableRow
+											key={colName}
+										>
+											<TableCell
+												style={{ backgroundColor: "#EFF2FF", color: "#69707F" }}
+											>
+												{colName}
+											</TableCell>
+											<TableCell
+												align="center"
+											>
+												{selectedBuilding[colName] === undefined ||
+												selectedBuilding[colName] === null ||
+												selectedBuilding[colName] === ""
+													? "-"
+													: selectedBuilding[colName]}
+											</TableCell>
+										</TableRow>
+									);
+								})}
+							</TableBody>
+						</Table>
+					</LoadingOverlay>
+				</TableContainer>
+			) : null}
 		</div>
 	);
 };

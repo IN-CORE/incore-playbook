@@ -8,7 +8,6 @@ import { applyTransform } from "ol/extent";
 import { downloadOutputFile, getOutputFileContent } from "../../../utils/datawolf";
 import { basicLayers, generateLayers } from "../../../utils/map";
 import { IncoreButtonText } from "../../styledComponents/IncoreButtonText";
-import { BuildingInfoTable } from "../table/BuildingInfoTable";
 import GetAppIcon from "@material-ui/icons/GetApp";
 import { downloadImg } from "../../../utils/image";
 import CameraAltIcon from "@material-ui/icons/CameraAlt";
@@ -30,9 +29,6 @@ export default function SubstationDamage(props) {
 	const [selectedExecutionName, setSelectedExecutionName] = useState("");
 	const [substationDmgDsResultDownload, setSubstationDmgDsResultDownload] = useState(null);
 	const [damageLayers, setDamageLayers] = useState(null);
-	const [selectedBuilding, setSelectedBuilding] = useState(null);
-
-	const [loading, setLoading] = React.useState(false);
 
 	// print container
 	const printRef = useRef();
@@ -104,21 +100,10 @@ export default function SubstationDamage(props) {
 							layers={[basicLayers, hazardLayers, damageLayers]}
 							layerSwitcherOptions={{}}
 							allowBuildingSelection={true}
-							setSelectedBuilding={setSelectedBuilding}
-							setLoading={setLoading}
 						/>
 					</Container>
 				) : (
 					<></>
-				)}
-
-				{selectedBuilding !== null ? 
-					<BuildingInfoTable buildingData={selectedBuilding} setSelectedBuilding={setSelectedBuilding} loading={loading} /> : (
-						<Box>
-							<Typography className="previewSubTitle">
-								Please click on a building to view its information
-							</Typography>
-						</Box>
 				)}
 
 			</DialogContent>
