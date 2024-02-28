@@ -206,9 +206,9 @@ export function CGEResultsTableCompare(props) {
 									<TableCell className={classes.tableDataCell} key={idx}>
 										{afterJsonA[header] === undefined && afterJsonB[header] === undefined ?
 											"-" :
-											round(afterJsonA[header] - afterJsonB[header], 1) > 0 ?
-												`+${round(afterJsonA[header] - afterJsonB[header], 1)}` :
-												round(afterJsonA[header] - afterJsonB[header], 1)
+											round(afterJsonB[header] - afterJsonA[header], 1) > 0 ?
+												`+${round(afterJsonB[header] - afterJsonA[header], 1)}` :
+												round(afterJsonB[header] - afterJsonA[header], 1)
 										}
 									</TableCell>
 								);
