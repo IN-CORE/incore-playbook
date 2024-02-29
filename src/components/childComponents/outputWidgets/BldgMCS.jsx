@@ -12,7 +12,6 @@ import {
 import CloseIcon from "@material-ui/icons/Close";
 import { ResultSummaryTable } from "../table/ResultSummaryTable";
 import { FunctionalityGraph } from "../graph/FunctionalityGraph";
-import { BuildingInfoTable } from "../table/BuildingInfoTable";
 import Map from "../map/Map";
 import { fromLonLat, getTransform } from "ol/proj";
 import { FunctionalityTable } from "../table/FunctionalityTable";
@@ -46,8 +45,6 @@ export default function BldgMCS(props) {
 	const [mcsBldgSummaryTableContent, setMcsBldgSummaryTableContent] = useState(null);
 	const [mcsBldgFailureProbDownload, setMcsBldgFailureProbDownload] = useState();
 	const [damageLayers, setDamageLayers] = useState(null);
-	const [selectedBuilding, setSelectedBuilding] = useState(null);
-	const [loading, setLoading] = React.useState(false);
 
 	// print container
 	const printRef = useRef();
@@ -160,21 +157,10 @@ export default function BldgMCS(props) {
 							layers={[basicLayers, hazardLayers, damageLayers]}
 							layerSwitcherOptions={{}}
 							allowBuildingSelection={true}
-							setSelectedBuilding={setSelectedBuilding}
-							setLoading={setLoading}
 						/>
 					</Container>
 				) : (
 					<></>
-				)}
-
-				{selectedBuilding !== null ? 
-					<BuildingInfoTable buildingData={selectedBuilding} setSelectedBuilding={setSelectedBuilding} loading={loading} /> : (
-						<Box>
-							<Typography className="previewSubTitle">
-								Please click on a building to view its information
-							</Typography>
-						</Box>
 				)}
 
 				{/*for table*/}
