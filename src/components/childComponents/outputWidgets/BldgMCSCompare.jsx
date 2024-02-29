@@ -1,11 +1,14 @@
-import { Box, Grid } from "@material-ui/core";
+import { Box, Container, Grid } from "@material-ui/core";
 import React, { useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
 import { getOutputFileContent, getOutputFileContentJSON } from "../../../utils/datawolf";
-import { generateLayers } from "../../../utils/map";
+import { createBasicLayers, generateLayers } from "../../../utils/map";
 import { comparisonKey } from "../../../globals";
 import { FunctionalityTableCompare } from "../table/FunctionalityTableCompare";
 import { FunctionalityGraphCompare } from "../graph/FunctionalityGraphCompare";
+import MapCompare from "../map/MapCompare";
+import { applyTransform } from "ol/extent";
+import { fromLonLat, getTransform } from "ol/proj";
 
 export default function BldgMCSCompare(props) {
 	let {
@@ -19,10 +22,16 @@ export default function BldgMCSCompare(props) {
 	const globalConfig = useSelector((state) => state.config.globalConfig);
 
 	const [mcsBldgSummaryTableContents, setMcsBldgSummaryTableContents] = useState({});
-	const [damageLayers, setDamageLayers] = useState(null);
+	const [damageLayersA, setDamageLayersA] = useState(null);
+	const [damageLayersB, setDamageLayersB] = useState(null);
+
+	const basicLayersA = createBasicLayers("Base Maps");
+	const basicLayersB = createBasicLayers("Base Maps");
 
 	// print container
 	const printRef = useRef();
+
+	const mapHeight = 300; // px
 
 	useEffect(() => {
 
@@ -46,10 +55,11 @@ export default function BldgMCSCompare(props) {
 							}
 						];
 						const previewLayers = generateLayers(globalConfig, layerDef);
-						setDamageLayers(prevState => ({
-							...prevState,
-							[comparisonKey[i]]: previewLayers
-						}));
+						if (i === 0) {
+							setDamageLayersA(previewLayers);
+						} else {
+							setDamageLayersB(previewLayers);
+						}
 					} else if (vName === "mcsBldgSummaryTableContent") {
 						const content = await getOutputFileContentJSON(datawolfConfig, executionItems[i], datawolfDatasetConfigItem.datasetId);
 						setMcsBldgSummaryTableContents(prevState => ({
@@ -84,23 +94,27 @@ export default function BldgMCSCompare(props) {
 					}
 				</Grid>
 			</Box>
-			{/*/!*for map*!/*/}
-			{/*{basicLayers && hazardLayers && damageLayers ? (*/}
-			{/*	<Container className="mapContainer" disableGutters>*/}
-			{/*		<Map*/}
-			{/*			className="fillContainer"*/}
-			{/*			zoom={mapConfig.ZOOM}*/}
-			{/*			minZoom={mapConfig.MIN_ZOOM}*/}
-			{/*			maxZoom={mapConfig.MAX_ZOOM}*/}
-			{/*			extent={applyTransform(mapConfig.MAP_BOUNDS, getTransform("EPSG:4326", "EPSG:3857"))}*/}
-			{/*			center={fromLonLat(mapConfig.MAP_CENTER)}*/}
-			{/*			layers={[basicLayers, hazardLayers, damageLayers]}*/}
-			{/*			layerSwitcherOptions={{}}*/}
-			{/*		/>*/}
-			{/*	</Container>*/}
-			{/*) : (*/}
-			{/*	<></>*/}
-			{/*)}*/}
+
+			{/*for map*/}
+			{basicLayersA && basicLayersB && hazardLayers && damageLayersA && damageLayersB ? (
+				<Container className="mapContainer" disableGutters style={{ height: `${mapHeight}px` }}>
+					<MapCompare
+						className="fillContainer"
+						zoom={mapConfig.ZOOM}
+						minZoom={mapConfig.MIN_ZOOM}
+						maxZoom={mapConfig.MAX_ZOOM}
+						extent={applyTransform(mapConfig.MAP_BOUNDS, getTransform("EPSG:4326", "EPSG:3857"))}
+						center={fromLonLat(mapConfig.MAP_CENTER)}
+						layersA={[basicLayersA, hazardLayers[comparisonKey[0]], damageLayersA]}
+						layersB={[basicLayersB, hazardLayers[comparisonKey[1]], damageLayersB]}
+						layerSwitcherOptionsA={{}}
+						layerSwitcherOptionsB={{}}
+						height={mapHeight}
+					/>
+				</Container>
+			) : (
+				<></>
+			)}
 
 			{/*for table*/}
 			{Object.keys(mcsBldgSummaryTableContents).length >= 2 ? (

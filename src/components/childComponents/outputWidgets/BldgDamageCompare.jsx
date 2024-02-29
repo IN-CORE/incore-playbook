@@ -1,13 +1,16 @@
-import { Box } from "@material-ui/core";
+import { Box, Container, Divider } from "@material-ui/core";
 import React, { useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
 import { getOutputFileContent, getOutputFileContentJSON } from "../../../utils/datawolf";
-import { generateLayers } from "../../../utils/map";
+import { createBasicLayers, generateLayers } from "../../../utils/map";
 import { downloadImg } from "../../../utils/image";
 import CameraAltIcon from "@material-ui/icons/CameraAlt";
 import { IncoreButtonText } from "../../styledComponents/IncoreButtonText";
 import { comparisonKey } from "../../../globals";
 import { BldgDamageTableCompare } from "../table/BldgDamageTableCompare";
+import MapCompare from "../map/MapCompare";
+import { applyTransform } from "ol/extent";
+import { fromLonLat, getTransform } from "ol/proj";
 
 export default function BldgDamageCompare(props) {
 	let {
@@ -21,9 +24,15 @@ export default function BldgDamageCompare(props) {
 	const globalConfig = useSelector((state) => state.config.globalConfig);
 
 	const [bldgDmgSummaryTableContents, setBldgDmgSummaryTableContents] = useState({});
-	const [damageLayers, setDamageLayers] = useState({});
+	const [damageLayersA, setDamageLayersA] = useState(null);
+	const [damageLayersB, setDamageLayersB] = useState(null);
 
+	// one layer can only be added to one map, so creating multiple objects is necessary
+	const basicLayersA = createBasicLayers("Base Maps");
+	const basicLayersB = createBasicLayers("Base Maps");
 	const printRef = useRef();
+
+	const mapHeight = 300; // px
 
 	useEffect(() => {
 		const fetchData = async () => {
@@ -46,10 +55,11 @@ export default function BldgDamageCompare(props) {
 							}
 						];
 						const previewLayers = generateLayers(globalConfig, layerDef);
-						setDamageLayers(prevState => ({
-							...prevState,
-							[comparisonKey[i]]: previewLayers
-						}));
+						if (i === 0) {
+							setDamageLayersA(previewLayers);
+						} else {
+							setDamageLayersB(previewLayers);
+						}
 					} else if (vName === "bldgDmgSummaryTableContent") {
 						const content = await getOutputFileContentJSON(datawolfConfig, executionItems[i], datawolfDatasetConfigItem.datasetId);
 						setBldgDmgSummaryTableContents(prevState => ({
@@ -87,28 +97,26 @@ export default function BldgDamageCompare(props) {
 			{/*	<Divider orientation="horizontal" />*/}
 			{/*</Box>*/}
 
-			{/*/!*for map*!/*/}
-			{/*{basicLayers && Object.keys(hazardLayers).length > 0 && Object.keys(damageLayers).length > 0 ? (*/}
-			{/*	Object.keys(hazardLayers).map(key => (*/}
-			{/*		<Container className={`mapContainer-${key}`} disableGutters>*/}
-			{/*			<div className={`mapsWrapper-${key}`}>*/}
-			{/*				<Map*/}
-			{/*					key={`hazard-${key}`}*/}
-			{/*					// className="mapColumn"*/}
-			{/*					zoom={mapConfig.ZOOM}*/}
-			{/*					minZoom={mapConfig.MIN_ZOOM}*/}
-			{/*					maxZoom={mapConfig.MAX_ZOOM}*/}
-			{/*					extent={applyTransform(mapConfig.MAP_BOUNDS, getTransform("EPSG:4326", "EPSG:3857"))}*/}
-			{/*					center={fromLonLat(mapConfig.MAP_CENTER)}*/}
-			{/*					layers={[basicLayers, hazardLayers[key], damageLayers[key]]}*/}
-			{/*					layerSwitcherOptions={{}}*/}
-			{/*				/>*/}
-			{/*			</div>*/}
-			{/*		</Container>*/}
-			{/*	))*/}
-			{/*) : (*/}
-			{/*	<></>*/}
-			{/*)}*/}
+			{/*for map*/}
+			{basicLayersA && basicLayersB && hazardLayers && damageLayersA && damageLayersB ? (
+				<Container className="mapContainer" disableGutters style={{ height: `${mapHeight}px` }}>
+					<MapCompare
+						className="fillContainer"
+						zoom={mapConfig.ZOOM}
+						minZoom={mapConfig.MIN_ZOOM}
+						maxZoom={mapConfig.MAX_ZOOM}
+						extent={applyTransform(mapConfig.MAP_BOUNDS, getTransform("EPSG:4326", "EPSG:3857"))}
+						center={fromLonLat(mapConfig.MAP_CENTER)}
+						layersA={[basicLayersA, hazardLayers[comparisonKey[0]], damageLayersA]}
+						layersB={[basicLayersB, hazardLayers[comparisonKey[1]], damageLayersB]}
+						layerSwitcherOptionsA={{}}
+						layerSwitcherOptionsB={{}}
+						height={mapHeight}
+					/>
+				</Container>
+			) : (
+				<></>
+			)}
 
 			{/*for table*/}
 			{Object.keys(bldgDmgSummaryTableContents).length >= 2 ? (

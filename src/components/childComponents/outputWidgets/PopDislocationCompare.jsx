@@ -1,11 +1,14 @@
-import { Box, Grid } from "@material-ui/core";
+import { Box, Container, Grid } from "@material-ui/core";
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { getOutputFileContent, getOutputFileContentJSON } from "../../../utils/datawolf";
-import { generateLayers } from "../../../utils/map";
+import { basicLayers, createBasicLayers, generateLayers } from "../../../utils/map";
 import { DislocationResultsTableCompare } from "../table/DislocationResultsTableCompare";
 import { HuaResultsTableCompare } from "../table/HuaResultsTableCompare";
 import { comparisonKey } from "../../../globals";
+import MapCompare from "../map/MapCompare";
+import { applyTransform } from "ol/extent";
+import { fromLonLat, getTransform } from "ol/proj";
 
 export default function PopDislocationCompare(props) {
 	let {
@@ -24,8 +27,16 @@ export default function PopDislocationCompare(props) {
 	const [dislocationByTenureContent, setDislocationByTenureContent] = useState(null);
 	const [dislocationByIncomeContent, setDislocationByIncomeContent] = useState(null);
 	const [dislocationByHousingTypeContent, setDislocationByHousingTypeContent] = useState(null);
-	const [damageLayers1, setDamageLayers1] = useState(null);
-	const [damageLayers2, setDamageLayers2] = useState(null);
+	const [damageLayersA1, setDamageLayersA1] = useState(null);
+	const [damageLayersA2, setDamageLayersA2] = useState(null);
+	const [damageLayersB1, setDamageLayersB1] = useState(null);
+	const [damageLayersB2, setDamageLayersB2] = useState(null);
+
+	// one layer can only be added to one map, so creating multiple objects is necessary
+	const basicLayersA = createBasicLayers("Base Maps");
+	const basicLayersB = createBasicLayers("Base Maps");
+
+	const mapHeight = 300; // px
 
 	useEffect(() => {
 		const fetchData = async () => {
@@ -48,7 +59,11 @@ export default function PopDislocationCompare(props) {
 							}
 						];
 						const previewLayers = generateLayers(globalConfig, tmpLayerDef);
-						setDamageLayers1(previewLayers);
+						if (i === 0) {
+							setDamageLayersA1(previewLayers);
+						} else {
+							setDamageLayersB1(previewLayers);
+						}
 					} else if (vName === "popdislHeatmapINCOREId") {
 						const popdislHeatmapINCOREId = await getOutputFileContent(
 							datawolfConfig,
@@ -65,7 +80,11 @@ export default function PopDislocationCompare(props) {
 							}
 						];
 						const previewLayers = generateLayers(globalConfig, tmpLayerDef, "Population Dislocation");
-						setDamageLayers2(previewLayers);
+						if (i === 0) {
+							setDamageLayersA2(previewLayers);
+						} else {
+							setDamageLayersB2(previewLayers);
+						}
 					} else if (vName === "totalDislTableContent") {
 						if (i === 0) {
 							setTotalDislTableContentA(
@@ -109,7 +128,28 @@ export default function PopDislocationCompare(props) {
 	}, [executionItems, datawolfDatasetConfigItems, hazardLayers]);
 
 	return (
-		<Box style={{ padding: "50px 25px" }}>
+		<Box>
+			{/*for map*/}
+			{basicLayersA && basicLayersB && hazardLayers && damageLayersA1 && damageLayersB1 && damageLayersA2 && damageLayersB2 ? (
+				<Container className="mapContainer" disableGutters style={{ height: `${mapHeight}px` }}>
+					<MapCompare
+						className="fillContainer"
+						zoom={mapConfig.ZOOM}
+						minZoom={mapConfig.MIN_ZOOM}
+						maxZoom={mapConfig.MAX_ZOOM}
+						extent={applyTransform(mapConfig.MAP_BOUNDS, getTransform("EPSG:4326", "EPSG:3857"))}
+						center={fromLonLat(mapConfig.MAP_CENTER)}
+						layersA={[basicLayersA, hazardLayers[comparisonKey[0]], damageLayersA1, damageLayersA2]}
+						layersB={[basicLayersB, hazardLayers[comparisonKey[1]], damageLayersB1, damageLayersB2]}
+						layerSwitcherOptionsA={{}}
+						layerSwitcherOptionsB={{}}
+						height={mapHeight}
+					/>
+				</Container>
+			) : (
+				<></>
+			)}
+
 			<Grid container spacing={2} justify="center">
 				<Grid item xs={12} sm={12} md={5} lg={5} xl={5}>
 					{totalDislTableContentA && totalDislTableContentB &&
