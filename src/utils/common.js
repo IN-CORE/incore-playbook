@@ -1,10 +1,12 @@
 import Cookies from "universal-cookie";
 import jwt_decode from "jwt-decode";
 import { globals as defaultGlobalConfig, testUserInfo } from "../globals";
-import { datawolfConfig as defaultDatawolfConfig } from "../datawolf.config.js";
-import { datawolfWorkflowConfig as defaultDatawolfWorkflowConfig } from "../datawolf.config.js";
+import {
+	datawolfConfig as defaultDatawolfConfig,
+	datawolfWorkflowConfig as defaultDatawolfWorkflowConfig
+} from "../datawolf.config.js";
 import JSSoup from "jssoup";
-import { toLonLat, fromLonLat } from "ol/proj";
+import { fromLonLat, toLonLat } from "ol/proj";
 
 const cookies = new Cookies();
 
@@ -65,6 +67,7 @@ export function getCurrUsername(hostname = "") {
 		}
 	}
 }
+
 // get current user's full name
 export function getCurrUserFullname(hostname = "") {
 	if (hostname === "http://localhost:8080") {
@@ -139,20 +142,32 @@ export function getShortHTML(html) {
 // }
 
 export function round(num, scale) {
-	if(!(`${  num}`).includes("e")) {
-		return +(`${Math.round(`${num  }e+${  scale}`)   }e-${  scale}`);
+	if (!(`${num}`).includes("e")) {
+		return +(`${Math.round(`${num}e+${scale}`)}e-${scale}`);
 	} else {
-		let arr = (`${  num}`).split("e");
+		let arr = (`${num}`).split("e");
 		let sig = "";
-		if(+arr[1] + scale > 0) {
+		if (+arr[1] + scale > 0) {
 			sig = "+";
 		}
-		return +(`${Math.round(`${+arr[0]  }e${  sig  }${+arr[1] + scale}`)  }e-${  scale}`);
+		return +(`${Math.round(`${+arr[0]}e${sig}${+arr[1] + scale}`)}e-${scale}`);
 	}
 }
 
 export function diff(num1, num2) {
-	return num1-num2;
+	return (num1 === undefined || num2 === undefined ?
+		"-" :
+		num1 - num2 > 0 ?
+			`+${(num1 - num2).toLocaleString("en-US")}` :
+			(num1 - num2).toLocaleString("en-US"));
+}
+
+export function percentDiff(num1, num2) {
+	return (num1 === undefined || num2 === undefined ?
+		"-" :
+		num1 - num2 > 0 ?
+			`+${round((num1 - num2), 1)}%` :
+			`${round((num1 - num2), 1)}%`);
 }
 
 export function formatPercent(val, n = 1) {
@@ -197,7 +212,7 @@ export function FlatCoordToLonLat(flatCoord) {
 	return toLonLat(flatCoord);
 }
 
-export function LonLatToFlatCoord(lon, lat){
+export function LonLatToFlatCoord(lon, lat) {
 	return fromLonLat([lon, lat]);
 }
 
@@ -273,7 +288,7 @@ export function getCurrUserInfo(cookie) {
 	}
 }
 
-export function csvToArray(str, delimiter = ",", includeHeader=true) {
+export function csvToArray(str, delimiter = ",", includeHeader = true) {
 	// slice from start of text to the first \n index
 	// use split to create an array from string by delimiter
 	const headers = str.slice(0, str.indexOf("\n")).split(delimiter);
@@ -282,7 +297,7 @@ export function csvToArray(str, delimiter = ",", includeHeader=true) {
 	// use split to create an array of each csv value row
 	const rows = str.slice(str.indexOf("\n") + 1).split("\n");
 	let rows_arr = [];
-	rows.map(function (row) {
+	rows.map(function(row) {
 		if (row) rows_arr.push(row.split(delimiter));
 	});
 

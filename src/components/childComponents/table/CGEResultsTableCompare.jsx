@@ -134,7 +134,8 @@ export function CGEResultsTableCompare(props) {
 					</TableHead>
 					<TableBody>
 						<TableRow>
-							<TableCell className={classes.tableColumnHeadGreen} sx={{textAlign: "left", paddingLeft: 0}}> Before Event </TableCell>
+							<TableCell className={classes.tableColumnHeadGreen}
+								sx={{ textAlign: "left", paddingLeft: 0 }}> Before Event </TableCell>
 							{headers.slice(1).map((header, idx) => {
 								return (
 									<TableCell className={classes.tableDataCell} key={idx}>
@@ -145,7 +146,8 @@ export function CGEResultsTableCompare(props) {
 						</TableRow>
 
 						<TableRow>
-							<TableCell className={classes.tableColumnHeadRed} sx={{textAlign: "left", paddingLeft: 0}}> Before Retrofit </TableCell>
+							<TableCell className={classes.tableColumnHeadRed}
+								sx={{ textAlign: "left", paddingLeft: 0 }}>A</TableCell>
 							{headers.slice(1).map((header, idx) => {
 								return (
 									<TableCell className={classes.tableDataCell} key={idx}>
@@ -156,8 +158,8 @@ export function CGEResultsTableCompare(props) {
 						</TableRow>
 
 						<TableRow>
-							<TableCell className={classes.tableColumnHeadRed} style={{ textAlign: "right"}}>
-								% of Change
+							<TableCell className={classes.tableColumnHeadRed} style={{ textAlign: "right" }}>
+                                % of Change
 							</TableCell>
 							{headers.slice(1).map((header, idx) => {
 								return (
@@ -169,9 +171,10 @@ export function CGEResultsTableCompare(props) {
 								);
 							})}
 						</TableRow>
-						
-                        <TableRow>
-							<TableCell className={classes.tableColumnHeadDarkRed} sx={{textAlign: "left", paddingLeft: 0}}> After Retrofit </TableCell>
+
+						<TableRow>
+							<TableCell className={classes.tableColumnHeadDarkRed}
+								sx={{ textAlign: "left", paddingLeft: 0 }}>B</TableCell>
 							{headers.slice(1).map((header, idx) => {
 								return (
 									<TableCell className={classes.tableDataCell} key={idx}>
@@ -182,8 +185,8 @@ export function CGEResultsTableCompare(props) {
 						</TableRow>
 
 						<TableRow>
-							<TableCell className={classes.tableColumnHeadDarkRed} style={{ textAlign: "right"}}>
-								% of Change
+							<TableCell className={classes.tableColumnHeadDarkRed} style={{ textAlign: "right" }}>
+                                % of Change
 							</TableCell>
 							{headers.slice(1).map((header, idx) => {
 								return (
@@ -196,12 +199,17 @@ export function CGEResultsTableCompare(props) {
 							})}
 						</TableRow>
 
-                        <TableRow>
-							<TableCell className={classes.tableRowHead}> Difference between before and after </TableCell>
+						<TableRow>
+							<TableCell className={classes.tableRowHead}> Difference between A and B </TableCell>
 							{headers.slice(1).map((header, idx) => {
 								return (
 									<TableCell className={classes.tableDataCell} key={idx}>
-										{((afterJsonA[header] !== undefined) && (afterJsonB[header] !== undefined)) ? round(afterJsonA[header] - afterJsonB[header], 1) : "-"}
+										{afterJsonA[header] === undefined && afterJsonB[header] === undefined ?
+											"-" :
+											round(afterJsonB[header] - afterJsonA[header], 1) > 0 ?
+												`+${round(afterJsonB[header] - afterJsonA[header], 1)}` :
+												round(afterJsonB[header] - afterJsonA[header], 1)
+										}
 									</TableCell>
 								);
 							})}
