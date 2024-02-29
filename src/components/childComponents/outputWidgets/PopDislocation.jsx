@@ -144,6 +144,7 @@ export default function PopDislocation(props) {
 							center={fromLonLat(mapConfig.MAP_CENTER)}
 							layers={[basicLayers, hazardLayers, damageLayers1, damageLayers2]}
 							layerSwitcherOptions={{}}
+							allowBuildingSelection={true}
 						/>
 					</Container>
 				) : (

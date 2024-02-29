@@ -148,6 +148,7 @@ export default function BldgDamage(props) {
 							center={fromLonLat(mapConfig.MAP_CENTER)}
 							layers={[basicLayers, hazardLayers, damageLayers]}
 							layerSwitcherOptions={{}}
+							allowBuildingSelection={true}
 						/>
 					</Container>
 				) : (

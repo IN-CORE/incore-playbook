@@ -20,7 +20,6 @@ import { useSelector } from "react-redux";
 import { applyTransform } from "ol/extent";
 import { downloadOutputFile, getOutputFileContent, getOutputFileContentJSON } from "../../../utils/datawolf";
 import { basicLayers, generateLayers } from "../../../utils/map";
-import { downloadDataset } from "../../../utils/dataset";
 import { IncoreButtonText } from "../../styledComponents/IncoreButtonText";
 import GetAppIcon from "@material-ui/icons/GetApp";
 import { downloadImg } from "../../../utils/image";
@@ -157,6 +156,7 @@ export default function BldgMCS(props) {
 							center={fromLonLat(mapConfig.MAP_CENTER)}
 							layers={[basicLayers, hazardLayers, damageLayers]}
 							layerSwitcherOptions={{}}
+							allowBuildingSelection={true}
 						/>
 					</Container>
 				) : (
