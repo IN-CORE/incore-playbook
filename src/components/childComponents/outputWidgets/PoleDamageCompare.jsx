@@ -26,6 +26,8 @@ export default function PoleDamageCompare(props) {
 	const basicLayersA = createBasicLayers("Base Maps");
 	const basicLayersB = createBasicLayers("Base Maps");
 
+	const mapHeight = 500; // px
+
 	useEffect(() => {
 		const fetchData = async () => {
 			for (const datawolfDatasetConfigItem of datawolfDatasetConfigItems) {
@@ -65,7 +67,7 @@ export default function PoleDamageCompare(props) {
 			<Grid container spacing={3} justify="center">
 				{/*for map*/}
 				{basicLayersA && basicLayersB && hazardLayers && damageLayersA && damageLayersB ? (
-					<Container className="mapContainer" disableGutters>
+					<Container className="mapContainer" disableGutters style={{ height: `${mapHeight}px` }}>
 						<MapCompare
 							className="fillContainer"
 							zoom={mapConfig.ZOOM}
@@ -77,6 +79,7 @@ export default function PoleDamageCompare(props) {
 							layersB={[basicLayersB, hazardLayers[comparisonKey[1]], damageLayersB]}
 							layerSwitcherOptionsA={{}}
 							layerSwitcherOptionsB={{}}
+							height={mapHeight}
 						/>
 					</Container>
 				) : (
