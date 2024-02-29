@@ -10,8 +10,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Added
 - Adding % (# of building) to table of building damage output. [#261](https://github.com/IN-CORE/incore-playbook/issues/261)
+- Add click on map to view more details for a building on output widgets [#284](https://github.com/IN-CORE/incore-playbook/issues/284)
 - Github action to publish @incore/incore-playbook to Github package registry [#283](https://github.com/IN-CORE/incore-playbook/issues/283)
 - Allow retrofit strategy plan as input [#313](https://github.com/IN-CORE/incore-playbook/issues/313)
+- Add Marker to the selected building. [#304](https://github.com/IN-CORE/incore-playbook/issues/304)
+- Add Table Overlay to the map to display building information. [#303](https://github.com/IN-CORE/incore-playbook/issues/303)
 
 ### Fixed
 - Default mapping bounding box coordinates need to flip order [#272](https://github.com/IN-CORE/incore-playbook/issues/272)
