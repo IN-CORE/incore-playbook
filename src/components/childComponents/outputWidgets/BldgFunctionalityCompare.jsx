@@ -119,24 +119,6 @@ export default function BldgFunctionality(props) {
 				<></>
 			)}
 
-			{/*/!*for map*!/*/}
-			{/*{basicLayers && hazardLayers && damageLayers ? (*/}
-			{/*	<Container className="mapContainer" disableGutters>*/}
-			{/*		<Map*/}
-			{/*			className="fillContainer"*/}
-			{/*			zoom={mapConfig.ZOOM}*/}
-			{/*			minZoom={mapConfig.MIN_ZOOM}*/}
-			{/*			maxZoom={mapConfig.MAX_ZOOM}*/}
-			{/*			extent={applyTransform(mapConfig.MAP_BOUNDS, getTransform("EPSG:4326", "EPSG:3857"))}*/}
-			{/*			center={fromLonLat(mapConfig.MAP_CENTER)}*/}
-			{/*			layers={[basicLayers, hazardLayers, damageLayers]}*/}
-			{/*			layerSwitcherOptions={{}}*/}
-			{/*		/>*/}
-			{/*	</Container>*/}
-			{/*) : (*/}
-			{/*	<></>*/}
-			{/*)}*/}
-
 			{/*for table*/}
 			{Object.keys(bldgFuncSummaryTableContents).length >= 2 ? (
 				<Box>
