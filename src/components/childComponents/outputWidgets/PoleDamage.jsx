@@ -94,11 +94,13 @@ export default function PoleDamage(props) {
 							center={fromLonLat(mapConfig.MAP_CENTER)}
 							layers={[basicLayers, hazardLayers, damageLayers]}
 							layerSwitcherOptions={{}}
+							allowBuildingSelection={true}
 						/>
 					</Container>
 				) : (
 					<></>
 				)}
+				
 			</DialogContent>
 			<DialogActions>
 				<IncoreButtonText

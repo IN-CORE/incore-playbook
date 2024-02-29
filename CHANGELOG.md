@@ -10,19 +10,19 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Added
 - Adding % (# of building) to table of building damage output. [#261](https://github.com/IN-CORE/incore-playbook/issues/261)
+- Add click on map to view more details for a building on output widgets [#284](https://github.com/IN-CORE/incore-playbook/issues/284)
 - Github action to publish @incore/incore-playbook to Github package registry [#283](https://github.com/IN-CORE/incore-playbook/issues/283)
 - Add HHRS bar chart comparison components [#290](https://github.com/IN-CORE/incore-playbook/issues/290)
 - Add CGE bar Char comparison components [#289](https://github.com/IN-CORE/incore-playbook/issues/289)
 - Add CGE Table Comparison [#291](https://github.com/IN-CORE/incore-playbook/issues/291)
 - Add MCS and Building Functionality table and bar chart comparison [#308](https://github.com/IN-CORE/incore-playbook/issues/308)
 - Add Map comparison and Pole Damage comparison components [#288](https://github.com/IN-CORE/incore-playbook/issues/288)
-- Add CGE Bar Char comparison components [#289](https://github.com/IN-CORE/incore-playbook/issues/289)
-- Add CGE Table Comparison [#291](https://github.com/IN-CORE/incore-playbook/issues/291)
 - Add Sector Shock Bar Chart Comparison [#305](https://github.com/IN-CORE/incore-playbook/issues/305)
 - Add Population Dislocation comparison tables [#292](https://github.com/IN-CORE/incore-playbook/issues/292)
 - Building Damage Comparison Table [#307](https://github.com/IN-CORE/incore-playbook/issues/307)
-- Github action to publish @incore/incore-playbook to Github package registry [#283](https://github.com/IN-CORE/incore-playbook/issues/283)
 - Refactor compare selection improvement [#298](https://github.com/IN-CORE/incore-playbook/issues/298)
+- Add Marker to the selected building. [#304](https://github.com/IN-CORE/incore-playbook/issues/304)
+- Add Table Overlay to the map to display building information. [#303](https://github.com/IN-CORE/incore-playbook/issues/303)
 
 ### Fixed
 - Default mapping bounding box coordinates need to flip order [#272](https://github.com/IN-CORE/incore-playbook/issues/272)
