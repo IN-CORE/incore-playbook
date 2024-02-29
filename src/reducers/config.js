@@ -1,19 +1,22 @@
 import {
-	UPDATE_MAP_CONFIG,
+	SET_ALLOWED_DATA_TYPES,
 	SET_ALLOWED_HAZARD_TYPES,
 	UPDATE_ASSET_CONFIG,
-	SET_ALLOWED_DATA_TYPES,
+	UPDATE_CGE_INFO,
 	UPDATE_DATAWOLF_CONFIG,
+	UPDATE_DATAWOLF_WORKFLOW_CONFIG,
 	UPDATE_GLOBAL_CONFIG,
-	UPDATE_DATAWOLF_WORKFLOW_CONFIG, UPDATE_CGE_INFO, UPDATE_HHS_INFO
+	UPDATE_HHS_INFO,
+	UPDATE_MAP_CONFIG
 } from "../actions/config";
 import { mapConfig as defaultMapConfig } from "../map.config";
 import { assetConfig as defaultAssetConfig } from "../asset.config";
-import { datawolfConfig as defaultDatawolfConfig } from "../datawolf.config.js";
-import { datawolfWorkflowConfig as defaultDatawolfWorkflowConfig } from "../datawolf.config.js";
+import {
+	datawolfConfig as defaultDatawolfConfig,
+	datawolfWorkflowConfig as defaultDatawolfWorkflowConfig
+} from "../datawolf.config.js";
 import { globals as defaultGlobalConfig } from "../globals";
-import { cgeInfo as defaultCgeConfig} from "../messages.config";
-import { hhsInfo as defaultHhsConfig} from "../messages.config";
+import { cgeInfo as defaultCgeConfig, hhsInfo as defaultHhsConfig } from "../messages.config";
 
 const defaultConfig = {
 	mapConfig: defaultMapConfig,
@@ -24,6 +27,7 @@ const defaultConfig = {
 	allowedHazardTypes: ["earthquake", "tornado", "tsunami", "hurricane", "flood"],
 	allowedDataTypes: {
 		building: true,
+		retrofitStrategies: true,
 		epf: true,
 		network: true,
 		socioeconomics: true
