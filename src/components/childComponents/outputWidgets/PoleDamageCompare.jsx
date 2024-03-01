@@ -80,6 +80,7 @@ export default function PoleDamageCompare(props) {
 							layerSwitcherOptionsA={{}}
 							layerSwitcherOptionsB={{}}
 							height={mapHeight}
+							allowBuildingSelection={true}
 						/>
 					</Container>
 				) : (
