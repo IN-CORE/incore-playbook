@@ -24,6 +24,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Replaced Node-Sass with Sass for better platfrom reliablility [#275](https://github.com/IN-CORE/incore-playbook/issues/275)
 - Update the ResultTable to use keys dynamically for the FEMA table headers [#285](https://github.com/IN-CORE/incore-playbook/issues/285)
 - Increase the max zoom level for the map [#278](https://github.com/IN-CORE/incore-playbook/issues/278)
+- Map config's geoserver style changed to general name [#328](https://github.com/IN-CORE/incore-playbook/issues/328)
 
 
 ## [0.5.7] - 2023-04-05
