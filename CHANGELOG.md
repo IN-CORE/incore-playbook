@@ -27,6 +27,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Integrate click feature into map compare component [#320](https://github.com/IN-CORE/incore-playbook/issues/320)
 
 ### Fixed
+- Typos in hurricane creation form [#248](https://github.com/IN-CORE/incore-playbook/issues/248)
 - Default mapping bounding box coordinates need to flip order [#272](https://github.com/IN-CORE/incore-playbook/issues/272)
 - Update hazard previewing due to model change [#269](https://github.com/IN-CORE/incore-playbook/issues/269)
 - Fix percentage calculation [#287](https://github.com/IN-CORE/incore-playbook/issues/287)
