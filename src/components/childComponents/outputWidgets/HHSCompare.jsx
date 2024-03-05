@@ -14,28 +14,40 @@ export default function HHSCompare(props) {
 	const [marks, setMarks] = useState([
 		{
 			value: 1,
-			label: "0"
+			label: "0",
 		},
 		{
 			value: 7,
-			label: "6"
+			label: "6",
 		},
 		{
 			value: 13,
-			label: "12"
+			label: "12",
 		},
 		{
 			value: 25,
-			label: "24"
+			label: "24",
 		},
 		{
 			value: 49,
-			label: "48"
-		}
+			label: "48",
+		},
 	]);
 
-	const [HHSBarChartContentA, setHHSBarChartContentA] = useState({ 1: [], 7: [], 13: [], 25: [], 49: [] });
-	const [HHSBarChartContentB, setHHSBarChartContentB] = useState({ 1: [], 7: [], 13: [], 25: [], 49: [] });
+	const [HHSBarChartContentA, setHHSBarChartContentA] = useState({
+		1: [],
+		7: [],
+		13: [],
+		25: [],
+		49: [],
+	});
+	const [HHSBarChartContentB, setHHSBarChartContentB] = useState({
+		1: [],
+		7: [],
+		13: [],
+		25: [],
+		49: [],
+	});
 	const [t, setT] = useState("1");
 
 	useEffect(() => {
@@ -49,16 +61,16 @@ export default function HHSCompare(props) {
 								await getOutputFileContentJSON(
 									datawolfConfig,
 									executionItems[i],
-									datawolfDatasetConfigItem.datasetId
-								)
+									datawolfDatasetConfigItem.datasetId,
+								),
 							);
 						} else if (i === 1) {
 							setHHSBarChartContentB(
 								await getOutputFileContentJSON(
 									datawolfConfig,
 									executionItems[i],
-									datawolfDatasetConfigItem.datasetId
-								)
+									datawolfDatasetConfigItem.datasetId,
+								),
 							);
 						}
 					}

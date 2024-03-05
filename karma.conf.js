@@ -11,29 +11,29 @@ module.exports = function (config) {
 		frameworks: ["jasmine", "sinon"],
 		preprocessors: {
 			"test/**/*.test.js": ["webpack", "sourcemap"],
-			"test/**/*.test.jsx": ["webpack", "sourcemap"]
+			"test/**/*.test.jsx": ["webpack", "sourcemap"],
 		},
 		files: [
 			"node_modules/babel-polyfill/dist/polyfill.js",
 			{ pattern: "test/**/*.test.js" },
-			{ pattern: "test/**/*.test.jsx" }
+			{ pattern: "test/**/*.test.jsx" },
 		],
 		reporters: ["mocha", "coverage"], //report results in this format
 		coverageReporter: {
 			reporters: [
 				{
-					type: "text-summary"
+					type: "text-summary",
 				},
 				{
 					type: "html",
-					dir: "coverage"
-				}
-			]
+					dir: "coverage",
+				},
+			],
 		},
 		webpack: {
 			devtool: "inline-source-map",
 			resolve: {
-				extensions: [".js", ".jsx"]
+				extensions: [".js", ".jsx"],
 			},
 			module: {
 				exprContextCritical: false,
@@ -42,25 +42,25 @@ module.exports = function (config) {
 						enforce: "pre",
 						test: /\.js$/,
 						exclude: [path.resolve("node_modules"), path.resolve("src")],
-						loaders: ["babel-loader"]
+						loaders: ["babel-loader"],
 					},
 					{
 						enforce: "pre",
 						test: /\.jsx?$/,
 						exclude: path.resolve("node_modules"),
 						include: path.resolve("src"),
-						loaders: ["isparta-loader"]
-					}
-				]
+						loaders: ["isparta-loader"],
+					},
+				],
 			},
 			externals: {
 				"react/addons": true,
 				"react/lib/ExecutionEnvironment": true,
-				"react/lib/ReactContext": true
-			}
+				"react/lib/ReactContext": true,
+			},
 		},
 		webpackServer: {
-			noInfo: true
+			noInfo: true,
 		},
 		plugins: [
 			"karma-webpack",
@@ -71,7 +71,7 @@ module.exports = function (config) {
 			"karma-chrome-launcher",
 			"karma-firefox-launcher",
 			"karma-phantomjs-launcher",
-			"karma-mocha-reporter"
-		]
+			"karma-mocha-reporter",
+		],
 	});
 };

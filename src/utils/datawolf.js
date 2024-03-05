@@ -1,18 +1,29 @@
-import { getCurrUserDatawolfId, getCurrUsername, getHeader, getIncoreTokenFile } from "./common";
+import {
+	getCurrUserDatawolfId,
+	getCurrUsername,
+	getHeader,
+	getIncoreTokenFile,
+} from "./common";
 import {
 	datawolfConfig as defaultDatawolfConfig,
-	datawolfWorkflowConfig as defaultDatawolfWorkflowConfig
+	datawolfWorkflowConfig as defaultDatawolfWorkflowConfig,
 } from "../datawolf.config.js";
 
-export async function checkFileDescriptors(datawolfConfig = defaultDatawolfConfig, datasetId) {
+export async function checkFileDescriptors(
+	datawolfConfig = defaultDatawolfConfig,
+	datasetId,
+) {
 	let authHeader = getHeader(datawolfConfig.hostname);
 
 	// Get - Result Dataset
-	const datasetResponse = await fetch(`${datawolfConfig["datasetBaseURL"]}/${datasetId}`, {
-		method: "GET",
-		headers: authHeader,
-		mode: "cors"
-	});
+	const datasetResponse = await fetch(
+		`${datawolfConfig["datasetBaseURL"]}/${datasetId}`,
+		{
+			method: "GET",
+			headers: authHeader,
+			mode: "cors",
+		},
+	);
 
 	if (datasetResponse.status === 200) {
 		const resultDataset = await datasetResponse.json();
@@ -20,15 +31,22 @@ export async function checkFileDescriptors(datawolfConfig = defaultDatawolfConfi
 	} else return 0;
 }
 
-export async function getOutputFileText(datawolfConfig = defaultDatawolfConfig, datasetId, outputFileName = null) {
+export async function getOutputFileText(
+	datawolfConfig = defaultDatawolfConfig,
+	datasetId,
+	outputFileName = null,
+) {
 	let authHeader = getHeader(datawolfConfig.hostname);
 
 	// Get - Result Dataset
-	const datasetResponse = await fetch(`${datawolfConfig["datasetBaseURL"]}/${datasetId}`, {
-		method: "GET",
-		headers: authHeader,
-		mode: "cors"
-	});
+	const datasetResponse = await fetch(
+		`${datawolfConfig["datasetBaseURL"]}/${datasetId}`,
+		{
+			method: "GET",
+			headers: authHeader,
+			mode: "cors",
+		},
+	);
 
 	if (datasetResponse.status === 200) {
 		const resultDataset = await datasetResponse.json();
@@ -56,8 +74,8 @@ export async function getOutputFileText(datawolfConfig = defaultDatawolfConfig, 
 				`${datawolfConfig["datasetBaseURL"]}/${datasetId}/${fileId}/file`,
 				{
 					method: "GET",
-					headers: authHeader
-				}
+					headers: authHeader,
+				},
 			);
 
 			return await fileDownloadResponse.text();
@@ -74,7 +92,7 @@ export async function submitExecution(
 	datawolfWorkflowConfig = defaultDatawolfWorkflowConfig,
 	title,
 	description,
-	datawolfFormState
+	datawolfFormState,
 ) {
 	let incoreTokenDatasetId = await postDataset(datawolfConfig);
 	if (incoreTokenDatasetId === null) {
@@ -88,16 +106,24 @@ export async function submitExecution(
 	let currUserDatawolfId = await getCurrUserDatawolfId(
 		getCurrUsername(datawolfConfig.hostname),
 		datawolfConfig,
-		datawolfWorkflowConfig
+		datawolfWorkflowConfig,
 	);
 
-	const parameters = Object.keys(datawolfFormState).reduce((parameters, key) => {
-		return { ...parameters, ...datawolfFormState[key] };
-	}, {});
+	const parameters = Object.keys(datawolfFormState).reduce(
+		(parameters, key) => {
+			return { ...parameters, ...datawolfFormState[key] };
+		},
+		{},
+	);
 
 	// TODO assume the only input dataset is token
-	const datasets = datawolfWorkflowConfig["inputs"]["datasets"][0]["datasetsMap"].reduce((datasets, datasetDef) => {
-		return { ...datasets, ...{ [datasetDef["datasetId"]]: incoreTokenDatasetId } };
+	const datasets = datawolfWorkflowConfig["inputs"]["datasets"][0][
+		"datasetsMap"
+	].reduce((datasets, datasetDef) => {
+		return {
+			...datasets,
+			...{ [datasetDef["datasetId"]]: incoreTokenDatasetId },
+		};
 	}, {});
 
 	let requestBody = {
@@ -107,21 +133,25 @@ export async function submitExecution(
 		description: description,
 		parameters: parameters,
 
-		datasets: datasets
+		datasets: datasets,
 	};
 
 	let datawolfResponse = await fetch(`${datawolfConfig["executionPostURL"]}`, {
 		method: "POST",
 		headers: authHeader,
 		body: JSON.stringify(requestBody),
-		mode: "cors"
+		mode: "cors",
 	});
 
 	return datawolfResponse.status;
 }
 
 // TODO move this to redux
-export async function postDataset(datawolfConfig, title = "incoretoken", description = "incoretoken") {
+export async function postDataset(
+	datawolfConfig,
+	title = "incoretoken",
+	description = "incoretoken",
+) {
 	let authHeader = getHeader(datawolfConfig.hostname);
 	// authHeader.append("Content-Type", "multipart/form-data");
 
@@ -138,7 +168,7 @@ export async function postDataset(datawolfConfig, title = "incoretoken", descrip
 		method: "POST",
 		headers: authHeader,
 		body: formData,
-		mode: "cors"
+		mode: "cors",
 	});
 
 	if (datawolfResponse.status === 200) {
@@ -156,16 +186,19 @@ export async function downloadOutputFile(
 	datawolfConfig = defaultDatawolfConfig,
 	datasetId,
 	outputFileName = null,
-	saveFileName = null
+	saveFileName = null,
 ) {
 	let authHeader = getHeader(datawolfConfig.hostname);
 
 	// Get - Result Dataset
-	const datasetResponse = await fetch(`${datawolfConfig["datasetBaseURL"]}/${datasetId}`, {
-		method: "GET",
-		headers: authHeader,
-		mode: "cors"
-	});
+	const datasetResponse = await fetch(
+		`${datawolfConfig["datasetBaseURL"]}/${datasetId}`,
+		{
+			method: "GET",
+			headers: authHeader,
+			mode: "cors",
+		},
+	);
 
 	if (datasetResponse.status === 200) {
 		const resultDataset = await datasetResponse.json();
@@ -193,8 +226,8 @@ export async function downloadOutputFile(
 				`${datawolfConfig["datasetBaseURL"]}/${datasetId}/${fileId}/file`,
 				{
 					method: "GET",
-					headers: authHeader
-				}
+					headers: authHeader,
+				},
 			);
 
 			if (fileDownloadResponse.status === 200) {
@@ -202,12 +235,16 @@ export async function downloadOutputFile(
 				if (window.navigator.msSaveOrOpenBlob) {
 					window.navigator.msSaveBlob(
 						blob,
-						saveFileName ? saveFileName : resultDataset.fileDescriptors[0].filename
+						saveFileName
+							? saveFileName
+							: resultDataset.fileDescriptors[0].filename,
 					);
 				} else {
 					let anchor = window.document.createElement("a");
 					anchor.href = window.URL.createObjectURL(blob);
-					anchor.download = saveFileName ? saveFileName : resultDataset.fileDescriptors[0].filename;
+					anchor.download = saveFileName
+						? saveFileName
+						: resultDataset.fileDescriptors[0].filename;
 					document.body.appendChild(anchor);
 					anchor.click();
 					document.body.removeChild(anchor);
@@ -227,20 +264,31 @@ export async function downloadOutputFile(
 	}
 }
 
-export const getOutputFileContentJSON = async (datawolfConfig = defaultDatawolfConfig, executionItem, dwDatasetId) => {
+export const getOutputFileContentJSON = async (
+	datawolfConfig = defaultDatawolfConfig,
+	executionItem,
+	dwDatasetId,
+) => {
 	let datawolfId = executionItem["datasets"][dwDatasetId];
 	let datawolfFileContent = await getOutputFileText(datawolfConfig, datawolfId);
 	return JSON.parse(datawolfFileContent);
 };
 
-export const getOutputFileContent = async (datawolfConfig = defaultDatawolfConfig, executionItem, dwDatasetId) => {
+export const getOutputFileContent = async (
+	datawolfConfig = defaultDatawolfConfig,
+	executionItem,
+	dwDatasetId,
+) => {
 	let datawolfId = executionItem["datasets"][dwDatasetId];
 	return await getOutputFileText(datawolfConfig, datawolfId);
 };
 
 export const getExecution = async (datawolfConfig, executionId) => {
 	let endpoint = `${datawolfConfig.executionPostURL}/${executionId}`;
-	const response = await fetch(endpoint, { mode: "cors", headers: getHeader(datawolfConfig.hostname) });
+	const response = await fetch(endpoint, {
+		mode: "cors",
+		headers: getHeader(datawolfConfig.hostname),
+	});
 	if (response.status === 200) {
 		return response.json();
 	} else if (response.status === 401) {

@@ -30,8 +30,8 @@ export default function HHSBarChart(props) {
 					bar: { groupWidth: "50%" },
 					vAxis: {
 						title: "Frequency",
-						titleTextStyle: { italic: false }
-					}
+						titleTextStyle: { italic: false },
+					},
 				}}
 			/>
 		</div>

@@ -19,7 +19,7 @@ const defaultState = {
 	cgeOutcrs: [],
 	huas: [],
 	blockGroups: [],
-	valueLosses: []
+	valueLosses: [],
 };
 // type only does a vague match; need to filter to make sure
 const datasets = (state = defaultState, action) => {
@@ -42,11 +42,15 @@ const datasets = (state = defaultState, action) => {
 			return Object.assign({}, state, { cgeIouts: action.datasets });
 		case "RECEIVE_CGE_MISC":
 			return Object.assign({}, state, {
-				cgeMiscs: action.datasets.filter((dataset) => dataset.dataType === "incore:JoplinCGEmisc")
+				cgeMiscs: action.datasets.filter(
+					(dataset) => dataset.dataType === "incore:JoplinCGEmisc",
+				),
 			});
 		case "RECEIVE_CGE_MISCH":
 			return Object.assign({}, state, {
-				cgeMischs: action.datasets.filter((dataset) => dataset.dataType === "incore:JoplinCGEmisch")
+				cgeMischs: action.datasets.filter(
+					(dataset) => dataset.dataType === "incore:JoplinCGEmisch",
+				),
 			});
 		case "RECEIVE_CGE_LANDCAP":
 			return Object.assign({}, state, { cgeLandcaps: action.datasets });
@@ -86,7 +90,7 @@ const datasets = (state = defaultState, action) => {
 				cgeOutcrs: [],
 				huas: [],
 				blockGroups: [],
-				valueLosses: []
+				valueLosses: [],
 			});
 		default:
 			return state;

@@ -6,8 +6,11 @@ import { fetchHazards } from "../../../actions/hazards";
 import { getHazardTypePlural } from "../../../utils/common";
 
 export default function Hazards(props) {
-	const { setDatawolfFormState, datawolfFormState, datawolfParamConfigItem } = props;
-	const alllowedHazardTypes = useSelector((state) => state.config.allowedHazardTypes);
+	const { setDatawolfFormState, datawolfFormState, datawolfParamConfigItem } =
+		props;
+	const alllowedHazardTypes = useSelector(
+		(state) => state.config.allowedHazardTypes,
+	);
 	const globalConfig = useSelector((state) => state.config.globalConfig);
 
 	// pre-populate those; will be used in the dropdown line 34
@@ -18,7 +21,8 @@ export default function Hazards(props) {
 	const floods = useSelector((state) => state.hazard.floods);
 
 	const dispatch = useDispatch();
-	const listHazards = (hazardType, limit, offset) => dispatch(fetchHazards(hazardType, limit, offset));
+	const listHazards = (hazardType, limit, offset) =>
+		dispatch(fetchHazards(hazardType, limit, offset));
 
 	const [hazards, setHazards] = useState([]);
 
@@ -52,7 +56,10 @@ export default function Hazards(props) {
 					datawolfParamConfigItem.parametersMap.map((pm) => {
 						mapState[pm.paramId] = currentVal;
 					});
-					return { ...prevState, [datawolfParamConfigItem.variableName]: mapState };
+					return {
+						...prevState,
+						[datawolfParamConfigItem.variableName]: mapState,
+					};
 				});
 			}}
 			options={hazards}
@@ -73,8 +80,8 @@ export default function Hazards(props) {
 							boxSizing: "border-box",
 							border: "solid 1px",
 							borderColor: "#D3D3D3",
-							borderRadius: "4px"
-						}
+							borderRadius: "4px",
+						},
 					}}
 				/>
 			)}

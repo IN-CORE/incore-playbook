@@ -6,7 +6,10 @@ import { IncoreButtonInline } from "../../styledComponents/IncoreButtonInline";
 import { Box, Button, Typography } from "@material-ui/core";
 import { useDispatch, useSelector } from "react-redux";
 import { parseDateTime } from "../../../utils/common";
-import { getStep as getStepAction, updateStep as updateStepAction } from "../../../actions/steps";
+import {
+	getStep as getStepAction,
+	updateStep as updateStepAction,
+} from "../../../actions/steps";
 import { IncoreTextArea } from "../../styledComponents/IncoreTextArea";
 
 export const DocURI = (props) => {
@@ -16,10 +19,13 @@ export const DocURI = (props) => {
 
 	const globalConfig = useSelector((state) => state.config.globalConfig);
 
-	const listSteps = (globalConfig, stepId, substepId) => dispatch(getStepAction(globalConfig, stepId, substepId));
+	const listSteps = (globalConfig, stepId, substepId) =>
+		dispatch(getStepAction(globalConfig, stepId, substepId));
 	const patchStep = (globalConfig, stepId, substepId, status, docUri) =>
 		dispatch(updateStepAction(globalConfig, stepId, substepId, status, docUri));
-	const stepData = useSelector((state) => state.steps[`step_${step}_${substep}`]);
+	const stepData = useSelector(
+		(state) => state.steps[`step_${step}_${substep}`],
+	);
 
 	const [edit, setEdit] = useState(false);
 	const [docUri, setDocUri] = useState(stepData["doc_uri"]);
@@ -45,7 +51,7 @@ export const DocURI = (props) => {
 				background: "#ffffff",
 				border: "dashed 1px #00619D",
 				borderRadius: "5px",
-				padding: "1.5em"
+				padding: "1.5em",
 			}}
 		>
 			<IncoreTitle>Document Link</IncoreTitle>
@@ -63,7 +69,11 @@ export const DocURI = (props) => {
 						/>
 					</Box>
 					<Box style={{ marginTop: "0.5em" }}>
-						<IncoreButtonInline variant="contained" color="default" onClick={handleDocUriOnSave}>
+						<IncoreButtonInline
+							variant="contained"
+							color="default"
+							onClick={handleDocUriOnSave}
+						>
 							Save
 						</IncoreButtonInline>
 						<Button
@@ -94,7 +104,8 @@ export const DocURI = (props) => {
 						<IncoreFootNote>
 							Link last edited by {stepData["doc_user"]["firstName"]}&nbsp;
 							{stepData["doc_user"]["lastName"]} at{" "}
-							{parseDateTime(stepData["doc_updated_at"]) ?? "unavailable timestamp"}
+							{parseDateTime(stepData["doc_updated_at"]) ??
+								"unavailable timestamp"}
 						</IncoreFootNote>
 					) : (
 						<></>

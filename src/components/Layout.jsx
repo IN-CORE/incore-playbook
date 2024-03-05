@@ -29,12 +29,19 @@ export const Layout = (props) => {
 	return (
 		<div>
 			<Header
-				isAuthenticated={isAuthorized(globalConfig.hostname, globalConfig["testbedGroup"])}
+				isAuthenticated={isAuthorized(
+					globalConfig.hostname,
+					globalConfig["testbedGroup"],
+				)}
 				menuItem={menuItem}
 			/>
 			<div
 				className="masterContent"
-				style={{ marginLeft: mLeft, padding: 8, backgroundColor: "rgba(248, 249, 255, 0.5)" }}
+				style={{
+					marginLeft: mLeft,
+					padding: 8,
+					backgroundColor: "rgba(248, 249, 255, 0.5)",
+				}}
 			>
 				{children}
 			</div>

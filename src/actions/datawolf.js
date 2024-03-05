@@ -8,7 +8,7 @@ export function receiveExecutions(type, json) {
 		dispatch({
 			type: type,
 			executions: json,
-			receivedAt: Date.now()
+			receivedAt: Date.now(),
 		});
 	};
 }
@@ -16,10 +16,14 @@ export function receiveExecutions(type, json) {
 export function fetchExecutions(datawolfConfig, all = false) {
 	let endpoint = datawolfConfig.executionGetURL;
 	// filter by current user's email
-	if (!all) endpoint = `${endpoint}?email=${getCurrUsername(datawolfConfig.hostname)}`;
+	if (!all)
+		endpoint = `${endpoint}?email=${getCurrUsername(datawolfConfig.hostname)}`;
 
 	return (dispatch) => {
-		return fetch(endpoint, { mode: "cors", headers: getHeader(datawolfConfig.hostname) }).then((response) => {
+		return fetch(endpoint, {
+			mode: "cors",
+			headers: getHeader(datawolfConfig.hostname),
+		}).then((response) => {
 			if (response.status === 200) {
 				response.json().then((json) => {
 					dispatch(receiveExecutions(RECEIVE_EXECUTIONS, json));

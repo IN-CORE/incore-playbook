@@ -11,11 +11,11 @@ const useStyles = makeStyles((theme) => ({
 		marginBottom: theme.spacing(0),
 		display: "flex",
 		paddingTop: theme.spacing(0.25),
-		paddingBottom: theme.spacing(0.25)
+		paddingBottom: theme.spacing(0.25),
 	},
 	iconContainerLink: {
 		paddingLeft: theme.spacing(4),
-		margin: "0 auto"
+		margin: "0 auto",
 	},
 
 	icon: {
@@ -24,8 +24,8 @@ const useStyles = makeStyles((theme) => ({
 		display: "flex",
 		justifyContent: "center",
 		alignItems: "center",
-		marginRight: theme.spacing(1)
-	}
+		marginRight: theme.spacing(1),
+	},
 }));
 
 const Footer = () => {
@@ -36,8 +36,18 @@ const Footer = () => {
 		<div className="footerDiv">
 			<Container className={classes.footerContainer}>
 				{assetConfig.footerLogos.map((footerLogo, idx) => (
-					<a href={footerLogo.url} target="_blank" className={classes.iconContainerLink} key={idx}>
-						<img src={footerLogo.image} className={classes.icon} key={idx} alt={footerLogo.name} />
+					<a
+						href={footerLogo.url}
+						target="_blank"
+						className={classes.iconContainerLink}
+						key={idx}
+					>
+						<img
+							src={footerLogo.image}
+							className={classes.icon}
+							key={idx}
+							alt={footerLogo.name}
+						/>
 					</a>
 				))}
 			</Container>

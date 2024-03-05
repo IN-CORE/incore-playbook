@@ -19,20 +19,49 @@
 			"title": "Hazard Datasets",
 			"items": {
 				"type": "object",
-				"required": ["hazardType", "demandType", "demandUnits", "file", "recurrenceInterval", "recurrenceUnit"],
+				"required": [
+					"hazardType",
+					"demandType",
+					"demandUnits",
+					"file",
+					"recurrenceInterval",
+					"recurrenceUnit"
+				],
 				"properties": {
 					"demandType": {
 						"type": "string",
 						"title": "Demand Type",
-						"enumNames": ["Maximum tsunami height", "Maximum water velocity", "Maximum momentum flux"],
+						"enumNames": [
+							"Maximum tsunami height",
+							"Maximum water velocity",
+							"Maximum momentum flux"
+						],
 						"enum": ["Hmax", "Vmax", "Mmax"],
 						"default": "Hmax"
 					},
 					"demandUnits": {
 						"type": "string",
 						"title": "Demand Unit",
-						"enumNames": ["ft", "m", "mph", "kph", "ft/s", "m/s", "m^3/s^2", "ft^3/s^2"],
-						"enum": ["ft", "m", "mph", "kph", "ft/s", "m/s", "m^3/s^2", "ft^3/s^2"],
+						"enumNames": [
+							"ft",
+							"m",
+							"mph",
+							"kph",
+							"ft/s",
+							"m/s",
+							"m^3/s^2",
+							"ft^3/s^2"
+						],
+						"enum": [
+							"ft",
+							"m",
+							"mph",
+							"kph",
+							"ft/s",
+							"m/s",
+							"m^3/s^2",
+							"ft^3/s^2"
+						],
 						"default": "ft"
 					},
 					"recurrenceInterval": {

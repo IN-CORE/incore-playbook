@@ -7,12 +7,16 @@ export function receiveAttributes(type, json) {
 		dispatch({
 			type: type,
 			attributes: json,
-			receivedAt: Date.now()
+			receivedAt: Date.now(),
 		});
 	};
 }
 
-export function fetchAttributes(globalConfig = defaultGlobalConfig, id, sortColumnName) {
+export function fetchAttributes(
+	globalConfig = defaultGlobalConfig,
+	id,
+	sortColumnName,
+) {
 	let url = `${globalConfig.geoServerWFS}?service=WFS&version=1.0.0&request=GetFeature&outputFormat=JSON`;
 	url = `${url}&typename=${id}&sortBy=${sortColumnName}+D`;
 	return (dispatch) => {

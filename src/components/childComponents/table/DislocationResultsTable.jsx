@@ -1,6 +1,13 @@
 import React from "react";
 
-import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@material-ui/core";
+import {
+	Table,
+	TableBody,
+	TableCell,
+	TableContainer,
+	TableHead,
+	TableRow,
+} from "@material-ui/core";
 
 import { makeStyles } from "@material-ui/core/styles";
 import { round } from "../../../utils/common";
@@ -12,7 +19,7 @@ const tableColumnHead = {
 	textAlign: "right",
 	border: "solid 1px rgba(46,91,255,0.08)",
 	borderRadius: "1px",
-	width: "160px"
+	width: "160px",
 };
 
 const tableRowHead = {
@@ -25,18 +32,18 @@ const tableRowHead = {
 	borderRight: "solid 1px #FFFFFF",
 	borderTop: "solid 1px #FFFFFF",
 	borderBottom: "solid 1px #FFFFFF",
-	letterSpacing: "1.13px"
+	letterSpacing: "1.13px",
 };
 
 const useStyles = makeStyles({
 	table: {
 		maxWidth: 550,
-		display: "block"
+		display: "block",
 	},
 	metricsTable: {
 		display: "block",
 		maxWidth: "fit-content",
-		margin: "auto auto"
+		margin: "auto auto",
 	},
 	tableRowHeadFirst: {
 		color: "#69707F",
@@ -44,36 +51,36 @@ const useStyles = makeStyles({
 		fontWeight: "500",
 		textAlign: "center",
 		backgroundColor: "#F8F9FF",
-		border: "solid 1px #FFFFFF"
+		border: "solid 1px #FFFFFF",
 	},
 	tableRowHead: tableRowHead,
 	tableRowHeadRight: {
 		...tableRowHead,
-		borderRight: "solid 1px rgba(234, 238, 255, 0.6)"
+		borderRight: "solid 1px rgba(234, 238, 255, 0.6)",
 	},
 	tableRowTotal: {
 		...tableRowHead,
 		textAlign: "right",
-		letterSpacing: "inherit"
+		letterSpacing: "inherit",
 	},
 	tableColumnHeadGreen: {
 		...tableColumnHead,
-		backgroundColor: "#A1BE2E"
+		backgroundColor: "#A1BE2E",
 	},
 	tableColumnHeadRed: {
 		...tableColumnHead,
-		backgroundColor: "#DB4F60"
+		backgroundColor: "#DB4F60",
 	},
 	tableDataCell: {
 		width: "100px",
 		textAlign: "center",
-		border: "solid 1px rgba(46,91,255,0.08)"
+		border: "solid 1px rgba(46,91,255,0.08)",
 	},
 	tableDataCellDislocated: {
 		width: "100px",
 		textAlign: "center",
 		border: "solid 1px rgba(46,91,255,0.08)",
-		backgroundColor: "#FEEFF1"
+		backgroundColor: "#FEEFF1",
 	},
 	title: {
 		height: "19px",
@@ -85,8 +92,8 @@ const useStyles = makeStyles({
 		lineHeight: "19px",
 		padding: "12px 8px",
 		marginBottom: "17px",
-		display: "block"
-	}
+		display: "block",
+	},
 });
 
 export function DislocationResultsTable(props) {
@@ -130,31 +137,54 @@ export function DislocationResultsTable(props) {
 					</TableHead>
 					<TableBody>
 						<TableRow>
-							<TableCell className={classes.tableColumnHeadRed}> Dislocated </TableCell>
+							<TableCell className={classes.tableColumnHeadRed}>
+								{" "}
+								Dislocated{" "}
+							</TableCell>
 							<TableCell className={classes.tableDataCellDislocated}>
 								{"households" in resultsJson["dislocated"]
-									? resultsJson["dislocated"]["households"].toLocaleString("en-US")
-									: resultsJson["dislocated"]["population"].toLocaleString("en-US")}
+									? resultsJson["dislocated"]["households"].toLocaleString(
+											"en-US",
+									  )
+									: resultsJson["dislocated"]["population"].toLocaleString(
+											"en-US",
+									  )}
 							</TableCell>
 							<TableCell className={classes.tableDataCellDislocated}>
 								{"percent_of_households" in resultsJson["dislocated"]
 									? round(resultsJson["dislocated"]["percent_of_households"], 1)
-									: round(resultsJson["dislocated"]["percent_of_population"], 1)}
+									: round(
+											resultsJson["dislocated"]["percent_of_population"],
+											1,
+									  )}
 								%
 							</TableCell>
 						</TableRow>
 
 						<TableRow>
-							<TableCell className={classes.tableColumnHeadGreen}> Not Dislocated </TableCell>
+							<TableCell className={classes.tableColumnHeadGreen}>
+								{" "}
+								Not Dislocated{" "}
+							</TableCell>
 							<TableCell className={classes.tableDataCell}>
 								{"households" in resultsJson["not_dislocated"]
-									? resultsJson["not_dislocated"]["households"].toLocaleString("en-US")
-									: resultsJson["not_dislocated"]["population"].toLocaleString("en-US")}
+									? resultsJson["not_dislocated"]["households"].toLocaleString(
+											"en-US",
+									  )
+									: resultsJson["not_dislocated"]["population"].toLocaleString(
+											"en-US",
+									  )}
 							</TableCell>
 							<TableCell className={classes.tableDataCell}>
 								{"percent_of_households" in resultsJson["not_dislocated"]
-									? round(resultsJson["not_dislocated"]["percent_of_households"], 1)
-									: round(resultsJson["not_dislocated"]["percent_of_population"], 1)}
+									? round(
+											resultsJson["not_dislocated"]["percent_of_households"],
+											1,
+									  )
+									: round(
+											resultsJson["not_dislocated"]["percent_of_population"],
+											1,
+									  )}
 								%
 							</TableCell>
 						</TableRow>

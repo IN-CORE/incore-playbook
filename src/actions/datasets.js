@@ -8,19 +8,27 @@ export function receiveDatasets(type, json) {
 		dispatch({
 			type: type,
 			datasets: json,
-			receivedAt: Date.now()
+			receivedAt: Date.now(),
 		});
 	};
 }
 
-export function fetchDatasets(globalConfig = defaultGlobalConfig, limit = 20, offset = 0, type) {
+export function fetchDatasets(
+	globalConfig = defaultGlobalConfig,
+	limit = 20,
+	offset = 0,
+	type,
+) {
 	let endpoint = `${globalConfig.dataServiceBase}datasets?limit=${limit}&skip=${offset}&type=${type}`;
 
 	let space = globalConfig.testbedSpace;
 	if (space !== undefined) endpoint = `${endpoint}&space=${space}`;
 
 	return async (dispatch) => {
-		const response = await fetch(endpoint, { mode: "cors", headers: getHeader(globalConfig.hostname) });
+		const response = await fetch(endpoint, {
+			mode: "cors",
+			headers: getHeader(globalConfig.hostname),
+		});
 		if (response.status === 200) {
 			response.json().then((json) => {
 				Object.keys(globalConfig.inputDatasetTypes).map((key) => {

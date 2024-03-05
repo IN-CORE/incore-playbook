@@ -1,7 +1,10 @@
 import { Box, Container, Grid } from "@material-ui/core";
 import React, { useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
-import { getOutputFileContent, getOutputFileContentJSON } from "../../../utils/datawolf";
+import {
+	getOutputFileContent,
+	getOutputFileContentJSON,
+} from "../../../utils/datawolf";
 import { createBasicLayers, generateLayers } from "../../../utils/map";
 import { comparisonKey } from "../../../globals";
 import { FunctionalityTableCompare } from "../table/FunctionalityTableCompare";
@@ -17,7 +20,8 @@ export default function BldgMCSCompare(props) {
 	const datawolfConfig = useSelector((state) => state.config.datawolfConfig);
 	const globalConfig = useSelector((state) => state.config.globalConfig);
 
-	const [mcsBldgSummaryTableContents, setMcsBldgSummaryTableContents] = useState({});
+	const [mcsBldgSummaryTableContents, setMcsBldgSummaryTableContents] =
+		useState({});
 	const [damageLayersA, setDamageLayersA] = useState(null);
 	const [damageLayersB, setDamageLayersB] = useState(null);
 
@@ -38,16 +42,17 @@ export default function BldgMCSCompare(props) {
 						const mcsBldgFailureProbINCOREId = await getOutputFileContent(
 							datawolfConfig,
 							executionItems[i],
-							datawolfDatasetConfigItem.datasetId
+							datawolfDatasetConfigItem.datasetId,
 						);
 						const layerDef = [
 							{
 								layerId: mcsBldgFailureProbINCOREId,
 								layerStyles: mapConfig.LAYER_STYLES.BldgMCS,
-								title: "Building Functionality Probability without Interdependency",
+								title:
+									"Building Functionality Probability without Interdependency",
 								opacity: 1,
-								zIndex: 1
-							}
+								zIndex: 1,
+							},
 						];
 						const previewLayers = generateLayers(globalConfig, layerDef);
 						if (i === 0) {
@@ -59,11 +64,11 @@ export default function BldgMCSCompare(props) {
 						const content = await getOutputFileContentJSON(
 							datawolfConfig,
 							executionItems[i],
-							datawolfDatasetConfigItem.datasetId
+							datawolfDatasetConfigItem.datasetId,
 						);
 						setMcsBldgSummaryTableContents((prevState) => ({
 							...prevState,
-							[comparisonKey[i]]: content
+							[comparisonKey[i]]: content,
 						}));
 					}
 				}
@@ -83,8 +88,12 @@ export default function BldgMCSCompare(props) {
 					mcsBldgSummaryTableContents[comparisonKey[1]]["by_category"] ? (
 						<Grid item style={{ minWidth: "90%" }}>
 							<FunctionalityGraphCompare
-								categorySummaryA={mcsBldgSummaryTableContents[comparisonKey[0]]["by_category"]}
-								categorySummaryB={mcsBldgSummaryTableContents[comparisonKey[1]]["by_category"]}
+								categorySummaryA={
+									mcsBldgSummaryTableContents[comparisonKey[0]]["by_category"]
+								}
+								categorySummaryB={
+									mcsBldgSummaryTableContents[comparisonKey[1]]["by_category"]
+								}
 							/>
 						</Grid>
 					) : (
@@ -94,17 +103,36 @@ export default function BldgMCSCompare(props) {
 			</Box>
 
 			{/*for map*/}
-			{basicLayersA && basicLayersB && hazardLayers && damageLayersA && damageLayersB ? (
-				<Container className="mapContainer" disableGutters style={{ height: `${mapHeight}px` }}>
+			{basicLayersA &&
+			basicLayersB &&
+			hazardLayers &&
+			damageLayersA &&
+			damageLayersB ? (
+				<Container
+					className="mapContainer"
+					disableGutters
+					style={{ height: `${mapHeight}px` }}
+				>
 					<MapCompare
 						className="fillContainer"
 						zoom={mapConfig.ZOOM}
 						minZoom={mapConfig.MIN_ZOOM}
 						maxZoom={mapConfig.MAX_ZOOM}
-						extent={applyTransform(mapConfig.MAP_BOUNDS, getTransform("EPSG:4326", "EPSG:3857"))}
+						extent={applyTransform(
+							mapConfig.MAP_BOUNDS,
+							getTransform("EPSG:4326", "EPSG:3857"),
+						)}
 						center={fromLonLat(mapConfig.MAP_CENTER)}
-						layersA={[basicLayersA, hazardLayers[comparisonKey[0]], damageLayersA]}
-						layersB={[basicLayersB, hazardLayers[comparisonKey[1]], damageLayersB]}
+						layersA={[
+							basicLayersA,
+							hazardLayers[comparisonKey[0]],
+							damageLayersA,
+						]}
+						layersB={[
+							basicLayersB,
+							hazardLayers[comparisonKey[1]],
+							damageLayersB,
+						]}
 						layerSwitcherOptionsA={{}}
 						layerSwitcherOptionsB={{}}
 						height={mapHeight}

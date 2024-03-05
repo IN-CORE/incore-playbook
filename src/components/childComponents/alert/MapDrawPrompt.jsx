@@ -13,20 +13,31 @@ const useStyles = makeStyles({
 		transform: "translate(-50%, -50%)",
 		maxWidth: "400px",
 		padding: "3em",
-		zIndex: 3000
-	}
+		zIndex: 3000,
+	},
 });
 
 export const MapDrawPrompt = (props) => {
 	const classes = useStyles();
 
-	const { mapDialogOpen, handleMapDialogClose, promptTitle, promptText, promptElem } = props;
+	const {
+		mapDialogOpen,
+		handleMapDialogClose,
+		promptTitle,
+		promptText,
+		promptElem,
+	} = props;
 
 	return (
-		<Paper className={classes.dialog} style={{ display: mapDialogOpen ? "inherit" : "none" }}>
+		<Paper
+			className={classes.dialog}
+			style={{ display: mapDialogOpen ? "inherit" : "none" }}
+		>
 			<IncoreTitle style={{ color: "#00619D" }}>{promptTitle}</IncoreTitle>
 			<p style={{ padding: "1em 0" }}>{promptText}</p>
-			<Box style={{ margin: "auto", textAlign: "center", padding: "2em" }}>{promptElem}</Box>
+			<Box style={{ margin: "auto", textAlign: "center", padding: "2em" }}>
+				{promptElem}
+			</Box>
 			<IncoreButton onClick={handleMapDialogClose}>Got It</IncoreButton>
 		</Paper>
 	);

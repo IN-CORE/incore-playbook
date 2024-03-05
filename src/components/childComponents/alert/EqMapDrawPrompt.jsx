@@ -13,7 +13,7 @@ export const EqMapDrawPrompt = (props) => {
 					backgroundColor: "#D63649",
 					borderRadius: "50%",
 					display: "block",
-					margin: "auto"
+					margin: "auto",
 				}}
 			/>
 			<span>Epicenter</span>

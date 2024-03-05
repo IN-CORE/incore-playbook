@@ -3,7 +3,10 @@ import "../../../styles/step-status.css";
 import { useDispatch, useSelector } from "react-redux";
 import { getStep, updateStep } from "../../../actions/steps";
 import { FormControl } from "@material-ui/core";
-import { IncoreMenuItem, IncoreSelectBox } from "../../styledComponents/IncoreSelect";
+import {
+	IncoreMenuItem,
+	IncoreSelectBox,
+} from "../../styledComponents/IncoreSelect";
 import { IncoreFootNote } from "../../styledComponents/IncoreFootNote";
 import { parseDateTime } from "../../../utils/common";
 import CheckIcon from "@material-ui/icons/Check";
@@ -12,8 +15,12 @@ import HourglassEmptyOutlinedIcon from "@material-ui/icons/HourglassEmptyOutline
 
 const StepStatusDropdown = ({ step, substep }) => {
 	const dispatch = useDispatch();
-	const stepData = useSelector((state) => state.steps[`step_${step}_${substep}`]);
-	const [activeKey, setActiveKey] = useState(stepData.status !== undefined ? stepData.status : "pending");
+	const stepData = useSelector(
+		(state) => state.steps[`step_${step}_${substep}`],
+	);
+	const [activeKey, setActiveKey] = useState(
+		stepData.status !== undefined ? stepData.status : "pending",
+	);
 
 	const globalConfig = useSelector((state) => state.config.globalConfig);
 
@@ -40,12 +47,19 @@ const StepStatusDropdown = ({ step, substep }) => {
 	const options = [
 		{ value: "pending", label: "Pending", icon: pendingIcon },
 		{ value: "in_progress", label: "In Progress", icon: inProgressCheckIcon },
-		{ value: "complete", label: "Complete", icon: completedCheckIcon }
+		{ value: "complete", label: "Complete", icon: completedCheckIcon },
 	];
 
 	const renderOption = (option) => (
 		<IncoreMenuItem value={option.value}>
-			<div style={{ display: "flex", alignItems: "center", justifyContent: "flex-start", margin: "auto 1em" }}>
+			<div
+				style={{
+					display: "flex",
+					alignItems: "center",
+					justifyContent: "flex-start",
+					margin: "auto 1em",
+				}}
+			>
 				{option.icon}
 				<div style={{ marginLeft: "1em" }}>{option.label}</div>
 			</div>
@@ -58,14 +72,20 @@ const StepStatusDropdown = ({ step, substep }) => {
 
 	return (
 		<FormControl style={{ m: 1, minWidth: 120 }}>
-			<IncoreSelectBox labelId="dropdown-label" id="dropdown" value={activeKey} onChange={handleOptionChange}>
+			<IncoreSelectBox
+				labelId="dropdown-label"
+				id="dropdown"
+				value={activeKey}
+				onChange={handleOptionChange}
+			>
 				{options.map(renderOption)}
 			</IncoreSelectBox>
 			{stepData["status"] && stepData["status_user"] ? (
 				<IncoreFootNote>
 					Last updated by {stepData["status_user"]["firstName"]}&nbsp;
 					{stepData["status_user"]["lastName"]} at{" "}
-					{parseDateTime(stepData["status_updated_at"]) ?? "unavailable timestamp"}
+					{parseDateTime(stepData["status_updated_at"]) ??
+						"unavailable timestamp"}
 				</IncoreFootNote>
 			) : null}
 		</FormControl>

@@ -9,12 +9,14 @@ import path from "path";
 import TerserPlugin from "terser-webpack-plugin";
 
 // eslint-disable-next-line no-console
-console.log(`the current HOSTNAME environment variable is ${process.env.INCORE_REMOTE_HOSTNAME}`);
+console.log(
+	`the current HOSTNAME environment variable is ${process.env.INCORE_REMOTE_HOSTNAME}`,
+);
 
 export default {
 	mode: "production",
 	resolve: {
-		extensions: [".js", ".jsx", ".json"]
+		extensions: [".js", ".jsx", ".json"],
 	},
 	devtool: "source-map", // more info:https://webpack.github.io/docs/build-performance.html#sourcemaps and https://webpack.github.io/docs/configuration.html#devtool
 	entry: [
@@ -22,13 +24,13 @@ export default {
 		"whatwg-fetch",
 		path.resolve(__dirname, "src/index.jsx"),
 		"ol/ol.css",
-		"ol-layerswitcher/src/ol-layerswitcher.css"
+		"ol-layerswitcher/src/ol-layerswitcher.css",
 	],
 	target: "web", // necessary per https://webpack.github.io/docs/testing.html#compile-and-test
 	output: {
 		path: path.resolve(__dirname, "dist"),
 		publicPath: "",
-		filename: "[name].[chunkhash].js"
+		filename: "[name].[chunkhash].js",
 	},
 	plugins: [
 		// Hash the files using MD5 so that their names change when the content changes.
@@ -40,9 +42,11 @@ export default {
 		new webpack.DefinePlugin({
 			"process.env": {
 				NODE_ENV: JSON.stringify("production"),
-				INCORE_REMOTE_HOSTNAME: JSON.stringify(process.env.INCORE_REMOTE_HOSTNAME)
+				INCORE_REMOTE_HOSTNAME: JSON.stringify(
+					process.env.INCORE_REMOTE_HOSTNAME,
+				),
 			},
-			"__DEV__": false
+			__DEV__: false,
 		}),
 
 		// Generate an external css file with a hash in the filename
@@ -61,40 +65,46 @@ export default {
 				keepClosingSlash: true,
 				minifyJS: true,
 				minifyCSS: true,
-				minifyURLs: true
+				minifyURLs: true,
 			},
 			inject: true,
 			// Note that you can add custom options here if you need to handle other custom logic in index.html
 			// To track JavaScript errors via TrackJS, sign up for a free trial at TrackJS.com and enter your token below.
-			trackJSToken: ""
+			trackJSToken: "",
 		}),
 
 		new webpack.LoaderOptionsPlugin({
 			debug: true,
 			options: {
 				sassLoader: {
-					includePaths: [path.resolve(__dirname, "src", "scss")]
+					includePaths: [path.resolve(__dirname, "src", "scss")],
 				},
 				context: "/",
-				postcss: [autoprefixer()]
-			}
-		})
+				postcss: [autoprefixer()],
+			},
+		}),
 	],
 	module: {
 		rules: [
 			{ test: /\.jsx?$/, exclude: /node_modules/, loaders: ["babel-loader"] },
-			{ test: /\.eot(\?v=\d+.\d+.\d+)?$/, loader: "url-loader?name=[name].[ext]" },
+			{
+				test: /\.eot(\?v=\d+.\d+.\d+)?$/,
+				loader: "url-loader?name=[name].[ext]",
+			},
 			{
 				test: /\.woff(2)?(\?v=[0-9]\.[0-9]\.[0-9])?$/,
-				loader: "url-loader?limit=10000&mimetype=application/font-woff&name=[name].[ext]"
+				loader:
+					"url-loader?limit=10000&mimetype=application/font-woff&name=[name].[ext]",
 			},
 			{
 				test: /\.[ot]tf(\?v=\d+.\d+.\d+)?$/,
-				loader: "url-loader?limit=10000&mimetype=application/octet-stream&name=[name].[ext]"
+				loader:
+					"url-loader?limit=10000&mimetype=application/octet-stream&name=[name].[ext]",
 			},
 			{
 				test: /\.svg(\?v=\d+.\d+.\d+)?$/,
-				loader: "url-loader?limit=10000&mimetype=image/svg+xml&name=[name].[ext]"
+				loader:
+					"url-loader?limit=10000&mimetype=image/svg+xml&name=[name].[ext]",
 			},
 			{ test: /\.(jpe?g|png|gif)$/i, loader: "file-loader?name=[name].[ext]" },
 			{ test: /\.ico$/, loader: "file-loader?name=[name].[ext]" },
@@ -104,12 +114,15 @@ export default {
 				use: [
 					MiniCssExtractPlugin.loader,
 					{ loader: "css-loader", options: { sourceMap: true } },
-					{ loader: "postcss-loader", options: { plugins: () => [require("autoprefixer")] } },
-					{ loader: "sass-loader", options: { sourceMap: true } }
-				]
-			}
+					{
+						loader: "postcss-loader",
+						options: { plugins: () => [require("autoprefixer")] },
+					},
+					{ loader: "sass-loader", options: { sourceMap: true } },
+				],
+			},
 			// {test: /\.json$/, loader: "json-loader"}
-		]
+		],
 	},
 	optimization: {
 		minimizer: [
@@ -118,10 +131,10 @@ export default {
 				terserOptions: {
 					ecma: 8,
 					compress: {
-						warnings: false
-					}
-				}
-			})
-		]
-	}
+						warnings: false,
+					},
+				},
+			}),
+		],
+	},
 };

@@ -3,7 +3,7 @@ import jwt_decode from "jwt-decode";
 import { globals as defaultGlobalConfig, testUserInfo } from "../globals";
 import {
 	datawolfConfig as defaultDatawolfConfig,
-	datawolfWorkflowConfig as defaultDatawolfWorkflowConfig
+	datawolfWorkflowConfig as defaultDatawolfWorkflowConfig,
 } from "../datawolf.config.js";
 import JSSoup from "jssoup";
 import { fromLonLat, toLonLat } from "ol/proj";
@@ -11,12 +11,19 @@ import { fromLonLat, toLonLat } from "ol/proj";
 const cookies = new Cookies();
 
 //NOTE: This is only checking if a cookie is present, but not validating the cookie.
-export const isAuthorized = (hostname = "", testbedGroup = defaultGlobalConfig.testbedGroup) => {
+export const isAuthorized = (
+	hostname = "",
+	testbedGroup = defaultGlobalConfig.testbedGroup,
+) => {
 	const authorization = cookies.get("Authorization");
 
 	if (hostname === "http://localhost:8080") return true;
 	else {
-		if (authorization !== undefined && authorization !== "" && authorization !== null) {
+		if (
+			authorization !== undefined &&
+			authorization !== "" &&
+			authorization !== null
+		) {
 			// further restrict to the testbed group
 			const userInfo = getCurrUserInfo(authorization);
 			return "groups" in userInfo && userInfo["groups"].includes(testbedGroup);
@@ -30,7 +37,11 @@ export const isAdmin = (hostname = "") => {
 
 	if (hostname === "http://localhost:8080") return true;
 	else {
-		if (authorization !== undefined && authorization !== "" && authorization !== null) {
+		if (
+			authorization !== undefined &&
+			authorization !== "" &&
+			authorization !== null
+		) {
 			// further restrict to the testbed group
 			const userInfo = getCurrUserInfo(authorization);
 			return "groups" in userInfo && userInfo["groups"].includes("incore_ncsa");
@@ -42,13 +53,13 @@ export const isAdmin = (hostname = "") => {
 export function getHeader(hostname = "") {
 	if (hostname.includes("localhost")) {
 		const headers = new Headers({
-			"x-auth-userinfo": `{"preferred_username":"${testUserInfo}"}`
+			"x-auth-userinfo": `{"preferred_username":"${testUserInfo}"}`,
 		});
 
 		return headers;
 	} else {
 		const headers = new Headers({
-			Authorization: cookies.get("Authorization")
+			Authorization: cookies.get("Authorization"),
 		});
 
 		return headers;
@@ -85,7 +96,7 @@ export function getCurrUserFullname(hostname = "") {
 export async function getCurrUserDatawolfId(
 	email,
 	datawolfConfig = defaultDatawolfConfig,
-	datawolfWorkflowConfig = defaultDatawolfWorkflowConfig
+	datawolfWorkflowConfig = defaultDatawolfWorkflowConfig,
 ) {
 	let cookie = cookies.get("DatawolfUserDetails");
 	if (email === "" || undefined || null) {
@@ -94,10 +105,16 @@ export async function getCurrUserDatawolfId(
 		return cookie.id;
 	}
 	let endpoint = datawolfConfig["datawolfPersonsDetail"] + email;
-	let request = await fetch(endpoint, { mode: "cors", headers: getHeader(datawolfConfig.hostname) });
+	let request = await fetch(endpoint, {
+		mode: "cors",
+		headers: getHeader(datawolfConfig.hostname),
+	});
 	if (request.status === 200) {
 		const userDetail = await request.json();
-		cookies.set("DatawolfUserDetails", { id: userDetail[0].id, email: userDetail[0].email });
+		cookies.set("DatawolfUserDetails", {
+			id: userDetail[0].id,
+			email: userDetail[0].email,
+		});
 		return userDetail[0].id;
 	} else if (request.status === 401) {
 		// TODO handle error
@@ -159,19 +176,29 @@ export function round(num, scale) {
 }
 
 export function diff(num1, num2) {
-	return num1 === undefined || num2 === undefined
-		? "-"
-		: num1 - num2 > 0
-		  ? `+${(num1 - num2).toLocaleString("en-US")}`
-		  : (num1 - num2).toLocaleString("en-US");
+	if (num1 === undefined || num2 === undefined) {
+		return "-";
+	} else {
+		const difference = num1 - num2;
+		if (difference > 0) {
+			return `+${difference.toLocaleString("en-US")}`;
+		} else {
+			return difference.toLocaleString("en-US");
+		}
+	}
 }
 
 export function percentDiff(num1, num2) {
-	return num1 === undefined || num2 === undefined
-		? "-"
-		: num1 - num2 > 0
-		  ? `+${round(num1 - num2, 1)}%`
-		  : `${round(num1 - num2, 1)}%`;
+	if (num1 === undefined || num2 === undefined) {
+		return "-";
+	} else {
+		const difference = num1 - num2;
+		if (difference > 0) {
+			return `+${round(difference, 1)}%`;
+		} else {
+			return `${round(difference, 1)}%`;
+		}
+	}
 }
 
 export function formatPercent(val, n = 1) {
@@ -201,7 +228,8 @@ export function exportJson(json, file_name) {
 }
 
 export function dataURItoFile(dataURI, filename = "") {
-	if (filename === undefined || filename === "" || filename === null) filename = "hurricane-raster.tif";
+	if (filename === undefined || filename === "" || filename === null)
+		filename = "hurricane-raster.tif";
 	let mime = dataURI.split(",")[0].match(/:(.*?);/)[1];
 	let binary = atob(dataURI.split(",")[1]);
 	let array = [];
@@ -231,10 +259,16 @@ export function getHazardTypePlural(hazardType) {
 
 // get incore space id given space name
 // TODO replace with endpoint once it's ready
-export async function getSpaceIdByName(globalConfig = defaultGlobalConfig, name) {
+export async function getSpaceIdByName(
+	globalConfig = defaultGlobalConfig,
+	name,
+) {
 	const endpoint = `${globalConfig.spaceServiceBase}spaces`;
 	if (name === undefined || name === null) name = globalConfig.testbedSpace;
-	const request = await fetch(endpoint, { mode: "cors", headers: getHeader(globalConfig.hostname) });
+	const request = await fetch(endpoint, {
+		mode: "cors",
+		headers: getHeader(globalConfig.hostname),
+	});
 	if (request.status === 200) {
 		const spaces = await request.json();
 		return spaces.filter((space) => space["name"] === name)[0]["id"];
@@ -248,10 +282,17 @@ export async function getSpaceIdByName(globalConfig = defaultGlobalConfig, name)
 }
 
 // move resource to space
-export async function move2TestbedSpace(globalConfig = defaultGlobalConfig, resourceId) {
+export async function move2TestbedSpace(
+	globalConfig = defaultGlobalConfig,
+	resourceId,
+) {
 	const spaceId = await getSpaceIdByName(globalConfig);
 	const endpoint = `${globalConfig.spaceServiceBase}spaces/${spaceId}/members/${resourceId}`;
-	const request = await fetch(endpoint, { mode: "cors", headers: getHeader(globalConfig.hostname), method: "POST" });
+	const request = await fetch(endpoint, {
+		mode: "cors",
+		headers: getHeader(globalConfig.hostname),
+		method: "POST",
+	});
 	if (request.status === 200) {
 		return await request.json();
 	} else if (request.status === 401) {
@@ -271,7 +312,7 @@ export function parseDateTime(dateString) {
 		day: "numeric",
 		hour: "2-digit",
 		minute: "2-digit",
-		timeZone: timeZone
+		timeZone: timeZone,
 	};
 	const mydate = new Date(dateString);
 	return mydate.toLocaleString("en-US", options);

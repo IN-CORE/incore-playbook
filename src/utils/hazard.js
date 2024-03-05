@@ -10,7 +10,7 @@ export async function createModelTornado(
 	startLat,
 	startLon,
 	endLat,
-	endLon
+	endLon,
 ) {
 	const endpoint = `${globalConfig.hazardServiceBase}tornadoes`;
 	let formData = new FormData();
@@ -25,8 +25,8 @@ export async function createModelTornado(
 			startLongitude: startLon,
 			endLatitude: [endLat],
 			endLongitude: [endLon],
-			windSpeedMethod: "1"
-		}
+			windSpeedMethod: "1",
+		},
 	};
 	formData.append("tornado", JSON.stringify(tornadoMetadata));
 	let authHeader = getHeader(globalConfig.hostname);
@@ -34,7 +34,7 @@ export async function createModelTornado(
 		method: "POST",
 		mode: "cors",
 		headers: authHeader,
-		body: formData
+		body: formData,
 	});
 
 	if (tornadoRequest.status === 200) {
@@ -48,14 +48,19 @@ export async function createModelTornado(
 	}
 }
 
-export async function createRasterTornado(globalConfig = defaultGlobalConfig, name, description, files) {
+export async function createRasterTornado(
+	globalConfig = defaultGlobalConfig,
+	name,
+	description,
+	files,
+) {
 	const endpoint = `${globalConfig.hazardServiceBase}tornadoes`;
 	let formData = new FormData();
 
 	let tornadoMetadata = {
 		tornadoType: "dataset",
 		name: name,
-		description: description
+		description: description,
 	};
 	formData.append("tornado", JSON.stringify(tornadoMetadata));
 	files.map((file) => {
@@ -67,7 +72,7 @@ export async function createRasterTornado(globalConfig = defaultGlobalConfig, na
 		method: "POST",
 		mode: "cors",
 		headers: authHeader,
-		body: formData
+		body: formData,
 	});
 
 	if (tornadoRequest.status === 200) {
@@ -81,12 +86,19 @@ export async function createRasterTornado(globalConfig = defaultGlobalConfig, na
 	}
 }
 
-export async function getHazardMetadata(globalConfig = defaultGlobalConfig, hazardType, hazardId) {
+export async function getHazardMetadata(
+	globalConfig = defaultGlobalConfig,
+	hazardType,
+	hazardId,
+) {
 	// need to turn hazardType into plura
 	const hazardTypePlural = getHazardTypePlural(hazardType);
 
 	let endpoint = `${globalConfig.hazardServiceBase}${hazardTypePlural}/${hazardId}`;
-	let hazardRequest = await fetch(endpoint, { mode: "cors", headers: getHeader(globalConfig.hostname) });
+	let hazardRequest = await fetch(endpoint, {
+		mode: "cors",
+		headers: getHeader(globalConfig.hostname),
+	});
 	if (hazardRequest.status === 200) {
 		return await hazardRequest.json();
 	} else if (hazardRequest.status === 401) {
@@ -110,7 +122,7 @@ export async function createModelEarthquake(
 	demandType,
 	demandUnits,
 	attenuations,
-	faultTypeMap
+	faultTypeMap,
 ) {
 	const endpoint = `${globalConfig.hazardServiceBase}earthquakes`;
 	let formData = new FormData();
@@ -124,7 +136,7 @@ export async function createModelEarthquake(
 			srcLatitude: lat,
 			srcLongitude: lon,
 			magnitude: magnitude,
-			depth: depth
+			depth: depth,
 		},
 		visualizationParameters: {
 			demandType: demandType,
@@ -134,8 +146,8 @@ export async function createModelEarthquake(
 			maxX: round(mapConfg.HAZARD_BOUNDS[2], 3),
 			minY: round(mapConfg.HAZARD_BOUNDS[3], 3),
 			numPoints: "1025",
-			amplifyHazard: "true"
-		}
+			amplifyHazard: "true",
+		},
 	};
 	eqMetadata["attenuations"][attenuations] = 1.0;
 
@@ -151,7 +163,7 @@ export async function createModelEarthquake(
 		method: "POST",
 		mode: "cors",
 		headers: authHeader,
-		body: formData
+		body: formData,
 	});
 
 	if (tornadoRequest.status === 200) {
@@ -165,7 +177,11 @@ export async function createModelEarthquake(
 	}
 }
 
-export async function createRjfsDatasetHazards(globalConfig = defaultGlobalConfig, formData, hazardType) {
+export async function createRjfsDatasetHazards(
+	globalConfig = defaultGlobalConfig,
+	formData,
+	hazardType,
+) {
 	const endpoint = `${globalConfig.hazardServiceBase}${hazardType}`;
 	let dataurls = [];
 	let payload = new FormData();
@@ -175,14 +191,17 @@ export async function createRjfsDatasetHazards(globalConfig = defaultGlobalConfi
 			dataurl: hazardDataset["file"],
 			// need to have the correct extension name .tif to create a layer
 			// data url does not contain filename!
-			filename: `${hazardDataset["demandType"]}-raster.tif`
+			filename: `${hazardDataset["demandType"]}-raster.tif`,
 		});
 		delete hazardDataset["file"];
 	});
 
 	// need to convert data uri to blob then append
 	dataurls.map((dataurl) => {
-		payload.append("file", dataURItoFile(dataurl["dataurl"], dataurl["filename"]));
+		payload.append(
+			"file",
+			dataURItoFile(dataurl["dataurl"], dataurl["filename"]),
+		);
 	});
 
 	payload.append(hazardType.slice(0, -1), JSON.stringify(formData));
@@ -191,7 +210,7 @@ export async function createRjfsDatasetHazards(globalConfig = defaultGlobalConfi
 		method: "POST",
 		mode: "cors",
 		headers: authHeader,
-		body: payload
+		body: payload,
 	});
 
 	if (request.status === 200) {

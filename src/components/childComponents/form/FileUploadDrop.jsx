@@ -12,10 +12,10 @@ const useStyles = makeStyles({
 		border: "1px dashed #00619D",
 		backgroundColor: "#FFFFFF",
 		margin: "27px auto 0 auto",
-		display: "block"
+		display: "block",
 	},
 	fileDropInput: {
-		width: "95px"
+		width: "95px",
 	},
 	fileDropText: {
 		height: "54px",
@@ -25,12 +25,12 @@ const useStyles = makeStyles({
 		fontWeight: 500,
 		letterSpacing: 0,
 		lineHeight: "18px",
-		textAlign: "center"
+		textAlign: "center",
 	},
 	fileDropGroup: {
 		width: "92px",
 		margin: "50px auto 0 auto",
-		display: "block"
+		display: "block",
 	},
 	displayFile: {
 		boxSizing: "border-box",
@@ -38,11 +38,11 @@ const useStyles = makeStyles({
 		border: "1px solid #00619D",
 		backgroundColor: "#FFFFFF",
 		margin: "5px auto 0 auto",
-		display: "block"
+		display: "block",
 	},
 	displayFileItem: {
 		width: "100%",
-		height: "37px"
+		height: "37px",
 	},
 	displayFilename: {
 		height: "18px",
@@ -52,21 +52,22 @@ const useStyles = makeStyles({
 		letterSpacing: 0,
 		lineHeight: "18px",
 		padding: "9px 17px",
-		float: "left"
+		float: "left",
 	},
 	deleteFileIcon: {
-		"height": "24px",
-		"width": "24px",
-		"float": "right",
-		"margin": "6px",
+		height: "24px",
+		width: "24px",
+		float: "right",
+		margin: "6px",
 		"&:hover": {
-			color: "#D63649"
-		}
-	}
+			color: "#D63649",
+		},
+	},
 });
 
 export default function FileUploadDrop(props) {
-	const { onDrop, onFileInputChange, fileInputRef, onDeleteClick, files } = props;
+	const { onDrop, onFileInputChange, fileInputRef, onDeleteClick, files } =
+		props;
 
 	const classes = useStyles();
 
@@ -93,7 +94,9 @@ export default function FileUploadDrop(props) {
 					{files.map((file) => {
 						return (
 							<div className={classes.displayFileItem} key={file.name}>
-								<Typography className={classes.displayFilename}>{file.name}</Typography>
+								<Typography className={classes.displayFilename}>
+									{file.name}
+								</Typography>
 								<IconButton
 									aria-label="delete"
 									className={classes.deleteFileIcon}

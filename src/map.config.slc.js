@@ -6,7 +6,7 @@ const layerStyles = {
 	PoleDamage: "incore:epf-dmg-summary",
 	PopulationDislocation: {
 		bldgMaxDamageStateINCOREId: "incore:bldg-dmg-summary",
-		popdislHeatmapINCOREId: "incore:heatmap"
+		popdislHeatmapINCOREId: "incore:heatmap",
 	},
 	SubstationDamage: "incore:epf-dmg-summary",
 	MapUtil: {
@@ -20,11 +20,11 @@ const layerStyles = {
 			wavePeriod: "incore:hurricane-wave-period",
 			waveDirection: "incore:hurricane-wave-direction",
 			waterVelocity: "incore:hurricane-water-velocity",
-			windVelocity: "incore:hurricane-wind"
+			windVelocity: "incore:hurricane-wind",
 		},
 		tsunami: {},
-		floods: {}
-	}
+		floods: {},
+	},
 };
 
 // // joplin
@@ -110,5 +110,5 @@ export const mapConfig = {
 	ZOOM: 5,
 	MIN_ZOOM: 4,
 	MAX_ZOOM: 19,
-	LAYER_STYLES: layerStyles
+	LAYER_STYLES: layerStyles,
 };

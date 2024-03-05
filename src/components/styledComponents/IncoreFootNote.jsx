@@ -10,5 +10,5 @@ export const IncoreFootNote = styled(Typography)({
 	width: "100%",
 	textTransform: "capitalize",
 	position: "inherit",
-	padding: "0.5em 0"
+	padding: "0.5em 0",
 });

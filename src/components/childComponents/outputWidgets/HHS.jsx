@@ -1,9 +1,21 @@
 import React, { useEffect, useRef, useState } from "react";
 
-import { Box, Container, Dialog, DialogActions, DialogContent, Grid, IconButton, Typography } from "@material-ui/core";
+import {
+	Box,
+	Container,
+	Dialog,
+	DialogActions,
+	DialogContent,
+	Grid,
+	IconButton,
+	Typography,
+} from "@material-ui/core";
 import CloseIcon from "@material-ui/icons/Close";
 import HHSBarChart from "../graph/HHSBarChart";
-import { downloadOutputFile, getOutputFileContentJSON } from "../../../utils/datawolf";
+import {
+	downloadOutputFile,
+	getOutputFileContentJSON,
+} from "../../../utils/datawolf";
 import { useSelector } from "react-redux";
 import { IncoreButtonText } from "../../styledComponents/IncoreButtonText";
 import GetAppIcon from "@material-ui/icons/GetApp";
@@ -14,7 +26,13 @@ import HhsSlider from "../form/HhsSlider";
 import { IncoreInputLabel } from "../../styledComponents/IncoreInputLabel";
 
 export default function HHS(props) {
-	let { executionItem, previewOn, handlePreviewClose, datawolfDatasetConfigItems, setDownloadDialogOpen } = props;
+	let {
+		executionItem,
+		previewOn,
+		handlePreviewClose,
+		datawolfDatasetConfigItems,
+		setDownloadDialogOpen,
+	} = props;
 
 	const datawolfConfig = useSelector((state) => state.config.datawolfConfig);
 
@@ -22,27 +40,33 @@ export default function HHS(props) {
 	const [marks, setMarks] = useState([
 		{
 			value: 1,
-			label: "0"
+			label: "0",
 		},
 		{
 			value: 7,
-			label: "6"
+			label: "6",
 		},
 		{
 			value: 13,
-			label: "12"
+			label: "12",
 		},
 		{
 			value: 25,
-			label: "24"
+			label: "24",
 		},
 		{
 			value: 49,
-			label: "48"
-		}
+			label: "48",
+		},
 	]);
 
-	const [HHSBarChartContent, setHHSBarChartContent] = useState({ 1: [], 7: [], 13: [], 25: [], 49: [] });
+	const [HHSBarChartContent, setHHSBarChartContent] = useState({
+		1: [],
+		7: [],
+		13: [],
+		25: [],
+		49: [],
+	});
 	const [HhsDownload, setHhsDownload] = useState();
 	const [t, setT] = useState("1");
 
@@ -54,10 +78,16 @@ export default function HHS(props) {
 			const vName = datawolfDatasetConfigItem.datasets.variableName;
 			if (vName === "HHSBarChartContent") {
 				setHHSBarChartContent(
-					await getOutputFileContentJSON(datawolfConfig, executionItem, datawolfDatasetConfigItem.datasetId)
+					await getOutputFileContentJSON(
+						datawolfConfig,
+						executionItem,
+						datawolfDatasetConfigItem.datasetId,
+					),
 				);
 			} else if (vName === "HhsDownload") {
-				setHhsDownload(executionItem["datasets"][datawolfDatasetConfigItem.datasetId]);
+				setHhsDownload(
+					executionItem["datasets"][datawolfDatasetConfigItem.datasetId],
+				);
 			}
 		});
 	}, []);
@@ -65,21 +95,38 @@ export default function HHS(props) {
 	const download = async () => {
 		setDownloadDialogOpen(true);
 		if (HhsDownload) {
-			await downloadOutputFile(datawolfConfig, HhsDownload, null, `hhs-${executionItem.id}.csv`);
+			await downloadOutputFile(
+				datawolfConfig,
+				HhsDownload,
+				null,
+				`hhs-${executionItem.id}.csv`,
+			);
 		}
 	};
 
 	return (
-		<Dialog open={previewOn} onClose={handlePreviewClose} maxWidth="lg" fullWidth scroll="paper">
+		<Dialog
+			open={previewOn}
+			onClose={handlePreviewClose}
+			maxWidth="lg"
+			fullWidth
+			scroll="paper"
+		>
 			<DialogContent className="previewModal" ref={printRef}>
-				<IconButton aria-label="Close" onClick={handlePreviewClose} style={{ float: "right" }}>
+				<IconButton
+					aria-label="Close"
+					onClick={handlePreviewClose}
+					style={{ float: "right" }}
+				>
 					<CloseIcon fontSize="small" />
 				</IconButton>
 
 				{/*title*/}
 				{/*TODO wrap into a component*/}
 				<Box className="previewTitleSection">
-					<Typography className="previewTitle">{selectedExecutionName}</Typography>
+					<Typography className="previewTitle">
+						{selectedExecutionName}
+					</Typography>
 					<Typography className="previewTitle">
 						Select Data: Housing Recovery Stage Across Households
 					</Typography>
@@ -129,7 +176,10 @@ export default function HHS(props) {
 				<IncoreButtonText onClick={download} startIcon={<GetAppIcon />}>
 					Download
 				</IncoreButtonText>
-				<IncoreButtonText onClick={handlePreviewClose} startIcon={<CloseIcon />}>
+				<IncoreButtonText
+					onClick={handlePreviewClose}
+					startIcon={<CloseIcon />}
+				>
 					Close
 				</IncoreButtonText>
 			</DialogActions>

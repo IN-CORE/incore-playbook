@@ -25,18 +25,38 @@ export function FunctionalityGraphCompare(props) {
 
 	// Assuming categorySummaryA and categorySummaryB have the same categories
 	categorySummaryA.forEach((entry, index) => {
-		funcPercentA.push(entry.percent_functional < 0 ? 0 : round(entry.percent_functional * 100, 1));
-		nonFuncPercentA.push(entry.percent_non_functional < 0 ? 0 : round(entry.percent_non_functional * 100, 1));
+		funcPercentA.push(
+			entry.percent_functional < 0
+				? 0
+				: round(entry.percent_functional * 100, 1),
+		);
+		nonFuncPercentA.push(
+			entry.percent_non_functional < 0
+				? 0
+				: round(entry.percent_non_functional * 100, 1),
+		);
 		funcCountA.push(entry.num_functional < 0 ? 0 : entry.num_functional);
-		nonFuncCountA.push(entry.num_non_functional < 0 ? 0 : entry.num_non_functional);
+		nonFuncCountA.push(
+			entry.num_non_functional < 0 ? 0 : entry.num_non_functional,
+		);
 		categories.push(entry.category.trim());
 
 		// Match category in B with A
 		const matchB = categorySummaryB[index];
-		funcPercentB.push(matchB.percent_functional < 0 ? 0 : round(matchB.percent_functional * 100, 1));
-		nonFuncPercentB.push(matchB.percent_non_functional < 0 ? 0 : round(matchB.percent_non_functional * 100, 1));
+		funcPercentB.push(
+			matchB.percent_functional < 0
+				? 0
+				: round(matchB.percent_functional * 100, 1),
+		);
+		nonFuncPercentB.push(
+			matchB.percent_non_functional < 0
+				? 0
+				: round(matchB.percent_non_functional * 100, 1),
+		);
 		funcCountB.push(matchB.num_functional < 0 ? 0 : matchB.num_functional);
-		nonFuncCountB.push(matchB.num_non_functional < 0 ? 0 : matchB.num_non_functional);
+		nonFuncCountB.push(
+			matchB.num_non_functional < 0 ? 0 : matchB.num_non_functional,
+		);
 	});
 
 	let data = {
@@ -45,44 +65,44 @@ export function FunctionalityGraphCompare(props) {
 			{
 				label: "Functional Percentage A",
 				backgroundColor: "#96B712",
-				data: funcPercentA
+				data: funcPercentA,
 			},
 			{
 				label: "Non-Functional Percentage A",
 				backgroundColor: "#D63649",
-				data: nonFuncPercentA
+				data: nonFuncPercentA,
 			},
 			{
 				label: "Functional Percentage B",
 				backgroundColor: "#2E5232",
-				data: funcPercentB
+				data: funcPercentB,
 			},
 			{
 				label: "Non-Functional Percentage B",
 				backgroundColor: "#833841",
-				data: nonFuncPercentB
+				data: nonFuncPercentB,
 			},
 			{
 				label: "Functional Building Num A",
 				data: funcCountA,
-				hidden: true
+				hidden: true,
 			},
 			{
 				label: "Non-Functional Building Num A",
 				data: nonFuncCountA,
-				hidden: true
+				hidden: true,
 			},
 			{
 				label: "Functional Building Num B",
 				data: funcCountB,
-				hidden: true
+				hidden: true,
 			},
 			{
 				label: "Non-Functional Building Num B",
 				data: nonFuncCountB,
-				hidden: true
-			}
-		]
+				hidden: true,
+			},
+		],
 	};
 
 	let options = {
@@ -93,8 +113,8 @@ export function FunctionalityGraphCompare(props) {
 				// Filter function to only display legends for datasets that are not hidden
 				filter: function (legendItem, chartData) {
 					return !chartData.datasets[legendItem.datasetIndex].hidden;
-				}
-			}
+				},
+			},
 		},
 		tooltips: {
 			mode: "single",
@@ -109,56 +129,61 @@ export function FunctionalityGraphCompare(props) {
 					label.push(
 						`${data.datasets[item.datasetIndex + 4].label}: ${
 							data.datasets[item.datasetIndex + 4].data[item.index]
-						}`
+						}`,
 					);
 					return label;
-				}
-			}
+				},
+			},
 		},
 		maintainAspectRatio: false,
 		scales: {
 			xAxes: [
 				{
 					gridLines: {
-						display: false
+						display: false,
 					},
 					ticks: {
 						fontFamily: "Rubik",
-						fontSize: 14
+						fontSize: 14,
 					},
 					categoryPercentage: 0.8,
-					barPercentage: 0.75 // Adjust as needed for your design
-				}
+					barPercentage: 0.75, // Adjust as needed for your design
+				},
 			],
 			yAxes: [
 				{
 					scaleLabel: {
 						display: true,
-						labelString: "Percentage"
+						labelString: "Percentage",
 					},
 					ticks: {
-						maxTicksLimit: 6
-					}
-				}
-			]
+						maxTicksLimit: 6,
+					},
+				},
+			],
 		},
 		plugins: {
 			zoom: {
 				pan: {
-					enabled: false
+					enabled: false,
 				},
 				zoom: {
 					enabled: true,
-					mode: "y"
-				}
-			}
-		}
+					mode: "y",
+				},
+			},
+		},
 	};
 
 	return (
 		<div>
 			<div style={{ textAlign: "right" }}>
-				<Button onClick={resetClick} variant="outlined" size="small" className="compactButton">
+				<Button
+					onClick={resetClick}
+					variant="outlined"
+					size="small"
+					className="compactButton"
+				>
 					Reset Zoom
 				</Button>
 			</div>

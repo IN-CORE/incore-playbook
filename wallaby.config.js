@@ -10,11 +10,11 @@ let babelConfig = JSON.parse(fs.readFileSync(path.join(__dirname, ".babelrc")));
 let wallabyPostprocessor = wallabyWebpack({
 	//webpack options
 	externals: {
-		"react": "React",
-		"cheerio": "window",
+		react: "React",
+		cheerio: "window",
 		"react/addons": true,
 		"react/lib/ReactContext": true,
-		"react/lib/ExecutionEnvironment": true
+		"react/lib/ExecutionEnvironment": true,
 	},
 	module: {
 		loaders: [
@@ -22,20 +22,33 @@ let wallabyPostprocessor = wallabyWebpack({
 				test: /\.jsx?$/,
 				include: path.join(__dirname, "src"),
 				exclude: /node_modules/,
-				loaders: ["babel-loader"]
+				loaders: ["babel-loader"],
 			},
 			// {test: /\.json$/, loaders: ["json-loader"]},
-			{ test: /(\.css|\.scss)$/, loaders: ["style-loader", "css-loader?sourceMap", "sass-loader?sourceMap"] },
+			{
+				test: /(\.css|\.scss)$/,
+				loaders: [
+					"style-loader",
+					"css-loader?sourceMap",
+					"sass-loader?sourceMap",
+				],
+			},
 			{ test: /\.eot(\?v=\d+\.\d+\.\d+)?$/, loader: "file-loader" },
 			{ test: /\.(woff|woff2)$/, loader: "url-loader?prefix=font/&limit=5000" },
-			{ test: /\.ttf(\?v=\d+\.\d+\.\d+)?$/, loader: "url-loader?limit=10000&mimetype=application/octet-stream" },
-			{ test: /\.svg(\?v=\d+\.\d+\.\d+)?$/, loader: "url-loader?limit=10000&mimetype=image/svg+xml" }
-		]
+			{
+				test: /\.ttf(\?v=\d+\.\d+\.\d+)?$/,
+				loader: "url-loader?limit=10000&mimetype=application/octet-stream",
+			},
+			{
+				test: /\.svg(\?v=\d+\.\d+\.\d+)?$/,
+				loader: "url-loader?limit=10000&mimetype=image/svg+xml",
+			},
+		],
 	},
 	resolve: {
-		extensions: [".js", ".jsx"]
+		extensions: [".js", ".jsx"],
 	},
-	entry: {}
+	entry: {},
 });
 
 process.env.NODE_ENV = "test";
@@ -48,21 +61,24 @@ module.exports = function (wallaby) {
 		// their wrapped versions will be loaded instead
 		files: [
 			{ pattern: "node_modules/babel-polyfill/browser.js", instrument: false },
-			{ pattern: "node_modules/react/dist/react-with-addons.js", instrument: false },
+			{
+				pattern: "node_modules/react/dist/react-with-addons.js",
+				instrument: false,
+			},
 			{ pattern: "src/**/*.js", load: false },
-			{ pattern: "src/**/*.jsx", load: false }
+			{ pattern: "src/**/*.jsx", load: false },
 		],
 
 		tests: [{ pattern: "test/**/*.test.js", load: false }],
 
 		env: {
-			type: "browser"
+			type: "browser",
 		},
 
 		testFramework: "jasmine",
 
 		compilers: {
-			"**/*.js*": wallaby.compilers.babel(babelConfig)
+			"**/*.js*": wallaby.compilers.babel(babelConfig),
 		},
 
 		postprocessor: wallabyPostprocessor,
@@ -70,6 +86,6 @@ module.exports = function (wallaby) {
 		setup: function () {
 			// required to trigger test loading
 			window.__moduleBundler.loadTests();
-		}
+		},
 	};
 };

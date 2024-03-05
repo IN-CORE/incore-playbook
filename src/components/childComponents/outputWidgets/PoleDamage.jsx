@@ -1,11 +1,22 @@
-import { Box, Container, Dialog, DialogActions, DialogContent, IconButton, Typography } from "@material-ui/core";
+import {
+	Box,
+	Container,
+	Dialog,
+	DialogActions,
+	DialogContent,
+	IconButton,
+	Typography,
+} from "@material-ui/core";
 import CloseIcon from "@material-ui/icons/Close";
 import Map from "../map/Map";
 import { fromLonLat, getTransform } from "ol/proj";
 import React, { useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
 import { applyTransform } from "ol/extent";
-import { downloadOutputFile, getOutputFileContent } from "../../../utils/datawolf";
+import {
+	downloadOutputFile,
+	getOutputFileContent,
+} from "../../../utils/datawolf";
 import { basicLayers, generateLayers } from "../../../utils/map";
 import { IncoreButtonText } from "../../styledComponents/IncoreButtonText";
 import GetAppIcon from "@material-ui/icons/GetApp";
@@ -19,7 +30,7 @@ export default function PoleDamage(props) {
 		handlePreviewClose,
 		datawolfDatasetConfigItems,
 		hazardLayers,
-		setDownloadDialogOpen
+		setDownloadDialogOpen,
 	} = props;
 
 	const mapConfig = useSelector((state) => state.config.mapConfig);
@@ -42,7 +53,7 @@ export default function PoleDamage(props) {
 				const poleMaxDmgStateINCOREId = await getOutputFileContent(
 					datawolfConfig,
 					executionItem,
-					datawolfDatasetConfigItem.datasetId
+					datawolfDatasetConfigItem.datasetId,
 				);
 				const layerDef = [
 					{
@@ -50,13 +61,15 @@ export default function PoleDamage(props) {
 						layerStyles: mapConfig.LAYER_STYLES.PoleDamage,
 						title: "EPF Damage (Pole)",
 						opacity: 1,
-						zIndex: 1
-					}
+						zIndex: 1,
+					},
 				];
 				const previewLayers = generateLayers(globalConfig, layerDef);
 				setDamageLayers(previewLayers);
 			} else if (vName === "poleDmgDsResultDownload") {
-				setPoleDmgDsResultDownload(executionItem["datasets"][datawolfDatasetConfigItem.datasetId]);
+				setPoleDmgDsResultDownload(
+					executionItem["datasets"][datawolfDatasetConfigItem.datasetId],
+				);
 			}
 		});
 	}, []);
@@ -64,22 +77,41 @@ export default function PoleDamage(props) {
 	const download = async () => {
 		setDownloadDialogOpen(true);
 		if (poleDmgDsResultDownload) {
-			await downloadOutputFile(datawolfConfig, poleDmgDsResultDownload, null, `epf-pole-${executionItem.id}.csv`);
+			await downloadOutputFile(
+				datawolfConfig,
+				poleDmgDsResultDownload,
+				null,
+				`epf-pole-${executionItem.id}.csv`,
+			);
 		}
 	};
 
 	return (
-		<Dialog open={previewOn} onClose={handlePreviewClose} maxWidth="lg" fullWidth scroll="paper">
+		<Dialog
+			open={previewOn}
+			onClose={handlePreviewClose}
+			maxWidth="lg"
+			fullWidth
+			scroll="paper"
+		>
 			<DialogContent className="previewModal" ref={printRef}>
-				<IconButton aria-label="Close" onClick={handlePreviewClose} style={{ float: "right" }}>
+				<IconButton
+					aria-label="Close"
+					onClick={handlePreviewClose}
+					style={{ float: "right" }}
+				>
 					<CloseIcon fontSize="small" />
 				</IconButton>
 
 				{/*title*/}
 				{/*TODO wrap into a component*/}
 				<Box className="previewTitleSection">
-					<Typography className="previewTitle">{selectedExecutionName}</Typography>
-					<Typography className="previewTitle">Select Data: EPF Pole Damage</Typography>
+					<Typography className="previewTitle">
+						{selectedExecutionName}
+					</Typography>
+					<Typography className="previewTitle">
+						Select Data: EPF Pole Damage
+					</Typography>
 				</Box>
 
 				{/*for map*/}
@@ -90,7 +122,10 @@ export default function PoleDamage(props) {
 							zoom={mapConfig.ZOOM}
 							minZoom={mapConfig.MIN_ZOOM}
 							maxZoom={mapConfig.MAX_ZOOM}
-							extent={applyTransform(mapConfig.MAP_BOUNDS, getTransform("EPSG:4326", "EPSG:3857"))}
+							extent={applyTransform(
+								mapConfig.MAP_BOUNDS,
+								getTransform("EPSG:4326", "EPSG:3857"),
+							)}
 							center={fromLonLat(mapConfig.MAP_CENTER)}
 							layers={[basicLayers, hazardLayers, damageLayers]}
 							layerSwitcherOptions={{}}
@@ -113,7 +148,10 @@ export default function PoleDamage(props) {
 				<IncoreButtonText onClick={download} startIcon={<GetAppIcon />}>
 					Data
 				</IncoreButtonText>
-				<IncoreButtonText onClick={handlePreviewClose} startIcon={<CloseIcon />}>
+				<IncoreButtonText
+					onClick={handlePreviewClose}
+					startIcon={<CloseIcon />}
+				>
 					Close
 				</IncoreButtonText>
 			</DialogActions>

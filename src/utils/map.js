@@ -6,25 +6,32 @@ import { mapConfig as defaultMapConfig } from "../map.config";
 import XYZ from "ol/source/XYZ";
 import OSM, { ATTRIBUTION as OSM_ATTRIBUTION } from "ol/source/OSM";
 
-export const generateLayers = (globalConfig = defaultGlobalConfig, layerDef, layerGroupTitle = "Damage") => {
+export const generateLayers = (
+	globalConfig = defaultGlobalConfig,
+	layerDef,
+	layerGroupTitle = "Damage",
+) => {
 	return layerDef.reduce((previewLayers, layerDefinition) => {
 		const source = new TileWMS({
 			url: `${globalConfig.geoServerWMS}`,
-			params: { LAYERS: layerDefinition.layerId, STYLES: layerDefinition.layerStyles },
+			params: {
+				LAYERS: layerDefinition.layerId,
+				STYLES: layerDefinition.layerStyles,
+			},
 			ratio: 1,
 			transition: 0,
 			serverType: "geoserver",
-			crossOrigin: "anonymous"
+			crossOrigin: "anonymous",
 		});
 		const previewLayer = new TileLayer({
 			title: layerDefinition["title"],
 			source: source,
 			zIndex: layerDefinition["zIndex"],
-			opacity: layerDefinition["opacity"]
+			opacity: layerDefinition["opacity"],
 		});
 		return new GroupLayer({
 			title: layerGroupTitle,
-			layers: [...previewLayers, previewLayer]
+			layers: [...previewLayers, previewLayer],
 		});
 	}, []);
 };
@@ -36,7 +43,7 @@ const _constructHazardLayer = (
 	layerTitle,
 	style,
 	zIndex = 1,
-	opacity = 1
+	opacity = 1,
 ) => {
 	let HazardMapLayer;
 	if (layerId && layerTitle) {
@@ -46,13 +53,13 @@ const _constructHazardLayer = (
 			ratio: 1,
 			transition: 0,
 			serverType: "geoserver",
-			crossOrigin: "anonymous"
+			crossOrigin: "anonymous",
 		});
 		HazardMapLayer = new TileLayer({
 			title: layerTitle,
 			source: source,
 			zIndex: zIndex,
-			opacity: opacity
+			opacity: opacity,
 		});
 	}
 	return HazardMapLayer;
@@ -65,7 +72,7 @@ export const getHazardGroupLayers = (
 	json,
 	htype,
 	zIndex = 1,
-	opacity = 1
+	opacity = 1,
 ) => {
 	let layerId;
 	let layerTitle;
@@ -84,8 +91,8 @@ export const getHazardGroupLayers = (
 					layerTitle,
 					style[hazardDataset["demandType"]],
 					zIndex,
-					opacity
-				)
+					opacity,
+				),
 			);
 		});
 	}
@@ -104,10 +111,13 @@ export const basicLayers = new GroupLayer({
 				url: "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
 				attributions: [
 					OSM_ATTRIBUTION,
-					"Tiles courtesy of " + '<a href="http://openstreetmap.org">' + "OpenStreetMap" + "</a>"
+					"Tiles courtesy of " +
+						'<a href="http://openstreetmap.org">' +
+						"OpenStreetMap" +
+						"</a>",
 				],
-				crossOrigin: "anonymous"
-			})
+				crossOrigin: "anonymous",
+			}),
 		}),
 		new TileLayer({
 			type: "base",
@@ -115,9 +125,12 @@ export const basicLayers = new GroupLayer({
 			visible: true,
 			source: new XYZ({
 				url: "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
-				attributions: ['&#169; <a href="https://www.esri.com">Esri</a>,', OSM_ATTRIBUTION],
-				crossOrigin: "anonymous"
-			})
+				attributions: [
+					'&#169; <a href="https://www.esri.com">Esri</a>,',
+					OSM_ATTRIBUTION,
+				],
+				crossOrigin: "anonymous",
+			}),
 		}),
 		new TileLayer({
 			type: "base",
@@ -125,11 +138,14 @@ export const basicLayers = new GroupLayer({
 			visible: true,
 			source: new XYZ({
 				url: "https://{a-d}.basemaps.cartocdn.com/rastertiles/light_all/{z}/{x}/{y}.png",
-				attributions: ['&#169; <a href="https://www.carto.com">Carto</a>,', OSM_ATTRIBUTION],
-				crossOrigin: "anonymous"
-			})
-		})
-	]
+				attributions: [
+					'&#169; <a href="https://www.carto.com">Carto</a>,',
+					OSM_ATTRIBUTION,
+				],
+				crossOrigin: "anonymous",
+			}),
+		}),
+	],
 });
 
 export const validateCoord = (lon, lat, boundingBox) => {
@@ -160,10 +176,13 @@ export function createBasicLayers(title) {
 					url: "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
 					attributions: [
 						OSM_ATTRIBUTION,
-						"Tiles courtesy of " + '<a href="http://openstreetmap.org">' + "OpenStreetMap" + "</a>"
+						"Tiles courtesy of " +
+							'<a href="http://openstreetmap.org">' +
+							"OpenStreetMap" +
+							"</a>",
 					],
-					crossOrigin: "anonymous"
-				})
+					crossOrigin: "anonymous",
+				}),
 			}),
 			new TileLayer({
 				type: "base",
@@ -171,9 +190,12 @@ export function createBasicLayers(title) {
 				visible: true,
 				source: new XYZ({
 					url: "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
-					attributions: ['&#169; <a href="https://www.esri.com">Esri</a>,', OSM_ATTRIBUTION],
-					crossOrigin: "anonymous"
-				})
+					attributions: [
+						'&#169; <a href="https://www.esri.com">Esri</a>,',
+						OSM_ATTRIBUTION,
+					],
+					crossOrigin: "anonymous",
+				}),
 			}),
 			new TileLayer({
 				type: "base",
@@ -181,10 +203,13 @@ export function createBasicLayers(title) {
 				visible: true,
 				source: new XYZ({
 					url: "https://{a-d}.basemaps.cartocdn.com/rastertiles/light_all/{z}/{x}/{y}.png",
-					attributions: ['&#169; <a href="https://www.carto.com">Carto</a>,', OSM_ATTRIBUTION],
-					crossOrigin: "anonymous"
-				})
-			})
-		]
+					attributions: [
+						'&#169; <a href="https://www.carto.com">Carto</a>,',
+						OSM_ATTRIBUTION,
+					],
+					crossOrigin: "anonymous",
+				}),
+			}),
+		],
 	});
 }

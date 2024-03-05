@@ -21,12 +21,16 @@ export default function DatasetTsunami(props) {
 
 	const widgets = {
 		TextWidget: CustomTextInput,
-		SelectWidget: CustomSelectWidget
+		SelectWidget: CustomSelectWidget,
 	};
 
 	const onSave = async (formData) => {
 		setLoading(true);
-		const tsunamiJson = await createRjfsDatasetHazards(globalConfig, formData, "tsunamis");
+		const tsunamiJson = await createRjfsDatasetHazards(
+			globalConfig,
+			formData,
+			"tsunamis",
+		);
 		if (tsunamiJson && tsunamiJson["id"]) {
 			// move to testbed space
 			await move2TestbedSpace(globalConfig, tsunamiJson["id"]);

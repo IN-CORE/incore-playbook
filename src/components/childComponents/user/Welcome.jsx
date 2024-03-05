@@ -13,8 +13,8 @@ const useStyles = makeStyles(() => ({
 	avatarImgSquare: {
 		width: "32px",
 		height: "32px",
-		borderRadius: "10%"
-	}
+		borderRadius: "10%",
+	},
 }));
 
 export const Welcome = () => {
@@ -35,8 +35,12 @@ export const Welcome = () => {
 					<AccountCircle fontSize="small" />
 				)}
 				<Box display="flex" flexDirection="column">
-					<IncoreInputLabel style={{ margin: "auto", padding: 0 }}>Welcome</IncoreInputLabel>
-					<IncoreFootNote style={{ margin: "auto", padding: 0, fontSize: "14px" }}>
+					<IncoreInputLabel style={{ margin: "auto", padding: 0 }}>
+						Welcome
+					</IncoreInputLabel>
+					<IncoreFootNote
+						style={{ margin: "auto", padding: 0, fontSize: "14px" }}
+					>
 						{getCurrUserFullname(globalConfig.hostname) ?? "Playbook User"}
 					</IncoreFootNote>
 				</Box>

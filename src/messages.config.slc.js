@@ -16,12 +16,12 @@ export const stepInfo = [
 				"elevates the importance of resilience , convenes stakeholders, communicates effectively, " +
 				"and engages public support. A community resilience leader may be a Chief Resilience Officer (CRO), " +
 				"sustainability office head, emergency management professional, city planner, " +
-				"or other official with qualifications to advance community resilience."
+				"or other official with qualifications to advance community resilience.",
 		],
 		stepLink: {
 			uri: "https://incore.ncsa.illinois.edu",
-			text: "Learn More about Identifying a Resilience Leader for the Community"
-		}
+			text: "Learn More about Identifying a Resilience Leader for the Community",
+		},
 	},
 	{
 		stepTitle: "About this Step",
@@ -39,47 +39,47 @@ export const stepInfo = [
 			"- Energy systems (e.g., electric power, fuel systems)",
 			"- Communication systems (e.g., internet, phone, cellular)",
 			"- Water and wastewater systems (e.g., reservoirs, pumping stations, transmission network, water treatment " +
-				"plants, storm water system, wastewater treatment)"
+				"plants, storm water system, wastewater treatment)",
 		],
 		stepLink: {
 			uri: "https://incore.ncsa.illinois.edu",
-			text: "Learn More about characterizing the built environment."
-		}
+			text: "Learn More about characterizing the built environment.",
+		},
 	},
 	{
 		stepTitle: "About this Step",
 		stepAbout: [
 			"A community’s built environment is foundational to community functions, services, and the variety of daily activities of its residents.",
 			"Ideally, you will have already completed this work in Step 2.3—Characterize the Built Environment—of this playbook.",
-			"The built environment includes, but is not limited to: buildings, transportation facilities, energy systems, communication systems, water and wastewater systems."
+			"The built environment includes, but is not limited to: buildings, transportation facilities, energy systems, communication systems, water and wastewater systems.",
 		],
 		stepLink: {
 			uri: "https://incore.ncsa.illinois.edu",
-			text: "Learn More about Defining the Built Environment"
-		}
+			text: "Learn More about Defining the Built Environment",
+		},
 	},
 	{
 		stepTitle: "About this Step",
 		stepAbout: [
 			"The planning team should identify the prevailing hazards that will affect community functions and resilience.",
 			"Ideally, you will have already defined the prevailing hazards for your community in Step 3.3 of this playbook.",
-			"Hazards are typically organized into these categories: Routine Events, Design Event, and Extreme Events."
+			"Hazards are typically organized into these categories: Routine Events, Design Event, and Extreme Events.",
 		],
 		stepLink: {
 			uri: "https://incore.ncsa.illinois.edu",
-			text: "Learn More about Defining the Hazards."
-		}
+			text: "Learn More about Defining the Hazards.",
+		},
 	},
 	{
 		stepTitle: "About this Step",
 		stepAbout: [
-			"In-CORE uses sophisticated analysis techniques to analyze your specific community data with the latest data available on a variety of hazard threats to produce actional information on your community’s resilience."
+			"In-CORE uses sophisticated analysis techniques to analyze your specific community data with the latest data available on a variety of hazard threats to produce actional information on your community’s resilience.",
 		],
 		stepLink: {
 			uri: "https://incore.ncsa.illinois.edu",
-			text: "Learn More about IN-CORE"
-		}
-	}
+			text: "Learn More about IN-CORE",
+		},
+	},
 ];
 
 export const hhsInfo = {
@@ -93,8 +93,8 @@ export const hhsInfo = {
 		"Stage 4":
 			"Permanent housing, which can consist of staying in a rental unit, staying in a mobile home, or staying in a site-built home.",
 		"Stage 5":
-			"Failure to reach permanent housing, which can occur from languishing in unstable housing or becoming homeless."
-	}
+			"Failure to reach permanent housing, which can occur from languishing in unstable housing or becoming homeless.",
+	},
 };
 
 // // Joplin
@@ -153,8 +153,8 @@ export const cgeInfo = {
 			HH1: "less than $30K",
 			HH2: "30k - 60k",
 			HH3: "60k - 100k",
-			HH4: "more than 100K"
-		}
+			HH4: "more than 100K",
+		},
 	},
 	domesticSupply: {
 		textTitle: 'What do we mean by "Domestic Supply"?',
@@ -162,19 +162,22 @@ export const cgeInfo = {
 			"Domestic supply is the total value of commodities produced by that sector (i.e., Goods, Trade, Other) valued at producers’ prices available for domestic consumption or investment. It is calculated as total domestic production plus imports minus exports and minus change in inventories. Another way to consider this definition would be GDP (Gross Domestic Product) for the given sector.",
 		tableTitle: "Sectors",
 		rows: {
-			AG_MI: "Agriculture, Forestry, Fishing, Hunting, Mining, Quarrying, and Oil and Gas Extraction",
+			AG_MI:
+				"Agriculture, Forestry, Fishing, Hunting, Mining, Quarrying, and Oil and Gas Extraction",
 			UTIL: "Utilities",
 			CONS: "Construction",
 			MANU: "Manufacturing",
-			COMMER: "Wholesale Trade, Retail Trade, Transportation and Warehousing, Finance and Insurance, Professional, Scientific, and Technical Services",
+			COMMER:
+				"Wholesale Trade, Retail Trade, Transportation and Warehousing, Finance and Insurance, Professional, Scientific, and Technical Services",
 			EDU: "Educational Services",
 			HEALTH: "Health Care and Social Assistance",
-			ART_ACC: "Arts, Entertainment, Recreation, Accommodation and Food Services",
+			ART_ACC:
+				"Arts, Entertainment, Recreation, Accommodation and Food Services",
 			RELIG: "Religious Organizations",
 			HS1: "Lower-value homes (less than $100k)",
 			HS2: "Middle-value homes (100k-200k)",
-			HS3: "Higher - value homes (more than 200k)"
-		}
+			HS3: "Higher - value homes (more than 200k)",
+		},
 	},
 	employment: {
 		textTitle: 'What do we mean by "Employment"?',
@@ -182,18 +185,21 @@ export const cgeInfo = {
 			"As a standard definition, employment is the total number of workers employed at a given time. In the context of the figures, employment is the total number of workers employed in the given sector. Another way to look at this would be to say that employment is the total number of laborers employed in that sector.",
 		tableTitle: "Sectors",
 		rows: {
-			AG_MI: "Agriculture, Forestry, Fishing, Hunting, Mining, Quarrying, and Oil and Gas Extraction",
+			AG_MI:
+				"Agriculture, Forestry, Fishing, Hunting, Mining, Quarrying, and Oil and Gas Extraction",
 			UTIL: "Utilities",
 			CONS: "Construction",
 			MANU: "Manufacturing",
-			COMMER: "Wholesale Trade, Retail Trade, Transportation and Warehousing, Finance and Insurance, Professional, Scientific, and Technical Services",
+			COMMER:
+				"Wholesale Trade, Retail Trade, Transportation and Warehousing, Finance and Insurance, Professional, Scientific, and Technical Services",
 			EDU: "Educational Services",
 			HEALTH: "Health Care and Social Assistance",
-			ART_ACC: "Arts, Entertainment, Recreation, Accommodation and Food Services",
+			ART_ACC:
+				"Arts, Entertainment, Recreation, Accommodation and Food Services",
 			RELIG: "Religious Organizations",
 			HS1: "Lower-value homes (less than $100k)",
 			HS2: "Middle-value homes (100k-200k)",
-			HS3: "Higher - value homes (more than 200k)"
-		}
-	}
+			HS3: "Higher - value homes (more than 200k)",
+		},
+	},
 };

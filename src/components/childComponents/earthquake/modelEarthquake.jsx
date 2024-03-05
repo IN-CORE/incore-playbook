@@ -5,12 +5,20 @@ import { Box, Container, InputLabel } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 
 import { IncoreButton } from "../../styledComponents/IncoreButton";
-import { IncoreMenuItem, IncoreSelectBox } from "../../styledComponents/IncoreSelect";
+import {
+	IncoreMenuItem,
+	IncoreSelectBox,
+} from "../../styledComponents/IncoreSelect";
 import { IncoreTextField } from "../../styledComponents/IncoreInput";
 import { IncoreInputLabel } from "../../styledComponents/IncoreInputLabel";
 
 import { createModelEarthquake } from "../../../utils/hazard";
-import { FlatCoordToLonLat, LonLatToFlatCoord, move2TestbedSpace, round } from "../../../utils/common";
+import {
+	FlatCoordToLonLat,
+	LonLatToFlatCoord,
+	move2TestbedSpace,
+	round,
+} from "../../../utils/common";
 import LoadingOverlay from "react-loading-overlay";
 import { useSelector } from "react-redux";
 import { IncoreButtonText } from "../../styledComponents/IncoreButtonText";
@@ -19,18 +27,18 @@ import { validateCoord } from "../../../utils/map";
 const useStyles = makeStyles({
 	srcLatLabel: {
 		fontSize: "14px",
-		color: "#D63649"
+		color: "#D63649",
 	},
 	srcLonLabel: {
 		fontSize: "14px",
-		color: "#96B712"
+		color: "#96B712",
 	},
 	coordInput: {
 		color: "#2E384D",
 		fontSize: "14px",
 		height: "18px",
 		border: "0 none",
-		background: "transparent"
+		background: "transparent",
 	},
 	coordInputEdit: {
 		color: "#00619D",
@@ -38,7 +46,7 @@ const useStyles = makeStyles({
 		height: "18px",
 		border: "0 none",
 		backgroundColor: "#FFFFFF",
-		fontStyle: "italic"
+		fontStyle: "italic",
 	},
 	coordBox: {
 		width: "100%",
@@ -51,8 +59,8 @@ const useStyles = makeStyles({
 		border: "1px solid rgba(0, 0, 0, 0.23)",
 		borderRadius: "4px",
 		textAlign: "center",
-		paddingLeft: "11.25px"
-	}
+		paddingLeft: "11.25px",
+	},
 });
 
 export default function ModelEarthquake(props) {
@@ -88,7 +96,16 @@ export default function ModelEarthquake(props) {
 
 	// form check
 	useEffect(() => {
-		if (name && description && coordLat && coordLon && magnitude && depth && !enableEdit) setDisabled(false);
+		if (
+			name &&
+			description &&
+			coordLat &&
+			coordLon &&
+			magnitude &&
+			depth &&
+			!enableEdit
+		)
+			setDisabled(false);
 		else setDisabled(true);
 	}, [name, description, coordLat, coordLon, enableEdit]);
 
@@ -106,7 +123,8 @@ export default function ModelEarthquake(props) {
 	}, [srcCoordProps, enableEdit]);
 
 	useEffect(() => {
-		if (coordLat && coordLon && enableEdit) setSrcCoordProps(LonLatToFlatCoord(coordLon, coordLat));
+		if (coordLat && coordLon && enableEdit)
+			setSrcCoordProps(LonLatToFlatCoord(coordLon, coordLat));
 	}, [coordLat, coordLon, enableEdit]);
 
 	const onSave = async () => {
@@ -123,7 +141,7 @@ export default function ModelEarthquake(props) {
 			demandType,
 			demandUnits,
 			attenuations,
-			faultTypeMap
+			faultTypeMap,
 		);
 		if (eqJson && eqJson["id"]) {
 			// move to testbed space
@@ -150,7 +168,9 @@ export default function ModelEarthquake(props) {
 				<Container>
 					<LoadingOverlay active={loading} spinner text="Saving...">
 						<Box className="inputGroup">
-							<IncoreInputLabel className="required-field">Name</IncoreInputLabel>
+							<IncoreInputLabel className="required-field">
+								Name
+							</IncoreInputLabel>
 							<IncoreTextField
 								value={name}
 								variant="outlined"
@@ -158,7 +178,9 @@ export default function ModelEarthquake(props) {
 							/>
 						</Box>
 						<Box className="inputGroup">
-							<IncoreInputLabel className="required-field">Description</IncoreInputLabel>
+							<IncoreInputLabel className="required-field">
+								Description
+							</IncoreInputLabel>
 							<IncoreTextField
 								value={description}
 								variant="outlined"
@@ -166,25 +188,35 @@ export default function ModelEarthquake(props) {
 							/>
 						</Box>
 						<Box className="inputGroup">
-							<IncoreInputLabel className="required-field">Magnitude</IncoreInputLabel>
+							<IncoreInputLabel className="required-field">
+								Magnitude
+							</IncoreInputLabel>
 							<IncoreTextField
 								value={magnitude}
 								type={"number"}
 								variant="outlined"
-								onChange={(e) => setMagnitude(e.target.value < 0 ? 0 : e.target.value)}
+								onChange={(e) =>
+									setMagnitude(e.target.value < 0 ? 0 : e.target.value)
+								}
 							/>
 						</Box>
 						<Box className="inputGroup">
-							<IncoreInputLabel className="required-field">Depth</IncoreInputLabel>
+							<IncoreInputLabel className="required-field">
+								Depth
+							</IncoreInputLabel>
 							<IncoreTextField
 								value={depth}
 								type={"number"}
 								variant="outlined"
-								onChange={(e) => setDepth(e.target.value < 0 ? 0 : e.target.value)}
+								onChange={(e) =>
+									setDepth(e.target.value < 0 ? 0 : e.target.value)
+								}
 							/>
 						</Box>
 						<Box className="inputGroup">
-							<IncoreInputLabel className="required-field">Demand Type</IncoreInputLabel>
+							<IncoreInputLabel className="required-field">
+								Demand Type
+							</IncoreInputLabel>
 							<IncoreSelectBox
 								labelId="label"
 								id="select"
@@ -216,7 +248,9 @@ export default function ModelEarthquake(props) {
 							</IncoreSelectBox>
 						</Box>
 						<Box className="inputGroup">
-							<IncoreInputLabel className="required-field">Demand Units</IncoreInputLabel>
+							<IncoreInputLabel className="required-field">
+								Demand Units
+							</IncoreInputLabel>
 							<IncoreSelectBox
 								labelId="label"
 								id="select"
@@ -245,7 +279,9 @@ export default function ModelEarthquake(props) {
 							</IncoreSelectBox>
 						</Box>
 						<Box className="inputGroup">
-							<IncoreInputLabel className="required-field">Attenuation Model</IncoreInputLabel>
+							<IncoreInputLabel className="required-field">
+								Attenuation Model
+							</IncoreInputLabel>
 							<IncoreSelectBox
 								labelId="label"
 								id="select"
@@ -253,16 +289,25 @@ export default function ModelEarthquake(props) {
 								defaultValue={attenuations}
 								onChange={(e) => setAttenuations(e.target.value)}
 							>
-								<IncoreMenuItem value="AtkinsonBoore1995" key="AtkinsonBoore1995">
+								<IncoreMenuItem
+									value="AtkinsonBoore1995"
+									key="AtkinsonBoore1995"
+								>
 									AtkinsonBoore1995
 								</IncoreMenuItem>
 								<IncoreMenuItem value="ChiouYoungs2014" key="ChiouYoungs2014">
 									ChiouYoungs2014
 								</IncoreMenuItem>
-								<IncoreMenuItem value="AbrahamsonSilvaKamai2014" key="AbrahamsonSilvaKamai2014">
+								<IncoreMenuItem
+									value="AbrahamsonSilvaKamai2014"
+									key="AbrahamsonSilvaKamai2014"
+								>
 									AbrahamsonSilvaKamai2014
 								</IncoreMenuItem>
-								<IncoreMenuItem value="CampbellBozorgnia2014" key="CampbellBozorgnia2014">
+								<IncoreMenuItem
+									value="CampbellBozorgnia2014"
+									key="CampbellBozorgnia2014"
+								>
 									CampbellBozorgnia2014
 								</IncoreMenuItem>
 								<IncoreMenuItem value="Toro1997" key="Toro1997">
@@ -275,7 +320,9 @@ export default function ModelEarthquake(props) {
 						attenuations === "CampbellBozorgnia2014" ||
 						attenuations === "AbrahamsonSilvaKamai2014" ? (
 							<Box className="inputGroup">
-								<IncoreInputLabel className="required-field">Fault Mechanism</IncoreInputLabel>
+								<IncoreInputLabel className="required-field">
+									Fault Mechanism
+								</IncoreInputLabel>
 								<IncoreSelectBox
 									labelId="label"
 									id="select"
@@ -319,11 +366,16 @@ export default function ModelEarthquake(props) {
 								)
 							) : null}
 							<Box className={classes.coordBox}>
-								<Box display="flex" style={{ alignItems: "baseline", justifyContent: "center" }}>
+								<Box
+									display="flex"
+									style={{ alignItems: "baseline", justifyContent: "center" }}
+								>
 									<InputLabel className={classes.srcLatLabel}>Lat: </InputLabel>
 									<input
 										placeholder={mapConfig.MAP_CENTER[1]}
-										className={!enableEdit ? classes.coordInput : classes.coordInputEdit}
+										className={
+											!enableEdit ? classes.coordInput : classes.coordInputEdit
+										}
 										value={coordLat}
 										type={"number"}
 										onChange={(e) => setCoordLat(e.target.value)}
@@ -332,7 +384,9 @@ export default function ModelEarthquake(props) {
 									<InputLabel className={classes.srcLonLabel}>Lon: </InputLabel>
 									<input
 										placeholder={mapConfig.MAP_CENTER[0]}
-										className={!enableEdit ? classes.coordInput : classes.coordInputEdit}
+										className={
+											!enableEdit ? classes.coordInput : classes.coordInputEdit
+										}
 										value={coordLon}
 										type={"number"}
 										onChange={(e) => setCoordLon(e.target.value)}
@@ -351,7 +405,13 @@ export default function ModelEarthquake(props) {
 										<IncoreButtonText
 											onClick={() => {
 												setEnableEdit(false);
-												setValidCoord(validateCoord(coordLon, coordLat, mapConfig.MAP_BOUNDS));
+												setValidCoord(
+													validateCoord(
+														coordLon,
+														coordLat,
+														mapConfig.MAP_BOUNDS,
+													),
+												);
 											}}
 											style={{ maxWidth: "fit-content" }}
 										>
@@ -362,7 +422,11 @@ export default function ModelEarthquake(props) {
 							</Box>
 						</Box>
 						<Box className="inputGroup">
-							<IncoreButton variant="contained" onClick={onSave} disabled={disabled || !validCoord}>
+							<IncoreButton
+								variant="contained"
+								onClick={onSave}
+								disabled={disabled || !validCoord}
+							>
 								Save
 							</IncoreButton>
 						</Box>

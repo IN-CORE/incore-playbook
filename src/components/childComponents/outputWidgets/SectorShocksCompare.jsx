@@ -22,16 +22,16 @@ export default function SectorShocksCompare(props) {
 								await getOutputFileContent(
 									datawolfConfig,
 									executionItems[i],
-									datawolfDatasetConfigItem.datasetId
-								)
+									datawolfDatasetConfigItem.datasetId,
+								),
 							);
 						} else if (i === 1) {
 							setSectorShocksContentB(
 								await getOutputFileContent(
 									datawolfConfig,
 									executionItems[i],
-									datawolfDatasetConfigItem.datasetId
-								)
+									datawolfDatasetConfigItem.datasetId,
+								),
 							);
 						}
 					}

@@ -1,5 +1,13 @@
 import React, { useState } from "react";
-import { Box, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@material-ui/core";
+import {
+	Box,
+	Table,
+	TableBody,
+	TableCell,
+	TableContainer,
+	TableHead,
+	TableRow,
+} from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Switch from "@material-ui/core/Switch";
@@ -7,10 +15,10 @@ import Switch from "@material-ui/core/Switch";
 const useStyles = makeStyles({
 	table: {
 		backgroundColor: "#FFFFFF",
-		minWidth: "1135px"
+		minWidth: "1135px",
 	},
 	tableHeaderRow: {
-		height: "34px"
+		height: "34px",
 	},
 	tableHeaderCell: {
 		height: "14px",
@@ -21,10 +29,10 @@ const useStyles = makeStyles({
 		letterSpacing: "1.13px",
 		lineHeight: "14px",
 		textAlign: "center",
-		textTransform: "uppercase"
+		textTransform: "uppercase",
 	},
 	tableBodyRow: {
-		height: "28px"
+		height: "28px",
 	},
 	tableBodyCell: {
 		height: "21px",
@@ -33,7 +41,7 @@ const useStyles = makeStyles({
 		fontSize: "15px",
 		letterSpacing: 0,
 		lineHeight: "18px",
-		border: "1px solid rgba(46,91,255,0.08)"
+		border: "1px solid rgba(46,91,255,0.08)",
 	},
 	tableBodyCategoryCell: {
 		height: "21px",
@@ -44,7 +52,7 @@ const useStyles = makeStyles({
 		letterSpacing: 0,
 		lineHeight: "18px",
 		textTransform: "capitalize",
-		border: "1px solid rgba(46,91,255,0.08)"
+		border: "1px solid rgba(46,91,255,0.08)",
 	},
 	tableBodyClusterCell: {
 		height: "21px",
@@ -53,18 +61,18 @@ const useStyles = makeStyles({
 		fontSize: "15px",
 		letterSpacing: 0,
 		lineHeight: "18px",
-		border: "1px solid rgba(46,91,255,0.08)"
+		border: "1px solid rgba(46,91,255,0.08)",
 	},
 	switchBase: {
 		"&$checked": {
-			color: "#00619D"
+			color: "#00619D",
 		},
 		"&$checked + $track": {
-			backgroundColor: "#00619D"
-		}
+			backgroundColor: "#00619D",
+		},
 	},
 	checked: {},
-	track: {}
+	track: {},
 });
 
 const NA_value = -1; // TODO need to change to -1
@@ -138,7 +146,7 @@ export function BldgDamageTable(props) {
 							classes={{
 								switchBase: classes.switchBase,
 								checked: classes.checked,
-								track: classes.track
+								track: classes.track,
 							}}
 						/>
 					}
@@ -149,7 +157,11 @@ export function BldgDamageTable(props) {
 				<TableHead>
 					<TableRow className={classes.tableHeaderRow} key="hdrRow">
 						<TableCell
-							style={{ width: "647px", backgroundColor: "#EFF2FF", color: "#69707F" }}
+							style={{
+								width: "647px",
+								backgroundColor: "#EFF2FF",
+								color: "#69707F",
+							}}
 							colSpan={2}
 							className={classes.tableHeaderCell}
 							key="playbook-building-clusters"
@@ -197,10 +209,16 @@ export function BldgDamageTable(props) {
 										if (clusterItem["category"] === categoryItem["category"]) {
 											if (firstMatchIdxx < 0) firstMatchIdxx = idxx;
 											return (
-												<TableRow className={classes.tableBodyRow} key={clusterItem["cluster"]}>
+												<TableRow
+													className={classes.tableBodyRow}
+													key={clusterItem["cluster"]}
+												>
 													{idxx === firstMatchIdxx ? (
 														<TableCell
-															rowSpan={clusterNumInCategory[categoryItem["category"]] + 1}
+															rowSpan={
+																clusterNumInCategory[categoryItem["category"]] +
+																1
+															}
 															align="center"
 															className={classes.tableBodyCategoryCell}
 															style={{ fontWeight: 500, textAlign: "left" }}
@@ -208,10 +226,16 @@ export function BldgDamageTable(props) {
 															{categoryItem["category"]}
 														</TableCell>
 													) : null}
-													<TableCell key={idxx} className={classes.tableBodyClusterCell}>
+													<TableCell
+														key={idxx}
+														className={classes.tableBodyClusterCell}
+													>
 														{clusterItem["cluster"]}
 													</TableCell>
-													<TableCell key={`${idxx}-insig`} className={classes.tableBodyCell}>
+													<TableCell
+														key={`${idxx}-insig`}
+														className={classes.tableBodyCell}
+													>
 														<td>
 															{clusterItem[tableHeaders[0]] === NA_value
 																? "-"
@@ -222,7 +246,7 @@ export function BldgDamageTable(props) {
 																percentOn
 																	? {
 																			visibility: "visible",
-																			color: "#A9A9A9"
+																			color: "#A9A9A9",
 																	  }
 																	: { visibility: "hidden" }
 															}
@@ -230,11 +254,14 @@ export function BldgDamageTable(props) {
 															{calcPercentage(
 																clusterItem[tableHeaders[0]],
 																clusterItem,
-																tableHeaders
+																tableHeaders,
 															)}
 														</td>
 													</TableCell>
-													<TableCell key={`${idxx}-mod`} className={classes.tableBodyCell}>
+													<TableCell
+														key={`${idxx}-mod`}
+														className={classes.tableBodyCell}
+													>
 														<td>
 															{clusterItem[tableHeaders[1]] === NA_value
 																? "-"
@@ -245,7 +272,7 @@ export function BldgDamageTable(props) {
 																percentOn
 																	? {
 																			visibility: "visible",
-																			color: "#A9A9A9"
+																			color: "#A9A9A9",
 																	  }
 																	: { visibility: "hidden" }
 															}
@@ -253,7 +280,7 @@ export function BldgDamageTable(props) {
 															{calcPercentage(
 																clusterItem[tableHeaders[1]],
 																clusterItem,
-																tableHeaders
+																tableHeaders,
 															)}
 														</td>
 													</TableCell>
@@ -271,7 +298,7 @@ export function BldgDamageTable(props) {
 																percentOn
 																	? {
 																			visibility: "visible",
-																			color: "#A9A9A9"
+																			color: "#A9A9A9",
 																	  }
 																	: { visibility: "hidden" }
 															}
@@ -279,11 +306,14 @@ export function BldgDamageTable(props) {
 															{calcPercentage(
 																clusterItem[tableHeaders[2]],
 																clusterItem,
-																tableHeaders
+																tableHeaders,
 															)}
 														</td>
 													</TableCell>
-													<TableCell key={`${idxx}-comp`} className={classes.tableBodyCell}>
+													<TableCell
+														key={`${idxx}-comp`}
+														className={classes.tableBodyCell}
+													>
 														<td>
 															{clusterItem[tableHeaders[3]] === NA_value
 																? "-"
@@ -294,7 +324,7 @@ export function BldgDamageTable(props) {
 																percentOn
 																	? {
 																			visibility: "visible",
-																			color: "#A9A9A9"
+																			color: "#A9A9A9",
 																	  }
 																	: { visibility: "hidden" }
 															}
@@ -302,7 +332,7 @@ export function BldgDamageTable(props) {
 															{calcPercentage(
 																clusterItem[tableHeaders[3]],
 																clusterItem,
-																tableHeaders
+																tableHeaders,
 															)}
 														</td>
 													</TableCell>
@@ -310,11 +340,18 @@ export function BldgDamageTable(props) {
 											);
 										}
 									})}
-									<TableRow className={classes.tableBodyRow} key={categoryItem["id"]}>
+									<TableRow
+										className={classes.tableBodyRow}
+										key={categoryItem["id"]}
+									>
 										<TableCell
 											key="total"
 											className={classes.tableBodyClusterCell}
-											style={{ fontWeight: 500, textAlign: "right", backgroundColor: "#EEF3F5" }}
+											style={{
+												fontWeight: 500,
+												textAlign: "right",
+												backgroundColor: "#EEF3F5",
+											}}
 										>
 											TOTAL
 										</TableCell>
@@ -340,7 +377,7 @@ export function BldgDamageTable(props) {
 													: calcPercentage(
 															categoryItem[tableHeaders[0]],
 															categoryItem,
-															tableHeaders
+															tableHeaders,
 													  )}
 											</td>
 										</TableCell>
@@ -366,7 +403,7 @@ export function BldgDamageTable(props) {
 													: calcPercentage(
 															categoryItem[tableHeaders[1]],
 															categoryItem,
-															tableHeaders
+															tableHeaders,
 													  )}
 											</td>
 										</TableCell>
@@ -392,7 +429,7 @@ export function BldgDamageTable(props) {
 													: calcPercentage(
 															categoryItem[tableHeaders[2]],
 															categoryItem,
-															tableHeaders
+															tableHeaders,
 													  )}
 											</td>
 										</TableCell>
@@ -418,7 +455,7 @@ export function BldgDamageTable(props) {
 													: calcPercentage(
 															categoryItem[tableHeaders[3]],
 															categoryItem,
-															tableHeaders
+															tableHeaders,
 													  )}
 											</td>
 										</TableCell>

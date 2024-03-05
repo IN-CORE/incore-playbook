@@ -1,5 +1,12 @@
 import React from "react";
-import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@material-ui/core";
+import {
+	Table,
+	TableBody,
+	TableCell,
+	TableContainer,
+	TableHead,
+	TableRow,
+} from "@material-ui/core";
 
 import { makeStyles } from "@material-ui/core/styles";
 import { formatProbToPercent } from "../../../utils/common";
@@ -8,16 +15,16 @@ import CompareArrowsIcon from "@material-ui/icons/CompareArrows";
 const useStyles = makeStyles({
 	table: {
 		backgroundColor: "#FFFFFF",
-		minWidth: "1135px"
+		minWidth: "1135px",
 	},
 	tableHeaderRow: {
-		height: "34px"
+		height: "34px",
 	},
 	tableTopHeaderRow: {
 		textAlign: "center",
 		border: "1px solid rgba(46,91,255,0.08)",
 		height: "15px",
-		textTransform: "uppercase"
+		textTransform: "uppercase",
 	},
 	tableHeaderCell: {
 		height: "14px",
@@ -28,10 +35,10 @@ const useStyles = makeStyles({
 		letterSpacing: "1.13px",
 		lineHeight: "14px",
 		textAlign: "center",
-		textTransform: "uppercase"
+		textTransform: "uppercase",
 	},
 	tableBodyRow: {
-		height: "28px"
+		height: "28px",
 	},
 	tableBodyCell: {
 		height: "21px",
@@ -40,7 +47,7 @@ const useStyles = makeStyles({
 		letterSpacing: 0,
 		lineHeight: "18px",
 		border: "1px solid rgba(46,91,255,0.08)",
-		textAlign: "center"
+		textAlign: "center",
 	},
 	tableBodyCategoryCell: {
 		height: "21px",
@@ -50,7 +57,7 @@ const useStyles = makeStyles({
 		letterSpacing: 0,
 		lineHeight: "18px",
 		textTransform: "capitalize",
-		border: "1px solid rgba(46,91,255,0.08)"
+		border: "1px solid rgba(46,91,255,0.08)",
 	},
 	tableBodyClusterCell: {
 		height: "21px",
@@ -58,8 +65,8 @@ const useStyles = makeStyles({
 		fontSize: "15px",
 		letterSpacing: 0,
 		lineHeight: "18px",
-		border: "1px solid rgba(46,91,255,0.08)"
-	}
+		border: "1px solid rgba(46,91,255,0.08)",
+	},
 });
 
 function calcClusterNumInCategory(fields) {
@@ -103,7 +110,11 @@ export function FunctionalityTableCompare(props) {
 
 					<TableRow className={classes.tableHeaderRow} key="hdrRow">
 						<TableCell
-							style={{ width: "647px", backgroundColor: "#EFF2FF", color: "#69707F" }}
+							style={{
+								width: "647px",
+								backgroundColor: "#EFF2FF",
+								color: "#69707F",
+							}}
 							colSpan={3}
 							className={classes.tableHeaderCell}
 							key="playbook-building-clusters"
@@ -165,7 +176,10 @@ export function FunctionalityTableCompare(props) {
 													{idxx === firstMatchIdxx ? (
 														<TableCell
 															rowSpan={
-																(clusterNumInCategory[categoryItemA["category"]] + 1) *
+																(clusterNumInCategory[
+																	categoryItemA["category"]
+																] +
+																	1) *
 																3
 															}
 															align="center"
@@ -182,30 +196,45 @@ export function FunctionalityTableCompare(props) {
 													>
 														{clusterItemA["cluster"]}
 													</TableCell>
-													<TableCell key={`${idxx}-A`} className={classes.tableBodyCell}>
+													<TableCell
+														key={`${idxx}-A`}
+														className={classes.tableBodyCell}
+													>
 														A
 													</TableCell>
-													<TableCell key={`${idxx}-f1`} className={classes.tableBodyCell}>
+													<TableCell
+														key={`${idxx}-f1`}
+														className={classes.tableBodyCell}
+													>
 														{clusterItemA["percent_functional"] === NA_value
 															? "-"
 															: formatProbToPercent(
 																	clusterItemA["percent_functional"],
-																	1
+																	1,
 															  )}
 													</TableCell>
-													<TableCell key={`${idxx}-nf1`} className={classes.tableBodyCell}>
+													<TableCell
+														key={`${idxx}-nf1`}
+														className={classes.tableBodyCell}
+													>
 														{clusterItemA["percent_non_functional"] === NA_value
 															? "-"
 															: formatProbToPercent(
-																	clusterItemA["percent_non_functional"]
+																	clusterItemA["percent_non_functional"],
 															  )}
 													</TableCell>
-													<TableCell key={`${idxx}-f2`} className={classes.tableBodyCell}>
+													<TableCell
+														key={`${idxx}-f2`}
+														className={classes.tableBodyCell}
+													>
 														{clusterItemA["num_functional"] === NA_value
 															? "-"
 															: clusterItemA["num_functional"]}
 													</TableCell>
-													<TableCell key={`${idxx}-nf2`} className={classes.tableBodyCell}>
+													<TableCell
+														key={`${idxx}-nf2`}
+														className={classes.tableBodyCell}
+													>
 														{clusterItemA["num_non_functional"] === NA_value
 															? "-"
 															: clusterItemA["num_non_functional"]}
@@ -216,30 +245,45 @@ export function FunctionalityTableCompare(props) {
 													className={classes.tableBodyRow}
 													key={clusterItemB["cluster"]}
 												>
-													<TableCell key={`${idxx}-B`} className={classes.tableBodyCell}>
+													<TableCell
+														key={`${idxx}-B`}
+														className={classes.tableBodyCell}
+													>
 														B
 													</TableCell>
-													<TableCell key={`${idxx}-f1`} className={classes.tableBodyCell}>
+													<TableCell
+														key={`${idxx}-f1`}
+														className={classes.tableBodyCell}
+													>
 														{clusterItemB["percent_functional"] === NA_value
 															? "-"
 															: formatProbToPercent(
 																	clusterItemB["percent_functional"],
-																	1
+																	1,
 															  )}
 													</TableCell>
-													<TableCell key={`${idxx}-nf1`} className={classes.tableBodyCell}>
+													<TableCell
+														key={`${idxx}-nf1`}
+														className={classes.tableBodyCell}
+													>
 														{clusterItemB["percent_non_functional"] === NA_value
 															? "-"
 															: formatProbToPercent(
-																	clusterItemB["percent_non_functional"]
+																	clusterItemB["percent_non_functional"],
 															  )}
 													</TableCell>
-													<TableCell key={`${idxx}-f2`} className={classes.tableBodyCell}>
+													<TableCell
+														key={`${idxx}-f2`}
+														className={classes.tableBodyCell}
+													>
 														{clusterItemB["num_functional"] === NA_value
 															? "-"
 															: clusterItemB["num_functional"]}
 													</TableCell>
-													<TableCell key={`${idxx}-nf2`} className={classes.tableBodyCell}>
+													<TableCell
+														key={`${idxx}-nf2`}
+														className={classes.tableBodyCell}
+													>
 														{clusterItemB["num_non_functional"] === NA_value
 															? "-"
 															: clusterItemB["num_non_functional"]}
@@ -250,60 +294,83 @@ export function FunctionalityTableCompare(props) {
 													className={classes.tableBodyRow}
 													key={clusterItemA["cluster"]}
 												>
-													<TableCell key={`${idxx}-diff`} className={classes.tableBodyCell}>
-														<CompareArrowsIcon style={{ transform: "rotate(90deg)" }} />
+													<TableCell
+														key={`${idxx}-diff`}
+														className={classes.tableBodyCell}
+													>
+														<CompareArrowsIcon
+															style={{ transform: "rotate(90deg)" }}
+														/>
 													</TableCell>
-													<TableCell key={`${idxx}-f1`} className={classes.tableBodyCell}>
+													<TableCell
+														key={`${idxx}-f1`}
+														className={classes.tableBodyCell}
+													>
 														{clusterItemA["percent_functional"] === NA_value ||
 														clusterItemB["percent_functional"] === NA_value
 															? "-"
 															: parseFloat(clusterItemB["percent_functional"]) -
-																		parseFloat(clusterItemA["percent_functional"]) >
-															    0
-															  ? `+${formatProbToPercent(
-																		parseFloat(clusterItemB["percent_functional"]) -
-																			parseFloat(
-																				clusterItemA["percent_functional"]
-																			),
-																		1
-															    )}`
-															  : formatProbToPercent(
-																		parseFloat(clusterItemB["percent_functional"]) -
-																			parseFloat(
-																				clusterItemA["percent_functional"]
-																			),
-																		1
-															    )}
-													</TableCell>
-													<TableCell key={`${idxx}-nf1`} className={classes.tableBodyCell}>
-														{clusterItemA["percent_non_functional"] === NA_value ||
-														clusterItemB["percent_non_functional"] === NA_value
-															? "-"
-															: parseFloat(clusterItemB["percent_non_functional"]) -
 																		parseFloat(
-																			clusterItemA["percent_non_functional"]
+																			clusterItemA["percent_functional"],
 																		) >
 															    0
 															  ? `+${formatProbToPercent(
 																		parseFloat(
-																			clusterItemB["percent_non_functional"]
+																			clusterItemB["percent_functional"],
 																		) -
 																			parseFloat(
-																				clusterItemA["percent_non_functional"]
+																				clusterItemA["percent_functional"],
 																			),
-																		1
+																		1,
 															    )}`
 															  : formatProbToPercent(
 																		parseFloat(
-																			clusterItemB["percent_non_functional"]
+																			clusterItemB["percent_functional"],
 																		) -
 																			parseFloat(
-																				clusterItemA["percent_non_functional"]
+																				clusterItemA["percent_functional"],
 																			),
-																		1
+																		1,
 															    )}
 													</TableCell>
-													<TableCell key={`${idxx}-f2`} className={classes.tableBodyCell}>
+													<TableCell
+														key={`${idxx}-nf1`}
+														className={classes.tableBodyCell}
+													>
+														{clusterItemA["percent_non_functional"] ===
+															NA_value ||
+														clusterItemB["percent_non_functional"] === NA_value
+															? "-"
+															: parseFloat(
+																		clusterItemB["percent_non_functional"],
+															    ) -
+																		parseFloat(
+																			clusterItemA["percent_non_functional"],
+																		) >
+															    0
+															  ? `+${formatProbToPercent(
+																		parseFloat(
+																			clusterItemB["percent_non_functional"],
+																		) -
+																			parseFloat(
+																				clusterItemA["percent_non_functional"],
+																			),
+																		1,
+															    )}`
+															  : formatProbToPercent(
+																		parseFloat(
+																			clusterItemB["percent_non_functional"],
+																		) -
+																			parseFloat(
+																				clusterItemA["percent_non_functional"],
+																			),
+																		1,
+															    )}
+													</TableCell>
+													<TableCell
+														key={`${idxx}-f2`}
+														className={classes.tableBodyCell}
+													>
 														{clusterItemA["num_functional"] === NA_value ||
 														clusterItemB["num_functional"] === NA_value
 															? "-"
@@ -317,19 +384,32 @@ export function FunctionalityTableCompare(props) {
 															  : parseFloat(clusterItemB["num_functional"]) -
 															    parseFloat(clusterItemA["num_functional"])}
 													</TableCell>
-													<TableCell key={`${idxx}-nf2`} className={classes.tableBodyCell}>
+													<TableCell
+														key={`${idxx}-nf2`}
+														className={classes.tableBodyCell}
+													>
 														{clusterItemA["num_non_functional"] === NA_value ||
 														clusterItemB["num_non_functional"] === NA_value
 															? "-"
 															: parseFloat(clusterItemB["num_non_functional"]) -
-																		parseFloat(clusterItemA["num_non_functional"]) >
+																		parseFloat(
+																			clusterItemA["num_non_functional"],
+																		) >
 															    0
 															  ? `+${
-																		parseFloat(clusterItemB["num_non_functional"]) -
-																		parseFloat(clusterItemA["num_non_functional"])
+																		parseFloat(
+																			clusterItemB["num_non_functional"],
+																		) -
+																		parseFloat(
+																			clusterItemA["num_non_functional"],
+																		)
 															    }`
-															  : parseFloat(clusterItemB["num_non_functional"]) -
-															    parseFloat(clusterItemA["num_non_functional"])}
+															  : parseFloat(
+																		clusterItemB["num_non_functional"],
+															    ) -
+															    parseFloat(
+																		clusterItemA["num_non_functional"],
+															    )}
 													</TableCell>
 												</TableRow>
 											</>
@@ -337,11 +417,18 @@ export function FunctionalityTableCompare(props) {
 									}
 								})}
 								{/*TOTAL A:*/}
-								<TableRow className={classes.tableBodyRow} key={categoryItemA["id"]}>
+								<TableRow
+									className={classes.tableBodyRow}
+									key={categoryItemA["id"]}
+								>
 									<TableCell
 										key="total"
 										className={classes.tableBodyClusterCell}
-										style={{ fontWeight: 500, textAlign: "right", backgroundColor: "#EEF3F5" }}
+										style={{
+											fontWeight: 500,
+											textAlign: "right",
+											backgroundColor: "#EEF3F5",
+										}}
 										rowSpan={3}
 									>
 										TOTAL
@@ -360,7 +447,9 @@ export function FunctionalityTableCompare(props) {
 									>
 										{categoryItemA["percent_functional"] === NA_value
 											? "-"
-											: formatProbToPercent(categoryItemA["percent_functional"])}
+											: formatProbToPercent(
+													categoryItemA["percent_functional"],
+											  )}
 									</TableCell>
 									<TableCell
 										key="percent-nonfunc"
@@ -369,7 +458,9 @@ export function FunctionalityTableCompare(props) {
 									>
 										{categoryItemA["percent_non_functional"] === NA_value
 											? "-"
-											: formatProbToPercent(categoryItemA["percent_non_functional"])}
+											: formatProbToPercent(
+													categoryItemA["percent_non_functional"],
+											  )}
 									</TableCell>
 									<TableCell
 										key="num-func"
@@ -391,7 +482,10 @@ export function FunctionalityTableCompare(props) {
 									</TableCell>
 								</TableRow>
 								{/*TOTAL B:*/}
-								<TableRow className={classes.tableBodyRow} key={categoryItemA["id"]}>
+								<TableRow
+									className={classes.tableBodyRow}
+									key={categoryItemA["id"]}
+								>
 									<TableCell
 										key="perent-func-B"
 										className={classes.tableBodyCell}
@@ -406,7 +500,9 @@ export function FunctionalityTableCompare(props) {
 									>
 										{categoryItemB["percent_functional"] === NA_value
 											? "-"
-											: formatProbToPercent(categoryItemB["percent_functional"])}
+											: formatProbToPercent(
+													categoryItemB["percent_functional"],
+											  )}
 									</TableCell>
 									<TableCell
 										key="percent-nonfunc"
@@ -415,7 +511,9 @@ export function FunctionalityTableCompare(props) {
 									>
 										{categoryItemB["percent_non_functional"] === NA_value
 											? "-"
-											: formatProbToPercent(categoryItemB["percent_non_functional"])}
+											: formatProbToPercent(
+													categoryItemB["percent_non_functional"],
+											  )}
 									</TableCell>
 									<TableCell
 										key="num-func"
@@ -437,7 +535,10 @@ export function FunctionalityTableCompare(props) {
 									</TableCell>
 								</TableRow>
 								{/*TOTAL Diff:*/}
-								<TableRow className={classes.tableBodyRow} key={categoryItemA["id"]}>
+								<TableRow
+									className={classes.tableBodyRow}
+									key={categoryItemA["id"]}
+								>
 									<TableCell
 										key="percent-func-diff"
 										className={classes.tableBodyCell}
@@ -459,12 +560,12 @@ export function FunctionalityTableCompare(props) {
 											  ? `+${formatProbToPercent(
 														parseFloat(categoryItemB["percent_functional"]) -
 															parseFloat(categoryItemA["percent_functional"]),
-														1
+														1,
 											    )}`
 											  : formatProbToPercent(
 														parseFloat(categoryItemB["percent_functional"]) -
 															parseFloat(categoryItemA["percent_functional"]),
-														1
+														1,
 											    )}
 									</TableCell>
 									<TableCell
@@ -476,17 +577,27 @@ export function FunctionalityTableCompare(props) {
 										categoryItemB["percent_non_functional"] === NA_value
 											? "-"
 											: parseFloat(categoryItemB["percent_non_functional"]) -
-														parseFloat(categoryItemA["percent_non_functional"]) >
+														parseFloat(
+															categoryItemA["percent_non_functional"],
+														) >
 											    0
 											  ? `+${formatProbToPercent(
-														parseFloat(categoryItemB["percent_non_functional"]) -
-															parseFloat(categoryItemA["percent_non_functional"]),
-														1
+														parseFloat(
+															categoryItemB["percent_non_functional"],
+														) -
+															parseFloat(
+																categoryItemA["percent_non_functional"],
+															),
+														1,
 											    )}`
 											  : formatProbToPercent(
-														parseFloat(categoryItemB["percent_non_functional"]) -
-															parseFloat(categoryItemA["percent_non_functional"]),
-														1
+														parseFloat(
+															categoryItemB["percent_non_functional"],
+														) -
+															parseFloat(
+																categoryItemA["percent_non_functional"],
+															),
+														1,
 											    )}
 									</TableCell>
 									<TableCell

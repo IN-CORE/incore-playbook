@@ -11,8 +11,12 @@ import QueryBuilderIcon from "@material-ui/icons/QueryBuilder";
 
 const StepStatus = ({ step, substep }) => {
 	const dispatch = useDispatch();
-	const stepData = useSelector((state) => state.steps[`step_${step}_${substep}`]);
-	const [activeKey, setActiveKey] = useState(stepData.status !== undefined ? stepData.status : "pending");
+	const stepData = useSelector(
+		(state) => state.steps[`step_${step}_${substep}`],
+	);
+	const [activeKey, setActiveKey] = useState(
+		stepData.status !== undefined ? stepData.status : "pending",
+	);
 
 	const globalConfig = useSelector((state) => state.config.globalConfig);
 
@@ -32,15 +36,28 @@ const StepStatus = ({ step, substep }) => {
 		}
 	}, [activeKey]);
 
-	const completedCheckIcon = <CheckCircleIcon style={{ color: "#00619D", height: "16px", width: "16px" }} />;
-	const inProgressCheckIcon = <CheckCircleIcon style={{ color: "#8798AD", height: "16px", width: "16px" }} />;
-	const pendingIcon = <QueryBuilderIcon style={{ height: "16px", width: "16px" }} />;
+	const completedCheckIcon = (
+		<CheckCircleIcon
+			style={{ color: "#00619D", height: "16px", width: "16px" }}
+		/>
+	);
+	const inProgressCheckIcon = (
+		<CheckCircleIcon
+			style={{ color: "#8798AD", height: "16px", width: "16px" }}
+		/>
+	);
+	const pendingIcon = (
+		<QueryBuilderIcon style={{ height: "16px", width: "16px" }} />
+	);
 
 	return (
 		<Box>
 			<div className={"statusBox"}>
 				{processStatus.map((status, index) => (
-					<div key={index} className={`statusInfo ${activeKey === status.key ? "active" : ""}`}>
+					<div
+						key={index}
+						className={`statusInfo ${activeKey === status.key ? "active" : ""}`}
+					>
 						<Box
 							style={{ cursor: "pointer" }}
 							onClick={() => {
@@ -48,8 +65,12 @@ const StepStatus = ({ step, substep }) => {
 							}}
 							display="flex"
 						>
-							{status.key === "complete" ? <Box>{completedCheckIcon}</Box> : null}
-							{status.key === "in_progress" ? <Box>{inProgressCheckIcon}</Box> : null}
+							{status.key === "complete" ? (
+								<Box>{completedCheckIcon}</Box>
+							) : null}
+							{status.key === "in_progress" ? (
+								<Box>{inProgressCheckIcon}</Box>
+							) : null}
 							{status.key === "pending" ? <Box>{pendingIcon}</Box> : null}
 							<Box>{status.name}</Box>
 						</Box>
@@ -60,7 +81,8 @@ const StepStatus = ({ step, substep }) => {
 				<IncoreFootNote>
 					Last updated by {stepData["status_user"]["firstName"]}&nbsp;
 					{stepData["status_user"]["lastName"]} at{" "}
-					{parseDateTime(stepData["status_updated_at"]) ?? "unavailable timestamp"}
+					{parseDateTime(stepData["status_updated_at"]) ??
+						"unavailable timestamp"}
 				</IncoreFootNote>
 			) : null}
 		</Box>

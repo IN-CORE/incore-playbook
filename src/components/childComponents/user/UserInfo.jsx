@@ -10,7 +10,7 @@ import {
 	TablePagination,
 	TableRow,
 	TableSortLabel,
-	Tooltip
+	Tooltip,
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import { useDispatch, useSelector } from "react-redux";
@@ -25,11 +25,11 @@ const useStyles = makeStyles({
 	avatarImg: {
 		width: "32px",
 		height: "32px",
-		borderRadius: "50%"
+		borderRadius: "50%",
 	},
 	table: {
-		wordBreak: "break-all"
-	}
+		wordBreak: "break-all",
+	},
 });
 
 /**
@@ -41,8 +41,10 @@ export const UserInfo = (props) => {
 	const { editable } = props;
 
 	const dispatch = useDispatch();
-	const getPlaybookUserList = (globalConfig, limit, skip) => dispatch(fetchUserList(globalConfig, limit, skip));
-	const getPlaybookRoles = (globalConfig, limit, skip) => dispatch(fetchRoles(globalConfig, limit, skip));
+	const getPlaybookUserList = (globalConfig, limit, skip) =>
+		dispatch(fetchUserList(globalConfig, limit, skip));
+	const getPlaybookRoles = (globalConfig, limit, skip) =>
+		dispatch(fetchRoles(globalConfig, limit, skip));
 
 	const userList = useSelector((state) => state.user.userList);
 	const userChanged = useSelector((state) => state.user.user);
@@ -88,7 +90,10 @@ export const UserInfo = (props) => {
 				<TableHead>
 					<TableRow>
 						<TableCell align="left" />
-						<TableCell align="left" sortDirection={orderBy === "email" ? order : false}>
+						<TableCell
+							align="left"
+							sortDirection={orderBy === "email" ? order : false}
+						>
 							<TableSortLabel
 								active={orderBy === "email"}
 								direction={orderBy === "email" ? order : "asc"}
@@ -97,7 +102,10 @@ export const UserInfo = (props) => {
 								Email
 							</TableSortLabel>
 						</TableCell>
-						<TableCell align="left" sortDirection={orderBy === "firstName" ? order : false}>
+						<TableCell
+							align="left"
+							sortDirection={orderBy === "firstName" ? order : false}
+						>
 							<TableSortLabel
 								active={orderBy === "firstName"}
 								direction={orderBy === "firstName" ? order : "asc"}
@@ -134,14 +142,21 @@ export const UserInfo = (props) => {
 								>
 									<Tooltip title={user["username"] ?? ""}>
 										{user["email"] !== undefined ? (
-											<Gravatar className={classes.avatarImg} email={user["email"]} rating="g" />
+											<Gravatar
+												className={classes.avatarImg}
+												email={user["email"]}
+												rating="g"
+											/>
 										) : (
 											<AccountCircle fontSize="small" />
 										)}
 									</Tooltip>
 								</TableCell>
 								<TableCell align="left">
-									<IncoreLinkSmall href={`mailto:${user["email"]}`} style={{ fontWeight: 400 }}>
+									<IncoreLinkSmall
+										href={`mailto:${user["email"]}`}
+										style={{ fontWeight: 400 }}
+									>
 										{user["email"]}
 									</IncoreLinkSmall>
 								</TableCell>

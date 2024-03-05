@@ -20,11 +20,11 @@ const useStyles = makeStyles({
 		letterSpacing: 0,
 		lineHeight: "22px",
 		textAlign: "center",
-		textTransform: "capitalize"
+		textTransform: "capitalize",
 	},
 	selectedTab: {
-		backgroundColor: "#eaedff"
-	}
+		backgroundColor: "#eaedff",
+	},
 });
 
 export const AnticipatedPerformance = (props) => {
@@ -39,7 +39,8 @@ export const AnticipatedPerformance = (props) => {
 
 	// Redux connect equivalent
 	const dispatch = useDispatch();
-	const getExecutionList = (datawolfConfig, all) => dispatch(fetchExecutions(datawolfConfig, all));
+	const getExecutionList = (datawolfConfig, all) =>
+		dispatch(fetchExecutions(datawolfConfig, all));
 	const executions = useSelector((state) => state.execution.executions);
 
 	return (
@@ -59,7 +60,11 @@ export const AnticipatedPerformance = (props) => {
 						/>
 					</Box>
 					<Box style={{ marginRight: "2em" }}>
-						<StepStatusDropdown step={step} substep={substep} style={{ marginLeft: "auto" }} />
+						<StepStatusDropdown
+							step={step}
+							substep={substep}
+							style={{ marginLeft: "auto" }}
+						/>
 					</Box>
 				</Box>
 				<Box className="outerBox">

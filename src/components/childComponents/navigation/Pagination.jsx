@@ -12,11 +12,17 @@ class Pagination extends React.Component {
 		return (
 			<div style={{ textAlign: "center", margin: "1em" }}>
 				<ButtonGroup size="small">
-					<Button disabled={this.props.pageNumber === 1} onClick={this.props.previous}>
+					<Button
+						disabled={this.props.pageNumber === 1}
+						onClick={this.props.previous}
+					>
 						<PreviousIcon fontSize="small" />
 					</Button>
 					<Button disabled={true}>{this.props.pageNumber}</Button>
-					<Button disabled={this.props.data.length < this.props.dataPerPage} onClick={this.props.next}>
+					<Button
+						disabled={this.props.data.length < this.props.dataPerPage}
+						onClick={this.props.next}
+					>
 						<NextIcon fontSize="small" />
 					</Button>
 				</ButtonGroup>

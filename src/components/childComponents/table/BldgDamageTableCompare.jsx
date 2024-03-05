@@ -1,5 +1,12 @@
 import React from "react";
-import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@material-ui/core";
+import {
+	Table,
+	TableBody,
+	TableCell,
+	TableContainer,
+	TableHead,
+	TableRow,
+} from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import CompareArrowsIcon from "@material-ui/icons/CompareArrows";
 import BldgDmgDiffBarChart from "../graph/BldgDmgDiffBarChart";
@@ -7,10 +14,10 @@ import BldgDmgDiffBarChart from "../graph/BldgDmgDiffBarChart";
 const useStyles = makeStyles({
 	table: {
 		backgroundColor: "#FFFFFF",
-		minWidth: "1135px"
+		minWidth: "1135px",
 	},
 	tableHeaderRow: {
-		height: "34px"
+		height: "34px",
 	},
 	tableHeaderCell: {
 		height: "14px",
@@ -21,10 +28,10 @@ const useStyles = makeStyles({
 		letterSpacing: "1.13px",
 		lineHeight: "14px",
 		textAlign: "center",
-		textTransform: "uppercase"
+		textTransform: "uppercase",
 	},
 	tableBodyRow: {
-		height: "28px"
+		height: "28px",
 	},
 	tableBodyCell: {
 		height: "21px",
@@ -33,7 +40,7 @@ const useStyles = makeStyles({
 		letterSpacing: 0,
 		lineHeight: "18px",
 		border: "1px solid rgba(46,91,255,0.08)",
-		textAlign: "center"
+		textAlign: "center",
 	},
 	tableBodyCategoryCell: {
 		height: "21px",
@@ -44,7 +51,7 @@ const useStyles = makeStyles({
 		letterSpacing: 0,
 		lineHeight: "18px",
 		textTransform: "capitalize",
-		border: "1px solid rgba(46,91,255,0.08)"
+		border: "1px solid rgba(46,91,255,0.08)",
 	},
 	tableBodyClusterCell: {
 		height: "21px",
@@ -53,8 +60,8 @@ const useStyles = makeStyles({
 		fontSize: "15px",
 		letterSpacing: 0,
 		lineHeight: "18px",
-		border: "1px solid rgba(46,91,255,0.08)"
-	}
+		border: "1px solid rgba(46,91,255,0.08)",
+	},
 });
 
 const NA_value = -1; // TODO need to change to -1
@@ -122,7 +129,11 @@ export function BldgDamageTableCompare(props) {
 					{/*["playbook builidng clusters", "DS_0", "DS_1", "DS_2", "DS_3"];*/}
 					<TableRow className={classes.tableHeaderRow} key="hdrRow">
 						<TableCell
-							style={{ width: "647px", backgroundColor: "#EFF2FF", color: "#69707F" }}
+							style={{
+								width: "647px",
+								backgroundColor: "#EFF2FF",
+								color: "#69707F",
+							}}
 							colSpan={3}
 							className={classes.tableHeaderCell}
 							key="playbook-building-clusters"
@@ -158,7 +169,11 @@ export function BldgDamageTableCompare(props) {
 							{tableHeadersA[3]}
 						</TableCell>
 						<TableCell
-							style={{ width: "25%", backgroundColor: "#EFF2FF", color: "#69707F" }}
+							style={{
+								width: "25%",
+								backgroundColor: "#EFF2FF",
+								color: "#69707F",
+							}}
 							className={classes.tableHeaderCell}
 							key="percent-change"
 						>
@@ -186,7 +201,10 @@ export function BldgDamageTableCompare(props) {
 													{idxx === firstMatchIdxx ? (
 														<TableCell
 															rowSpan={
-																(clusterNumInCategory[categoryItemA["category"]] + 1) *
+																(clusterNumInCategory[
+																	categoryItemA["category"]
+																] +
+																	1) *
 																3
 															}
 															align="center"
@@ -203,15 +221,24 @@ export function BldgDamageTableCompare(props) {
 													>
 														{clusterItemA["cluster"]}
 													</TableCell>
-													<TableCell key={`${idxx}-A`} className={classes.tableBodyCell}>
+													<TableCell
+														key={`${idxx}-A`}
+														className={classes.tableBodyCell}
+													>
 														A
 													</TableCell>
-													<TableCell key={`${idxx}-insig`} className={classes.tableBodyCell}>
+													<TableCell
+														key={`${idxx}-insig`}
+														className={classes.tableBodyCell}
+													>
 														{clusterItemA[tableHeadersA[0]] === NA_value
 															? "-"
 															: clusterItemA[tableHeadersA[0]]}
 													</TableCell>
-													<TableCell key={`${idxx}-mod`} className={classes.tableBodyCell}>
+													<TableCell
+														key={`${idxx}-mod`}
+														className={classes.tableBodyCell}
+													>
 														{clusterItemA[tableHeadersA[1]] === NA_value
 															? "-"
 															: clusterItemA[tableHeadersA[1]]}
@@ -224,7 +251,10 @@ export function BldgDamageTableCompare(props) {
 															? "-"
 															: clusterItemA[tableHeadersA[2]]}
 													</TableCell>
-													<TableCell key={`${idxx}-comp`} className={classes.tableBodyCell}>
+													<TableCell
+														key={`${idxx}-comp`}
+														className={classes.tableBodyCell}
+													>
 														{clusterItemA[tableHeadersA[3]] === NA_value
 															? "-"
 															: clusterItemA[tableHeadersA[3]]}
@@ -253,7 +283,7 @@ export function BldgDamageTableCompare(props) {
 																	parseFloat(clusterItemB[tableHeadersB[2]]) -
 																		parseFloat(clusterItemA[tableHeadersA[2]]),
 																	parseFloat(clusterItemB[tableHeadersB[3]]) -
-																		parseFloat(clusterItemA[tableHeadersA[3]])
+																		parseFloat(clusterItemA[tableHeadersA[3]]),
 																]}
 															/>
 														) : (
@@ -266,15 +296,24 @@ export function BldgDamageTableCompare(props) {
 													className={classes.tableBodyRow}
 													key={clusterItemB["cluster"]}
 												>
-													<TableCell key={`${idxx}-B`} className={classes.tableBodyCell}>
+													<TableCell
+														key={`${idxx}-B`}
+														className={classes.tableBodyCell}
+													>
 														B
 													</TableCell>
-													<TableCell key={`${idxx}-insig`} className={classes.tableBodyCell}>
+													<TableCell
+														key={`${idxx}-insig`}
+														className={classes.tableBodyCell}
+													>
 														{clusterItemB[tableHeadersB[0]] === NA_value
 															? "-"
 															: clusterItemB[tableHeadersB[0]]}
 													</TableCell>
-													<TableCell key={`${idxx}-mod`} className={classes.tableBodyCell}>
+													<TableCell
+														key={`${idxx}-mod`}
+														className={classes.tableBodyCell}
+													>
 														{clusterItemB[tableHeadersB[1]] === NA_value
 															? "-"
 															: clusterItemB[tableHeadersB[1]]}
@@ -287,7 +326,10 @@ export function BldgDamageTableCompare(props) {
 															? "-"
 															: clusterItemB[tableHeadersB[2]]}
 													</TableCell>
-													<TableCell key={`${idxx}-comp`} className={classes.tableBodyCell}>
+													<TableCell
+														key={`${idxx}-comp`}
+														className={classes.tableBodyCell}
+													>
 														{clusterItemB[tableHeadersB[3]] === NA_value
 															? "-"
 															: clusterItemB[tableHeadersB[3]]}
@@ -298,10 +340,18 @@ export function BldgDamageTableCompare(props) {
 													className={classes.tableBodyRow}
 													key={`${clusterItemB["cluster"]}-diff`}
 												>
-													<TableCell key={`${idxx}-diff`} className={classes.tableBodyCell}>
-														<CompareArrowsIcon style={{ transform: "rotate(90deg)" }} />
+													<TableCell
+														key={`${idxx}-diff`}
+														className={classes.tableBodyCell}
+													>
+														<CompareArrowsIcon
+															style={{ transform: "rotate(90deg)" }}
+														/>
 													</TableCell>
-													<TableCell key={`${idxx}-insig`} className={classes.tableBodyCell}>
+													<TableCell
+														key={`${idxx}-insig`}
+														className={classes.tableBodyCell}
+													>
 														{clusterItemA[tableHeadersA[0]] === NA_value ||
 														clusterItemB[tableHeadersB[0]] === NA_value
 															? "-"
@@ -315,7 +365,10 @@ export function BldgDamageTableCompare(props) {
 															  : parseFloat(clusterItemB[tableHeadersB[0]]) -
 															    parseFloat(clusterItemA[tableHeadersA[0]])}
 													</TableCell>
-													<TableCell key={`${idxx}-mod`} className={classes.tableBodyCell}>
+													<TableCell
+														key={`${idxx}-mod`}
+														className={classes.tableBodyCell}
+													>
 														{clusterItemA[tableHeadersA[1]] === NA_value ||
 														clusterItemB[tableHeadersB[1]] === NA_value
 															? "-"
@@ -346,7 +399,10 @@ export function BldgDamageTableCompare(props) {
 															  : parseFloat(clusterItemB[tableHeadersB[2]]) -
 															    parseFloat(clusterItemA[tableHeadersA[2]])}
 													</TableCell>
-													<TableCell key={`${idxx}-comp`} className={classes.tableBodyCell}>
+													<TableCell
+														key={`${idxx}-comp`}
+														className={classes.tableBodyCell}
+													>
 														{clusterItemA[tableHeadersA[3]] === NA_value ||
 														clusterItemB[tableHeadersB[3]] === NA_value
 															? "-"
@@ -366,11 +422,18 @@ export function BldgDamageTableCompare(props) {
 									}
 								})}
 								{/*A:*/}
-								<TableRow className={classes.tableBodyRow} key={categoryItemA["id"]}>
+								<TableRow
+									className={classes.tableBodyRow}
+									key={categoryItemA["id"]}
+								>
 									<TableCell
 										key="total"
 										className={classes.tableBodyClusterCell}
-										style={{ fontWeight: 500, textAlign: "right", backgroundColor: "#EEF3F5" }}
+										style={{
+											fontWeight: 500,
+											textAlign: "right",
+											backgroundColor: "#EEF3F5",
+										}}
 										rowSpan={3}
 									>
 										TOTAL
@@ -443,7 +506,7 @@ export function BldgDamageTableCompare(props) {
 													parseFloat(categoryItemB[tableHeadersB[2]]) -
 														parseFloat(categoryItemA[tableHeadersA[2]]),
 													parseFloat(categoryItemB[tableHeadersB[3]]) -
-														parseFloat(categoryItemA[tableHeadersA[3]])
+														parseFloat(categoryItemA[tableHeadersA[3]]),
 												]}
 											/>
 										) : (
@@ -452,7 +515,10 @@ export function BldgDamageTableCompare(props) {
 									</TableCell>
 								</TableRow>
 								{/*B:*/}
-								<TableRow className={classes.tableBodyRow} key={categoryItemB["id"]}>
+								<TableRow
+									className={classes.tableBodyRow}
+									key={categoryItemB["id"]}
+								>
 									<TableCell
 										key="total-B"
 										className={classes.tableBodyCell}
@@ -498,7 +564,10 @@ export function BldgDamageTableCompare(props) {
 									</TableCell>
 								</TableRow>
 								{/*Diff:*/}
-								<TableRow className={classes.tableBodyRow} key={`${categoryItemB["id"]}-diff`}>
+								<TableRow
+									className={classes.tableBodyRow}
+									key={`${categoryItemB["id"]}-diff`}
+								>
 									<TableCell
 										key="total-diff"
 										className={classes.tableBodyCell}

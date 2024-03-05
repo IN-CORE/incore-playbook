@@ -33,31 +33,31 @@ export function StackedResult(props) {
 			{
 				label: "DS_0",
 				backgroundColor: "#96B712",
-				data: DS_0
+				data: DS_0,
 			},
 			{
 				label: "DS_1",
 				backgroundColor: "#F7C137",
-				data: DS_1
+				data: DS_1,
 			},
 			{
 				label: "DS_2",
 				backgroundColor: "#ED8036",
-				data: DS_2
+				data: DS_2,
 			},
 			{
 				label: "DS_3",
 				backgroundColor: "#D63649",
-				data: DS_3
-			}
-		]
+				data: DS_3,
+			},
+		],
 	};
 
 	let options = {
 		responsive: true,
 		maintainAspectRatio: false,
 		legend: {
-			display: false
+			display: false,
 		},
 		tooltips: {
 			callbacks: {
@@ -68,41 +68,41 @@ export function StackedResult(props) {
 					let datasetLabel = data.datasets[item.datasetIndex].label || "";
 					let dataPoint = item.yLabel;
 					return `${datasetLabel}: ${dataPoint} buildings`;
-				}
-			}
+				},
+			},
 		},
 		scales: {
 			xAxes: [
 				{
 					stacked: true,
 					gridLines: {
-						display: false
+						display: false,
 					},
 					barPercentage: 0.75,
 					ticks: {
 						// fontStyle: "bold",
 						fontFamily: "Rubik",
-						fontSize: 14
-					}
-				}
+						fontSize: 14,
+					},
+				},
 			],
 			yAxes: [
 				{
 					stacked: true,
 					scaleLabel: {
 						display: true,
-						labelString: "Buildings"
+						labelString: "Buildings",
 					},
 					ticks: {
-						maxTicksLimit: 6
-					}
-				}
-			]
+						maxTicksLimit: 6,
+					},
+				},
+			],
 		},
 		plugins: {
 			zoom: {
 				pan: {
-					enabled: false
+					enabled: false,
 				},
 				zoom: {
 					enabled: true,
@@ -112,21 +112,26 @@ export function StackedResult(props) {
 						borderColor: "rgba(225,225,225,0.3)",
 						borderWidth: 5,
 						backgroundColor: "rgb(225,225,225)",
-						animationDuration: 0
+						animationDuration: 0,
 					},
 					rangeMin: {
 						x: 0,
-						y: 0
-					}
-				}
-			}
-		}
+						y: 0,
+					},
+				},
+			},
+		},
 	};
 
 	return (
 		<div>
 			<div style={{ textAlign: "right" }}>
-				<Button onClick={resetClick} variant="outlined" size="small" className="compactButton">
+				<Button
+					onClick={resetClick}
+					variant="outlined"
+					size="small"
+					className="compactButton"
+				>
 					Reset Zoom
 				</Button>
 			</div>

@@ -1,6 +1,13 @@
 import React from "react";
 
-import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@material-ui/core";
+import {
+	Table,
+	TableBody,
+	TableCell,
+	TableContainer,
+	TableHead,
+	TableRow,
+} from "@material-ui/core";
 
 import { makeStyles } from "@material-ui/core/styles";
 import { round } from "../../../utils/common";
@@ -11,7 +18,7 @@ const tableColumnHead = {
 	fontWeight: "500",
 	border: "solid 1px rgba(46,91,255,0.08)",
 	borderRadius: "1px",
-	width: "160px"
+	width: "160px",
 };
 
 const tableRowHead = {
@@ -23,18 +30,18 @@ const tableRowHead = {
 	borderLeft: "solid 1px #FFFFFF",
 	borderRight: "solid 1px #FFFFFF",
 	borderTop: "solid 1px #FFFFFF",
-	borderBottom: "solid 1px #FFFFFF"
+	borderBottom: "solid 1px #FFFFFF",
 };
 
 const useStyles = makeStyles({
 	table: {
 		maxWidth: 700,
-		display: "block"
+		display: "block",
 	},
 	metricsTable: {
 		display: "block",
 		maxWidth: "fit-content",
-		margin: "auto auto"
+		margin: "auto auto",
 	},
 	tableRowHeadFirst: {
 		color: "#69707F",
@@ -42,30 +49,30 @@ const useStyles = makeStyles({
 		fontWeight: "500",
 		textAlign: "center",
 		backgroundColor: "#F8F9FF",
-		border: "solid 1px #FFFFFF"
+		border: "solid 1px #FFFFFF",
 	},
 	tableRowHead: tableRowHead,
 	tableRowHeadRight: {
 		...tableRowHead,
-		borderRight: "solid 1px #EAEEFF"
+		borderRight: "solid 1px #EAEEFF",
 	},
 	tableColumnHeadGreen: {
 		...tableColumnHead,
-		backgroundColor: "#A1BE2E"
+		backgroundColor: "#A1BE2E",
 	},
 	tableColumnHeadRed: {
 		...tableColumnHead,
-		backgroundColor: "#CB5963"
+		backgroundColor: "#CB5963",
 	},
 	tableColumnHeadDarkRed: {
 		...tableColumnHead,
-		backgroundColor: "#833841"
+		backgroundColor: "#833841",
 	},
 	tableDataCell: {
 		width: "100px",
 		textAlign: "center",
-		border: "solid 1px rgba(46,91,255,0.08)"
-	}
+		border: "solid 1px rgba(46,91,255,0.08)",
+	},
 });
 
 export function CGEResultsTableCompare(props) {
@@ -96,17 +103,31 @@ export function CGEResultsTableCompare(props) {
 			return key.startsWith(region);
 		};
 
-		beforeJson = Object.fromEntries(Object.entries(beforeJson).filter(filterFunc));
-		afterJsonA = Object.fromEntries(Object.entries(afterJsonA).filter(filterFunc));
-		percentageChangeA = Object.fromEntries(Object.entries(percentageChangeA).filter(filterFunc));
-		afterJsonB = Object.fromEntries(Object.entries(afterJsonB).filter(filterFunc));
-		percentageChangeB = Object.fromEntries(Object.entries(percentageChangeB).filter(filterFunc));
+		beforeJson = Object.fromEntries(
+			Object.entries(beforeJson).filter(filterFunc),
+		);
+		afterJsonA = Object.fromEntries(
+			Object.entries(afterJsonA).filter(filterFunc),
+		);
+		percentageChangeA = Object.fromEntries(
+			Object.entries(percentageChangeA).filter(filterFunc),
+		);
+		afterJsonB = Object.fromEntries(
+			Object.entries(afterJsonB).filter(filterFunc),
+		);
+		percentageChangeB = Object.fromEntries(
+			Object.entries(percentageChangeB).filter(filterFunc),
+		);
 	}
 
 	// Eliminate duplicate keys. Also, handles the case where before and after has different number of groups
 	headers = [
 		...headers,
-		...new Set([...Object.keys(afterJsonA), ...Object.keys(beforeJson), ...Object.keys(percentageChangeA)])
+		...new Set([
+			...Object.keys(afterJsonA),
+			...Object.keys(beforeJson),
+			...Object.keys(percentageChangeA),
+		]),
 	];
 	const headerSize = headers.length;
 
@@ -149,7 +170,9 @@ export function CGEResultsTableCompare(props) {
 							{headers.slice(1).map((header, idx) => {
 								return (
 									<TableCell className={classes.tableDataCell} key={idx}>
-										{beforeJson[header] !== undefined ? round(beforeJson[header], 1) : "-"}
+										{beforeJson[header] !== undefined
+											? round(beforeJson[header], 1)
+											: "-"}
 									</TableCell>
 								);
 							})}
@@ -165,14 +188,19 @@ export function CGEResultsTableCompare(props) {
 							{headers.slice(1).map((header, idx) => {
 								return (
 									<TableCell className={classes.tableDataCell} key={idx}>
-										{afterJsonA[header] !== undefined ? round(afterJsonA[header], 1) : "-"}
+										{afterJsonA[header] !== undefined
+											? round(afterJsonA[header], 1)
+											: "-"}
 									</TableCell>
 								);
 							})}
 						</TableRow>
 
 						<TableRow>
-							<TableCell className={classes.tableColumnHeadRed} style={{ textAlign: "right" }}>
+							<TableCell
+								className={classes.tableColumnHeadRed}
+								style={{ textAlign: "right" }}
+							>
 								% of Change
 							</TableCell>
 							{headers.slice(1).map((header, idx) => {
@@ -196,14 +224,19 @@ export function CGEResultsTableCompare(props) {
 							{headers.slice(1).map((header, idx) => {
 								return (
 									<TableCell className={classes.tableDataCell} key={idx}>
-										{afterJsonB[header] !== undefined ? round(afterJsonB[header], 1) : "-"}
+										{afterJsonB[header] !== undefined
+											? round(afterJsonB[header], 1)
+											: "-"}
 									</TableCell>
 								);
 							})}
 						</TableRow>
 
 						<TableRow>
-							<TableCell className={classes.tableColumnHeadDarkRed} style={{ textAlign: "right" }}>
+							<TableCell
+								className={classes.tableColumnHeadDarkRed}
+								style={{ textAlign: "right" }}
+							>
 								% of Change
 							</TableCell>
 							{headers.slice(1).map((header, idx) => {
@@ -218,14 +251,21 @@ export function CGEResultsTableCompare(props) {
 						</TableRow>
 
 						<TableRow>
-							<TableCell className={classes.tableRowHead}> Difference between A and B </TableCell>
+							<TableCell className={classes.tableRowHead}>
+								{" "}
+								Difference between A and B{" "}
+							</TableCell>
 							{headers.slice(1).map((header, idx) => {
 								return (
 									<TableCell className={classes.tableDataCell} key={idx}>
-										{afterJsonA[header] === undefined && afterJsonB[header] === undefined
+										{afterJsonA[header] === undefined &&
+										afterJsonB[header] === undefined
 											? "-"
 											: round(afterJsonB[header] - afterJsonA[header], 1) > 0
-											  ? `+${round(afterJsonB[header] - afterJsonA[header], 1)}`
+											  ? `+${round(
+														afterJsonB[header] - afterJsonA[header],
+														1,
+											    )}`
 											  : round(afterJsonB[header] - afterJsonA[header], 1)}
 									</TableCell>
 								);

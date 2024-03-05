@@ -14,8 +14,12 @@ const ParseData = (data, region = null) => {
 			return key.startsWith(region);
 		};
 
-		beforeEvent = Object.fromEntries(Object.entries(beforeEvent).filter(filterFunc));
-		afterEvent = Object.fromEntries(Object.entries(afterEvent).filter(filterFunc));
+		beforeEvent = Object.fromEntries(
+			Object.entries(beforeEvent).filter(filterFunc),
+		);
+		afterEvent = Object.fromEntries(
+			Object.entries(afterEvent).filter(filterFunc),
+		);
 	}
 
 	const chartData = [];
@@ -28,7 +32,8 @@ const ParseData = (data, region = null) => {
 };
 
 export default function CGEBarChart(props) {
-	const { height, width, data, title, xAxisLegend, yAxisLegend, region } = props;
+	const { height, width, data, title, xAxisLegend, yAxisLegend, region } =
+		props;
 
 	return (
 		<div className="barChart">
@@ -43,12 +48,12 @@ export default function CGEBarChart(props) {
 					legend: { position: "none" },
 					colors: ["#A1BE2E", "#DB4F60"],
 					hAxis: {
-						title: xAxisLegend
+						title: xAxisLegend,
 					},
 					vAxis: {
-						title: yAxisLegend
+						title: yAxisLegend,
 					},
-					bars: "horizontal"
+					bars: "horizontal",
 				}}
 				// For tests
 				rootProps={{ "data-testid": "1" }}

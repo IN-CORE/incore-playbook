@@ -16,7 +16,7 @@ export const TornadoMapDrawPrompt = (props) => {
 							backgroundColor: "#96B712",
 							borderRadius: "50%",
 							display: "block",
-							margin: "auto"
+							margin: "auto",
 						}}
 					/>
 					<span>Start</span>
@@ -27,7 +27,7 @@ export const TornadoMapDrawPrompt = (props) => {
 						width: "100%",
 						borderTop: "0.2em dashed #979797",
 						display: "block",
-						margin: "auto"
+						margin: "auto",
 					}}
 				/>
 				<Box display="flex" flexDirection="column">
@@ -38,7 +38,7 @@ export const TornadoMapDrawPrompt = (props) => {
 							backgroundColor: "#D63649",
 							borderRadius: "50%",
 							display: "block",
-							margin: "auto"
+							margin: "auto",
 						}}
 					/>
 					<span>End</span>

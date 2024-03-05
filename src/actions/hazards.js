@@ -8,12 +8,17 @@ export function receiveHazards(type, json) {
 		dispatch({
 			type: type,
 			hazards: json,
-			receivedAt: Date.now()
+			receivedAt: Date.now(),
 		});
 	};
 }
 
-export function fetchHazards(globalConfig = defaultGlobalConfig, hazardType = "tornadoes", limit = 20, offset = 0) {
+export function fetchHazards(
+	globalConfig = defaultGlobalConfig,
+	hazardType = "tornadoes",
+	limit = 20,
+	offset = 0,
+) {
 	hazardType = getHazardTypePlural(hazardType);
 	let endpoint = `${globalConfig.hazardServiceBase}${hazardType}?limit=${limit}&skip=${offset}`;
 
@@ -21,7 +26,10 @@ export function fetchHazards(globalConfig = defaultGlobalConfig, hazardType = "t
 	if (space !== undefined) endpoint = `${endpoint}&space=${space}`;
 
 	return (dispatch) => {
-		return fetch(endpoint, { mode: "cors", headers: getHeader(globalConfig.hostname) }).then((response) => {
+		return fetch(endpoint, {
+			mode: "cors",
+			headers: getHeader(globalConfig.hostname),
+		}).then((response) => {
 			if (response.status === 200) {
 				response.json().then((json) => {
 					dispatch(receiveHazards(`RECEIVE_${hazardType.toUpperCase()}`, json));

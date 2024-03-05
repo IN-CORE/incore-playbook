@@ -11,7 +11,15 @@ import VectorLayer from "ol/layer/Vector";
 import VectorSource from "ol/source/Vector";
 
 import { makeStyles } from "@material-ui/core/styles";
-import { IconButton, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@material-ui/core";
+import {
+	IconButton,
+	Table,
+	TableBody,
+	TableCell,
+	TableContainer,
+	TableHead,
+	TableRow,
+} from "@material-ui/core";
 import LoadingOverlay from "react-loading-overlay";
 import CloseIcon from "@material-ui/icons/Close";
 
@@ -22,10 +30,10 @@ const useStyles = makeStyles({
 		backgroundColor: "#FFFFFF",
 		minWidth: "265px",
 		maxHeight: "356px",
-		overflowY: "auto"
+		overflowY: "auto",
 	},
 	tableHeaderRow: {
-		height: "34px"
+		height: "34px",
 	},
 	tableHeaderCell: {
 		height: "14px",
@@ -36,10 +44,10 @@ const useStyles = makeStyles({
 		letterSpacing: "1.13px",
 		lineHeight: "14px",
 		textAlign: "center",
-		textTransform: "uppercase"
+		textTransform: "uppercase",
 	},
 	tableBodyRow: {
-		height: "28px"
+		height: "28px",
 	},
 	tableBodyCell: {
 		height: "21px",
@@ -48,8 +56,8 @@ const useStyles = makeStyles({
 		fontSize: "15px",
 		letterSpacing: 0,
 		lineHeight: "18px",
-		border: "1px solid rgba(46,91,255,0.08)"
-	}
+		border: "1px solid rgba(46,91,255,0.08)",
+	},
 });
 
 export const MapContext = React.createContext({});
@@ -104,7 +112,7 @@ const Map = (props) => {
 			layerSwitcherOptions,
 			updateMap,
 			events,
-			allowBuildingSelection
+			allowBuildingSelection,
 		} = props;
 
 		const map = new OLMap({
@@ -115,7 +123,7 @@ const Map = (props) => {
 				zoom,
 				minZoom,
 				maxZoom,
-				extent
+				extent,
 			}),
 			layers,
 			overlays: [
@@ -124,10 +132,10 @@ const Map = (props) => {
 					className: "ol-popup",
 					autoPan: true,
 					autoPanAnimation: {
-						duration: 250
-					}
-				})
-			]
+						duration: 250,
+					},
+				}),
+			],
 			// controls: defaultControls().extend(controls)
 		});
 
@@ -163,10 +171,15 @@ const Map = (props) => {
 				const viewProjection = view.getProjection();
 				const viewResolution = view.getResolution();
 
-				const url = damageLayerSource.getFeatureInfoUrl(coordinate, viewResolution, viewProjection, {
-					INFO_FORMAT: "application/json",
-					FEATURE_COUNT: 1
-				});
+				const url = damageLayerSource.getFeatureInfoUrl(
+					coordinate,
+					viewResolution,
+					viewProjection,
+					{
+						INFO_FORMAT: "application/json",
+						FEATURE_COUNT: 1,
+					},
+				);
 				if (url) {
 					setLoading(true);
 					fetch(url)
@@ -229,30 +242,36 @@ const Map = (props) => {
 				className={`ol-map ${className}`}
 				ref={fallbackContainer}
 			>
-				<MapContext.Provider value={{ map: mapRef.current }}>{children}</MapContext.Provider>
+				<MapContext.Provider value={{ map: mapRef.current }}>
+					{children}
+				</MapContext.Provider>
 			</div>
 			{allowBuildingSelection && selectedBuilding ? (
 				<TableContainer
 					style={{
-						"position": "absolute",
-						"width": "300px",
-						"maxHeight": "356px",
-						"top": "5px",
-						"left": "30px",
-						"Zindex": 5000,
-						"padding": "5px",
-						"overflow": "scroll",
-						"scrollBehavior": "smooth",
+						position: "absolute",
+						width: "300px",
+						maxHeight: "356px",
+						top: "5px",
+						left: "30px",
+						Zindex: 5000,
+						padding: "5px",
+						overflow: "scroll",
+						scrollBehavior: "smooth",
 						"&::WebkitScrollbar": {
-							display: "none" // Hide the scrollbar for WebKit browsers (Chrome, Safari, Edge, etc.)
+							display: "none", // Hide the scrollbar for WebKit browsers (Chrome, Safari, Edge, etc.)
 						},
 						"&MsOverflowStyle:": {
-							display: "none" // Hide the scrollbar for IE
-						}
+							display: "none", // Hide the scrollbar for IE
+						},
 					}}
 				>
 					<LoadingOverlay active={loading} spinner text="Loading...">
-						<Table className={classes.table} size="small" aria-label="a dense table">
+						<Table
+							className={classes.table}
+							size="small"
+							aria-label="a dense table"
+						>
 							<TableHead>
 								{/* keeping this here to be added back in the future */}
 								{/* <TableRow
@@ -278,10 +297,16 @@ const Map = (props) => {
 									></TableCell>
 								</TableRow> */}
 								<TableRow key="hdrRow">
-									<TableCell align="center" style={{ backgroundColor: "#EFF2FF", color: "#69707F" }}>
+									<TableCell
+										align="center"
+										style={{ backgroundColor: "#EFF2FF", color: "#69707F" }}
+									>
 										Attribute
 									</TableCell>
-									<TableCell align="center" style={{ backgroundColor: "#EFF2FF", color: "#69707F" }}>
+									<TableCell
+										align="center"
+										style={{ backgroundColor: "#EFF2FF", color: "#69707F" }}
+									>
 										Value
 									</TableCell>
 								</TableRow>
@@ -293,7 +318,9 @@ const Map = (props) => {
 									}
 									return (
 										<TableRow key={colName}>
-											<TableCell style={{ backgroundColor: "#EFF2FF", color: "#69707F" }}>
+											<TableCell
+												style={{ backgroundColor: "#EFF2FF", color: "#69707F" }}
+											>
 												{colName}
 											</TableCell>
 											<TableCell align="center">

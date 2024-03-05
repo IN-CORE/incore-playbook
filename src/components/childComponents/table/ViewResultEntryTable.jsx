@@ -14,7 +14,7 @@ import {
 	TablePagination,
 	TableRow,
 	TableSortLabel,
-	Typography
+	Typography,
 } from "@material-ui/core";
 import UnfoldMoreIcon from "@material-ui/icons/UnfoldMore";
 import UnfoldLess from "@material-ui/icons/UnfoldLess";
@@ -22,7 +22,12 @@ import UnfoldLess from "@material-ui/icons/UnfoldLess";
 import { makeStyles } from "@material-ui/core/styles";
 import { useSelector } from "react-redux";
 
-import { getComparator, isAdmin, parseDateTime, stableSort } from "../../../utils/common";
+import {
+	getComparator,
+	isAdmin,
+	parseDateTime,
+	stableSort,
+} from "../../../utils/common";
 import { checkFileDescriptors } from "../../../utils/datawolf";
 import { useLocation, useRouteMatch } from "react-router-dom";
 import { IncoreTitle } from "../../styledComponents/IncoreTitle";
@@ -30,7 +35,7 @@ import { IncoreTitle } from "../../styledComponents/IncoreTitle";
 const useStyles = makeStyles({
 	table: {
 		minWidth: 650,
-		borderCollapse: "collapse"
+		borderCollapse: "collapse",
 	},
 	tableHeaderRow: {
 		// height: "34px",
@@ -42,54 +47,54 @@ const useStyles = makeStyles({
 		fontSize: "12px",
 		fontWeight: 500,
 		letterSpacing: "1.13px",
-		lineHeight: "14px"
+		lineHeight: "14px",
 	},
 	tableBodyRow: {
 		backgroundColor: "#FFFFFF",
 		borderBottom: "2px solid #D9E8F1",
 		borderTop: "2px solid #D9E8F1",
-		minHeight: "65px"
+		minHeight: "65px",
 	},
 	tableBodyRowChecked: {
 		backgroundColor: "#e5eff5",
 		borderBottom: "2px solid #D9E8F1",
 		borderTop: "2px solid #D9E8F1",
-		minHeight: "65px"
+		minHeight: "65px",
 	},
 	tableBodyCell: {
 		minWidth: "68.75px",
 		color: "#2E384D",
 		fontSize: "15px",
 		letterSpacing: 0,
-		lineHeight: "22px"
+		lineHeight: "22px",
 	},
 	statusFinished: {
 		textTransform: "lowercase",
 		color: "#2E384D",
 		backgroundColor: "#9BD686",
 		padding: "auto 2px",
-		textAlign: "center"
+		textAlign: "center",
 	},
 	statusWaiting: {
 		textTransform: "lowercase",
 		color: "#2E384D",
 		backgroundColor: "#8798AD",
 		padding: "auto 2px",
-		textAlign: "center"
+		textAlign: "center",
 	},
 	statusRunning: {
 		textTransform: "lowercase",
 		color: "#2E384D",
 		backgroundColor: "#F7C137",
 		padding: "auto 2px",
-		textAlign: "center"
+		textAlign: "center",
 	},
 	statusUnsuccess: {
 		textTransform: "lowercase",
 		color: "#2E384D",
 		backgroundColor: "#f3b4b0",
 		padding: "auto 2px",
-		textAlign: "center"
+		textAlign: "center",
 	},
 	firstTableBodyCell: {
 		minWidth: "300px",
@@ -97,39 +102,39 @@ const useStyles = makeStyles({
 		fontSize: "15px",
 		letterSpacing: 0,
 		lineHeight: "22px",
-		fontWeight: 500
+		fontWeight: 500,
 	},
 	subBodyRow: {
 		backgroundColor: "rgba(255,255,255,0.6)",
 		borderBottom: "2px solid #D9E8F1",
 		borderTop: "2px solid #D9E8F1",
-		minHeight: "34px"
+		minHeight: "34px",
 	},
 	clickableLink: {
 		"&:hover": {
-			cursor: "pointer"
+			cursor: "pointer",
 		},
-		"color": "#00619D",
-		"fontWeight": 500,
-		"margin": "auto 2em"
+		color: "#00619D",
+		fontWeight: 500,
+		margin: "auto 2em",
 	},
 	clickableLinkDisabled: {
 		pointerEvents: "none",
 		textDecoration: "none",
 		color: "#9E9E9E",
 		fontWeight: 500,
-		margin: "auto 2em"
+		margin: "auto 2em",
 	},
 	compareButton: {
-		"fontSize": "16px",
-		"fontWeight": 500,
-		"backgroundColor": "#00619D",
+		fontSize: "16px",
+		fontWeight: 500,
+		backgroundColor: "#00619D",
 		"&:hover": {
-			backgroundColor: "#2C4170"
+			backgroundColor: "#2C4170",
 		},
-		"color": "#ffffff",
-		"textTransform": "capitalize"
-	}
+		color: "#ffffff",
+		textTransform: "capitalize",
+	},
 });
 
 export function ViewResultEntryTable(props) {
@@ -161,7 +166,9 @@ export function ViewResultEntryTable(props) {
 	const [compareItemNames, setCompareItemNames] = React.useState([]);
 
 	// list all the widgets from workflow definition
-	const datawolfWorkflowConfig = useSelector((state) => state.config.datawolfWorkflowConfig);
+	const datawolfWorkflowConfig = useSelector(
+		(state) => state.config.datawolfWorkflowConfig,
+	);
 	const datawolfConfig = useSelector((state) => state.config.datawolfConfig);
 	const globalConfig = useSelector((state) => state.config.globalConfig);
 
@@ -169,19 +176,26 @@ export function ViewResultEntryTable(props) {
 	const match = useRouteMatch(); // No arguments to match the current route
 
 	const _checkResultsReady = async (listWidgets, currentExecutionDataset) => {
-		const requiredDatasetIds = datawolfWorkflowConfig.outputs.datasets[0].datasetsMap.reduce((list, item) => {
-			if (listWidgets.includes(item.datasets.widget)) {
-				return [...list, item.datasetId];
-			}
+		const requiredDatasetIds =
+			datawolfWorkflowConfig.outputs.datasets[0].datasetsMap.reduce(
+				(list, item) => {
+					if (listWidgets.includes(item.datasets.widget)) {
+						return [...list, item.datasetId];
+					}
 
-			return list;
-		}, []);
+					return list;
+				},
+				[],
+			);
 
 		return await requiredDatasetIds.reduce(async (state, reqId) => {
 			return (
 				reqId in currentExecutionDataset &&
 				currentExecutionDataset[reqId] !== "ERROR" &&
-				(await checkFileDescriptors(datawolfConfig, currentExecutionDataset[reqId])) > 0 &&
+				(await checkFileDescriptors(
+					datawolfConfig,
+					currentExecutionDataset[reqId],
+				)) > 0 &&
 				state
 			);
 		}, true);
@@ -189,28 +203,53 @@ export function ViewResultEntryTable(props) {
 
 	useEffect(() => {
 		setWidgetList(
-			datawolfWorkflowConfig.outputs.datasets[0].datasetsMap.reduce((list, item) => {
-				if (!list.includes(item.datasets.widget)) {
-					return [...list, item.datasets.widget];
-				} else {
-					return list;
-				}
-			}, [])
+			datawolfWorkflowConfig.outputs.datasets[0].datasetsMap.reduce(
+				(list, item) => {
+					if (!list.includes(item.datasets.widget)) {
+						return [...list, item.datasets.widget];
+					} else {
+						return list;
+					}
+				},
+				[],
+			),
 		);
 	}, []);
 
 	useEffect(() => {
 		executions.map(async (execution) => {
 			if (execution["id"] === expandId) {
-				setResMatricsReadiness(await _checkResultsReady(["CGE", "PopDislocation"], execution.datasets));
-				setEpfPoleDmgReadiness(await _checkResultsReady(["PoleDamage"], execution.datasets));
-				setEpfSubDmgReadiness(await _checkResultsReady(["SubstationDamage"], execution.datasets));
-				setBldgDmgReadiness(await _checkResultsReady(["BldgDamage"], execution.datasets));
-				setBldgFailReadiness(await _checkResultsReady(["BldgMCS"], execution.datasets));
-				setBldgFuncReadiness(await _checkResultsReady(["BldgFunctionality"], execution.datasets));
-				setSectorShockReadiness(await _checkResultsReady(["SectorShocks"], execution.datasets));
+				setResMatricsReadiness(
+					await _checkResultsReady(
+						["CGE", "PopDislocation"],
+						execution.datasets,
+					),
+				);
+				setEpfPoleDmgReadiness(
+					await _checkResultsReady(["PoleDamage"], execution.datasets),
+				);
+				setEpfSubDmgReadiness(
+					await _checkResultsReady(["SubstationDamage"], execution.datasets),
+				);
+				setBldgDmgReadiness(
+					await _checkResultsReady(["BldgDamage"], execution.datasets),
+				);
+				setBldgFailReadiness(
+					await _checkResultsReady(["BldgMCS"], execution.datasets),
+				);
+				setBldgFuncReadiness(
+					await _checkResultsReady(["BldgFunctionality"], execution.datasets),
+				);
+				setSectorShockReadiness(
+					await _checkResultsReady(["SectorShocks"], execution.datasets),
+				);
 				setCgeReadiness(await _checkResultsReady(["CGE"], execution.datasets));
-				setPopDislReadiness(await _checkResultsReady(["PopDislocation", "BldgDamage"], execution.datasets));
+				setPopDislReadiness(
+					await _checkResultsReady(
+						["PopDislocation", "BldgDamage"],
+						execution.datasets,
+					),
+				);
 				setHhrsReadiness(await _checkResultsReady(["HHS"], execution.datasets));
 			}
 		});
@@ -218,7 +257,9 @@ export function ViewResultEntryTable(props) {
 
 	useEffect(() => {
 		// Only allow two item to be compared
-		Object.keys(compareItems).length === 2 ? setCompareDisabled(false) : setCompareDisabled(true);
+		Object.keys(compareItems).length === 2
+			? setCompareDisabled(false)
+			: setCompareDisabled(true);
 	}, [compareItems]);
 
 	const handleRequestSort = (event, property) => {
@@ -265,16 +306,22 @@ export function ViewResultEntryTable(props) {
 		const currentLocation = window.location;
 
 		// Construct the new URL by replacing the current path with the new path
-		const basePath = currentLocation.pathname.substring(0, currentLocation.pathname.lastIndexOf("/"));
-		const newUrl = `${currentLocation.origin}${basePath}/compare-analyses?executionIds=${Object.keys(
-			compareItems
-		).join(",")}`;
+		const basePath = currentLocation.pathname.substring(
+			0,
+			currentLocation.pathname.lastIndexOf("/"),
+		);
+		const newUrl = `${
+			currentLocation.origin
+		}${basePath}/compare-analyses?executionIds=${Object.keys(compareItems).join(
+			",",
+		)}`;
 		// Open the new URL in a new tab
 		window.open(newUrl, "_blank");
 	};
 
 	// Avoid a layout jump when reaching the last page with empty rows.
-	const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - executions.length) : 0;
+	const emptyRows =
+		page > 0 ? Math.max(0, (1 + page) * rowsPerPage - executions.length) : 0;
 
 	const classes = useStyles();
 
@@ -286,11 +333,23 @@ export function ViewResultEntryTable(props) {
 						<Box>
 							<IncoreTitle style={{ display: "inline" }}>
 								Compare Analyses A:&nbsp;
-								<Typography style={{ display: "inline", color: "#00619D", fontWeight: 500 }}>
+								<Typography
+									style={{
+										display: "inline",
+										color: "#00619D",
+										fontWeight: 500,
+									}}
+								>
 									{Object.keys(compareItemNames).at(0) ?? "[ ]"}
 								</Typography>{" "}
 								and B:&nbsp;
-								<Typography style={{ display: "inline", color: "#00619D", fontWeight: 500 }}>
+								<Typography
+									style={{
+										display: "inline",
+										color: "#00619D",
+										fontWeight: 500,
+									}}
+								>
 									{Object.keys(compareItemNames).at(1) ?? "[ ]"}
 								</Typography>
 							</IncoreTitle>
@@ -312,7 +371,11 @@ export function ViewResultEntryTable(props) {
 			</Box>
 			<TableContainer>
 				{/* {console.log(widgetList)} */}
-				<Table className={classes.table} size="small" aria-label="a dense table">
+				<Table
+					className={classes.table}
+					size="small"
+					aria-label="a dense table"
+				>
 					<TableHead>
 						<TableRow className={classes.tableHeaderRow} key="hdrRow">
 							<TableCell className={classes.tableHeaderCell} key="checkbox" />
@@ -321,11 +384,15 @@ export function ViewResultEntryTable(props) {
 									<TableCell
 										className={classes.tableHeaderCell}
 										key={fieldName["columnName"]}
-										sortDirection={orderBy === fieldName["columnName"] ? order : false}
+										sortDirection={
+											orderBy === fieldName["columnName"] ? order : false
+										}
 									>
 										<TableSortLabel
 											active={orderBy === fieldName["columnName"]}
-											direction={orderBy === fieldName["columnName"] ? order : "asc"}
+											direction={
+												orderBy === fieldName["columnName"] ? order : "asc"
+											}
 											onClick={createSortHandler(fieldName["columnName"])}
 										>
 											{fieldName["prettyName"]}
@@ -345,16 +412,24 @@ export function ViewResultEntryTable(props) {
 									<>
 										<TableRow
 											className={
-												compareItems.hasOwnProperty(execution.id) && compareItems[execution.id]
+												compareItems.hasOwnProperty(execution.id) &&
+												compareItems[execution.id]
 													? classes.tableBodyRowChecked
 													: classes.tableBodyRow
 											}
 											key={execution["id"]}
 										>
-											<TableCell key={`${execution["id"]}-checkbox`} align="right">
+											<TableCell
+												key={`${execution["id"]}-checkbox`}
+												align="right"
+											>
 												<Checkbox
 													onChange={(event) =>
-														handleChecked(event, execution.id, execution["title"])
+														handleChecked(
+															event,
+															execution.id,
+															execution["title"],
+														)
 													}
 													id={execution.id}
 													checked={
@@ -362,7 +437,9 @@ export function ViewResultEntryTable(props) {
 															? compareItems[execution.id]
 															: false
 													}
-													disabled={execution["finalStatus"].toLowerCase() != "finished"}
+													disabled={
+														execution["finalStatus"].toLowerCase() != "finished"
+													}
 												/>
 											</TableCell>
 											{fieldNames.map((fieldName, idx) => {
@@ -382,7 +459,8 @@ export function ViewResultEntryTable(props) {
 																} else if (
 																	execution["finalStatus"].toLowerCase() ===
 																		"waiting" ||
-																	execution["finalStatus"].toLowerCase() === "queued"
+																	execution["finalStatus"].toLowerCase() ===
+																		"queued"
 																) {
 																	return (
 																		<p className={classes.statusWaiting}>
@@ -392,7 +470,8 @@ export function ViewResultEntryTable(props) {
 																} else if (
 																	execution["finalStatus"].toLowerCase() ===
 																		"failed" ||
-																	execution["finalStatus"].toLowerCase() === "aborted"
+																	execution["finalStatus"].toLowerCase() ===
+																		"aborted"
 																) {
 																	return (
 																		<p className={classes.statusUnsuccess}>
@@ -400,7 +479,8 @@ export function ViewResultEntryTable(props) {
 																		</p>
 																	);
 																} else if (
-																	execution["finalStatus"].toLowerCase() === "running"
+																	execution["finalStatus"].toLowerCase() ===
+																	"running"
 																) {
 																	return (
 																		<p className={classes.statusRunning}>
@@ -408,7 +488,9 @@ export function ViewResultEntryTable(props) {
 																		</p>
 																	);
 																} else {
-																	return <p>{execution[fieldName["columnName"]]}</p>;
+																	return (
+																		<p>{execution[fieldName["columnName"]]}</p>
+																	);
 																}
 															})()}
 														</TableCell>
@@ -423,7 +505,9 @@ export function ViewResultEntryTable(props) {
 																	: classes.tableBodyCell
 															}
 														>
-															{parseDateTime(execution[fieldName["columnName"]])}
+															{parseDateTime(
+																execution[fieldName["columnName"]],
+															)}
 														</TableCell>
 													);
 												} else {
@@ -438,9 +522,12 @@ export function ViewResultEntryTable(props) {
 														>
 															{fieldName["columnName"] === "creator" &&
 															execution[fieldName["columnName"]] &&
-															"firstName" in execution[fieldName["columnName"]] &&
+															"firstName" in
+																execution[fieldName["columnName"]] &&
 															"lastName" in execution[fieldName["columnName"]]
-																? `${execution[fieldName["columnName"]].firstName}
+																? `${
+																		execution[fieldName["columnName"]].firstName
+																  }
 														${execution[fieldName["columnName"]].lastName}`
 																: execution[fieldName["columnName"]]}
 														</TableCell>
@@ -451,7 +538,8 @@ export function ViewResultEntryTable(props) {
 												className={classes.tableBodyCell}
 												key={`${execution["id"]}-unfold`}
 											>
-												{execution["id"] === expandId && execution["id"] !== collapseId ? (
+												{execution["id"] === expandId &&
+												execution["id"] !== collapseId ? (
 													<IconButton
 														aria-label="unfold"
 														onClick={() => {
@@ -474,7 +562,8 @@ export function ViewResultEntryTable(props) {
 												)}
 											</TableCell>
 										</TableRow>
-										{execution["id"] === expandId && execution["id"] !== collapseId ? (
+										{execution["id"] === expandId &&
+										execution["id"] !== collapseId ? (
 											<>
 												{/* {console.log(execution)} */}
 												{/*resilience metrics*/}
@@ -597,7 +686,10 @@ export function ViewResultEntryTable(props) {
 														className={classes.subBodyRow}
 														key={`${execution["id"]}-mcs`}
 													>
-														<TableCell colSpan={7} key={`${execution["id"]}-mcs-title`}>
+														<TableCell
+															colSpan={7}
+															key={`${execution["id"]}-mcs-title`}
+														>
 															<Link
 																color="primary"
 																onClick={() => {
@@ -680,7 +772,10 @@ export function ViewResultEntryTable(props) {
 														className={classes.subBodyRow}
 														key={`${execution["id"]}-cge`}
 													>
-														<TableCell colSpan={7} key={`${execution["id"]}-cge-title`}>
+														<TableCell
+															colSpan={7}
+															key={`${execution["id"]}-cge-title`}
+														>
 															<Link
 																color="primary"
 																onClick={() => {
@@ -734,7 +829,10 @@ export function ViewResultEntryTable(props) {
 														className={classes.subBodyRow}
 														key={`${execution["id"]}-HHS`}
 													>
-														<TableCell colSpan={7} key={`${execution["id"]}-HHS-title`}>
+														<TableCell
+															colSpan={7}
+															key={`${execution["id"]}-HHS-title`}
+														>
 															<Link
 																color="primary"
 																onClick={() => {
@@ -756,12 +854,16 @@ export function ViewResultEntryTable(props) {
 
 												{/*Logs: Only allow the admin to see the logs*/}
 												{/*Always show logs*/}
-												{widgetList.includes("Log") && isAdmin(globalConfig.hostname) ? (
+												{widgetList.includes("Log") &&
+												isAdmin(globalConfig.hostname) ? (
 													<TableRow
 														className={classes.subBodyRow}
 														key={`${execution["id"]}-Log`}
 													>
-														<TableCell colSpan={7} key={`${execution["id"]}-Log-title`}>
+														<TableCell
+															colSpan={7}
+															key={`${execution["id"]}-Log-title`}
+														>
 															<Link
 																color="primary"
 																onClick={() => {
@@ -786,7 +888,7 @@ export function ViewResultEntryTable(props) {
 						{emptyRows > 0 && (
 							<TableRow
 								style={{
-									height: 53 * emptyRows
+									height: 53 * emptyRows,
 								}}
 							>
 								<TableCell colSpan={7} />

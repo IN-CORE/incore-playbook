@@ -14,15 +14,19 @@ const ParseData = (data, executionTitles, region = null) => {
 			return key.startsWith(region);
 		};
 
-		beforeEvent = Object.fromEntries(Object.entries(beforeEvent).filter(filterFunc));
+		beforeEvent = Object.fromEntries(
+			Object.entries(beforeEvent).filter(filterFunc),
+		);
 		afterEvents = afterEvents.map((afterEvent) =>
-			Object.fromEntries(Object.entries(afterEvent).filter(filterFunc))
+			Object.fromEntries(Object.entries(afterEvent).filter(filterFunc)),
 		);
 	}
 
 	const chartData = [];
 	let chartFirstRow = ["Million of $", "Before Event"];
-	executionTitles.forEach((title) => chartFirstRow.push(`After Event ${title}`));
+	executionTitles.forEach((title) =>
+		chartFirstRow.push(`After Event ${title}`),
+	);
 	chartData.push(chartFirstRow);
 
 	for (const key in beforeEvent) {
@@ -34,7 +38,16 @@ const ParseData = (data, executionTitles, region = null) => {
 };
 
 export default function CGEBarChartCompare(props) {
-	const { height, width, data, title, xAxisLegend, yAxisLegend, region, executionTitles } = props;
+	const {
+		height,
+		width,
+		data,
+		title,
+		xAxisLegend,
+		yAxisLegend,
+		region,
+		executionTitles,
+	} = props;
 
 	return (
 		<div className="barChart">
@@ -49,12 +62,12 @@ export default function CGEBarChartCompare(props) {
 					legend: { position: "none" },
 					colors: ["#A1BE2E", "#CB5963", "#833841"],
 					hAxis: {
-						title: xAxisLegend
+						title: xAxisLegend,
 					},
 					vAxis: {
-						title: yAxisLegend
+						title: yAxisLegend,
 					},
-					bars: "horizontal"
+					bars: "horizontal",
 				}}
 				// For tests
 				rootProps={{ "data-testid": "1" }}
