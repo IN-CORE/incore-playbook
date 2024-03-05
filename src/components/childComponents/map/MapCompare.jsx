@@ -186,26 +186,17 @@ const MapCompare = (props) => {
 						.then((json) => {
 							let bldg = json.features;
 							if (bldg.length > 0) {
-								if (analysisTag === "A") {
-									setSelectedBuildingA(bldg[0].properties);
-								} else {
-									setSelectedBuildingB(bldg[0].properties);
-								}
+								setSelectedBuildingA(bldg[0].properties);
+								setSelectedBuildingB(bldg[0].properties);
 							} else if (bldg.length === 0) {
-								if (analysisTag === "A") {
-									setSelectedBuildingA(null);
-								} else {
-									setSelectedBuildingB(null);
-								}
+								setSelectedBuildingA(null);
+								setSelectedBuildingB(null);
 							}
 							setLoading(false);
 						});
 				} else {
-					if (analysisTag === "A") {
-						setSelectedBuildingA(null);
-					} else {
-						setSelectedBuildingB(null);
-					}
+					setSelectedBuildingA(null);
+					setSelectedBuildingB(null);
 				}
 			});
 
