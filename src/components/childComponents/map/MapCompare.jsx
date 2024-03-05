@@ -42,15 +42,15 @@ const useStyles = makeStyles({
 		border: "1px solid rgba(46,91,255,0.08)"
 	},
 	tableContainer: {
-		position: "absolute",
-		width: "250px",
-		maxHeight: "250px",
-		top: "50px",
-		left: "0px",
-		zIndex: 5000,
-		padding: "5px",
-		overflow: "scroll",
-		scrollBehavior: "smooth",
+		"position": "absolute",
+		"width": "250px",
+		"maxHeight": "250px",
+		"top": "50px",
+		"left": "0px",
+		"zIndex": 5000,
+		"padding": "5px",
+		"overflow": "scroll",
+		"scrollBehavior": "smooth",
 		"&::WebkitScrollbar": {
 			display: "none" // Hide the scrollbar for WebKit browsers (Chrome, Safari, Edge, etc.)
 		},
@@ -304,28 +304,36 @@ const MapCompare = (props) => {
 		}
 	}
 
-
 	return (
 		<div style={{ position: "relative" }}>
 			<div style={{ width: "100%", height: `${height}px`, display: "flex" }}>
-				<div className={`ol-map ${className}`} ref={fallbackContainerA}
-					style={{ width: "50%", height: `${height}px`, marginRight: "5px" }}>
+				<div
+					className={`ol-map ${className}`}
+					ref={fallbackContainerA}
+					style={{ width: "50%", height: `${height}px`, marginRight: "5px" }}
+				>
 					<MapContext.Provider value={{ map: mapRefA.current }}>{children}</MapContext.Provider>
 				</div>
-				<div className={`ol-map ${className}`} ref={fallbackContainerB}
-					style={{ width: "50%", height: `${height}px`, marginLeft: "5px" }}>
+				<div
+					className={`ol-map ${className}`}
+					ref={fallbackContainerB}
+					style={{ width: "50%", height: `${height}px`, marginLeft: "5px" }}
+				>
 					<MapContext.Provider value={{ map: mapRefB.current }}>{children}</MapContext.Provider>
 				</div>
 			</div>
-			{allowBuildingSelection && selectedBuildingA && selectedBuildingA !== undefined ?
-				<OverlayTable selectedBuilding={selectedBuildingA} loading={loading} /> : <></>
-			}
-			{allowBuildingSelection && selectedBuildingB && selectedBuildingB !== undefined ?
-				<OverlayTable selectedBuilding={selectedBuildingB} loading={loading} right={true} /> : <></>
-			}
+			{allowBuildingSelection && selectedBuildingA && selectedBuildingA !== undefined ? (
+				<OverlayTable selectedBuilding={selectedBuildingA} loading={loading} />
+			) : (
+				<></>
+			)}
+			{allowBuildingSelection && selectedBuildingB && selectedBuildingB !== undefined ? (
+				<OverlayTable selectedBuilding={selectedBuildingB} loading={loading} right={true} />
+			) : (
+				<></>
+			)}
 		</div>
-	)
-	;
+	);
 };
 
 const OverlayTable = (props) => {
@@ -333,24 +341,16 @@ const OverlayTable = (props) => {
 	const classes = useStyles();
 
 	return (
-		<TableContainer className={classes.tableContainer} style={right ? { "left": "50%" } : null}>
+		<TableContainer className={classes.tableContainer} style={right ? { left: "50%" } : null}>
 			<LoadingOverlay active={loading} spinner text="Loading...">
 				<Table className={classes.table} size="small" aria-label="a dense table">
 					<TableHead>
-						<TableRow
-							key="hdrRow"
-						>
-							<TableCell
-								align="center"
-								style={{ backgroundColor: "#EFF2FF", color: "#69707F" }}
-							>
-                                Attribute
+						<TableRow key="hdrRow">
+							<TableCell align="center" style={{ backgroundColor: "#EFF2FF", color: "#69707F" }}>
+								Attribute
 							</TableCell>
-							<TableCell
-								align="center"
-								style={{ backgroundColor: "#EFF2FF", color: "#69707F" }}
-							>
-                                Value
+							<TableCell align="center" style={{ backgroundColor: "#EFF2FF", color: "#69707F" }}>
+								Value
 							</TableCell>
 						</TableRow>
 					</TableHead>
@@ -360,20 +360,14 @@ const OverlayTable = (props) => {
 								return null;
 							}
 							return (
-								<TableRow
-									key={colName}
-								>
-									<TableCell
-										style={{ backgroundColor: "#EFF2FF", color: "#69707F" }}
-									>
+								<TableRow key={colName}>
+									<TableCell style={{ backgroundColor: "#EFF2FF", color: "#69707F" }}>
 										{colName}
 									</TableCell>
-									<TableCell
-										align="center"
-									>
+									<TableCell align="center">
 										{selectedBuilding[colName] === undefined ||
-                                        selectedBuilding[colName] === null ||
-                                        selectedBuilding[colName] === ""
+										selectedBuilding[colName] === null ||
+										selectedBuilding[colName] === ""
 											? "-"
 											: selectedBuilding[colName]}
 									</TableCell>

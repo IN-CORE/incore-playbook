@@ -100,7 +100,6 @@ export default function PoleDamage(props) {
 				) : (
 					<></>
 				)}
-				
 			</DialogContent>
 			<DialogActions>
 				<IncoreButtonText

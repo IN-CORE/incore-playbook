@@ -9,11 +9,7 @@ import { comparisonKey } from "../../../globals";
 import MapCompare from "../map/MapCompare";
 
 export default function PoleDamageCompare(props) {
-	let {
-		executionItems,
-		datawolfDatasetConfigItems,
-		hazardLayers,
-	} = props;
+	let { executionItems, datawolfDatasetConfigItems, hazardLayers } = props;
 
 	const mapConfig = useSelector((state) => state.config.mapConfig);
 	const datawolfConfig = useSelector((state) => state.config.datawolfConfig);

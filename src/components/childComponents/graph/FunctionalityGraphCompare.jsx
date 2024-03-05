@@ -25,7 +25,6 @@ export function FunctionalityGraphCompare(props) {
 
 	// Assuming categorySummaryA and categorySummaryB have the same categories
 	categorySummaryA.forEach((entry, index) => {
-
 		funcPercentA.push(entry.percent_functional < 0 ? 0 : round(entry.percent_functional * 100, 1));
 		nonFuncPercentA.push(entry.percent_non_functional < 0 ? 0 : round(entry.percent_non_functional * 100, 1));
 		funcCountA.push(entry.num_functional < 0 ? 0 : entry.num_functional);
@@ -92,7 +91,7 @@ export function FunctionalityGraphCompare(props) {
 			display: true,
 			labels: {
 				// Filter function to only display legends for datasets that are not hidden
-				filter: function(legendItem, chartData) {
+				filter: function (legendItem, chartData) {
 					return !chartData.datasets[legendItem.datasetIndex].hidden;
 				}
 			}
@@ -100,40 +99,48 @@ export function FunctionalityGraphCompare(props) {
 		tooltips: {
 			mode: "single",
 			callbacks: {
-				title: function() {
+				title: function () {
 					return "";
 				},
-				label: function(item, data) {
+				label: function (item, data) {
 					let datasetLabel = data.datasets[item.datasetIndex].label || "";
 					let dataPoint = item.yLabel;
 					let label = [`${datasetLabel}: ${dataPoint} %`];
-					label.push(`${data.datasets[item.datasetIndex + 4].label}: ${data.datasets[item.datasetIndex + 4].data[item.index]}`);
+					label.push(
+						`${data.datasets[item.datasetIndex + 4].label}: ${
+							data.datasets[item.datasetIndex + 4].data[item.index]
+						}`
+					);
 					return label;
 				}
 			}
 		},
 		maintainAspectRatio: false,
 		scales: {
-			xAxes: [{
-				gridLines: {
-					display: false
-				},
-				ticks: {
-					fontFamily: "Rubik",
-					fontSize: 14
-				},
-				categoryPercentage: 0.8,
-				barPercentage: 0.75 // Adjust as needed for your design
-			}],
-			yAxes: [{
-				scaleLabel: {
-					display: true,
-					labelString: "Percentage"
-				},
-				ticks: {
-					maxTicksLimit: 6
+			xAxes: [
+				{
+					gridLines: {
+						display: false
+					},
+					ticks: {
+						fontFamily: "Rubik",
+						fontSize: 14
+					},
+					categoryPercentage: 0.8,
+					barPercentage: 0.75 // Adjust as needed for your design
 				}
-			}]
+			],
+			yAxes: [
+				{
+					scaleLabel: {
+						display: true,
+						labelString: "Percentage"
+					},
+					ticks: {
+						maxTicksLimit: 6
+					}
+				}
+			]
 		},
 		plugins: {
 			zoom: {
@@ -152,7 +159,7 @@ export function FunctionalityGraphCompare(props) {
 		<div>
 			<div style={{ textAlign: "right" }}>
 				<Button onClick={resetClick} variant="outlined" size="small" className="compactButton">
-                    Reset Zoom
+					Reset Zoom
 				</Button>
 			</div>
 			<div style={{ height: "250px" }}>

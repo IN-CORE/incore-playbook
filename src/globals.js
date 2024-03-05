@@ -272,5 +272,4 @@ export const processStatus = [
 	{ name: "COMPLETE", key: "complete" }
 ];
 
-
 export const comparisonKey = ["A", "B"];

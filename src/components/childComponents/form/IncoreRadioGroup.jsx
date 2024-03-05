@@ -15,37 +15,27 @@ const useStyles = makeStyles({
 	}
 });
 
-
 export const IncoreRadioGroup = (props) => {
-
-	const {options, value, handleChange} = props;
+	const { options, value, handleChange } = props;
 
 	const classes = useStyles();
 
 	return (
 		<FormControl component="fieldset">
-			<RadioGroup
-				row
-				name="radioGroup"
-				value={value}
-				className={classes.radio}
-				onChange={handleChange}
-			>
-				{
-					options ? options.map((option) => {
-						return (
-							<FormControlLabel
-								value={option["value"]}
-								key={option["value"]}
-								control={<Radio color="primary" size="small" />}
-								className={classes.label}
-								label={<Typography className={classes.label}>{option["name"]}</Typography>}
-							/>
-						);
-					})
-						:
-						null
-				}
+			<RadioGroup row name="radioGroup" value={value} className={classes.radio} onChange={handleChange}>
+				{options
+					? options.map((option) => {
+							return (
+								<FormControlLabel
+									value={option["value"]}
+									key={option["value"]}
+									control={<Radio color="primary" size="small" />}
+									className={classes.label}
+									label={<Typography className={classes.label}>{option["name"]}</Typography>}
+								/>
+							);
+					  })
+					: null}
 			</RadioGroup>
 		</FormControl>
 	);

@@ -3,7 +3,7 @@ import Chart from "react-google-charts";
 
 const ParseData = (data, executionTitles, region = null) => {
 	let beforeEvent = data[0]["beforeEvent"];
-	let afterEvents = data.map(d => d["afterEvent"]);
+	let afterEvents = data.map((d) => d["afterEvent"]);
 
 	if (region) {
 		let filterFunc = ([key]) => {
@@ -15,17 +15,19 @@ const ParseData = (data, executionTitles, region = null) => {
 		};
 
 		beforeEvent = Object.fromEntries(Object.entries(beforeEvent).filter(filterFunc));
-		afterEvents = afterEvents.map(afterEvent => Object.fromEntries(Object.entries(afterEvent).filter(filterFunc)));
+		afterEvents = afterEvents.map((afterEvent) =>
+			Object.fromEntries(Object.entries(afterEvent).filter(filterFunc))
+		);
 	}
 
 	const chartData = [];
-    let chartFirstRow = ["Million of $", "Before Event"];
-    executionTitles.forEach((title) => chartFirstRow.push(`After Event ${title}`))
+	let chartFirstRow = ["Million of $", "Before Event"];
+	executionTitles.forEach((title) => chartFirstRow.push(`After Event ${title}`));
 	chartData.push(chartFirstRow);
 
 	for (const key in beforeEvent) {
-        let row = [key, beforeEvent[key]];
-        afterEvents.forEach(afterEvent => row.push(afterEvent[key]));
+		let row = [key, beforeEvent[key]];
+		afterEvents.forEach((afterEvent) => row.push(afterEvent[key]));
 		chartData.push(row);
 	}
 	return chartData;

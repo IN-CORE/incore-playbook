@@ -1,4 +1,4 @@
-import React from 'react'
+import React from "react";
 import { useSelector } from "react-redux";
 import { Box, Container, Grid } from "@material-ui/core";
 
@@ -10,73 +10,95 @@ import { IncoreInputLabel } from "../../styledComponents/IncoreInputLabel";
 import { getOutputFileContentJSON } from "../../../utils/datawolf";
 
 export default function CGECompare({ executionItems, datawolfDatasetConfigItems }) {
-
-    const datawolfConfig = useSelector((state) => state.config.datawolfConfig);
+	const datawolfConfig = useSelector((state) => state.config.datawolfConfig);
 	const globalConfig = useSelector((state) => state.config.globalConfig);
 
-    const [cgeType, setCgeType] = React.useState("totalHouseholdIncome");
+	const [cgeType, setCgeType] = React.useState("totalHouseholdIncome");
 	const [region, setRegion] = React.useState(
 		globalConfig["allowedRegions"] ? globalConfig["allowedRegions"][0].value : null
 	);
 
-    const [selectedExecutionNames, setSelectedExecutionNames] = React.useState([]);
-    
-    const [cgeHouseholdIncomeContentA, setCgeHouseholdIncomeContentA] = React.useState(null);
+	const [selectedExecutionNames, setSelectedExecutionNames] = React.useState([]);
+
+	const [cgeHouseholdIncomeContentA, setCgeHouseholdIncomeContentA] = React.useState(null);
 	const [cgeDomesticSupplyContentA, setCgeDomesticSupplyContentA] = React.useState(null);
 	const [cgeEmploymentContentA, setCgeEmploymentContentA] = React.useState(null);
-    
-    const [cgeHouseholdIncomeContentB, setCgeHouseholdIncomeContentB] = React.useState(null);
+
+	const [cgeHouseholdIncomeContentB, setCgeHouseholdIncomeContentB] = React.useState(null);
 	const [cgeDomesticSupplyContentB, setCgeDomesticSupplyContentB] = React.useState(null);
 	const [cgeEmploymentContentB, setCgeEmploymentContentB] = React.useState(null);
 
-    React.useEffect(() => {
-        setSelectedExecutionNames(executionItems.map((executionItem) => executionItem["title"]))
+	React.useEffect(() => {
+		setSelectedExecutionNames(executionItems.map((executionItem) => executionItem["title"]));
 
-        const fetchData = async () => {
-            for (let i = 0; i < executionItems.length; i++) {
-                datawolfDatasetConfigItems.map(async (datawolfDatasetConfigItem) => {
-                    const vName = datawolfDatasetConfigItem.datasets.variableName;
-                    if (vName === "cgeHouseholdIncomeContent") {
-                        if (i === 0) {
-                            setCgeHouseholdIncomeContentA(
-                                await getOutputFileContentJSON(datawolfConfig, executionItems[i], datawolfDatasetConfigItem.datasetId)
-                            );
-                        } else {
-                            setCgeHouseholdIncomeContentB(
-                                await getOutputFileContentJSON(datawolfConfig, executionItems[i], datawolfDatasetConfigItem.datasetId)
-                            );
-                        }
-                    } else if (vName === "cgeDomesticSupplyContent") {
-                        if (i === 0) {
-                            setCgeDomesticSupplyContentA(
-                                await getOutputFileContentJSON(datawolfConfig, executionItems[i], datawolfDatasetConfigItem.datasetId)
-                            );
-                        } else {
-                            setCgeDomesticSupplyContentB(
-                                await getOutputFileContentJSON(datawolfConfig, executionItems[i], datawolfDatasetConfigItem.datasetId)
-                            );
-                        }
-                    } else if (vName === "cgeEmploymentContent") {
-                        if (i === 0) {
-                            setCgeEmploymentContentA(
-                                await getOutputFileContentJSON(datawolfConfig, executionItems[i], datawolfDatasetConfigItem.datasetId)
-                            );
-                        } else {
-                            setCgeEmploymentContentB(
-                                await getOutputFileContentJSON(datawolfConfig, executionItems[i], datawolfDatasetConfigItem.datasetId)
-                            );
-                        }
-                    }
-                })
-            }
+		const fetchData = async () => {
+			for (let i = 0; i < executionItems.length; i++) {
+				datawolfDatasetConfigItems.map(async (datawolfDatasetConfigItem) => {
+					const vName = datawolfDatasetConfigItem.datasets.variableName;
+					if (vName === "cgeHouseholdIncomeContent") {
+						if (i === 0) {
+							setCgeHouseholdIncomeContentA(
+								await getOutputFileContentJSON(
+									datawolfConfig,
+									executionItems[i],
+									datawolfDatasetConfigItem.datasetId
+								)
+							);
+						} else {
+							setCgeHouseholdIncomeContentB(
+								await getOutputFileContentJSON(
+									datawolfConfig,
+									executionItems[i],
+									datawolfDatasetConfigItem.datasetId
+								)
+							);
+						}
+					} else if (vName === "cgeDomesticSupplyContent") {
+						if (i === 0) {
+							setCgeDomesticSupplyContentA(
+								await getOutputFileContentJSON(
+									datawolfConfig,
+									executionItems[i],
+									datawolfDatasetConfigItem.datasetId
+								)
+							);
+						} else {
+							setCgeDomesticSupplyContentB(
+								await getOutputFileContentJSON(
+									datawolfConfig,
+									executionItems[i],
+									datawolfDatasetConfigItem.datasetId
+								)
+							);
+						}
+					} else if (vName === "cgeEmploymentContent") {
+						if (i === 0) {
+							setCgeEmploymentContentA(
+								await getOutputFileContentJSON(
+									datawolfConfig,
+									executionItems[i],
+									datawolfDatasetConfigItem.datasetId
+								)
+							);
+						} else {
+							setCgeEmploymentContentB(
+								await getOutputFileContentJSON(
+									datawolfConfig,
+									executionItems[i],
+									datawolfDatasetConfigItem.datasetId
+								)
+							);
+						}
+					}
+				});
+			}
 		};
 
-        fetchData();
+		fetchData();
+	}, [executionItems, datawolfDatasetConfigItems]);
 
-    }, [executionItems, datawolfDatasetConfigItems])
-
-    return (
-        <Box style={{ padding: "5px 25px 25px 25px" }}>
+	return (
+		<Box style={{ padding: "5px 25px 25px 25px" }}>
 			<Grid container spacing={3} justify="center">
 				<Grid item xs={12} sm={12} md={8} lg={8} xl={8}>
 					{/*dropdown*/}
@@ -125,10 +147,7 @@ export default function CGECompare({ executionItems, datawolfDatasetConfigItems 
 										{globalConfig["allowedRegions"]
 											? globalConfig["allowedRegions"].map((allowedRegion) => {
 													return (
-														<IncoreMenuItem
-															value={allowedRegion.value}
-															key={allowedRegion}
-														>
+														<IncoreMenuItem value={allowedRegion.value} key={allowedRegion}>
 															{allowedRegion.name}
 														</IncoreMenuItem>
 													);
@@ -139,18 +158,22 @@ export default function CGECompare({ executionItems, datawolfDatasetConfigItems 
 							) : null}
 						</Container>
 					</Box>
-                    
+
 					{/*table and barchart*/}
 					{/*TODO CGE Result table left to implement*/}
 					{(() => {
-						if (cgeType === "totalHouseholdIncome" && cgeHouseholdIncomeContentA && cgeHouseholdIncomeContentB) {
+						if (
+							cgeType === "totalHouseholdIncome" &&
+							cgeHouseholdIncomeContentA &&
+							cgeHouseholdIncomeContentB
+						) {
 							return (
 								<>
 									<Box style={{ margin: "50px 0", maxWidth: "700px" }}>
 										<CGEBarChartCompare
 											region={region}
 											data={[cgeHouseholdIncomeContentA, cgeHouseholdIncomeContentB]}
-                                            executionTitles={selectedExecutionNames}
+											executionTitles={selectedExecutionNames}
 											height="30em"
 										/>
 									</Box>
@@ -162,14 +185,18 @@ export default function CGECompare({ executionItems, datawolfDatasetConfigItems 
 									</Box>
 								</>
 							);
-						} else if (cgeType === "domesticSupply" && cgeDomesticSupplyContentA && cgeDomesticSupplyContentB) {
+						} else if (
+							cgeType === "domesticSupply" &&
+							cgeDomesticSupplyContentA &&
+							cgeDomesticSupplyContentB
+						) {
 							return (
 								<>
 									<Box style={{ margin: "50px 0", maxWidth: "700px" }}>
 										<CGEBarChartCompare
 											region={region}
 											data={[cgeDomesticSupplyContentA, cgeDomesticSupplyContentB]}
-                                            executionTitles={selectedExecutionNames}
+											executionTitles={selectedExecutionNames}
 											yAxisLegend="Million of $"
 											height="30em"
 										/>
@@ -190,13 +217,16 @@ export default function CGECompare({ executionItems, datawolfDatasetConfigItems 
 										<CGEBarChartCompare
 											region={region}
 											data={[cgeEmploymentContentA, cgeEmploymentContentB]}
-                                            executionTitles={selectedExecutionNames}
+											executionTitles={selectedExecutionNames}
 											title="Employment"
 											height="30em"
 										/>
 									</Box>
 									<Box>
-										<CGEResultsTableCompare region={region} resultsJsonArr={[cgeEmploymentContentA, cgeEmploymentContentB]} />
+										<CGEResultsTableCompare
+											region={region}
+											resultsJsonArr={[cgeEmploymentContentA, cgeEmploymentContentB]}
+										/>
 									</Box>
 								</>
 							);
@@ -209,6 +239,5 @@ export default function CGECompare({ executionItems, datawolfDatasetConfigItems 
 				</Grid>
 			</Grid>
 		</Box>
-    )
-
+	);
 }

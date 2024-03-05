@@ -82,7 +82,11 @@ export function getCurrUserFullname(hostname = "") {
 }
 
 // get current users id from datawolf
-export async function getCurrUserDatawolfId(email, datawolfConfig = defaultDatawolfConfig, datawolfWorkflowConfig = defaultDatawolfWorkflowConfig) {
+export async function getCurrUserDatawolfId(
+	email,
+	datawolfConfig = defaultDatawolfConfig,
+	datawolfWorkflowConfig = defaultDatawolfWorkflowConfig
+) {
 	let cookie = cookies.get("DatawolfUserDetails");
 	if (email === "" || undefined || null) {
 		return datawolfWorkflowConfig["creatorId"]; // default to use the workflow creator's ID if no match can be found
@@ -142,32 +146,32 @@ export function getShortHTML(html) {
 // }
 
 export function round(num, scale) {
-	if (!(`${num}`).includes("e")) {
-		return +(`${Math.round(`${num}e+${scale}`)}e-${scale}`);
+	if (!`${num}`.includes("e")) {
+		return +`${Math.round(`${num}e+${scale}`)}e-${scale}`;
 	} else {
-		let arr = (`${num}`).split("e");
+		let arr = `${num}`.split("e");
 		let sig = "";
 		if (+arr[1] + scale > 0) {
 			sig = "+";
 		}
-		return +(`${Math.round(`${+arr[0]}e${sig}${+arr[1] + scale}`)}e-${scale}`);
+		return +`${Math.round(`${+arr[0]}e${sig}${+arr[1] + scale}`)}e-${scale}`;
 	}
 }
 
 export function diff(num1, num2) {
-	return (num1 === undefined || num2 === undefined ?
-		"-" :
-		num1 - num2 > 0 ?
-			`+${(num1 - num2).toLocaleString("en-US")}` :
-			(num1 - num2).toLocaleString("en-US"));
+	return num1 === undefined || num2 === undefined
+		? "-"
+		: num1 - num2 > 0
+		  ? `+${(num1 - num2).toLocaleString("en-US")}`
+		  : (num1 - num2).toLocaleString("en-US");
 }
 
 export function percentDiff(num1, num2) {
-	return (num1 === undefined || num2 === undefined ?
-		"-" :
-		num1 - num2 > 0 ?
-			`+${round((num1 - num2), 1)}%` :
-			`${round((num1 - num2), 1)}%`);
+	return num1 === undefined || num2 === undefined
+		? "-"
+		: num1 - num2 > 0
+		  ? `+${round(num1 - num2, 1)}%`
+		  : `${round(num1 - num2, 1)}%`;
 }
 
 export function formatPercent(val, n = 1) {
@@ -297,7 +301,7 @@ export function csvToArray(str, delimiter = ",", includeHeader = true) {
 	// use split to create an array of each csv value row
 	const rows = str.slice(str.indexOf("\n") + 1).split("\n");
 	let rows_arr = [];
-	rows.map(function(row) {
+	rows.map(function (row) {
 		if (row) rows_arr.push(row.split(delimiter));
 	});
 
@@ -305,7 +309,6 @@ export function csvToArray(str, delimiter = ",", includeHeader = true) {
 	if (includeHeader) return [headers, ...rows_arr];
 	else return rows_arr;
 }
-
 
 export function stableSort(array, comparator) {
 	const stabilizedThis = array.map((el, index) => [el, index]);
@@ -316,7 +319,6 @@ export function stableSort(array, comparator) {
 	});
 	return stabilizedThis.map((el) => el[0]);
 }
-
 
 export function getComparator(order, orderBy) {
 	return order === "desc"
@@ -338,7 +340,7 @@ export function descendingComparator(a, b, orderBy) {
 
 function ObjectByString(o, s) {
 	s = s.replace(/\[(\w+)\]/g, ".$1"); // convert indexes to properties
-	s = s.replace(/^\./, "");           // strip a leading dot
+	s = s.replace(/^\./, ""); // strip a leading dot
 	const a = s.split(".");
 	for (let i = 0, n = a.length; i < n; ++i) {
 		let k = a[i];

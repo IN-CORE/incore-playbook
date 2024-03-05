@@ -18,13 +18,18 @@ let wallabyPostprocessor = wallabyWebpack({
 	},
 	module: {
 		loaders: [
-			{test: /\.jsx?$/, include: path.join(__dirname, "src"), exclude: /node_modules/,  loaders: ["babel-loader"]},
+			{
+				test: /\.jsx?$/,
+				include: path.join(__dirname, "src"),
+				exclude: /node_modules/,
+				loaders: ["babel-loader"]
+			},
 			// {test: /\.json$/, loaders: ["json-loader"]},
-			{test: /(\.css|\.scss)$/, loaders: ["style-loader", "css-loader?sourceMap", "sass-loader?sourceMap"]},
-			{test: /\.eot(\?v=\d+\.\d+\.\d+)?$/, loader: "file-loader"},
-			{test: /\.(woff|woff2)$/, loader: "url-loader?prefix=font/&limit=5000"},
-			{test: /\.ttf(\?v=\d+\.\d+\.\d+)?$/, loader: "url-loader?limit=10000&mimetype=application/octet-stream"},
-			{test: /\.svg(\?v=\d+\.\d+\.\d+)?$/, loader: "url-loader?limit=10000&mimetype=image/svg+xml"},
+			{ test: /(\.css|\.scss)$/, loaders: ["style-loader", "css-loader?sourceMap", "sass-loader?sourceMap"] },
+			{ test: /\.eot(\?v=\d+\.\d+\.\d+)?$/, loader: "file-loader" },
+			{ test: /\.(woff|woff2)$/, loader: "url-loader?prefix=font/&limit=5000" },
+			{ test: /\.ttf(\?v=\d+\.\d+\.\d+)?$/, loader: "url-loader?limit=10000&mimetype=application/octet-stream" },
+			{ test: /\.svg(\?v=\d+\.\d+\.\d+)?$/, loader: "url-loader?limit=10000&mimetype=image/svg+xml" }
 		]
 	},
 	resolve: {
@@ -42,15 +47,13 @@ module.exports = function (wallaby) {
 		// as they should not be loaded in browser,
 		// their wrapped versions will be loaded instead
 		files: [
-			{pattern: "node_modules/babel-polyfill/browser.js", instrument: false},
-			{pattern: "node_modules/react/dist/react-with-addons.js", instrument: false},
-			{pattern: "src/**/*.js", load: false},
-			{pattern: "src/**/*.jsx", load: false}
+			{ pattern: "node_modules/babel-polyfill/browser.js", instrument: false },
+			{ pattern: "node_modules/react/dist/react-with-addons.js", instrument: false },
+			{ pattern: "src/**/*.js", load: false },
+			{ pattern: "src/**/*.jsx", load: false }
 		],
 
-		tests: [
-			{pattern: "test/**/*.test.js", load: false}
-		],
+		tests: [{ pattern: "test/**/*.test.js", load: false }],
 
 		env: {
 			type: "browser"

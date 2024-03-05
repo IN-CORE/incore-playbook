@@ -77,8 +77,16 @@ export const getHazardGroupLayers = (
 		json["hazardDatasets"].map((hazardDataset) => {
 			layerId = hazardDataset["datasetId"];
 			layerTitle = `${json["name"]} - ${hazardDataset["demandType"]}`;
-			HazardMapLayers.push(_constructHazardLayer(globalConfig, layerId, layerTitle,
-				style[hazardDataset["demandType"]], zIndex, opacity));
+			HazardMapLayers.push(
+				_constructHazardLayer(
+					globalConfig,
+					layerId,
+					layerTitle,
+					style[hazardDataset["demandType"]],
+					zIndex,
+					opacity
+				)
+			);
 		});
 	}
 
@@ -96,7 +104,7 @@ export const basicLayers = new GroupLayer({
 				url: "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
 				attributions: [
 					OSM_ATTRIBUTION,
-					"Tiles courtesy of " + "<a href=\"http://openstreetmap.org\">" + "OpenStreetMap" + "</a>"
+					"Tiles courtesy of " + '<a href="http://openstreetmap.org">' + "OpenStreetMap" + "</a>"
 				],
 				crossOrigin: "anonymous"
 			})
@@ -107,7 +115,7 @@ export const basicLayers = new GroupLayer({
 			visible: true,
 			source: new XYZ({
 				url: "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
-				attributions: ["&#169; <a href=\"https://www.esri.com\">Esri</a>,", OSM_ATTRIBUTION],
+				attributions: ['&#169; <a href="https://www.esri.com">Esri</a>,', OSM_ATTRIBUTION],
 				crossOrigin: "anonymous"
 			})
 		}),
@@ -117,7 +125,7 @@ export const basicLayers = new GroupLayer({
 			visible: true,
 			source: new XYZ({
 				url: "https://{a-d}.basemaps.cartocdn.com/rastertiles/light_all/{z}/{x}/{y}.png",
-				attributions: ["&#169; <a href=\"https://www.carto.com\">Carto</a>,", OSM_ATTRIBUTION],
+				attributions: ['&#169; <a href="https://www.carto.com">Carto</a>,', OSM_ATTRIBUTION],
 				crossOrigin: "anonymous"
 			})
 		})
@@ -152,7 +160,7 @@ export function createBasicLayers(title) {
 					url: "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
 					attributions: [
 						OSM_ATTRIBUTION,
-						"Tiles courtesy of " + "<a href=\"http://openstreetmap.org\">" + "OpenStreetMap" + "</a>"
+						"Tiles courtesy of " + '<a href="http://openstreetmap.org">' + "OpenStreetMap" + "</a>"
 					],
 					crossOrigin: "anonymous"
 				})
@@ -163,7 +171,7 @@ export function createBasicLayers(title) {
 				visible: true,
 				source: new XYZ({
 					url: "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
-					attributions: ["&#169; <a href=\"https://www.esri.com\">Esri</a>,", OSM_ATTRIBUTION],
+					attributions: ['&#169; <a href="https://www.esri.com">Esri</a>,', OSM_ATTRIBUTION],
 					crossOrigin: "anonymous"
 				})
 			}),
@@ -173,7 +181,7 @@ export function createBasicLayers(title) {
 				visible: true,
 				source: new XYZ({
 					url: "https://{a-d}.basemaps.cartocdn.com/rastertiles/light_all/{z}/{x}/{y}.png",
-					attributions: ["&#169; <a href=\"https://www.carto.com\">Carto</a>,", OSM_ATTRIBUTION],
+					attributions: ['&#169; <a href="https://www.carto.com">Carto</a>,', OSM_ATTRIBUTION],
 					crossOrigin: "anonymous"
 				})
 			})

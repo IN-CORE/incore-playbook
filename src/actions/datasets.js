@@ -1,19 +1,19 @@
-import {getHeader} from "../utils/common";
-import {globals as defaultGlobalConfig} from "../globals";
+import { getHeader } from "../utils/common";
+import { globals as defaultGlobalConfig } from "../globals";
 
 export const LOGIN_ERROR = "LOGIN_ERROR";
 
-export function receiveDatasets(type, json){
+export function receiveDatasets(type, json) {
 	return (dispatch) => {
 		dispatch({
 			type: type,
 			datasets: json,
-			receivedAt: Date.now(),
+			receivedAt: Date.now()
 		});
 	};
 }
 
-export function fetchDatasets(globalConfig=defaultGlobalConfig, limit=20, offset=0, type){
+export function fetchDatasets(globalConfig = defaultGlobalConfig, limit = 20, offset = 0, type) {
 	let endpoint = `${globalConfig.dataServiceBase}datasets?limit=${limit}&skip=${offset}&type=${type}`;
 
 	let space = globalConfig.testbedSpace;
@@ -22,7 +22,7 @@ export function fetchDatasets(globalConfig=defaultGlobalConfig, limit=20, offset
 	return async (dispatch) => {
 		const response = await fetch(endpoint, { mode: "cors", headers: getHeader(globalConfig.hostname) });
 		if (response.status === 200) {
-			response.json().then(json => {
+			response.json().then((json) => {
 				Object.keys(globalConfig.inputDatasetTypes).map((key) => {
 					globalConfig.inputDatasetTypes[key].map((inputDatasetType) => {
 						if (inputDatasetType["type"] === type) {
@@ -31,12 +31,10 @@ export function fetchDatasets(globalConfig=defaultGlobalConfig, limit=20, offset
 					});
 				});
 			});
-		}
-		else if (response.status === 401) {
+		} else if (response.status === 401) {
 			// TODO Auth Failed
 			dispatch(receiveDatasets(LOGIN_ERROR, []));
-		}
-		else {
+		} else {
 			Object.keys(globalConfig.inputDatasetTypes).map((key_1) => {
 				globalConfig.inputDatasetTypes[key_1].map((inputDatasetType_1) => {
 					if (inputDatasetType_1["type"] === type) {

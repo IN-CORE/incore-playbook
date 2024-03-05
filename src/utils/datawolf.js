@@ -52,10 +52,13 @@ export async function getOutputFileText(datawolfConfig = defaultDatawolfConfig, 
 
 		if (fileId !== -1) {
 			// Get - Result File Download
-			const fileDownloadResponse = await fetch(`${datawolfConfig["datasetBaseURL"]}/${datasetId}/${fileId}/file`, {
-				method: "GET",
-				headers: authHeader
-			});
+			const fileDownloadResponse = await fetch(
+				`${datawolfConfig["datasetBaseURL"]}/${datasetId}/${fileId}/file`,
+				{
+					method: "GET",
+					headers: authHeader
+				}
+			);
 
 			return await fileDownloadResponse.text();
 		} else {
@@ -82,7 +85,11 @@ export async function submitExecution(
 	let authHeader = getHeader(datawolfConfig.hostname);
 	authHeader.append("Content-Type", "application/json");
 
-	let currUserDatawolfId = await getCurrUserDatawolfId(getCurrUsername(datawolfConfig.hostname), datawolfConfig, datawolfWorkflowConfig);
+	let currUserDatawolfId = await getCurrUserDatawolfId(
+		getCurrUsername(datawolfConfig.hostname),
+		datawolfConfig,
+		datawolfWorkflowConfig
+	);
 
 	const parameters = Object.keys(datawolfFormState).reduce((parameters, key) => {
 		return { ...parameters, ...datawolfFormState[key] };
@@ -145,7 +152,12 @@ export async function postDataset(datawolfConfig, title = "incoretoken", descrip
 	}
 }
 
-export async function downloadOutputFile(datawolfConfig = defaultDatawolfConfig, datasetId, outputFileName = null, saveFileName = null) {
+export async function downloadOutputFile(
+	datawolfConfig = defaultDatawolfConfig,
+	datasetId,
+	outputFileName = null,
+	saveFileName = null
+) {
 	let authHeader = getHeader(datawolfConfig.hostname);
 
 	// Get - Result Dataset
@@ -177,15 +189,21 @@ export async function downloadOutputFile(datawolfConfig = defaultDatawolfConfig,
 
 		if (fileId !== -1) {
 			// Get - Result File Download
-			const fileDownloadResponse = await fetch(`${datawolfConfig["datasetBaseURL"]}/${datasetId}/${fileId}/file`, {
-				method: "GET",
-				headers: authHeader
-			});
+			const fileDownloadResponse = await fetch(
+				`${datawolfConfig["datasetBaseURL"]}/${datasetId}/${fileId}/file`,
+				{
+					method: "GET",
+					headers: authHeader
+				}
+			);
 
 			if (fileDownloadResponse.status === 200) {
 				let blob = await fileDownloadResponse.blob();
 				if (window.navigator.msSaveOrOpenBlob) {
-					window.navigator.msSaveBlob(blob, saveFileName ? saveFileName : resultDataset.fileDescriptors[0].filename);
+					window.navigator.msSaveBlob(
+						blob,
+						saveFileName ? saveFileName : resultDataset.fileDescriptors[0].filename
+					);
 				} else {
 					let anchor = window.document.createElement("a");
 					anchor.href = window.URL.createObjectURL(blob);

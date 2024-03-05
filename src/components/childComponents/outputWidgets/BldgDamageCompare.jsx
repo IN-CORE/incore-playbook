@@ -13,11 +13,7 @@ import { applyTransform } from "ol/extent";
 import { fromLonLat, getTransform } from "ol/proj";
 
 export default function BldgDamageCompare(props) {
-	let {
-		executionItems,
-		datawolfDatasetConfigItems,
-		hazardLayers
-	} = props;
+	let { executionItems, datawolfDatasetConfigItems, hazardLayers } = props;
 
 	const mapConfig = useSelector((state) => state.config.mapConfig);
 	const datawolfConfig = useSelector((state) => state.config.datawolfConfig);
@@ -61,8 +57,12 @@ export default function BldgDamageCompare(props) {
 							setDamageLayersB(previewLayers);
 						}
 					} else if (vName === "bldgDmgSummaryTableContent") {
-						const content = await getOutputFileContentJSON(datawolfConfig, executionItems[i], datawolfDatasetConfigItem.datasetId);
-						setBldgDmgSummaryTableContents(prevState => ({
+						const content = await getOutputFileContentJSON(
+							datawolfConfig,
+							executionItems[i],
+							datawolfDatasetConfigItem.datasetId
+						);
+						setBldgDmgSummaryTableContents((prevState) => ({
 							...prevState,
 							[comparisonKey[i]]: content
 						}));
@@ -122,8 +122,10 @@ export default function BldgDamageCompare(props) {
 			{/*for table*/}
 			{Object.keys(bldgDmgSummaryTableContents).length >= 2 ? (
 				<Box>
-					<BldgDamageTableCompare fieldsA={bldgDmgSummaryTableContents[comparisonKey[0]]}
-						fieldsB={bldgDmgSummaryTableContents[comparisonKey[1]]} />
+					<BldgDamageTableCompare
+						fieldsA={bldgDmgSummaryTableContents[comparisonKey[0]]}
+						fieldsB={bldgDmgSummaryTableContents[comparisonKey[1]]}
+					/>
 				</Box>
 			) : (
 				<></>
@@ -136,7 +138,7 @@ export default function BldgDamageCompare(props) {
 				}}
 				startIcon={<CameraAltIcon />}
 			>
-                Image
+				Image
 			</IncoreButtonText>
 		</Box>
 	);

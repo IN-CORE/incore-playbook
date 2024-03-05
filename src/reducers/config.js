@@ -38,26 +38,26 @@ const defaultConfig = {
 
 const config = (state = defaultConfig, action) => {
 	switch (action.type) {
-	case UPDATE_MAP_CONFIG:
-		return Object.assign({}, state, { mapConfig: action.mapConfig });
-	case UPDATE_ASSET_CONFIG:
-		return Object.assign({}, state, { assetConfig: action.assetConfig });
-	case UPDATE_DATAWOLF_CONFIG:
-		return Object.assign({}, state, { datawolfConfig: action.datawolfConfig });
-	case UPDATE_DATAWOLF_WORKFLOW_CONFIG:
-		return Object.assign({}, state, { datawolfWorkflowConfig: action.datawolfWorkflowConfig });
-	case UPDATE_GLOBAL_CONFIG:
-		return Object.assign({}, state, { globalConfig: action.globalConfig });
-	case SET_ALLOWED_HAZARD_TYPES:
-		return Object.assign({}, state, { allowedHazardTypes: action.allowedHazardTypes });
-	case SET_ALLOWED_DATA_TYPES:
-		return Object.assign({}, state, { allowedDataTypes: action.allowedDataTypes });
-	case UPDATE_CGE_INFO:
-		return Object.assign({}, state, { cgeInfo: action.cgeInfo });
-	case UPDATE_HHS_INFO:
-		return Object.assign({}, state, { hhsInfo: action.hhsInfo });
-	default:
-		return state;
+		case UPDATE_MAP_CONFIG:
+			return Object.assign({}, state, { mapConfig: action.mapConfig });
+		case UPDATE_ASSET_CONFIG:
+			return Object.assign({}, state, { assetConfig: action.assetConfig });
+		case UPDATE_DATAWOLF_CONFIG:
+			return Object.assign({}, state, { datawolfConfig: action.datawolfConfig });
+		case UPDATE_DATAWOLF_WORKFLOW_CONFIG:
+			return Object.assign({}, state, { datawolfWorkflowConfig: action.datawolfWorkflowConfig });
+		case UPDATE_GLOBAL_CONFIG:
+			return Object.assign({}, state, { globalConfig: action.globalConfig });
+		case SET_ALLOWED_HAZARD_TYPES:
+			return Object.assign({}, state, { allowedHazardTypes: action.allowedHazardTypes });
+		case SET_ALLOWED_DATA_TYPES:
+			return Object.assign({}, state, { allowedDataTypes: action.allowedDataTypes });
+		case UPDATE_CGE_INFO:
+			return Object.assign({}, state, { cgeInfo: action.cgeInfo });
+		case UPDATE_HHS_INFO:
+			return Object.assign({}, state, { hhsInfo: action.hhsInfo });
+		default:
+			return state;
 	}
 };
 

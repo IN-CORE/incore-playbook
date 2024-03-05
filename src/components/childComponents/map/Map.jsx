@@ -254,7 +254,7 @@ const Map = (props) => {
 					<LoadingOverlay active={loading} spinner text="Loading...">
 						<Table className={classes.table} size="small" aria-label="a dense table">
 							<TableHead>
-							{/* keeping this here to be added back in the future */}
+								{/* keeping this here to be added back in the future */}
 								{/* <TableRow
 								>
 									<TableCell
@@ -277,19 +277,11 @@ const Map = (props) => {
 										align="center"
 									></TableCell>
 								</TableRow> */}
-								<TableRow
-									key="hdrRow"
-								>
-									<TableCell
-										align="center"
-										style={{ backgroundColor: "#EFF2FF", color: "#69707F" }}
-									>
+								<TableRow key="hdrRow">
+									<TableCell align="center" style={{ backgroundColor: "#EFF2FF", color: "#69707F" }}>
 										Attribute
 									</TableCell>
-									<TableCell
-										align="center"
-										style={{ backgroundColor: "#EFF2FF", color: "#69707F" }}
-									>
+									<TableCell align="center" style={{ backgroundColor: "#EFF2FF", color: "#69707F" }}>
 										Value
 									</TableCell>
 								</TableRow>
@@ -300,17 +292,11 @@ const Map = (props) => {
 										return null;
 									}
 									return (
-										<TableRow
-											key={colName}
-										>
-											<TableCell
-												style={{ backgroundColor: "#EFF2FF", color: "#69707F" }}
-											>
+										<TableRow key={colName}>
+											<TableCell style={{ backgroundColor: "#EFF2FF", color: "#69707F" }}>
 												{colName}
 											</TableCell>
-											<TableCell
-												align="center"
-											>
+											<TableCell align="center">
 												{selectedBuilding[colName] === undefined ||
 												selectedBuilding[colName] === null ||
 												selectedBuilding[colName] === ""

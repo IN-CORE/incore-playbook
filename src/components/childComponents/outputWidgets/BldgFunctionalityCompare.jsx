@@ -14,11 +14,7 @@ import { applyTransform } from "ol/extent";
 import { fromLonLat, getTransform } from "ol/proj";
 
 export default function BldgFunctionality(props) {
-	let {
-		executionItems,
-		datawolfDatasetConfigItems,
-		hazardLayers
-	} = props;
+	let { executionItems, datawolfDatasetConfigItems, hazardLayers } = props;
 
 	const mapConfig = useSelector((state) => state.config.mapConfig);
 	const datawolfConfig = useSelector((state) => state.config.datawolfConfig);
@@ -38,7 +34,6 @@ export default function BldgFunctionality(props) {
 	const printRef = useRef();
 
 	useEffect(() => {
-
 		const fetchData = async () => {
 			for (const datawolfDatasetConfigItem of datawolfDatasetConfigItems) {
 				const vName = datawolfDatasetConfigItem.datasets.variableName;
@@ -65,8 +60,12 @@ export default function BldgFunctionality(props) {
 							setDamageLayersB(previewLayers);
 						}
 					} else if (vName === "bldgFuncSummaryTableContent") {
-						const content = await getOutputFileContentJSON(datawolfConfig, executionItems[i], datawolfDatasetConfigItem.datasetId);
-						setBldgFuncSummaryTableContents(prevState => ({
+						const content = await getOutputFileContentJSON(
+							datawolfConfig,
+							executionItems[i],
+							datawolfDatasetConfigItem.datasetId
+						);
+						setBldgFuncSummaryTableContents((prevState) => ({
 							...prevState,
 							[comparisonKey[i]]: content
 						}));
@@ -83,18 +82,18 @@ export default function BldgFunctionality(props) {
 			{/*for chart*/}
 			<Box className="chartContainer">
 				<Grid container spacing={3} justify="center">
-					{
-						Object.keys(bldgFuncSummaryTableContents).length >= 2 &&
-                        bldgFuncSummaryTableContents[comparisonKey[0]]["by_category"] &&
-                        bldgFuncSummaryTableContents[comparisonKey[1]]["by_category"] ?
-							<Grid item style={{ minWidth: "90%" }}>
-								<FunctionalityGraphCompare
-									categorySummaryA={bldgFuncSummaryTableContents[comparisonKey[0]]["by_category"]}
-									categorySummaryB={bldgFuncSummaryTableContents[comparisonKey[1]]["by_category"]} />
-							</Grid>
-							:
-							<></>
-					}
+					{Object.keys(bldgFuncSummaryTableContents).length >= 2 &&
+					bldgFuncSummaryTableContents[comparisonKey[0]]["by_category"] &&
+					bldgFuncSummaryTableContents[comparisonKey[1]]["by_category"] ? (
+						<Grid item style={{ minWidth: "90%" }}>
+							<FunctionalityGraphCompare
+								categorySummaryA={bldgFuncSummaryTableContents[comparisonKey[0]]["by_category"]}
+								categorySummaryB={bldgFuncSummaryTableContents[comparisonKey[1]]["by_category"]}
+							/>
+						</Grid>
+					) : (
+						<></>
+					)}
 				</Grid>
 			</Box>
 
@@ -123,8 +122,10 @@ export default function BldgFunctionality(props) {
 			{/*for table*/}
 			{Object.keys(bldgFuncSummaryTableContents).length >= 2 ? (
 				<Box>
-					<FunctionalityTableCompare funcResultsA={bldgFuncSummaryTableContents[comparisonKey[0]]}
-						funcResultsB={bldgFuncSummaryTableContents[comparisonKey[1]]} />
+					<FunctionalityTableCompare
+						funcResultsA={bldgFuncSummaryTableContents[comparisonKey[0]]}
+						funcResultsB={bldgFuncSummaryTableContents[comparisonKey[1]]}
+					/>
 				</Box>
 			) : (
 				<></>
@@ -137,7 +138,7 @@ export default function BldgFunctionality(props) {
 				}}
 				startIcon={<CameraAltIcon />}
 			>
-                Image
+				Image
 			</IncoreButtonText>
 		</Box>
 	);

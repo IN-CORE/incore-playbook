@@ -110,25 +110,25 @@ export function HuaResultsTable(props) {
 	const [huaBy, setHuaBy] = React.useState("tenure");
 	const [filterOptions, setFilterOptions] = React.useState([
 		{
-			"value": "tenure",
-			"name": "by Tenure"
+			value: "tenure",
+			name: "by Tenure"
 		},
 		{
-			"value": "race",
-			"name": "by Race / Ethnicity"
+			value: "race",
+			name: "by Race / Ethnicity"
 		},
 		{
-			"value": "income",
-			"name": "by Household Income Level"
+			value: "income",
+			name: "by Household Income Level"
 		},
 		{
-			"value": "housingType",
-			"name": "by Housing Type"
+			value: "housingType",
+			name: "by Housing Type"
 		},
 		{
-			"value": "disability",
-			"name": "by Disability"
-		},
+			value: "disability",
+			name: "by Disability"
+		}
 	]);
 
 	const handleChange = (event) => {
@@ -147,8 +147,6 @@ export function HuaResultsTable(props) {
 	];
 
 	const classes = useStyles();
-
-
 
 	return (
 		<div>

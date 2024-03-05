@@ -13,7 +13,8 @@ import {
 	TableHead,
 	TablePagination,
 	TableRow,
-	TableSortLabel, Typography
+	TableSortLabel,
+	Typography
 } from "@material-ui/core";
 import UnfoldMoreIcon from "@material-ui/icons/UnfoldMore";
 import UnfoldLess from "@material-ui/icons/UnfoldLess";
@@ -179,9 +180,9 @@ export function ViewResultEntryTable(props) {
 		return await requiredDatasetIds.reduce(async (state, reqId) => {
 			return (
 				reqId in currentExecutionDataset &&
-                currentExecutionDataset[reqId] !== "ERROR" &&
-                (await checkFileDescriptors(datawolfConfig, currentExecutionDataset[reqId])) > 0 &&
-                state
+				currentExecutionDataset[reqId] !== "ERROR" &&
+				(await checkFileDescriptors(datawolfConfig, currentExecutionDataset[reqId])) > 0 &&
+				state
 			);
 		}, true);
 	};
@@ -242,16 +243,16 @@ export function ViewResultEntryTable(props) {
 	const handleChecked = (event, id, title) => {
 		// If the checkbox is checked, add/update the item in the state
 		if (event.target.checked) {
-			setCompareItems(prevState => ({ ...prevState, [id]: true }));
-			setCompareItemNames(prevState => ({ ...prevState, [title]: true }));
+			setCompareItems((prevState) => ({ ...prevState, [id]: true }));
+			setCompareItemNames((prevState) => ({ ...prevState, [title]: true }));
 		} else {
 			// If the checkbox is unchecked, create a copy of the state without the item
-			setCompareItems(prevState => {
+			setCompareItems((prevState) => {
 				const newState = { ...prevState }; // Copy the existing state
 				delete newState[id]; // Remove the item corresponding to the unchecked checkbox
 				return newState;
 			});
-			setCompareItemNames(prevState => {
+			setCompareItemNames((prevState) => {
 				const newState = { ...prevState }; // Copy the existing state
 				delete newState[title]; // Remove the item corresponding to the unchecked checkbox
 				return newState;
@@ -265,10 +266,11 @@ export function ViewResultEntryTable(props) {
 
 		// Construct the new URL by replacing the current path with the new path
 		const basePath = currentLocation.pathname.substring(0, currentLocation.pathname.lastIndexOf("/"));
-		const newUrl = `${currentLocation.origin}${basePath}/compare-analyses?executionIds=${Object.keys(compareItems).join(",")}`;
+		const newUrl = `${currentLocation.origin}${basePath}/compare-analyses?executionIds=${Object.keys(
+			compareItems
+		).join(",")}`;
 		// Open the new URL in a new tab
 		window.open(newUrl, "_blank");
-
 	};
 
 	// Avoid a layout jump when reaching the last page with empty rows.
@@ -279,21 +281,24 @@ export function ViewResultEntryTable(props) {
 	return (
 		<>
 			<Box display="flex" justifyContent="space-between">
-				{
-					compareItemNames ?
-						<Box display="flex" style={{ float: "right" }}>
-							<Box>
-								<IncoreTitle style={{ display: "inline" }}>
-                                        Compare Analyses A:&nbsp;
-									<Typography style={{ display: "inline", color: "#00619D", fontWeight: 500 }}>
-										{Object.keys(compareItemNames).at(0) ?? "[ ]"}
-									</Typography> and B:&nbsp;
-									<Typography style={{ display: "inline", color: "#00619D", fontWeight: 500 }}>
-										{Object.keys(compareItemNames).at(1) ?? "[ ]"}
-									</Typography>
-								</IncoreTitle>
-							</Box>
-						</Box>:<></>}
+				{compareItemNames ? (
+					<Box display="flex" style={{ float: "right" }}>
+						<Box>
+							<IncoreTitle style={{ display: "inline" }}>
+								Compare Analyses A:&nbsp;
+								<Typography style={{ display: "inline", color: "#00619D", fontWeight: 500 }}>
+									{Object.keys(compareItemNames).at(0) ?? "[ ]"}
+								</Typography>{" "}
+								and B:&nbsp;
+								<Typography style={{ display: "inline", color: "#00619D", fontWeight: 500 }}>
+									{Object.keys(compareItemNames).at(1) ?? "[ ]"}
+								</Typography>
+							</IncoreTitle>
+						</Box>
+					</Box>
+				) : (
+					<></>
+				)}
 				<Button
 					variant="contained"
 					color="primary"
@@ -302,7 +307,7 @@ export function ViewResultEntryTable(props) {
 					classes={{ root: classes.compareButton }}
 					style={{ float: "left" }}
 				>
-                    COMPARE TWO SCENARIOS
+					COMPARE TWO SCENARIOS
 				</Button>
 			</Box>
 			<TableContainer>
@@ -310,10 +315,7 @@ export function ViewResultEntryTable(props) {
 				<Table className={classes.table} size="small" aria-label="a dense table">
 					<TableHead>
 						<TableRow className={classes.tableHeaderRow} key="hdrRow">
-							<TableCell
-								className={classes.tableHeaderCell}
-								key="checkbox"
-							/>
+							<TableCell className={classes.tableHeaderCell} key="checkbox" />
 							{fieldNames.map((fieldName) => {
 								return (
 									<TableCell
@@ -342,14 +344,24 @@ export function ViewResultEntryTable(props) {
 								return (
 									<>
 										<TableRow
-											className={compareItems.hasOwnProperty(execution.id) && compareItems[execution.id] ?
-												classes.tableBodyRowChecked : classes.tableBodyRow} key={execution["id"]}>
+											className={
+												compareItems.hasOwnProperty(execution.id) && compareItems[execution.id]
+													? classes.tableBodyRowChecked
+													: classes.tableBodyRow
+											}
+											key={execution["id"]}
+										>
 											<TableCell key={`${execution["id"]}-checkbox`} align="right">
 												<Checkbox
 													onChange={(event) =>
-														handleChecked(event, execution.id, execution["title"])}
+														handleChecked(event, execution.id, execution["title"])
+													}
 													id={execution.id}
-													checked={compareItems.hasOwnProperty(execution.id) ? compareItems[execution.id] : false}
+													checked={
+														compareItems.hasOwnProperty(execution.id)
+															? compareItems[execution.id]
+															: false
+													}
 													disabled={execution["finalStatus"].toLowerCase() != "finished"}
 												/>
 											</TableCell>
@@ -358,15 +370,19 @@ export function ViewResultEntryTable(props) {
 													return (
 														<TableCell key={`${execution["id"]}-${idx}`}>
 															{(() => {
-																if (execution["finalStatus"].toLowerCase() === "finished") {
+																if (
+																	execution["finalStatus"].toLowerCase() ===
+																	"finished"
+																) {
 																	return (
 																		<p className={classes.statusFinished}>
 																			{execution[fieldName["columnName"]]}
 																		</p>
 																	);
 																} else if (
-																	execution["finalStatus"].toLowerCase() === "waiting" ||
-                                                            execution["finalStatus"].toLowerCase() === "queued"
+																	execution["finalStatus"].toLowerCase() ===
+																		"waiting" ||
+																	execution["finalStatus"].toLowerCase() === "queued"
 																) {
 																	return (
 																		<p className={classes.statusWaiting}>
@@ -374,8 +390,9 @@ export function ViewResultEntryTable(props) {
 																		</p>
 																	);
 																} else if (
-																	execution["finalStatus"].toLowerCase() === "failed" ||
-                                                            execution["finalStatus"].toLowerCase() === "aborted"
+																	execution["finalStatus"].toLowerCase() ===
+																		"failed" ||
+																	execution["finalStatus"].toLowerCase() === "aborted"
 																) {
 																	return (
 																		<p className={classes.statusUnsuccess}>
@@ -420,9 +437,9 @@ export function ViewResultEntryTable(props) {
 															}
 														>
 															{fieldName["columnName"] === "creator" &&
-                                                    execution[fieldName["columnName"]] &&
-                                                    "firstName" in execution[fieldName["columnName"]] &&
-                                                    "lastName" in execution[fieldName["columnName"]]
+															execution[fieldName["columnName"]] &&
+															"firstName" in execution[fieldName["columnName"]] &&
+															"lastName" in execution[fieldName["columnName"]]
 																? `${execution[fieldName["columnName"]].firstName}
 														${execution[fieldName["columnName"]].lastName}`
 																: execution[fieldName["columnName"]]}
@@ -430,7 +447,10 @@ export function ViewResultEntryTable(props) {
 													);
 												}
 											})}
-											<TableCell className={classes.tableBodyCell} key={`${execution["id"]}-unfold`}>
+											<TableCell
+												className={classes.tableBodyCell}
+												key={`${execution["id"]}-unfold`}
+											>
 												{execution["id"] === expandId && execution["id"] !== collapseId ? (
 													<IconButton
 														aria-label="unfold"
@@ -459,41 +479,44 @@ export function ViewResultEntryTable(props) {
 												{/* {console.log(execution)} */}
 												{/*resilience metrics*/}
 												{widgetList.includes("CGE") &&
-                                        widgetList.includes("PopDislocation") &&
-                                        widgetList.includes("BldgFunctionality") ? (
-														<TableRow
-															className={classes.subBodyRow}
-															key={`${execution["id"]}-resilience-metrics`}
+												widgetList.includes("PopDislocation") &&
+												widgetList.includes("BldgFunctionality") ? (
+													<TableRow
+														className={classes.subBodyRow}
+														key={`${execution["id"]}-resilience-metrics`}
+													>
+														<TableCell
+															colSpan={7}
+															key={`${execution["id"]}-resilience-metrics-title`}
 														>
-															<TableCell
-																colSpan={7}
-																key={`${execution["id"]}-resilience-metrics-title`}
+															<Link
+																color="primary"
+																onClick={() => {
+																	preview(execution["id"], "ResilienceMetrics");
+																}}
+																className={
+																	resMatricsReadiness
+																		? classes.clickableLink
+																		: classes.clickableLinkDisabled
+																}
 															>
-																<Link
-																	color="primary"
-																	onClick={() => {
-																		preview(execution["id"], "ResilienceMetrics");
-																	}}
-																	className={
-																		resMatricsReadiness
-																			? classes.clickableLink
-																			: classes.clickableLinkDisabled
-																	}
-																>
-                                                        Resilience Metrics
-																</Link>
-															</TableCell>
-														</TableRow>
-													) : (
-														<></>
-													)}
+																Resilience Metrics
+															</Link>
+														</TableCell>
+													</TableRow>
+												) : (
+													<></>
+												)}
 												{/*EPF damage*/}
 												{widgetList.includes("PoleDamage") ? (
 													<TableRow
 														className={classes.subBodyRow}
 														key={`${execution["id"]}-epf-pole`}
 													>
-														<TableCell colSpan={7} key={`${execution["id"]}-epf-pole-title`}>
+														<TableCell
+															colSpan={7}
+															key={`${execution["id"]}-epf-pole-title`}
+														>
 															<Link
 																color="primary"
 																onClick={() => {
@@ -505,7 +528,7 @@ export function ViewResultEntryTable(props) {
 																		: classes.clickableLinkDisabled
 																}
 															>
-                                                        Pole Damage (Electrical Power Network)
+																Pole Damage (Electrical Power Network)
 															</Link>
 														</TableCell>
 													</TableRow>
@@ -532,7 +555,7 @@ export function ViewResultEntryTable(props) {
 																		: classes.clickableLinkDisabled
 																}
 															>
-                                                        Substation Damage (Electrical Power Network)
+																Substation Damage (Electrical Power Network)
 															</Link>
 														</TableCell>
 													</TableRow>
@@ -545,7 +568,10 @@ export function ViewResultEntryTable(props) {
 														className={classes.subBodyRow}
 														key={`${execution["id"]}-bldg-dmg`}
 													>
-														<TableCell colSpan={7} key={`${execution["id"]}-bldg-dmg-title`}>
+														<TableCell
+															colSpan={7}
+															key={`${execution["id"]}-bldg-dmg-title`}
+														>
 															<Link
 																color="primary"
 																onClick={() => {
@@ -557,7 +583,7 @@ export function ViewResultEntryTable(props) {
 																		: classes.clickableLinkDisabled
 																}
 															>
-                                                        Building Damage
+																Building Damage
 															</Link>
 														</TableCell>
 													</TableRow>
@@ -567,7 +593,10 @@ export function ViewResultEntryTable(props) {
 
 												{/*mcs*/}
 												{widgetList.includes("BldgMCS") ? (
-													<TableRow className={classes.subBodyRow} key={`${execution["id"]}-mcs`}>
+													<TableRow
+														className={classes.subBodyRow}
+														key={`${execution["id"]}-mcs`}
+													>
 														<TableCell colSpan={7} key={`${execution["id"]}-mcs-title`}>
 															<Link
 																color="primary"
@@ -580,7 +609,8 @@ export function ViewResultEntryTable(props) {
 																		: classes.clickableLinkDisabled
 																}
 															>
-                                                        Building Functionality (without Electrical Power Dependency)
+																Building Functionality (without Electrical Power
+																Dependency)
 															</Link>
 														</TableCell>
 													</TableRow>
@@ -608,7 +638,8 @@ export function ViewResultEntryTable(props) {
 																		: classes.clickableLinkDisabled
 																}
 															>
-                                                        Building Functionality (with Electrical Power Dependency)
+																Building Functionality (with Electrical Power
+																Dependency)
 															</Link>
 														</TableCell>
 													</TableRow>
@@ -636,7 +667,7 @@ export function ViewResultEntryTable(props) {
 																		: classes.clickableLinkDisabled
 																}
 															>
-                                                        Capital Shocks
+																Capital Shocks
 															</Link>
 														</TableCell>
 													</TableRow>
@@ -645,7 +676,10 @@ export function ViewResultEntryTable(props) {
 												)}
 												{/*CGE*/}
 												{widgetList.includes("CGE") ? (
-													<TableRow className={classes.subBodyRow} key={`${execution["id"]}-cge`}>
+													<TableRow
+														className={classes.subBodyRow}
+														key={`${execution["id"]}-cge`}
+													>
 														<TableCell colSpan={7} key={`${execution["id"]}-cge-title`}>
 															<Link
 																color="primary"
@@ -658,7 +692,8 @@ export function ViewResultEntryTable(props) {
 																		: classes.clickableLinkDisabled
 																}
 															>
-                                                        Economic Prediction Model (Computable General Equilibrium)
+																Economic Prediction Model (Computable General
+																Equilibrium)
 															</Link>
 														</TableCell>
 													</TableRow>
@@ -686,7 +721,7 @@ export function ViewResultEntryTable(props) {
 																		: classes.clickableLinkDisabled
 																}
 															>
-                                                        Population Dislocation
+																Population Dislocation
 															</Link>
 														</TableCell>
 													</TableRow>
@@ -695,7 +730,10 @@ export function ViewResultEntryTable(props) {
 												)}
 												{/*Housing Recover*/}
 												{widgetList.includes("HHS") ? (
-													<TableRow className={classes.subBodyRow} key={`${execution["id"]}-HHS`}>
+													<TableRow
+														className={classes.subBodyRow}
+														key={`${execution["id"]}-HHS`}
+													>
 														<TableCell colSpan={7} key={`${execution["id"]}-HHS-title`}>
 															<Link
 																color="primary"
@@ -708,7 +746,7 @@ export function ViewResultEntryTable(props) {
 																		: classes.clickableLinkDisabled
 																}
 															>
-                                                        Housing Recovery
+																Housing Recovery
 															</Link>
 														</TableCell>
 													</TableRow>
@@ -719,7 +757,10 @@ export function ViewResultEntryTable(props) {
 												{/*Logs: Only allow the admin to see the logs*/}
 												{/*Always show logs*/}
 												{widgetList.includes("Log") && isAdmin(globalConfig.hostname) ? (
-													<TableRow className={classes.subBodyRow} key={`${execution["id"]}-Log`}>
+													<TableRow
+														className={classes.subBodyRow}
+														key={`${execution["id"]}-Log`}
+													>
 														<TableCell colSpan={7} key={`${execution["id"]}-Log-title`}>
 															<Link
 																color="primary"
@@ -728,7 +769,7 @@ export function ViewResultEntryTable(props) {
 																}}
 																className={classes.clickableLink}
 															>
-                                                        Logs
+																Logs
 															</Link>
 														</TableCell>
 													</TableRow>

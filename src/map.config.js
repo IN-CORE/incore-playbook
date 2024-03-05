@@ -13,14 +13,14 @@ const layerStyles = {
 		earthquake: "incore:earthquake-pga-g",
 		tornado: "incore:tornado",
 		hurricane: {
-			"waveHeight": "incore:hurricane-wave-height",
-			"surgeLevel": "incore:hurricane-surge-level",
-			"inundationDuration": "incore:hurricane-inundation-duration",
-			"inundationDepth": "incore:hurricane-inundation-depth",
-			"wavePeriod": "incore:hurricane-wave-period",
-			"waveDirection": "incore:hurricane-wave-direction",
-			"waterVelocity": "incore:hurricane-water-velocity",
-			"windVelocity": "incore:hurricane-wind"
+			waveHeight: "incore:hurricane-wave-height",
+			surgeLevel: "incore:hurricane-surge-level",
+			inundationDuration: "incore:hurricane-inundation-duration",
+			inundationDepth: "incore:hurricane-inundation-depth",
+			wavePeriod: "incore:hurricane-wave-period",
+			waveDirection: "incore:hurricane-wave-direction",
+			waterVelocity: "incore:hurricane-water-velocity",
+			windVelocity: "incore:hurricane-wind"
 		},
 		tsunami: {},
 		floods: {}
@@ -74,12 +74,7 @@ const layerStyles = {
 
 // galveston
 export const mapConfig = {
-	MAP_BOUNDS: [
-		-96.211436,
-		27.941297,
-		-93.611436,
-		30.541297
-	],
+	MAP_BOUNDS: [-96.211436, 27.941297, -93.611436, 30.541297],
 	MAP_CENTER: [-94.911436, 29.241297],
 	ZOOM: 5,
 	MIN_ZOOM: 4,

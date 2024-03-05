@@ -99,24 +99,24 @@ export function HuaResultsTableCompare(props) {
 	const [huaBy, setHuaBy] = React.useState("tenure");
 	const [filterOptions, setFilterOptions] = React.useState([
 		{
-			"value": "tenure",
-			"name": "by Tenure"
+			value: "tenure",
+			name: "by Tenure"
 		},
 		{
-			"value": "race",
-			"name": "by Race / Ethnicity"
+			value: "race",
+			name: "by Race / Ethnicity"
 		},
 		{
-			"value": "income",
-			"name": "by Household Income Level"
+			value: "income",
+			name: "by Household Income Level"
 		},
 		{
-			"value": "housingType",
-			"name": "by Housing Type"
+			value: "housingType",
+			name: "by Housing Type"
 		},
 		{
-			"value": "disability",
-			"name": "by Disability"
+			value: "disability",
+			name: "by Disability"
 		}
 	]);
 
@@ -142,7 +142,7 @@ export function HuaResultsTableCompare(props) {
 		<div>
 			<div style={{ paddingLeft: "6px" }}>
 				<FormLabel component="legend" className={classes.title}>
-                    Household Dislocation
+					Household Dislocation
 				</FormLabel>
 				<IncoreRadioGroup options={filterOptions} value={huaBy} handleChange={handleChange} />
 			</div>
@@ -197,13 +197,15 @@ export function HuaResultsTableCompare(props) {
 											>
 												{resA["household_characteristics"]}{" "}
 											</TableCell>
-											<TableCell className={
-												idx === resultsJsonA.length - 1
-													? classes.tableColumnHeadTotal
-													: classes.tableColumnHeadCharacteristics
-											} style={{ textAlign: "center" }}
+											<TableCell
+												className={
+													idx === resultsJsonA.length - 1
+														? classes.tableColumnHeadTotal
+														: classes.tableColumnHeadCharacteristics
+												}
+												style={{ textAlign: "center" }}
 											>
-                                                A
+												A
 											</TableCell>
 											<TableCell className={classes.tableDataCellRed} key={`2_${idx.toString()}`}>
 												{resA["household_dislocated"].toLocaleString("en-US")}
@@ -218,12 +220,15 @@ export function HuaResultsTableCompare(props) {
 
 										{/*B*/}
 										<TableRow key={idx}>
-											<TableCell className={
-												idx === resultsJsonA.length - 1
-													? classes.tableColumnHeadTotal
-													: classes.tableColumnHeadCharacteristics
-											} style={{ textAlign: "center" }}>
-                                                B
+											<TableCell
+												className={
+													idx === resultsJsonA.length - 1
+														? classes.tableColumnHeadTotal
+														: classes.tableColumnHeadCharacteristics
+												}
+												style={{ textAlign: "center" }}
+											>
+												B
 											</TableCell>
 											<TableCell className={classes.tableDataCellRed} key={`2_${idx.toString()}`}>
 												{resB["household_dislocated"].toLocaleString("en-US")}
@@ -238,11 +243,14 @@ export function HuaResultsTableCompare(props) {
 
 										{/*Diff*/}
 										<TableRow key={idx}>
-											<TableCell className={
-												idx === resultsJsonA.length - 1
-													? classes.tableColumnHeadTotal
-													: classes.tableColumnHeadCharacteristics
-											} style={{ textAlign: "center" }}>
+											<TableCell
+												className={
+													idx === resultsJsonA.length - 1
+														? classes.tableColumnHeadTotal
+														: classes.tableColumnHeadCharacteristics
+												}
+												style={{ textAlign: "center" }}
+											>
 												<CompareArrowsIcon style={{ transform: "rotate(90deg)" }} />
 											</TableCell>
 											<TableCell className={classes.tableDataCellRed} key={`2_${idx.toString()}`}>
@@ -252,7 +260,10 @@ export function HuaResultsTableCompare(props) {
 												{diff(resB["total_households"], resA["total_households"])}
 											</TableCell>
 											<TableCell className={classes.tableDataCell} key={`4_${idx.toString()}`}>
-												{percentDiff(resB["percent_household_dislocated"], resA["percent_household_dislocated"])}
+												{percentDiff(
+													resB["percent_household_dislocated"],
+													resA["percent_household_dislocated"]
+												)}
 											</TableCell>
 										</TableRow>
 									</>

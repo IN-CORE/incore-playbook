@@ -11,11 +11,7 @@ import { applyTransform } from "ol/extent";
 import { fromLonLat, getTransform } from "ol/proj";
 
 export default function BldgMCSCompare(props) {
-	let {
-		executionItems,
-		datawolfDatasetConfigItems,
-		hazardLayers
-	} = props;
+	let { executionItems, datawolfDatasetConfigItems, hazardLayers } = props;
 
 	const mapConfig = useSelector((state) => state.config.mapConfig);
 	const datawolfConfig = useSelector((state) => state.config.datawolfConfig);
@@ -34,7 +30,6 @@ export default function BldgMCSCompare(props) {
 	const mapHeight = 300; // px
 
 	useEffect(() => {
-
 		const fetchData = async () => {
 			for (const datawolfDatasetConfigItem of datawolfDatasetConfigItems) {
 				const vName = datawolfDatasetConfigItem.datasets.variableName;
@@ -61,8 +56,12 @@ export default function BldgMCSCompare(props) {
 							setDamageLayersB(previewLayers);
 						}
 					} else if (vName === "mcsBldgSummaryTableContent") {
-						const content = await getOutputFileContentJSON(datawolfConfig, executionItems[i], datawolfDatasetConfigItem.datasetId);
-						setMcsBldgSummaryTableContents(prevState => ({
+						const content = await getOutputFileContentJSON(
+							datawolfConfig,
+							executionItems[i],
+							datawolfDatasetConfigItem.datasetId
+						);
+						setMcsBldgSummaryTableContents((prevState) => ({
 							...prevState,
 							[comparisonKey[i]]: content
 						}));
@@ -72,7 +71,6 @@ export default function BldgMCSCompare(props) {
 		};
 
 		fetchData();
-
 	}, [executionItems, datawolfDatasetConfigItems]);
 
 	return (
@@ -80,18 +78,18 @@ export default function BldgMCSCompare(props) {
 			{/*for chart*/}
 			<Box className="chartContainer">
 				<Grid container spacing={3} justify="center">
-					{
-						Object.keys(mcsBldgSummaryTableContents).length >= 2 &&
-                        mcsBldgSummaryTableContents[comparisonKey[0]]["by_category"] &&
-                        mcsBldgSummaryTableContents[comparisonKey[1]]["by_category"] ?
-							<Grid item style={{ minWidth: "90%" }}>
-								<FunctionalityGraphCompare
-									categorySummaryA={mcsBldgSummaryTableContents[comparisonKey[0]]["by_category"]}
-									categorySummaryB={mcsBldgSummaryTableContents[comparisonKey[1]]["by_category"]} />
-							</Grid>
-							:
-							<></>
-					}
+					{Object.keys(mcsBldgSummaryTableContents).length >= 2 &&
+					mcsBldgSummaryTableContents[comparisonKey[0]]["by_category"] &&
+					mcsBldgSummaryTableContents[comparisonKey[1]]["by_category"] ? (
+						<Grid item style={{ minWidth: "90%" }}>
+							<FunctionalityGraphCompare
+								categorySummaryA={mcsBldgSummaryTableContents[comparisonKey[0]]["by_category"]}
+								categorySummaryB={mcsBldgSummaryTableContents[comparisonKey[1]]["by_category"]}
+							/>
+						</Grid>
+					) : (
+						<></>
+					)}
 				</Grid>
 			</Box>
 
@@ -120,11 +118,14 @@ export default function BldgMCSCompare(props) {
 			{/*for table*/}
 			{Object.keys(mcsBldgSummaryTableContents).length >= 2 ? (
 				<Box>
-					<FunctionalityTableCompare funcResultsA={mcsBldgSummaryTableContents[comparisonKey[0]]}
-						funcResultsB={mcsBldgSummaryTableContents[comparisonKey[1]]} />
+					<FunctionalityTableCompare
+						funcResultsA={mcsBldgSummaryTableContents[comparisonKey[0]]}
+						funcResultsB={mcsBldgSummaryTableContents[comparisonKey[1]]}
+					/>
 				</Box>
 			) : (
 				<>/</>
 			)}
-		</Box>);
+		</Box>
+	);
 }

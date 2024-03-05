@@ -65,9 +65,12 @@ export default function ViewResult(props) {
 			getExecutionList(datawolfConfig, datawolfViewAllOn);
 
 			// start a new interval timer and register that timer
-			const interval = setInterval(() => {
-				getExecutionList(datawolfConfig, datawolfViewAllOn);
-			}, datawolfConfig["retreiveTimeInterval"] ?? 10 * 1000);
+			const interval = setInterval(
+				() => {
+					getExecutionList(datawolfConfig, datawolfViewAllOn);
+				},
+				datawolfConfig["retreiveTimeInterval"] ?? 10 * 1000
+			);
 			return () => {
 				clearInterval(interval);
 			};
@@ -188,8 +191,8 @@ export default function ViewResult(props) {
 				if (widgetName === "ResilienceMetrics") {
 					if (
 						item.datasets.widget === "CGE" ||
-                        item.datasets.widget === "PopDislocation" ||
-                        item.datasets.widget === "BldgFunctionality"
+						item.datasets.widget === "PopDislocation" ||
+						item.datasets.widget === "BldgFunctionality"
 					) {
 						return [...list, item];
 					}
@@ -275,26 +278,26 @@ export default function ViewResult(props) {
 
 			{/*for individual analysis result preview*/}
 			{widgetName &&
-            selectedExecutionItem &&
-            previewOn &&
-            datawolfDatasetConfigItems.length > 0 &&
-            hazardType &&
-            hazardGroupLayer ? (
-					(() => {
-						return React.cloneElement(registeredWidgets[widgetName], {
-							executionItem: selectedExecutionItem,
-							getExecution: getExecution,
-							previewOn: previewOn,
-							handlePreviewClose: handlePreviewClose,
-							datawolfDatasetConfigItems: datawolfDatasetConfigItems,
-							hazardType: hazardType,
-							hazardLayers: hazardGroupLayer,
-							setDownloadDialogOpen: setDownloadDialogOpen
-						});
-					})()
-				) : (
-					<></>
-				)}
+			selectedExecutionItem &&
+			previewOn &&
+			datawolfDatasetConfigItems.length > 0 &&
+			hazardType &&
+			hazardGroupLayer ? (
+				(() => {
+					return React.cloneElement(registeredWidgets[widgetName], {
+						executionItem: selectedExecutionItem,
+						getExecution: getExecution,
+						previewOn: previewOn,
+						handlePreviewClose: handlePreviewClose,
+						datawolfDatasetConfigItems: datawolfDatasetConfigItems,
+						hazardType: hazardType,
+						hazardLayers: hazardGroupLayer,
+						setDownloadDialogOpen: setDownloadDialogOpen
+					});
+				})()
+			) : (
+				<></>
+			)}
 		</div>
 	);
 }

@@ -16,7 +16,7 @@ export default function RetrofitStrategies(props) {
 			listDatasets(globalConfig, inputDatasetType["num"], 0, inputDatasetType["type"]);
 		});
 	}, []);
-    
+
 	return (
 		<IncoreSelectBox
 			labelId="label"

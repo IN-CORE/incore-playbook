@@ -9,10 +9,10 @@ import path from "path";
 import TerserPlugin from "terser-webpack-plugin";
 
 // eslint-disable-next-line no-console
-console.log(`the current HOSTNAME environment variable is ${  process.env.INCORE_REMOTE_HOSTNAME}`);
+console.log(`the current HOSTNAME environment variable is ${process.env.INCORE_REMOTE_HOSTNAME}`);
 
 export default {
-	mode:"production",
+	mode: "production",
 	resolve: {
 		extensions: [".js", ".jsx", ".json"]
 	},
@@ -22,7 +22,7 @@ export default {
 		"whatwg-fetch",
 		path.resolve(__dirname, "src/index.jsx"),
 		"ol/ol.css",
-		"ol-layerswitcher/src/ol-layerswitcher.css",
+		"ol-layerswitcher/src/ol-layerswitcher.css"
 	],
 	target: "web", // necessary per https://webpack.github.io/docs/testing.html#compile-and-test
 	output: {
@@ -39,10 +39,10 @@ export default {
 
 		new webpack.DefinePlugin({
 			"process.env": {
-				"NODE_ENV": JSON.stringify("production"),
-				"INCORE_REMOTE_HOSTNAME": JSON.stringify(process.env.INCORE_REMOTE_HOSTNAME)
+				NODE_ENV: JSON.stringify("production"),
+				INCORE_REMOTE_HOSTNAME: JSON.stringify(process.env.INCORE_REMOTE_HOSTNAME)
 			},
-			__DEV__: false
+			"__DEV__": false
 		}),
 
 		// Generate an external css file with a hash in the filename
@@ -76,16 +76,14 @@ export default {
 					includePaths: [path.resolve(__dirname, "src", "scss")]
 				},
 				context: "/",
-				postcss: [
-					autoprefixer(),
-				]
+				postcss: [autoprefixer()]
 			}
 		})
 	],
 	module: {
 		rules: [
-			{test: /\.jsx?$/, exclude: /node_modules/, loaders:["babel-loader"]},
-			{test: /\.eot(\?v=\d+.\d+.\d+)?$/, loader: "url-loader?name=[name].[ext]"},
+			{ test: /\.jsx?$/, exclude: /node_modules/, loaders: ["babel-loader"] },
+			{ test: /\.eot(\?v=\d+.\d+.\d+)?$/, loader: "url-loader?name=[name].[ext]" },
 			{
 				test: /\.woff(2)?(\?v=[0-9]\.[0-9]\.[0-9])?$/,
 				loader: "url-loader?limit=10000&mimetype=application/font-woff&name=[name].[ext]"
@@ -98,9 +96,9 @@ export default {
 				test: /\.svg(\?v=\d+.\d+.\d+)?$/,
 				loader: "url-loader?limit=10000&mimetype=image/svg+xml&name=[name].[ext]"
 			},
-			{test: /\.(jpe?g|png|gif)$/i, loader: "file-loader?name=[name].[ext]"},
-			{test: /\.ico$/, loader: "file-loader?name=[name].[ext]"},
-			{test: /\.html$/i, loader: "html-loader"},
+			{ test: /\.(jpe?g|png|gif)$/i, loader: "file-loader?name=[name].[ext]" },
+			{ test: /\.ico$/, loader: "file-loader?name=[name].[ext]" },
+			{ test: /\.html$/i, loader: "html-loader" },
 			{
 				test: /(\.css|\.scss)$/,
 				use: [
@@ -109,19 +107,21 @@ export default {
 					{ loader: "postcss-loader", options: { plugins: () => [require("autoprefixer")] } },
 					{ loader: "sass-loader", options: { sourceMap: true } }
 				]
-			},
+			}
 			// {test: /\.json$/, loader: "json-loader"}
 		]
 	},
-	optimization:{
-		minimizer: [new TerserPlugin({
-			sourceMap: true,
-			terserOptions: {
-				ecma:8,
-				compress: {
-					warnings: false
+	optimization: {
+		minimizer: [
+			new TerserPlugin({
+				sourceMap: true,
+				terserOptions: {
+					ecma: 8,
+					compress: {
+						warnings: false
+					}
 				}
-			}
-		})],
+			})
+		]
 	}
 };

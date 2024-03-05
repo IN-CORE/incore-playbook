@@ -11,11 +11,7 @@ import { applyTransform } from "ol/extent";
 import { fromLonLat, getTransform } from "ol/proj";
 
 export default function PopDislocationCompare(props) {
-	let {
-		executionItems,
-		datawolfDatasetConfigItems,
-		hazardLayers
-	} = props;
+	let { executionItems, datawolfDatasetConfigItems, hazardLayers } = props;
 
 	const mapConfig = useSelector((state) => state.config.mapConfig);
 	const datawolfConfig = useSelector((state) => state.config.datawolfConfig);
@@ -88,34 +84,58 @@ export default function PopDislocationCompare(props) {
 					} else if (vName === "totalDislTableContent") {
 						if (i === 0) {
 							setTotalDislTableContentA(
-								await getOutputFileContentJSON(datawolfConfig, executionItems[i], datawolfDatasetConfigItem.datasetId)
+								await getOutputFileContentJSON(
+									datawolfConfig,
+									executionItems[i],
+									datawolfDatasetConfigItem.datasetId
+								)
 							);
 						} else if (i === 1) {
 							setTotalDislTableContentB(
-								await getOutputFileContentJSON(datawolfConfig, executionItems[i], datawolfDatasetConfigItem.datasetId)
+								await getOutputFileContentJSON(
+									datawolfConfig,
+									executionItems[i],
+									datawolfDatasetConfigItem.datasetId
+								)
 							);
 						}
 					} else if (vName === "dislocationByRaceContent") {
-						const content = await getOutputFileContentJSON(datawolfConfig, executionItems[i], datawolfDatasetConfigItem.datasetId);
-						setDislocationByRaceContent(prevState => ({
+						const content = await getOutputFileContentJSON(
+							datawolfConfig,
+							executionItems[i],
+							datawolfDatasetConfigItem.datasetId
+						);
+						setDislocationByRaceContent((prevState) => ({
 							...prevState,
 							[comparisonKey[i]]: content
 						}));
 					} else if (vName === "dislocationByTenureContent") {
-						const content = await getOutputFileContentJSON(datawolfConfig, executionItems[i], datawolfDatasetConfigItem.datasetId);
-						setDislocationByTenureContent(prevState => ({
+						const content = await getOutputFileContentJSON(
+							datawolfConfig,
+							executionItems[i],
+							datawolfDatasetConfigItem.datasetId
+						);
+						setDislocationByTenureContent((prevState) => ({
 							...prevState,
 							[comparisonKey[i]]: content
 						}));
 					} else if (vName === "dislocationByIncomeContent") {
-						const content = await getOutputFileContentJSON(datawolfConfig, executionItems[i], datawolfDatasetConfigItem.datasetId);
-						setDislocationByIncomeContent(prevState => ({
+						const content = await getOutputFileContentJSON(
+							datawolfConfig,
+							executionItems[i],
+							datawolfDatasetConfigItem.datasetId
+						);
+						setDislocationByIncomeContent((prevState) => ({
 							...prevState,
 							[comparisonKey[i]]: content
 						}));
 					} else if (vName === "dislocationByHousingTypeContent") {
-						const content = await getOutputFileContentJSON(datawolfConfig, executionItems[i], datawolfDatasetConfigItem.datasetId);
-						setDislocationByHousingTypeContent(prevState => ({
+						const content = await getOutputFileContentJSON(
+							datawolfConfig,
+							executionItems[i],
+							datawolfDatasetConfigItem.datasetId
+						);
+						setDislocationByHousingTypeContent((prevState) => ({
 							...prevState,
 							[comparisonKey[i]]: content
 						}));
@@ -130,7 +150,13 @@ export default function PopDislocationCompare(props) {
 	return (
 		<Box>
 			{/*for map*/}
-			{basicLayersA && basicLayersB && hazardLayers && damageLayersA1 && damageLayersB1 && damageLayersA2 && damageLayersB2 ? (
+			{basicLayersA &&
+			basicLayersB &&
+			hazardLayers &&
+			damageLayersA1 &&
+			damageLayersB1 &&
+			damageLayersA2 &&
+			damageLayersB2 ? (
 				<Container className="mapContainer" disableGutters style={{ height: `${mapHeight}px` }}>
 					<MapCompare
 						className="fillContainer"
@@ -153,55 +179,55 @@ export default function PopDislocationCompare(props) {
 
 			<Grid container spacing={2} justify="center">
 				<Grid item xs={12} sm={12} md={5} lg={5} xl={5}>
-					{totalDislTableContentA && totalDislTableContentB &&
-                    totalDislTableContentA["household_dislocation_in_total"] &&
-                    totalDislTableContentB["household_dislocation_in_total"]
-						? (
-							<DislocationResultsTableCompare
-								resultsJsonA={totalDislTableContentA["household_dislocation_in_total"]}
-								resultsJsonB={totalDislTableContentB["household_dislocation_in_total"]}
-								headers={["HOUSEHOLD", "% of HOUSEHOLD"]}
-								title={"Household Dislocation - in Total"}
-							/>
-						) : (
-							<></>
-						)}
-					{totalDislTableContentA && totalDislTableContentB &&
-                    totalDislTableContentA["population_dislocation_in_total"] &&
-                    totalDislTableContentB["population_dislocation_in_total"]
-						? (
-							<DislocationResultsTableCompare
-								resultsJsonA={totalDislTableContentA["population_dislocation_in_total"]}
-								resultsJsonB={totalDislTableContentB["population_dislocation_in_total"]}
-								headers={["POPULATION", "% of POPULATION"]}
-								title={"Population Dislocation - in Total"}
-							/>
-						) : (
-							<></>
-						)}
+					{totalDislTableContentA &&
+					totalDislTableContentB &&
+					totalDislTableContentA["household_dislocation_in_total"] &&
+					totalDislTableContentB["household_dislocation_in_total"] ? (
+						<DislocationResultsTableCompare
+							resultsJsonA={totalDislTableContentA["household_dislocation_in_total"]}
+							resultsJsonB={totalDislTableContentB["household_dislocation_in_total"]}
+							headers={["HOUSEHOLD", "% of HOUSEHOLD"]}
+							title={"Household Dislocation - in Total"}
+						/>
+					) : (
+						<></>
+					)}
+					{totalDislTableContentA &&
+					totalDislTableContentB &&
+					totalDislTableContentA["population_dislocation_in_total"] &&
+					totalDislTableContentB["population_dislocation_in_total"] ? (
+						<DislocationResultsTableCompare
+							resultsJsonA={totalDislTableContentA["population_dislocation_in_total"]}
+							resultsJsonB={totalDislTableContentB["population_dislocation_in_total"]}
+							headers={["POPULATION", "% of POPULATION"]}
+							title={"Population Dislocation - in Total"}
+						/>
+					) : (
+						<></>
+					)}
 				</Grid>
 				<Grid item xs={12} sm={12} md={7} lg={7} xl={7}>
 					{dislocationByIncomeContent &&
-                    dislocationByRaceContent &&
-                    dislocationByTenureContent &&
-                    dislocationByHousingTypeContent ? (
-							<HuaResultsTableCompare
-								resultsJsonA={{
-									income: dislocationByIncomeContent[comparisonKey[0]],
-									race: dislocationByRaceContent[comparisonKey[0]],
-									tenure: dislocationByTenureContent[comparisonKey[0]],
-									housingType: dislocationByHousingTypeContent[comparisonKey[0]]
-								}}
-								resultsJsonB={{
-									income: dislocationByIncomeContent[comparisonKey[1]],
-									race: dislocationByRaceContent[comparisonKey[1]],
-									tenure: dislocationByTenureContent[comparisonKey[1]],
-									housingType: dislocationByHousingTypeContent[comparisonKey[1]]
-								}}
-							/>
-						) : (
-							<></>
-						)}
+					dislocationByRaceContent &&
+					dislocationByTenureContent &&
+					dislocationByHousingTypeContent ? (
+						<HuaResultsTableCompare
+							resultsJsonA={{
+								income: dislocationByIncomeContent[comparisonKey[0]],
+								race: dislocationByRaceContent[comparisonKey[0]],
+								tenure: dislocationByTenureContent[comparisonKey[0]],
+								housingType: dislocationByHousingTypeContent[comparisonKey[0]]
+							}}
+							resultsJsonB={{
+								income: dislocationByIncomeContent[comparisonKey[1]],
+								race: dislocationByRaceContent[comparisonKey[1]],
+								tenure: dislocationByTenureContent[comparisonKey[1]],
+								housingType: dislocationByHousingTypeContent[comparisonKey[1]]
+							}}
+						/>
+					) : (
+						<></>
+					)}
 				</Grid>
 			</Grid>
 		</Box>

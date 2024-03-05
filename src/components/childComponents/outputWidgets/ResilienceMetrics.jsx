@@ -14,12 +14,11 @@ import CameraAltIcon from "@material-ui/icons/CameraAlt";
 import FormLabel from "@material-ui/core/FormLabel";
 import { IncoreRadioGroup } from "../form/IncoreRadioGroup";
 
-
 const useStyles = makeStyles({
 	tableEntry: {
 		display: "block",
 		margin: "50px auto",
-		textAlign: "center",
+		textAlign: "center"
 	},
 	title: {
 		height: "19px",
@@ -70,22 +69,28 @@ export default function ResilienceMetrics(props) {
 	const [cgeDomesticSupplyContent, setCgeDomesticSupplyContent] = useState(null);
 	const [cgeEmploymentContent, setCgeEmploymentContent] = useState(null);
 	const [bldgFuncSummaryTableContent, setBldgFuncSummaryTableContent] = useState(null);
-	const [cgeHhIncomeRegion, setCgeHhIncomeRegion] = useState(globalConfig["allowedRegions"] ? globalConfig["allowedRegions"][0].value : null);
-	const [cgeDomesticSupplyRegion, setCgeDomesticSupplyRegion] = useState(globalConfig["allowedRegions"] ? globalConfig["allowedRegions"][0].value : null);
-	const [cgeEmploymentRegion, setCgeEmploymentRegion] = useState(globalConfig["allowedRegions"] ? globalConfig["allowedRegions"][0].value : null);
+	const [cgeHhIncomeRegion, setCgeHhIncomeRegion] = useState(
+		globalConfig["allowedRegions"] ? globalConfig["allowedRegions"][0].value : null
+	);
+	const [cgeDomesticSupplyRegion, setCgeDomesticSupplyRegion] = useState(
+		globalConfig["allowedRegions"] ? globalConfig["allowedRegions"][0].value : null
+	);
+	const [cgeEmploymentRegion, setCgeEmploymentRegion] = useState(
+		globalConfig["allowedRegions"] ? globalConfig["allowedRegions"][0].value : null
+	);
 
-	const [cgeFilterOptions, setCgeFilterOptions] = useState(globalConfig["allowedRegions"] ?
-		globalConfig["allowedRegions"].reduce((state, region)=>{
-			return [...state, {"name": region.name, "value": region.value}];
-		}, [])
-		:
-		[]);
+	const [cgeFilterOptions, setCgeFilterOptions] = useState(
+		globalConfig["allowedRegions"]
+			? globalConfig["allowedRegions"].reduce((state, region) => {
+					return [...state, { name: region.name, value: region.value }];
+			  }, [])
+			: []
+	);
 
 	// print container
 	const printRef = useRef();
 
-
-	useEffect(()=> {
+	useEffect(() => {
 		setSelectedExecutionName(executionItem["title"]);
 
 		datawolfDatasetConfigItems.map(async (datawolfDatasetConfigItem) => {
@@ -180,20 +185,20 @@ export default function ResilienceMetrics(props) {
 					dislocationByRaceContent &&
 					dislocationByTenureContent &&
 					dislocationByHousingTypeContent ? (
-							<Box className={classes.tableEntry}>
-								<HuaResultsTable
-									resultsJson={{
-										income: dislocationByIncomeContent,
-										race: dislocationByRaceContent,
-										tenure: dislocationByTenureContent,
-										housingType: dislocationByHousingTypeContent
-									}}
-									isMetrics={true}
-								/>
-							</Box>
-						) : (
-							<></>
-						)}
+						<Box className={classes.tableEntry}>
+							<HuaResultsTable
+								resultsJson={{
+									income: dislocationByIncomeContent,
+									race: dislocationByRaceContent,
+									tenure: dislocationByTenureContent,
+									housingType: dislocationByHousingTypeContent
+								}}
+								isMetrics={true}
+							/>
+						</Box>
+					) : (
+						<></>
+					)}
 					{totalDislTableContent && totalDislTableContent["population_dislocation_in_total"] ? (
 						<Box className={classes.tableEntry}>
 							<DislocationResultsTable
@@ -231,10 +236,19 @@ export default function ResilienceMetrics(props) {
 								<FormLabel component="legend" className={classes.title}>
 									Household Income
 								</FormLabel>
-								<IncoreRadioGroup options={cgeFilterOptions} value={cgeHhIncomeRegion}
-												  handleChange={(e) => { setCgeHhIncomeRegion(e.target.value);}} />
+								<IncoreRadioGroup
+									options={cgeFilterOptions}
+									value={cgeHhIncomeRegion}
+									handleChange={(e) => {
+										setCgeHhIncomeRegion(e.target.value);
+									}}
+								/>
 							</div>
-							<CgeResultsTable resultsJson={cgeHouseholdIncomeContent} isMetrics={true} region={cgeHhIncomeRegion}/>
+							<CgeResultsTable
+								resultsJson={cgeHouseholdIncomeContent}
+								isMetrics={true}
+								region={cgeHhIncomeRegion}
+							/>
 						</Box>
 					) : (
 						<></>
@@ -244,9 +258,18 @@ export default function ResilienceMetrics(props) {
 							<FormLabel component="legend" className={classes.title}>
 								Employment
 							</FormLabel>
-							<IncoreRadioGroup options={cgeFilterOptions} value={cgeEmploymentRegion}
-											  handleChange={(e) => { setCgeEmploymentRegion(e.target.value);}} />
-							<CgeResultsTable resultsJson={cgeEmploymentContent} isMetrics={true} region={cgeEmploymentRegion}/>
+							<IncoreRadioGroup
+								options={cgeFilterOptions}
+								value={cgeEmploymentRegion}
+								handleChange={(e) => {
+									setCgeEmploymentRegion(e.target.value);
+								}}
+							/>
+							<CgeResultsTable
+								resultsJson={cgeEmploymentContent}
+								isMetrics={true}
+								region={cgeEmploymentRegion}
+							/>
 						</Box>
 					) : (
 						<></>
@@ -256,8 +279,13 @@ export default function ResilienceMetrics(props) {
 							<FormLabel component="legend" className={classes.title}>
 								Community-level GDP
 							</FormLabel>
-							<IncoreRadioGroup options={cgeFilterOptions} value={cgeDomesticSupplyRegion}
-											  handleChange={(e) => { setCgeDomesticSupplyRegion(e.target.value);}} />
+							<IncoreRadioGroup
+								options={cgeFilterOptions}
+								value={cgeDomesticSupplyRegion}
+								handleChange={(e) => {
+									setCgeDomesticSupplyRegion(e.target.value);
+								}}
+							/>
 							<CgeResultsTable
 								resultsJson={cgeDomesticSupplyContent}
 								yAxisLegend="Person"
@@ -287,9 +315,17 @@ export default function ResilienceMetrics(props) {
 				</div>
 			</DialogContent>
 			<DialogActions>
-				<IncoreButtonText onClick={()=>{downloadImg(printRef.current, "Resilience_Metrics");}}
-								  startIcon={<CameraAltIcon/>}>Image</IncoreButtonText>
-				<IncoreButtonText onClick={handlePreviewClose} startIcon={<CloseIcon/>}>Close</IncoreButtonText>
+				<IncoreButtonText
+					onClick={() => {
+						downloadImg(printRef.current, "Resilience_Metrics");
+					}}
+					startIcon={<CameraAltIcon />}
+				>
+					Image
+				</IncoreButtonText>
+				<IncoreButtonText onClick={handlePreviewClose} startIcon={<CloseIcon />}>
+					Close
+				</IncoreButtonText>
 			</DialogActions>
 		</Dialog>
 	);

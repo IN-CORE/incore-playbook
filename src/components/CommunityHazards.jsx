@@ -204,7 +204,6 @@ export const CommunityHazards = (props) => {
 		setCurrTabIndex(0);
 	}, [selectedHazardType]);
 
-
 	// When Switching Tab
 	useEffect(() => {
 		drawDisplaySourceRef.current.clear();
@@ -448,8 +447,12 @@ export const CommunityHazards = (props) => {
 										label="Create a Hazard"
 										className={classes.tab}
 										classes={{ selected: classes.selectedTab }}
-										style={{display: selectedHazardType === "tornado" || selectedHazardType ===
-											"earthquake" ? "block":"none"}}
+										style={{
+											display:
+												selectedHazardType === "tornado" || selectedHazardType === "earthquake"
+													? "block"
+													: "none"
+										}}
 									/>
 									<Tab
 										label="View Created"

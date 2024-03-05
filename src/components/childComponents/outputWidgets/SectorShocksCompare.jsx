@@ -19,14 +19,21 @@ export default function SectorShocksCompare(props) {
 					if (vName === "sectorShocksDownload") {
 						if (i === 0) {
 							setSectorShocksContentA(
-								await getOutputFileContent(datawolfConfig, executionItems[i], datawolfDatasetConfigItem.datasetId)
+								await getOutputFileContent(
+									datawolfConfig,
+									executionItems[i],
+									datawolfDatasetConfigItem.datasetId
+								)
 							);
 						} else if (i === 1) {
 							setSectorShocksContentB(
-								await getOutputFileContent(datawolfConfig, executionItems[i], datawolfDatasetConfigItem.datasetId)
+								await getOutputFileContent(
+									datawolfConfig,
+									executionItems[i],
+									datawolfDatasetConfigItem.datasetId
+								)
 							);
 						}
-
 					}
 				}
 			}

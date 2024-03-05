@@ -23,7 +23,6 @@ import { IncoreMenuItem, IncoreSelectBox } from "./styledComponents/IncoreSelect
 import { useDispatch, useSelector } from "react-redux";
 import { fetchDatasets } from "../actions/datasets";
 
-
 import Pagination from "./childComponents/navigation/Pagination";
 import { move2TestbedSpace } from "../utils/common";
 import { DownloadAlert } from "./childComponents/alert/DownloadAlert";
@@ -200,39 +199,63 @@ export const BuiltEnvironment = ({ step, substep }) => {
 
 	const pageChange = (direction, key) => {
 		if (key === "building") {
-			_pageChangeHelper(direction, dataPerPage, setOffsetBuilding, pageNumberBuilding,
-				setPageNumberBuilding);
+			_pageChangeHelper(direction, dataPerPage, setOffsetBuilding, pageNumberBuilding, setPageNumberBuilding);
 		}
 		if (key === "retrofitStrategies") {
-			_pageChangeHelper(direction, dataPerPage, setOffsetRetrofitStrategies, pageNumberRetrofitStrategies,
-				setPageNumberRetrofitStrategies);
+			_pageChangeHelper(
+				direction,
+				dataPerPage,
+				setOffsetRetrofitStrategies,
+				pageNumberRetrofitStrategies,
+				setPageNumberRetrofitStrategies
+			);
 		}
 		if (key === "epf") {
 			_pageChangeHelper(direction, dataPerPage, setOffsetEpf, pageNumberEpf, setPageNumberEpf);
 		}
 		if (key === "interdNetwork") {
-			_pageChangeHelper(direction, dataPerPage, setOffsetInterdNetwork, pageNumberInterdNetwork,
-				setPageNumberInterdNetwork);
+			_pageChangeHelper(
+				direction,
+				dataPerPage,
+				setOffsetInterdNetwork,
+				pageNumberInterdNetwork,
+				setPageNumberInterdNetwork
+			);
 		}
 		if (key === "sectorShocks") {
-			_pageChangeHelper(direction, dataPerPage, setOffsetSectorShocks, pageNumberSectorShocks,
-				setPageNumberSectorShocks);
+			_pageChangeHelper(
+				direction,
+				dataPerPage,
+				setOffsetSectorShocks,
+				pageNumberSectorShocks,
+				setPageNumberSectorShocks
+			);
 		}
 		if (key === "huas") {
 			_pageChangeHelper(direction, dataPerPage, setOffsetHuas, pageNumberHuas, setPageNumberHuas);
 		}
 		if (key === "blockGroups") {
-			_pageChangeHelper(direction, dataPerPage, setOffsetBlockGroups, pageNumberBlockGroups,
-				setPageNumberBlockGroups);
+			_pageChangeHelper(
+				direction,
+				dataPerPage,
+				setOffsetBlockGroups,
+				pageNumberBlockGroups,
+				setPageNumberBlockGroups
+			);
 		}
 		if (key === "valueLosses") {
-			_pageChangeHelper(direction, dataPerPage, setOffsetValueLosses, pageNumberValueLosses,
-				setPageNumberValueLosses);
+			_pageChangeHelper(
+				direction,
+				dataPerPage,
+				setOffsetValueLosses,
+				pageNumberValueLosses,
+				setPageNumberValueLosses
+			);
 		}
 	};
 
 	const getRow = (fields) => {
-		let row = fields.map(v => ({ ...v, download: "Download" }));
+		let row = fields.map((v) => ({ ...v, download: "Download" }));
 		return row;
 	};
 
@@ -315,8 +338,11 @@ export const BuiltEnvironment = ({ step, substep }) => {
 	return (
 		<Layout>
 			<div className="firstDivInContent">
-				<Box display="flex" style={{ alignItem: "center", padding: "1em 0" }}
-					sx={{ justifyContent: "space-between" }}>
+				<Box
+					display="flex"
+					style={{ alignItem: "center", padding: "1em 0" }}
+					sx={{ justifyContent: "space-between" }}
+				>
 					<Box>
 						<BreadCrumb
 							parentStep="Understand the Situation"
@@ -332,277 +358,275 @@ export const BuiltEnvironment = ({ step, substep }) => {
 				<Box className="outerBox">
 					<Grid container spacing={3} className="innerBox">
 						{/*Download alerts*/}
-						<DownloadAlert downloadDialogOpen={downloadDialogOpen}
-							handleDownloadDialogClose={() => {setDownloadDialogOpen(false);}} />
+						<DownloadAlert
+							downloadDialogOpen={downloadDialogOpen}
+							handleDownloadDialogClose={() => {
+								setDownloadDialogOpen(false);
+							}}
+						/>
 						<Grid item xl={8} lg={8} md={8} sm={12} xs={12} className="gridItem">
 							<LoadingOverlay active={loading} spinner text="Saving...">
 								<div>
 									<IncoreInputLabel className={classes.title}>Uploaded Data</IncoreInputLabel>
 									<Box className={classes.uploadSection}>
 										{/*list of uploaded building inventory*/}
-										{
-											allowedDataTypes.building ?
-												<Box className={classes.subUploadSection}>
-													<Box className={classes.subTitleRow}>
-														<IncoreInputLabel className={classes.subTitle}>
-                                                            Building Inventory
-														</IncoreInputLabel>
-														{
-															globalConfig.allowUpload ?
-																<IconButton className={classes.plusButton}
-																	onClick={() => {
-																		setUploadModalStatus(true);
-																		setDatasetType("ergo:buildingInventoryVer6");
-																		setCategory("building");
-																	}}>
-																	<AddCircleOutlineIcon />
-																</IconButton>
-																:
-																null
-														}
-														<Divider orientation="horizontal"
-															className={classes.subDivider}
-															flexItem
-														/>
-													</Box>
-													<Box className="entryTable">
-														<EntryTable fieldNames={fieldNames}
-															fields={getRow(buildings)} />
-													</Box>
-													<Pagination
-														pageNumber={pageNumberBuilding}
-														data={buildings}
-														dataPerPage={dataPerPage}
-														previous={() => pageChange("previous", "building")}
-														next={() => pageChange("next", "building")}
+										{allowedDataTypes.building ? (
+											<Box className={classes.subUploadSection}>
+												<Box className={classes.subTitleRow}>
+													<IncoreInputLabel className={classes.subTitle}>
+														Building Inventory
+													</IncoreInputLabel>
+													{globalConfig.allowUpload ? (
+														<IconButton
+															className={classes.plusButton}
+															onClick={() => {
+																setUploadModalStatus(true);
+																setDatasetType("ergo:buildingInventoryVer6");
+																setCategory("building");
+															}}
+														>
+															<AddCircleOutlineIcon />
+														</IconButton>
+													) : null}
+													<Divider
+														orientation="horizontal"
+														className={classes.subDivider}
+														flexItem
 													/>
 												</Box>
-												:
-												null
-										}
+												<Box className="entryTable">
+													<EntryTable fieldNames={fieldNames} fields={getRow(buildings)} />
+												</Box>
+												<Pagination
+													pageNumber={pageNumberBuilding}
+													data={buildings}
+													dataPerPage={dataPerPage}
+													previous={() => pageChange("previous", "building")}
+													next={() => pageChange("next", "building")}
+												/>
+											</Box>
+										) : null}
 										{/*list of uploaded building retrofit strategies*/}
-										{
-											allowedDataTypes.retrofitStrategies ?
-												<Box className={classes.subUploadSection}>
-													<Box className={classes.subTitleRow}>
-														<IncoreInputLabel className={classes.subTitle}>
-                                                            Building Retrofit Plans
-														</IncoreInputLabel>
-														{
-															globalConfig.allowUpload ?
-																<IconButton className={classes.plusButton}
-																	onClick={() => {
-																		setUploadModalStatus(true);
-																		setDatasetType("incore:retrofitStrategy");
-																		setCategory("retrofitStrategies");
-																	}}>
-																	<AddCircleOutlineIcon />
-																</IconButton>
-																:
-																null
-														}
-														<Divider orientation="horizontal"
-															className={classes.subDivider}
-															flexItem
-														/>
-													</Box>
-													<Box className="entryTable">
-														<EntryTable fieldNames={fieldNames}
-															fields={getRow(retrofitStrategies)} />
-													</Box>
-													<Pagination
-														pageNumber={pageNumberRetrofitStrategies}
-														data={retrofitStrategies}
-														dataPerPage={dataPerPage}
-														previous={() => pageChange("previous", "retrofitStrategies")}
-														next={() => pageChange("next", "retrofitStrategies")}
+										{allowedDataTypes.retrofitStrategies ? (
+											<Box className={classes.subUploadSection}>
+												<Box className={classes.subTitleRow}>
+													<IncoreInputLabel className={classes.subTitle}>
+														Building Retrofit Plans
+													</IncoreInputLabel>
+													{globalConfig.allowUpload ? (
+														<IconButton
+															className={classes.plusButton}
+															onClick={() => {
+																setUploadModalStatus(true);
+																setDatasetType("incore:retrofitStrategy");
+																setCategory("retrofitStrategies");
+															}}
+														>
+															<AddCircleOutlineIcon />
+														</IconButton>
+													) : null}
+													<Divider
+														orientation="horizontal"
+														className={classes.subDivider}
+														flexItem
 													/>
 												</Box>
-												:
-												null
-										}
+												<Box className="entryTable">
+													<EntryTable
+														fieldNames={fieldNames}
+														fields={getRow(retrofitStrategies)}
+													/>
+												</Box>
+												<Pagination
+													pageNumber={pageNumberRetrofitStrategies}
+													data={retrofitStrategies}
+													dataPerPage={dataPerPage}
+													previous={() => pageChange("previous", "retrofitStrategies")}
+													next={() => pageChange("next", "retrofitStrategies")}
+												/>
+											</Box>
+										) : null}
 
 										{/*list of uploaded EPF inventory*/}
-										{
-											allowedDataTypes.epf ?
-												<Box className={classes.subUploadSection}>
-													<Box className={classes.subTitleRow}>
-														<IncoreInputLabel className={classes.subTitle}>Electric Power
-                                                            Facility</IncoreInputLabel>
-														{
-															globalConfig.allowUpload ?
-																<IconButton className={classes.plusButton}
-																	onClick={() => {
-																		setUploadModalStatus(true);
-																		setDatasetType("incore:epf");
-																		setCategory("electric power facility");
-																	}}>
-																	<AddCircleOutlineIcon />
-																</IconButton>
-																:
-																null
-														}
-														<Divider orientation="horizontal" className={classes.subDivider}
-															flexItem />
-													</Box>
-													<Box className="entryTable">
-														<EntryTable fieldNames={fieldNames} fields={getRow(epfs)} />
-													</Box>
-													<Pagination
-														pageNumber={pageNumberEpf}
-														data={epfs}
-														dataPerPage={dataPerPage}
-														previous={() => pageChange("previous", "epf")}
-														next={() => pageChange("next", "epf")}
+										{allowedDataTypes.epf ? (
+											<Box className={classes.subUploadSection}>
+												<Box className={classes.subTitleRow}>
+													<IncoreInputLabel className={classes.subTitle}>
+														Electric Power Facility
+													</IncoreInputLabel>
+													{globalConfig.allowUpload ? (
+														<IconButton
+															className={classes.plusButton}
+															onClick={() => {
+																setUploadModalStatus(true);
+																setDatasetType("incore:epf");
+																setCategory("electric power facility");
+															}}
+														>
+															<AddCircleOutlineIcon />
+														</IconButton>
+													) : null}
+													<Divider
+														orientation="horizontal"
+														className={classes.subDivider}
+														flexItem
 													/>
 												</Box>
-												:
-												null
-										}
+												<Box className="entryTable">
+													<EntryTable fieldNames={fieldNames} fields={getRow(epfs)} />
+												</Box>
+												<Pagination
+													pageNumber={pageNumberEpf}
+													data={epfs}
+													dataPerPage={dataPerPage}
+													previous={() => pageChange("previous", "epf")}
+													next={() => pageChange("next", "epf")}
+												/>
+											</Box>
+										) : null}
 
 										{/*list of uploaded interdependency network*/}
-										{
-											allowedDataTypes.network ?
-												<Box className={classes.subUploadSection}>
-													<Box className={classes.subTitleRow}>
-														<IncoreInputLabel className={classes.subTitle}>Interdependency
-                                                            Network</IncoreInputLabel>
-														{
-															globalConfig.allowUpload ?
-																<IconButton className={classes.plusButton}
-																	onClick={() => {
-																		setUploadModalStatus(true);
-																		setDatasetType("incore:buildingInterdependencyDict");
-																		setCategory("interdependency network");
-																	}}>
-																	<AddCircleOutlineIcon />
-																</IconButton>
-																:
-																null
-														}
-														<Divider orientation="horizontal" className={classes.subDivider}
-															flexItem />
-													</Box>
-													<Box className="entryTable">
-														<EntryTable fieldNames={fieldNames}
-															fields={getRow(interdNetworks)} />
-													</Box>
-													<Pagination
-														pageNumber={pageNumberInterdNetwork}
-														data={interdNetworks}
-														dataPerPage={dataPerPage}
-														previous={() => pageChange("previous", "interdNetwork")}
-														next={() => pageChange("next", "interdNetwork")}
+										{allowedDataTypes.network ? (
+											<Box className={classes.subUploadSection}>
+												<Box className={classes.subTitleRow}>
+													<IncoreInputLabel className={classes.subTitle}>
+														Interdependency Network
+													</IncoreInputLabel>
+													{globalConfig.allowUpload ? (
+														<IconButton
+															className={classes.plusButton}
+															onClick={() => {
+																setUploadModalStatus(true);
+																setDatasetType("incore:buildingInterdependencyDict");
+																setCategory("interdependency network");
+															}}
+														>
+															<AddCircleOutlineIcon />
+														</IconButton>
+													) : null}
+													<Divider
+														orientation="horizontal"
+														className={classes.subDivider}
+														flexItem
 													/>
 												</Box>
-												:
-												null
-										}
+												<Box className="entryTable">
+													<EntryTable
+														fieldNames={fieldNames}
+														fields={getRow(interdNetworks)}
+													/>
+												</Box>
+												<Pagination
+													pageNumber={pageNumberInterdNetwork}
+													data={interdNetworks}
+													dataPerPage={dataPerPage}
+													previous={() => pageChange("previous", "interdNetwork")}
+													next={() => pageChange("next", "interdNetwork")}
+												/>
+											</Box>
+										) : null}
 
 										{/*list of socioeconomics datasets for sector shock, cge and population dislocation*/}
-										{
-											allowedDataTypes.socioeconomics ?
-												<Box className={classes.subUploadSection}>
-													<Box className={classes.subTitleRow}>
-														<IncoreInputLabel className={classes.subTitle}>Socioeconomics
-                                                            Datasets</IncoreInputLabel>
-														{
-															globalConfig.allowUpload ?
-																<IconButton className={classes.plusButton}
-																	onClick={() => {
-																		setUploadModalStatus(true);
-																		// don't set types here, set the types inside the modal
-																		setDatasetType("");
-																		setCategory("socioeconomics input");
-																	}}>
-																	<AddCircleOutlineIcon />
-																</IconButton>
-																:
-																null
-														}
-														<Divider orientation="horizontal" className={classes.subDivider}
-															flexItem />
-													</Box>
-													{/*sector shocks*/}
-													<Box className={classes.socioeconomicsSubBox}>
-														<IncoreInputLabel className={classes.socioeconomicsSubTitle}>
-                                                            Sector Shocks
-														</IncoreInputLabel>
-														<Box className="entryTable">
-															<EntryTable
-																fieldNames={fieldNames}
-																fields={getRow(sectorShocks)}
-															/>
-														</Box>
-														<Pagination
-															pageNumber={pageNumberSectorShocks}
-															data={sectorShocks}
-															dataPerPage={dataPerPage}
-															previous={() => pageChange("previous", "sectorShocks")}
-															next={() => pageChange("next", "sectorShocks")}
-														/>
-													</Box>
-													{/*huas*/}
-													<Box className={classes.socioeconomicsSubBox}>
-														<IncoreInputLabel className={classes.socioeconomicsSubTitle}>
-                                                            Housing Unit Allocations
-														</IncoreInputLabel>
-														<Box className="entryTable">
-															<EntryTable
-																fieldNames={fieldNames}
-																fields={getRow(huas)}
-															/>
-														</Box>
-														<Pagination
-															pageNumber={pageNumberHuas}
-															data={huas}
-															dataPerPage={dataPerPage}
-															previous={() => pageChange("previous", "huas")}
-															next={() => pageChange("next", "huas")}
-														/>
-													</Box>
-													{/*block groups*/}
-													<Box className={classes.socioeconomicsSubBox}>
-														<IncoreInputLabel className={classes.socioeconomicsSubTitle}>
-                                                            Block Groups
-														</IncoreInputLabel>
-														<Box className="entryTable">
-															<EntryTable
-																fieldNames={fieldNames}
-																fields={getRow(blockGroups)}
-															/>
-														</Box>
-														<Pagination
-															pageNumber={pageNumberBlockGroups}
-															data={blockGroups}
-															dataPerPage={dataPerPage}
-															previous={() => pageChange("previous", "blockGroups")}
-															next={() => pageChange("next", "blockGroups")}
-														/>
-													</Box>
-													{/*value losses*/}
-													<Box className={classes.socioeconomicsSubBox}>
-														<IncoreInputLabel className={classes.socioeconomicsSubTitle}>
-                                                            Value Losses
-														</IncoreInputLabel>
-														<Box className="entryTable">
-															<EntryTable
-																fieldNames={fieldNames}
-																fields={getRow(valueLosses)}
-															/>
-														</Box>
-														<Pagination
-															pageNumber={pageNumberValueLosses}
-															data={valueLosses}
-															dataPerPage={dataPerPage}
-															previous={() => pageChange("previous", "valueLosses")}
-															next={() => pageChange("next", "valueLosses")}
-														/>
-													</Box>
+										{allowedDataTypes.socioeconomics ? (
+											<Box className={classes.subUploadSection}>
+												<Box className={classes.subTitleRow}>
+													<IncoreInputLabel className={classes.subTitle}>
+														Socioeconomics Datasets
+													</IncoreInputLabel>
+													{globalConfig.allowUpload ? (
+														<IconButton
+															className={classes.plusButton}
+															onClick={() => {
+																setUploadModalStatus(true);
+																// don't set types here, set the types inside the modal
+																setDatasetType("");
+																setCategory("socioeconomics input");
+															}}
+														>
+															<AddCircleOutlineIcon />
+														</IconButton>
+													) : null}
+													<Divider
+														orientation="horizontal"
+														className={classes.subDivider}
+														flexItem
+													/>
 												</Box>
-												:
-												null
-										}
+												{/*sector shocks*/}
+												<Box className={classes.socioeconomicsSubBox}>
+													<IncoreInputLabel className={classes.socioeconomicsSubTitle}>
+														Sector Shocks
+													</IncoreInputLabel>
+													<Box className="entryTable">
+														<EntryTable
+															fieldNames={fieldNames}
+															fields={getRow(sectorShocks)}
+														/>
+													</Box>
+													<Pagination
+														pageNumber={pageNumberSectorShocks}
+														data={sectorShocks}
+														dataPerPage={dataPerPage}
+														previous={() => pageChange("previous", "sectorShocks")}
+														next={() => pageChange("next", "sectorShocks")}
+													/>
+												</Box>
+												{/*huas*/}
+												<Box className={classes.socioeconomicsSubBox}>
+													<IncoreInputLabel className={classes.socioeconomicsSubTitle}>
+														Housing Unit Allocations
+													</IncoreInputLabel>
+													<Box className="entryTable">
+														<EntryTable fieldNames={fieldNames} fields={getRow(huas)} />
+													</Box>
+													<Pagination
+														pageNumber={pageNumberHuas}
+														data={huas}
+														dataPerPage={dataPerPage}
+														previous={() => pageChange("previous", "huas")}
+														next={() => pageChange("next", "huas")}
+													/>
+												</Box>
+												{/*block groups*/}
+												<Box className={classes.socioeconomicsSubBox}>
+													<IncoreInputLabel className={classes.socioeconomicsSubTitle}>
+														Block Groups
+													</IncoreInputLabel>
+													<Box className="entryTable">
+														<EntryTable
+															fieldNames={fieldNames}
+															fields={getRow(blockGroups)}
+														/>
+													</Box>
+													<Pagination
+														pageNumber={pageNumberBlockGroups}
+														data={blockGroups}
+														dataPerPage={dataPerPage}
+														previous={() => pageChange("previous", "blockGroups")}
+														next={() => pageChange("next", "blockGroups")}
+													/>
+												</Box>
+												{/*value losses*/}
+												<Box className={classes.socioeconomicsSubBox}>
+													<IncoreInputLabel className={classes.socioeconomicsSubTitle}>
+														Value Losses
+													</IncoreInputLabel>
+													<Box className="entryTable">
+														<EntryTable
+															fieldNames={fieldNames}
+															fields={getRow(valueLosses)}
+														/>
+													</Box>
+													<Pagination
+														pageNumber={pageNumberValueLosses}
+														data={valueLosses}
+														dataPerPage={dataPerPage}
+														previous={() => pageChange("previous", "valueLosses")}
+														next={() => pageChange("next", "valueLosses")}
+													/>
+												</Box>
+											</Box>
+										) : null}
 									</Box>
 								</div>
 							</LoadingOverlay>
@@ -675,7 +699,7 @@ export const BuiltEnvironment = ({ step, substep }) => {
 								) : null}
 								<Box className="inputGroup">
 									<IncoreButton variant="contained" onClick={onSave} disabled={disabled}>
-                                        Save
+										Save
 									</IncoreButton>
 								</Box>
 							</>

@@ -21,7 +21,7 @@ export default function SectorShocks(props) {
 	// print container
 	const printRef = useRef();
 
-	useEffect(()=> {
+	useEffect(() => {
 		setSelectedExecutionName(executionItem["title"]);
 
 		datawolfDatasetConfigItems.map(async (datawolfDatasetConfigItem) => {
@@ -38,8 +38,12 @@ export default function SectorShocks(props) {
 	const download = async () => {
 		setDownloadDialogOpen(true);
 		if (sectorShocksDownload) {
-			await downloadOutputFile(datawolfConfig, sectorShocksDownload, null,
-				`sector-shocks-${executionItem.id}.csv`);
+			await downloadOutputFile(
+				datawolfConfig,
+				sectorShocksDownload,
+				null,
+				`sector-shocks-${executionItem.id}.csv`
+			);
 		}
 	};
 
@@ -72,10 +76,20 @@ export default function SectorShocks(props) {
 				</Box>
 			</DialogContent>
 			<DialogActions>
-				<IncoreButtonText onClick={()=>{downloadImg(printRef.current, "SectorShocks");}}
-								  startIcon={<CameraAltIcon/>}>Image</IncoreButtonText>
-				<IncoreButtonText onClick={download} startIcon={<GetAppIcon/>}>Data</IncoreButtonText>
-				<IncoreButtonText onClick={handlePreviewClose} startIcon={<CloseIcon/>}>Close</IncoreButtonText>
+				<IncoreButtonText
+					onClick={() => {
+						downloadImg(printRef.current, "SectorShocks");
+					}}
+					startIcon={<CameraAltIcon />}
+				>
+					Image
+				</IncoreButtonText>
+				<IncoreButtonText onClick={download} startIcon={<GetAppIcon />}>
+					Data
+				</IncoreButtonText>
+				<IncoreButtonText onClick={handlePreviewClose} startIcon={<CloseIcon />}>
+					Close
+				</IncoreButtonText>
 			</DialogActions>
 		</Dialog>
 	);

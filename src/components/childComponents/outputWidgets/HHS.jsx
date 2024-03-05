@@ -81,7 +81,7 @@ export default function HHS(props) {
 				<Box className="previewTitleSection">
 					<Typography className="previewTitle">{selectedExecutionName}</Typography>
 					<Typography className="previewTitle">
-                        Select Data: Housing Recovery Stage Across Households
+						Select Data: Housing Recovery Stage Across Households
 					</Typography>
 				</Box>
 
@@ -91,11 +91,15 @@ export default function HHS(props) {
 							{/*Sliders*/}
 							<Container style={{ width: "80%", margin: 0 }}>
 								<IncoreInputLabel id="discrete-slider-restrict" gutterBottom>
-                                    Months after the disaster
+									Months after the disaster
 								</IncoreInputLabel>
-								<HhsSlider marks={marks}
+								<HhsSlider
+									marks={marks}
 									value={t}
-									handleChange={(e, newValue) => {setT(newValue);}} />
+									handleChange={(e, newValue) => {
+										setT(newValue);
+									}}
+								/>
 							</Container>
 							{HHSBarChartContent ? (
 								<HHSBarChart
@@ -120,13 +124,13 @@ export default function HHS(props) {
 					}}
 					startIcon={<CameraAltIcon />}
 				>
-                    Image
+					Image
 				</IncoreButtonText>
 				<IncoreButtonText onClick={download} startIcon={<GetAppIcon />}>
-                    Download
+					Download
 				</IncoreButtonText>
 				<IncoreButtonText onClick={handlePreviewClose} startIcon={<CloseIcon />}>
-                    Close
+					Close
 				</IncoreButtonText>
 			</DialogActions>
 		</Dialog>

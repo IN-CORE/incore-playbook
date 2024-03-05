@@ -15,8 +15,8 @@ module.exports = function (config) {
 		},
 		files: [
 			"node_modules/babel-polyfill/dist/polyfill.js",
-			{pattern: "test/**/*.test.js"},
-			{pattern: "test/**/*.test.jsx"},
+			{ pattern: "test/**/*.test.js" },
+			{ pattern: "test/**/*.test.jsx" }
 		],
 		reporters: ["mocha", "coverage"], //report results in this format
 		coverageReporter: {

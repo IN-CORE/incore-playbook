@@ -6,17 +6,17 @@ export const stepInfo = [
 		stepAbout: [
 			"How is this done?",
 			"A resilience leader is typically identified by the local governing authority " +
-            "or body to promote and coordinate community resilience.",
+				"or body to promote and coordinate community resilience.",
 			"  ",
 			"What are the primary duties?",
 			"A resilience leader serves as the community official for resilience efforts " +
-            "and coordination with elected community leaders and key community stakeholders. " +
-            "Identification and recruitment of a collaborative planning team begins with " +
-            "a resilience leader who directs the process, provides continuity, " +
-            "elevates the importance of resilience , convenes stakeholders, communicates effectively, " +
-            "and engages public support. A community resilience leader may be a Chief Resilience Officer (CRO), " +
-            "sustainability office head, emergency management professional, city planner, " +
-            "or other official with qualifications to advance community resilience."
+				"and coordination with elected community leaders and key community stakeholders. " +
+				"Identification and recruitment of a collaborative planning team begins with " +
+				"a resilience leader who directs the process, provides continuity, " +
+				"elevates the importance of resilience , convenes stakeholders, communicates effectively, " +
+				"and engages public support. A community resilience leader may be a Chief Resilience Officer (CRO), " +
+				"sustainability office head, emergency management professional, city planner, " +
+				"or other official with qualifications to advance community resilience."
 		],
 		stepLink: {
 			uri: "https://incore.ncsa.illinois.edu",
@@ -28,18 +28,18 @@ export const stepInfo = [
 		stepAbout: [
 			"Who should complete this step?",
 			"The planning team should characterize the built environment – buildings and infrastructure systems – " +
-            "that community services and functions rely upon. Dependencies between buildings and infrastructure systems " +
-            "should also be identified.",
+				"that community services and functions rely upon. Dependencies between buildings and infrastructure systems " +
+				"should also be identified.",
 			"  ",
 			"What does the “Built Environment” include?",
 			"A community’s built environment is foundational to community functions, services, and the variety of daily " +
-            "activities of its residents. The built environment includes, but is not limited to:",
+				"activities of its residents. The built environment includes, but is not limited to:",
 			"- Buildings (e.g., critical, commercial, industrial, residential)",
 			"- Transportation facilities (e.g., roads, tunnels, rail, airports, maritime ports)",
 			"- Energy systems (e.g., electric power, fuel systems)",
 			"- Communication systems (e.g., internet, phone, cellular)",
 			"- Water and wastewater systems (e.g., reservoirs, pumping stations, transmission network, water treatment " +
-            "plants, storm water system, wastewater treatment)"
+				"plants, storm water system, wastewater treatment)"
 		],
 		stepLink: {
 			uri: "https://incore.ncsa.illinois.edu",
@@ -86,10 +86,14 @@ export const hhsInfo = {
 	tableTitle: "Recovery Stages",
 	rows: {
 		"Stage 1": "Emergency shelter.",
-		"Stage 2": "Temporary shelter, which can consist of staying with friends or family, staying at a hotel or motel.",
-		"Stage 3": "Temporary housing, which can consist of staying with friends or family, staying in a rental unit, staying in a FEMA-funded mobile home.",
-		"Stage 4": "Permanent housing, which can consist of staying in a rental unit, staying in a mobile home, or staying in a site-built home.",
-		"Stage 5": "Failure to reach permanent housing, which can occur from languishing in unstable housing or becoming homeless."
+		"Stage 2":
+			"Temporary shelter, which can consist of staying with friends or family, staying at a hotel or motel.",
+		"Stage 3":
+			"Temporary housing, which can consist of staying with friends or family, staying in a rental unit, staying in a FEMA-funded mobile home.",
+		"Stage 4":
+			"Permanent housing, which can consist of staying in a rental unit, staying in a mobile home, or staying in a site-built home.",
+		"Stage 5":
+			"Failure to reach permanent housing, which can occur from languishing in unstable housing or becoming homeless."
 	}
 };
 
@@ -141,9 +145,9 @@ export const hhsInfo = {
 // SLC & Galveston
 export const cgeInfo = {
 	totalHouseholdIncome: {
-		textTitle: "What do we mean by \"Total Household Income\"?",
+		textTitle: 'What do we mean by "Total Household Income"?',
 		textContent:
-            "Household income is the total income accruing to a household from land, labor, capital, and government transfers for the selected timeframe. In the context of a result like \"household income by the household group\" (i.e., HH1 to HH5), this would mean the combined total income for all households in that household group.",
+			'Household income is the total income accruing to a household from land, labor, capital, and government transfers for the selected timeframe. In the context of a result like "household income by the household group" (i.e., HH1 to HH5), this would mean the combined total income for all households in that household group.',
 		tableTitle: "Household (HH) Groups",
 		rows: {
 			HH1: "less than $30K",
@@ -153,43 +157,43 @@ export const cgeInfo = {
 		}
 	},
 	domesticSupply: {
-		textTitle: "What do we mean by \"Domestic Supply\"?",
+		textTitle: 'What do we mean by "Domestic Supply"?',
 		textContent:
-            "Domestic supply is the total value of commodities produced by that sector (i.e., Goods, Trade, Other) valued at producers’ prices available for domestic consumption or investment. It is calculated as total domestic production plus imports minus exports and minus change in inventories. Another way to consider this definition would be GDP (Gross Domestic Product) for the given sector.",
+			"Domestic supply is the total value of commodities produced by that sector (i.e., Goods, Trade, Other) valued at producers’ prices available for domestic consumption or investment. It is calculated as total domestic production plus imports minus exports and minus change in inventories. Another way to consider this definition would be GDP (Gross Domestic Product) for the given sector.",
 		tableTitle: "Sectors",
 		rows: {
-			"AG_MI": "Agriculture, Forestry, Fishing, Hunting, Mining, Quarrying, and Oil and Gas Extraction",
-			"UTIL": "Utilities",
-			"CONS": "Construction",
-			"MANU": "Manufacturing",
-			"COMMER": "Wholesale Trade, Retail Trade, Transportation and Warehousing, Finance and Insurance, Professional, Scientific, and Technical Services",
-			"EDU": "Educational Services",
-			"HEALTH": "Health Care and Social Assistance",
-			"ART_ACC": "Arts, Entertainment, Recreation, Accommodation and Food Services",
-			"RELIG": "Religious Organizations",
-			"HS1": "Lower-value homes (less than $100k)",
-			"HS2": "Middle-value homes (100k-200k)",
-			"HS3": "Higher - value homes (more than 200k)"
+			AG_MI: "Agriculture, Forestry, Fishing, Hunting, Mining, Quarrying, and Oil and Gas Extraction",
+			UTIL: "Utilities",
+			CONS: "Construction",
+			MANU: "Manufacturing",
+			COMMER: "Wholesale Trade, Retail Trade, Transportation and Warehousing, Finance and Insurance, Professional, Scientific, and Technical Services",
+			EDU: "Educational Services",
+			HEALTH: "Health Care and Social Assistance",
+			ART_ACC: "Arts, Entertainment, Recreation, Accommodation and Food Services",
+			RELIG: "Religious Organizations",
+			HS1: "Lower-value homes (less than $100k)",
+			HS2: "Middle-value homes (100k-200k)",
+			HS3: "Higher - value homes (more than 200k)"
 		}
 	},
 	employment: {
-		textTitle: "What do we mean by \"Employment\"?",
+		textTitle: 'What do we mean by "Employment"?',
 		textContent:
-            "As a standard definition, employment is the total number of workers employed at a given time. In the context of the figures, employment is the total number of workers employed in the given sector. Another way to look at this would be to say that employment is the total number of laborers employed in that sector.",
+			"As a standard definition, employment is the total number of workers employed at a given time. In the context of the figures, employment is the total number of workers employed in the given sector. Another way to look at this would be to say that employment is the total number of laborers employed in that sector.",
 		tableTitle: "Sectors",
 		rows: {
-			"AG_MI": "Agriculture, Forestry, Fishing, Hunting, Mining, Quarrying, and Oil and Gas Extraction",
-			"UTIL": "Utilities",
-			"CONS": "Construction",
-			"MANU": "Manufacturing",
-			"COMMER": "Wholesale Trade, Retail Trade, Transportation and Warehousing, Finance and Insurance, Professional, Scientific, and Technical Services",
-			"EDU": "Educational Services",
-			"HEALTH": "Health Care and Social Assistance",
-			"ART_ACC": "Arts, Entertainment, Recreation, Accommodation and Food Services",
-			"RELIG": "Religious Organizations",
-			"HS1": "Lower-value homes (less than $100k)",
-			"HS2": "Middle-value homes (100k-200k)",
-			"HS3": "Higher - value homes (more than 200k)"
+			AG_MI: "Agriculture, Forestry, Fishing, Hunting, Mining, Quarrying, and Oil and Gas Extraction",
+			UTIL: "Utilities",
+			CONS: "Construction",
+			MANU: "Manufacturing",
+			COMMER: "Wholesale Trade, Retail Trade, Transportation and Warehousing, Finance and Insurance, Professional, Scientific, and Technical Services",
+			EDU: "Educational Services",
+			HEALTH: "Health Care and Social Assistance",
+			ART_ACC: "Arts, Entertainment, Recreation, Accommodation and Food Services",
+			RELIG: "Religious Organizations",
+			HS1: "Lower-value homes (less than $100k)",
+			HS2: "Middle-value homes (100k-200k)",
+			HS3: "Higher - value homes (more than 200k)"
 		}
 	}
 };

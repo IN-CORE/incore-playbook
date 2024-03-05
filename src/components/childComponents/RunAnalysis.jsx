@@ -118,8 +118,8 @@ export default function ViewResult(props) {
 	useEffect(() => {
 		if (
 			Object.keys(datawolfFormState).every((k) => Object.values(datawolfFormState[k])[0] !== null) &&
-            title !== "" &&
-            description !== ""
+			title !== "" &&
+			description !== ""
 		)
 			setDisabled(false);
 		else setDisabled(true);
@@ -218,7 +218,7 @@ export default function ViewResult(props) {
 							endIcon={<Avatar src={assetConfig.poweredByLogo} className={classes.avatarStyle} />}
 							classes={{ root: classes.runButton, endIcon: classes.endIconStyle }}
 						>
-                            CALCULATE THE HAZARD RISK
+							CALCULATE THE HAZARD RISK
 						</Button>
 					</Box>
 				</Grid>

@@ -9,7 +9,6 @@ import { IncoreButtonText } from "../../styledComponents/IncoreButtonText";
 import GetAppIcon from "@material-ui/icons/GetApp";
 import { IncoreTitle } from "../../styledComponents/IncoreTitle";
 
-
 export default function Log(props) {
 	let { executionItem, previewOn, handlePreviewClose, datawolfDatasetConfigItems } = props;
 
@@ -54,23 +53,24 @@ export default function Log(props) {
 				</Box>
 
 				{/*logs*/}
-				{
-					Object.keys(logContent).map((entryKey) => {
-						return (
-							<Box style={{ margin: "2em auto" }}>
-								<IncoreTitle>{entryKey}</IncoreTitle>
-								<Box style={{
+				{Object.keys(logContent).map((entryKey) => {
+					return (
+						<Box style={{ margin: "2em auto" }}>
+							<IncoreTitle>{entryKey}</IncoreTitle>
+							<Box
+								style={{
 									padding: "2em",
 									backgroundColor: "#EAEAEA",
 									fontFamily: "Monospace",
-									maxHeight:"500px",
-									overflow:"scroll"
-								}}>
-									<dl>{logContent[entryKey] === "" ? "N/A" : logContent[entryKey]}</dl>
-								</Box>
-							</Box>);
-					})
-				}
+									maxHeight: "500px",
+									overflow: "scroll"
+								}}
+							>
+								<dl>{logContent[entryKey] === "" ? "N/A" : logContent[entryKey]}</dl>
+							</Box>
+						</Box>
+					);
+				})}
 			</DialogContent>
 			<DialogActions>
 				<IncoreButtonText onClick={download} startIcon={<GetAppIcon />}>

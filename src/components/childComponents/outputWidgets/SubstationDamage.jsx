@@ -105,7 +105,6 @@ export default function SubstationDamage(props) {
 				) : (
 					<></>
 				)}
-
 			</DialogContent>
 			<DialogActions>
 				<IncoreButtonText

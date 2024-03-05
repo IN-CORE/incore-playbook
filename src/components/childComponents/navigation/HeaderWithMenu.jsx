@@ -38,7 +38,6 @@ import Grid from "@material-ui/core/Grid";
 
 import Gravatar from "react-gravatar";
 
-
 import "../../../styles/main.css";
 import { getCurrEmail } from "../../../utils/common";
 import { Welcome } from "../user/Welcome";
@@ -59,7 +58,7 @@ const useStyles = makeStyles((theme) => ({
 		background: "#FFFFFF",
 		boxShadow: "none",
 		borderBottom: "solid 1px #E4E8F0",
-		padding:"0.5em",
+		padding: "0.5em"
 	},
 	appBarShift: {
 		width: `calc(100% - ${drawerWidth}px)`,
@@ -67,7 +66,7 @@ const useStyles = makeStyles((theme) => ({
 		transition: theme.transitions.create(["margin", "width"], {
 			easing: theme.transitions.easing.easeOut,
 			duration: theme.transitions.duration.enteringScreen
-		}),
+		})
 	},
 	drawer: {
 		width: drawerWidth,
@@ -93,7 +92,7 @@ const useStyles = makeStyles((theme) => ({
 	menuIcon: {
 		height: "32px",
 		width: "32px",
-		color: "#69707F",
+		color: "#69707F"
 	},
 	statusIcon: {
 		color: "#00619D",
@@ -468,24 +467,25 @@ const HeaderWithMenu = ({
 					onClick={handleSubmenuClick(route)}
 					disabled={disabled}
 				>
-					<ListItemText primary={`${key}. ${label}`} primaryTypographyProps={{
-						style: {
-							fontWeight: openSubMenu === key ? 500 : 400,
-							fontSize: "15px",
-							paddingRight: "5px"
-						}
-					}} />
+					<ListItemText
+						primary={`${key}. ${label}`}
+						primaryTypographyProps={{
+							style: {
+								fontWeight: openSubMenu === key ? 500 : 400,
+								fontSize: "15px",
+								paddingRight: "5px"
+							}
+						}}
+					/>
 					{Object.keys(stepStatus).length === 0 ? (
 						pendingIcon
 					) : (
 						<>
-							{stepStatus[`step_${key.replace("-", "_")}`].status === "pending" ? (
-								pendingIcon
-							) : stepStatus[`step_${key.replace("-", "_")}`].status === "in_progress" ? (
-								inProgressCheckIcon
-							) : (
-								completedCheckIcon
-							)}
+							{stepStatus[`step_${key.replace("-", "_")}`].status === "pending"
+								? pendingIcon
+								: stepStatus[`step_${key.replace("-", "_")}`].status === "in_progress"
+								  ? inProgressCheckIcon
+								  : completedCheckIcon}
 						</>
 					)}
 				</ListItem>
@@ -510,26 +510,30 @@ const HeaderWithMenu = ({
 						padding: "0.5em 1.5em"
 					}}
 				>
-					<Box component="div"
-						 sx={{
-							 display: "block",
-							 height: "1.3125em",
-							 width: "1.4375em"
-						 }}
-						 style={{
-							 backgroundColor: openTask === key ? "#00619D" : "#F2F5FB",
-							 color: openTask === key ? "#FFFFFF" : "#2E384D",
-							 textAlign: "center"
-						 }}
-					>{key}</Box>
-					<ListItemText primary={`${label}`}
-								  primaryTypographyProps={{
-									  style: {
-										  paddingLeft: "1em",
-										  fontWeight: openTask === key ? 500 : 400,
-										  fontSize: "16px"
-									  }
-								  }}
+					<Box
+						component="div"
+						sx={{
+							display: "block",
+							height: "1.3125em",
+							width: "1.4375em"
+						}}
+						style={{
+							backgroundColor: openTask === key ? "#00619D" : "#F2F5FB",
+							color: openTask === key ? "#FFFFFF" : "#2E384D",
+							textAlign: "center"
+						}}
+					>
+						{key}
+					</Box>
+					<ListItemText
+						primary={`${label}`}
+						primaryTypographyProps={{
+							style: {
+								paddingLeft: "1em",
+								fontWeight: openTask === key ? 500 : 400,
+								fontSize: "16px"
+							}
+						}}
 					/>
 					{/* If any in_progress status, then add pending check icon */}
 					{/* else, if any pending icon, show pending else, all are complete and show completed icon */}
@@ -608,12 +612,15 @@ const HeaderWithMenu = ({
 							onClick={handleProfileMenuOpen}
 							color="inherit"
 						>
-							{getCurrEmail(globalConfig.hostname) !== undefined ?
-								<Gravatar className={classes.avatarImg} email={getCurrEmail(globalConfig.hostname)}
-										  rating="g" />
-								:
+							{getCurrEmail(globalConfig.hostname) !== undefined ? (
+								<Gravatar
+									className={classes.avatarImg}
+									email={getCurrEmail(globalConfig.hostname)}
+									rating="g"
+								/>
+							) : (
 								<AccountCircle fontSize="small" />
-							}
+							)}
 						</IconButton>
 					</div>
 				</Toolbar>
@@ -636,11 +643,7 @@ const HeaderWithMenu = ({
 					<br />
 					<Divider />
 				</div>
-				<List
-					component="nav"
-					aria-labelledby="nested-list-subheader"
-					style={{ padding: 0 }}
-				>
+				<List component="nav" aria-labelledby="nested-list-subheader" style={{ padding: 0 }}>
 					{/*Welcome Section*/}
 					<Welcome />
 

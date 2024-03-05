@@ -97,7 +97,7 @@ function calcPercentage(partialValue, items, tableHeaders) {
 	if (totalValue === 0) {
 		return " (0%)";
 	}
-	return ` (${parseFloat((100 * partialValue / totalValue).toFixed(2))}%)`;
+	return ` (${parseFloat(((100 * partialValue) / totalValue).toFixed(2))}%)`;
 }
 
 export function BldgDamageTable(props) {
@@ -118,9 +118,9 @@ export function BldgDamageTable(props) {
 	const classes = useStyles();
 
 	let tableHeaders = ["Insignificant", "Moderate", "Extensive", "Complete"];
-	if (fields && ("Insignificant" in fields["by_category"][0])) {
+	if (fields && "Insignificant" in fields["by_category"][0]) {
 		tableHeaders = ["Insignificant", "Moderate", "Extensive", "Complete"];
-	} else if (fields && ("Affected" in fields["by_category"][0])) {
+	} else if (fields && "Affected" in fields["by_category"][0]) {
 		tableHeaders = ["Affected", "Minor", "Major", "Destroyed"];
 	} else {
 		tableHeaders = ["DS_0", "DS_1", "DS_2", "DS_3"];
@@ -154,7 +154,7 @@ export function BldgDamageTable(props) {
 							className={classes.tableHeaderCell}
 							key="playbook-building-clusters"
 						>
-                            playbook builidng clusters
+							playbook builidng clusters
 						</TableCell>
 						<TableCell
 							style={{ width: "121px", backgroundColor: "#96B712" }}
@@ -213,26 +213,48 @@ export function BldgDamageTable(props) {
 													</TableCell>
 													<TableCell key={`${idxx}-insig`} className={classes.tableBodyCell}>
 														<td>
-															{clusterItem[tableHeaders[0]] === NA_value ? "-" : clusterItem[tableHeaders[0]]}
+															{clusterItem[tableHeaders[0]] === NA_value
+																? "-"
+																: clusterItem[tableHeaders[0]]}
 														</td>
-														<td style={percentOn ?
-															{
-																visibility: "visible",
-																color: "#A9A9A9"
-															} : { visibility: "hidden" }}>
-															{calcPercentage(clusterItem[tableHeaders[0]], clusterItem, tableHeaders)}
+														<td
+															style={
+																percentOn
+																	? {
+																			visibility: "visible",
+																			color: "#A9A9A9"
+																	  }
+																	: { visibility: "hidden" }
+															}
+														>
+															{calcPercentage(
+																clusterItem[tableHeaders[0]],
+																clusterItem,
+																tableHeaders
+															)}
 														</td>
 													</TableCell>
 													<TableCell key={`${idxx}-mod`} className={classes.tableBodyCell}>
 														<td>
-															{clusterItem[tableHeaders[1]] === NA_value ? "-" : clusterItem[tableHeaders[1]]}
+															{clusterItem[tableHeaders[1]] === NA_value
+																? "-"
+																: clusterItem[tableHeaders[1]]}
 														</td>
-														<td style={percentOn ?
-															{
-																visibility: "visible",
-																color: "#A9A9A9"
-															} : { visibility: "hidden" }}>
-															{calcPercentage(clusterItem[tableHeaders[1]], clusterItem, tableHeaders)}
+														<td
+															style={
+																percentOn
+																	? {
+																			visibility: "visible",
+																			color: "#A9A9A9"
+																	  }
+																	: { visibility: "hidden" }
+															}
+														>
+															{calcPercentage(
+																clusterItem[tableHeaders[1]],
+																clusterItem,
+																tableHeaders
+															)}
 														</td>
 													</TableCell>
 													<TableCell
@@ -240,26 +262,48 @@ export function BldgDamageTable(props) {
 														className={classes.tableBodyCell}
 													>
 														<td>
-															{clusterItem[tableHeaders[2]] === NA_value ? "-" : clusterItem[tableHeaders[2]]}
+															{clusterItem[tableHeaders[2]] === NA_value
+																? "-"
+																: clusterItem[tableHeaders[2]]}
 														</td>
-														<td style={percentOn ?
-															{
-																visibility: "visible",
-																color: "#A9A9A9"
-															} : { visibility: "hidden" }}>
-															{calcPercentage(clusterItem[tableHeaders[2]], clusterItem, tableHeaders)}
+														<td
+															style={
+																percentOn
+																	? {
+																			visibility: "visible",
+																			color: "#A9A9A9"
+																	  }
+																	: { visibility: "hidden" }
+															}
+														>
+															{calcPercentage(
+																clusterItem[tableHeaders[2]],
+																clusterItem,
+																tableHeaders
+															)}
 														</td>
 													</TableCell>
 													<TableCell key={`${idxx}-comp`} className={classes.tableBodyCell}>
 														<td>
-															{clusterItem[tableHeaders[3]] === NA_value ? "-" : clusterItem[tableHeaders[3]]}
+															{clusterItem[tableHeaders[3]] === NA_value
+																? "-"
+																: clusterItem[tableHeaders[3]]}
 														</td>
-														<td style={percentOn ?
-															{
-																visibility: "visible",
-																color: "#A9A9A9"
-															} : { visibility: "hidden" }}>
-															{calcPercentage(clusterItem[tableHeaders[3]], clusterItem, tableHeaders)}
+														<td
+															style={
+																percentOn
+																	? {
+																			visibility: "visible",
+																			color: "#A9A9A9"
+																	  }
+																	: { visibility: "hidden" }
+															}
+														>
+															{calcPercentage(
+																clusterItem[tableHeaders[3]],
+																clusterItem,
+																tableHeaders
+															)}
 														</td>
 													</TableCell>
 												</TableRow>
@@ -272,18 +316,32 @@ export function BldgDamageTable(props) {
 											className={classes.tableBodyClusterCell}
 											style={{ fontWeight: 500, textAlign: "right", backgroundColor: "#EEF3F5" }}
 										>
-                                            TOTAL
+											TOTAL
 										</TableCell>
 										<TableCell
 											key="total-insig"
 											className={classes.tableBodyCell}
 											style={{ fontWeight: 500, backgroundColor: "#EEF3F5" }}
 										>
-											<td>{categoryItem[tableHeaders[0]] === NA_value ? "-" : categoryItem[tableHeaders[0]]}</td>
-											<td style={percentOn ?
-												{ visibility: "visible", color: "#A9A9A9" } : { visibility: "hidden" }}>
-												{categoryItem[tableHeaders[0]] === NA_value ? "" :
-													calcPercentage(categoryItem[tableHeaders[0]], categoryItem, tableHeaders)}
+											<td>
+												{categoryItem[tableHeaders[0]] === NA_value
+													? "-"
+													: categoryItem[tableHeaders[0]]}
+											</td>
+											<td
+												style={
+													percentOn
+														? { visibility: "visible", color: "#A9A9A9" }
+														: { visibility: "hidden" }
+												}
+											>
+												{categoryItem[tableHeaders[0]] === NA_value
+													? ""
+													: calcPercentage(
+															categoryItem[tableHeaders[0]],
+															categoryItem,
+															tableHeaders
+													  )}
 											</td>
 										</TableCell>
 										<TableCell
@@ -291,11 +349,25 @@ export function BldgDamageTable(props) {
 											className={classes.tableBodyCell}
 											style={{ fontWeight: 500, backgroundColor: "#EEF3F5" }}
 										>
-											<td>{categoryItem[tableHeaders[1]] === NA_value ? "-" : categoryItem[tableHeaders[1]]}</td>
-											<td style={percentOn ?
-												{ visibility: "visible", color: "#A9A9A9" } : { visibility: "hidden" }}>
-												{categoryItem[tableHeaders[1]] === NA_value ? "" :
-													calcPercentage(categoryItem[tableHeaders[1]], categoryItem, tableHeaders)}
+											<td>
+												{categoryItem[tableHeaders[1]] === NA_value
+													? "-"
+													: categoryItem[tableHeaders[1]]}
+											</td>
+											<td
+												style={
+													percentOn
+														? { visibility: "visible", color: "#A9A9A9" }
+														: { visibility: "hidden" }
+												}
+											>
+												{categoryItem[tableHeaders[1]] === NA_value
+													? ""
+													: calcPercentage(
+															categoryItem[tableHeaders[1]],
+															categoryItem,
+															tableHeaders
+													  )}
 											</td>
 										</TableCell>
 										<TableCell
@@ -303,11 +375,25 @@ export function BldgDamageTable(props) {
 											className={classes.tableBodyCell}
 											style={{ fontWeight: 500, backgroundColor: "#EEF3F5" }}
 										>
-											<td>{categoryItem[tableHeaders[2]] === NA_value ? "-" : categoryItem[tableHeaders[2]]}</td>
-											<td style={percentOn ?
-												{ visibility: "visible", color: "#A9A9A9" } : { visibility: "hidden" }}>
-												{categoryItem[tableHeaders[2]] === NA_value ? "" :
-													calcPercentage(categoryItem[tableHeaders[2]], categoryItem, tableHeaders)}
+											<td>
+												{categoryItem[tableHeaders[2]] === NA_value
+													? "-"
+													: categoryItem[tableHeaders[2]]}
+											</td>
+											<td
+												style={
+													percentOn
+														? { visibility: "visible", color: "#A9A9A9" }
+														: { visibility: "hidden" }
+												}
+											>
+												{categoryItem[tableHeaders[2]] === NA_value
+													? ""
+													: calcPercentage(
+															categoryItem[tableHeaders[2]],
+															categoryItem,
+															tableHeaders
+													  )}
 											</td>
 										</TableCell>
 										<TableCell
@@ -315,11 +401,25 @@ export function BldgDamageTable(props) {
 											className={classes.tableBodyCell}
 											style={{ fontWeight: 500, backgroundColor: "#EEF3F5" }}
 										>
-											<td>{categoryItem[tableHeaders[3]] === NA_value ? "-" : categoryItem[tableHeaders[3]]}</td>
-											<td style={percentOn ?
-												{ visibility: "visible", color: "#A9A9A9" } : { visibility: "hidden" }}>
-												{categoryItem[tableHeaders[3]] === NA_value ? "" :
-													calcPercentage(categoryItem[tableHeaders[3]], categoryItem, tableHeaders)}
+											<td>
+												{categoryItem[tableHeaders[3]] === NA_value
+													? "-"
+													: categoryItem[tableHeaders[3]]}
+											</td>
+											<td
+												style={
+													percentOn
+														? { visibility: "visible", color: "#A9A9A9" }
+														: { visibility: "hidden" }
+												}
+											>
+												{categoryItem[tableHeaders[3]] === NA_value
+													? ""
+													: calcPercentage(
+															categoryItem[tableHeaders[3]],
+															categoryItem,
+															tableHeaders
+													  )}
 											</td>
 										</TableCell>
 									</TableRow>

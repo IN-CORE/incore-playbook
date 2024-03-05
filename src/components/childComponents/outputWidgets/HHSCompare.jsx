@@ -46,11 +46,19 @@ export default function HHSCompare(props) {
 					if (vName === "HHSBarChartContent") {
 						if (i === 0) {
 							setHHSBarChartContentA(
-								await getOutputFileContentJSON(datawolfConfig, executionItems[i], datawolfDatasetConfigItem.datasetId)
+								await getOutputFileContentJSON(
+									datawolfConfig,
+									executionItems[i],
+									datawolfDatasetConfigItem.datasetId
+								)
 							);
 						} else if (i === 1) {
 							setHHSBarChartContentB(
-								await getOutputFileContentJSON(datawolfConfig, executionItems[i], datawolfDatasetConfigItem.datasetId)
+								await getOutputFileContentJSON(
+									datawolfConfig,
+									executionItems[i],
+									datawolfDatasetConfigItem.datasetId
+								)
 							);
 						}
 					}
@@ -68,11 +76,15 @@ export default function HHSCompare(props) {
 					{/*Sliders*/}
 					<Container style={{ width: "80%", margin: 0 }}>
 						<IncoreInputLabel id="discrete-slider-restrict" gutterBottom>
-                            Months after the disaster
+							Months after the disaster
 						</IncoreInputLabel>
-						<HhsSlider marks={marks}
+						<HhsSlider
+							marks={marks}
 							value={t}
-							handleChange={(e, newValue) => {setT(newValue);}} />
+							handleChange={(e, newValue) => {
+								setT(newValue);
+							}}
+						/>
 					</Container>
 					{HHSBarChartContentA && HHSBarChartContentB ? (
 						<HHSBarChartCompare
@@ -90,6 +102,5 @@ export default function HHSCompare(props) {
 				</Grid>
 			</Grid>
 		</Box>
-
 	);
 }

@@ -86,26 +86,25 @@ export const Role = (props) => {
 				<>
 					{selectedRoleId
 						? roles.map((role) => {
-							if (role["id"] === selectedRoleId) {
-								return role["name"];
-							}
+								if (role["id"] === selectedRoleId) {
+									return role["name"];
+								}
 						  })
 						: "None"}
-					{
-						editable ?
-							<Box style={{ display: "block" }}>
-								<Button
-									style={{ fontSize: "12px", color: "#00619D" }}
-									onClick={() => {
-										setEditRoleOn(true);
-									}}
-								>
-								    <EditIcon fontSize="small" />
-								</Button>
-							</Box>
-							:
-							<></>
-					}
+					{editable ? (
+						<Box style={{ display: "block" }}>
+							<Button
+								style={{ fontSize: "12px", color: "#00619D" }}
+								onClick={() => {
+									setEditRoleOn(true);
+								}}
+							>
+								<EditIcon fontSize="small" />
+							</Button>
+						</Box>
+					) : (
+						<></>
+					)}
 				</>
 			)}
 		</>

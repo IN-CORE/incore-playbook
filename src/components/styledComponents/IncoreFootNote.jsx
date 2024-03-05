@@ -5,10 +5,10 @@ export const IncoreFootNote = styled(Typography)({
 	color: "#8798AD",
 	fontSize: "12px",
 	fontWeight: 400,
-	fontStyle:"italic",
+	fontStyle: "italic",
 	letterSpacing: "0.6px",
 	width: "100%",
 	textTransform: "capitalize",
 	position: "inherit",
-	padding: "0.5em 0",
+	padding: "0.5em 0"
 });

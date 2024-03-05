@@ -48,32 +48,21 @@ const StepStatus = ({ step, substep }) => {
 							}}
 							display="flex"
 						>
-							{
-								status.key === "complete" ?
-									<Box>{completedCheckIcon}</Box> : null
-							}
-							{
-								status.key === "in_progress" ?
-									<Box>{inProgressCheckIcon}</Box> : null
-							}
-							{
-								status.key === "pending" ?
-									<Box>{pendingIcon}</Box> : null
-							}
-							<Box>
-								{status.name}
-							</Box>
+							{status.key === "complete" ? <Box>{completedCheckIcon}</Box> : null}
+							{status.key === "in_progress" ? <Box>{inProgressCheckIcon}</Box> : null}
+							{status.key === "pending" ? <Box>{pendingIcon}</Box> : null}
+							<Box>{status.name}</Box>
 						</Box>
 					</div>
 				))}
 			</div>
-			{
-				stepData["status"] && stepData["status_user"] ?
-					<IncoreFootNote>Last updated by {stepData["status_user"]["firstName"]}&nbsp;
-						{stepData["status_user"]["lastName"]} at {parseDateTime(stepData["status_updated_at"]) ?? "unavailable timestamp"}</IncoreFootNote>
-					:
-					null
-			}
+			{stepData["status"] && stepData["status_user"] ? (
+				<IncoreFootNote>
+					Last updated by {stepData["status_user"]["firstName"]}&nbsp;
+					{stepData["status_user"]["lastName"]} at{" "}
+					{parseDateTime(stepData["status_updated_at"]) ?? "unavailable timestamp"}
+				</IncoreFootNote>
+			) : null}
 		</Box>
 	);
 };

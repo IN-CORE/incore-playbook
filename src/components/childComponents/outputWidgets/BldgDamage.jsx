@@ -123,7 +123,7 @@ export default function BldgDamage(props) {
 						{bldgDmgSummaryTableContent ? (
 							<Grid item style={{ minWidth: "804px" }}>
 								<Typography className="previewSubTitle">
-                                    Anticipated Performance - Building Clusters
+									Anticipated Performance - Building Clusters
 								</Typography>
 								<Box style={{ marginTop: "38px" }}>
 									<StackedResult categorySummary={bldgDmgSummaryTableContent["by_category"]} />
@@ -171,13 +171,13 @@ export default function BldgDamage(props) {
 					}}
 					startIcon={<CameraAltIcon />}
 				>
-                    Image
+					Image
 				</IncoreButtonText>
 				<IncoreButtonText onClick={download} startIcon={<GetAppIcon />}>
-                    Data
+					Data
 				</IncoreButtonText>
 				<IncoreButtonText onClick={handlePreviewClose} startIcon={<CloseIcon />}>
-                    Close
+					Close
 				</IncoreButtonText>
 			</DialogActions>
 		</Dialog>
