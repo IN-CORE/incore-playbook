@@ -113,6 +113,7 @@ export default function BldgFunctionality(props) {
 						layerSwitcherOptionsA={{}}
 						layerSwitcherOptionsB={{}}
 						height={mapHeight}
+						allowBuildingSelection={true}
 					/>
 				</Container>
 			) : (

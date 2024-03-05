@@ -110,6 +110,7 @@ export default function BldgMCSCompare(props) {
 						layerSwitcherOptionsA={{}}
 						layerSwitcherOptionsB={{}}
 						height={mapHeight}
+						allowBuildingSelection={true}
 					/>
 				</Container>
 			) : (

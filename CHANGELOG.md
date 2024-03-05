@@ -23,6 +23,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Add Marker to the selected building. [#304](https://github.com/IN-CORE/incore-playbook/issues/304)
 - Add Table Overlay to the map to display building information. [#303](https://github.com/IN-CORE/incore-playbook/issues/303)
 - Add map component to all the compare widgets that have maps [#317](https://github.com/IN-CORE/incore-playbook/issues/317)
+- Integrate click feature into map compare component [#320](https://github.com/IN-CORE/incore-playbook/issues/320)
 
 ### Fixed
 - Default mapping bounding box coordinates need to flip order [#272](https://github.com/IN-CORE/incore-playbook/issues/272)

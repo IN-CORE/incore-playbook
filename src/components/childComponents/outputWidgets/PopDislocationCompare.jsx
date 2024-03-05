@@ -144,6 +144,7 @@ export default function PopDislocationCompare(props) {
 						layerSwitcherOptionsA={{}}
 						layerSwitcherOptionsB={{}}
 						height={mapHeight}
+						allowBuildingSelection={true}
 					/>
 				</Container>
 			) : (
