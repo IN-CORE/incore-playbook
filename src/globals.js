@@ -271,3 +271,6 @@ export const processStatus = [
 	{ name: "IN PROGRESS", key: "in_progress" },
 	{ name: "COMPLETE", key: "complete" }
 ];
+
+
+export const comparisonKey = ["A", "B"];

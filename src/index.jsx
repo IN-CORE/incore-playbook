@@ -52,10 +52,15 @@ store.dispatch(setAllowedHazardTypes(["earthquake", "tornado", "tsunami", "hurri
 
 const theme = createMuiTheme({
 	typography: {
-		fontFamily: "Rubik"
+		fontFamily: "Rubik, Arial, sans-serif" // It"s good practice to provide fallback fonts
 	},
 	palette: {
-		fontFamily: "Rubik"
+		primary: {
+			main: "#00619D" // Example primary color
+		},
+		secondary: {
+			main: "#00619D" // Example secondary color
+		}
 	}
 });
 

@@ -11,7 +11,6 @@ import HhsDescription from "../step/HhsDescription";
 import { downloadImg } from "../../../utils/image";
 import CameraAltIcon from "@material-ui/icons/CameraAlt";
 import HhsSlider from "../form/HhsSlider";
-import { IncoreTitle } from "../../styledComponents/IncoreTitle";
 import { IncoreInputLabel } from "../../styledComponents/IncoreInputLabel";
 
 export default function HHS(props) {
@@ -23,24 +22,24 @@ export default function HHS(props) {
 	const [marks, setMarks] = useState([
 		{
 			value: 1,
-			label: "0",
+			label: "0"
 		},
 		{
 			value: 7,
-			label: "6",
+			label: "6"
 		},
 		{
 			value: 13,
-			label: "12",
+			label: "12"
 		},
 		{
 			value: 25,
-			label: "24",
+			label: "24"
 		},
 		{
 			value: 49,
-			label: "48",
-		},
+			label: "48"
+		}
 	]);
 
 	const [HHSBarChartContent, setHHSBarChartContent] = useState({ 1: [], 7: [], 13: [], 25: [], 49: [] });
@@ -82,32 +81,30 @@ export default function HHS(props) {
 				<Box className="previewTitleSection">
 					<Typography className="previewTitle">{selectedExecutionName}</Typography>
 					<Typography className="previewTitle">
-						Select Data: Housing Recovery Stage Across Households
+                        Select Data: Housing Recovery Stage Across Households
 					</Typography>
 				</Box>
 
 				<Box style={{ padding: "5px 25px 25px 25px" }}>
 					<Grid container spacing={3} justify="center">
 						<Grid item xs={12} sm={12} md={8} lg={8} xl={8}>
-							<Box style={{ maxWidth: "700px" }}>
-								{/*Sliders*/}
-								<Container style={{width: "80%", margin: 0}}>
-									<IncoreInputLabel id="discrete-slider-restrict" gutterBottom>
-										Months after the disaster
-									</IncoreInputLabel>
-									<HhsSlider marks={marks}
-											   value={t}
-											   handleChange={(e, newValue) => {setT(newValue);}}/>
-								</Container>
-								{HHSBarChartContent ? (
-									<HHSBarChart
-										data={HHSBarChartContent[t]}
-										height={"25em"}
-										xAxisLegend="Housing Recovery Stage"
-										yAxisLegend="Frequency"
-									/>
-								) : null}
-							</Box>
+							{/*Sliders*/}
+							<Container style={{ width: "80%", margin: 0 }}>
+								<IncoreInputLabel id="discrete-slider-restrict" gutterBottom>
+                                    Months after the disaster
+								</IncoreInputLabel>
+								<HhsSlider marks={marks}
+									value={t}
+									handleChange={(e, newValue) => {setT(newValue);}} />
+							</Container>
+							{HHSBarChartContent ? (
+								<HHSBarChart
+									data={HHSBarChartContent[t]}
+									height={"25em"}
+									xAxisLegend="Housing Recovery Stage"
+									yAxisLegend="Frequency"
+								/>
+							) : null}
 						</Grid>
 						{/*description*/}
 						<Grid item xs={12} sm={12} md={4} lg={4} xl={4}>
@@ -123,13 +120,13 @@ export default function HHS(props) {
 					}}
 					startIcon={<CameraAltIcon />}
 				>
-					Image
+                    Image
 				</IncoreButtonText>
 				<IncoreButtonText onClick={download} startIcon={<GetAppIcon />}>
-					Download
+                    Download
 				</IncoreButtonText>
 				<IncoreButtonText onClick={handlePreviewClose} startIcon={<CloseIcon />}>
-					Close
+                    Close
 				</IncoreButtonText>
 			</DialogActions>
 		</Dialog>

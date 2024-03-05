@@ -15,7 +15,7 @@ import { fromLonLat, getTransform } from "ol/proj";
 import React, { useEffect, useRef, useState } from "react";
 import { ResultSummaryTable } from "../table/ResultSummaryTable";
 import { StackedResult } from "../graph/StackedResult";
-import { ResultTable } from "../table/ResultTable";
+import { BldgDamageTable } from "../table/BldgDamageTable";
 import { useSelector } from "react-redux";
 import { applyTransform } from "ol/extent";
 import { downloadOutputFile, getOutputFileContent, getOutputFileContentJSON } from "../../../utils/datawolf";
@@ -123,7 +123,7 @@ export default function BldgDamage(props) {
 						{bldgDmgSummaryTableContent ? (
 							<Grid item style={{ minWidth: "804px" }}>
 								<Typography className="previewSubTitle">
-									Anticipated Performance - Building Clusters
+                                    Anticipated Performance - Building Clusters
 								</Typography>
 								<Box style={{ marginTop: "38px" }}>
 									<StackedResult categorySummary={bldgDmgSummaryTableContent["by_category"]} />
@@ -158,7 +158,7 @@ export default function BldgDamage(props) {
 				{/*for table*/}
 				{bldgDmgSummaryTableContent ? (
 					<Box>
-						<ResultTable fields={bldgDmgSummaryTableContent} />
+						<BldgDamageTable fields={bldgDmgSummaryTableContent} />
 					</Box>
 				) : (
 					<></>
@@ -171,13 +171,13 @@ export default function BldgDamage(props) {
 					}}
 					startIcon={<CameraAltIcon />}
 				>
-					Image
+                    Image
 				</IncoreButtonText>
 				<IncoreButtonText onClick={download} startIcon={<GetAppIcon />}>
-					Data
+                    Data
 				</IncoreButtonText>
 				<IncoreButtonText onClick={handlePreviewClose} startIcon={<CloseIcon />}>
-					Close
+                    Close
 				</IncoreButtonText>
 			</DialogActions>
 		</Dialog>
