@@ -1,4 +1,4 @@
-import { Box, Container, Divider } from "@material-ui/core";
+import { Box, Container } from "@material-ui/core";
 import React, { useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
 import { getOutputFileContent, getOutputFileContentJSON } from "../../../utils/datawolf";
@@ -32,7 +32,7 @@ export default function BldgDamageCompare(props) {
 	const basicLayersB = createBasicLayers("Base Maps");
 	const printRef = useRef();
 
-	const mapHeight = 300; // px
+	const mapHeight = 400; // px
 
 	useEffect(() => {
 		const fetchData = async () => {

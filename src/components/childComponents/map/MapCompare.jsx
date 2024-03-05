@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Map as OLMap, View, Feature } from "ol";
+import { Map as OLMap, View } from "ol";
 import Overlay from "ol/Overlay";
 import LayerSwitcher from "./LayerSwitcher";
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@material-ui/core";
@@ -57,11 +57,11 @@ const useStyles = makeStyles({
 		"&MsOverflowStyle:": {
 			display: "none" // Hide the scrollbar for IE
 		}
-	},
+	}
 });
 
 const MapCompare = (props) => {
-	const { children, id, className, height, allowBuildingSelection } = props;
+	const { children, className, height, allowBuildingSelection } = props;
 	const classes = useStyles();
 
 	const [selectedBuildingA, setSelectedBuildingA] = React.useState(null);
@@ -96,7 +96,7 @@ const MapCompare = (props) => {
 			zoom,
 			minZoom,
 			maxZoom,
-			extent,
+			extent
 		});
 
 		const mapA = new OLMap({
@@ -148,8 +148,7 @@ const MapCompare = (props) => {
 			mapB.addControl(layerSwitcher);
 		}
 
-		setupDamageLayerInteraction(mapA, layersA, allowBuildingSelection, "A");
-		setupDamageLayerInteraction(mapB, layersB, allowBuildingSelection, "B");
+		setupDamageLayerInteractions(mapA, mapB, layersA, layersB, allowBuildingSelection);
 
 		if (updateMap) {
 			updateMap(mapA);
@@ -172,41 +171,63 @@ const MapCompare = (props) => {
 		};
 	}, []);
 
-	function setupDamageLayerInteraction(map, layers, allowBuildingSelection, analysisTag) {
-		let damageLayerGrp = null;
+	function setupDamageLayerInteractions(mapA, mapB, layersA, layersB, allowBuildingSelection) {
+		let damageLayerGrpA = null;
+		let damageLayerGrpB = null;
 
-		layers.forEach((layerGrp) => {
+		layersA.forEach((layerGrp) => {
 			if (layerGrp.getProperties().title === "Damage") {
-				damageLayerGrp = layerGrp;
+				damageLayerGrpA = layerGrp;
+			}
+		});
+		layersB.forEach((layerGrp) => {
+			if (layerGrp.getProperties().title === "Damage") {
+				damageLayerGrpB = layerGrp;
 			}
 		});
 
-		if (damageLayerGrp !== null && allowBuildingSelection) {
-			const damageLayer = damageLayerGrp.getLayers().getArray()[0];
-			const damageLayerSource = damageLayer.getSource();
+		if (damageLayerGrpA !== null && damageLayerGrpB !== null && allowBuildingSelection) {
+			const damageLayerA = damageLayerGrpA.getLayers().getArray()[0];
+			const damageLayerB = damageLayerGrpB.getLayers().getArray()[0];
+			const damageLayerSourceA = damageLayerA.getSource();
+			const damageLayerSourceB = damageLayerB.getSource();
 
-			map.on("singleclick", (evt) => {
-				let coordinate = map.getCoordinateFromPixel(evt.pixel);
-				const view = map.getView();
+			mapA.on("singleclick", (evt) => {
+				let coordinate = mapA.getCoordinateFromPixel(evt.pixel);
+				const view = mapA.getView();
 				const viewProjection = view.getProjection();
 				const viewResolution = view.getResolution();
 
-				const url = damageLayerSource.getFeatureInfoUrl(coordinate, viewResolution, viewProjection, {
+				const urlA = damageLayerSourceA.getFeatureInfoUrl(coordinate, viewResolution, viewProjection, {
 					INFO_FORMAT: "application/json",
 					FEATURE_COUNT: 1
 				});
 
-				if (url) {
+				const urlB = damageLayerSourceB.getFeatureInfoUrl(coordinate, viewResolution, viewProjection, {
+					INFO_FORMAT: "application/json",
+					FEATURE_COUNT: 1
+				});
+
+				if (urlA && urlB) {
 					setLoading(true);
-					fetch(url)
+					fetch(urlA)
 						.then((response) => response.json())
 						.then((json) => {
 							let bldg = json.features;
 							if (bldg.length > 0) {
 								setSelectedBuildingA(bldg[0].properties);
-								setSelectedBuildingB(bldg[0].properties);
 							} else if (bldg.length === 0) {
 								setSelectedBuildingA(null);
+							}
+							setLoading(false);
+						});
+					fetch(urlB)
+						.then((response) => response.json())
+						.then((json) => {
+							let bldg = json.features;
+							if (bldg.length > 0) {
+								setSelectedBuildingB(bldg[0].properties);
+							} else if (bldg.length === 0) {
 								setSelectedBuildingB(null);
 							}
 							setLoading(false);
@@ -217,13 +238,68 @@ const MapCompare = (props) => {
 				}
 			});
 
-			map.on("pointermove", (evt) => {
+			mapB.on("singleclick", (evt) => {
+				let coordinate = mapB.getCoordinateFromPixel(evt.pixel);
+				const view = mapB.getView();
+				const viewProjection = view.getProjection();
+				const viewResolution = view.getResolution();
+
+				const urlA = damageLayerSourceA.getFeatureInfoUrl(coordinate, viewResolution, viewProjection, {
+					INFO_FORMAT: "application/json",
+					FEATURE_COUNT: 1
+				});
+
+				const urlB = damageLayerSourceB.getFeatureInfoUrl(coordinate, viewResolution, viewProjection, {
+					INFO_FORMAT: "application/json",
+					FEATURE_COUNT: 1
+				});
+
+				if (urlA && urlB) {
+					setLoading(true);
+					fetch(urlA)
+						.then((response) => response.json())
+						.then((json) => {
+							let bldg = json.features;
+							if (bldg.length > 0) {
+								setSelectedBuildingA(bldg[0].properties);
+							} else if (bldg.length === 0) {
+								setSelectedBuildingA(null);
+							}
+							setLoading(false);
+						});
+					fetch(urlB)
+						.then((response) => response.json())
+						.then((json) => {
+							let bldg = json.features;
+							if (bldg.length > 0) {
+								setSelectedBuildingB(bldg[0].properties);
+							} else if (bldg.length === 0) {
+								setSelectedBuildingB(null);
+							}
+							setLoading(false);
+						});
+				} else {
+					setSelectedBuildingA(null);
+					setSelectedBuildingB(null);
+				}
+			});
+
+			mapA.on("pointermove", (evt) => {
 				if (evt.dragging) {
 					return;
 				}
-				const data = damageLayer.getData(evt.pixel);
+				const data = damageLayerA.getData(evt.pixel);
 				const hit = data && data[3] > 0;
-				map.getTargetElement().style.cursor = hit ? "pointer" : "";
+				mapA.getTargetElement().style.cursor = hit ? "pointer" : "";
+			});
+
+			mapB.on("pointermove", (evt) => {
+				if (evt.dragging) {
+					return;
+				}
+				const data = damageLayerB.getData(evt.pixel);
+				const hit = data && data[3] > 0;
+				mapB.getTargetElement().style.cursor = hit ? "pointer" : "";
 			});
 		}
 	}
@@ -233,174 +309,82 @@ const MapCompare = (props) => {
 		<div style={{ position: "relative" }}>
 			<div style={{ width: "100%", height: `${height}px`, display: "flex" }}>
 				<div className={`ol-map ${className}`} ref={fallbackContainerA}
-					 style={{ width: "50%", height: `${height}px`, marginRight: "5px" }}>
+					style={{ width: "50%", height: `${height}px`, marginRight: "5px" }}>
 					<MapContext.Provider value={{ map: mapRefA.current }}>{children}</MapContext.Provider>
 				</div>
 				<div className={`ol-map ${className}`} ref={fallbackContainerB}
-					 style={{ width: "50%", height: `${height}px`, marginLeft: "5px" }}>
+					style={{ width: "50%", height: `${height}px`, marginLeft: "5px" }}>
 					<MapContext.Provider value={{ map: mapRefB.current }}>{children}</MapContext.Provider>
 				</div>
 			</div>
-			{allowBuildingSelection && selectedBuildingA ? (
-				<TableContainer className={classes.tableContainer}
-				>
-					<LoadingOverlay active={loading} spinner text="Loading...">
-						<Table className={classes.table} size="small" aria-label="a dense table">
-							<TableHead>
-								{/* keeping this here to be added back in the future */}
-								{/* <TableRow
-								>
-									<TableCell
-										align="center"
-									>
-										<IconButton
-											aria-label="close"
-											size="small"
-											onClick={() => {
-												markerFeature.setGeometry(undefined);
-												markerFeature.setStyle(new Style(null));
-												markerFeature.set("visible", false);
-												setSelectedBuilding(null);
-											}}
-										>
-											<CloseIcon fontSize="inherit" />
-										</IconButton>
-									</TableCell>
-									<TableCell
-										align="center"
-									></TableCell>
-								</TableRow> */}
-								<TableRow
-									key="hdrRow"
-								>
-									<TableCell
-										align="center"
-										style={{ backgroundColor: "#EFF2FF", color: "#69707F" }}
-									>
-										Attribute
-									</TableCell>
-									<TableCell
-										align="center"
-										style={{ backgroundColor: "#EFF2FF", color: "#69707F" }}
-									>
-										Value
-									</TableCell>
-								</TableRow>
-							</TableHead>
-							<TableBody>
-								{Object.keys(selectedBuildingA).map((colName) => {
-									if (colName === "guid") {
-										return null;
-									}
-									return (
-										<TableRow
-											key={colName}
-										>
-											<TableCell
-												style={{ backgroundColor: "#EFF2FF", color: "#69707F" }}
-											>
-												{colName}
-											</TableCell>
-											<TableCell
-												align="center"
-											>
-												{selectedBuildingA[colName] === undefined ||
-												selectedBuildingA[colName] === null ||
-												selectedBuildingA[colName] === ""
-													? "-"
-													: selectedBuildingA[colName]}
-											</TableCell>
-										</TableRow>
-									);
-								})}
-							</TableBody>
-						</Table>
-					</LoadingOverlay>
-				</TableContainer>
-			) : null}
-			{allowBuildingSelection && selectedBuildingB ? (
-				<TableContainer className={classes.tableContainer}
-					style={{
-						"left": "50%"
-					}}
-				>
-					<LoadingOverlay active={loading} spinner text="Loading...">
-						<Table className={classes.table} size="small" aria-label="a dense table">
-							<TableHead>
-								{/* keeping this here to be added back in the future */}
-								{/* <TableRow
-								>
-									<TableCell
-										align="center"
-									>
-										<IconButton
-											aria-label="close"
-											size="small"
-											onClick={() => {
-												markerFeature.setGeometry(undefined);
-												markerFeature.setStyle(new Style(null));
-												markerFeature.set("visible", false);
-												setSelectedBuilding(null);
-											}}
-										>
-											<CloseIcon fontSize="inherit" />
-										</IconButton>
-									</TableCell>
-									<TableCell
-										align="center"
-									></TableCell>
-								</TableRow> */}
-								<TableRow
-									key="hdrRow"
-								>
-									<TableCell
-										align="center"
-										style={{ backgroundColor: "#EFF2FF", color: "#69707F" }}
-									>
-										Attribute
-									</TableCell>
-									<TableCell
-										align="center"
-										style={{ backgroundColor: "#EFF2FF", color: "#69707F" }}
-									>
-										Value
-									</TableCell>
-								</TableRow>
-							</TableHead>
-							<TableBody>
-								{Object.keys(selectedBuildingB).map((colName) => {
-									if (colName === "guid") {
-										return null;
-									}
-									return (
-										<TableRow
-											key={colName}
-										>
-											<TableCell
-												style={{ backgroundColor: "#EFF2FF", color: "#69707F" }}
-											>
-												{colName}
-											</TableCell>
-											<TableCell
-												align="center"
-											>
-												{selectedBuildingB[colName] === undefined ||
-												selectedBuildingB[colName] === null ||
-												selectedBuildingB[colName] === ""
-													? "-"
-													: selectedBuildingB[colName]}
-											</TableCell>
-										</TableRow>
-									);
-								})}
-							</TableBody>
-						</Table>
-					</LoadingOverlay>
-				</TableContainer>
-			) : null}
+			{allowBuildingSelection && selectedBuildingA && selectedBuildingA !== undefined ?
+				<OverlayTable selectedBuilding={selectedBuildingA} loading={loading} /> : <></>
+			}
+			{allowBuildingSelection && selectedBuildingB && selectedBuildingB !== undefined ?
+				<OverlayTable selectedBuilding={selectedBuildingB} loading={loading} right={true} /> : <></>
+			}
 		</div>
 	)
 	;
+};
+
+const OverlayTable = (props) => {
+	const { selectedBuilding, loading, right } = props;
+	const classes = useStyles();
+
+	return (
+		<TableContainer className={classes.tableContainer} style={right ? { "left": "50%" } : null}>
+			<LoadingOverlay active={loading} spinner text="Loading...">
+				<Table className={classes.table} size="small" aria-label="a dense table">
+					<TableHead>
+						<TableRow
+							key="hdrRow"
+						>
+							<TableCell
+								align="center"
+								style={{ backgroundColor: "#EFF2FF", color: "#69707F" }}
+							>
+                                Attribute
+							</TableCell>
+							<TableCell
+								align="center"
+								style={{ backgroundColor: "#EFF2FF", color: "#69707F" }}
+							>
+                                Value
+							</TableCell>
+						</TableRow>
+					</TableHead>
+					<TableBody>
+						{Object.keys(selectedBuilding).map((colName) => {
+							if (colName === "guid") {
+								return null;
+							}
+							return (
+								<TableRow
+									key={colName}
+								>
+									<TableCell
+										style={{ backgroundColor: "#EFF2FF", color: "#69707F" }}
+									>
+										{colName}
+									</TableCell>
+									<TableCell
+										align="center"
+									>
+										{selectedBuilding[colName] === undefined ||
+                                        selectedBuilding[colName] === null ||
+                                        selectedBuilding[colName] === ""
+											? "-"
+											: selectedBuilding[colName]}
+									</TableCell>
+								</TableRow>
+							);
+						})}
+					</TableBody>
+				</Table>
+			</LoadingOverlay>
+		</TableContainer>
+	);
 };
 
 export default MapCompare;
