@@ -40,7 +40,26 @@ const useStyles = makeStyles({
 		letterSpacing: 0,
 		lineHeight: "18px",
 		border: "1px solid rgba(46,91,255,0.08)"
-	}
+	},
+	tableContainer: {
+		position: "absolute",
+		width: "250px",
+		maxHeight: "250px",
+		top: "50px",
+		left: "0px",
+		zIndex: 5000,
+		padding: "5px",
+		overflow: "scroll",
+		scrollBehavior: "smooth",
+		// Custom scrollbar styles might not be directly supported via makeStyles,
+		// and you might need to use global styles or a separate CSS stylesheet.
+		"&::WebkitScrollbar": {
+			display: "none" // Hide the scrollbar for WebKit browsers (Chrome, Safari, Edge, etc.)
+		},
+		"&MsOverflowStyle:": {
+			display: "none" // Hide the scrollbar for IE
+		}
+	},
 });
 
 const MapCompare = (props) => {
@@ -225,24 +244,7 @@ const MapCompare = (props) => {
 				</div>
 			</div>
 			{allowBuildingSelection && selectedBuildingA ? (
-				<TableContainer
-					style={{
-						"position": "absolute",
-						"width": "250px",
-						"maxHeight": "250px",
-						"top": "50px",
-						"left": "0px",
-						"Zindex": 5000,
-						"padding": "5px",
-						"overflow": "scroll",
-						"scrollBehavior": "smooth",
-						"&::WebkitScrollbar": {
-							display: "none" // Hide the scrollbar for WebKit browsers (Chrome, Safari, Edge, etc.)
-						},
-						"&MsOverflowStyle:": {
-							display: "none" // Hide the scrollbar for IE
-						}
-					}}
+				<TableContainer className={classes.tableContainer}
 				>
 					<LoadingOverlay active={loading} spinner text="Loading...">
 						<Table className={classes.table} size="small" aria-label="a dense table">
@@ -319,23 +321,9 @@ const MapCompare = (props) => {
 				</TableContainer>
 			) : null}
 			{allowBuildingSelection && selectedBuildingB ? (
-				<TableContainer
+				<TableContainer className={classes.tableContainer}
 					style={{
-						"position": "absolute",
-						"width": "250px",
-						"maxHeight": "250px",
-						"top": "50px",
-						"left": "50%",
-						"Zindex": 5000,
-						"padding": "5px",
-						"overflow": "scroll",
-						"scrollBehavior": "smooth",
-						"&::WebkitScrollbar": {
-							display: "none" // Hide the scrollbar for WebKit browsers (Chrome, Safari, Edge, etc.)
-						},
-						"&MsOverflowStyle:": {
-							display: "none" // Hide the scrollbar for IE
-						}
+						"left": "50%"
 					}}
 				>
 					<LoadingOverlay active={loading} spinner text="Loading...">
