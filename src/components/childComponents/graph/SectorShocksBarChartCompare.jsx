@@ -21,10 +21,11 @@ const ParseData = (dataA, dataB) => {
 	if (dataArrA[0][0].lastIndexOf("_") === -1 && dataArrB[0][0].lastIndexOf("_") === -1) {
 		if (
 			!(dataArrA[0][0].startsWith("M") || dataArrA[0][0].endsWith("M")) &&
-			!(dataArrA[0][0].startsWith("I") || dataArrA[0][0].endsWith("I"))
+            !(dataArrA[0][0].startsWith("I") || dataArrA[0][0].endsWith("I"))
 		) {
 			for (let i = 0; i < dataArrA.length; i++) {
-				chartData.push([dataArrA[i][0], parseFloat(dataArrA[i][1]), colorsA[i % 5], parseFloat(dataArrB[i][1]), colorsB[i % 5]]);
+				chartData.push([dataArrA[i][0], parseFloat(dataArrA[i][1]), colorsA[i % 5],
+					dataArrB.length > i ? parseFloat(dataArrB[i][1]) : 0, colorsB[i % 5]]);
 			}
 			return chartData;
 		}
@@ -35,7 +36,8 @@ const ParseData = (dataA, dataB) => {
 			if (galDataArryA[i][0].startsWith("H") && /\d$/.test(galDataArryA[i][0])) {
 				chartData.push([`${galDataArryA[i][0]}I`, galDataArryA[i][1], colorsA[i % 5], galDataArryB[i][1], colorsB[i % 5]]);
 			} else {
-				chartData.push([`I${galDataArryA[i][0]}`, galDataArryA[i][1], colorsA[i % 5], galDataArryB[i][1], colorsB[i % 5]]);
+				chartData.push([`I${galDataArryA[i][0]}`, galDataArryA[i][1], colorsA[i % 5],
+					galDataArryB.length > i ? galDataArryB[i][1] : 0, colorsB[i % 5]]);
 			}
 		}
 
@@ -61,7 +63,7 @@ const ParseData = (dataA, dataB) => {
 			const objB = regionsB[i];
 			const valueB = objB.value;
 
-			chartData.push([`${key}_${subKeyA}`, valueA, colorsA[i % 5], valueB, colorsB[i % 5] ]);
+			chartData.push([`${key}_${subKeyA}`, valueA, colorsA[i % 5], valueB, colorsB[i % 5]]);
 		});
 	}
 
