@@ -23,28 +23,21 @@
     "mocha": true
   },
   "rules": {
-	"no-mixed-spaces-and-tabs": ["error", "smart-tabs"],
 	"eqeqeq": ["error", "smart"],
 	"no-eval": "warn",
-    "quotes": ["error", "double"],
-	"indent": ["error", "tab"],
     "no-console": 1,
     "no-debugger": 1,
     "no-var": "error",
-    "semi": ["error", "always"],
     "no-trailing-spaces": 0,
-    "eol-last": "warn",
     "no-underscore-dangle": 0,
     "no-alert": 0,
     "no-lone-blocks": 0,
 	"no-unused-vars": "warn",
 	"prefer-template": "error",
-    "jsx-quotes": 1,
     "react/display-name": [ 1, {"ignoreTranspilerName": false }],
     "react/forbid-prop-types": [1, {"forbid": ["any"]}],
     "react/jsx-boolean-value": 0,
     "react/jsx-closing-bracket-location": 0,
-    "react/jsx-curly-spacing": 1,
     "react/jsx-indent-props": 0,
     "react/jsx-key": 1,
     "react/jsx-max-props-per-line": 0,
@@ -69,7 +62,6 @@
     "react/react-in-jsx-scope": 1,
     "react/self-closing-comp": 1,
     "react/sort-comp": 1,
-    "react/jsx-wrap-multilines": 1
   },
   "globals": {
   }
