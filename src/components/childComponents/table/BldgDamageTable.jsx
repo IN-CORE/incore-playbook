@@ -84,7 +84,13 @@ function calcClusterNumInCategory(fields) {
 	return count;
 }
 
-function calcPercentage(partialValue, totalValue) {
+function calcPercentage(partialValue, items, tableHeaders) {
+	let totalValue = 0;
+	for (let i = 0; i < 4; i++) {
+		const key = tableHeaders[i];
+		totalValue += items[key];
+	}
+
 	if (partialValue === NA_value) {
 		return "";
 	}
@@ -96,7 +102,7 @@ function calcPercentage(partialValue, totalValue) {
 
 export function BldgDamageTable(props) {
 	const { fields } = props;
-	const [percentOn, setPercentOn] = useState(true);
+	const [percentOn, setPercentOn] = useState(false);
 
 	function handleChange() {
 		setPercentOn((percentOn) => !percentOn);
@@ -214,7 +220,7 @@ export function BldgDamageTable(props) {
 																visibility: "visible",
 																color: "#A9A9A9"
 															} : { visibility: "hidden" }}>
-															{calcPercentage(clusterItem[tableHeaders[0]], categoryItem[tableHeaders[0]])}
+															{calcPercentage(clusterItem[tableHeaders[0]], clusterItem, tableHeaders)}
 														</td>
 													</TableCell>
 													<TableCell key={`${idxx}-mod`} className={classes.tableBodyCell}>
@@ -226,7 +232,7 @@ export function BldgDamageTable(props) {
 																visibility: "visible",
 																color: "#A9A9A9"
 															} : { visibility: "hidden" }}>
-															{calcPercentage(clusterItem[tableHeaders[1]], categoryItem[tableHeaders[1]])}
+															{calcPercentage(clusterItem[tableHeaders[1]], clusterItem, tableHeaders)}
 														</td>
 													</TableCell>
 													<TableCell
@@ -241,7 +247,7 @@ export function BldgDamageTable(props) {
 																visibility: "visible",
 																color: "#A9A9A9"
 															} : { visibility: "hidden" }}>
-															{calcPercentage(clusterItem[tableHeaders[2]], categoryItem[tableHeaders[2]])}
+															{calcPercentage(clusterItem[tableHeaders[2]], clusterItem, tableHeaders)}
 														</td>
 													</TableCell>
 													<TableCell key={`${idxx}-comp`} className={classes.tableBodyCell}>
@@ -253,7 +259,7 @@ export function BldgDamageTable(props) {
 																visibility: "visible",
 																color: "#A9A9A9"
 															} : { visibility: "hidden" }}>
-															{calcPercentage(clusterItem[tableHeaders[3]], categoryItem[tableHeaders[3]])}
+															{calcPercentage(clusterItem[tableHeaders[3]], clusterItem, tableHeaders)}
 														</td>
 													</TableCell>
 												</TableRow>
@@ -276,7 +282,8 @@ export function BldgDamageTable(props) {
 											<td>{categoryItem[tableHeaders[0]] === NA_value ? "-" : categoryItem[tableHeaders[0]]}</td>
 											<td style={percentOn ?
 												{ visibility: "visible", color: "#A9A9A9" } : { visibility: "hidden" }}>
-												{categoryItem[tableHeaders[0]] === NA_value ? "" : "(100%)"}
+												{categoryItem[tableHeaders[0]] === NA_value ? "" :
+													calcPercentage(categoryItem[tableHeaders[0]], categoryItem, tableHeaders)}
 											</td>
 										</TableCell>
 										<TableCell
@@ -287,7 +294,8 @@ export function BldgDamageTable(props) {
 											<td>{categoryItem[tableHeaders[1]] === NA_value ? "-" : categoryItem[tableHeaders[1]]}</td>
 											<td style={percentOn ?
 												{ visibility: "visible", color: "#A9A9A9" } : { visibility: "hidden" }}>
-												{categoryItem[tableHeaders[1]] === NA_value ? "" : "(100%)"}
+												{categoryItem[tableHeaders[1]] === NA_value ? "" :
+													calcPercentage(categoryItem[tableHeaders[1]], categoryItem, tableHeaders)}
 											</td>
 										</TableCell>
 										<TableCell
@@ -298,7 +306,8 @@ export function BldgDamageTable(props) {
 											<td>{categoryItem[tableHeaders[2]] === NA_value ? "-" : categoryItem[tableHeaders[2]]}</td>
 											<td style={percentOn ?
 												{ visibility: "visible", color: "#A9A9A9" } : { visibility: "hidden" }}>
-												{categoryItem[tableHeaders[2]] === NA_value ? "" : "(100%)"}
+												{categoryItem[tableHeaders[2]] === NA_value ? "" :
+													calcPercentage(categoryItem[tableHeaders[2]], categoryItem, tableHeaders)}
 											</td>
 										</TableCell>
 										<TableCell
@@ -309,7 +318,8 @@ export function BldgDamageTable(props) {
 											<td>{categoryItem[tableHeaders[3]] === NA_value ? "-" : categoryItem[tableHeaders[3]]}</td>
 											<td style={percentOn ?
 												{ visibility: "visible", color: "#A9A9A9" } : { visibility: "hidden" }}>
-												{categoryItem[tableHeaders[3]] === NA_value ? "" : "(100%)"}
+												{categoryItem[tableHeaders[3]] === NA_value ? "" :
+													calcPercentage(categoryItem[tableHeaders[3]], categoryItem, tableHeaders)}
 											</td>
 										</TableCell>
 									</TableRow>

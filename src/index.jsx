@@ -42,6 +42,7 @@ store.dispatch(updateHhsInfo(defaultHhsConfig));
 store.dispatch(
 	setAllowedDataTypes({
 		building: true,
+		retrofitStrategies: true,
 		epf: true,
 		network: true,
 		socioeconomics: true

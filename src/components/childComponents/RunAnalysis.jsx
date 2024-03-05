@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import { Box, Avatar, Button, Grid, IconButton, Collapse } from "@material-ui/core";
+import { Avatar, Box, Button, Grid } from "@material-ui/core";
 
 import { IncoreInputLabel } from "../styledComponents/IncoreInputLabel";
 import { submitExecution } from "../../utils/datawolf";
@@ -19,6 +19,7 @@ import SectorShocks from "./inputWidgets/SectorShocks";
 import ValueLosses from "./inputWidgets/ValueLosses";
 import InputTextField from "./inputWidgets/InputTextField";
 import { IncoreTextField } from "../styledComponents/IncoreInput";
+import RetrofitStrategies from "./inputWidgets/RetrofitStrategies";
 
 const useStyles = makeStyles({
 	runButton: {
@@ -73,6 +74,7 @@ const registeredWidgets = {
 	AllowedHazardTypes: <AllowedHazardTypes />,
 	BlockGroups: <BlockGroups />,
 	Buildings: <Buildings />,
+	RetrofitStrategies: <RetrofitStrategies />,
 	Epfs: <Epfs />,
 	Hazards: <Hazards />,
 	Huas: <Huas />,
@@ -116,8 +118,8 @@ export default function ViewResult(props) {
 	useEffect(() => {
 		if (
 			Object.keys(datawolfFormState).every((k) => Object.values(datawolfFormState[k])[0] !== null) &&
-			title !== "" &&
-			description !== ""
+            title !== "" &&
+            description !== ""
 		)
 			setDisabled(false);
 		else setDisabled(true);
@@ -216,7 +218,7 @@ export default function ViewResult(props) {
 							endIcon={<Avatar src={assetConfig.poweredByLogo} className={classes.avatarStyle} />}
 							classes={{ root: classes.runButton, endIcon: classes.endIconStyle }}
 						>
-							CALCULATE THE HAZARD RISK
+                            CALCULATE THE HAZARD RISK
 						</Button>
 					</Box>
 				</Grid>

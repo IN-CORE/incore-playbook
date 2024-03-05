@@ -20,6 +20,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Add Resilience Metrics comparisons [#322](https://github.com/IN-CORE/incore-playbook/issues/322)
 - Building Damage Comparison Table [#307](https://github.com/IN-CORE/incore-playbook/issues/307)
 - Refactor compare selection improvement [#298](https://github.com/IN-CORE/incore-playbook/issues/298)
+- Allow retrofit strategy plan as input [#313](https://github.com/IN-CORE/incore-playbook/issues/313)
 - Add Marker to the selected building. [#304](https://github.com/IN-CORE/incore-playbook/issues/304)
 - Add Table Overlay to the map to display building information. [#303](https://github.com/IN-CORE/incore-playbook/issues/303)
 - Add map component to all the compare widgets that have maps [#317](https://github.com/IN-CORE/incore-playbook/issues/317)
@@ -28,6 +29,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Fixed
 - Default mapping bounding box coordinates need to flip order [#272](https://github.com/IN-CORE/incore-playbook/issues/272)
 - Update hazard previewing due to model change [#269](https://github.com/IN-CORE/incore-playbook/issues/269)
+- Fix percentage calculation [#287](https://github.com/IN-CORE/incore-playbook/issues/287)
 
 ### Changed
 - Replaced Node-Sass with Sass for better platfrom reliablility [#275](https://github.com/IN-CORE/incore-playbook/issues/275)
