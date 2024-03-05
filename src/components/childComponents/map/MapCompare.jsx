@@ -51,8 +51,6 @@ const useStyles = makeStyles({
 		padding: "5px",
 		overflow: "scroll",
 		scrollBehavior: "smooth",
-		// Custom scrollbar styles might not be directly supported via makeStyles,
-		// and you might need to use global styles or a separate CSS stylesheet.
 		"&::WebkitScrollbar": {
 			display: "none" // Hide the scrollbar for WebKit browsers (Chrome, Safari, Edge, etc.)
 		},
