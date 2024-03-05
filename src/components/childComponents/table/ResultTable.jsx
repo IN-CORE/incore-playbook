@@ -84,11 +84,11 @@ function calcClusterNumInCategory(fields) {
 	return count;
 }
 
-function calcPercentage(partialValue, categoryItem, tableHeaders) {
+function calcPercentage(partialValue, items, tableHeaders) {
 	let totalValue = 0;
 	for (let i = 0; i < 4; i++) {
 		const key = tableHeaders[i];
-		totalValue += categoryItem[key];
+		totalValue += items[key];
 	}
 
 	if (partialValue === NA_value) {
@@ -216,7 +216,7 @@ export function ResultTable(props) {
 														</td>
 														<td style={percentOn ?
 															{ visibility: "visible", color:"#A9A9A9" }: { visibility: "hidden"}}>
-															{calcPercentage(clusterItem[tableHeaders[0]], categoryItem, tableHeaders)}
+															{calcPercentage(clusterItem[tableHeaders[0]], clusterItem, tableHeaders)}
 														</td>
 													</TableCell>
 													<TableCell key={`${idxx}-mod`} className={classes.tableBodyCell}>
@@ -225,7 +225,7 @@ export function ResultTable(props) {
 														</td>
 														<td style={percentOn ?
 															{ visibility: "visible", color:"#A9A9A9" }: { visibility: "hidden"}}>
-															{calcPercentage(clusterItem[tableHeaders[1]], categoryItem, tableHeaders)}
+															{calcPercentage(clusterItem[tableHeaders[1]], clusterItem, tableHeaders)}
 														</td>
 													</TableCell>
 													<TableCell
@@ -237,7 +237,7 @@ export function ResultTable(props) {
 														</td>
 														<td style={percentOn ?
 															{ visibility: "visible", color:"#A9A9A9" }: { visibility: "hidden"}}>
-															{calcPercentage(clusterItem[tableHeaders[2]], categoryItem, tableHeaders)}
+															{calcPercentage(clusterItem[tableHeaders[2]], clusterItem, tableHeaders)}
 														</td>
 													</TableCell>
 													<TableCell key={`${idxx}-comp`} className={classes.tableBodyCell}>
@@ -246,7 +246,7 @@ export function ResultTable(props) {
 														</td>
 														<td style={percentOn ?
 															{ visibility: "visible", color:"#A9A9A9" }: { visibility: "hidden"}}>
-															{calcPercentage(clusterItem[tableHeaders[3]], categoryItem, tableHeaders)}
+															{calcPercentage(clusterItem[tableHeaders[3]], clusterItem, tableHeaders)}
 														</td>
 													</TableCell>
 												</TableRow>
@@ -269,7 +269,8 @@ export function ResultTable(props) {
 											<td>{categoryItem[tableHeaders[0]] === NA_value ? "-" : categoryItem[tableHeaders[0]]}</td>
 											<td style={percentOn ?
 												{ visibility: "visible", color:"#A9A9A9" }: { visibility: "hidden"}}>
-												{categoryItem[tableHeaders[0]] === NA_value ? "" : "(100%)"}
+												{categoryItem[tableHeaders[0]] === NA_value ? "" :
+													calcPercentage(categoryItem[tableHeaders[0]], categoryItem, tableHeaders)}
 											</td>
 										</TableCell>
 										<TableCell
@@ -280,7 +281,8 @@ export function ResultTable(props) {
 											<td>{categoryItem[tableHeaders[1]] === NA_value ? "-" : categoryItem[tableHeaders[1]]}</td>
 											<td style={percentOn ?
 												{ visibility: "visible", color:"#A9A9A9" }: { visibility: "hidden"}}>
-												{categoryItem[tableHeaders[1]] === NA_value ? "" : "(100%)"}
+												{categoryItem[tableHeaders[1]] === NA_value ? "" :
+													calcPercentage(categoryItem[tableHeaders[1]], categoryItem, tableHeaders)}
 											</td>
 										</TableCell>
 										<TableCell
@@ -291,7 +293,8 @@ export function ResultTable(props) {
 											<td>{categoryItem[tableHeaders[2]] === NA_value ? "-" : categoryItem[tableHeaders[2]]}</td>
 											<td style={percentOn ?
 												{ visibility: "visible", color:"#A9A9A9" }: { visibility: "hidden"}}>
-												{categoryItem[tableHeaders[2]] === NA_value ? "" : "(100%)"}
+												{categoryItem[tableHeaders[2]] === NA_value ? "" :
+													calcPercentage(categoryItem[tableHeaders[2]], categoryItem, tableHeaders)}
 											</td>
 										</TableCell>
 										<TableCell
@@ -302,7 +305,8 @@ export function ResultTable(props) {
 											<td>{categoryItem[tableHeaders[3]] === NA_value ? "-" : categoryItem[tableHeaders[3]]}</td>
 											<td style={percentOn ?
 												{ visibility: "visible", color:"#A9A9A9" }: { visibility: "hidden"}}>
-												{categoryItem[tableHeaders[3]] === NA_value ? "" : "(100%)"}
+												{categoryItem[tableHeaders[3]] === NA_value ? "" :
+													calcPercentage(categoryItem[tableHeaders[3]], categoryItem, tableHeaders)}
 											</td>
 										</TableCell>
 									</TableRow>
