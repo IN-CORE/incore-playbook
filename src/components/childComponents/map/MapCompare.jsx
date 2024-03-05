@@ -317,11 +317,11 @@ const MapCompare = (props) => {
 					<MapContext.Provider value={{ map: mapRefB.current }}>{children}</MapContext.Provider>
 				</div>
 			</div>
-			{allowBuildingSelection && selectedBuildingA ?
+			{allowBuildingSelection && selectedBuildingA && selectedBuildingA !== undefined ?
 				<OverlayTable selectedBuilding={selectedBuildingA} loading={loading} /> : <></>
 			}
-			{allowBuildingSelection && selectedBuildingB ?
-				<OverlayTable selectedBuilding={selectedBuildingA} loading={loading} right={true} /> : <></>
+			{allowBuildingSelection && selectedBuildingB && selectedBuildingB !== undefined ?
+				<OverlayTable selectedBuilding={selectedBuildingB} loading={loading} right={true} /> : <></>
 			}
 		</div>
 	)
