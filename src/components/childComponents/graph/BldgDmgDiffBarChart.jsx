@@ -4,7 +4,7 @@ import Chart from "react-google-charts";
 const parseData = (headers, data) => {
 	const chartData = [];
 	const colors = ["#96B712", "#F7C137", "#ED8036", "#D63649"];
-	chartData.push(["Category", "Percentage", { role: "style" }, { role: "annotation" }]);
+	chartData.push(["Category", "Difference", { role: "style" }, { role: "annotation" }]);
 	for (let i = 0; i < data.length; i++) {
 		const changeString = `${data[i] >= 0 ? "+" : ""}${data[i]}`;
 		chartData.push([headers[i], data[i], colors[i], changeString]);

@@ -29,7 +29,6 @@ const tableRowHead = {
 
 const useStyles = makeStyles({
 	table: {
-		maxWidth: 550,
 		display: "block"
 	},
 	metricsTable: {
