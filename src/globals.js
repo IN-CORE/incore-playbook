@@ -16,6 +16,37 @@ globals["allowUpload"] = true;
 // globals["testbedSpace"] = "commresiliencejoplin";
 // globals["testbedGroup"] = "incore_joplin_user"; // incore_galveston_user, incore_joplin_user, incore_slc_user
 
+// globals["retrofitStrategyBuilder"] = {
+// 	conditions: [
+// 		{
+// 			label: "Council Zone",
+// 			type: "select",
+// 			possibleOptions: [
+// 				{ label: "Unincorporated", value: "unincorporated" },
+// 				{ label: "City", value: "city" },
+// 				{ label: "Town", value: "town" },
+// 				{ label: "Metro Township", value: "metrotown" },
+// 			]
+// 		},
+// 		{
+// 			label: "Building Strucutral Type",
+// 			type: "select",
+// 			possibleOptions: [
+// 				{ label: "Low-Rise Unreinforced Masonry Bearing Walls", value: "F1" },
+// 				{ label: "Mid-Rise Unreinforced Masonry Bearing Walls", value: "F2" },
+// 			]
+// 		},
+// 		{
+// 			label: "% number of Buildings",
+// 			type: "number",
+// 			possibleOptions: null
+// 		}
+// 	],
+// 	retrofitMethods: [
+// 		{label: "Wood or Metal Deck Diaphragms", value: "woodormetaldeckdiaphragms"},
+// 	]
+// }
+
 // globals["maestroServiceBase"] = `${hostname}/maestro/slc/`;
 // globals["allowedRegions"] = [
 // 	{
@@ -43,6 +74,39 @@ globals["allowedRegions"] = [
 ];
 globals["testbedSpace"] = "commresiliencegal";
 globals["testbedGroup"] = "incore_galveston_user"; // incore_galveston_user, incore_joplin_user, incore_slc_user
+
+globals["retrofitStrategyBuilder"] = {
+	conditions: [
+		{
+			label: "Flood Zone",
+			type: "select",
+			possibleOptions: [
+				{ label: "1 % Annual Chance Flood Hazard", value: "1percentannualchanceflood" },
+				{ label: "0.2 % Annual Chance Flood Hazard", value: "0.2percentannualchanceflood" },
+				{ label: "Other Flood Zones", value: "otherfloodzone" },
+			]
+		},
+		{
+			label: "Building Archetypes",
+			type: "select",
+			possibleOptions: [
+				{ label: "One-story single-family residential building on crawlspace foundation", value: "F1" },
+				{ label: "One-story multiple-family residential building on slab-on-grade foundation", value: "F2" },
+				{ label: "Two-Story single-family residential building on crawlspace foundation", value: "F3" },
+				{ label: "Two-Story multi-family residential building on slab-on-grade foundation", value: "F4" },
+			]
+		},
+		{
+			label: "% number of Buildings",
+			type: "number",
+			possibleOptions: null
+		}
+	],
+	retrofitMethods: [
+		{label: "Elevated by 5 feet", value: "elevatedBy5Feet"},
+		{label: "Elevated by 10 feet", value: "elevatedBy10Feet"},
+	]
+}
 
 globals["registerNewUserURL"] = "https://identity.ncsa.illinois.edu/register/BSKC2UKQPU";
 globals["resetPasswordURL"] = "https://identity.ncsa.illinois.edu/reset";

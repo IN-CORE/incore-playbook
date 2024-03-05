@@ -17,6 +17,7 @@ import AddCircleOutlineIcon from "@material-ui/icons/AddCircleOutline";
 import LoadingOverlay from "react-loading-overlay";
 import fullHtml from "../public/steps/2-4.html";
 import CloseIcon from "@material-ui/icons/Close";
+import EditIcon from '@material-ui/icons/Edit';
 import FileUploadDrop from "./childComponents/form/FileUploadDrop";
 import { makeStyles } from "@material-ui/core/styles";
 import { IncoreMenuItem, IncoreSelectBox } from "./styledComponents/IncoreSelect";
@@ -25,8 +26,10 @@ import { fetchDatasets } from "../actions/datasets";
 
 
 import Pagination from "./childComponents/navigation/Pagination";
+import RetrofitStrategyBuilder from "./childComponents/RetrofitStrategyBuilder";
 import { move2TestbedSpace } from "../utils/common";
 import { DownloadAlert } from "./childComponents/alert/DownloadAlert";
+import { set } from "ol/transform";
 
 const useStyles = makeStyles({
 	title: {
@@ -47,8 +50,14 @@ const useStyles = makeStyles({
 	subTitleRow: {
 		height: "50px"
 	},
+	subTitleBox: {
+		display: "flex",
+		height: "30px",
+		alignItems: "center",
+	},
 	subTitle: {
-		display: "inline"
+		display: "inline",
+		marginBottom: "0px",
 	},
 	socioeconomicsSubBox: {
 		padding: "1em"
@@ -59,7 +68,7 @@ const useStyles = makeStyles({
 	plusButton: {
 		display: "inline",
 		float: "right",
-		padding: 0
+		padding: 5
 	},
 	subDivider: {
 		color: "#00619d",
@@ -125,6 +134,7 @@ export const BuiltEnvironment = ({ step, substep }) => {
 	const [pageNumberBlockGroups, setPageNumberBlockGroups] = React.useState(1);
 	const [pageNumberValueLosses, setPageNumberValueLosses] = React.useState(1);
 	const [downloadDialogOpen, setDownloadDialogOpen] = React.useState(false);
+	const [strategyBuilderModalStatus, setStrategyBuilderModalStatus] = React.useState(false);
 
 	// load uploaded dataset
 	useEffect(() => {
@@ -140,6 +150,10 @@ export const BuiltEnvironment = ({ step, substep }) => {
 		if (title !== "" && description !== "" && datasetType !== "" && files.length > 0) setDisabled(false);
 		else setDisabled(true);
 	}, [title, description, datasetType, files]);
+
+	const onRetrofitStrategyBuilderClose = () => {
+		setStrategyBuilderModalStatus(false);
+	}
 
 	const onFileInputChange = (event) => {
 		const fileList = Array.from(event.target.files);
@@ -344,6 +358,7 @@ export const BuiltEnvironment = ({ step, substep }) => {
 											allowedDataTypes.building ?
 												<Box className={classes.subUploadSection}>
 													<Box className={classes.subTitleRow}>
+													<Box className={classes.subTitleBox}>
 														<IncoreInputLabel className={classes.subTitle}>
                                                             Building Inventory
 														</IncoreInputLabel>
@@ -360,6 +375,7 @@ export const BuiltEnvironment = ({ step, substep }) => {
 																:
 																null
 														}
+													</Box>
 														<Divider orientation="horizontal"
 															className={classes.subDivider}
 															flexItem
@@ -385,9 +401,18 @@ export const BuiltEnvironment = ({ step, substep }) => {
 											allowedDataTypes.retrofitStrategies ?
 												<Box className={classes.subUploadSection}>
 													<Box className={classes.subTitleRow}>
+													<Box className={classes.subTitleBox}>
 														<IncoreInputLabel className={classes.subTitle}>
                                                             Building Retrofit Plans
 														</IncoreInputLabel>
+														<IconButton 
+															className={classes.plusButton}
+															onClick={() => {
+																setStrategyBuilderModalStatus(true);
+															}}
+														>
+															<EditIcon style={{color: "#2E384D"}} />
+														</IconButton>
 														{
 															globalConfig.allowUpload ?
 																<IconButton className={classes.plusButton}
@@ -401,6 +426,7 @@ export const BuiltEnvironment = ({ step, substep }) => {
 																:
 																null
 														}
+													</Box>
 														<Divider orientation="horizontal"
 															className={classes.subDivider}
 															flexItem
@@ -427,6 +453,7 @@ export const BuiltEnvironment = ({ step, substep }) => {
 											allowedDataTypes.epf ?
 												<Box className={classes.subUploadSection}>
 													<Box className={classes.subTitleRow}>
+													<Box className={classes.subTitleBox}>
 														<IncoreInputLabel className={classes.subTitle}>Electric Power
                                                             Facility</IncoreInputLabel>
 														{
@@ -442,6 +469,7 @@ export const BuiltEnvironment = ({ step, substep }) => {
 																:
 																null
 														}
+													</Box>
 														<Divider orientation="horizontal" className={classes.subDivider}
 															flexItem />
 													</Box>
@@ -465,6 +493,7 @@ export const BuiltEnvironment = ({ step, substep }) => {
 											allowedDataTypes.network ?
 												<Box className={classes.subUploadSection}>
 													<Box className={classes.subTitleRow}>
+													<Box>
 														<IncoreInputLabel className={classes.subTitle}>Interdependency
                                                             Network</IncoreInputLabel>
 														{
@@ -480,6 +509,7 @@ export const BuiltEnvironment = ({ step, substep }) => {
 																:
 																null
 														}
+													</Box>
 														<Divider orientation="horizontal" className={classes.subDivider}
 															flexItem />
 													</Box>
@@ -504,6 +534,7 @@ export const BuiltEnvironment = ({ step, substep }) => {
 											allowedDataTypes.socioeconomics ?
 												<Box className={classes.subUploadSection}>
 													<Box className={classes.subTitleRow}>
+													<Box className={classes.subTitleBox}>
 														<IncoreInputLabel className={classes.subTitle}>Socioeconomics
                                                             Datasets</IncoreInputLabel>
 														{
@@ -520,6 +551,7 @@ export const BuiltEnvironment = ({ step, substep }) => {
 																:
 																null
 														}
+													</Box>
 														<Divider orientation="horizontal" className={classes.subDivider}
 															flexItem />
 													</Box>
@@ -611,6 +643,11 @@ export const BuiltEnvironment = ({ step, substep }) => {
 							<StepInfo fullHtml={fullHtml} />
 						</Grid>
 					</Grid>
+					{/* For Retrofit Strategy Builder */}
+					<RetrofitStrategyBuilder 
+						strategyBuilderModalStatus={strategyBuilderModalStatus} 
+						onRetrofitStrategyBuilderClose={onRetrofitStrategyBuilderClose} 
+					/>
 					{/*for individual analysis result preview*/}
 					<Dialog open={uploadModalStatus} onClose={handleUploadClose} maxWidth="sm" fullWidth scroll="paper">
 						<DialogContent>
