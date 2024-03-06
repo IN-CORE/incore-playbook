@@ -31,6 +31,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Default mapping bounding box coordinates need to flip order [#272](https://github.com/IN-CORE/incore-playbook/issues/272)
 - Update hazard previewing due to model change [#269](https://github.com/IN-CORE/incore-playbook/issues/269)
 - Fix percentage calculation [#287](https://github.com/IN-CORE/incore-playbook/issues/287)
+- Fix building damage stacked barchart bug [#332](https://github.com/IN-CORE/incore-playbook/issues/332)
 
 ### Changed
 - Replaced Node-Sass with Sass for better platfrom reliablility [#275](https://github.com/IN-CORE/incore-playbook/issues/275)

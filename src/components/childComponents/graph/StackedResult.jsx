@@ -13,16 +13,24 @@ export function StackedResult(props) {
 
 	let categories = [];
 	let totals = [];
-	let DS_0 = [];
-	let DS_1 = [];
-	let DS_2 = [];
-	let DS_3 = [];
+	let DS_0 = []; //"DS_0" or "Insignificant" or "Affected"
+	let DS_1 = []; //"DS_1" or "Moderate" or "Minor"
+	let DS_2 = []; //"DS_2" or "Extensive" or "Major"
+	let DS_3 = []; //"DS_3" or "Complete" or "Destroyed"
 
 	categorySummary.map((entry, idx) => {
-		DS_0.push(!("DS_0" in entry) || entry.DS_0 < 0 ? 0 : entry.DS_0);
-		DS_1.push(!("DS_1" in entry) || entry.DS_1 < 0 ? 0 : entry.DS_1);
-		DS_2.push(!("DS_2" in entry) || entry.DS_2 < 0 ? 0 : entry.DS_2);
-		DS_3.push(!("DS_3" in entry) || entry.DS_3 < 0 ? 0 : entry.DS_3);
+		DS_0.push(("DS_0" in entry && entry.DS_0 >= 0) ? entry.DS_0 :
+			("Insignificant" in entry && entry.Insignificant >= 0) ? entry.Insignificant :
+				("Affected" in entry && entry.Affected >= 0) ? entry.Affected : 0);
+		DS_1.push(("DS_1" in entry && entry.DS_1 >= 0) ? entry.DS_1 :
+			("Moderate" in entry && entry.Moderate >= 0) ? entry.Moderate :
+				("Minor" in entry && entry.Minor >= 0) ? entry.Minor : 0);
+		DS_2.push(("DS_2" in entry && entry.DS_2 >= 0) ? entry.DS_2 :
+			("Extensive" in entry && entry.Extensive >= 0) ? entry.Extensive :
+				("Major" in entry && entry.Major >= 0) ? entry.Major : 0);
+		DS_3.push(("DS_3" in entry && entry.DS_3 >= 0) ? entry.DS_3 :
+			("Complete" in entry && entry.Complete >= 0) ? entry.Complete :
+				("Destroyed" in entry && entry.Destroyed >= 0) ? entry.Destroyed : 0);
 		totals.push(DS_0[idx] + DS_1[idx] + DS_2[idx] + DS_3[idx]);
 		categories.push([entry.category.trim(), `(total: ${totals[idx]})`]);
 	});
