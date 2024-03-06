@@ -17,12 +17,16 @@ const PoweredBy = ({ text }) => {
 					letterSpacing: "1.13px",
 					fontWeight: 500,
 					color: "DarkGrey",
-					padding: "5px 4px 0 4px"
+					padding: "5px 4px 0 4px",
 				}}
 			>
 				{preText}
 			</span>
-			<img src={assetConfig.poweredByLogo} alt="IN-CORE" style={{ maxHeight: 30 }} />
+			<img
+				src={assetConfig.poweredByLogo}
+				alt="IN-CORE"
+				style={{ maxHeight: 30 }}
+			/>
 		</div>
 	);
 };

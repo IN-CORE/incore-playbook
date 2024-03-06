@@ -26,7 +26,8 @@ export default function RasterTornado(props) {
 
 	// form check
 	useEffect(() => {
-		if (name !== "" && description !== "" && files.length > 0) setDisabled(false);
+		if (name !== "" && description !== "" && files.length > 0)
+			setDisabled(false);
 		else setDisabled(true);
 	}, [name, description, files]);
 
@@ -42,7 +43,12 @@ export default function RasterTornado(props) {
 	const onSave = async () => {
 		setLoading(true);
 		// check if all fields are filled:
-		const tornadoJson = await createRasterTornado(globalConfig, name, description, files);
+		const tornadoJson = await createRasterTornado(
+			globalConfig,
+			name,
+			description,
+			files,
+		);
 		if (tornadoJson && tornadoJson["id"]) {
 			// move to testbed space
 			await move2TestbedSpace(globalConfig, tornadoJson["id"]);
@@ -71,7 +77,9 @@ export default function RasterTornado(props) {
 				<Container>
 					<LoadingOverlay active={loading} spinner text="Saving...">
 						<Box className="inputGroup">
-							<IncoreInputLabel className="required-field">Name</IncoreInputLabel>
+							<IncoreInputLabel className="required-field">
+								Name
+							</IncoreInputLabel>
 							<IncoreTextField
 								value={name}
 								variant="outlined"
@@ -79,7 +87,9 @@ export default function RasterTornado(props) {
 							/>
 						</Box>
 						<Box className="inputGroup">
-							<IncoreInputLabel className="required-field">Description</IncoreInputLabel>
+							<IncoreInputLabel className="required-field">
+								Description
+							</IncoreInputLabel>
 							<IncoreTextField
 								value={description}
 								variant="outlined"
@@ -97,7 +107,11 @@ export default function RasterTornado(props) {
 							/>
 						</Box>
 						<Box className="inputGroup">
-							<IncoreButton variant="contained" onClick={onSave} disabled={disabled}>
+							<IncoreButton
+								variant="contained"
+								onClick={onSave}
+								disabled={disabled}
+							>
 								Save
 							</IncoreButton>
 						</Box>

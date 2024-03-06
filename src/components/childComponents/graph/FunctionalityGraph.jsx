@@ -20,10 +20,20 @@ export function FunctionalityGraph(props) {
 	let nonFuncCount = [];
 
 	categorySummary.map((entry, _) => {
-		funcPercent.push(entry.percent_functional < 0 ? 0 : round(entry.percent_functional * 100, 1));
-		nonFuncPercent.push(entry.percent_non_functional < 0 ? 0 : round(entry.percent_non_functional * 100, 1));
+		funcPercent.push(
+			entry.percent_functional < 0
+				? 0
+				: round(entry.percent_functional * 100, 1),
+		);
+		nonFuncPercent.push(
+			entry.percent_non_functional < 0
+				? 0
+				: round(entry.percent_non_functional * 100, 1),
+		);
 		funcCount.push(entry.num_functional < 0 ? 0 : entry.num_functional);
-		nonFuncCount.push(entry.num_non_functional < 0 ? 0 : entry.num_non_functional);
+		nonFuncCount.push(
+			entry.num_non_functional < 0 ? 0 : entry.num_non_functional,
+		);
 		categories.push([entry.category.trim()]);
 	});
 
@@ -33,31 +43,31 @@ export function FunctionalityGraph(props) {
 			{
 				label: "Functional",
 				backgroundColor: "#96B712",
-				data: funcPercent
+				data: funcPercent,
 			},
 			{
 				label: "Non-Functional",
 				backgroundColor: "#D63649",
-				data: nonFuncPercent
+				data: nonFuncPercent,
 			},
 			{
 				label: "Functional Buildings",
 				data: funcCount,
-				hidden: true
+				hidden: true,
 			},
 			{
 				label: "Non-Functional Buildings",
 				data: nonFuncCount,
-				hidden: true
-			}
-		]
+				hidden: true,
+			},
+		],
 	};
 
 	let options = {
 		responsive: true,
 		maintainAspectRatio: false,
 		legend: {
-			display: false
+			display: false,
 		},
 		tooltips: {
 			mode: "single",
@@ -69,41 +79,45 @@ export function FunctionalityGraph(props) {
 					let datasetLabel = data.datasets[item.datasetIndex].label || "";
 					let dataPoint = item.yLabel;
 					let label = [`${datasetLabel}: ${dataPoint} %`];
-					label.push(`Buildings: ${data.datasets[item.datasetIndex + 2].data[item.index]}`);
+					label.push(
+						`Buildings: ${
+							data.datasets[item.datasetIndex + 2].data[item.index]
+						}`,
+					);
 					return label;
-				}
-			}
+				},
+			},
 		},
 		scales: {
 			xAxes: [
 				{
 					gridLines: {
-						display: false
+						display: false,
 					},
 					barPercentage: 0.75,
 					ticks: {
 						// fontStyle: "bold",
 						fontFamily: "Rubik",
-						fontSize: 14
-					}
-				}
+						fontSize: 14,
+					},
+				},
 			],
 			yAxes: [
 				{
 					scaleLabel: {
 						display: true,
-						labelString: "Percentage"
+						labelString: "Percentage",
 					},
 					ticks: {
-						maxTicksLimit: 6
-					}
-				}
-			]
+						maxTicksLimit: 6,
+					},
+				},
+			],
 		},
 		plugins: {
 			zoom: {
 				pan: {
-					enabled: false
+					enabled: false,
 				},
 				zoom: {
 					enabled: true,
@@ -113,21 +127,26 @@ export function FunctionalityGraph(props) {
 						borderColor: "rgba(225,225,225,0.3)",
 						borderWidth: 5,
 						backgroundColor: "rgb(225,225,225)",
-						animationDuration: 0
+						animationDuration: 0,
 					},
 					rangeMin: {
 						x: 0,
-						y: 0
-					}
-				}
-			}
-		}
+						y: 0,
+					},
+				},
+			},
+		},
 	};
 
 	return (
 		<div>
 			<div style={{ textAlign: "right" }}>
-				<Button onClick={resetClick} variant="outlined" size="small" className="compactButton">
+				<Button
+					onClick={resetClick}
+					variant="outlined"
+					size="small"
+					className="compactButton"
+				>
 					Reset Zoom
 				</Button>
 			</div>

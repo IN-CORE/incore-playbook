@@ -5,11 +5,13 @@ let hostname = process.env.INCORE_REMOTE_HOSTNAME || "";
 globals["baseUrlRoute"] = "playbook";
 globals["geoServerWMS"] = `${hostname}/geoserver/incore/wms`;
 globals["client_id"] = "react-auth";
-globals["authService"] = `${hostname}/auth/realms/In-core/protocol/openid-connect/token`;
+globals["authService"] =
+	`${hostname}/auth/realms/In-core/protocol/openid-connect/token`;
 globals["hazardServiceBase"] = `${hostname}/hazard/api/`;
 globals["dataServiceBase"] = `${hostname}/data/api/`;
 globals["spaceServiceBase"] = `${hostname}/space/api/`;
-globals["setGravatarURL"] = "https://en.gravatar.com/support/activating-your-account/";
+globals["setGravatarURL"] =
+	"https://en.gravatar.com/support/activating-your-account/";
 globals["allowUpload"] = true;
 // globals["maestroServiceBase"] = `${hostname}/maestro/joplin/`;
 // globals["allowedRegions"] = null;
@@ -65,12 +67,12 @@ globals["maestroServiceBase"] = `${hostname}/maestro/galveston/`;
 globals["allowedRegions"] = [
 	{
 		name: "Island",
-		value: "I"
+		value: "I",
 	},
 	{
 		name: "Mainland",
-		value: "M"
-	}
+		value: "M",
+	},
 ];
 globals["testbedSpace"] = "commresiliencegal";
 globals["testbedGroup"] = "incore_galveston_user"; // incore_galveston_user, incore_joplin_user, incore_slc_user
@@ -80,14 +82,13 @@ globals["retrofitStrategyBuilder"] = {
 	displayValues: {
 		"1percentannualchanceflood": "1 % Annual Chance Flood Hazard",
 		"0.2percentannualchanceflood": "0.2 % Annual Chance Flood Hazard",
-		"otherfloodzone": "Other Flood Zones",
-		"F1": "One-story single-family residential building on crawlspace foundation",
-		"F2": "One-story multiple-family residential building on slab-on-grade foundation",
-		"F3": "Two-Story single-family residential building on crawlspace foundation",
-		"F4": "Two-Story multi-family residential building on slab-on-grade foundation",
-		"elevatedBy5Feet": "Elevated by 5 feet",
-		"elevatedBy10Feet": "Elevated by 10 feet"
-	
+		otherfloodzone: "Other Flood Zones",
+		F1: "One-story single-family residential building on crawlspace foundation",
+		F2: "One-story multiple-family residential building on slab-on-grade foundation",
+		F3: "Two-Story single-family residential building on crawlspace foundation",
+		F4: "Two-Story multi-family residential building on slab-on-grade foundation",
+		elevatedBy5Feet: "Elevated by 5 feet",
+		elevatedBy10Feet: "Elevated by 10 feet",
 	},
 	conditions: [
 		{
@@ -95,28 +96,50 @@ globals["retrofitStrategyBuilder"] = {
 			type: "mapSelect",
 			key: "zone",
 			possibleOptions: [
-				{ label: "1 % Annual Chance Flood Hazard", value: "1percentannualchanceflood" },
-				{ label: "0.2 % Annual Chance Flood Hazard", value: "0.2percentannualchanceflood" },
+				{
+					label: "1 % Annual Chance Flood Hazard",
+					value: "1percentannualchanceflood",
+				},
+				{
+					label: "0.2 % Annual Chance Flood Hazard",
+					value: "0.2percentannualchanceflood",
+				},
 				{ label: "Other Flood Zones", value: "otherfloodzone" },
-			]
+			],
 		},
 		{
 			label: "Building Archetypes",
 			type: "select",
 			key: "archetype",
 			possibleOptions: [
-				{ label: "One-story single-family residential building on crawlspace foundation", value: "F1" },
-				{ label: "One-story multiple-family residential building on slab-on-grade foundation", value: "F2" },
-				{ label: "Two-Story single-family residential building on crawlspace foundation", value: "F3" },
-				{ label: "Two-Story multi-family residential building on slab-on-grade foundation", value: "F4" },
-			]
+				{
+					label:
+						"One-story single-family residential building on crawlspace foundation",
+					value: "F1",
+				},
+				{
+					label:
+						"One-story multiple-family residential building on slab-on-grade foundation",
+					value: "F2",
+				},
+				{
+					label:
+						"Two-Story single-family residential building on crawlspace foundation",
+					value: "F3",
+				},
+				{
+					label:
+						"Two-Story multi-family residential building on slab-on-grade foundation",
+					value: "F4",
+				},
+			],
 		},
 		{
 			label: "% number of Buildings",
 			type: "number",
 			key: "percent",
-			possibleOptions: null
-		}
+			possibleOptions: null,
+		},
 	],
 	retrofitMethods: [
 		{
@@ -124,14 +147,15 @@ globals["retrofitStrategyBuilder"] = {
 			type: "select",
 			key: "retrofitMethod",
 			possibleOptions: [
-				{label: "Elevated by 5 feet", value: "elevatedBy5Feet"},
-				{label: "Elevated by 10 feet", value: "elevatedBy10Feet"},
-			]
-		}
-	]
-}
+				{ label: "Elevated by 5 feet", value: "elevatedBy5Feet" },
+				{ label: "Elevated by 10 feet", value: "elevatedBy10Feet" },
+			],
+		},
+	],
+};
 
-globals["registerNewUserURL"] = "https://identity.ncsa.illinois.edu/register/BSKC2UKQPU";
+globals["registerNewUserURL"] =
+	"https://identity.ncsa.illinois.edu/register/BSKC2UKQPU";
 globals["resetPasswordURL"] = "https://identity.ncsa.illinois.edu/reset";
 
 // might have multiple versions in the future
@@ -143,8 +167,8 @@ globals["inputDatasetTypes"] = {
 			format: "shapefile",
 			num: 20,
 			isSocioeconomics: false,
-			dispatchKey: "RECEIVE_BLDGS"
-		}
+			dispatchKey: "RECEIVE_BLDGS",
+		},
 	],
 	retrofitStrategies: [
 		{
@@ -152,8 +176,8 @@ globals["inputDatasetTypes"] = {
 			format: "table",
 			num: 50,
 			isSocioeconomics: false,
-			dispatchKey: "RECEIVE_RETROFIT_STRATEGIES"
-		}
+			dispatchKey: "RECEIVE_RETROFIT_STRATEGIES",
+		},
 	],
 	epfs: [
 		{
@@ -161,8 +185,8 @@ globals["inputDatasetTypes"] = {
 			format: "shapefile",
 			num: 20,
 			isSocioeconomics: false,
-			dispatchKey: "RECEIVE_EPFS"
-		}
+			dispatchKey: "RECEIVE_EPFS",
+		},
 	],
 	interdNetworks: [
 		{
@@ -170,8 +194,8 @@ globals["inputDatasetTypes"] = {
 			format: "json",
 			num: 20,
 			isSocioeconomics: false,
-			dispatchKey: "RECEIVE_INTERD"
-		}
+			dispatchKey: "RECEIVE_INTERD",
+		},
 	],
 	sectorShocks: [
 		{
@@ -180,8 +204,8 @@ globals["inputDatasetTypes"] = {
 			format: "table",
 			num: 5,
 			isSocioeconomics: true,
-			dispatchKey: "RECEIVE_SECTOR_SHOCKS"
-		}
+			dispatchKey: "RECEIVE_SECTOR_SHOCKS",
+		},
 	],
 	cgeSams: [
 		{
@@ -190,8 +214,8 @@ globals["inputDatasetTypes"] = {
 			format: "table",
 			num: 5,
 			isSocioeconomics: false, // not allow user to upload
-			dispatchKey: "RECEIVE_CGE_SAM"
-		}
+			dispatchKey: "RECEIVE_CGE_SAM",
+		},
 	],
 	cgeBbs: [
 		{
@@ -200,8 +224,8 @@ globals["inputDatasetTypes"] = {
 			format: "table",
 			num: 5,
 			isSocioeconomics: false,
-			dispatchKey: "RECEIVE_CGE_BB"
-		}
+			dispatchKey: "RECEIVE_CGE_BB",
+		},
 	],
 	cgeIouts: [
 		{
@@ -210,8 +234,8 @@ globals["inputDatasetTypes"] = {
 			format: "table",
 			num: 5,
 			isSocioeconomics: false,
-			dispatchKey: "RECEIVE_CGE_IOUTS"
-		}
+			dispatchKey: "RECEIVE_CGE_IOUTS",
+		},
 	],
 	cgeMiscs: [
 		{
@@ -220,8 +244,8 @@ globals["inputDatasetTypes"] = {
 			format: "table",
 			num: 5,
 			isSocioeconomics: false,
-			dispatchKey: "RECEIVE_CGE_MISC"
-		}
+			dispatchKey: "RECEIVE_CGE_MISC",
+		},
 	],
 	cgeMischs: [
 		{
@@ -230,8 +254,8 @@ globals["inputDatasetTypes"] = {
 			format: "table",
 			num: 5,
 			isSocioeconomics: false,
-			dispatchKey: "RECEIVE_CGE_MISCH"
-		}
+			dispatchKey: "RECEIVE_CGE_MISCH",
+		},
 	],
 	cgeLandcaps: [
 		{
@@ -240,8 +264,8 @@ globals["inputDatasetTypes"] = {
 			format: "table",
 			num: 5,
 			isSocioeconomics: false,
-			dispatchKey: "RECEIVE_CGE_LANDCAP"
-		}
+			dispatchKey: "RECEIVE_CGE_LANDCAP",
+		},
 	],
 	cgeEmploys: [
 		{
@@ -250,8 +274,8 @@ globals["inputDatasetTypes"] = {
 			format: "table",
 			num: 5,
 			isSocioeconomics: false,
-			dispatchKey: "RECEIVE_CGE_EMPLOY"
-		}
+			dispatchKey: "RECEIVE_CGE_EMPLOY",
+		},
 	],
 	cgeIgtds: [
 		{
@@ -260,8 +284,8 @@ globals["inputDatasetTypes"] = {
 			format: "table",
 			num: 5,
 			isSocioeconomics: false,
-			dispatchKey: "RECEIVE_CGE_IGTD"
-		}
+			dispatchKey: "RECEIVE_CGE_IGTD",
+		},
 	],
 	cgeTauffs: [
 		{
@@ -270,8 +294,8 @@ globals["inputDatasetTypes"] = {
 			format: "table",
 			num: 5,
 			isSocioeconomics: false,
-			dispatchKey: "RECEIVE_CGE_TAUFF"
-		}
+			dispatchKey: "RECEIVE_CGE_TAUFF",
+		},
 	],
 	cgeJobcrs: [
 		{
@@ -280,8 +304,8 @@ globals["inputDatasetTypes"] = {
 			format: "table",
 			num: 5,
 			isSocioeconomics: false,
-			dispatchKey: "RECEIVE_CGE_JOBCR"
-		}
+			dispatchKey: "RECEIVE_CGE_JOBCR",
+		},
 	],
 	cgeOutcrs: [
 		{
@@ -290,8 +314,8 @@ globals["inputDatasetTypes"] = {
 			format: "table",
 			num: 5,
 			isSocioeconomics: false,
-			dispatchKey: "RECEIVE_CGE_OUTCR"
-		}
+			dispatchKey: "RECEIVE_CGE_OUTCR",
+		},
 	],
 	huas: [
 		{
@@ -300,8 +324,8 @@ globals["inputDatasetTypes"] = {
 			format: "table",
 			num: 5,
 			isSocioeconomics: true,
-			dispatchKey: "RECEIVE_HUA"
-		}
+			dispatchKey: "RECEIVE_HUA",
+		},
 	],
 	blockGroups: [
 		{
@@ -310,8 +334,8 @@ globals["inputDatasetTypes"] = {
 			format: "table",
 			num: 5,
 			isSocioeconomics: true,
-			dispatchKey: "RECEIVE_BLOCK_GROUP"
-		}
+			dispatchKey: "RECEIVE_BLOCK_GROUP",
+		},
 	],
 	valueLosses: [
 		{
@@ -320,9 +344,9 @@ globals["inputDatasetTypes"] = {
 			format: "table",
 			num: 5,
 			isSocioeconomics: true,
-			dispatchKey: "RECEIVE_VALUE_LOSS"
-		}
-	]
+			dispatchKey: "RECEIVE_VALUE_LOSS",
+		},
+	],
 };
 
 export { globals };
@@ -350,11 +374,13 @@ export const ARCHETYPE = {
 	16: "Small big-box",
 	17: "Mobile Home",
 	18: "Shopping Center",
-	19: "Office Building"
+	19: "Office Building",
 };
 
 export const processStatus = [
 	{ name: "PENDING", key: "pending" },
 	{ name: "IN PROGRESS", key: "in_progress" },
-	{ name: "COMPLETE", key: "complete" }
+	{ name: "COMPLETE", key: "complete" },
 ];
+
+export const comparisonKey = ["A", "B"];

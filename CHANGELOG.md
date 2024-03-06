@@ -12,19 +12,33 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Adding % (# of building) to table of building damage output. [#261](https://github.com/IN-CORE/incore-playbook/issues/261)
 - Add click on map to view more details for a building on output widgets [#284](https://github.com/IN-CORE/incore-playbook/issues/284)
 - Github action to publish @incore/incore-playbook to Github package registry [#283](https://github.com/IN-CORE/incore-playbook/issues/283)
+- Add HHRS bar chart comparison components [#290](https://github.com/IN-CORE/incore-playbook/issues/290)
+- Add MCS and Building Functionality table and bar chart comparison [#308](https://github.com/IN-CORE/incore-playbook/issues/308)
+- Add Map comparison and Pole Damage comparison components [#288](https://github.com/IN-CORE/incore-playbook/issues/288)
+- Add Sector Shock Bar Chart Comparison [#305](https://github.com/IN-CORE/incore-playbook/issues/305)
+- Add Population Dislocation comparison tables [#292](https://github.com/IN-CORE/incore-playbook/issues/292)
+- Add Resilience Metrics comparisons [#322](https://github.com/IN-CORE/incore-playbook/issues/322)
+- Building Damage Comparison Table [#307](https://github.com/IN-CORE/incore-playbook/issues/307)
+- Refactor compare selection improvement [#298](https://github.com/IN-CORE/incore-playbook/issues/298)
 - Allow retrofit strategy plan as input [#313](https://github.com/IN-CORE/incore-playbook/issues/313)
 - Add Marker to the selected building. [#304](https://github.com/IN-CORE/incore-playbook/issues/304)
 - Add Table Overlay to the map to display building information. [#303](https://github.com/IN-CORE/incore-playbook/issues/303)
+- Add map component to all the compare widgets that have maps [#317](https://github.com/IN-CORE/incore-playbook/issues/317)
+- Integrate click feature into map compare component [#320](https://github.com/IN-CORE/incore-playbook/issues/320)
+- Added pre-commit for linting and formatting [#302](https://github.com/IN-CORE/incore-playbook/issues/302)
 
 ### Fixed
+- Typos in hurricane creation form [#248](https://github.com/IN-CORE/incore-playbook/issues/248)
 - Default mapping bounding box coordinates need to flip order [#272](https://github.com/IN-CORE/incore-playbook/issues/272)
 - Update hazard previewing due to model change [#269](https://github.com/IN-CORE/incore-playbook/issues/269)
+- Fix percentage calculation [#287](https://github.com/IN-CORE/incore-playbook/issues/287)
+- Fix building damage stacked barchart bug [#332](https://github.com/IN-CORE/incore-playbook/issues/332)
 
 ### Changed
 - Replaced Node-Sass with Sass for better platfrom reliablility [#275](https://github.com/IN-CORE/incore-playbook/issues/275)
 - Update the ResultTable to use keys dynamically for the FEMA table headers [#285](https://github.com/IN-CORE/incore-playbook/issues/285)
 - Increase the max zoom level for the map [#278](https://github.com/IN-CORE/incore-playbook/issues/278)
-
+- Retrofit strategy should be optional in step 3-4 [#349](https://github.com/IN-CORE/incore-playbook/issues/349)
 
 ## [0.5.7] - 2023-04-05
 

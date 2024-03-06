@@ -19,7 +19,9 @@ export const CustomSelectWidget = (item) => {
 				{item.schema.enum.map((option, i) => {
 					return (
 						<IncoreMenuItem value={option} key={option}>
-							{item.schema.enumNames ? item.schema.enumNames[i] : item.schema.enum[i]}
+							{item.schema.enumNames
+								? item.schema.enumNames[i]
+								: item.schema.enum[i]}
 						</IncoreMenuItem>
 					);
 				})}

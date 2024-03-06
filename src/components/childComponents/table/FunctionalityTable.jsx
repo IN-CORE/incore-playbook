@@ -1,5 +1,13 @@
 import React from "react";
-import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, withStyles } from "@material-ui/core";
+import {
+	Table,
+	TableBody,
+	TableCell,
+	TableContainer,
+	TableHead,
+	TableRow,
+	withStyles,
+} from "@material-ui/core";
 
 import { makeStyles } from "@material-ui/core/styles";
 import { formatProbToPercent, round } from "../../../utils/common";
@@ -8,16 +16,16 @@ import LinearProgress from "@material-ui/core/LinearProgress";
 const useStyles = makeStyles({
 	table: {
 		backgroundColor: "#FFFFFF",
-		minWidth: "1135px"
+		minWidth: "1135px",
 	},
 	tableHeaderRow: {
-		height: "34px"
+		height: "34px",
 	},
 	tableTopHeaderRow: {
 		textAlign: "center",
 		border: "1px solid rgba(46,91,255,0.08)",
 		height: "15px",
-		textTransform: "uppercase"
+		textTransform: "uppercase",
 	},
 	tableHeaderCell: {
 		height: "14px",
@@ -28,10 +36,10 @@ const useStyles = makeStyles({
 		letterSpacing: "1.13px",
 		lineHeight: "14px",
 		textAlign: "center",
-		textTransform: "uppercase"
+		textTransform: "uppercase",
 	},
 	tableBodyRow: {
-		height: "28px"
+		height: "28px",
 	},
 	tableBodyCell: {
 		height: "21px",
@@ -40,7 +48,7 @@ const useStyles = makeStyles({
 		fontSize: "15px",
 		letterSpacing: 0,
 		lineHeight: "18px",
-		border: "1px solid rgba(46,91,255,0.08)"
+		border: "1px solid rgba(46,91,255,0.08)",
 	},
 	tableBodyCategoryCell: {
 		height: "21px",
@@ -51,7 +59,7 @@ const useStyles = makeStyles({
 		letterSpacing: 0,
 		lineHeight: "18px",
 		textTransform: "capitalize",
-		border: "1px solid rgba(46,91,255,0.08)"
+		border: "1px solid rgba(46,91,255,0.08)",
 	},
 	tableBodyClusterCell: {
 		height: "21px",
@@ -60,10 +68,10 @@ const useStyles = makeStyles({
 		fontSize: "15px",
 		letterSpacing: 0,
 		lineHeight: "18px",
-		border: "1px solid rgba(46,91,255,0.08)"
+		border: "1px solid rgba(46,91,255,0.08)",
 		// display: "flex",
 		// width: "100%"
-	}
+	},
 });
 
 function calcClusterNumInCategory(fields) {
@@ -83,19 +91,20 @@ function calcClusterNumInCategory(fields) {
 const BorderLinearProgress = withStyles((theme) => ({
 	root: {
 		height: 4,
-		borderRadius: 5
+		borderRadius: 5,
 	},
 	colorPrimary: {
-		backgroundColor: theme.palette.grey[theme.palette.type === "light" ? 200 : 700]
+		backgroundColor:
+			theme.palette.grey[theme.palette.type === "light" ? 200 : 700],
 	},
 	barColorPrimary: {
-		backgroundColor: "red"
+		backgroundColor: "red",
 	},
 	bar: {
 		borderRadius: 5,
-		backgroundColor: "rgba(150, 183, 18, 1)"
+		backgroundColor: "rgba(150, 183, 18, 1)",
 		// backgroundColor: "#1a90ff",
-	}
+	},
 }))(LinearProgress);
 
 export function FunctionalityTable(props) {
@@ -125,7 +134,11 @@ export function FunctionalityTable(props) {
 
 					<TableRow className={classes.tableHeaderRow} key="hdrRow">
 						<TableCell
-							style={{ width: "647px", backgroundColor: "#EFF2FF", color: "#69707F" }}
+							style={{
+								width: "647px",
+								backgroundColor: "#EFF2FF",
+								color: "#69707F",
+							}}
 							colSpan={2}
 							className={classes.tableHeaderCell}
 							key="playbook-building-clusters"
@@ -174,7 +187,10 @@ export function FunctionalityTable(props) {
 
 									if (clusterItem["category"] === categoryItem["category"]) {
 										if (clusterItem["percent_functional"] > 0) {
-											funcPercent = round(clusterItem["percent_functional"] * 100, 1);
+											funcPercent = round(
+												clusterItem["percent_functional"] * 100,
+												1,
+											);
 											// uncomment this if we want to style it by using the background instead of progress bar
 											// nonFuncPercent = round(100 - funcPercent, 1);
 											// style = {background: `linear-gradient(90deg, rgba(150, 183, 18, 0.15) ${funcPercent}%, rgba(214,54,73, 0.15) ${funcPercent}% ${nonFuncPercent}%)`};
@@ -182,10 +198,15 @@ export function FunctionalityTable(props) {
 
 										if (firstMatchIdxx < 0) firstMatchIdxx = idxx;
 										return (
-											<TableRow className={classes.tableBodyRow} key={clusterItem["cluster"]}>
+											<TableRow
+												className={classes.tableBodyRow}
+												key={clusterItem["cluster"]}
+											>
 												{idxx === firstMatchIdxx ? (
 													<TableCell
-														rowSpan={clusterNumInCategory[categoryItem["category"]] + 1}
+														rowSpan={
+															clusterNumInCategory[categoryItem["category"]] + 1
+														}
 														align="center"
 														className={classes.tableBodyCategoryCell}
 														style={{ fontWeight: 500, textAlign: "left" }}
@@ -209,22 +230,39 @@ export function FunctionalityTable(props) {
 														}
 													/>
 												</TableCell>
-												<TableCell key={`${idxx}-f1`} className={classes.tableBodyCell}>
+												<TableCell
+													key={`${idxx}-f1`}
+													className={classes.tableBodyCell}
+												>
 													{clusterItem["percent_functional"] === NA_value
 														? "-"
-														: formatProbToPercent(clusterItem["percent_functional"], 1)}
+														: formatProbToPercent(
+																clusterItem["percent_functional"],
+																1,
+														  )}
 												</TableCell>
-												<TableCell key={`${idxx}-nf1`} className={classes.tableBodyCell}>
+												<TableCell
+													key={`${idxx}-nf1`}
+													className={classes.tableBodyCell}
+												>
 													{clusterItem["percent_non_functional"] === NA_value
 														? "-"
-														: formatProbToPercent(clusterItem["percent_non_functional"])}
+														: formatProbToPercent(
+																clusterItem["percent_non_functional"],
+														  )}
 												</TableCell>
-												<TableCell key={`${idxx}-f2`} className={classes.tableBodyCell}>
+												<TableCell
+													key={`${idxx}-f2`}
+													className={classes.tableBodyCell}
+												>
 													{clusterItem["num_functional"] === NA_value
 														? "-"
 														: clusterItem["num_functional"]}
 												</TableCell>
-												<TableCell key={`${idxx}-nf2`} className={classes.tableBodyCell}>
+												<TableCell
+													key={`${idxx}-nf2`}
+													className={classes.tableBodyCell}
+												>
 													{clusterItem["num_non_functional"] === NA_value
 														? "-"
 														: clusterItem["num_non_functional"]}
@@ -233,11 +271,18 @@ export function FunctionalityTable(props) {
 										);
 									}
 								})}
-								<TableRow className={classes.tableBodyRow} key={categoryItem["id"]}>
+								<TableRow
+									className={classes.tableBodyRow}
+									key={categoryItem["id"]}
+								>
 									<TableCell
 										key="total"
 										className={classes.tableBodyClusterCell}
-										style={{ fontWeight: 500, textAlign: "right", backgroundColor: "#EEF3F5" }}
+										style={{
+											fontWeight: 500,
+											textAlign: "right",
+											backgroundColor: "#EEF3F5",
+										}}
 									>
 										TOTAL
 									</TableCell>
@@ -257,7 +302,9 @@ export function FunctionalityTable(props) {
 									>
 										{categoryItem["percent_non_functional"] === NA_value
 											? "-"
-											: formatProbToPercent(categoryItem["percent_non_functional"])}
+											: formatProbToPercent(
+													categoryItem["percent_non_functional"],
+											  )}
 									</TableCell>
 									<TableCell
 										key="num-func"

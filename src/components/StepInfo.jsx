@@ -1,5 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { Button, Dialog, DialogActions, DialogContent } from "@material-ui/core";
+import {
+	Button,
+	Dialog,
+	DialogActions,
+	DialogContent,
+} from "@material-ui/core";
 
 import { getShortHTML } from "../utils/common";
 
@@ -34,7 +39,11 @@ const StepInfo = (props) => {
 
 			{showMoreLink ? (
 				<span
-					style={{ color: "#00619D", textDecoration: "underline", cursor: "pointer" }}
+					style={{
+						color: "#00619D",
+						textDecoration: "underline",
+						cursor: "pointer",
+					}}
 					onClick={handleClickOpen}
 				>
 					{" "}
@@ -42,7 +51,12 @@ const StepInfo = (props) => {
 				</span>
 			) : null}
 
-			<Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title" maxWidth="lg">
+			<Dialog
+				open={open}
+				onClose={handleClose}
+				aria-labelledby="form-dialog-title"
+				maxWidth="lg"
+			>
 				<DialogContent>
 					<div dangerouslySetInnerHTML={{ __html: html }} />
 				</DialogContent>

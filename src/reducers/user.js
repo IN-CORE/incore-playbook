@@ -1,4 +1,9 @@
-import { RECEIVE_USER_LIST, RECEIVE_USER, RECEIVE_ROLES, ASSIGN_ROLE } from "../actions/user";
+import {
+	RECEIVE_USER_LIST,
+	RECEIVE_USER,
+	RECEIVE_ROLES,
+	ASSIGN_ROLE,
+} from "../actions/user";
 
 const defaultState = { userList: [], roles: [] };
 
