@@ -18,6 +18,7 @@ import LoadingOverlay from "react-loading-overlay";
 import fullHtml from "../public/steps/2-4.html";
 import CloseIcon from "@material-ui/icons/Close";
 import EditIcon from '@material-ui/icons/Edit';
+import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
 import FileUploadDrop from "./childComponents/form/FileUploadDrop";
 import { makeStyles } from "@material-ui/core/styles";
 import { IncoreMenuItem, IncoreSelectBox } from "./styledComponents/IncoreSelect";
@@ -411,7 +412,7 @@ export const BuiltEnvironment = ({ step, substep }) => {
 																setStrategyBuilderModalStatus(true);
 															}}
 														>
-															<EditIcon style={{color: "#2E384D"}} />
+															<EditOutlinedIcon style={{color: "#2E384D"}} />
 														</IconButton>
 														{
 															globalConfig.allowUpload ?
