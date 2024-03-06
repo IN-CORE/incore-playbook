@@ -30,6 +30,7 @@ import CloseIcon from "@material-ui/icons/Close";
 import DeleteIcon from "@material-ui/icons/Delete";
 import EditIcon from "@material-ui/icons/Edit";
 import MapIcon from "@material-ui/icons/Map";
+import StopRoundedIcon from '@material-ui/icons/StopRounded';
 import { makeStyles } from "@material-ui/core/styles";
 
 import { IncoreInputLabel } from "../styledComponents/IncoreInputLabel";
@@ -159,6 +160,14 @@ export default function RetrofitStrategyBuilder(props) {
 		"Add Conditions and Retrofit Methods",
 		"Review Retrofit Summary"
 	];
+
+	const colorCodes = [
+		"#00B654",
+		"#FF88CF",
+		"#36C1ED",
+		"#FFB067",
+		"#9C4EFF"
+	]
 
 	const AddRetrofitStrategyRow = () => {
 		return (
@@ -432,7 +441,7 @@ export default function RetrofitStrategyBuilder(props) {
 										{addedRows.map((row, index) => (
 											<TableRow key={index}>
 												<TableCell component="th" align="center" scope="row" className={classes.tableSavedCell}>
-													{index + 1}
+													<StopRoundedIcon fontSize="medium" style={{color: colorCodes[index]}} />{index + 1}
 												</TableCell>
 												<TableCell className={classes.tableSavedCell}>
 													<TableContainer>
