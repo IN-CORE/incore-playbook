@@ -25,6 +25,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Add Table Overlay to the map to display building information. [#303](https://github.com/IN-CORE/incore-playbook/issues/303)
 - Add map component to all the compare widgets that have maps [#317](https://github.com/IN-CORE/incore-playbook/issues/317)
 - Integrate click feature into map compare component [#320](https://github.com/IN-CORE/incore-playbook/issues/320)
+- Added pre-commit for linting and formatting [#302](https://github.com/IN-CORE/incore-playbook/issues/302)
 
 ### Fixed
 - Typos in hurricane creation form [#248](https://github.com/IN-CORE/incore-playbook/issues/248)
