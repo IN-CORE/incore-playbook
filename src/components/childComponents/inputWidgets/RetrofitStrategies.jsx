@@ -16,7 +16,7 @@ export default function RetrofitStrategies(props) {
 			listDatasets(globalConfig, inputDatasetType["num"], 0, inputDatasetType["type"]);
 		});
 	}, []);
-    
+
 	return (
 		<IncoreSelectBox
 			labelId="label"
@@ -24,6 +24,7 @@ export default function RetrofitStrategies(props) {
 			variant="outlined"
 			onChange={(e) => {
 				let currentVal = e.target.value;
+				if (currentVal === "not_retrofitted") currentVal = "";
 				setDatawolfFormState((prevState) => {
 					let mapState = {};
 					datawolfParamConfigItem.parametersMap.map((pm) => {
@@ -32,13 +33,10 @@ export default function RetrofitStrategies(props) {
 					return { ...prevState, [datawolfParamConfigItem.variableName]: mapState };
 				});
 			}}
-			// parameters belong to the same variable should have the same value; just pick one
-			value={
-				datawolfFormState[datawolfParamConfigItem.variableName][
-					Object.keys(datawolfFormState[datawolfParamConfigItem.variableName])[0]
-				] ?? ""
-			}
 		>
+			<IncoreMenuItem value="not_retrofitted" key="not_retrofitted">
+                Not Retrofitted
+			</IncoreMenuItem>
 			{retrofitStrategies.map((option) => {
 				return (
 					<IncoreMenuItem value={option["id"]} key={option["id"]}>

@@ -36,7 +36,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Replaced Node-Sass with Sass for better platfrom reliablility [#275](https://github.com/IN-CORE/incore-playbook/issues/275)
 - Update the ResultTable to use keys dynamically for the FEMA table headers [#285](https://github.com/IN-CORE/incore-playbook/issues/285)
 - Increase the max zoom level for the map [#278](https://github.com/IN-CORE/incore-playbook/issues/278)
-
+- Retrofit strategy should be optional in step 3-4 [#349](https://github.com/IN-CORE/incore-playbook/issues/349)
 
 ## [0.5.7] - 2023-04-05
 
