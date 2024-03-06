@@ -3,7 +3,13 @@ import { Box, IconButton, Collapse } from "@material-ui/core";
 import Alert from "@material-ui/lab/Alert";
 import CloseIcon from "@material-ui/icons/Close";
 
-export const AlertMessage = ({ open, setOpen, message, alertSeverity, status }) => {
+export const AlertMessage = ({
+	open,
+	setOpen,
+	message,
+	alertSeverity,
+	status,
+}) => {
 	let subMessage = "";
 
 	if (status !== null && status === 401) {

@@ -23,7 +23,11 @@ const ParseData = (data) => {
 			!(dataArr[0][0].startsWith("I") || dataArr[0][0].endsWith("I"))
 		) {
 			for (let i = 0; i < dataArr.length; i++) {
-				chartData.push([dataArr[i][0], parseFloat(dataArr[i][1]), colors[i % 5]]);
+				chartData.push([
+					dataArr[i][0],
+					parseFloat(dataArr[i][1]),
+					colors[i % 5],
+				]);
 			}
 			return chartData;
 		}
@@ -31,7 +35,10 @@ const ParseData = (data) => {
 		let galDataArry = [];
 		for (let i = 0; i < dataArr.length; i++) {
 			if (dataArr[i][0].startsWith("H") && !/\d$/.test(dataArr[i][0])) {
-				galDataArry.push([dataArr[i][0].slice(0, dataArr[i][0].length - 1), parseFloat(dataArr[i][1])]);
+				galDataArry.push([
+					dataArr[i][0].slice(0, dataArr[i][0].length - 1),
+					parseFloat(dataArr[i][1]),
+				]);
 			} else {
 				galDataArry.push([dataArr[i][0].slice(1), parseFloat(dataArr[i][1])]);
 			}
@@ -39,9 +46,17 @@ const ParseData = (data) => {
 
 		for (let i = 0; i < galDataArry.length; i++) {
 			if (galDataArry[i][0].startsWith("H") && /\d$/.test(galDataArry[i][0])) {
-				chartData.push([`${galDataArry[i][0]}I`, galDataArry[i][1], colors[i % 5]]);
+				chartData.push([
+					`${galDataArry[i][0]}I`,
+					galDataArry[i][1],
+					colors[i % 5],
+				]);
 			} else {
-				chartData.push([`I${galDataArry[i][0]}`, galDataArry[i][1], colors[i % 5]]);
+				chartData.push([
+					`I${galDataArry[i][0]}`,
+					galDataArry[i][1],
+					colors[i % 5],
+				]);
 			}
 		}
 
@@ -91,15 +106,15 @@ export default function SectorShocksBarChart(props) {
 					hAxis: {
 						title: xAxisLegend,
 						textStyle: {
-							fontSize: 10 // or the number you want
-						}
+							fontSize: 10, // or the number you want
+						},
 					},
 					vAxis: {
 						title: yAxisLegend,
 						titleTextStyle: { italic: false },
 						minValue: 0,
-						maxValue: 1
-					}
+						maxValue: 1,
+					},
 				}}
 				// For tests
 				rootProps={{ "data-testid": "1" }}

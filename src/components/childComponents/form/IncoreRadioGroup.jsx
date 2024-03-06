@@ -8,17 +8,15 @@ import { makeStyles } from "@material-ui/core/styles";
 
 const useStyles = makeStyles({
 	radio: {
-		color: "#69707F"
+		color: "#69707F",
 	},
 	label: {
-		fontSize: "12px"
-	}
+		fontSize: "12px",
+	},
 });
 
-
 export const IncoreRadioGroup = (props) => {
-
-	const {options, value, handleChange} = props;
+	const { options, value, handleChange } = props;
 
 	const classes = useStyles();
 
@@ -31,21 +29,23 @@ export const IncoreRadioGroup = (props) => {
 				className={classes.radio}
 				onChange={handleChange}
 			>
-				{
-					options ? options.map((option) => {
-						return (
-							<FormControlLabel
-								value={option["value"]}
-								key={option["value"]}
-								control={<Radio color="primary" size="small" />}
-								className={classes.label}
-								label={<Typography className={classes.label}>{option["name"]}</Typography>}
-							/>
-						);
-					})
-						:
-						null
-				}
+				{options
+					? options.map((option) => {
+							return (
+								<FormControlLabel
+									value={option["value"]}
+									key={option["value"]}
+									control={<Radio color="primary" size="small" />}
+									className={classes.label}
+									label={
+										<Typography className={classes.label}>
+											{option["name"]}
+										</Typography>
+									}
+								/>
+							);
+					  })
+					: null}
 			</RadioGroup>
 		</FormControl>
 	);

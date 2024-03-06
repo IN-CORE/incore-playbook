@@ -1,11 +1,26 @@
-import { Box, Container, Dialog, DialogActions, DialogContent, Grid, IconButton, Typography } from "@material-ui/core";
+import {
+	Box,
+	Container,
+	Dialog,
+	DialogActions,
+	DialogContent,
+	Grid,
+	IconButton,
+	Typography,
+} from "@material-ui/core";
 import CloseIcon from "@material-ui/icons/Close";
 import CGEBarChart from "../graph/CGEBarChart";
 import { CgeResultsTable } from "../table/CgeResultsTable";
 import CgeDescription from "../step/CgeDescription";
 import React, { useEffect, useState, useRef } from "react";
-import { IncoreMenuItem, IncoreSelectBox } from "../../styledComponents/IncoreSelect";
-import { downloadOutputFile, getOutputFileContentJSON } from "../../../utils/datawolf";
+import {
+	IncoreMenuItem,
+	IncoreSelectBox,
+} from "../../styledComponents/IncoreSelect";
+import {
+	downloadOutputFile,
+	getOutputFileContentJSON,
+} from "../../../utils/datawolf";
 import { useSelector } from "react-redux";
 import { IncoreButtonText } from "../../styledComponents/IncoreButtonText";
 import GetAppIcon from "@material-ui/icons/GetApp";
@@ -14,22 +29,33 @@ import CameraAltIcon from "@material-ui/icons/CameraAlt";
 import { IncoreInputLabel } from "../../styledComponents/IncoreInputLabel";
 
 export default function CGE(props) {
-	let { executionItem, previewOn, handlePreviewClose, datawolfDatasetConfigItems, setDownloadDialogOpen } = props;
+	let {
+		executionItem,
+		previewOn,
+		handlePreviewClose,
+		datawolfDatasetConfigItems,
+		setDownloadDialogOpen,
+	} = props;
 
 	const datawolfConfig = useSelector((state) => state.config.datawolfConfig);
 	const globalConfig = useSelector((state) => state.config.globalConfig);
 
 	const [cgeType, setCgeType] = useState("totalHouseholdIncome");
 	const [region, setRegion] = useState(
-		globalConfig["allowedRegions"] ? globalConfig["allowedRegions"][0].value : null
+		globalConfig["allowedRegions"]
+			? globalConfig["allowedRegions"][0].value
+			: null,
 	);
 	const [selectedExecutionName, setSelectedExecutionName] = useState("");
-	const [cgeHouseholdIncomeContent, setCgeHouseholdIncomeContent] = useState(null);
-	const [cgeDomesticSupplyContent, setCgeDomesticSupplyContent] = useState(null);
+	const [cgeHouseholdIncomeContent, setCgeHouseholdIncomeContent] =
+		useState(null);
+	const [cgeDomesticSupplyContent, setCgeDomesticSupplyContent] =
+		useState(null);
 	const [cgeEmploymentContent, setCgeEmploymentContent] = useState(null);
 	const [cgeEmploymentPreDownload, setCgeEmploymentPreDownload] = useState();
 	const [cgeEmploymentPostDownload, setCgeEmploymentPostDownload] = useState();
-	const [cgeHouseholdIncomeDownload, setCgeHouseholdIncomeDownload] = useState();
+	const [cgeHouseholdIncomeDownload, setCgeHouseholdIncomeDownload] =
+		useState();
 	const [cgeDomesticSupplyDownload, setCgeDomesticSupplyDownload] = useState();
 
 	// print container
@@ -42,24 +68,44 @@ export default function CGE(props) {
 			const vName = datawolfDatasetConfigItem.datasets.variableName;
 			if (vName === "cgeHouseholdIncomeContent") {
 				setCgeHouseholdIncomeContent(
-					await getOutputFileContentJSON(datawolfConfig, executionItem, datawolfDatasetConfigItem.datasetId)
+					await getOutputFileContentJSON(
+						datawolfConfig,
+						executionItem,
+						datawolfDatasetConfigItem.datasetId,
+					),
 				);
 			} else if (vName === "cgeDomesticSupplyContent") {
 				setCgeDomesticSupplyContent(
-					await getOutputFileContentJSON(datawolfConfig, executionItem, datawolfDatasetConfigItem.datasetId)
+					await getOutputFileContentJSON(
+						datawolfConfig,
+						executionItem,
+						datawolfDatasetConfigItem.datasetId,
+					),
 				);
 			} else if (vName === "cgeEmploymentContent") {
 				setCgeEmploymentContent(
-					await getOutputFileContentJSON(datawolfConfig, executionItem, datawolfDatasetConfigItem.datasetId)
+					await getOutputFileContentJSON(
+						datawolfConfig,
+						executionItem,
+						datawolfDatasetConfigItem.datasetId,
+					),
 				);
 			} else if (vName === "cgeEmploymentPreDownload") {
-				setCgeEmploymentPreDownload(executionItem["datasets"][datawolfDatasetConfigItem.datasetId]);
+				setCgeEmploymentPreDownload(
+					executionItem["datasets"][datawolfDatasetConfigItem.datasetId],
+				);
 			} else if (vName === "cgeEmploymentPostDownload") {
-				setCgeEmploymentPostDownload(executionItem["datasets"][datawolfDatasetConfigItem.datasetId]);
+				setCgeEmploymentPostDownload(
+					executionItem["datasets"][datawolfDatasetConfigItem.datasetId],
+				);
 			} else if (vName === "cgeHouseholdIncomeDownload") {
-				setCgeHouseholdIncomeDownload(executionItem["datasets"][datawolfDatasetConfigItem.datasetId]);
+				setCgeHouseholdIncomeDownload(
+					executionItem["datasets"][datawolfDatasetConfigItem.datasetId],
+				);
 			} else if (vName === "cgeDomesticSupplyDownload") {
-				setCgeDomesticSupplyDownload(executionItem["datasets"][datawolfDatasetConfigItem.datasetId]);
+				setCgeDomesticSupplyDownload(
+					executionItem["datasets"][datawolfDatasetConfigItem.datasetId],
+				);
 			}
 		});
 	}, []);
@@ -71,43 +117,61 @@ export default function CGE(props) {
 				datawolfConfig,
 				cgeHouseholdIncomeDownload,
 				null,
-				`cge-household-income-${executionItem.id}.csv`
+				`cge-household-income-${executionItem.id}.csv`,
 			);
 		} else if (cgeType === "domesticSupply" && cgeDomesticSupplyDownload) {
 			await downloadOutputFile(
 				datawolfConfig,
 				cgeDomesticSupplyDownload,
 				null,
-				`cge-domestic-supply-${executionItem.id}.csv`
+				`cge-domestic-supply-${executionItem.id}.csv`,
 			);
-		} else if (cgeType === "employment" && cgeEmploymentPreDownload && cgeEmploymentPostDownload) {
+		} else if (
+			cgeType === "employment" &&
+			cgeEmploymentPreDownload &&
+			cgeEmploymentPostDownload
+		) {
 			await downloadOutputFile(
 				datawolfConfig,
 				cgeEmploymentPreDownload,
 				null,
-				`cge-predisaster-demand-${executionItem.id}.csv`
+				`cge-predisaster-demand-${executionItem.id}.csv`,
 			);
 			await downloadOutputFile(
 				datawolfConfig,
 				cgeEmploymentPostDownload,
 				null,
-				`cge-postdisaster-demand-${executionItem.id}.csv`
+				`cge-postdisaster-demand-${executionItem.id}.csv`,
 			);
 		}
 	};
 
 	return (
-		<Dialog open={previewOn} onClose={handlePreviewClose} maxWidth="lg" fullWidth scroll="paper">
+		<Dialog
+			open={previewOn}
+			onClose={handlePreviewClose}
+			maxWidth="lg"
+			fullWidth
+			scroll="paper"
+		>
 			<DialogContent className="previewModal" ref={printRef}>
-				<IconButton aria-label="Close" onClick={handlePreviewClose} style={{ float: "right" }}>
+				<IconButton
+					aria-label="Close"
+					onClick={handlePreviewClose}
+					style={{ float: "right" }}
+				>
 					<CloseIcon fontSize="small" />
 				</IconButton>
 
 				{/*title*/}
 				{/*TODO wrap into a component*/}
 				<Box className="previewTitleSection">
-					<Typography className="previewTitle">{selectedExecutionName}</Typography>
-					<Typography className="previewTitle">Select Data: CGE Results</Typography>
+					<Typography className="previewTitle">
+						{selectedExecutionName}
+					</Typography>
+					<Typography className="previewTitle">
+						Select Data: CGE Results
+					</Typography>
 				</Box>
 
 				<Box style={{ padding: "5px 25px 25px 25px" }}>
@@ -128,10 +192,16 @@ export default function CGE(props) {
 											value={cgeType}
 											style={{ maxWidth: "500px" }}
 										>
-											<IncoreMenuItem value="totalHouseholdIncome" key="totalHouseholdIncome">
+											<IncoreMenuItem
+												value="totalHouseholdIncome"
+												key="totalHouseholdIncome"
+											>
 												Total Household Income
 											</IncoreMenuItem>
-											<IncoreMenuItem value="domesticSupply" key="domesticSupply">
+											<IncoreMenuItem
+												value="domesticSupply"
+												key="domesticSupply"
+											>
 												Domestic Supply
 											</IncoreMenuItem>
 											<IncoreMenuItem value="employment" key="employment">
@@ -157,16 +227,18 @@ export default function CGE(props) {
 												style={{ maxWidth: "500px" }}
 											>
 												{globalConfig["allowedRegions"]
-													? globalConfig["allowedRegions"].map((allowedRegion) => {
-															return (
-																<IncoreMenuItem
-																	value={allowedRegion.value}
-																	key={allowedRegion}
-																>
-																	{allowedRegion.name}
-																</IncoreMenuItem>
-															);
-													  })
+													? globalConfig["allowedRegions"].map(
+															(allowedRegion) => {
+																return (
+																	<IncoreMenuItem
+																		value={allowedRegion.value}
+																		key={allowedRegion}
+																	>
+																		{allowedRegion.name}
+																	</IncoreMenuItem>
+																);
+															},
+													  )
 													: null}
 											</IncoreSelectBox>
 										</Box>
@@ -177,7 +249,10 @@ export default function CGE(props) {
 							{/*table and barchart*/}
 							{/*TODO for some reason barchart unit not working*/}
 							{(() => {
-								if (cgeType === "totalHouseholdIncome" && cgeHouseholdIncomeContent) {
+								if (
+									cgeType === "totalHouseholdIncome" &&
+									cgeHouseholdIncomeContent
+								) {
 									return (
 										<>
 											<Box style={{ margin: "50px 0", maxWidth: "700px" }}>
@@ -195,7 +270,10 @@ export default function CGE(props) {
 											</Box>
 										</>
 									);
-								} else if (cgeType === "domesticSupply" && cgeDomesticSupplyContent) {
+								} else if (
+									cgeType === "domesticSupply" &&
+									cgeDomesticSupplyContent
+								) {
 									return (
 										<>
 											<Box style={{ margin: "50px 0", maxWidth: "700px" }}>
@@ -227,7 +305,10 @@ export default function CGE(props) {
 												/>
 											</Box>
 											<Box>
-												<CgeResultsTable region={region} resultsJson={cgeEmploymentContent} />
+												<CgeResultsTable
+													region={region}
+													resultsJson={cgeEmploymentContent}
+												/>
 											</Box>
 										</>
 									);
@@ -253,7 +334,10 @@ export default function CGE(props) {
 				<IncoreButtonText onClick={download} startIcon={<GetAppIcon />}>
 					Data
 				</IncoreButtonText>
-				<IncoreButtonText onClick={handlePreviewClose} startIcon={<CloseIcon />}>
+				<IncoreButtonText
+					onClick={handlePreviewClose}
+					startIcon={<CloseIcon />}
+				>
 					Close
 				</IncoreButtonText>
 			</DialogActions>

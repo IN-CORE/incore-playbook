@@ -11,9 +11,9 @@ export const IncoreAutocomplete = styled(Autocomplete)({
 	lineHeight: "18px",
 	position: "relative",
 	"&:before, &:after": {
-		borderColor: "#00619D"
+		borderColor: "#00619D",
 	},
 	"& .MuiSelect-select:focus": {
-		backgroundColor: "#FFFFFF!important"
+		backgroundColor: "#FFFFFF!important",
 	},
 });

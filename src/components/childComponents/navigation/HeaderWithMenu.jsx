@@ -38,7 +38,6 @@ import Grid from "@material-ui/core/Grid";
 
 import Gravatar from "react-gravatar";
 
-
 import "../../../styles/main.css";
 import { getCurrEmail } from "../../../utils/common";
 import { Welcome } from "../user/Welcome";
@@ -49,32 +48,32 @@ const drawerWidth = menuWidth;
 
 const useStyles = makeStyles((theme) => ({
 	root: {
-		fontFamily: "Rubik, san-serif"
+		fontFamily: "Rubik, san-serif",
 	},
 	appBar: {
 		transition: theme.transitions.create(["margin", "width"], {
 			easing: theme.transitions.easing.sharp,
-			duration: theme.transitions.duration.leavingScreen
+			duration: theme.transitions.duration.leavingScreen,
 		}),
 		background: "#FFFFFF",
 		boxShadow: "none",
 		borderBottom: "solid 1px #E4E8F0",
-		padding:"0.5em",
+		padding: "0.5em",
 	},
 	appBarShift: {
 		width: `calc(100% - ${drawerWidth}px)`,
 		marginLeft: drawerWidth,
 		transition: theme.transitions.create(["margin", "width"], {
 			easing: theme.transitions.easing.easeOut,
-			duration: theme.transitions.duration.enteringScreen
+			duration: theme.transitions.duration.enteringScreen,
 		}),
 	},
 	drawer: {
 		width: drawerWidth,
-		flexShrink: 0
+		flexShrink: 0,
 	},
 	drawerPaper: {
-		width: drawerWidth
+		width: drawerWidth,
 	},
 	drawerHeader: {
 		display: "flex",
@@ -82,13 +81,13 @@ const useStyles = makeStyles((theme) => ({
 		padding: theme.spacing(0, 1),
 		// necessary for content to be below app bar
 		...theme.mixins.toolbar,
-		justifyContent: "flex-end"
+		justifyContent: "flex-end",
 	},
 	grow: {
-		flexGrow: 1
+		flexGrow: 1,
 	},
 	menuButton: {
-		marginRight: theme.spacing(0.5)
+		marginRight: theme.spacing(0.5),
 	},
 	menuIcon: {
 		height: "32px",
@@ -97,31 +96,31 @@ const useStyles = makeStyles((theme) => ({
 	},
 	statusIcon: {
 		color: "#00619D",
-		fontSize: "1.5em"
+		fontSize: "1.5em",
 	},
 	headerLogo: {
 		height: "44px",
-		marginRight: theme.spacing(1)
+		marginRight: theme.spacing(1),
 	},
 	hide: {
-		display: "none"
+		display: "none",
 	},
 	title: {
 		display: "none",
 		[theme.breakpoints.up("sm")]: {
 			display: "flex",
-			alignItems: "center"
-		}
+			alignItems: "center",
+		},
 	},
 	titleLink: {
 		textDecoration: "none",
-		color: "inherit"
+		color: "inherit",
 	},
 	inputRoot: {
-		color: "inherit"
+		color: "inherit",
 	},
 	sectionDesktop: {
-		display: "flex"
+		display: "flex",
 		// [theme.breakpoints.up("sm")]: {
 		// 	display: "flex",
 		// },
@@ -129,13 +128,13 @@ const useStyles = makeStyles((theme) => ({
 	parentMenu: {
 		fontWeight: 500,
 		backgroundColor: "rgba(0, 97, 157, 0.1)",
-		textTransform: "capitalize"
+		textTransform: "capitalize",
 	},
 	avatarImg: {
 		width: "32px",
 		height: "32px",
-		borderRadius: "50%"
-	}
+		borderRadius: "50%",
+	},
 }));
 
 const HeaderWithMenu = ({
@@ -143,7 +142,7 @@ const HeaderWithMenu = ({
 	isAuthenticated,
 	menuItem,
 	headerTitle = "Playbook Interactive Guide for",
-	headerSubTitle = "Community Resilience Planning"
+	headerSubTitle = "Community Resilience Planning",
 }) => {
 	const classes = useStyles();
 	const theme = useTheme();
@@ -188,7 +187,9 @@ const HeaderWithMenu = ({
 		openMenu = "1";
 	}
 
-	let [open, setOpen] = isAuthenticated ? React.useState(true) : React.useState(false);
+	let [open, setOpen] = isAuthenticated
+		? React.useState(true)
+		: React.useState(false);
 
 	const [openTask, setOpenTask] = React.useState(openMenu);
 
@@ -255,30 +256,30 @@ const HeaderWithMenu = ({
 					label: "Identify leader",
 					status: "pending",
 					disabled: false,
-					route: "/create-team-leader"
+					route: "/create-team-leader",
 				},
 				{
 					key: "1-2",
 					label: "Identify Team Members",
 					status: "pending",
 					disabled: false,
-					route: "/create-team-member"
+					route: "/create-team-member",
 				},
 				{
 					key: "1-3",
 					label: "Establish the scope",
 					status: "pending",
 					disabled: false,
-					route: "/create-team-scope"
+					route: "/create-team-scope",
 				},
 				{
 					key: "1-4",
 					label: " Identify key stakeholders",
 					status: "pending",
 					disabled: false,
-					route: "/create-team-stakeholder"
-				}
-			]
+					route: "/create-team-stakeholder",
+				},
+			],
 		},
 		{
 			key: "2",
@@ -289,37 +290,37 @@ const HeaderWithMenu = ({
 					label: "Assess existing community plans",
 					status: "pending",
 					disabled: false,
-					route: "/community-plan"
+					route: "/community-plan",
 				},
 				{
 					key: "2-2",
 					label: "Characterize community members",
 					status: "pending",
 					disabled: false,
-					route: "/community-member"
+					route: "/community-member",
 				},
 				{
 					key: "2-3",
 					label: "Characterize social functions",
 					status: "pending",
 					disabled: false,
-					route: "/community-function"
+					route: "/community-function",
 				},
 				{
 					key: "2-4",
 					label: "Characterize built environment",
 					status: "pending",
 					disabled: false,
-					route: "/community-environment"
+					route: "/community-environment",
 				},
 				{
 					key: "2-5",
 					label: "Link social functions & built environment",
 					status: "pending",
 					disabled: false,
-					route: "/community-link"
-				}
-			]
+					route: "/community-link",
+				},
+			],
 		},
 		{
 			key: "3",
@@ -330,37 +331,37 @@ const HeaderWithMenu = ({
 					label: "Identify long-term community goals",
 					status: "pending",
 					disabled: false,
-					route: "/goal-objective-long"
+					route: "/goal-objective-long",
 				},
 				{
 					key: "3-2",
 					label: "Establish performance goals",
 					status: "pending",
 					disabled: false,
-					route: "/goal-objective-desired"
+					route: "/goal-objective-desired",
 				},
 				{
 					key: "3-3",
 					label: "Define community hazards",
 					status: "pending",
 					disabled: false,
-					route: "/goal-objective-hazard"
+					route: "/goal-objective-hazard",
 				},
 				{
 					key: "3-4",
 					label: "Determine anticipated performance",
 					status: "pending",
 					disabled: false,
-					route: "/goal-objective-performance"
+					route: "/goal-objective-performance",
 				},
 				{
 					key: "3-5",
 					label: "Summarize the results",
 					status: "pending",
 					disabled: false,
-					route: "/goal-objective-result"
-				}
-			]
+					route: "/goal-objective-result",
+				},
+			],
 		},
 		{
 			key: "4",
@@ -371,23 +372,23 @@ const HeaderWithMenu = ({
 					label: "Evaluate Gaps",
 					status: "pending",
 					disabled: false,
-					route: "/plan-development-gap"
+					route: "/plan-development-gap",
 				},
 				{
 					key: "4-2",
 					label: "Identify Solutions",
 					status: "pending",
 					disabled: false,
-					route: "/plan-development-solution"
+					route: "/plan-development-solution",
 				},
 				{
 					key: "4-3",
 					label: "Prioritize implementation strategy",
 					status: "pending",
 					disabled: false,
-					route: "/plan-development-strategy"
-				}
-			]
+					route: "/plan-development-strategy",
+				},
+			],
 		},
 		{
 			key: "5",
@@ -398,23 +399,23 @@ const HeaderWithMenu = ({
 					label: "Document Plans & Strategy",
 					status: "pending",
 					disabled: false,
-					route: "/review-strategy"
+					route: "/review-strategy",
 				},
 				{
 					key: "5-2",
 					label: "Obtain Feedback & Approval",
 					status: "pending",
 					disabled: false,
-					route: "/review-approval"
+					route: "/review-approval",
 				},
 				{
 					key: "5-3",
 					label: "Finalize & Approve The Plan",
 					status: "pending",
 					disabled: false,
-					route: "/review-final"
-				}
-			]
+					route: "/review-final",
+				},
+			],
 		},
 		{
 			key: "6",
@@ -425,30 +426,32 @@ const HeaderWithMenu = ({
 					label: "Execute approved solutions",
 					status: "pending",
 					disabled: false,
-					route: "/implementation-execute"
+					route: "/implementation-execute",
 				},
 				{
 					key: "6-2",
 					label: "Evaluate & Update",
 					status: "pending",
 					disabled: false,
-					route: "/implementation-update"
+					route: "/implementation-update",
 				},
 				{
 					key: "6-3",
 					label: "Modify Strategy (as needed)",
 					status: "pending",
 					disabled: false,
-					route: "/implementation-modify"
-				}
-			]
-		}
+					route: "/implementation-modify",
+				},
+			],
+		},
 	];
 
 	let menus = [];
 	const pendingIcon = <QueryBuilderIcon className={classes.statusIcon} />;
 	const completedCheckIcon = <CheckIcon className={classes.statusIcon} />;
-	const inProgressCheckIcon = <HourglassEmptyOutlinedIcon className={classes.statusIcon} />;
+	const inProgressCheckIcon = (
+		<HourglassEmptyOutlinedIcon className={classes.statusIcon} />
+	);
 
 	treeData.map(({ key, label, nodes }) => {
 		let subMenus = [];
@@ -461,34 +464,36 @@ const HeaderWithMenu = ({
 						textTransform: "capitalize",
 						backgroundColor: openSubMenu === key ? "#E9EFFE" : "#FFFFFF",
 						color: "#00619D",
-						padding: "0.3em 1.5em"
+						padding: "0.3em 1.5em",
 					}}
 					key={key}
 					selected={openSubMenu === key}
 					onClick={handleSubmenuClick(route)}
 					disabled={disabled}
 				>
-					<ListItemText primary={`${key}. ${label}`} primaryTypographyProps={{
-						style: {
-							fontWeight: openSubMenu === key ? 500 : 400,
-							fontSize: "15px",
-							paddingRight: "5px"
-						}
-					}} />
+					<ListItemText
+						primary={`${key}. ${label}`}
+						primaryTypographyProps={{
+							style: {
+								fontWeight: openSubMenu === key ? 500 : 400,
+								fontSize: "15px",
+								paddingRight: "5px",
+							},
+						}}
+					/>
 					{Object.keys(stepStatus).length === 0 ? (
 						pendingIcon
 					) : (
 						<>
-							{stepStatus[`step_${key.replace("-", "_")}`].status === "pending" ? (
-								pendingIcon
-							) : stepStatus[`step_${key.replace("-", "_")}`].status === "in_progress" ? (
-								inProgressCheckIcon
-							) : (
-								completedCheckIcon
-							)}
+							{stepStatus[`step_${key.replace("-", "_")}`].status === "pending"
+								? pendingIcon
+								: stepStatus[`step_${key.replace("-", "_")}`].status ===
+								    "in_progress"
+								  ? inProgressCheckIcon
+								  : completedCheckIcon}
 						</>
 					)}
-				</ListItem>
+				</ListItem>,
 			);
 			if (Object.keys(stepStatus).length === 0) {
 				subMenusStatus.push("pending");
@@ -507,43 +512,51 @@ const HeaderWithMenu = ({
 					style={{
 						backgroundColor: openTask === key ? "#E9EFFE" : "#FFFFFF",
 						color: openTask === key ? "#00619D" : "#2E384D",
-						padding: "0.5em 1.5em"
+						padding: "0.5em 1.5em",
 					}}
 				>
-					<Box component="div"
-						 sx={{
-							 display: "block",
-							 height: "1.3125em",
-							 width: "1.4375em"
-						 }}
-						 style={{
-							 backgroundColor: openTask === key ? "#00619D" : "#F2F5FB",
-							 color: openTask === key ? "#FFFFFF" : "#2E384D",
-							 textAlign: "center"
-						 }}
-					>{key}</Box>
-					<ListItemText primary={`${label}`}
-								  primaryTypographyProps={{
-									  style: {
-										  paddingLeft: "1em",
-										  fontWeight: openTask === key ? 500 : 400,
-										  fontSize: "16px"
-									  }
-								  }}
+					<Box
+						component="div"
+						sx={{
+							display: "block",
+							height: "1.3125em",
+							width: "1.4375em",
+						}}
+						style={{
+							backgroundColor: openTask === key ? "#00619D" : "#F2F5FB",
+							color: openTask === key ? "#FFFFFF" : "#2E384D",
+							textAlign: "center",
+						}}
+					>
+						{key}
+					</Box>
+					<ListItemText
+						primary={`${label}`}
+						primaryTypographyProps={{
+							style: {
+								paddingLeft: "1em",
+								fontWeight: openTask === key ? 500 : 400,
+								fontSize: "16px",
+							},
+						}}
 					/>
 					{/* If any in_progress status, then add pending check icon */}
 					{/* else, if any pending icon, show pending else, all are complete and show completed icon */}
 					{subMenusStatus.includes("in_progress") ? (
 						inProgressCheckIcon
 					) : (
-						<>{subMenusStatus.includes("pending") ? pendingIcon : completedCheckIcon}</>
+						<>
+							{subMenusStatus.includes("pending")
+								? pendingIcon
+								: completedCheckIcon}
+						</>
 					)}
 				</ListItem>
 				<Collapse in={openTask === key} timeout="auto" unmountOnExit>
 					{subMenus}
 				</Collapse>
 				<Divider />
-			</div>
+			</div>,
 		);
 	});
 
@@ -554,7 +567,7 @@ const HeaderWithMenu = ({
 				position="relative"
 				color="transparent"
 				className={clsx(classes.appBar, {
-					[classes.appBarShift]: open
+					[classes.appBarShift]: open,
 				})}
 			>
 				<Toolbar>
@@ -563,7 +576,11 @@ const HeaderWithMenu = ({
 						aria-label="open drawer"
 						onClick={handleDrawerOpen}
 						edge="start"
-						className={isAuthenticated ? clsx(classes.menuButton, open && classes.hide) : classes.hide}
+						className={
+							isAuthenticated
+								? clsx(classes.menuButton, open && classes.hide)
+								: classes.hide
+						}
 					>
 						<MenuIcon className={classes.menuIcon} />
 					</IconButton>
@@ -589,7 +606,9 @@ const HeaderWithMenu = ({
 					</Link>
 
 					<div className={classes.grow} />
-					<div className={isAuthenticated ? classes.sectionDesktop : classes.hide}>
+					<div
+						className={isAuthenticated ? classes.sectionDesktop : classes.hide}
+					>
 						{/*<IconButton aria-label="show messages" color="inherit">*/}
 						{/*	<Badge variant="dot" color="primary">*/}
 						{/*		<MailIcon />*/}
@@ -608,12 +627,15 @@ const HeaderWithMenu = ({
 							onClick={handleProfileMenuOpen}
 							color="inherit"
 						>
-							{getCurrEmail(globalConfig.hostname) !== undefined ?
-								<Gravatar className={classes.avatarImg} email={getCurrEmail(globalConfig.hostname)}
-										  rating="g" />
-								:
+							{getCurrEmail(globalConfig.hostname) !== undefined ? (
+								<Gravatar
+									className={classes.avatarImg}
+									email={getCurrEmail(globalConfig.hostname)}
+									rating="g"
+								/>
+							) : (
 								<AccountCircle fontSize="small" />
-							}
+							)}
 						</IconButton>
 					</div>
 				</Toolbar>
@@ -626,12 +648,16 @@ const HeaderWithMenu = ({
 				anchor="left"
 				open={open}
 				classes={{
-					paper: classes.drawerPaper
+					paper: classes.drawerPaper,
 				}}
 			>
 				<div className={classes.drawerHeader}>
 					<IconButton onClick={handleDrawerClose}>
-						{theme.direction === "ltr" ? <ChevronLeftIcon /> : <ChevronRightIcon />}
+						{theme.direction === "ltr" ? (
+							<ChevronLeftIcon />
+						) : (
+							<ChevronRightIcon />
+						)}
 					</IconButton>{" "}
 					<br />
 					<Divider />
@@ -649,7 +675,7 @@ const HeaderWithMenu = ({
 			</Drawer>
 			<main
 				className={clsx(classes.content, {
-					[classes.contentShift]: open
+					[classes.contentShift]: open,
 				})}
 			/>
 		</div>

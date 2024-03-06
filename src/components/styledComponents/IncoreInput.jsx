@@ -2,7 +2,7 @@ import { styled } from "@material-ui/core/styles";
 import { TextField } from "@material-ui/core";
 
 export const IncoreTextField = styled(TextField)({
-	"width": "100%",
+	width: "100%",
 	"& .MuiInputBase-root": {
 		height: "41px",
 		width: "100%",
@@ -12,6 +12,6 @@ export const IncoreTextField = styled(TextField)({
 		letterSpacing: 0,
 		lineHeight: "18px",
 		backgroundColor: "#FFFFFF",
-		position: "relative"
-	}
+		position: "relative",
+	},
 });

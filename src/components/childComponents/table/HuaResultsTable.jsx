@@ -1,6 +1,14 @@
 import React from "react";
 
-import { Typography, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@material-ui/core";
+import {
+	Typography,
+	Table,
+	TableBody,
+	TableCell,
+	TableContainer,
+	TableHead,
+	TableRow,
+} from "@material-ui/core";
 
 import Radio from "@material-ui/core/Radio";
 import RadioGroup from "@material-ui/core/RadioGroup";
@@ -19,7 +27,7 @@ const tableColumnHead = {
 	border: "solid 1px rgba(46,91,255,0.08)",
 	borderRadius: "1px",
 	width: "185px",
-	backgroundColor: "rgba(234,238,255, 0.6)"
+	backgroundColor: "rgba(234,238,255, 0.6)",
 };
 
 const tableRowHead = {
@@ -32,18 +40,18 @@ const tableRowHead = {
 	borderRight: "solid 1px #FFFFFF",
 	borderTop: "solid 1px #FFFFFF",
 	borderBottom: "solid 1px #FFFFFF",
-	letterSpacing: "1.13px"
+	letterSpacing: "1.13px",
 };
 
 const useStyles = makeStyles({
 	table: {
 		maxWidth: 700,
-		display: "block"
+		display: "block",
 	},
 	metricsTable: {
 		display: "block",
 		maxWidth: "fit-content",
-		margin: "auto auto"
+		margin: "auto auto",
 	},
 	tableRowHeadFirst: {
 		color: "#69707F",
@@ -52,38 +60,38 @@ const useStyles = makeStyles({
 		textAlign: "center",
 		backgroundColor: "rgba(234, 238, 255, 0.6)",
 		border: "solid 1px #FFFFFF",
-		letterSpacing: "1.13px"
+		letterSpacing: "1.13px",
 	},
 	tableRowHead: {
 		...tableRowHead,
 		backgroundColor: "#DB4F60",
-		color: "#FFFFFF"
+		color: "#FFFFFF",
 	},
 	tableRowHeadRight: {
 		...tableRowHead,
-		borderRight: "solid 1px rgba(234, 238, 255, 0.6)"
+		borderRight: "solid 1px rgba(234, 238, 255, 0.6)",
 	},
 	tableColumnHead: {
-		...tableColumnHead
+		...tableColumnHead,
 	},
 	tableColumnHeadCharacteristics: {
 		...tableColumnHead,
-		backgroundColor: "rgba(234,238,255, 1)"
+		backgroundColor: "rgba(234,238,255, 1)",
 	},
 	tableColumnHeadTotal: {
 		...tableColumnHead,
-		backgroundColor: "rgba(234, 238, 255, 0.6)"
+		backgroundColor: "rgba(234, 238, 255, 0.6)",
 	},
 	tableDataCell: {
 		width: "100px",
 		textAlign: "center",
-		border: "solid 1px rgba(46,91,255,0.08)"
+		border: "solid 1px rgba(46,91,255,0.08)",
 	},
 	tableDataCellRed: {
 		width: "100px",
 		textAlign: "center",
 		border: "solid 1px rgba(46,91,255,0.08)",
-		backgroundColor: "#FEEFF1"
+		backgroundColor: "#FEEFF1",
 	},
 	title: {
 		height: "19px",
@@ -95,39 +103,39 @@ const useStyles = makeStyles({
 		lineHeight: "19px",
 		padding: "12px 8px",
 		marginBottom: "25px",
-		display: "block"
+		display: "block",
 	},
 	radio: {
-		color: "#69707F"
+		color: "#69707F",
 		// letterSpacing: "0.53px"
 	},
 	label: {
-		fontSize: "12px"
-	}
+		fontSize: "12px",
+	},
 });
 
 export function HuaResultsTable(props) {
 	const [huaBy, setHuaBy] = React.useState("tenure");
 	const [filterOptions, setFilterOptions] = React.useState([
 		{
-			"value": "tenure",
-			"name": "by Tenure"
+			value: "tenure",
+			name: "by Tenure",
 		},
 		{
-			"value": "race",
-			"name": "by Race / Ethnicity"
+			value: "race",
+			name: "by Race / Ethnicity",
 		},
 		{
-			"value": "income",
-			"name": "by Household Income Level"
+			value: "income",
+			name: "by Household Income Level",
 		},
 		{
-			"value": "housingType",
-			"name": "by Housing Type"
+			value: "housingType",
+			name: "by Housing Type",
 		},
 		{
-			"value": "disability",
-			"name": "by Disability"
+			value: "disability",
+			name: "by Disability",
 		},
 	]);
 
@@ -143,12 +151,10 @@ export function HuaResultsTable(props) {
 		"HOUSEHOLD CHARACTERISTICS",
 		"# HOUSEHOLDS DISLOCATED",
 		"TOTAL HOUSEHOLDS",
-		"% HOUSEHOLDS DISLOCATED"
+		"% HOUSEHOLDS DISLOCATED",
 	];
 
 	const classes = useStyles();
-
-
 
 	return (
 		<div>
@@ -156,7 +162,11 @@ export function HuaResultsTable(props) {
 				<FormLabel component="legend" className={classes.title}>
 					Household Dislocation
 				</FormLabel>
-				<IncoreRadioGroup options={filterOptions} value={huaBy} handleChange={handleChange} />
+				<IncoreRadioGroup
+					options={filterOptions}
+					value={huaBy}
+					handleChange={handleChange}
+				/>
 			</div>
 
 			{resultsJson !== undefined ? (
@@ -201,13 +211,22 @@ export function HuaResultsTable(props) {
 										>
 											{e["household_characteristics"]}{" "}
 										</TableCell>
-										<TableCell className={classes.tableDataCellRed} key={`2_${idx.toString()}`}>
+										<TableCell
+											className={classes.tableDataCellRed}
+											key={`2_${idx.toString()}`}
+										>
 											{e["household_dislocated"].toLocaleString("en-US")}
 										</TableCell>
-										<TableCell className={classes.tableDataCell} key={`3_${idx.toString()}`}>
+										<TableCell
+											className={classes.tableDataCell}
+											key={`3_${idx.toString()}`}
+										>
 											{e["total_households"].toLocaleString("en-US")}
 										</TableCell>
-										<TableCell className={classes.tableDataCell} key={`4_${idx.toString()}`}>
+										<TableCell
+											className={classes.tableDataCell}
+											key={`4_${idx.toString()}`}
+										>
 											{round(e["percent_household_dislocated"], 1)}%
 										</TableCell>
 									</TableRow>
@@ -217,7 +236,10 @@ export function HuaResultsTable(props) {
 					</Table>
 				</TableContainer>
 			) : (
-				<div style={{ padding: "10px" }}> No data available for the selection</div>
+				<div style={{ padding: "10px" }}>
+					{" "}
+					No data available for the selection
+				</div>
 			)}
 		</div>
 	);

@@ -215,11 +215,13 @@ export const StaticSubStep = ({ menu, step, substep }) => {
 	return (
 		<Layout>
 			<div className="firstDivInContent">
-				<Box display="flex" style={{alignItem:"center", padding:"1em 0"}} sx={{ justifyContent: "space-between" }}>
-					<Box>
-						{breadCrumb}
-					</Box>
-					<Box style={{marginRight:"2em"}}>
+				<Box
+					display="flex"
+					style={{ alignItem: "center", padding: "1em 0" }}
+					sx={{ justifyContent: "space-between" }}
+				>
+					<Box>{breadCrumb}</Box>
+					<Box style={{ marginRight: "2em" }}>
 						<StepStatusDropdown step={step} substep={substep} />
 					</Box>
 				</Box>

@@ -1,7 +1,7 @@
 .stepStatus {
 	height: 14px;
 	width: 95px;
-	color: #00619D;
+	color: #00619d;
 	font-family: Rubik, sans-serif;
 	font-size: 12px;
 	font-weight: 400;
@@ -13,7 +13,7 @@
 	height: 25px;
 	width: 380px;
 	border-radius: 8px;
-	background-color: #BFC5D2;
+	background-color: #bfc5d2;
 	padding: 0px 2px 0px 2px;
 }
 .statusInfo {
@@ -23,20 +23,20 @@
 	float: left;
 	text-align: center;
 	margin: 2px 4px 2px 4px;
-	padding:0 10px;
+	padding: 0 10px;
 	font-family: Roboto, sans-serif;
 	font-size: 14px;
 	font-weight: 500;
 	letter-spacing: 0.17px;
 	line-height: 21px;
 	color: #000000;
-	background-color: #BFC5D2;
+	background-color: #bfc5d2;
 }
 .active {
-	color: #1F8DE7;
-	background-color: #FFFFFF;
+	color: #1f8de7;
+	background-color: #ffffff;
 }
 .inactive {
 	color: #000000;
-	background-color: #BFC5D2;
+	background-color: #bfc5d2;
 }

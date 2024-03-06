@@ -13,18 +13,18 @@ export const IncoreSlider = styled(Slider)({
 			boxShadow: "inherit",
 		},
 	},
-	"& .MuiSlider-mark":{
-		display: "none"
+	"& .MuiSlider-mark": {
+		display: "none",
 	},
-	"& .MuiSlider-markLabel":{
+	"& .MuiSlider-markLabel": {
 		color: "#2E384D",
 		fontSize: "15px",
 		fontWeight: 500,
 	},
-	"& .MuiSlider-markLabelActive":{
+	"& .MuiSlider-markLabelActive": {
 		color: "#00619D",
 		fontSize: "15px",
-		fontWeight: 500
+		fontWeight: 500,
 	},
 	"& .MuiSlider-track": {
 		height: 8,

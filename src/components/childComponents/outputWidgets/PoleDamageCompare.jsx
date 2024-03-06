@@ -4,16 +4,16 @@ import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { applyTransform } from "ol/extent";
 import { getOutputFileContent } from "../../../utils/datawolf";
-import { basicLayers, generateLayers, createBasicLayers } from "../../../utils/map";
+import {
+	basicLayers,
+	generateLayers,
+	createBasicLayers,
+} from "../../../utils/map";
 import { comparisonKey } from "../../../globals";
 import MapCompare from "../map/MapCompare";
 
 export default function PoleDamageCompare(props) {
-	let {
-		executionItems,
-		datawolfDatasetConfigItems,
-		hazardLayers,
-	} = props;
+	let { executionItems, datawolfDatasetConfigItems, hazardLayers } = props;
 
 	const mapConfig = useSelector((state) => state.config.mapConfig);
 	const datawolfConfig = useSelector((state) => state.config.datawolfConfig);
@@ -37,7 +37,7 @@ export default function PoleDamageCompare(props) {
 						const poleMaxDmgStateINCOREId = await getOutputFileContent(
 							datawolfConfig,
 							executionItems[i],
-							datawolfDatasetConfigItem.datasetId
+							datawolfDatasetConfigItem.datasetId,
 						);
 						const layerDef = [
 							{
@@ -45,8 +45,8 @@ export default function PoleDamageCompare(props) {
 								layerStyles: mapConfig.LAYER_STYLES.PoleDamage,
 								title: "EPF Damage (Pole)",
 								opacity: 1,
-								zIndex: 1
-							}
+								zIndex: 1,
+							},
 						];
 						const previewLayers = await generateLayers(globalConfig, layerDef);
 						if (i === 0) {
@@ -66,17 +66,36 @@ export default function PoleDamageCompare(props) {
 		<Box style={{ padding: "5px 25px 25px 25px" }}>
 			<Grid container spacing={3} justify="center">
 				{/*for map*/}
-				{basicLayersA && basicLayersB && hazardLayers && damageLayersA && damageLayersB ? (
-					<Container className="mapContainer" disableGutters style={{ height: `${mapHeight}px` }}>
+				{basicLayersA &&
+				basicLayersB &&
+				hazardLayers &&
+				damageLayersA &&
+				damageLayersB ? (
+					<Container
+						className="mapContainer"
+						disableGutters
+						style={{ height: `${mapHeight}px` }}
+					>
 						<MapCompare
 							className="fillContainer"
 							zoom={mapConfig.ZOOM}
 							minZoom={mapConfig.MIN_ZOOM}
 							maxZoom={mapConfig.MAX_ZOOM}
-							extent={applyTransform(mapConfig.MAP_BOUNDS, getTransform("EPSG:4326", "EPSG:3857"))}
+							extent={applyTransform(
+								mapConfig.MAP_BOUNDS,
+								getTransform("EPSG:4326", "EPSG:3857"),
+							)}
 							center={fromLonLat(mapConfig.MAP_CENTER)}
-							layersA={[basicLayersA, hazardLayers[comparisonKey[0]], damageLayersA]}
-							layersB={[basicLayersB, hazardLayers[comparisonKey[1]], damageLayersB]}
+							layersA={[
+								basicLayersA,
+								hazardLayers[comparisonKey[0]],
+								damageLayersA,
+							]}
+							layersB={[
+								basicLayersB,
+								hazardLayers[comparisonKey[1]],
+								damageLayersB,
+							]}
 							layerSwitcherOptionsA={{}}
 							layerSwitcherOptionsB={{}}
 							height={mapHeight}

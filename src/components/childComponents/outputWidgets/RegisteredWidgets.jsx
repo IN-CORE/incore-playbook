@@ -26,5 +26,5 @@ export const registeredWidgets = {
 	// eslint-disable-next-line react/jsx-pascal-case
 	HHS: <HHS />,
 	Log: <Log />,
-	SectorShocks: <SectorShocks />
+	SectorShocks: <SectorShocks />,
 };

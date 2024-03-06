@@ -6,25 +6,25 @@ const layerStyles = {
 	PoleDamage: "incore:epf-dmg-summary",
 	PopulationDislocation: {
 		bldgMaxDamageStateINCOREId: "incore:bldg-dmg-summary",
-		popdislHeatmapINCOREId: "incore:heatmap"
+		popdislHeatmapINCOREId: "incore:heatmap",
 	},
 	SubstationDamage: "incore:epf-dmg-summary",
 	MapUtil: {
 		earthquake: "incore:earthquake-pga-g",
 		tornado: "incore:tornado",
 		hurricane: {
-			"waveHeight": "incore:hurricane-wave-height",
-			"surgeLevel": "incore:hurricane-surge-level",
-			"inundationDuration": "incore:hurricane-inundation-duration",
-			"inundationDepth": "incore:hurricane-inundation-depth",
-			"wavePeriod": "incore:hurricane-wave-period",
-			"waveDirection": "incore:hurricane-wave-direction",
-			"waterVelocity": "incore:hurricane-water-velocity",
-			"windVelocity": "incore:hurricane-wind"
+			waveHeight: "incore:hurricane-wave-height",
+			surgeLevel: "incore:hurricane-surge-level",
+			inundationDuration: "incore:hurricane-inundation-duration",
+			inundationDepth: "incore:hurricane-inundation-depth",
+			wavePeriod: "incore:hurricane-wave-period",
+			waveDirection: "incore:hurricane-wave-direction",
+			waterVelocity: "incore:hurricane-water-velocity",
+			windVelocity: "incore:hurricane-wind",
 		},
 		tsunami: {},
-		floods: {}
-	}
+		floods: {},
+	},
 };
 
 // // joplin
@@ -104,22 +104,11 @@ const layerStyles = {
 
 // Salt Lake City
 export const mapConfig = {
-	MAP_BOUNDS: [
-		-112.625,
-		40.126,
-		-111.282,
-		41.240
-
-	],
-	HAZARD_BOUNDS: [
-		-112.312,
-		40.277,
-		-111.462,
-		41
-	],
+	MAP_BOUNDS: [-112.625, 40.126, -111.282, 41.24],
+	HAZARD_BOUNDS: [-112.312, 40.277, -111.462, 41],
 	MAP_CENTER: [-111.954, 40.683],
 	ZOOM: 5,
 	MIN_ZOOM: 4,
 	MAX_ZOOM: 19,
-	LAYER_STYLES: layerStyles
+	LAYER_STYLES: layerStyles,
 };

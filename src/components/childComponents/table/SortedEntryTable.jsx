@@ -1,16 +1,28 @@
 import React, { useState } from "react";
 
-import { Table, TableBody, TableCell, TableSortLabel, TableContainer, TableHead, TableRow } from "@material-ui/core";
+import {
+	Table,
+	TableBody,
+	TableCell,
+	TableSortLabel,
+	TableContainer,
+	TableHead,
+	TableRow,
+} from "@material-ui/core";
 // import MoreHorizIcon from "@material-ui/icons/MoreHoriz";
 
 import { makeStyles } from "@material-ui/core/styles";
 import { IncoreLinkSmall } from "../../styledComponents/IncoreLinkSmall";
 
-import { getComparator, stableSort, parseDateTime } from "../../../utils/common";
+import {
+	getComparator,
+	stableSort,
+	parseDateTime,
+} from "../../../utils/common";
 
 const useStyles = makeStyles({
 	table: {
-		minWidth: 650
+		minWidth: 650,
 	},
 	tableHeaderRow: {
 		// height: "34px",
@@ -22,7 +34,7 @@ const useStyles = makeStyles({
 		fontSize: "12px",
 		fontWeight: 500,
 		letterSpacing: "1.13px",
-		lineHeight: "14px"
+		lineHeight: "14px",
 	},
 	tableBodyRow: {
 		// height: "75px",
@@ -34,7 +46,7 @@ const useStyles = makeStyles({
 		fontSize: "15px",
 		letterSpacing: 0,
 		lineHeight: "22px",
-		wordBreak: "break-word"
+		wordBreak: "break-word",
 	},
 	firstTableBodyCell: {
 		width: "250px",
@@ -42,18 +54,18 @@ const useStyles = makeStyles({
 		color: "#2E384D",
 		fontSize: "15px",
 		letterSpacing: 0,
-		lineHeight: "22px"
+		lineHeight: "22px",
 	},
 	clickableLink: {
 		"&:hover": {
-			cursor: "pointer"
-		}
+			cursor: "pointer",
+		},
 	},
 	clickableLinkDisabled: {
 		pointerEvents: "none",
 		textDecoration: "none",
-		color: "#9E9E9E"
-	}
+		color: "#9E9E9E",
+	},
 });
 
 export function SortedEntryTable(props) {
@@ -75,7 +87,7 @@ export function SortedEntryTable(props) {
 
 	const sortedFields = stableSort(fields, getComparator(order, orderBy)).slice(
 		(pageNum - 1) * dataPerPage,
-		(pageNum - 1) * dataPerPage + dataPerPage
+		(pageNum - 1) * dataPerPage + dataPerPage,
 	);
 
 	const classes = useStyles();
@@ -90,11 +102,15 @@ export function SortedEntryTable(props) {
 								<TableCell
 									className={classes.tableHeaderCell}
 									key={fieldName["columnName"]}
-									sortDirection={orderBy === fieldName["columnName"] ? order : false}
+									sortDirection={
+										orderBy === fieldName["columnName"] ? order : false
+									}
 								>
 									<TableSortLabel
 										active={orderBy === fieldName["columnName"]}
-										direction={orderBy === fieldName["columnName"] ? order : "asc"}
+										direction={
+											orderBy === fieldName["columnName"] ? order : "asc"
+										}
 										onClick={createSortHandler(fieldName["columnName"])}
 									>
 										{fieldName["prettyName"]}

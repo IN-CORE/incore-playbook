@@ -10,5 +10,5 @@ export const IncoreTitle = styled(Typography)({
 	marginBottom: "11px",
 	width: "100%",
 	textTransform: "uppercase",
-	position: "inherit"
+	position: "inherit",
 });

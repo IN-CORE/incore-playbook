@@ -16,7 +16,7 @@ export const IncoreSelectBox = styled(Select)({
 		borderColor: "#00619D",
 	},
 	"& .MuiSelect-select:focus": {
-		backgroundColor: "#FFFFFF!important"
+		backgroundColor: "#FFFFFF!important",
 	},
 });
 
@@ -28,6 +28,5 @@ export const IncoreMenuItem = styled(MenuItem)({
 	fontWeight: 500,
 	letterSpacing: 0,
 	lineHeight: "18px",
-	backgroundColor: "#FFFFFF"
+	backgroundColor: "#FFFFFF",
 });
-

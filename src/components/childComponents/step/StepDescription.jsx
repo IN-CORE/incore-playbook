@@ -13,7 +13,7 @@ const useStyles = makeStyles({
 		fontWeight: "500",
 		letterSpacing: "0",
 		lineHeight: "14px",
-		margin: "20px 5px 0px 5px"
+		margin: "20px 5px 0px 5px",
 	},
 	thisStepAbout: {
 		minHeight: "200px",
@@ -23,12 +23,12 @@ const useStyles = makeStyles({
 		fontSize: "12px",
 		letterSpacing: "0",
 		lineHeight: "15px",
-		margin: "0px 5px 0px 5px"
+		margin: "0px 5px 0px 5px",
 	},
 	learnMoreLink: {
 		color: "#00619D",
-		lineHeight: "14px"
-	}
+		lineHeight: "14px",
+	},
 });
 
 export const StepDescription = (props) => {
@@ -54,7 +54,11 @@ export const StepDescription = (props) => {
 		<div>
 			<div onClick={() => togglePanel()} className={classes.thisStepTitle}>
 				{title}{" "}
-				{open ? <ExpandLess style={{ fontSize: "small" }} /> : <ExpandMore style={{ fontSize: "small" }} />}
+				{open ? (
+					<ExpandLess style={{ fontSize: "small" }} />
+				) : (
+					<ExpandMore style={{ fontSize: "small" }} />
+				)}
 			</div>
 			{open ? (
 				<div className={classes.thisStepAbout}>

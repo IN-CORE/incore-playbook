@@ -7,6 +7,8 @@ Requirements: [Node.js](https://nodejs.org) and [Yarn](https://yarnpkg.com).
 
 Install dependencies: `yarn install` or `npm install`
 
+Install pre-commit: `pre-commit install` if pre-commit is not installed, run `brew install pre-commit`
+
 Install peer dependencies: `npm install react@~16.14.0 react-dom@~16.14.0 react-redux@~7.1.0 redux-thunk@~2.3.0 redux@~4.0.1 react-router-dom@~5.2.0 @material-ui/core@^4.11.0 @material-ui/icons@^4.9.1 babel-polyfill@^6.26.0 --no-save`
 
 Develop: `export INCORE_REMOTE_HOSTNAME=https://incore-dev.ncsa.illinois.edu` and run `yarn start` or `npm start`
@@ -39,4 +41,3 @@ const newTheme = createTheme({
 
 export default (render(aggregatedReducer, aggregatedRoutes, newTheme));
 ```
-
