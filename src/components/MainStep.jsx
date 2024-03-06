@@ -16,22 +16,32 @@ export const MainStep = ({ menu }) => {
 	let breadCrumb = null;
 	if (menu === "1") {
 		fullHtml = fullHtml10;
-		breadCrumb = <BreadCrumb parentStep="Form a Collaborative Planning Team" taskNo="1" />;
+		breadCrumb = (
+			<BreadCrumb parentStep="Form a Collaborative Planning Team" taskNo="1" />
+		);
 	} else if (menu === "2") {
 		fullHtml = fullHtml20;
-		breadCrumb = <BreadCrumb parentStep="Understanding the Situation" taskNo="2" />;
+		breadCrumb = (
+			<BreadCrumb parentStep="Understanding the Situation" taskNo="2" />
+		);
 	} else if (menu === "3") {
 		fullHtml = fullHtml30;
-		breadCrumb = <BreadCrumb parentStep="Determine Goals & Objectives" taskNo="3" />;
+		breadCrumb = (
+			<BreadCrumb parentStep="Determine Goals & Objectives" taskNo="3" />
+		);
 	} else if (menu === "4") {
 		fullHtml = fullHtml40;
 		breadCrumb = <BreadCrumb parentStep="Plan Development" taskNo="4" />;
 	} else if (menu === "5") {
 		fullHtml = fullHtml50;
-		breadCrumb = <BreadCrumb parentStep="Plan Prep, Review, & Approval" taskNo="5" />;
+		breadCrumb = (
+			<BreadCrumb parentStep="Plan Prep, Review, & Approval" taskNo="5" />
+		);
 	} else if (menu === "6") {
 		fullHtml = fullHtml60;
-		breadCrumb = <BreadCrumb parentStep="Plan Implementation & Maintenance" taskNo="6" />;
+		breadCrumb = (
+			<BreadCrumb parentStep="Plan Implementation & Maintenance" taskNo="6" />
+		);
 	}
 
 	return (

@@ -22,5 +22,5 @@ export const registeredCompareWidgets = {
 	SubstationDamage: <SubstationDamage />,
 	// eslint-disable-next-line react/jsx-pascal-case
 	HHS: <HHSCompare />,
-	SectorShocks: <SectorShocksCompare />
+	SectorShocks: <SectorShocksCompare />,
 };

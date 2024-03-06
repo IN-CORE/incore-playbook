@@ -7,7 +7,7 @@ import {
 	Divider,
 	Grid,
 	IconButton,
-	Typography
+	Typography,
 } from "@material-ui/core";
 import CloseIcon from "@material-ui/icons/Close";
 import { ResultSummaryTable } from "../table/ResultSummaryTable";
@@ -18,7 +18,11 @@ import { FunctionalityTable } from "../table/FunctionalityTable";
 import React, { useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
 import { applyTransform } from "ol/extent";
-import { downloadOutputFile, getOutputFileContent, getOutputFileContentJSON } from "../../../utils/datawolf";
+import {
+	downloadOutputFile,
+	getOutputFileContent,
+	getOutputFileContentJSON,
+} from "../../../utils/datawolf";
 import { basicLayers, generateLayers } from "../../../utils/map";
 import { IncoreButtonText } from "../../styledComponents/IncoreButtonText";
 import GetAppIcon from "@material-ui/icons/GetApp";
@@ -33,7 +37,7 @@ export default function BldgMCS(props) {
 		datawolfDatasetConfigItems,
 		hazardType,
 		hazardLayers,
-		setDownloadDialogOpen
+		setDownloadDialogOpen,
 	} = props;
 
 	const mapConfig = useSelector((state) => state.config.mapConfig);
@@ -42,8 +46,10 @@ export default function BldgMCS(props) {
 
 	const [selectedExecutionName, setSelectedExecutionName] = useState("");
 	const [runtime, setRuntime] = useState(null);
-	const [mcsBldgSummaryTableContent, setMcsBldgSummaryTableContent] = useState(null);
-	const [mcsBldgFailureProbDownload, setMcsBldgFailureProbDownload] = useState();
+	const [mcsBldgSummaryTableContent, setMcsBldgSummaryTableContent] =
+		useState(null);
+	const [mcsBldgFailureProbDownload, setMcsBldgFailureProbDownload] =
+		useState();
 	const [damageLayers, setDamageLayers] = useState(null);
 
 	// print container
@@ -61,7 +67,7 @@ export default function BldgMCS(props) {
 				const mcsBldgFailureProbINCOREId = await getOutputFileContent(
 					datawolfConfig,
 					executionItem,
-					datawolfDatasetConfigItem.datasetId
+					datawolfDatasetConfigItem.datasetId,
 				);
 				const layerDef = [
 					{
@@ -69,17 +75,23 @@ export default function BldgMCS(props) {
 						layerStyles: mapConfig.LAYER_STYLES.BldgMCS,
 						title: "Building Functionality Probability without Interdependency",
 						opacity: 1,
-						zIndex: 1
-					}
+						zIndex: 1,
+					},
 				];
 				const previewLayers = generateLayers(globalConfig, layerDef);
 				setDamageLayers(previewLayers);
 			} else if (vName === "mcsBldgSummaryTableContent") {
 				setMcsBldgSummaryTableContent(
-					await getOutputFileContentJSON(datawolfConfig, executionItem, datawolfDatasetConfigItem.datasetId)
+					await getOutputFileContentJSON(
+						datawolfConfig,
+						executionItem,
+						datawolfDatasetConfigItem.datasetId,
+					),
 				);
 			} else if (vName === "mcsBldgFailureProbDownload") {
-				setMcsBldgFailureProbDownload(executionItem["datasets"][datawolfDatasetConfigItem.datasetId]);
+				setMcsBldgFailureProbDownload(
+					executionItem["datasets"][datawolfDatasetConfigItem.datasetId],
+				);
 			}
 		});
 	}, []);
@@ -91,24 +103,36 @@ export default function BldgMCS(props) {
 				datawolfConfig,
 				mcsBldgFailureProbDownload,
 				null,
-				`bldg-fail-prob-${executionItem.id}.csv`
+				`bldg-fail-prob-${executionItem.id}.csv`,
 			);
 		}
 	};
 
 	return (
-		<Dialog open={previewOn} onClose={handlePreviewClose} maxWidth="lg" fullWidth scroll="paper">
+		<Dialog
+			open={previewOn}
+			onClose={handlePreviewClose}
+			maxWidth="lg"
+			fullWidth
+			scroll="paper"
+		>
 			<DialogContent className="previewModal" ref={printRef}>
-				<IconButton aria-label="Close" onClick={handlePreviewClose} style={{ float: "right" }}>
+				<IconButton
+					aria-label="Close"
+					onClick={handlePreviewClose}
+					style={{ float: "right" }}
+				>
 					<CloseIcon fontSize="small" />
 				</IconButton>
 
 				{/*title*/}
 				{/*TODO wrap into a component*/}
 				<Box className="previewTitleSection">
-					<Typography className="previewTitle">{selectedExecutionName}</Typography>
 					<Typography className="previewTitle">
-                        Select Data: Building Functionality without Interdependency
+						{selectedExecutionName}
+					</Typography>
+					<Typography className="previewTitle">
+						Select Data: Building Functionality without Interdependency
 					</Typography>
 				</Box>
 
@@ -117,7 +141,9 @@ export default function BldgMCS(props) {
 					<Grid container spacing={3} justify="center">
 						{runtime ? (
 							<Grid item>
-								<Typography className="previewSubTitle">Analysis Result View</Typography>
+								<Typography className="previewSubTitle">
+									Analysis Result View
+								</Typography>
 								<ResultSummaryTable
 									hazardType={hazardType}
 									inventoryType="buildings"
@@ -128,13 +154,16 @@ export default function BldgMCS(props) {
 							<></>
 						)}
 						<Divider orientation="vertical" flexItem />
-						{mcsBldgSummaryTableContent && mcsBldgSummaryTableContent["by_category"] ? (
+						{mcsBldgSummaryTableContent &&
+						mcsBldgSummaryTableContent["by_category"] ? (
 							<Grid item style={{ minWidth: "804px" }}>
 								<Typography className="previewSubTitle">
-                                    Anticipated Performance - Building Clusters
+									Anticipated Performance - Building Clusters
 								</Typography>
 								<Box style={{ marginTop: "38px" }}>
-									<FunctionalityGraph categorySummary={mcsBldgSummaryTableContent["by_category"]} />
+									<FunctionalityGraph
+										categorySummary={mcsBldgSummaryTableContent["by_category"]}
+									/>
 								</Box>
 							</Grid>
 						) : (
@@ -152,7 +181,10 @@ export default function BldgMCS(props) {
 							zoom={mapConfig.ZOOM}
 							minZoom={mapConfig.MIN_ZOOM}
 							maxZoom={mapConfig.MAX_ZOOM}
-							extent={applyTransform(mapConfig.MAP_BOUNDS, getTransform("EPSG:4326", "EPSG:3857"))}
+							extent={applyTransform(
+								mapConfig.MAP_BOUNDS,
+								getTransform("EPSG:4326", "EPSG:3857"),
+							)}
 							center={fromLonLat(mapConfig.MAP_CENTER)}
 							layers={[basicLayers, hazardLayers, damageLayers]}
 							layerSwitcherOptions={{}}
@@ -179,13 +211,16 @@ export default function BldgMCS(props) {
 					}}
 					startIcon={<CameraAltIcon />}
 				>
-                    Image
+					Image
 				</IncoreButtonText>
 				<IncoreButtonText onClick={download} startIcon={<GetAppIcon />}>
-                    Data
+					Data
 				</IncoreButtonText>
-				<IncoreButtonText onClick={handlePreviewClose} startIcon={<CloseIcon />}>
-                    Close
+				<IncoreButtonText
+					onClick={handlePreviewClose}
+					startIcon={<CloseIcon />}
+				>
+					Close
 				</IncoreButtonText>
 			</DialogActions>
 		</Dialog>

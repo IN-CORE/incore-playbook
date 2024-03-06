@@ -3,7 +3,7 @@ import Chart from "react-google-charts";
 
 const ParseData = (data, executionTitles, region = null) => {
 	let beforeEvent = data[0]["beforeEvent"];
-	let afterEvents = data.map(d => d["afterEvent"]);
+	let afterEvents = data.map((d) => d["afterEvent"]);
 
 	if (region) {
 		let filterFunc = ([key]) => {
@@ -14,25 +14,40 @@ const ParseData = (data, executionTitles, region = null) => {
 			return key.startsWith(region);
 		};
 
-		beforeEvent = Object.fromEntries(Object.entries(beforeEvent).filter(filterFunc));
-		afterEvents = afterEvents.map(afterEvent => Object.fromEntries(Object.entries(afterEvent).filter(filterFunc)));
+		beforeEvent = Object.fromEntries(
+			Object.entries(beforeEvent).filter(filterFunc),
+		);
+		afterEvents = afterEvents.map((afterEvent) =>
+			Object.fromEntries(Object.entries(afterEvent).filter(filterFunc)),
+		);
 	}
 
 	const chartData = [];
-    let chartFirstRow = ["Million of $", "Before Event"];
-    executionTitles.forEach((title) => chartFirstRow.push(`After Event ${title}`))
+	let chartFirstRow = ["Million of $", "Before Event"];
+	executionTitles.forEach((title) =>
+		chartFirstRow.push(`After Event ${title}`),
+	);
 	chartData.push(chartFirstRow);
 
 	for (const key in beforeEvent) {
-        let row = [key, beforeEvent[key]];
-        afterEvents.forEach(afterEvent => row.push(afterEvent[key]));
+		let row = [key, beforeEvent[key]];
+		afterEvents.forEach((afterEvent) => row.push(afterEvent[key]));
 		chartData.push(row);
 	}
 	return chartData;
 };
 
 export default function CGEBarChartCompare(props) {
-	const { height, width, data, title, xAxisLegend, yAxisLegend, region, executionTitles } = props;
+	const {
+		height,
+		width,
+		data,
+		title,
+		xAxisLegend,
+		yAxisLegend,
+		region,
+		executionTitles,
+	} = props;
 
 	return (
 		<div className="barChart">
@@ -47,12 +62,12 @@ export default function CGEBarChartCompare(props) {
 					legend: { position: "none" },
 					colors: ["#A1BE2E", "#CB5963", "#833841"],
 					hAxis: {
-						title: xAxisLegend
+						title: xAxisLegend,
 					},
 					vAxis: {
-						title: yAxisLegend
+						title: yAxisLegend,
 					},
-					bars: "horizontal"
+					bars: "horizontal",
 				}}
 				// For tests
 				rootProps={{ "data-testid": "1" }}

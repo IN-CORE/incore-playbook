@@ -1,11 +1,17 @@
 import React from "react";
-import { IncoreMenuItem, IncoreSelectBox } from "../../styledComponents/IncoreSelect";
+import {
+	IncoreMenuItem,
+	IncoreSelectBox,
+} from "../../styledComponents/IncoreSelect";
 import { useSelector } from "react-redux";
 
 export default function AllowedHazardTypes(props) {
-	const { setDatawolfFormState, datawolfFormState, datawolfParamConfigItem } = props;
+	const { setDatawolfFormState, datawolfFormState, datawolfParamConfigItem } =
+		props;
 
-	const alllowedHazardTypes = useSelector((state) => state.config.allowedHazardTypes);
+	const alllowedHazardTypes = useSelector(
+		(state) => state.config.allowedHazardTypes,
+	);
 
 	return (
 		<IncoreSelectBox
@@ -19,13 +25,18 @@ export default function AllowedHazardTypes(props) {
 					datawolfParamConfigItem.parametersMap.map((pm) => {
 						mapState[pm.paramId] = currentVal;
 					});
-					return { ...prevState, [datawolfParamConfigItem.variableName]: mapState };
+					return {
+						...prevState,
+						[datawolfParamConfigItem.variableName]: mapState,
+					};
 				});
 			}}
 			// parameters belong to the same variable should have the same value; just pick one
 			value={
 				datawolfFormState[datawolfParamConfigItem.variableName][
-					Object.keys(datawolfFormState[datawolfParamConfigItem.variableName])[0]
+					Object.keys(
+						datawolfFormState[datawolfParamConfigItem.variableName],
+					)[0]
 				] ?? ""
 			}
 		>

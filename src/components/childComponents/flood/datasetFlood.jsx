@@ -22,12 +22,16 @@ export default function DatasetFlood(props) {
 
 	const widgets = {
 		TextWidget: CustomTextInput,
-		SelectWidget: CustomSelectWidget
+		SelectWidget: CustomSelectWidget,
 	};
 
 	const onSave = async (formData) => {
 		setLoading(true);
-		const floodJson = await createRjfsDatasetHazards(globalConfig, formData, "floods");
+		const floodJson = await createRjfsDatasetHazards(
+			globalConfig,
+			formData,
+			"floods",
+		);
 		if (floodJson && floodJson["id"]) {
 			// move to testbed space
 			await move2TestbedSpace(globalConfig, floodJson["id"]);

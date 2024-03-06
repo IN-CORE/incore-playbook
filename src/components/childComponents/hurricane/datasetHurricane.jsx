@@ -21,12 +21,16 @@ export default function DatasetHurricane(props) {
 
 	const widgets = {
 		TextWidget: CustomTextInput,
-		SelectWidget: CustomSelectWidget
+		SelectWidget: CustomSelectWidget,
 	};
 
 	const onSave = async (formData) => {
 		setLoading(true);
-		const hurricaneJson = await createRjfsDatasetHazards(globalConfig, formData, "hurricanes");
+		const hurricaneJson = await createRjfsDatasetHazards(
+			globalConfig,
+			formData,
+			"hurricanes",
+		);
 		if (hurricaneJson && hurricaneJson["id"]) {
 			// move to testbed space
 			await move2TestbedSpace(globalConfig, hurricaneJson["id"]);

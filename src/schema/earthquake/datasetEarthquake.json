@@ -38,8 +38,26 @@
 					"demandUnits": {
 						"type": "string",
 						"title": "Demand Unit",
-						"enumNames": ["g", "in/sec^2", "m/sec^2", "in/sec", "cm/sec", "in", "ft", "m"],
-						"enum": ["g", "in/sec^2", "m/sec^2", "in/sec", "cm/sec", "in", "ft", "m"],
+						"enumNames": [
+							"g",
+							"in/sec^2",
+							"m/sec^2",
+							"in/sec",
+							"cm/sec",
+							"in",
+							"ft",
+							"m"
+						],
+						"enum": [
+							"g",
+							"in/sec^2",
+							"m/sec^2",
+							"in/sec",
+							"cm/sec",
+							"in",
+							"ft",
+							"m"
+						],
 						"default": "g"
 					},
 					"file": {

@@ -41,4 +41,3 @@ const newTheme = createTheme({
 
 export default (render(aggregatedReducer, aggregatedRoutes, newTheme));
 ```
-

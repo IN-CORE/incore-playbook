@@ -5,11 +5,19 @@ import { Box, Container, InputLabel } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 
 import { IncoreButton } from "../../styledComponents/IncoreButton";
-import { IncoreMenuItem, IncoreSelectBox } from "../../styledComponents/IncoreSelect";
+import {
+	IncoreMenuItem,
+	IncoreSelectBox,
+} from "../../styledComponents/IncoreSelect";
 import { IncoreTextField } from "../../styledComponents/IncoreInput";
 import { IncoreInputLabel } from "../../styledComponents/IncoreInputLabel";
 
-import { FlatCoordToLonLat, LonLatToFlatCoord, move2TestbedSpace, round } from "../../../utils/common";
+import {
+	FlatCoordToLonLat,
+	LonLatToFlatCoord,
+	move2TestbedSpace,
+	round,
+} from "../../../utils/common";
 import { createModelTornado } from "../../../utils/hazard";
 import LoadingOverlay from "react-loading-overlay";
 import { useSelector } from "react-redux";
@@ -19,11 +27,11 @@ import { validateCoord } from "../../../utils/map";
 const useStyles = makeStyles({
 	startLabel: {
 		color: "#96B712",
-		fontSize: "14px"
+		fontSize: "14px",
 	},
 	endLabel: {
 		color: "#D63649",
-		fontSize: "14px"
+		fontSize: "14px",
 	},
 	coordInput: {
 		color: "#2E384D",
@@ -31,7 +39,7 @@ const useStyles = makeStyles({
 		height: "18px",
 		border: "0 none",
 		maxWidth: "4.5em",
-		background: "transparent"
+		background: "transparent",
 	},
 	coordInputEdit: {
 		color: "#00619D",
@@ -40,7 +48,7 @@ const useStyles = makeStyles({
 		border: "0 none",
 		maxWidth: "4.5em",
 		background: "#FFFFFF",
-		fontStyle: "italic"
+		fontStyle: "italic",
 	},
 	coordBox: {
 		width: "100%",
@@ -53,8 +61,8 @@ const useStyles = makeStyles({
 		border: "1px solid rgba(0, 0, 0, 0.23)",
 		borderRadius: "4px",
 		textAlign: "center",
-		paddingLeft: "11.25px"
-	}
+		paddingLeft: "11.25px",
+	},
 });
 
 export default function ModelTornado(props) {
@@ -114,24 +122,51 @@ export default function ModelTornado(props) {
 		)
 			setDisabled(false);
 		else setDisabled(true);
-	}, [name, description, startLatCoord, startLonCoord, endLatCoord, endLonCoord, rating, enableEdit]);
+	}, [
+		name,
+		description,
+		startLatCoord,
+		startLonCoord,
+		endLatCoord,
+		endLonCoord,
+		rating,
+		enableEdit,
+	]);
 
 	// update start and end based on map click (parent prop change)
 	useEffect(() => {
 		if (startCoordProps.length > 0 && !enableEdit) {
 			const startLat = round(FlatCoordToLonLat(startCoordProps)[1], 3);
 			const startLon = round(FlatCoordToLonLat(startCoordProps)[0], 3);
-			checkSetCoord(startLon, startLat, setStartLonCoord, setStartLatCoord, setValidStartCoord);
+			checkSetCoord(
+				startLon,
+				startLat,
+				setStartLonCoord,
+				setStartLatCoord,
+				setValidStartCoord,
+			);
 		}
 		if (endCoordProps.length > 0 && !enableEdit) {
 			const endLat = round(FlatCoordToLonLat(endCoordProps)[1], 3);
 			const endLon = round(FlatCoordToLonLat(endCoordProps)[0], 3);
-			checkSetCoord(endLon, endLat, setEndLonCoord, setEndLatCoord, setValidEndCoord);
+			checkSetCoord(
+				endLon,
+				endLat,
+				setEndLonCoord,
+				setEndLatCoord,
+				setValidEndCoord,
+			);
 		}
 	}, [startCoordProps, endCoordProps, enableEdit]);
 
 	useEffect(() => {
-		if (startLonCoord && startLatCoord && endLatCoord && endLonCoord && enableEdit) {
+		if (
+			startLonCoord &&
+			startLatCoord &&
+			endLatCoord &&
+			endLonCoord &&
+			enableEdit
+		) {
 			setStartCoordProps(LonLatToFlatCoord(startLonCoord, startLatCoord));
 			setEndCoordProps(LonLatToFlatCoord(endLonCoord, endLatCoord));
 		}
@@ -148,7 +183,7 @@ export default function ModelTornado(props) {
 			startLatCoord,
 			startLonCoord,
 			endLatCoord,
-			endLonCoord
+			endLonCoord,
 		);
 		if (tornadoJson && tornadoJson["id"]) {
 			// move to testbed space
@@ -177,7 +212,9 @@ export default function ModelTornado(props) {
 				<Container>
 					<LoadingOverlay active={loading} spinner text="Saving...">
 						<Box className="inputGroup">
-							<IncoreInputLabel className="required-field">Name</IncoreInputLabel>
+							<IncoreInputLabel className="required-field">
+								Name
+							</IncoreInputLabel>
 							<IncoreTextField
 								value={name}
 								variant="outlined"
@@ -185,7 +222,9 @@ export default function ModelTornado(props) {
 							/>
 						</Box>
 						<Box className="inputGroup">
-							<IncoreInputLabel className="required-field">Description</IncoreInputLabel>
+							<IncoreInputLabel className="required-field">
+								Description
+							</IncoreInputLabel>
 							<IncoreTextField
 								value={description}
 								variant="outlined"
@@ -193,7 +232,9 @@ export default function ModelTornado(props) {
 							/>
 						</Box>
 						<Box className="inputGroup">
-							<IncoreInputLabel className="required-field">Rating</IncoreInputLabel>
+							<IncoreInputLabel className="required-field">
+								Rating
+							</IncoreInputLabel>
 							<IncoreSelectBox
 								labelId="label"
 								id="select"
@@ -236,11 +277,16 @@ export default function ModelTornado(props) {
 								)
 							) : null}
 							<Box className={classes.coordBox}>
-								<Box display="flex" style={{ alignItems: "baseline", justifyContent: "center" }}>
+								<Box
+									display="flex"
+									style={{ alignItems: "baseline", justifyContent: "center" }}
+								>
 									<InputLabel className={classes.startLabel}>Lat: </InputLabel>
 									<input
 										placeholder={mapConfig.MAP_CENTER[1]}
-										className={!enableEdit ? classes.coordInput : classes.coordInputEdit}
+										className={
+											!enableEdit ? classes.coordInput : classes.coordInputEdit
+										}
 										value={startLatCoord}
 										type={"number"}
 										onChange={(e) => setStartLatCoord(e.target.value)}
@@ -249,7 +295,9 @@ export default function ModelTornado(props) {
 									<InputLabel className={classes.startLabel}>Lon: </InputLabel>
 									<input
 										placeholder={mapConfig.MAP_CENTER[0]}
-										className={!enableEdit ? classes.coordInput : classes.coordInputEdit}
+										className={
+											!enableEdit ? classes.coordInput : classes.coordInputEdit
+										}
 										value={startLonCoord}
 										type={"number"}
 										onChange={(e) => setStartLonCoord(e.target.value)}
@@ -259,7 +307,9 @@ export default function ModelTornado(props) {
 									<InputLabel className={classes.endLabel}>Lat: </InputLabel>
 									<input
 										placeholder={mapConfig.MAP_CENTER[1]}
-										className={!enableEdit ? classes.coordInput : classes.coordInputEdit}
+										className={
+											!enableEdit ? classes.coordInput : classes.coordInputEdit
+										}
 										value={endLatCoord}
 										type={"number"}
 										onChange={(e) => setEndLatCoord(e.target.value)}
@@ -268,7 +318,9 @@ export default function ModelTornado(props) {
 									<InputLabel className={classes.endLabel}>Lon: </InputLabel>
 									<input
 										placeholder={mapConfig.MAP_CENTER[0]}
-										className={!enableEdit ? classes.coordInput : classes.coordInputEdit}
+										className={
+											!enableEdit ? classes.coordInput : classes.coordInputEdit
+										}
 										value={endLonCoord}
 										type={"number"}
 										onChange={(e) => setEndLonCoord(e.target.value)}
@@ -288,10 +340,18 @@ export default function ModelTornado(props) {
 											onClick={() => {
 												setEnableEdit(false);
 												setValidStartCoord(
-													validateCoord(startLonCoord, startLatCoord, mapConfig.MAP_BOUNDS)
+													validateCoord(
+														startLonCoord,
+														startLatCoord,
+														mapConfig.MAP_BOUNDS,
+													),
 												);
 												setValidEndCoord(
-													validateCoord(endLonCoord, endLatCoord, mapConfig.MAP_BOUNDS)
+													validateCoord(
+														endLonCoord,
+														endLatCoord,
+														mapConfig.MAP_BOUNDS,
+													),
 												);
 											}}
 											style={{ maxWidth: "fit-content" }}

@@ -1,5 +1,12 @@
 import React from "react";
-import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@material-ui/core";
+import {
+	Table,
+	TableBody,
+	TableCell,
+	TableContainer,
+	TableHead,
+	TableRow,
+} from "@material-ui/core";
 import FormLabel from "@material-ui/core/FormLabel";
 import { makeStyles } from "@material-ui/core/styles";
 import { diff, percentDiff, round } from "../../../utils/common";
@@ -13,7 +20,7 @@ const tableColumnHead = {
 	textAlign: "right",
 	border: "solid 1px rgba(46,91,255,0.08)",
 	borderRadius: "1px",
-	backgroundColor: "rgba(234,238,255, 0.6)"
+	backgroundColor: "rgba(234,238,255, 0.6)",
 };
 
 const tableRowHead = {
@@ -26,17 +33,17 @@ const tableRowHead = {
 	borderRight: "solid 1px #FFFFFF",
 	borderTop: "solid 1px #FFFFFF",
 	borderBottom: "solid 1px #FFFFFF",
-	letterSpacing: "1.13px"
+	letterSpacing: "1.13px",
 };
 
 const useStyles = makeStyles({
 	table: {
-		display: "block"
+		display: "block",
 	},
 	metricsTable: {
 		display: "block",
 		maxWidth: "fit-content",
-		margin: "auto auto"
+		margin: "auto auto",
 	},
 	tableRowHeadFirst: {
 		color: "#69707F",
@@ -45,36 +52,36 @@ const useStyles = makeStyles({
 		textAlign: "center",
 		backgroundColor: "rgba(234, 238, 255, 0.6)",
 		border: "solid 1px #FFFFFF",
-		letterSpacing: "1.13px"
+		letterSpacing: "1.13px",
 	},
 	tableRowHead: {
 		...tableRowHead,
 		backgroundColor: "#DB4F60",
-		color: "#FFFFFF"
+		color: "#FFFFFF",
 	},
 	tableRowHeadRight: {
 		...tableRowHead,
-		borderRight: "solid 1px rgba(234, 238, 255, 0.6)"
+		borderRight: "solid 1px rgba(234, 238, 255, 0.6)",
 	},
 	tableColumnHead: {
-		...tableColumnHead
+		...tableColumnHead,
 	},
 	tableColumnHeadCharacteristics: {
 		...tableColumnHead,
-		backgroundColor: "rgba(234,238,255, 1)"
+		backgroundColor: "rgba(234,238,255, 1)",
 	},
 	tableColumnHeadTotal: {
 		...tableColumnHead,
-		backgroundColor: "rgba(234, 238, 255, 0.6)"
+		backgroundColor: "rgba(234, 238, 255, 0.6)",
 	},
 	tableDataCell: {
 		textAlign: "center",
-		border: "solid 1px rgba(46,91,255,0.08)"
+		border: "solid 1px rgba(46,91,255,0.08)",
 	},
 	tableDataCellRed: {
 		textAlign: "center",
 		border: "solid 1px rgba(46,91,255,0.08)",
-		backgroundColor: "#FEEFF1"
+		backgroundColor: "#FEEFF1",
 	},
 	title: {
 		height: "19px",
@@ -85,39 +92,39 @@ const useStyles = makeStyles({
 		lineHeight: "19px",
 		padding: "12px 8px",
 		marginBottom: "25px",
-		display: "block"
+		display: "block",
 	},
 	radio: {
-		color: "#69707F"
+		color: "#69707F",
 	},
 	label: {
-		fontSize: "12px"
-	}
+		fontSize: "12px",
+	},
 });
 
 export function HuaResultsTableCompare(props) {
 	const [huaBy, setHuaBy] = React.useState("tenure");
 	const [filterOptions, setFilterOptions] = React.useState([
 		{
-			"value": "tenure",
-			"name": "by Tenure"
+			value: "tenure",
+			name: "by Tenure",
 		},
 		{
-			"value": "race",
-			"name": "by Race / Ethnicity"
+			value: "race",
+			name: "by Race / Ethnicity",
 		},
 		{
-			"value": "income",
-			"name": "by Household Income Level"
+			value: "income",
+			name: "by Household Income Level",
 		},
 		{
-			"value": "housingType",
-			"name": "by Housing Type"
+			value: "housingType",
+			name: "by Housing Type",
 		},
 		{
-			"value": "disability",
-			"name": "by Disability"
-		}
+			value: "disability",
+			name: "by Disability",
+		},
 	]);
 
 	const handleChange = (event) => {
@@ -133,7 +140,7 @@ export function HuaResultsTableCompare(props) {
 		"HOUSEHOLD CHARACTERISTICS",
 		"# HOUSEHOLDS DISLOCATED",
 		"TOTAL HOUSEHOLDS",
-		"% HOUSEHOLDS DISLOCATED"
+		"% HOUSEHOLDS DISLOCATED",
 	];
 
 	const classes = useStyles();
@@ -142,9 +149,13 @@ export function HuaResultsTableCompare(props) {
 		<div>
 			<div style={{ paddingLeft: "6px" }}>
 				<FormLabel component="legend" className={classes.title}>
-                    Household Dislocation
+					Household Dislocation
 				</FormLabel>
-				<IncoreRadioGroup options={filterOptions} value={huaBy} handleChange={handleChange} />
+				<IncoreRadioGroup
+					options={filterOptions}
+					value={huaBy}
+					handleChange={handleChange}
+				/>
 			</div>
 
 			{resultsJsonA !== undefined && resultsJsonB !== undefined ? (
@@ -197,62 +208,108 @@ export function HuaResultsTableCompare(props) {
 											>
 												{resA["household_characteristics"]}{" "}
 											</TableCell>
-											<TableCell className={
-												idx === resultsJsonA.length - 1
-													? classes.tableColumnHeadTotal
-													: classes.tableColumnHeadCharacteristics
-											} style={{ textAlign: "center" }}
+											<TableCell
+												className={
+													idx === resultsJsonA.length - 1
+														? classes.tableColumnHeadTotal
+														: classes.tableColumnHeadCharacteristics
+												}
+												style={{ textAlign: "center" }}
 											>
-                                                A
+												A
 											</TableCell>
-											<TableCell className={classes.tableDataCellRed} key={`2_${idx.toString()}`}>
+											<TableCell
+												className={classes.tableDataCellRed}
+												key={`2_${idx.toString()}`}
+											>
 												{resA["household_dislocated"].toLocaleString("en-US")}
 											</TableCell>
-											<TableCell className={classes.tableDataCell} key={`3_${idx.toString()}`}>
+											<TableCell
+												className={classes.tableDataCell}
+												key={`3_${idx.toString()}`}
+											>
 												{resA["total_households"].toLocaleString("en-US")}
 											</TableCell>
-											<TableCell className={classes.tableDataCell} key={`4_${idx.toString()}`}>
+											<TableCell
+												className={classes.tableDataCell}
+												key={`4_${idx.toString()}`}
+											>
 												{round(resA["percent_household_dislocated"], 1)}%
 											</TableCell>
 										</TableRow>
 
 										{/*B*/}
 										<TableRow key={idx}>
-											<TableCell className={
-												idx === resultsJsonA.length - 1
-													? classes.tableColumnHeadTotal
-													: classes.tableColumnHeadCharacteristics
-											} style={{ textAlign: "center" }}>
-                                                B
+											<TableCell
+												className={
+													idx === resultsJsonA.length - 1
+														? classes.tableColumnHeadTotal
+														: classes.tableColumnHeadCharacteristics
+												}
+												style={{ textAlign: "center" }}
+											>
+												B
 											</TableCell>
-											<TableCell className={classes.tableDataCellRed} key={`2_${idx.toString()}`}>
+											<TableCell
+												className={classes.tableDataCellRed}
+												key={`2_${idx.toString()}`}
+											>
 												{resB["household_dislocated"].toLocaleString("en-US")}
 											</TableCell>
-											<TableCell className={classes.tableDataCell} key={`3_${idx.toString()}`}>
+											<TableCell
+												className={classes.tableDataCell}
+												key={`3_${idx.toString()}`}
+											>
 												{resB["total_households"].toLocaleString("en-US")}
 											</TableCell>
-											<TableCell className={classes.tableDataCell} key={`4_${idx.toString()}`}>
+											<TableCell
+												className={classes.tableDataCell}
+												key={`4_${idx.toString()}`}
+											>
 												{round(resB["percent_household_dislocated"], 1)}%
 											</TableCell>
 										</TableRow>
 
 										{/*Diff*/}
 										<TableRow key={idx}>
-											<TableCell className={
-												idx === resultsJsonA.length - 1
-													? classes.tableColumnHeadTotal
-													: classes.tableColumnHeadCharacteristics
-											} style={{ textAlign: "center" }}>
-												<CompareArrowsIcon style={{ transform: "rotate(90deg)" }} />
+											<TableCell
+												className={
+													idx === resultsJsonA.length - 1
+														? classes.tableColumnHeadTotal
+														: classes.tableColumnHeadCharacteristics
+												}
+												style={{ textAlign: "center" }}
+											>
+												<CompareArrowsIcon
+													style={{ transform: "rotate(90deg)" }}
+												/>
 											</TableCell>
-											<TableCell className={classes.tableDataCellRed} key={`2_${idx.toString()}`}>
-												{diff(resB["household_dislocated"], resA["household_dislocated"])}
+											<TableCell
+												className={classes.tableDataCellRed}
+												key={`2_${idx.toString()}`}
+											>
+												{diff(
+													resB["household_dislocated"],
+													resA["household_dislocated"],
+												)}
 											</TableCell>
-											<TableCell className={classes.tableDataCell} key={`3_${idx.toString()}`}>
-												{diff(resB["total_households"], resA["total_households"])}
+											<TableCell
+												className={classes.tableDataCell}
+												key={`3_${idx.toString()}`}
+											>
+												{diff(
+													resB["total_households"],
+													resA["total_households"],
+												)}
 											</TableCell>
-											<TableCell className={classes.tableDataCell} key={`4_${idx.toString()}`}>
-												{percentDiff(resB["percent_household_dislocated"], resA["percent_household_dislocated"])}
+											<TableCell
+												className={classes.tableDataCell}
+												key={`4_${idx.toString()}`}
+											>
+												{percentDiff(
+													resB["percent_household_dislocated"],
+													resA["percent_household_dislocated"],
+												)}
 											</TableCell>
 										</TableRow>
 									</>
@@ -262,7 +319,10 @@ export function HuaResultsTableCompare(props) {
 					</Table>
 				</TableContainer>
 			) : (
-				<div style={{ padding: "10px" }}> No data available for the selection</div>
+				<div style={{ padding: "10px" }}>
+					{" "}
+					No data available for the selection
+				</div>
 			)}
 		</div>
 	);

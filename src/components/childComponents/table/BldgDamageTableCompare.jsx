@@ -1,5 +1,12 @@
 import React from "react";
-import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@material-ui/core";
+import {
+	Table,
+	TableBody,
+	TableCell,
+	TableContainer,
+	TableHead,
+	TableRow,
+} from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import CompareArrowsIcon from "@material-ui/icons/CompareArrows";
 import BldgDmgDiffBarChart from "../graph/BldgDmgDiffBarChart";
@@ -7,10 +14,10 @@ import BldgDmgDiffBarChart from "../graph/BldgDmgDiffBarChart";
 const useStyles = makeStyles({
 	table: {
 		backgroundColor: "#FFFFFF",
-		minWidth: "1135px"
+		minWidth: "1135px",
 	},
 	tableHeaderRow: {
-		height: "34px"
+		height: "34px",
 	},
 	tableHeaderCell: {
 		height: "14px",
@@ -21,10 +28,10 @@ const useStyles = makeStyles({
 		letterSpacing: "1.13px",
 		lineHeight: "14px",
 		textAlign: "center",
-		textTransform: "uppercase"
+		textTransform: "uppercase",
 	},
 	tableBodyRow: {
-		height: "28px"
+		height: "28px",
 	},
 	tableBodyCell: {
 		height: "21px",
@@ -33,7 +40,7 @@ const useStyles = makeStyles({
 		letterSpacing: 0,
 		lineHeight: "18px",
 		border: "1px solid rgba(46,91,255,0.08)",
-		textAlign: "center"
+		textAlign: "center",
 	},
 	tableBodyCategoryCell: {
 		height: "21px",
@@ -44,7 +51,7 @@ const useStyles = makeStyles({
 		letterSpacing: 0,
 		lineHeight: "18px",
 		textTransform: "capitalize",
-		border: "1px solid rgba(46,91,255,0.08)"
+		border: "1px solid rgba(46,91,255,0.08)",
 	},
 	tableBodyClusterCell: {
 		height: "21px",
@@ -53,8 +60,8 @@ const useStyles = makeStyles({
 		fontSize: "15px",
 		letterSpacing: 0,
 		lineHeight: "18px",
-		border: "1px solid rgba(46,91,255,0.08)"
-	}
+		border: "1px solid rgba(46,91,255,0.08)",
+	},
 });
 
 const NA_value = -1; // TODO need to change to -1
@@ -81,7 +88,7 @@ function calcPercentage(partialValue, totalValue) {
 	if (totalValue === 0) {
 		return " (0%)";
 	}
-	return ` (${parseFloat((100 * partialValue / totalValue).toFixed(2))}%)`;
+	return ` (${parseFloat(((100 * partialValue) / totalValue).toFixed(2))}%)`;
 }
 
 export function BldgDamageTableCompare(props) {
@@ -100,16 +107,16 @@ export function BldgDamageTableCompare(props) {
 	// backward compatibility with different table headers
 	let tableHeadersA = ["Insignificant", "Moderate", "Extensive", "Complete"];
 	let tableHeadersB = ["Insignificant", "Moderate", "Extensive", "Complete"];
-	if (fieldsA && ("Insignificant" in fieldsA["by_category"][0])) {
+	if (fieldsA && "Insignificant" in fieldsA["by_category"][0]) {
 		tableHeadersA = ["Insignificant", "Moderate", "Extensive", "Complete"];
-	} else if (fieldsA && ("Affected" in fieldsA["by_category"][0])) {
+	} else if (fieldsA && "Affected" in fieldsA["by_category"][0]) {
 		tableHeadersA = ["Affected", "Minor", "Major", "Destroyed"];
 	} else {
 		tableHeadersA = ["DS_0", "DS_1", "DS_2", "DS_3"];
 	}
-	if (fieldsB && ("Insignificant" in fieldsB["by_category"][0])) {
+	if (fieldsB && "Insignificant" in fieldsB["by_category"][0]) {
 		tableHeadersB = ["Insignificant", "Moderate", "Extensive", "Complete"];
-	} else if (fieldsB && ("Affected" in fieldsB["by_category"][0])) {
+	} else if (fieldsB && "Affected" in fieldsB["by_category"][0]) {
 		tableHeadersB = ["Affected", "Minor", "Major", "Destroyed"];
 	} else {
 		tableHeadersB = ["DS_0", "DS_1", "DS_2", "DS_3"];
@@ -122,12 +129,16 @@ export function BldgDamageTableCompare(props) {
 					{/*["playbook builidng clusters", "DS_0", "DS_1", "DS_2", "DS_3"];*/}
 					<TableRow className={classes.tableHeaderRow} key="hdrRow">
 						<TableCell
-							style={{ width: "647px", backgroundColor: "#EFF2FF", color: "#69707F" }}
+							style={{
+								width: "647px",
+								backgroundColor: "#EFF2FF",
+								color: "#69707F",
+							}}
 							colSpan={3}
 							className={classes.tableHeaderCell}
 							key="playbook-building-clusters"
 						>
-                            playbook builidng clusters
+							playbook builidng clusters
 						</TableCell>
 						<TableCell
 							style={{ width: "121px", backgroundColor: "#96B712" }}
@@ -158,342 +169,488 @@ export function BldgDamageTableCompare(props) {
 							{tableHeadersA[3]}
 						</TableCell>
 						<TableCell
-							style={{ width: "25%", backgroundColor: "#EFF2FF", color: "#69707F" }}
+							style={{
+								width: "25%",
+								backgroundColor: "#EFF2FF",
+								color: "#69707F",
+							}}
 							className={classes.tableHeaderCell}
 							key="percent-change"
 						>
-                            % of Change
+							% of Change
 						</TableCell>
 					</TableRow>
 				</TableHead>
 				<TableBody>
-					{
-						fieldsA["by_category"].map((categoryItemA, idx) => {
-							const categoryItemB = fieldsB["by_category"][idx];
-							let firstMatchIdxx = -1;
-							return (
-								<>
-									{fieldsA["by_cluster"].map((clusterItemA, idxx) => {
-										const clusterItemB = fieldsB["by_cluster"][idxx];
-										if (clusterItemA["category"] === categoryItemA["category"]) {
-											if (firstMatchIdxx < 0) firstMatchIdxx = idxx;
-											return (
-												<>
-													{/*A:*/}
-													<TableRow className={classes.tableBodyRow}
-														key={clusterItemA["cluster"]}>
-														{idxx === firstMatchIdxx ? (
-															<TableCell
-																rowSpan={(clusterNumInCategory[categoryItemA["category"]] + 1) * 3}
-																align="center"
-																className={classes.tableBodyCategoryCell}
-																style={{ fontWeight: 500, textAlign: "left" }}
-															>
-																{categoryItemA["category"]}
-															</TableCell>
-														) : null}
-														<TableCell key={idxx} className={classes.tableBodyClusterCell}
-															rowSpan={3}>
-															{clusterItemA["cluster"]}
-														</TableCell>
-														<TableCell key={`${idxx}-A`}
-															className={classes.tableBodyCell}>
-                                                            A
-														</TableCell>
-														<TableCell key={`${idxx}-insig`}
-															className={classes.tableBodyCell}>
-
-															{clusterItemA[tableHeadersA[0]] === NA_value ? "-" : clusterItemA[tableHeadersA[0]]}
-
-														</TableCell>
-														<TableCell key={`${idxx}-mod`}
-															className={classes.tableBodyCell}>
-															{clusterItemA[tableHeadersA[1]] === NA_value ? "-" : clusterItemA[tableHeadersA[1]]}
-														</TableCell>
+					{fieldsA["by_category"].map((categoryItemA, idx) => {
+						const categoryItemB = fieldsB["by_category"][idx];
+						let firstMatchIdxx = -1;
+						return (
+							<>
+								{fieldsA["by_cluster"].map((clusterItemA, idxx) => {
+									const clusterItemB = fieldsB["by_cluster"][idxx];
+									if (clusterItemA["category"] === categoryItemA["category"]) {
+										if (firstMatchIdxx < 0) firstMatchIdxx = idxx;
+										return (
+											<>
+												{/*A:*/}
+												<TableRow
+													className={classes.tableBodyRow}
+													key={clusterItemA["cluster"]}
+												>
+													{idxx === firstMatchIdxx ? (
 														<TableCell
-															key={`${idxx}-extensi`}
-															className={classes.tableBodyCell}
+															rowSpan={
+																(clusterNumInCategory[
+																	categoryItemA["category"]
+																] +
+																	1) *
+																3
+															}
+															align="center"
+															className={classes.tableBodyCategoryCell}
+															style={{ fontWeight: 500, textAlign: "left" }}
 														>
-															{clusterItemA[tableHeadersA[2]] === NA_value ? "-" : clusterItemA[tableHeadersA[2]]}
+															{categoryItemA["category"]}
 														</TableCell>
-														<TableCell key={`${idxx}-comp`}
-															className={classes.tableBodyCell}>
-															{clusterItemA[tableHeadersA[3]] === NA_value ? "-" : clusterItemA[tableHeadersA[3]]}
-														</TableCell>
-														{/*barchart*/}
-														<TableCell key={`${idxx}-barchart`}
-															className={classes.tableBodyCell} rowSpan={3}>
-															{
-																clusterItemA[tableHeadersA[0]] !== NA_value &&
-                                                                clusterItemB[tableHeadersB[0]] !== NA_value &&
-                                                                clusterItemA[tableHeadersA[1]] !== NA_value &&
-                                                                clusterItemB[tableHeadersB[1]] !== NA_value &&
-                                                                clusterItemA[tableHeadersA[2]] !== NA_value &&
-                                                                clusterItemB[tableHeadersB[2]] !== NA_value &&
-                                                                clusterItemA[tableHeadersA[3]] !== NA_value &&
-                                                                clusterItemB[tableHeadersB[3]] !== NA_value ?
-																	<BldgDmgDiffBarChart
-																		headers={tableHeadersA}
-																		data={[
-																			parseFloat(clusterItemB[tableHeadersB[0]]) - parseFloat(clusterItemA[tableHeadersA[0]]),
-																			parseFloat(clusterItemB[tableHeadersB[1]]) - parseFloat(clusterItemA[tableHeadersA[1]]),
-																			parseFloat(clusterItemB[tableHeadersB[2]]) - parseFloat(clusterItemA[tableHeadersA[2]]),
-																			parseFloat(clusterItemB[tableHeadersB[3]]) - parseFloat(clusterItemA[tableHeadersA[3]])
-																		]} />
-																	:
-																	<></>
-															}
-														</TableCell>
-													</TableRow>
-													{/*B:*/}
-													<TableRow className={classes.tableBodyRow}
-														key={clusterItemB["cluster"]}>
-														<TableCell key={`${idxx}-B`}
-															className={classes.tableBodyCell}>
-
-                                                            B
-
-														</TableCell>
-														<TableCell key={`${idxx}-insig`}
-															className={classes.tableBodyCell}>
-															{clusterItemB[tableHeadersB[0]] === NA_value ? "-" : clusterItemB[tableHeadersB[0]]}
-														</TableCell>
-														<TableCell key={`${idxx}-mod`}
-															className={classes.tableBodyCell}>
-															{clusterItemB[tableHeadersB[1]] === NA_value ? "-" : clusterItemB[tableHeadersB[1]]}
-														</TableCell>
-														<TableCell
-															key={`${idxx}-extensi`}
-															className={classes.tableBodyCell}
-														>
-															{clusterItemB[tableHeadersB[2]] === NA_value ? "-" : clusterItemB[tableHeadersB[2]]}
-														</TableCell>
-														<TableCell key={`${idxx}-comp`}
-															className={classes.tableBodyCell}>
-															{clusterItemB[tableHeadersB[3]] === NA_value ? "-" : clusterItemB[tableHeadersB[3]]}
-														</TableCell>
-													</TableRow>
-													{/*Diff:*/}
-													<TableRow className={classes.tableBodyRow}
-														key={`${clusterItemB["cluster"]}-diff`}>
-														<TableCell key={`${idxx}-diff`}
-															className={classes.tableBodyCell}>
-															<CompareArrowsIcon
-																style={{ transform: "rotate(90deg)" }} />
-														</TableCell>
-														<TableCell key={`${idxx}-insig`}
-															className={classes.tableBodyCell}>
-															{clusterItemA[tableHeadersA[0]] === NA_value || clusterItemB[tableHeadersB[0]] === NA_value ?
-																"-" :
-																(parseFloat(clusterItemB[tableHeadersB[0]]) - parseFloat(clusterItemA[tableHeadersA[0]])) > 0 ?
-																	`+${parseFloat(clusterItemB[tableHeadersB[0]]) - parseFloat(clusterItemA[tableHeadersA[0]])}` :
-																	(parseFloat(clusterItemB[tableHeadersB[0]]) - parseFloat(clusterItemA[tableHeadersA[0]]))
-															}
-														</TableCell>
-														<TableCell key={`${idxx}-mod`}
-															className={classes.tableBodyCell}>
-															{clusterItemA[tableHeadersA[1]] === NA_value || clusterItemB[tableHeadersB[1]] === NA_value ?
-																"-" :
-																(parseFloat(clusterItemB[tableHeadersB[1]]) - parseFloat(clusterItemA[tableHeadersA[1]])) > 0 ?
-																	`+${parseFloat(clusterItemB[tableHeadersB[1]]) - parseFloat(clusterItemA[tableHeadersA[1]])}` :
-																	(parseFloat(clusterItemB[tableHeadersB[1]]) - parseFloat(clusterItemA[tableHeadersA[1]]))
-															}
-														</TableCell>
-														<TableCell
-															key={`${idxx}-extensi`}
-															className={classes.tableBodyCell}
-														>
-															{clusterItemA[tableHeadersA[2]] === NA_value || clusterItemB[tableHeadersB[2]] === NA_value ?
-																"-" :
-																(parseFloat(clusterItemB[tableHeadersB[2]]) - parseFloat(clusterItemA[tableHeadersA[2]])) > 0 ?
-																	`+${parseFloat(clusterItemB[tableHeadersB[2]]) - parseFloat(clusterItemA[tableHeadersA[2]])}` :
-																	(parseFloat(clusterItemB[tableHeadersB[2]]) - parseFloat(clusterItemA[tableHeadersA[2]]))
-															}
-														</TableCell>
-														<TableCell key={`${idxx}-comp`}
-															className={classes.tableBodyCell}>
-															{clusterItemA[tableHeadersA[3]] === NA_value || clusterItemB[tableHeadersB[3]] === NA_value ?
-																"-" :
-																(parseFloat(clusterItemB[tableHeadersA[3]]) - parseFloat(clusterItemA[tableHeadersA[3]])) > 0 ?
-																	`+${parseFloat(clusterItemB[tableHeadersB[3]]) - parseFloat(clusterItemA[tableHeadersA[3]])}` :
-																	(parseFloat(clusterItemB[tableHeadersB[3]]) - parseFloat(clusterItemA[tableHeadersA[3]]))
-															}
-														</TableCell>
-													</TableRow>
-												</>
-											);
-										}
-									})}
-									{/*A:*/}
-									<TableRow className={classes.tableBodyRow} key={categoryItemA["id"]}>
-										<TableCell
-											key="total"
-											className={classes.tableBodyClusterCell}
-											style={{ fontWeight: 500, textAlign: "right", backgroundColor: "#EEF3F5" }}
-											rowSpan={3}
-										>
-                                            TOTAL
-										</TableCell>
-										<TableCell
-											key="total-A"
-											className={classes.tableBodyCell}
-											style={{ fontWeight: 500, backgroundColor: "#EEF3F5" }}
-										>
-                                            A
-										</TableCell>
-										<TableCell
-											key="total-insig"
-											className={classes.tableBodyCell}
-											style={{ fontWeight: 500, backgroundColor: "#EEF3F5" }}
-										>
-											{categoryItemA[tableHeadersA[0]] === NA_value ? "-" : categoryItemA[tableHeadersA[0]]}
-										</TableCell>
-										<TableCell
-											key="total-mod"
-											className={classes.tableBodyCell}
-											style={{ fontWeight: 500, backgroundColor: "#EEF3F5" }}
-										>
-											{categoryItemA[tableHeadersA[1]] === NA_value ? "-" : categoryItemA[tableHeadersA[1]]}
-										</TableCell>
-										<TableCell
-											key="total-extensi"
-											className={classes.tableBodyCell}
-											style={{ fontWeight: 500, backgroundColor: "#EEF3F5" }}
-										>
-											{categoryItemA[tableHeadersA[2]] === NA_value ? "-" : categoryItemA[tableHeadersA[2]]}
-										</TableCell>
-										<TableCell
-											key="total-comp"
-											className={classes.tableBodyCell}
-											style={{ fontWeight: 500, backgroundColor: "#EEF3F5" }}
-										>
-											{categoryItemA[tableHeadersA[3]] === NA_value ? "-" : categoryItemA[tableHeadersA[3]]}
-										</TableCell>
-										{/*barchart*/}
-										<TableCell key="total-barchart" className={classes.tableBodyCell}
-											style={{ fontWeight: 500, backgroundColor: "#EEF3F5" }} rowSpan={3}>
-											{
-												categoryItemA[tableHeadersA[0]] !== NA_value &&
-                                                categoryItemB[tableHeadersB[0]] !== NA_value &&
-                                                categoryItemA[tableHeadersA[1]] !== NA_value &&
-                                                categoryItemB[tableHeadersB[1]] !== NA_value &&
-                                                categoryItemA[tableHeadersA[2]] !== NA_value &&
-                                                categoryItemB[tableHeadersB[2]] !== NA_value &&
-                                                categoryItemA[tableHeadersA[3]] !== NA_value &&
-                                                categoryItemB[tableHeadersB[3]] !== NA_value ?
-													<BldgDmgDiffBarChart
-														headers={tableHeadersA}
-														data={[
-															parseFloat(categoryItemB[tableHeadersB[0]]) - parseFloat(categoryItemA[tableHeadersA[0]]),
-															parseFloat(categoryItemB[tableHeadersB[1]]) - parseFloat(categoryItemA[tableHeadersA[1]]),
-															parseFloat(categoryItemB[tableHeadersB[2]]) - parseFloat(categoryItemA[tableHeadersA[2]]),
-															parseFloat(categoryItemB[tableHeadersB[3]]) - parseFloat(categoryItemA[tableHeadersA[3]])
-														]} />
-													:
-													<></>
-											}
-										</TableCell>
-									</TableRow>
-									{/*B:*/}
-									<TableRow className={classes.tableBodyRow} key={categoryItemB["id"]}>
-										<TableCell
-											key="total-B"
-											className={classes.tableBodyCell}
-											style={{ fontWeight: 500, backgroundColor: "#EEF3F5" }}
-										>
-                                            B
-										</TableCell>
-										<TableCell
-											key="total-insig"
-											className={classes.tableBodyCell}
-											style={{ fontWeight: 500, backgroundColor: "#EEF3F5" }}
-										>
-											{categoryItemB[tableHeadersB[0]] === NA_value ? "-" : categoryItemB[tableHeadersB[0]]}
-										</TableCell>
-										<TableCell
-											key="total-mod"
-											className={classes.tableBodyCell}
-											style={{ fontWeight: 500, backgroundColor: "#EEF3F5" }}
-										>
-											{categoryItemB[tableHeadersB[1]] === NA_value ? "-" : categoryItemB[tableHeadersB[1]]}
-										</TableCell>
-										<TableCell
-											key="total-extensi"
-											className={classes.tableBodyCell}
-											style={{ fontWeight: 500, backgroundColor: "#EEF3F5" }}
-										>
-											{categoryItemB[tableHeadersB[2]] === NA_value ? "-" : categoryItemB[tableHeadersB[2]]}
-										</TableCell>
-										<TableCell
-											key="total-comp"
-											className={classes.tableBodyCell}
-											style={{ fontWeight: 500, backgroundColor: "#EEF3F5" }}
-										>
-											{categoryItemB[tableHeadersB[3]] === NA_value ? "-" : categoryItemB[tableHeadersB[3]]}
-										</TableCell>
-									</TableRow>
-									{/*Diff:*/}
-									<TableRow className={classes.tableBodyRow} key={`${categoryItemB["id"]}-diff`}>
-										<TableCell
-											key="total-diff"
-											className={classes.tableBodyCell}
-											style={{ fontWeight: 500, backgroundColor: "#EEF3F5" }}
-										>
-											<CompareArrowsIcon style={{ transform: "rotate(90deg)" }} />
-										</TableCell>
-										<TableCell
-											key="total-insig"
-											className={classes.tableBodyCell}
-											style={{ fontWeight: 500, backgroundColor: "#EEF3F5" }}
-										>
-											{categoryItemA[tableHeadersA[0]] === NA_value || categoryItemB[tableHeadersB[0]] === NA_value ?
-												"-" :
-												(parseFloat(categoryItemB[tableHeadersB[0]]) - parseFloat(categoryItemA[tableHeadersA[0]])) > 0 ?
-													`+${parseFloat(categoryItemB[tableHeadersB[0]]) - parseFloat(categoryItemA[tableHeadersA[0]])}` :
-													(parseFloat(categoryItemB[tableHeadersB[0]]) - parseFloat(categoryItemA[tableHeadersA[0]]))
-											}
-										</TableCell>
-										<TableCell
-											key="total-mod"
-											className={classes.tableBodyCell}
-											style={{ fontWeight: 500, backgroundColor: "#EEF3F5" }}
-										>
-											{categoryItemA[tableHeadersA[1]] === NA_value || categoryItemB[tableHeadersB[1]] === NA_value ?
-												"-" :
-												(parseFloat(categoryItemB[tableHeadersB[1]]) - parseFloat(categoryItemA[tableHeadersA[1]])) > 0 ?
-													`+${parseFloat(categoryItemB[tableHeadersB[1]]) - parseFloat(categoryItemA[tableHeadersA[1]])}` :
-													(parseFloat(categoryItemB[tableHeadersB[1]]) - parseFloat(categoryItemA[tableHeadersA[1]]))
-											}
-										</TableCell>
-										<TableCell
-											key="total-extensi"
-											className={classes.tableBodyCell}
-											style={{ fontWeight: 500, backgroundColor: "#EEF3F5" }}
-										>
-											{categoryItemA[tableHeadersA[2]] === NA_value || categoryItemB[tableHeadersB[2]] === NA_value ?
-												"-" :
-												(parseFloat(categoryItemB[tableHeadersB[2]]) - parseFloat(categoryItemA[tableHeadersA[2]])) > 0 ?
-													`+${parseFloat(categoryItemB[tableHeadersB[2]]) - parseFloat(categoryItemA[tableHeadersA[2]])}` :
-													(parseFloat(categoryItemB[tableHeadersB[2]]) - parseFloat(categoryItemA[tableHeadersA[2]]))
-											}
-										</TableCell>
-										<TableCell
-											key="total-comp"
-											className={classes.tableBodyCell}
-											style={{ fontWeight: 500, backgroundColor: "#EEF3F5" }}
-										>
-											{categoryItemA[tableHeadersA[3]] === NA_value || categoryItemB[tableHeadersB[3]] === NA_value ?
-												"-" :
-												(parseFloat(categoryItemB[tableHeadersB[3]]) - parseFloat(categoryItemA[tableHeadersA[3]])) > 0 ?
-													`+${parseFloat(categoryItemB[tableHeadersB[3]]) - parseFloat(categoryItemA[tableHeadersA[3]])}` :
-													(parseFloat(categoryItemB[tableHeadersB[3]]) - parseFloat(categoryItemA[tableHeadersA[3]]))
-											}
-										</TableCell>
-									</TableRow>
-								</>
-							);
-						})
-					}
+													) : null}
+													<TableCell
+														key={idxx}
+														className={classes.tableBodyClusterCell}
+														rowSpan={3}
+													>
+														{clusterItemA["cluster"]}
+													</TableCell>
+													<TableCell
+														key={`${idxx}-A`}
+														className={classes.tableBodyCell}
+													>
+														A
+													</TableCell>
+													<TableCell
+														key={`${idxx}-insig`}
+														className={classes.tableBodyCell}
+													>
+														{clusterItemA[tableHeadersA[0]] === NA_value
+															? "-"
+															: clusterItemA[tableHeadersA[0]]}
+													</TableCell>
+													<TableCell
+														key={`${idxx}-mod`}
+														className={classes.tableBodyCell}
+													>
+														{clusterItemA[tableHeadersA[1]] === NA_value
+															? "-"
+															: clusterItemA[tableHeadersA[1]]}
+													</TableCell>
+													<TableCell
+														key={`${idxx}-extensi`}
+														className={classes.tableBodyCell}
+													>
+														{clusterItemA[tableHeadersA[2]] === NA_value
+															? "-"
+															: clusterItemA[tableHeadersA[2]]}
+													</TableCell>
+													<TableCell
+														key={`${idxx}-comp`}
+														className={classes.tableBodyCell}
+													>
+														{clusterItemA[tableHeadersA[3]] === NA_value
+															? "-"
+															: clusterItemA[tableHeadersA[3]]}
+													</TableCell>
+													{/*barchart*/}
+													<TableCell
+														key={`${idxx}-barchart`}
+														className={classes.tableBodyCell}
+														rowSpan={3}
+													>
+														{clusterItemA[tableHeadersA[0]] !== NA_value &&
+														clusterItemB[tableHeadersB[0]] !== NA_value &&
+														clusterItemA[tableHeadersA[1]] !== NA_value &&
+														clusterItemB[tableHeadersB[1]] !== NA_value &&
+														clusterItemA[tableHeadersA[2]] !== NA_value &&
+														clusterItemB[tableHeadersB[2]] !== NA_value &&
+														clusterItemA[tableHeadersA[3]] !== NA_value &&
+														clusterItemB[tableHeadersB[3]] !== NA_value ? (
+															<BldgDmgDiffBarChart
+																headers={tableHeadersA}
+																data={[
+																	parseFloat(clusterItemB[tableHeadersB[0]]) -
+																		parseFloat(clusterItemA[tableHeadersA[0]]),
+																	parseFloat(clusterItemB[tableHeadersB[1]]) -
+																		parseFloat(clusterItemA[tableHeadersA[1]]),
+																	parseFloat(clusterItemB[tableHeadersB[2]]) -
+																		parseFloat(clusterItemA[tableHeadersA[2]]),
+																	parseFloat(clusterItemB[tableHeadersB[3]]) -
+																		parseFloat(clusterItemA[tableHeadersA[3]]),
+																]}
+															/>
+														) : (
+															<></>
+														)}
+													</TableCell>
+												</TableRow>
+												{/*B:*/}
+												<TableRow
+													className={classes.tableBodyRow}
+													key={clusterItemB["cluster"]}
+												>
+													<TableCell
+														key={`${idxx}-B`}
+														className={classes.tableBodyCell}
+													>
+														B
+													</TableCell>
+													<TableCell
+														key={`${idxx}-insig`}
+														className={classes.tableBodyCell}
+													>
+														{clusterItemB[tableHeadersB[0]] === NA_value
+															? "-"
+															: clusterItemB[tableHeadersB[0]]}
+													</TableCell>
+													<TableCell
+														key={`${idxx}-mod`}
+														className={classes.tableBodyCell}
+													>
+														{clusterItemB[tableHeadersB[1]] === NA_value
+															? "-"
+															: clusterItemB[tableHeadersB[1]]}
+													</TableCell>
+													<TableCell
+														key={`${idxx}-extensi`}
+														className={classes.tableBodyCell}
+													>
+														{clusterItemB[tableHeadersB[2]] === NA_value
+															? "-"
+															: clusterItemB[tableHeadersB[2]]}
+													</TableCell>
+													<TableCell
+														key={`${idxx}-comp`}
+														className={classes.tableBodyCell}
+													>
+														{clusterItemB[tableHeadersB[3]] === NA_value
+															? "-"
+															: clusterItemB[tableHeadersB[3]]}
+													</TableCell>
+												</TableRow>
+												{/*Diff:*/}
+												<TableRow
+													className={classes.tableBodyRow}
+													key={`${clusterItemB["cluster"]}-diff`}
+												>
+													<TableCell
+														key={`${idxx}-diff`}
+														className={classes.tableBodyCell}
+													>
+														<CompareArrowsIcon
+															style={{ transform: "rotate(90deg)" }}
+														/>
+													</TableCell>
+													<TableCell
+														key={`${idxx}-insig`}
+														className={classes.tableBodyCell}
+													>
+														{clusterItemA[tableHeadersA[0]] === NA_value ||
+														clusterItemB[tableHeadersB[0]] === NA_value
+															? "-"
+															: parseFloat(clusterItemB[tableHeadersB[0]]) -
+																		parseFloat(clusterItemA[tableHeadersA[0]]) >
+															    0
+															  ? `+${
+																		parseFloat(clusterItemB[tableHeadersB[0]]) -
+																		parseFloat(clusterItemA[tableHeadersA[0]])
+															    }`
+															  : parseFloat(clusterItemB[tableHeadersB[0]]) -
+															    parseFloat(clusterItemA[tableHeadersA[0]])}
+													</TableCell>
+													<TableCell
+														key={`${idxx}-mod`}
+														className={classes.tableBodyCell}
+													>
+														{clusterItemA[tableHeadersA[1]] === NA_value ||
+														clusterItemB[tableHeadersB[1]] === NA_value
+															? "-"
+															: parseFloat(clusterItemB[tableHeadersB[1]]) -
+																		parseFloat(clusterItemA[tableHeadersA[1]]) >
+															    0
+															  ? `+${
+																		parseFloat(clusterItemB[tableHeadersB[1]]) -
+																		parseFloat(clusterItemA[tableHeadersA[1]])
+															    }`
+															  : parseFloat(clusterItemB[tableHeadersB[1]]) -
+															    parseFloat(clusterItemA[tableHeadersA[1]])}
+													</TableCell>
+													<TableCell
+														key={`${idxx}-extensi`}
+														className={classes.tableBodyCell}
+													>
+														{clusterItemA[tableHeadersA[2]] === NA_value ||
+														clusterItemB[tableHeadersB[2]] === NA_value
+															? "-"
+															: parseFloat(clusterItemB[tableHeadersB[2]]) -
+																		parseFloat(clusterItemA[tableHeadersA[2]]) >
+															    0
+															  ? `+${
+																		parseFloat(clusterItemB[tableHeadersB[2]]) -
+																		parseFloat(clusterItemA[tableHeadersA[2]])
+															    }`
+															  : parseFloat(clusterItemB[tableHeadersB[2]]) -
+															    parseFloat(clusterItemA[tableHeadersA[2]])}
+													</TableCell>
+													<TableCell
+														key={`${idxx}-comp`}
+														className={classes.tableBodyCell}
+													>
+														{clusterItemA[tableHeadersA[3]] === NA_value ||
+														clusterItemB[tableHeadersB[3]] === NA_value
+															? "-"
+															: parseFloat(clusterItemB[tableHeadersA[3]]) -
+																		parseFloat(clusterItemA[tableHeadersA[3]]) >
+															    0
+															  ? `+${
+																		parseFloat(clusterItemB[tableHeadersB[3]]) -
+																		parseFloat(clusterItemA[tableHeadersA[3]])
+															    }`
+															  : parseFloat(clusterItemB[tableHeadersB[3]]) -
+															    parseFloat(clusterItemA[tableHeadersA[3]])}
+													</TableCell>
+												</TableRow>
+											</>
+										);
+									}
+								})}
+								{/*A:*/}
+								<TableRow
+									className={classes.tableBodyRow}
+									key={categoryItemA["id"]}
+								>
+									<TableCell
+										key="total"
+										className={classes.tableBodyClusterCell}
+										style={{
+											fontWeight: 500,
+											textAlign: "right",
+											backgroundColor: "#EEF3F5",
+										}}
+										rowSpan={3}
+									>
+										TOTAL
+									</TableCell>
+									<TableCell
+										key="total-A"
+										className={classes.tableBodyCell}
+										style={{ fontWeight: 500, backgroundColor: "#EEF3F5" }}
+									>
+										A
+									</TableCell>
+									<TableCell
+										key="total-insig"
+										className={classes.tableBodyCell}
+										style={{ fontWeight: 500, backgroundColor: "#EEF3F5" }}
+									>
+										{categoryItemA[tableHeadersA[0]] === NA_value
+											? "-"
+											: categoryItemA[tableHeadersA[0]]}
+									</TableCell>
+									<TableCell
+										key="total-mod"
+										className={classes.tableBodyCell}
+										style={{ fontWeight: 500, backgroundColor: "#EEF3F5" }}
+									>
+										{categoryItemA[tableHeadersA[1]] === NA_value
+											? "-"
+											: categoryItemA[tableHeadersA[1]]}
+									</TableCell>
+									<TableCell
+										key="total-extensi"
+										className={classes.tableBodyCell}
+										style={{ fontWeight: 500, backgroundColor: "#EEF3F5" }}
+									>
+										{categoryItemA[tableHeadersA[2]] === NA_value
+											? "-"
+											: categoryItemA[tableHeadersA[2]]}
+									</TableCell>
+									<TableCell
+										key="total-comp"
+										className={classes.tableBodyCell}
+										style={{ fontWeight: 500, backgroundColor: "#EEF3F5" }}
+									>
+										{categoryItemA[tableHeadersA[3]] === NA_value
+											? "-"
+											: categoryItemA[tableHeadersA[3]]}
+									</TableCell>
+									{/*barchart*/}
+									<TableCell
+										key="total-barchart"
+										className={classes.tableBodyCell}
+										style={{ fontWeight: 500, backgroundColor: "#EEF3F5" }}
+										rowSpan={3}
+									>
+										{categoryItemA[tableHeadersA[0]] !== NA_value &&
+										categoryItemB[tableHeadersB[0]] !== NA_value &&
+										categoryItemA[tableHeadersA[1]] !== NA_value &&
+										categoryItemB[tableHeadersB[1]] !== NA_value &&
+										categoryItemA[tableHeadersA[2]] !== NA_value &&
+										categoryItemB[tableHeadersB[2]] !== NA_value &&
+										categoryItemA[tableHeadersA[3]] !== NA_value &&
+										categoryItemB[tableHeadersB[3]] !== NA_value ? (
+											<BldgDmgDiffBarChart
+												headers={tableHeadersA}
+												data={[
+													parseFloat(categoryItemB[tableHeadersB[0]]) -
+														parseFloat(categoryItemA[tableHeadersA[0]]),
+													parseFloat(categoryItemB[tableHeadersB[1]]) -
+														parseFloat(categoryItemA[tableHeadersA[1]]),
+													parseFloat(categoryItemB[tableHeadersB[2]]) -
+														parseFloat(categoryItemA[tableHeadersA[2]]),
+													parseFloat(categoryItemB[tableHeadersB[3]]) -
+														parseFloat(categoryItemA[tableHeadersA[3]]),
+												]}
+											/>
+										) : (
+											<></>
+										)}
+									</TableCell>
+								</TableRow>
+								{/*B:*/}
+								<TableRow
+									className={classes.tableBodyRow}
+									key={categoryItemB["id"]}
+								>
+									<TableCell
+										key="total-B"
+										className={classes.tableBodyCell}
+										style={{ fontWeight: 500, backgroundColor: "#EEF3F5" }}
+									>
+										B
+									</TableCell>
+									<TableCell
+										key="total-insig"
+										className={classes.tableBodyCell}
+										style={{ fontWeight: 500, backgroundColor: "#EEF3F5" }}
+									>
+										{categoryItemB[tableHeadersB[0]] === NA_value
+											? "-"
+											: categoryItemB[tableHeadersB[0]]}
+									</TableCell>
+									<TableCell
+										key="total-mod"
+										className={classes.tableBodyCell}
+										style={{ fontWeight: 500, backgroundColor: "#EEF3F5" }}
+									>
+										{categoryItemB[tableHeadersB[1]] === NA_value
+											? "-"
+											: categoryItemB[tableHeadersB[1]]}
+									</TableCell>
+									<TableCell
+										key="total-extensi"
+										className={classes.tableBodyCell}
+										style={{ fontWeight: 500, backgroundColor: "#EEF3F5" }}
+									>
+										{categoryItemB[tableHeadersB[2]] === NA_value
+											? "-"
+											: categoryItemB[tableHeadersB[2]]}
+									</TableCell>
+									<TableCell
+										key="total-comp"
+										className={classes.tableBodyCell}
+										style={{ fontWeight: 500, backgroundColor: "#EEF3F5" }}
+									>
+										{categoryItemB[tableHeadersB[3]] === NA_value
+											? "-"
+											: categoryItemB[tableHeadersB[3]]}
+									</TableCell>
+								</TableRow>
+								{/*Diff:*/}
+								<TableRow
+									className={classes.tableBodyRow}
+									key={`${categoryItemB["id"]}-diff`}
+								>
+									<TableCell
+										key="total-diff"
+										className={classes.tableBodyCell}
+										style={{ fontWeight: 500, backgroundColor: "#EEF3F5" }}
+									>
+										<CompareArrowsIcon style={{ transform: "rotate(90deg)" }} />
+									</TableCell>
+									<TableCell
+										key="total-insig"
+										className={classes.tableBodyCell}
+										style={{ fontWeight: 500, backgroundColor: "#EEF3F5" }}
+									>
+										{categoryItemA[tableHeadersA[0]] === NA_value ||
+										categoryItemB[tableHeadersB[0]] === NA_value
+											? "-"
+											: parseFloat(categoryItemB[tableHeadersB[0]]) -
+														parseFloat(categoryItemA[tableHeadersA[0]]) >
+											    0
+											  ? `+${
+														parseFloat(categoryItemB[tableHeadersB[0]]) -
+														parseFloat(categoryItemA[tableHeadersA[0]])
+											    }`
+											  : parseFloat(categoryItemB[tableHeadersB[0]]) -
+											    parseFloat(categoryItemA[tableHeadersA[0]])}
+									</TableCell>
+									<TableCell
+										key="total-mod"
+										className={classes.tableBodyCell}
+										style={{ fontWeight: 500, backgroundColor: "#EEF3F5" }}
+									>
+										{categoryItemA[tableHeadersA[1]] === NA_value ||
+										categoryItemB[tableHeadersB[1]] === NA_value
+											? "-"
+											: parseFloat(categoryItemB[tableHeadersB[1]]) -
+														parseFloat(categoryItemA[tableHeadersA[1]]) >
+											    0
+											  ? `+${
+														parseFloat(categoryItemB[tableHeadersB[1]]) -
+														parseFloat(categoryItemA[tableHeadersA[1]])
+											    }`
+											  : parseFloat(categoryItemB[tableHeadersB[1]]) -
+											    parseFloat(categoryItemA[tableHeadersA[1]])}
+									</TableCell>
+									<TableCell
+										key="total-extensi"
+										className={classes.tableBodyCell}
+										style={{ fontWeight: 500, backgroundColor: "#EEF3F5" }}
+									>
+										{categoryItemA[tableHeadersA[2]] === NA_value ||
+										categoryItemB[tableHeadersB[2]] === NA_value
+											? "-"
+											: parseFloat(categoryItemB[tableHeadersB[2]]) -
+														parseFloat(categoryItemA[tableHeadersA[2]]) >
+											    0
+											  ? `+${
+														parseFloat(categoryItemB[tableHeadersB[2]]) -
+														parseFloat(categoryItemA[tableHeadersA[2]])
+											    }`
+											  : parseFloat(categoryItemB[tableHeadersB[2]]) -
+											    parseFloat(categoryItemA[tableHeadersA[2]])}
+									</TableCell>
+									<TableCell
+										key="total-comp"
+										className={classes.tableBodyCell}
+										style={{ fontWeight: 500, backgroundColor: "#EEF3F5" }}
+									>
+										{categoryItemA[tableHeadersA[3]] === NA_value ||
+										categoryItemB[tableHeadersB[3]] === NA_value
+											? "-"
+											: parseFloat(categoryItemB[tableHeadersB[3]]) -
+														parseFloat(categoryItemA[tableHeadersA[3]]) >
+											    0
+											  ? `+${
+														parseFloat(categoryItemB[tableHeadersB[3]]) -
+														parseFloat(categoryItemA[tableHeadersA[3]])
+											    }`
+											  : parseFloat(categoryItemB[tableHeadersB[3]]) -
+											    parseFloat(categoryItemA[tableHeadersA[3]])}
+									</TableCell>
+								</TableRow>
+							</>
+						);
+					})}
 				</TableBody>
 			</Table>
 		</TableContainer>

@@ -15,7 +15,7 @@ const rootReducer = {
 	hazard: hazards,
 	dataset: datasets,
 	config: config,
-	steps: stepsReducer
+	steps: stepsReducer,
 };
 
 export default rootReducer;

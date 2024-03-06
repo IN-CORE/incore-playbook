@@ -1,6 +1,12 @@
 import { LOGIN_ERROR } from "../actions/hazards";
 
-const defaultState = { tornadoes: [], earthquakes: [], tsunamis: [], floods: [], hurricanes: [] };
+const defaultState = {
+	tornadoes: [],
+	earthquakes: [],
+	tsunamis: [],
+	floods: [],
+	hurricanes: [],
+};
 
 const hazards = (state = defaultState, action) => {
 	switch (action.type) {

@@ -6,7 +6,13 @@ const ParseData = (dataA, dataB) => {
 	const chartData = [];
 	const colorsA = ["#aededb", "#2d8686", "#00619D", "#2c698d", "#272643"];
 	const colorsB = ["#c1f0e5", "#3daaaa", "#0080bf", "#3e8caa", "#34385a"];
-	chartData.push(["Sector", "Ratio of Capital Remaining A", { role: "style" }, "Ratio of Capital Remaining B", { role: "style" }]);
+	chartData.push([
+		"Sector",
+		"Ratio of Capital Remaining A",
+		{ role: "style" },
+		"Ratio of Capital Remaining B",
+		{ role: "style" },
+	]);
 
 	// without header
 	const dataArrA = csvToArray(dataA, ",", false);
@@ -18,14 +24,22 @@ const ParseData = (dataA, dataB) => {
 		return 0;
 	};
 
-	if (dataArrA[0][0].lastIndexOf("_") === -1 && dataArrB[0][0].lastIndexOf("_") === -1) {
+	if (
+		dataArrA[0][0].lastIndexOf("_") === -1 &&
+		dataArrB[0][0].lastIndexOf("_") === -1
+	) {
 		if (
 			!(dataArrA[0][0].startsWith("M") || dataArrA[0][0].endsWith("M")) &&
-            !(dataArrA[0][0].startsWith("I") || dataArrA[0][0].endsWith("I"))
+			!(dataArrA[0][0].startsWith("I") || dataArrA[0][0].endsWith("I"))
 		) {
 			for (let i = 0; i < dataArrA.length; i++) {
-				chartData.push([dataArrA[i][0], parseFloat(dataArrA[i][1]), colorsA[i % 5],
-					dataArrB.length > i ? parseFloat(dataArrB[i][1]) : 0, colorsB[i % 5]]);
+				chartData.push([
+					dataArrA[i][0],
+					parseFloat(dataArrA[i][1]),
+					colorsA[i % 5],
+					dataArrB.length > i ? parseFloat(dataArrB[i][1]) : 0,
+					colorsB[i % 5],
+				]);
 			}
 			return chartData;
 		}
@@ -33,11 +47,25 @@ const ParseData = (dataA, dataB) => {
 		let galDataArryA = generateGalDataArry(dataArrA);
 		let galDataArryB = generateGalDataArry(dataArrB);
 		for (let i = 0; i < galDataArryA.length; i++) {
-			if (galDataArryA[i][0].startsWith("H") && /\d$/.test(galDataArryA[i][0])) {
-				chartData.push([`${galDataArryA[i][0]}I`, galDataArryA[i][1], colorsA[i % 5], galDataArryB[i][1], colorsB[i % 5]]);
+			if (
+				galDataArryA[i][0].startsWith("H") &&
+				/\d$/.test(galDataArryA[i][0])
+			) {
+				chartData.push([
+					`${galDataArryA[i][0]}I`,
+					galDataArryA[i][1],
+					colorsA[i % 5],
+					galDataArryB[i][1],
+					colorsB[i % 5],
+				]);
 			} else {
-				chartData.push([`I${galDataArryA[i][0]}`, galDataArryA[i][1], colorsA[i % 5],
-					galDataArryB.length > i ? galDataArryB[i][1] : 0, colorsB[i % 5]]);
+				chartData.push([
+					`I${galDataArryA[i][0]}`,
+					galDataArryA[i][1],
+					colorsA[i % 5],
+					galDataArryB.length > i ? galDataArryB[i][1] : 0,
+					colorsB[i % 5],
+				]);
 			}
 		}
 
@@ -63,7 +91,13 @@ const ParseData = (dataA, dataB) => {
 			const objB = regionsB[i];
 			const valueB = objB.value;
 
-			chartData.push([`${key}_${subKeyA}`, valueA, colorsA[i % 5], valueB, colorsB[i % 5]]);
+			chartData.push([
+				`${key}_${subKeyA}`,
+				valueA,
+				colorsA[i % 5],
+				valueB,
+				colorsB[i % 5],
+			]);
 		});
 	}
 
@@ -90,7 +124,10 @@ function generateGalDataArry(dataArr) {
 	let galDataArry = [];
 	for (let i = 0; i < dataArr.length; i++) {
 		if (dataArr[i][0].startsWith("H") && !/\d$/.test(dataArr[i][0])) {
-			galDataArry.push([dataArr[i][0].slice(0, dataArr[i][0].length - 1), parseFloat(dataArr[i][1])]);
+			galDataArry.push([
+				dataArr[i][0].slice(0, dataArr[i][0].length - 1),
+				parseFloat(dataArr[i][1]),
+			]);
 		} else {
 			galDataArry.push([dataArr[i][0].slice(1), parseFloat(dataArr[i][1])]);
 		}
@@ -99,7 +136,8 @@ function generateGalDataArry(dataArr) {
 }
 
 export default function SectorShocksBarChartCompare(props) {
-	const { height, width, dataA, dataB, title, xAxisLegend, yAxisLegend } = props;
+	const { height, width, dataA, dataB, title, xAxisLegend, yAxisLegend } =
+		props;
 
 	return (
 		<div className="barChart">
@@ -116,15 +154,15 @@ export default function SectorShocksBarChartCompare(props) {
 					hAxis: {
 						title: xAxisLegend,
 						textStyle: {
-							fontSize: 10 // or the number you want
-						}
+							fontSize: 10, // or the number you want
+						},
 					},
 					vAxis: {
 						title: yAxisLegend,
 						titleTextStyle: { italic: false },
 						minValue: 0,
-						maxValue: 1
-					}
+						maxValue: 1,
+					},
 				}}
 				// For tests
 				rootProps={{ "data-testid": "1" }}
