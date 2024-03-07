@@ -538,14 +538,6 @@ export const BuiltEnvironment = ({ step, substep }) => {
 													<IncoreInputLabel className={classes.subTitle}>
 														Building Retrofit Plans
 													</IncoreInputLabel>
-													<IconButton
-														className={classes.plusButton}
-														onClick={() => {
-															setStrategyBuilderModalStatus(true);
-														}}
-													>
-														<EditOutlinedIcon style={{ color: "#2E384D" }} />
-													</IconButton>
 													{globalConfig.allowUpload ? (
 														<IconButton
 															className={classes.plusButton}
@@ -558,6 +550,14 @@ export const BuiltEnvironment = ({ step, substep }) => {
 															<AddCircleOutlineIcon />
 														</IconButton>
 													) : null}
+													<IconButton
+														className={classes.plusButton}
+														onClick={() => {
+															setStrategyBuilderModalStatus(true);
+														}}
+													>
+														<EditOutlinedIcon style={{ color: "#2E384D" }} />
+													</IconButton>
 													<Divider
 														orientation="horizontal"
 														className={classes.subDivider}
