@@ -423,27 +423,29 @@ const OverlayTable = (props) => {
 						</TableRow>
 					</TableHead>
 					<TableBody>
-						{Object.keys(selectedBuilding).map((colName) => {
-							if (colName === "guid") {
-								return null;
-							}
-							return (
-								<TableRow key={colName}>
-									<TableCell
-										style={{ backgroundColor: "#EFF2FF", color: "#69707F" }}
-									>
-										{colName}
-									</TableCell>
-									<TableCell align="center">
-										{selectedBuilding[colName] === undefined ||
-										selectedBuilding[colName] === null ||
-										selectedBuilding[colName] === ""
-											? "-"
-											: selectedBuilding[colName]}
-									</TableCell>
-								</TableRow>
-							);
-						})}
+						{Object.keys(selectedBuilding)
+							.sort()
+							.map((colName) => {
+								if (colName === "guid") {
+									return null;
+								}
+								return (
+									<TableRow key={colName}>
+										<TableCell
+											style={{ backgroundColor: "#EFF2FF", color: "#69707F" }}
+										>
+											{colName}
+										</TableCell>
+										<TableCell align="center">
+											{selectedBuilding[colName] === undefined ||
+											selectedBuilding[colName] === null ||
+											selectedBuilding[colName] === ""
+												? "-"
+												: selectedBuilding[colName]}
+										</TableCell>
+									</TableRow>
+								);
+							})}
 					</TableBody>
 				</Table>
 			</LoadingOverlay>
