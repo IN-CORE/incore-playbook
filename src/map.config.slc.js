@@ -9,6 +9,7 @@ const layerStyles = {
 		popdislHeatmapINCOREId: "incore:heatmap",
 	},
 	SubstationDamage: "incore:epf-dmg-summary",
+	Zone: "incore:polygon",
 	MapUtil: {
 		earthquake: "incore:earthquake-pga-g",
 		tornado: "incore:tornado",
