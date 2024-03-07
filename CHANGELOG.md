@@ -6,7 +6,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 
-## [Unreleased]
+## [0.6.0] - 2024-03-06
 
 ### Added
 - Adding % (# of building) to table of building damage output. [#261](https://github.com/IN-CORE/incore-playbook/issues/261)
@@ -38,14 +38,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Replaced Node-Sass with Sass for better platfrom reliablility [#275](https://github.com/IN-CORE/incore-playbook/issues/275)
 - Update the ResultTable to use keys dynamically for the FEMA table headers [#285](https://github.com/IN-CORE/incore-playbook/issues/285)
 - Increase the max zoom level for the map [#278](https://github.com/IN-CORE/incore-playbook/issues/278)
+- Map config's geoserver style changed to general name [#328](https://github.com/IN-CORE/incore-playbook/issues/328)
 - Retrofit strategy should be optional in step 3-4 [#349](https://github.com/IN-CORE/incore-playbook/issues/349)
-
-## [0.5.7] - 2023-04-05
-
-### Fixed
 - Added Satellite imagery layer to the map [#260](https://github.com/IN-CORE/incore-playbook/issues/260)
-
-### Changed
 - Changed the dropdown component in step 3-4. [#214](https://github.com/IN-CORE/incore-playbook/issues/214)
 
 ## [0.5.8] - 2023-04-05
