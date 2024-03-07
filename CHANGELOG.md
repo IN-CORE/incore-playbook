@@ -6,6 +6,12 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 
+## [Unreleased]
+
+### Fixed
+- Remove the extra % sign from population dislocation comparison table [#362](https://github.com/IN-CORE/incore-playbook/issues/362)
+
+
 ## [0.6.0] - 2024-03-06
 
 ### Added
