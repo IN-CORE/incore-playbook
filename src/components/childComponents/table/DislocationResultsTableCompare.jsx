@@ -211,7 +211,6 @@ export function DislocationResultsTableCompare(props) {
 											resultsJsonB["dislocated"]["percent_of_population"],
 											resultsJsonA["dislocated"]["percent_of_population"],
 									  )}
-								%
 							</TableCell>
 						</TableRow>
 

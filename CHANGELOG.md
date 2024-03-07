@@ -33,6 +33,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Update hazard previewing due to model change [#269](https://github.com/IN-CORE/incore-playbook/issues/269)
 - Fix percentage calculation [#287](https://github.com/IN-CORE/incore-playbook/issues/287)
 - Fix building damage stacked barchart bug [#332](https://github.com/IN-CORE/incore-playbook/issues/332)
+- Remove the extra % sign from population dislocation comparison table [#362](https://github.com/IN-CORE/incore-playbook/issues/362)
 
 ### Changed
 - Replaced Node-Sass with Sass for better platfrom reliablility [#275](https://github.com/IN-CORE/incore-playbook/issues/275)
