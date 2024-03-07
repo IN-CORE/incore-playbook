@@ -21,12 +21,16 @@ export default function DatasetEarthquake(props) {
 
 	const widgets = {
 		TextWidget: CustomTextInput,
-		SelectWidget: CustomSelectWidget
+		SelectWidget: CustomSelectWidget,
 	};
 
 	const onSave = async (formData) => {
 		setLoading(true);
-		const eqJson = await createRjfsDatasetHazards(globalConfig, formData, "earthquakes");
+		const eqJson = await createRjfsDatasetHazards(
+			globalConfig,
+			formData,
+			"earthquakes",
+		);
 		if (eqJson && eqJson["id"]) {
 			// move to testbed space
 			await move2TestbedSpace(globalConfig, eqJson["id"]);

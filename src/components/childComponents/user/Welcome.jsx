@@ -13,29 +13,34 @@ const useStyles = makeStyles(() => ({
 	avatarImgSquare: {
 		width: "32px",
 		height: "32px",
-		borderRadius: "10%"
-	}
+		borderRadius: "10%",
+	},
 }));
 
 export const Welcome = () => {
-
 	const globalConfig = useSelector((state) => state.config.globalConfig);
 	const classes = useStyles();
 
 	return (
-		<Container style={{margin:"2em auto"}}>
+		<Container style={{ margin: "2em auto" }}>
 			<Box display="flex" alignItems="center">
-				{getCurrEmail(globalConfig.hostname) !== undefined ?
-					<Gravatar className={classes.avatarImgSquare}
-							  email={getCurrEmail(globalConfig.hostname)}
-							  rating="g"
-							  style={{marginRight: "1em"}}/>
-					:
+				{getCurrEmail(globalConfig.hostname) !== undefined ? (
+					<Gravatar
+						className={classes.avatarImgSquare}
+						email={getCurrEmail(globalConfig.hostname)}
+						rating="g"
+						style={{ marginRight: "1em" }}
+					/>
+				) : (
 					<AccountCircle fontSize="small" />
-				}
+				)}
 				<Box display="flex" flexDirection="column">
-					<IncoreInputLabel style={{margin:"auto", padding: 0}}>Welcome</IncoreInputLabel>
-					<IncoreFootNote style={{margin:"auto", padding: 0, fontSize:"14px"}}>
+					<IncoreInputLabel style={{ margin: "auto", padding: 0 }}>
+						Welcome
+					</IncoreInputLabel>
+					<IncoreFootNote
+						style={{ margin: "auto", padding: 0, fontSize: "14px" }}
+					>
 						{getCurrUserFullname(globalConfig.hostname) ?? "Playbook User"}
 					</IncoreFootNote>
 				</Box>

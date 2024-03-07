@@ -1,6 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Box, Button, Container, Grid, makeStyles, Tab, Tabs } from "@material-ui/core";
+import {
+	Box,
+	Button,
+	Container,
+	Grid,
+	makeStyles,
+	Tab,
+	Tabs,
+} from "@material-ui/core";
 import GroupLayer from "ol/layer/Group";
 import TileLayer from "ol/layer/Tile";
 import XYZ from "ol/source/XYZ";
@@ -19,7 +27,10 @@ import ModelTornado from "./childComponents/tornado/ModelTornado";
 import Map from "./childComponents/map/Map";
 import { Layout } from "./Layout";
 import { IncoreInputLabel } from "./styledComponents/IncoreInputLabel";
-import { IncoreMenuItem, IncoreSelectBox } from "./styledComponents/IncoreSelect";
+import {
+	IncoreMenuItem,
+	IncoreSelectBox,
+} from "./styledComponents/IncoreSelect";
 import { getHazardGroupLayers } from "../utils/map";
 
 import Pagination from "./childComponents/navigation/Pagination";
@@ -44,11 +55,11 @@ import { EqMapDrawPrompt } from "./childComponents/alert/EqMapDrawPrompt";
 const useStyles = makeStyles({
 	tabDiv: {
 		margin: "48px 0 0 0",
-		width: "100%"
+		width: "100%",
 	},
 	tabs: {
 		height: "21px",
-		width: "100%"
+		width: "100%",
 	},
 	tab: {
 		height: "17px",
@@ -58,18 +69,18 @@ const useStyles = makeStyles({
 		fontWeight: 500,
 		letterSpacing: 0,
 		lineHeight: "17px",
-		textTransform: "None"
+		textTransform: "None",
 	},
 	selectedTab: {
-		backgroundColor: "#eaedff"
+		backgroundColor: "#eaedff",
 	},
 	mapContainer: {
-		height: "700px"
+		height: "700px",
 	},
 	summary: {
 		// backgroundColor: "gray",
-		boxShadow: "none"
-	}
+		boxShadow: "none",
+	},
 });
 
 export const CommunityHazards = (props) => {
@@ -94,9 +105,13 @@ export const CommunityHazards = (props) => {
 	const floods = useSelector((state) => state.hazard.floods);
 	const hurricanes = useSelector((state) => state.hazard.hurricanes);
 	const mapConfig = useSelector((state) => state.config.mapConfig);
-	const allowedHazardTypes = useSelector((state) => state.config.allowedHazardTypes);
+	const allowedHazardTypes = useSelector(
+		(state) => state.config.allowedHazardTypes,
+	);
 
-	const [selectedHazardType, setSelectedHazardType] = useState(allowedHazardTypes[0]);
+	const [selectedHazardType, setSelectedHazardType] = useState(
+		allowedHazardTypes[0],
+	);
 
 	const [fields, setFields] = React.useState([]);
 	const [dataPerPage, setDataPerPage] = React.useState(5);
@@ -116,28 +131,28 @@ export const CommunityHazards = (props) => {
 			stroke: new Stroke({
 				color: "#979797",
 				width: 3,
-				lineDash: [0.1, 5] //or other combinations
-			})
+				lineDash: [0.1, 5], //or other combinations
+			}),
 		}),
 		startPointStyle: new Style({
 			image: new Circle({
 				radius: 8,
 				fill: new Fill({
-					color: "#96B712"
-				})
-			})
+					color: "#96B712",
+				}),
+			}),
 		}),
 		endPointStyle: new Style({
 			image: new Circle({
 				radius: 8,
 				fill: new Fill({
-					color: "#D63649"
-				})
-			})
+					color: "#D63649",
+				}),
+			}),
 		}),
 		invisibleStyle: new Style({
-			visibility: "hidden"
-		})
+			visibility: "hidden",
+		}),
 	});
 
 	// Caches the control
@@ -151,8 +166,11 @@ export const CommunityHazards = (props) => {
 					title: "Carto",
 					source: new XYZ({
 						url: "https://{a-d}.basemaps.cartocdn.com/rastertiles/light_all/{z}/{x}/{y}.png",
-						attributions: ['&#169; <a href="https://www.carto.com">Carto</a>,', OSM_ATTRIBUTION]
-					})
+						attributions: [
+							'&#169; <a href="https://www.carto.com">Carto</a>,',
+							OSM_ATTRIBUTION,
+						],
+					}),
 				}),
 				new TileLayer({
 					type: "base",
@@ -160,17 +178,20 @@ export const CommunityHazards = (props) => {
 					visible: true,
 					source: new XYZ({
 						url: "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
-						attributions: ['&#169; <a href="https://www.esri.com">Esri</a>,', OSM_ATTRIBUTION],
-						crossOrigin: "anonymous"
-					})
+						attributions: [
+							'&#169; <a href="https://www.esri.com">Esri</a>,',
+							OSM_ATTRIBUTION,
+						],
+						crossOrigin: "anonymous",
+					}),
 				}),
 				new TileLayer({
 					type: "base",
 					visible: false,
 					title: "OSM",
-					source: new OSM()
-				})
-			]
+					source: new OSM(),
+				}),
+			],
 		}),
 		drawlayer: new GroupLayer({
 			title: "Draw Layer",
@@ -178,18 +199,18 @@ export const CommunityHazards = (props) => {
 				// interaction layer
 				new VectorLayer({
 					style: styleRef.current.invisibleStyle,
-					source: drawSourceRef.current
+					source: drawSourceRef.current,
 				}),
 				// display layer
 				new VectorLayer({
-					source: drawDisplaySourceRef.current
-				})
-			]
+					source: drawDisplaySourceRef.current,
+				}),
+			],
 		}),
 		tilelayer: new GroupLayer({
 			title: "Hazards",
-			layers: []
-		})
+			layers: [],
+		}),
 	});
 
 	// Holds an instance of Map component
@@ -203,7 +224,6 @@ export const CommunityHazards = (props) => {
 		// reset to the first tab
 		setCurrTabIndex(0);
 	}, [selectedHazardType]);
-
 
 	// When Switching Tab
 	useEffect(() => {
@@ -234,13 +254,17 @@ export const CommunityHazards = (props) => {
 		});
 
 		// construct different draw interactions
-		if (selectedHazardType === "tornado" && currTabIndex === 1 && !enableSrcEdit) {
+		if (
+			selectedHazardType === "tornado" &&
+			currTabIndex === 1 &&
+			!enableSrcEdit
+		) {
 			// when edit the textbox doesn't allow draw
 			drawInteractionRef.current = new Draw({
 				source: drawSourceRef.current,
 				type: "LineString",
 				stopClick: true,
-				maxPoints: 2
+				maxPoints: 2,
 			});
 			drawInteractionRef.current.on("drawstart", () => {
 				drawSourceRef.current.clear();
@@ -250,11 +274,15 @@ export const CommunityHazards = (props) => {
 				setStartCoord(geometry.getFirstCoordinate());
 				setEndCoord(geometry.getLastCoordinate());
 			});
-		} else if (selectedHazardType === "earthquake" && currTabIndex === 1 && !enableSrcEdit) {
+		} else if (
+			selectedHazardType === "earthquake" &&
+			currTabIndex === 1 &&
+			!enableSrcEdit
+		) {
 			// when edit the textbox doesn't allow draw
 			drawInteractionRef.current = new Draw({
 				source: drawSourceRef.current,
-				type: "Point"
+				type: "Point",
 			});
 			drawInteractionRef.current.on("drawstart", () => {
 				drawSourceRef.current.clear();
@@ -294,7 +322,12 @@ export const CommunityHazards = (props) => {
 	const handleLayerUpdate = (json) => {
 		// if not already added, then add, else ignore.
 		if (!olIdLayerMap.has(json.id)) {
-			const HazardMapGroupLayers = getHazardGroupLayers(globalConfig, mapConfig, json, selectedHazardType);
+			const HazardMapGroupLayers = getHazardGroupLayers(
+				globalConfig,
+				mapConfig,
+				json,
+				selectedHazardType,
+			);
 			layerRef.current.tilelayer.getLayers().push(HazardMapGroupLayers);
 
 			setOlIdLayerMap((olIdLayerMap) => olIdLayerMap.add(json.id));
@@ -316,7 +349,10 @@ export const CommunityHazards = (props) => {
 	};
 
 	const getRow = (selectedHazardType) => {
-		let row = eval(getHazardTypePlural(selectedHazardType)).map((v) => ({ ...v, viewLayer: "view" }));
+		let row = eval(getHazardTypePlural(selectedHazardType)).map((v) => ({
+			...v,
+			viewLayer: "view",
+		}));
 		return row;
 	};
 
@@ -324,7 +360,7 @@ export const CommunityHazards = (props) => {
 		let point = new Point(coord);
 		let pointFeature = new Feature({
 			geometry: point,
-			name: "point"
+			name: "point",
 		});
 		isStart
 			? pointFeature.setStyle(styleRef.current.startPointStyle)
@@ -336,7 +372,7 @@ export const CommunityHazards = (props) => {
 		let lineString = new LineString([start, end]);
 		let lineFeature = new Feature({
 			geometry: lineString,
-			name: "Line"
+			name: "Line",
 		});
 		lineFeature.setStyle(styleRef.current.lineStyle);
 		drawDisplaySourceRef.current.addFeature(lineFeature);
@@ -345,25 +381,25 @@ export const CommunityHazards = (props) => {
 	const fieldNames = [
 		{
 			prettyName: "NAME",
-			columnName: "name"
+			columnName: "name",
 		},
 		{
 			prettyName: "DESCRIPTION",
-			columnName: "description"
+			columnName: "description",
 		},
 		{
 			prettyName: "DATE ADDED",
-			columnName: "date"
+			columnName: "date",
 		},
 		{
 			prettyName: "SUBMITTED BY",
-			columnName: "creator"
+			columnName: "creator",
 		},
 		{
 			prettyName: "",
 			columnName: "viewLayer",
-			handleClick: hazardIdClick
-		}
+			handleClick: hazardIdClick,
+		},
 	];
 
 	const pageChange = (direction) => {
@@ -428,7 +464,7 @@ export const CommunityHazards = (props) => {
 							<Box className={classes.tabDiv}>
 								<Tabs
 									TabIndicatorProps={{
-										style: { background: "#00619D" }
+										style: { background: "#00619D" },
 									}}
 									selectionFollowsFocus={true}
 									aria-label="create tornado tabs"
@@ -448,8 +484,13 @@ export const CommunityHazards = (props) => {
 										label="Create a Hazard"
 										className={classes.tab}
 										classes={{ selected: classes.selectedTab }}
-										style={{display: selectedHazardType === "tornado" || selectedHazardType ===
-											"earthquake" ? "block":"none"}}
+										style={{
+											display:
+												selectedHazardType === "tornado" ||
+												selectedHazardType === "earthquake"
+													? "block"
+													: "none",
+										}}
 									/>
 									<Tab
 										label="View Created"
@@ -558,7 +599,9 @@ export const CommunityHazards = (props) => {
 														/>
 														<Pagination
 															pageNumber={pageNumber}
-															data={eval(getHazardTypePlural(selectedHazardType))}
+															data={eval(
+																getHazardTypePlural(selectedHazardType),
+															)}
 															dataPerPage={dataPerPage}
 															previous={() => pageChange("previous")}
 															next={() => pageChange("next")}
@@ -572,7 +615,11 @@ export const CommunityHazards = (props) => {
 							</Box>
 						</Grid>
 						<Grid item xl={6} lg={6} md={6} sm={6} xs={12} className="gridItem">
-							<Container className={classes.mapContainer} disableGutters style={{ position: "relative" }}>
+							<Container
+								className={classes.mapContainer}
+								disableGutters
+								style={{ position: "relative" }}
+							>
 								<Button
 									variant="outlined"
 									onClick={handleClearAllLayers}
@@ -581,7 +628,7 @@ export const CommunityHazards = (props) => {
 										zIndex: 100,
 										right: "5px",
 										top: "5px",
-										background: "#FFFFFF"
+										background: "#FFFFFF",
 									}}
 								>
 									Clear All
@@ -593,7 +640,8 @@ export const CommunityHazards = (props) => {
 											setMapDialogOpen(false);
 										}}
 									/>
-								) : selectedHazardType === "earthquake" && currTabIndex === 1 ? (
+								) : selectedHazardType === "earthquake" &&
+								  currTabIndex === 1 ? (
 									<EqMapDrawPrompt
 										mapDialogOpen={mapDialogOpen}
 										handleMapDialogClose={() => {
@@ -610,13 +658,13 @@ export const CommunityHazards = (props) => {
 									maxZoom={mapConfig.MAX_ZOOM}
 									extent={applyTransform(
 										mapConfig.MAP_BOUNDS,
-										getTransform("EPSG:4326", "EPSG:3857")
+										getTransform("EPSG:4326", "EPSG:3857"),
 									)}
 									center={fromLonLat(mapConfig.MAP_CENTER)}
 									layers={[
 										layerRef.current.basemaps,
 										layerRef.current.drawlayer,
-										layerRef.current.tilelayer
+										layerRef.current.tilelayer,
 									]}
 									layerSwitcherOptions={{}}
 									updateMap={(map) => {

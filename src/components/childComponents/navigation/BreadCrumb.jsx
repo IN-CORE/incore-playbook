@@ -16,31 +16,31 @@ const useStyles = makeStyles({
 		lineHeight: "22px",
 		display: "inline-block",
 		margin: "1.5em",
-		textTransform: "capitalize"
+		textTransform: "capitalize",
 	},
 	breadcrumbText: {
 		display: "inline",
 		fontWeight: 500,
-		fontSize: "18px"
+		fontSize: "18px",
 	},
 	breadcrumbTextColored: {
 		color: "#00619D",
 		display: "inline",
 		fontWeight: 500,
-		fontSize: "18px"
+		fontSize: "18px",
 	},
 	chipLabel: {
 		borderRadius: "5px",
 		height: "18px",
-		marginRight: "6px"
+		marginRight: "6px",
 	},
 	chipLabelColored: {
 		borderRadius: "5px",
 		height: "18px",
 		marginRight: "6px",
 		backgroundColor: "rgba(0, 97, 157)",
-		color: "White"
-	}
+		color: "White",
+	},
 });
 
 export default function BreadCrumb(props) {
@@ -54,7 +54,8 @@ export default function BreadCrumb(props) {
 					{props.parentStep}
 				</Typography>
 				<Typography className={classes.breadcrumbTextColored}>
-					&nbsp; {">"} &nbsp; <Chip label={props.subtaskNo} className={classes.chipLabelColored} />
+					&nbsp; {">"} &nbsp;{" "}
+					<Chip label={props.subtaskNo} className={classes.chipLabelColored} />
 					{props.childStep}
 				</Typography>
 			</Box>

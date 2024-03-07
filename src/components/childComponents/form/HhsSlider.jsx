@@ -1,9 +1,8 @@
 import React from "react";
 import { IncoreSlider } from "../../styledComponents/IncoreSlider";
 
-
 export default function HhsSlider(props) {
-	const {marks, value, handleChange} = props;
+	const { marks, value, handleChange } = props;
 
 	return (
 		<IncoreSlider
@@ -13,7 +12,7 @@ export default function HhsSlider(props) {
 			valueLabelDisplay="off"
 			marks={marks}
 			min={marks[0]["value"]}
-			max={marks[marks.length-1]["value"]}
+			max={marks[marks.length - 1]["value"]}
 			value={value}
 			onChange={handleChange}
 			track={false}

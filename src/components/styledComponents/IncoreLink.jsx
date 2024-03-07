@@ -8,5 +8,5 @@ export const IncoreLink = styled(Link)({
 	letterSpacing: "0.6px",
 	width: "100%",
 	textDecoration: "underline",
-	wordBreak: "break-all"
+	wordBreak: "break-all",
 });

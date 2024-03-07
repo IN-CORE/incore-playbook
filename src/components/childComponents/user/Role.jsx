@@ -1,5 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { IncoreMenuItem, IncoreSelectBox } from "../../styledComponents/IncoreSelect";
+import {
+	IncoreMenuItem,
+	IncoreSelectBox,
+} from "../../styledComponents/IncoreSelect";
 import { Box, Button, ButtonGroup } from "@material-ui/core";
 import { assignUserRole } from "../../../actions/user";
 import { useDispatch, useSelector } from "react-redux";
@@ -15,7 +18,7 @@ export const Role = (props) => {
 	const globalConfig = useSelector((state) => state.config.globalConfig);
 
 	const [selectedRoleId, setSelectedRoleId] = useState(
-		user["role"] && user["role"]["id"] ? user["role"]["id"] : null
+		user["role"] && user["role"]["id"] ? user["role"]["id"] : null,
 	);
 
 	const [editRoleOn, setEditRoleOn] = useState(false);
@@ -24,7 +27,9 @@ export const Role = (props) => {
 
 	useEffect(() => {
 		// if any thing updated in redux, reflect on the selected user
-		setSelectedRoleId(user["role"] && user["role"]["id"] ? user["role"]["id"] : null);
+		setSelectedRoleId(
+			user["role"] && user["role"]["id"] ? user["role"]["id"] : null,
+		);
 	}, [user]);
 
 	const handleRoleSelection = (e) => {
@@ -33,7 +38,9 @@ export const Role = (props) => {
 
 	const handleRoleCancel = () => {
 		// Resume to the current state in redux
-		setSelectedRoleId(user["role"] && user["role"]["id"] ? user["role"]["id"] : null);
+		setSelectedRoleId(
+			user["role"] && user["role"]["id"] ? user["role"]["id"] : null,
+		);
 		setEditRoleOn(false);
 	};
 
@@ -86,26 +93,25 @@ export const Role = (props) => {
 				<>
 					{selectedRoleId
 						? roles.map((role) => {
-							if (role["id"] === selectedRoleId) {
-								return role["name"];
-							}
+								if (role["id"] === selectedRoleId) {
+									return role["name"];
+								}
 						  })
 						: "None"}
-					{
-						editable ?
-							<Box style={{ display: "block" }}>
-								<Button
-									style={{ fontSize: "12px", color: "#00619D" }}
-									onClick={() => {
-										setEditRoleOn(true);
-									}}
-								>
-								    <EditIcon fontSize="small" />
-								</Button>
-							</Box>
-							:
-							<></>
-					}
+					{editable ? (
+						<Box style={{ display: "block" }}>
+							<Button
+								style={{ fontSize: "12px", color: "#00619D" }}
+								onClick={() => {
+									setEditRoleOn(true);
+								}}
+							>
+								<EditIcon fontSize="small" />
+							</Button>
+						</Box>
+					) : (
+						<></>
+					)}
 				</>
 			)}
 		</>
