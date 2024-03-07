@@ -10,22 +10,26 @@ import configureStore from "./store/configureStore";
 import { createMuiTheme, MuiThemeProvider } from "@material-ui/core/styles";
 import { mapConfig as defaultMapConfig } from "./map.config";
 import { assetConfig as defaultAssetConfig } from "./asset.config";
-import { datawolfConfig as defaultDatawolfConfig } from "./datawolf.config.js";
-import { datawolfWorkflowConfig as defaultDatawolfWorkflowConfig } from "./datawolf.config.js";
+import {
+	datawolfConfig as defaultDatawolfConfig,
+	datawolfWorkflowConfig as defaultDatawolfWorkflowConfig,
+} from "./datawolf.config.js";
 import { globals as defaultGlobalConfig } from "./globals";
-import { cgeInfo as defaultCgeConfig} from "./messages.config";
-import { hhsInfo as defaultHhsConfig} from "./messages.config";
+import {
+	cgeInfo as defaultCgeConfig,
+	hhsInfo as defaultHhsConfig,
+} from "./messages.config";
 
 import {
-	setAllowedHazardTypes,
 	setAllowedDataTypes,
+	setAllowedHazardTypes,
 	updateAssetConfig,
-	updateMapConfig,
-	updateDatawolfConfig,
-	updateGlobalConfig,
-	updateDatawolfWorkflowConfig,
 	updateCgeInfo,
-	updateHhsInfo
+	updateDatawolfConfig,
+	updateDatawolfWorkflowConfig,
+	updateGlobalConfig,
+	updateHhsInfo,
+	updateMapConfig,
 } from "./actions/config";
 
 require("./public/favicon.ico");
@@ -41,20 +45,34 @@ store.dispatch(updateHhsInfo(defaultHhsConfig));
 store.dispatch(
 	setAllowedDataTypes({
 		building: true,
+		retrofitStrategies: true,
 		epf: true,
 		network: true,
-		socioeconomics: true
-	})
+		socioeconomics: true,
+	}),
 );
-store.dispatch(setAllowedHazardTypes(["earthquake", "tornado", "tsunami", "hurricane", "flood"]));
+store.dispatch(
+	setAllowedHazardTypes([
+		"earthquake",
+		"tornado",
+		"tsunami",
+		"hurricane",
+		"flood",
+	]),
+);
 
 const theme = createMuiTheme({
 	typography: {
-		fontFamily: "Rubik"
+		fontFamily: "Rubik, Arial, sans-serif", // It"s good practice to provide fallback fonts
 	},
 	palette: {
-		fontFamily: "Rubik"
-	}
+		primary: {
+			main: "#00619D", // Example primary color
+		},
+		secondary: {
+			main: "#00619D", // Example secondary color
+		},
+	},
 });
 
 render(
@@ -68,11 +86,18 @@ render(
 						let exact = routes[key]["exact"];
 						let component = routes[key]["component"];
 
-						return <Route path={path} exact={exact} component={component} key={path} />;
+						return (
+							<Route
+								path={path}
+								exact={exact}
+								component={component}
+								key={path}
+							/>
+						);
 					})}
 				</Switch>
 			</BrowserRouter>
 		</Provider>
 	</MuiThemeProvider>,
-	document.getElementById("app")
+	document.getElementById("app"),
 );

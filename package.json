@@ -1,6 +1,6 @@
 {
 	"name": "@in-core/incore-playbook",
-	"version": "0.5.8",
+	"version": "0.6.0",
 	"description": "The Interdependent Networked Community Resilience Modeling Environment (IN-CORE) has the capability of computing resiliency measures at the user-desired community level. The methodologies and algorithms have been developed by different research groups within the Center of Excellence.",
 	"engines": {
 		"npm": ">=3.10",
@@ -48,9 +48,9 @@
 		"whatwg-fetch": "2.0.2"
 	},
 	"peerDependencies": {
-		"@material-ui/core": "^4.11.0",
-		"@material-ui/icons": "^4.9.1",
-		"babel-polyfill": "^6.26.0",
+		"@material-ui/core": "~4.11.0",
+		"@material-ui/icons": "~4.9.1",
+		"babel-polyfill": "~6.26.0",
 		"react": "~16.14.0",
 		"react-dom": "~16.14.0",
 		"react-redux": "~7.1.0",
@@ -104,11 +104,11 @@
 		"isparta-loader": "^2.0.0",
 		"json-loader": "^0.5.7",
 		"mini-css-extract-plugin": "^0.9.0",
-		"node-sass": "^4.14.1",
 		"npm-run-all": "4.0.1",
 		"postcss-loader": "^3.0.0",
 		"redux-immutable-state-invariant": "1.2.4",
 		"rimraf": "^2.5.4",
+		"sass": "^1.70.0",
 		"sass-loader": "^10.0.3",
 		"style-loader": "^2.0.0",
 		"terser-webpack-plugin": "^2.3.2",

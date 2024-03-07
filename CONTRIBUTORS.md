@@ -10,4 +10,3 @@ The following is a list of contributors in alphabetical order
 * **Michal Ondrejcek**
 * **Nathan Tolbert**
 * **Chen Wang**
-

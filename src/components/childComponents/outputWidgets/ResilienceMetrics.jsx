@@ -1,4 +1,13 @@
-import { Box, Dialog, DialogActions, DialogContent, IconButton, Tab, Tabs, Typography } from "@material-ui/core";
+import {
+	Box,
+	Dialog,
+	DialogActions,
+	DialogContent,
+	IconButton,
+	Tab,
+	Tabs,
+	Typography,
+} from "@material-ui/core";
 import CloseIcon from "@material-ui/icons/Close";
 import { DislocationResultsTable } from "../table/DislocationResultsTable";
 import { HuaResultsTable } from "../table/HuaResultsTable";
@@ -13,7 +22,6 @@ import { downloadImg } from "../../../utils/image";
 import CameraAltIcon from "@material-ui/icons/CameraAlt";
 import FormLabel from "@material-ui/core/FormLabel";
 import { IncoreRadioGroup } from "../form/IncoreRadioGroup";
-
 
 const useStyles = makeStyles({
 	tableEntry: {
@@ -30,7 +38,7 @@ const useStyles = makeStyles({
 		lineHeight: "19px",
 		padding: "12px 8px",
 		marginBottom: "25px",
-		display: "block"
+		display: "block",
 	},
 	tab: {
 		height: "22px",
@@ -40,20 +48,25 @@ const useStyles = makeStyles({
 		letterSpacing: 0,
 		lineHeight: "22px",
 		textAlign: "center",
-		textTransform: "capitalize"
+		textTransform: "capitalize",
 	},
 	radio: {
-		color: "#69707F"
+		color: "#69707F",
 	},
 	label: {
-		fontSize: "12px"
-	}
+		fontSize: "12px",
+	},
 });
 
 export default function ResilienceMetrics(props) {
 	const classes = useStyles();
 
-	let { executionItem, previewOn, handlePreviewClose, datawolfDatasetConfigItems } = props;
+	let {
+		executionItem,
+		previewOn,
+		handlePreviewClose,
+		datawolfDatasetConfigItems,
+	} = props;
 
 	const datawolfConfig = useSelector((state) => state.config.datawolfConfig);
 	const globalConfig = useSelector((state) => state.config.globalConfig);
@@ -62,91 +75,162 @@ export default function ResilienceMetrics(props) {
 	const [selectedExecutionName, setSelectedExecutionName] = useState("");
 
 	const [totalDislTableContent, setTotalDislTableContent] = useState(null);
-	const [dislocationByRaceContent, setDislocationByRaceContent] = useState(null);
-	const [dislocationByTenureContent, setDislocationByTenureContent] = useState(null);
-	const [dislocationByIncomeContent, setDislocationByIncomeContent] = useState(null);
-	const [dislocationByHousingTypeContent, setDislocationByHousingTypeContent] = useState(null);
-	const [cgeHouseholdIncomeContent, setCgeHouseholdIncomeContent] = useState(null);
-	const [cgeDomesticSupplyContent, setCgeDomesticSupplyContent] = useState(null);
+	const [dislocationByRaceContent, setDislocationByRaceContent] =
+		useState(null);
+	const [dislocationByTenureContent, setDislocationByTenureContent] =
+		useState(null);
+	const [dislocationByIncomeContent, setDislocationByIncomeContent] =
+		useState(null);
+	const [dislocationByHousingTypeContent, setDislocationByHousingTypeContent] =
+		useState(null);
+	const [cgeHouseholdIncomeContent, setCgeHouseholdIncomeContent] =
+		useState(null);
+	const [cgeDomesticSupplyContent, setCgeDomesticSupplyContent] =
+		useState(null);
 	const [cgeEmploymentContent, setCgeEmploymentContent] = useState(null);
-	const [bldgFuncSummaryTableContent, setBldgFuncSummaryTableContent] = useState(null);
-	const [cgeHhIncomeRegion, setCgeHhIncomeRegion] = useState(globalConfig["allowedRegions"] ? globalConfig["allowedRegions"][0].value : null);
-	const [cgeDomesticSupplyRegion, setCgeDomesticSupplyRegion] = useState(globalConfig["allowedRegions"] ? globalConfig["allowedRegions"][0].value : null);
-	const [cgeEmploymentRegion, setCgeEmploymentRegion] = useState(globalConfig["allowedRegions"] ? globalConfig["allowedRegions"][0].value : null);
+	const [bldgFuncSummaryTableContent, setBldgFuncSummaryTableContent] =
+		useState(null);
+	const [cgeHhIncomeRegion, setCgeHhIncomeRegion] = useState(
+		globalConfig["allowedRegions"]
+			? globalConfig["allowedRegions"][0].value
+			: null,
+	);
+	const [cgeDomesticSupplyRegion, setCgeDomesticSupplyRegion] = useState(
+		globalConfig["allowedRegions"]
+			? globalConfig["allowedRegions"][0].value
+			: null,
+	);
+	const [cgeEmploymentRegion, setCgeEmploymentRegion] = useState(
+		globalConfig["allowedRegions"]
+			? globalConfig["allowedRegions"][0].value
+			: null,
+	);
 
-	const [cgeFilterOptions, setCgeFilterOptions] = useState(globalConfig["allowedRegions"] ?
-		globalConfig["allowedRegions"].reduce((state, region)=>{
-			return [...state, {"name": region.name, "value": region.value}];
-		}, [])
-		:
-		[]);
+	const [cgeFilterOptions, setCgeFilterOptions] = useState(
+		globalConfig["allowedRegions"]
+			? globalConfig["allowedRegions"].reduce((state, region) => {
+					return [...state, { name: region.name, value: region.value }];
+			  }, [])
+			: [],
+	);
 
 	// print container
 	const printRef = useRef();
 
-
-	useEffect(()=> {
+	useEffect(() => {
 		setSelectedExecutionName(executionItem["title"]);
 
 		datawolfDatasetConfigItems.map(async (datawolfDatasetConfigItem) => {
 			const vName = datawolfDatasetConfigItem.datasets.variableName;
 			if (vName === "totalDislTableContent") {
 				setTotalDislTableContent(
-					await getOutputFileContentJSON(datawolfConfig, executionItem, datawolfDatasetConfigItem.datasetId)
+					await getOutputFileContentJSON(
+						datawolfConfig,
+						executionItem,
+						datawolfDatasetConfigItem.datasetId,
+					),
 				);
 			} else if (vName === "dislocationByRaceContent") {
 				setDislocationByRaceContent(
-					await getOutputFileContentJSON(datawolfConfig, executionItem, datawolfDatasetConfigItem.datasetId)
+					await getOutputFileContentJSON(
+						datawolfConfig,
+						executionItem,
+						datawolfDatasetConfigItem.datasetId,
+					),
 				);
 			} else if (vName === "dislocationByTenureContent") {
 				setDislocationByTenureContent(
-					await getOutputFileContentJSON(datawolfConfig, executionItem, datawolfDatasetConfigItem.datasetId)
+					await getOutputFileContentJSON(
+						datawolfConfig,
+						executionItem,
+						datawolfDatasetConfigItem.datasetId,
+					),
 				);
 			} else if (vName === "dislocationByIncomeContent") {
 				setDislocationByIncomeContent(
-					await getOutputFileContentJSON(datawolfConfig, executionItem, datawolfDatasetConfigItem.datasetId)
+					await getOutputFileContentJSON(
+						datawolfConfig,
+						executionItem,
+						datawolfDatasetConfigItem.datasetId,
+					),
 				);
 			} else if (vName === "dislocationByHousingTypeContent") {
 				setDislocationByHousingTypeContent(
-					await getOutputFileContentJSON(datawolfConfig, executionItem, datawolfDatasetConfigItem.datasetId)
+					await getOutputFileContentJSON(
+						datawolfConfig,
+						executionItem,
+						datawolfDatasetConfigItem.datasetId,
+					),
 				);
 			} else if (vName === "cgeHouseholdIncomeContent") {
 				setCgeHouseholdIncomeContent(
-					await getOutputFileContentJSON(datawolfConfig, executionItem, datawolfDatasetConfigItem.datasetId)
+					await getOutputFileContentJSON(
+						datawolfConfig,
+						executionItem,
+						datawolfDatasetConfigItem.datasetId,
+					),
 				);
 			} else if (vName === "cgeDomesticSupplyContent") {
 				setCgeDomesticSupplyContent(
-					await getOutputFileContentJSON(datawolfConfig, executionItem, datawolfDatasetConfigItem.datasetId)
+					await getOutputFileContentJSON(
+						datawolfConfig,
+						executionItem,
+						datawolfDatasetConfigItem.datasetId,
+					),
 				);
 			} else if (vName === "cgeEmploymentContent") {
 				setCgeEmploymentContent(
-					await getOutputFileContentJSON(datawolfConfig, executionItem, datawolfDatasetConfigItem.datasetId)
+					await getOutputFileContentJSON(
+						datawolfConfig,
+						executionItem,
+						datawolfDatasetConfigItem.datasetId,
+					),
 				);
 			} else if (vName === "bldgFuncSummaryTableContent") {
 				setBldgFuncSummaryTableContent(
-					await getOutputFileContentJSON(datawolfConfig, executionItem, datawolfDatasetConfigItem.datasetId)
+					await getOutputFileContentJSON(
+						datawolfConfig,
+						executionItem,
+						datawolfDatasetConfigItem.datasetId,
+					),
 				);
 			}
 		});
 	}, []);
 
 	return (
-		<Dialog open={previewOn} onClose={handlePreviewClose} maxWidth="lg" fullWidth scroll="paper">
+		<Dialog
+			open={previewOn}
+			onClose={handlePreviewClose}
+			maxWidth="lg"
+			fullWidth
+			scroll="paper"
+		>
 			<DialogContent className="previewModal" ref={printRef}>
-				<IconButton aria-label="Close" onClick={handlePreviewClose} style={{ float: "right" }}>
+				<IconButton
+					aria-label="Close"
+					onClick={handlePreviewClose}
+					style={{ float: "right" }}
+				>
 					<CloseIcon fontSize="small" />
 				</IconButton>
 
 				{/*title*/}
 				{/*TODO wrap into a component*/}
 				<Box className="previewTitleSection">
-					<Typography className="previewTitle">{selectedExecutionName}</Typography>
-					<Typography className="previewTitle">Select Data: Resilience Metrics</Typography>
+					<Typography className="previewTitle">
+						{selectedExecutionName}
+					</Typography>
+					<Typography className="previewTitle">
+						Select Data: Resilience Metrics
+					</Typography>
 				</Box>
 
 				{/*tabs*/}
 				<Tabs
-					TabIndicatorProps={{ style: { background: "#00619D", color: "#00619D" } }}
+					TabIndicatorProps={{
+						style: { background: "#00619D", color: "#00619D" },
+					}}
 					aria-label="metrics tabs"
 					value={currTabIndex}
 					onChange={(e, value) => {
@@ -180,24 +264,27 @@ export default function ResilienceMetrics(props) {
 					dislocationByRaceContent &&
 					dislocationByTenureContent &&
 					dislocationByHousingTypeContent ? (
-							<Box className={classes.tableEntry}>
-								<HuaResultsTable
-									resultsJson={{
-										income: dislocationByIncomeContent,
-										race: dislocationByRaceContent,
-										tenure: dislocationByTenureContent,
-										housingType: dislocationByHousingTypeContent
-									}}
-									isMetrics={true}
-								/>
-							</Box>
-						) : (
-							<></>
-						)}
-					{totalDislTableContent && totalDislTableContent["population_dislocation_in_total"] ? (
+						<Box className={classes.tableEntry}>
+							<HuaResultsTable
+								resultsJson={{
+									income: dislocationByIncomeContent,
+									race: dislocationByRaceContent,
+									tenure: dislocationByTenureContent,
+									housingType: dislocationByHousingTypeContent,
+								}}
+								isMetrics={true}
+							/>
+						</Box>
+					) : (
+						<></>
+					)}
+					{totalDislTableContent &&
+					totalDislTableContent["population_dislocation_in_total"] ? (
 						<Box className={classes.tableEntry}>
 							<DislocationResultsTable
-								resultsJson={totalDislTableContent["population_dislocation_in_total"]}
+								resultsJson={
+									totalDislTableContent["population_dislocation_in_total"]
+								}
 								headers={["POPULATION", "% of POPULATION"]}
 								title={"Population Dislocation - in Total"}
 								isMetrics={true}
@@ -206,10 +293,13 @@ export default function ResilienceMetrics(props) {
 					) : (
 						<></>
 					)}
-					{totalDislTableContent && totalDislTableContent["household_dislocation_in_total"] ? (
+					{totalDislTableContent &&
+					totalDislTableContent["household_dislocation_in_total"] ? (
 						<Box className={classes.tableEntry}>
 							<DislocationResultsTable
-								resultsJson={totalDislTableContent["household_dislocation_in_total"]}
+								resultsJson={
+									totalDislTableContent["household_dislocation_in_total"]
+								}
 								headers={["HOUSEHOLD", "% of HOUSEHOLD"]}
 								title={"Household Dislocation - in Total"}
 								isMetrics={true}
@@ -231,10 +321,19 @@ export default function ResilienceMetrics(props) {
 								<FormLabel component="legend" className={classes.title}>
 									Household Income
 								</FormLabel>
-								<IncoreRadioGroup options={cgeFilterOptions} value={cgeHhIncomeRegion}
-												  handleChange={(e) => { setCgeHhIncomeRegion(e.target.value);}} />
+								<IncoreRadioGroup
+									options={cgeFilterOptions}
+									value={cgeHhIncomeRegion}
+									handleChange={(e) => {
+										setCgeHhIncomeRegion(e.target.value);
+									}}
+								/>
 							</div>
-							<CgeResultsTable resultsJson={cgeHouseholdIncomeContent} isMetrics={true} region={cgeHhIncomeRegion}/>
+							<CgeResultsTable
+								resultsJson={cgeHouseholdIncomeContent}
+								isMetrics={true}
+								region={cgeHhIncomeRegion}
+							/>
 						</Box>
 					) : (
 						<></>
@@ -244,9 +343,18 @@ export default function ResilienceMetrics(props) {
 							<FormLabel component="legend" className={classes.title}>
 								Employment
 							</FormLabel>
-							<IncoreRadioGroup options={cgeFilterOptions} value={cgeEmploymentRegion}
-											  handleChange={(e) => { setCgeEmploymentRegion(e.target.value);}} />
-							<CgeResultsTable resultsJson={cgeEmploymentContent} isMetrics={true} region={cgeEmploymentRegion}/>
+							<IncoreRadioGroup
+								options={cgeFilterOptions}
+								value={cgeEmploymentRegion}
+								handleChange={(e) => {
+									setCgeEmploymentRegion(e.target.value);
+								}}
+							/>
+							<CgeResultsTable
+								resultsJson={cgeEmploymentContent}
+								isMetrics={true}
+								region={cgeEmploymentRegion}
+							/>
 						</Box>
 					) : (
 						<></>
@@ -256,8 +364,13 @@ export default function ResilienceMetrics(props) {
 							<FormLabel component="legend" className={classes.title}>
 								Community-level GDP
 							</FormLabel>
-							<IncoreRadioGroup options={cgeFilterOptions} value={cgeDomesticSupplyRegion}
-											  handleChange={(e) => { setCgeDomesticSupplyRegion(e.target.value);}} />
+							<IncoreRadioGroup
+								options={cgeFilterOptions}
+								value={cgeDomesticSupplyRegion}
+								handleChange={(e) => {
+									setCgeDomesticSupplyRegion(e.target.value);
+								}}
+							/>
 							<CgeResultsTable
 								resultsJson={cgeDomesticSupplyContent}
 								yAxisLegend="Person"
@@ -278,7 +391,9 @@ export default function ResilienceMetrics(props) {
 				>
 					{bldgFuncSummaryTableContent ? (
 						<Box className={classes.tableEntry}>
-							<Typography className={classes.title}>Count of Functional Buildings</Typography>
+							<Typography className={classes.title}>
+								Count of Functional Buildings
+							</Typography>
 							<FunctionalityTable funcResults={bldgFuncSummaryTableContent} />
 						</Box>
 					) : (
@@ -287,9 +402,20 @@ export default function ResilienceMetrics(props) {
 				</div>
 			</DialogContent>
 			<DialogActions>
-				<IncoreButtonText onClick={()=>{downloadImg(printRef.current, "Resilience_Metrics");}}
-								  startIcon={<CameraAltIcon/>}>Image</IncoreButtonText>
-				<IncoreButtonText onClick={handlePreviewClose} startIcon={<CloseIcon/>}>Close</IncoreButtonText>
+				<IncoreButtonText
+					onClick={() => {
+						downloadImg(printRef.current, "Resilience_Metrics");
+					}}
+					startIcon={<CameraAltIcon />}
+				>
+					Image
+				</IncoreButtonText>
+				<IncoreButtonText
+					onClick={handlePreviewClose}
+					startIcon={<CloseIcon />}
+				>
+					Close
+				</IncoreButtonText>
 			</DialogActions>
 		</Dialog>
 	);

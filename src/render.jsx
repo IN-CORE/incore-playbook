@@ -9,14 +9,20 @@ import reduxImmutableStateInvariant from "redux-immutable-state-invariant";
 
 const baseTheme = createMuiTheme({
 	typography: {
-		fontFamily: "Rubik"
+		fontFamily: "Rubik",
 	},
 	palette: {
-		fontFamily: "Rubik"
-	}
+		fontFamily: "Rubik",
+	},
 });
 
-const render = (reducers, routes, theme = baseTheme, storeCallback, baseUrlRoute = "") => {
+const render = (
+	reducers,
+	routes,
+	theme = baseTheme,
+	storeCallback,
+	baseUrlRoute = "",
+) => {
 	// create stores
 	const middlewares = [
 		// Add other middleware on this line...
@@ -26,13 +32,17 @@ const render = (reducers, routes, theme = baseTheme, storeCallback, baseUrlRoute
 
 		// thunk middleware can also accept an extra argument to be passed to each thunk action
 		// https://github.com/gaearon/redux-thunk#injecting-a-custom-argument
-		thunk
+		thunk,
 	];
 
 	// adds support for Redux dev tools
-	const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+	const composeEnhancers =
+		window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 	// combine old reducer with new ones
-	const store = createStore(combineReducers(reducers), composeEnhancers(applyMiddleware(...middlewares)));
+	const store = createStore(
+		combineReducers(reducers),
+		composeEnhancers(applyMiddleware(...middlewares)),
+	);
 
 	if (module.hot) {
 		// Enable Webpack hot module replacement for reducers
@@ -57,13 +67,20 @@ const render = (reducers, routes, theme = baseTheme, storeCallback, baseUrlRoute
 							let exact = routes[key]["exact"];
 							let component = routes[key]["component"];
 
-							return <Route path={path} exact={exact} component={component} key={path} />;
+							return (
+								<Route
+									path={path}
+									exact={exact}
+									component={component}
+									key={path}
+								/>
+							);
 						})}
 					</Switch>
 				</BrowserRouter>
 			</MuiThemeProvider>
 		</Provider>,
-		document.getElementById("app")
+		document.getElementById("app"),
 	);
 };
 

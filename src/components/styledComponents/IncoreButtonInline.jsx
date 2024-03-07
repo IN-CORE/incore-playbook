@@ -7,9 +7,9 @@ export const IncoreButtonInline = styled(Button)({
 	fontWeight: 500,
 	backgroundColor: "#00619D",
 	"&:hover": {
-		backgroundColor: "#2C4170"
+		backgroundColor: "#2C4170",
 	},
 	color: "#ffffff",
 	textTransform: "uppercase",
-	display: "inline"
+	display: "inline",
 });

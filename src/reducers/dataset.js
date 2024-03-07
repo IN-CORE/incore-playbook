@@ -2,6 +2,7 @@ import { LOGIN_ERROR } from "../actions/datasets";
 
 const defaultState = {
 	buildings: [],
+	retrofitStrategies: [],
 	epfs: [],
 	interdNetworks: [],
 	sectorShocks: [],
@@ -18,13 +19,15 @@ const defaultState = {
 	cgeOutcrs: [],
 	huas: [],
 	blockGroups: [],
-	valueLosses: []
+	valueLosses: [],
 };
 // type only does a vague match; need to filter to make sure
 const datasets = (state = defaultState, action) => {
 	switch (action.type) {
 		case "RECEIVE_BLDGS":
 			return Object.assign({}, state, { buildings: action.datasets });
+		case "RECEIVE_RETROFIT_STRATEGIES":
+			return Object.assign({}, state, { retrofitStrategies: action.datasets });
 		case "RECEIVE_EPFS":
 			return Object.assign({}, state, { epfs: action.datasets });
 		case "RECEIVE_INTERD":
@@ -39,11 +42,15 @@ const datasets = (state = defaultState, action) => {
 			return Object.assign({}, state, { cgeIouts: action.datasets });
 		case "RECEIVE_CGE_MISC":
 			return Object.assign({}, state, {
-				cgeMiscs: action.datasets.filter((dataset) => dataset.dataType === "incore:JoplinCGEmisc")
+				cgeMiscs: action.datasets.filter(
+					(dataset) => dataset.dataType === "incore:JoplinCGEmisc",
+				),
 			});
 		case "RECEIVE_CGE_MISCH":
 			return Object.assign({}, state, {
-				cgeMischs: action.datasets.filter((dataset) => dataset.dataType === "incore:JoplinCGEmisch")
+				cgeMischs: action.datasets.filter(
+					(dataset) => dataset.dataType === "incore:JoplinCGEmisch",
+				),
 			});
 		case "RECEIVE_CGE_LANDCAP":
 			return Object.assign({}, state, { cgeLandcaps: action.datasets });
@@ -66,6 +73,7 @@ const datasets = (state = defaultState, action) => {
 		case LOGIN_ERROR:
 			return Object.assign({}, state, {
 				buildings: [],
+				retrofitStrategies: [],
 				epfs: [],
 				interdNetworks: [],
 				sectorShocks: [],
@@ -82,7 +90,7 @@ const datasets = (state = defaultState, action) => {
 				cgeOutcrs: [],
 				huas: [],
 				blockGroups: [],
-				valueLosses: []
+				valueLosses: [],
 			});
 		default:
 			return state;

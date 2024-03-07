@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import { Box, Avatar, Button, Grid, IconButton, Collapse } from "@material-ui/core";
+import { Avatar, Box, Button, Grid } from "@material-ui/core";
 
 import { IncoreInputLabel } from "../styledComponents/IncoreInputLabel";
 import { submitExecution } from "../../utils/datawolf";
@@ -19,28 +19,29 @@ import SectorShocks from "./inputWidgets/SectorShocks";
 import ValueLosses from "./inputWidgets/ValueLosses";
 import InputTextField from "./inputWidgets/InputTextField";
 import { IncoreTextField } from "../styledComponents/IncoreInput";
+import RetrofitStrategies from "./inputWidgets/RetrofitStrategies";
 
 const useStyles = makeStyles({
 	runButton: {
-		"height": "61px",
-		"width": "100%",
-		"fontSize": "16px",
-		"fontWeight": 500,
-		"backgroundColor": "#00619D",
+		height: "61px",
+		width: "100%",
+		fontSize: "16px",
+		fontWeight: 500,
+		backgroundColor: "#00619D",
 		"&:hover": {
-			backgroundColor: "#2C4170"
+			backgroundColor: "#2C4170",
 		},
-		"color": "#ffffff",
-		"textTransform": "capitalize"
+		color: "#ffffff",
+		textTransform: "capitalize",
 	},
 	endIconStyle: {
 		backgroundColor: "#ffffff",
-		marginLeft: "15px"
+		marginLeft: "15px",
 	},
 	avatarStyle: {
 		height: "35px",
 		width: "56px",
-		borderRadius: 0
+		borderRadius: 0,
 	},
 	explanation: {
 		height: "14px",
@@ -50,22 +51,22 @@ const useStyles = makeStyles({
 		fontSize: "12px",
 		letterSpacing: 0,
 		lineHeight: "14px",
-		margin: "16px"
+		margin: "16px",
 	},
 	explanationLink: {
 		textDecoration: "underline",
-		color: "#00619D"
+		color: "#00619D",
 	},
 	socioeconomicsBlock: {
-		margin: "30px auto"
+		margin: "30px auto",
 	},
 	socioeconomics: {
 		padding: "0 30px",
 		border: "dashed 2px #00619D",
 		maxHeight: "300px",
 		overflow: "auto",
-		backgroundColor: "#FFFFFF"
-	}
+		backgroundColor: "#FFFFFF",
+	},
 });
 
 // TODO move this registration somewhere else?
@@ -73,19 +74,28 @@ const registeredWidgets = {
 	AllowedHazardTypes: <AllowedHazardTypes />,
 	BlockGroups: <BlockGroups />,
 	Buildings: <Buildings />,
+	RetrofitStrategies: <RetrofitStrategies />,
 	Epfs: <Epfs />,
 	Hazards: <Hazards />,
 	Huas: <Huas />,
 	InputTextField: <InputTextField />,
 	InterdNetworks: <InterdNetworks />,
 	SectorShocks: <SectorShocks />,
-	ValueLosses: <ValueLosses />
+	ValueLosses: <ValueLosses />,
 };
 
 export default function ViewResult(props) {
 	const classes = useStyles();
 
-	const { value, index, gotoViewResultTab, setErrorAlertOpen, setErrorStatus, setErrorMessage, ...other } = props;
+	const {
+		value,
+		index,
+		gotoViewResultTab,
+		setErrorAlertOpen,
+		setErrorStatus,
+		setErrorMessage,
+		...other
+	} = props;
 
 	// for execution
 	const [title, setTitle] = useState("");
@@ -95,7 +105,9 @@ export default function ViewResult(props) {
 
 	const assetConfig = useSelector((state) => state.config.assetConfig);
 	const datawolfConfig = useSelector((state) => state.config.datawolfConfig);
-	const datawolfWorkflowConfig = useSelector((state) => state.config.datawolfWorkflowConfig);
+	const datawolfWorkflowConfig = useSelector(
+		(state) => state.config.datawolfWorkflowConfig,
+	);
 
 	let parameters = datawolfWorkflowConfig.inputs.parameters;
 	const [datawolfFormState, setDatawolfFormState] = useState(
@@ -107,7 +119,7 @@ export default function ViewResult(props) {
 			}, {});
 
 			return { ...state, [p.variableName]: mapState };
-		}, {})
+		}, {}),
 	);
 
 	const [disabled, setDisabled] = useState(true);
@@ -115,7 +127,9 @@ export default function ViewResult(props) {
 	// form check
 	useEffect(() => {
 		if (
-			Object.keys(datawolfFormState).every((k) => Object.values(datawolfFormState[k])[0] !== null) &&
+			Object.keys(datawolfFormState).every(
+				(k) => Object.values(datawolfFormState[k])[0] !== null,
+			) &&
 			title !== "" &&
 			description !== ""
 		)
@@ -129,7 +143,7 @@ export default function ViewResult(props) {
 			datawolfWorkflowConfig,
 			title,
 			description,
-			datawolfFormState
+			datawolfFormState,
 		);
 
 		if (datawolfExecutionStatus !== 200) {
@@ -150,7 +164,7 @@ export default function ViewResult(props) {
 					}, {});
 
 					return { ...state, [p.variableName]: mapState };
-				}, {})
+				}, {}),
 			);
 
 			// jump to view result tab
@@ -169,7 +183,9 @@ export default function ViewResult(props) {
 			<Grid container spacing={3}>
 				<Grid item xl={7} lg={7} md={7} sm={7} xs={12}>
 					<Box className="inputGroup" style={{ height: "auto" }}>
-						<IncoreInputLabel className="required-field">Title</IncoreInputLabel>
+						<IncoreInputLabel className="required-field">
+							Title
+						</IncoreInputLabel>
 						<IncoreTextField
 							variant="outlined"
 							value={title}
@@ -179,7 +195,9 @@ export default function ViewResult(props) {
 						/>
 					</Box>
 					<Box className="inputGroup" style={{ height: "auto" }}>
-						<IncoreInputLabel className="required-field">Description</IncoreInputLabel>
+						<IncoreInputLabel className="required-field">
+							Description
+						</IncoreInputLabel>
 						<IncoreTextField
 							variant="outlined"
 							value={description}
@@ -192,13 +210,15 @@ export default function ViewResult(props) {
 						if (!item.hidden) {
 							return (
 								<Box className="inputGroup" style={{ height: "auto" }}>
-									<IncoreInputLabel className="required-field">{item.title}</IncoreInputLabel>
+									<IncoreInputLabel className="required-field">
+										{item.title}
+									</IncoreInputLabel>
 									{(() => {
 										// instantiate widget based on definitions
 										return React.cloneElement(registeredWidgets[item.widget], {
 											setDatawolfFormState: setDatawolfFormState,
 											datawolfFormState: datawolfFormState,
-											datawolfParamConfigItem: item
+											datawolfParamConfigItem: item,
 										});
 									})()}
 								</Box>
@@ -213,8 +233,16 @@ export default function ViewResult(props) {
 							color="primary"
 							onClick={handleRunButtonClick}
 							disabled={disabled}
-							endIcon={<Avatar src={assetConfig.poweredByLogo} className={classes.avatarStyle} />}
-							classes={{ root: classes.runButton, endIcon: classes.endIconStyle }}
+							endIcon={
+								<Avatar
+									src={assetConfig.poweredByLogo}
+									className={classes.avatarStyle}
+								/>
+							}
+							classes={{
+								root: classes.runButton,
+								endIcon: classes.endIconStyle,
+							}}
 						>
 							CALCULATE THE HAZARD RISK
 						</Button>

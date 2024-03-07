@@ -7,7 +7,7 @@ export async function createDataset(
 	description,
 	dataType,
 	files,
-	format = "shapefile"
+	format = "shapefile",
 ) {
 	const datasetEndpoint = `${globalConfig.dataServiceBase}datasets`;
 	let datasetFormData = new FormData();
@@ -19,7 +19,7 @@ export async function createDataset(
 		storedUrl: "",
 		format: format,
 		sourceDataset: "",
-		networkDataset: null
+		networkDataset: null,
 	};
 	datasetFormData.append("dataset", JSON.stringify(datasetMetadata));
 
@@ -28,7 +28,7 @@ export async function createDataset(
 		method: "POST",
 		mode: "cors",
 		headers: authHeader,
-		body: datasetFormData
+		body: datasetFormData,
 	});
 
 	if (datasetRequest.status === 200) {
@@ -45,7 +45,7 @@ export async function createDataset(
 			method: "POST",
 			mode: "cors",
 			headers: authHeader,
-			body: fileFormData
+			body: fileFormData,
 		});
 
 		if (fileRequest.status === 200) {
@@ -64,7 +64,11 @@ export async function createDataset(
 	}
 }
 
-export async function downloadDataset(globalConfig = defaultGlobalConfig, datasetId, title = null) {
+export async function downloadDataset(
+	globalConfig = defaultGlobalConfig,
+	datasetId,
+	title = null,
+) {
 	let filename = `${datasetId}.zip`;
 	if (title) filename = `${title}-${filename}`;
 
@@ -73,7 +77,7 @@ export async function downloadDataset(globalConfig = defaultGlobalConfig, datase
 	let response = await fetch(url, {
 		method: "GET",
 		mode: "cors",
-		headers: authHeader
+		headers: authHeader,
 	});
 
 	if (response.status === 200) {

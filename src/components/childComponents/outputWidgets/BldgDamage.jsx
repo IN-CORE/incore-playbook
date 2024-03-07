@@ -7,7 +7,7 @@ import {
 	Divider,
 	Grid,
 	IconButton,
-	Typography
+	Typography,
 } from "@material-ui/core";
 import CloseIcon from "@material-ui/icons/Close";
 import Map from "../map/Map";
@@ -15,10 +15,14 @@ import { fromLonLat, getTransform } from "ol/proj";
 import React, { useEffect, useRef, useState } from "react";
 import { ResultSummaryTable } from "../table/ResultSummaryTable";
 import { StackedResult } from "../graph/StackedResult";
-import { ResultTable } from "../table/ResultTable";
+import { BldgDamageTable } from "../table/BldgDamageTable";
 import { useSelector } from "react-redux";
 import { applyTransform } from "ol/extent";
-import { downloadOutputFile, getOutputFileContent, getOutputFileContentJSON } from "../../../utils/datawolf";
+import {
+	downloadOutputFile,
+	getOutputFileContent,
+	getOutputFileContentJSON,
+} from "../../../utils/datawolf";
 import { basicLayers, generateLayers } from "../../../utils/map";
 import { downloadImg } from "../../../utils/image";
 import GetAppIcon from "@material-ui/icons/GetApp";
@@ -33,7 +37,7 @@ export default function BldgDamage(props) {
 		datawolfDatasetConfigItems,
 		hazardType,
 		hazardLayers,
-		setDownloadDialogOpen
+		setDownloadDialogOpen,
 	} = props;
 
 	const mapConfig = useSelector((state) => state.config.mapConfig);
@@ -42,7 +46,8 @@ export default function BldgDamage(props) {
 
 	const [selectedExecutionName, setSelectedExecutionName] = useState("");
 	const [runtime, setRuntime] = useState(null);
-	const [bldgDmgSummaryTableContent, setBldgDmgSummaryTableContent] = useState(null);
+	const [bldgDmgSummaryTableContent, setBldgDmgSummaryTableContent] =
+		useState(null);
 	const [bldgDmgDsResultDownload, setBldgDmgDsResultDownload] = useState(null);
 	const [damageLayers, setDamageLayers] = useState(null);
 
@@ -60,7 +65,7 @@ export default function BldgDamage(props) {
 				const bldgMaxDamageStateINCOREId = await getOutputFileContent(
 					datawolfConfig,
 					executionItem,
-					datawolfDatasetConfigItem.datasetId
+					datawolfDatasetConfigItem.datasetId,
 				);
 				const layerDef = [
 					{
@@ -68,17 +73,23 @@ export default function BldgDamage(props) {
 						layerStyles: mapConfig.LAYER_STYLES.BldgDamage,
 						title: "Building Damage",
 						opacity: 1,
-						zIndex: 1
-					}
+						zIndex: 1,
+					},
 				];
 				const previewLayers = generateLayers(globalConfig, layerDef);
 				setDamageLayers(previewLayers);
 			} else if (vName === "bldgDmgSummaryTableContent") {
 				setBldgDmgSummaryTableContent(
-					await getOutputFileContentJSON(datawolfConfig, executionItem, datawolfDatasetConfigItem.datasetId)
+					await getOutputFileContentJSON(
+						datawolfConfig,
+						executionItem,
+						datawolfDatasetConfigItem.datasetId,
+					),
 				);
 			} else if (vName === "bldgDmgDsResultDownload") {
-				setBldgDmgDsResultDownload(executionItem["datasets"][datawolfDatasetConfigItem.datasetId]);
+				setBldgDmgDsResultDownload(
+					executionItem["datasets"][datawolfDatasetConfigItem.datasetId],
+				);
 			}
 		});
 	}, []);
@@ -86,21 +97,40 @@ export default function BldgDamage(props) {
 	const download = async () => {
 		setDownloadDialogOpen(true);
 		if (bldgDmgDsResultDownload) {
-			await downloadOutputFile(datawolfConfig, bldgDmgDsResultDownload, null, `bldg-dmg-${executionItem.id}.csv`);
+			await downloadOutputFile(
+				datawolfConfig,
+				bldgDmgDsResultDownload,
+				null,
+				`bldg-dmg-${executionItem.id}.csv`,
+			);
 		}
 	};
 
 	return (
-		<Dialog open={previewOn} onClose={handlePreviewClose} maxWidth="lg" fullWidth scroll="paper">
+		<Dialog
+			open={previewOn}
+			onClose={handlePreviewClose}
+			maxWidth="lg"
+			fullWidth
+			scroll="paper"
+		>
 			<DialogContent className="previewModal" ref={printRef}>
-				<IconButton aria-label="Close" onClick={handlePreviewClose} style={{ float: "right" }}>
+				<IconButton
+					aria-label="Close"
+					onClick={handlePreviewClose}
+					style={{ float: "right" }}
+				>
 					<CloseIcon fontSize="small" />
 				</IconButton>
 
 				{/*title*/}
 				<Box className="previewTitleSection">
-					<Typography className="previewTitle">{selectedExecutionName}</Typography>
-					<Typography className="previewTitle">Select Data: Building Damage</Typography>
+					<Typography className="previewTitle">
+						{selectedExecutionName}
+					</Typography>
+					<Typography className="previewTitle">
+						Select Data: Building Damage
+					</Typography>
 				</Box>
 
 				{/*for chart*/}
@@ -108,7 +138,9 @@ export default function BldgDamage(props) {
 					<Grid container spacing={3} justify="center">
 						{runtime ? (
 							<Grid item>
-								<Typography className="previewSubTitle">Analysis Result View</Typography>
+								<Typography className="previewSubTitle">
+									Analysis Result View
+								</Typography>
 								<ResultSummaryTable
 									hazardType={hazardType}
 									inventoryType="buildings"
@@ -126,7 +158,9 @@ export default function BldgDamage(props) {
 									Anticipated Performance - Building Clusters
 								</Typography>
 								<Box style={{ marginTop: "38px" }}>
-									<StackedResult categorySummary={bldgDmgSummaryTableContent["by_category"]} />
+									<StackedResult
+										categorySummary={bldgDmgSummaryTableContent["by_category"]}
+									/>
 								</Box>
 							</Grid>
 						) : (
@@ -144,10 +178,14 @@ export default function BldgDamage(props) {
 							zoom={mapConfig.ZOOM}
 							minZoom={mapConfig.MIN_ZOOM}
 							maxZoom={mapConfig.MAX_ZOOM}
-							extent={applyTransform(mapConfig.MAP_BOUNDS, getTransform("EPSG:4326", "EPSG:3857"))}
+							extent={applyTransform(
+								mapConfig.MAP_BOUNDS,
+								getTransform("EPSG:4326", "EPSG:3857"),
+							)}
 							center={fromLonLat(mapConfig.MAP_CENTER)}
 							layers={[basicLayers, hazardLayers, damageLayers]}
 							layerSwitcherOptions={{}}
+							allowBuildingSelection={true}
 						/>
 					</Container>
 				) : (
@@ -157,7 +195,7 @@ export default function BldgDamage(props) {
 				{/*for table*/}
 				{bldgDmgSummaryTableContent ? (
 					<Box>
-						<ResultTable fields={bldgDmgSummaryTableContent} />
+						<BldgDamageTable fields={bldgDmgSummaryTableContent} />
 					</Box>
 				) : (
 					<></>
@@ -175,7 +213,10 @@ export default function BldgDamage(props) {
 				<IncoreButtonText onClick={download} startIcon={<GetAppIcon />}>
 					Data
 				</IncoreButtonText>
-				<IncoreButtonText onClick={handlePreviewClose} startIcon={<CloseIcon />}>
+				<IncoreButtonText
+					onClick={handlePreviewClose}
+					startIcon={<CloseIcon />}
+				>
 					Close
 				</IncoreButtonText>
 			</DialogActions>

@@ -1,7 +1,17 @@
-import { Box, Dialog, DialogActions, DialogContent, IconButton, Typography } from "@material-ui/core";
+import {
+	Box,
+	Dialog,
+	DialogActions,
+	DialogContent,
+	IconButton,
+	Typography,
+} from "@material-ui/core";
 import CloseIcon from "@material-ui/icons/Close";
 import React, { useEffect, useState, useRef } from "react";
-import { getOutputFileContent, downloadOutputFile } from "../../../utils/datawolf";
+import {
+	getOutputFileContent,
+	downloadOutputFile,
+} from "../../../utils/datawolf";
 import { useSelector } from "react-redux";
 import { IncoreButtonText } from "../../styledComponents/IncoreButtonText";
 import GetAppIcon from "@material-ui/icons/GetApp";
@@ -10,7 +20,13 @@ import CameraAltIcon from "@material-ui/icons/CameraAlt";
 import SectorShocksBarChart from "../graph/SectorShocksBarChart";
 
 export default function SectorShocks(props) {
-	let { executionItem, previewOn, handlePreviewClose, datawolfDatasetConfigItems, setDownloadDialogOpen } = props;
+	let {
+		executionItem,
+		previewOn,
+		handlePreviewClose,
+		datawolfDatasetConfigItems,
+		setDownloadDialogOpen,
+	} = props;
 
 	const datawolfConfig = useSelector((state) => state.config.datawolfConfig);
 
@@ -21,16 +37,22 @@ export default function SectorShocks(props) {
 	// print container
 	const printRef = useRef();
 
-	useEffect(()=> {
+	useEffect(() => {
 		setSelectedExecutionName(executionItem["title"]);
 
 		datawolfDatasetConfigItems.map(async (datawolfDatasetConfigItem) => {
 			const vName = datawolfDatasetConfigItem.datasets.variableName;
 			if (vName === "sectorShocksDownload") {
 				setSectorShocksContent(
-					await getOutputFileContent(datawolfConfig, executionItem, datawolfDatasetConfigItem.datasetId)
+					await getOutputFileContent(
+						datawolfConfig,
+						executionItem,
+						datawolfDatasetConfigItem.datasetId,
+					),
 				);
-				setSectorShocksDownload(executionItem["datasets"][datawolfDatasetConfigItem.datasetId]);
+				setSectorShocksDownload(
+					executionItem["datasets"][datawolfDatasetConfigItem.datasetId],
+				);
 			}
 		});
 	}, []);
@@ -38,23 +60,41 @@ export default function SectorShocks(props) {
 	const download = async () => {
 		setDownloadDialogOpen(true);
 		if (sectorShocksDownload) {
-			await downloadOutputFile(datawolfConfig, sectorShocksDownload, null,
-				`sector-shocks-${executionItem.id}.csv`);
+			await downloadOutputFile(
+				datawolfConfig,
+				sectorShocksDownload,
+				null,
+				`sector-shocks-${executionItem.id}.csv`,
+			);
 		}
 	};
 
 	return (
-		<Dialog open={previewOn} onClose={handlePreviewClose} maxWidth="lg" fullWidth scroll="paper">
+		<Dialog
+			open={previewOn}
+			onClose={handlePreviewClose}
+			maxWidth="lg"
+			fullWidth
+			scroll="paper"
+		>
 			<DialogContent className="previewModal" ref={printRef}>
-				<IconButton aria-label="Close" onClick={handlePreviewClose} style={{ float: "right" }}>
+				<IconButton
+					aria-label="Close"
+					onClick={handlePreviewClose}
+					style={{ float: "right" }}
+				>
 					<CloseIcon fontSize="small" />
 				</IconButton>
 
 				{/*title*/}
 				{/*TODO wrap into a component*/}
 				<Box className="previewTitleSection">
-					<Typography className="previewTitle">{selectedExecutionName}</Typography>
-					<Typography className="previewTitle">Select Data: Sector Shocks Results</Typography>
+					<Typography className="previewTitle">
+						{selectedExecutionName}
+					</Typography>
+					<Typography className="previewTitle">
+						Select Data: Sector Shocks Results
+					</Typography>
 				</Box>
 				<Box>
 					{/*table and barchart*/}
@@ -72,10 +112,23 @@ export default function SectorShocks(props) {
 				</Box>
 			</DialogContent>
 			<DialogActions>
-				<IncoreButtonText onClick={()=>{downloadImg(printRef.current, "SectorShocks");}}
-								  startIcon={<CameraAltIcon/>}>Image</IncoreButtonText>
-				<IncoreButtonText onClick={download} startIcon={<GetAppIcon/>}>Data</IncoreButtonText>
-				<IncoreButtonText onClick={handlePreviewClose} startIcon={<CloseIcon/>}>Close</IncoreButtonText>
+				<IncoreButtonText
+					onClick={() => {
+						downloadImg(printRef.current, "SectorShocks");
+					}}
+					startIcon={<CameraAltIcon />}
+				>
+					Image
+				</IncoreButtonText>
+				<IncoreButtonText onClick={download} startIcon={<GetAppIcon />}>
+					Data
+				</IncoreButtonText>
+				<IncoreButtonText
+					onClick={handlePreviewClose}
+					startIcon={<CloseIcon />}
+				>
+					Close
+				</IncoreButtonText>
 			</DialogActions>
 		</Dialog>
 	);

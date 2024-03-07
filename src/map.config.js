@@ -1,34 +1,30 @@
 const layerStyles = {
-	BldgDamage: "incore:bldg-dmg-summary",
-	BldgFunctionality: "incore:joplin-bldg-func",
-	BldgMCS: "incore:joplin-bldg-mcs",
-	Interdependency: "incore:joplin-substations-label",
+	BldgDamage: "incore:galveston-bldg-dmg-fema",
+	BldgFunctionality: "incore:bldg-func",
+	BldgMCS: "incore:bldg-mcs",
+	Interdependency: "incore:substations-label",
 	PoleDamage: "incore:epf-dmg-summary",
 	PopulationDislocation: {
 		bldgMaxDamageStateINCOREId: "incore:bldg-dmg-summary",
-		popdislHeatmapINCOREId: "incore:heatmap"
+		popdislHeatmapINCOREId: "incore:heatmap",
 	},
 	SubstationDamage: "incore:epf-dmg-summary",
 	MapUtil: {
 		earthquake: "incore:earthquake-pga-g",
 		tornado: "incore:tornado",
 		hurricane: {
-			"waveHeight": "incore:hurricane-wave-height",
-			"surgeLevel": "incore:hurricane-surge-level",
-			"inundationDuration": "incore:hurricane-inundation-duration",
-			"inundationDepth": "incore:hurricane-inundation-depth",
-			"wavePeriod": "incore:hurricane-wave-period",
-			"waveDirection": "incore:hurricane-wave-direction",
-			"waterVelocity": "incore:hurricane-water-velocity",
-			"windVelocity": "incore:hurricane-wind"
+			waveHeight: "incore:hurricane-wave-height",
+			surgeLevel: "incore:hurricane-surge-level",
+			inundationDuration: "incore:hurricane-inundation-duration",
+			inundationDepth: "incore:hurricane-inundation-depth",
+			wavePeriod: "incore:hurricane-wave-period",
+			waveDirection: "incore:hurricane-wave-direction",
+			waterVelocity: "incore:hurricane-water-velocity",
+			windVelocity: "incore:hurricane-wind",
 		},
-		tsunami: {
-
-		},
-		floods: {
-
-		}
-	}
+		tsunami: {},
+		floods: {},
+	},
 };
 
 // // joplin
@@ -42,7 +38,7 @@ const layerStyles = {
 // 	MAP_CENTER: [-94.4980, 37.0672],
 // 	ZOOM: 5,
 // 	MIN_ZOOM: 4,
-// 	MAX_ZOOM: 15,
+// 	MAX_ZOOM: 19,
 // 	LAYER_STYLES: layerStyles
 // };
 
@@ -57,7 +53,7 @@ const layerStyles = {
 // 	MAP_CENTER: [-121.808613, 36.599902],
 // 	ZOOM: 5,
 // 	MIN_ZOOM: 4,
-// 	MAX_ZOOM: 15,
+// 	MAX_ZOOM: 19,
 // 	LAYER_STYLES: layerStyles
 // };
 
@@ -72,23 +68,18 @@ const layerStyles = {
 // 	MAP_CENTER: [-90.047817, 35.136082],
 // 	ZOOM: 5,
 // 	MIN_ZOOM: 4,
-// 	MAX_ZOOM: 15,
+// 	MAX_ZOOM: 19,
 // 	LAYER_STYLES: layerStyles
 // };
 
 // galveston
 export const mapConfig = {
-	MAP_BOUNDS:[
-		-96.211436,
-		30.541297,
-		-93.611436,
-		27.941297,
-	],
+	MAP_BOUNDS: [-96.211436, 27.941297, -93.611436, 30.541297],
 	MAP_CENTER: [-94.911436, 29.241297],
 	ZOOM: 5,
 	MIN_ZOOM: 4,
-	MAX_ZOOM: 15,
-	LAYER_STYLES: layerStyles
+	MAX_ZOOM: 19,
+	LAYER_STYLES: layerStyles,
 };
 
 // // lumberton
@@ -102,7 +93,7 @@ export const mapConfig = {
 // 	MAP_CENTER: [-79.006172, 34.633583],
 // 	ZOOM: 5,
 // 	MIN_ZOOM: 4,
-// 	MAX_ZOOM: 15,
+// 	MAX_ZOOM: 19,
 // 	LAYER_STYLES: layerStyles
 // };
 
@@ -123,6 +114,6 @@ export const mapConfig = {
 // 	MAP_CENTER: [-111.954, 40.683],
 // 	ZOOM: 5,
 // 	MIN_ZOOM: 4,
-// 	MAX_ZOOM: 15,
+// 	MAX_ZOOM: 19,
 //  LAYER_STYLES: layerStyles
 // };

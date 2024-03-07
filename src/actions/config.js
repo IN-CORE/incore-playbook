@@ -35,7 +35,8 @@ export const updateDatawolfConfig = (config) => ({
 });
 
 // config workflows
-export const UPDATE_DATAWOLF_WORKFLOW_CONFIG ="UPDATE_DATAWOLF_WORKFLOW_CONFIG";
+export const UPDATE_DATAWOLF_WORKFLOW_CONFIG =
+	"UPDATE_DATAWOLF_WORKFLOW_CONFIG";
 export const updateDatawolfWorkflowConfig = (config) => ({
 	type: UPDATE_DATAWOLF_WORKFLOW_CONFIG,
 	datawolfWorkflowConfig: config,

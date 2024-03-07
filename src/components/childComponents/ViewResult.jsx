@@ -2,62 +2,33 @@ import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 
 import { makeStyles } from "@material-ui/core/styles";
-import { Box, Grid } from "@material-ui/core";
+import { Box } from "@material-ui/core";
 
 import { IncoreInputLabel } from "../styledComponents/IncoreInputLabel";
 import { getHazardMetadata } from "../../utils/hazard";
 import { ViewResultEntryTable } from "./table/ViewResultEntryTable";
-import Interdependency from "./outputWidgets/Interdependency";
-import BldgDamage from "./outputWidgets/BldgDamage";
-import PoleDamage from "./outputWidgets/PoleDamage";
-import BldgMCS from "./outputWidgets/BldgMCS";
-import BldgFunctionality from "./outputWidgets/BldgFunctionality";
-import CGE from "./outputWidgets/CGE";
-import PopDislocation from "./outputWidgets/PopDislocation";
-import ResilienceMetrics from "./outputWidgets/ResilienceMetrics";
-import SubstationDamage from "./outputWidgets/SubstationDamage";
 
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Switch from "@material-ui/core/Switch";
 import { getHazardGroupLayers } from "../../utils/map";
-import HHS from "./outputWidgets/HHS";
-import Log from "./outputWidgets/Log";
-import SectorShocks from "./outputWidgets/SectorShocks";
 import { DownloadAlert } from "./alert/DownloadAlert";
+import { registeredWidgets } from "./outputWidgets/RegisteredWidgets";
 
 const useStyles = makeStyles({
 	statTitle: {
-		margin: "55px auto"
+		margin: "55px auto",
 	},
 	switchBase: {
 		"&$checked": {
-			color: "#00619D"
+			color: "#00619D",
 		},
 		"&$checked + $track": {
-			backgroundColor: "#00619D"
-		}
+			backgroundColor: "#00619D",
+		},
 	},
 	checked: {},
-	track: {}
+	track: {},
 });
-
-// TODO move this registration somewhere else?
-const registeredWidgets = {
-	Interdependency: <Interdependency />,
-	BldgDamage: <BldgDamage />,
-	PoleDamage: <PoleDamage />,
-	BldgMCS: <BldgMCS />,
-	BldgFunctionality: <BldgFunctionality />,
-	// eslint-disable-next-line react/jsx-pascal-case
-	CGE: <CGE />,
-	PopDislocation: <PopDislocation />,
-	ResilienceMetrics: <ResilienceMetrics />,
-	SubstationDamage: <SubstationDamage />,
-	// eslint-disable-next-line react/jsx-pascal-case
-	HHS: <HHS />,
-	Log: <Log />,
-	SectorShocks: <SectorShocks />
-};
 
 export default function ViewResult(props) {
 	const { value, index, getExecutionList, executions, ...other } = props;
@@ -66,14 +37,18 @@ export default function ViewResult(props) {
 	const datawolfConfig = useSelector((state) => state.config.datawolfConfig);
 	const globalConfig = useSelector((state) => state.config.globalConfig);
 	const mapConfig = useSelector((state) => state.config.mapConfig);
-	const datawolfWorkflowConfig = useSelector((state) => state.config.datawolfWorkflowConfig);
+	const datawolfWorkflowConfig = useSelector(
+		(state) => state.config.datawolfWorkflowConfig,
+	);
 
 	// states
 	const [numCompleted, setNumCompleted] = useState(0);
 	const [executionEntries, setExecutionEntries] = useState([]);
 	const [selectedExecutionItem, setSelectedExecutionItem] = useState(null);
 	const [widgetName, setWidgetName] = useState(null); // outputWidgets name
-	const [datawolfDatasetConfigItems, setDatawolfDatasetConfigItems] = useState([]);
+	const [datawolfDatasetConfigItems, setDatawolfDatasetConfigItems] = useState(
+		[],
+	);
 	const [hazardGroupLayer, setHazardGroupLayer] = useState(); // group layer of hazard to overlay on the map
 	const [hazardType, setHazardType] = useState(""); // used in runtime table
 	const [previewOn, setPreviewOn] = useState(false); // list vs preview
@@ -94,9 +69,12 @@ export default function ViewResult(props) {
 			getExecutionList(datawolfConfig, datawolfViewAllOn);
 
 			// start a new interval timer and register that timer
-			const interval = setInterval(() => {
-				getExecutionList(datawolfConfig, datawolfViewAllOn);
-			}, datawolfConfig["retreiveTimeInterval"] ?? 10 * 1000);
+			const interval = setInterval(
+				() => {
+					getExecutionList(datawolfConfig, datawolfViewAllOn);
+				},
+				datawolfConfig["retreiveTimeInterval"] ?? 10 * 1000,
+			);
 			return () => {
 				clearInterval(interval);
 			};
@@ -110,7 +88,10 @@ export default function ViewResult(props) {
 
 	// extract a single status from mutliple step status`
 	const extractStatus = (executionItem) => {
-		if (executionItem !== undefined && executionItem["stepState"] !== undefined) {
+		if (
+			executionItem !== undefined &&
+			executionItem["stepState"] !== undefined
+		) {
 			let statusArr = Object.values(executionItem["stepState"]);
 			// WAITING, QUEUED, RUNNING, FINISHED, ABORTED, FAILED, UNKNOWN
 			// if failed or aborted, return failed | aborted
@@ -126,7 +107,8 @@ export default function ViewResult(props) {
 			else if (statusArr.indexOf("QUEUED") >= 0) return "QUEUED";
 			else if (statusArr.indexOf("WAITING") >= 0) return "WAITING";
 			else if (statusArr.indexOf("UNKNOWN") >= 0) return "UNKNOWN";
-			else if (statusArr.every((status) => status === "FINISHED")) return "FINISHED";
+			else if (statusArr.every((status) => status === "FINISHED"))
+				return "FINISHED";
 		}
 		return "UNDEFINED";
 	};
@@ -154,28 +136,28 @@ export default function ViewResult(props) {
 	const fieldNames = [
 		{
 			prettyName: "TITLE",
-			columnName: "title"
+			columnName: "title",
 		},
 		{
 			prettyName: "DESCRIPTION",
-			columnName: "description"
+			columnName: "description",
 		},
 		{
 			prettyName: "CREATED BY",
-			columnName: "creator"
+			columnName: "creator",
 		},
 		{
 			prettyName: "HAZARD TYPE",
-			columnName: "hazardType"
+			columnName: "hazardType",
 		},
 		{
 			prettyName: "RUN DATE",
-			columnName: "date"
+			columnName: "date",
 		},
 		{
 			prettyName: "STATUS",
-			columnName: "finalStatus"
-		}
+			columnName: "finalStatus",
+		},
 	];
 
 	// close the model
@@ -196,9 +178,15 @@ export default function ViewResult(props) {
 	const _getHazardInfo = (executionItem) => {
 		return datawolfWorkflowConfig.inputs.parameters.reduce((hazardInfo, p) => {
 			if (p.variableName === "selectedHazardId") {
-				return { ...hazardInfo, hazardId: executionItem["parameters"][p.parametersMap[0].paramId] };
+				return {
+					...hazardInfo,
+					hazardId: executionItem["parameters"][p.parametersMap[0].paramId],
+				};
 			} else if (p.variableName === "selectedHazardType") {
-				return { ...hazardInfo, hazardType: executionItem["parameters"][p.parametersMap[0].paramId] };
+				return {
+					...hazardInfo,
+					hazardType: executionItem["parameters"][p.parametersMap[0].paramId],
+				};
 			} else {
 				return hazardInfo;
 			}
@@ -213,39 +201,56 @@ export default function ViewResult(props) {
 		// group output items belongs to that widgetName/widget type
 		// TODO rewrite this part of logic!
 		setDatawolfDatasetConfigItems(
-			datawolfWorkflowConfig.outputs.datasets[0].datasetsMap.reduce((list, item) => {
-				if (widgetName === "ResilienceMetrics") {
-					if (
-						item.datasets.widget === "CGE" ||
-						item.datasets.widget === "PopDislocation" ||
-						item.datasets.widget === "BldgFunctionality"
-					) {
-						return [...list, item];
+			datawolfWorkflowConfig.outputs.datasets[0].datasetsMap.reduce(
+				(list, item) => {
+					if (widgetName === "ResilienceMetrics") {
+						if (
+							item.datasets.widget === "CGE" ||
+							item.datasets.widget === "PopDislocation" ||
+							item.datasets.widget === "BldgFunctionality"
+						) {
+							return [...list, item];
+						}
 					}
-				}
-				if (widgetName === "Interdependency") {
-					if (item.datasets.widget === "SubstationDamage") {
-						return [...list, item];
+					if (widgetName === "Interdependency") {
+						if (item.datasets.widget === "SubstationDamage") {
+							return [...list, item];
+						}
 					}
-				}
-				if (widgetName === "PopDislocation") {
-					if (item.datasets.widget === widgetName || item.datasets.widget === "BldgDamage") {
-						return [...list, item];
+					if (widgetName === "PopDislocation") {
+						if (
+							item.datasets.widget === widgetName ||
+							item.datasets.widget === "BldgDamage"
+						) {
+							return [...list, item];
+						}
+					} else {
+						if (item.datasets.widget === widgetName) {
+							return [...list, item];
+						}
 					}
-				} else {
-					if (item.datasets.widget === widgetName) {
-						return [...list, item];
-					}
-				}
 
-				return list;
-			}, [])
+					return list;
+				},
+				[],
+			),
 		);
 
 		const hazardInfo = _getHazardInfo(selectedExecutionItem);
-		let hazardMetadata = await getHazardMetadata(globalConfig, hazardInfo.hazardType, hazardInfo.hazardId);
+		let hazardMetadata = await getHazardMetadata(
+			globalConfig,
+			hazardInfo.hazardType,
+			hazardInfo.hazardId,
+		);
 		setHazardGroupLayer(
-			getHazardGroupLayers(globalConfig, mapConfig, hazardMetadata, hazardInfo.hazardType, 0, 0.5)
+			getHazardGroupLayers(
+				globalConfig,
+				mapConfig,
+				hazardMetadata,
+				hazardInfo.hazardType,
+				0,
+				0.5,
+			),
 		);
 		setHazardType(hazardInfo["hazardType"]);
 
@@ -287,7 +292,7 @@ export default function ViewResult(props) {
 									classes={{
 										switchBase: classes.switchBase,
 										checked: classes.checked,
-										track: classes.track
+										track: classes.track,
 									}}
 								/>
 							}
@@ -298,7 +303,11 @@ export default function ViewResult(props) {
 					</Box>
 				</Box>
 				<Box>
-					<ViewResultEntryTable fieldNames={fieldNames} executions={executionEntries} preview={preview} />
+					<ViewResultEntryTable
+						fieldNames={fieldNames}
+						executions={executionEntries}
+						preview={preview}
+					/>
 				</Box>
 			</Box>
 
@@ -318,7 +327,7 @@ export default function ViewResult(props) {
 						datawolfDatasetConfigItems: datawolfDatasetConfigItems,
 						hazardType: hazardType,
 						hazardLayers: hazardGroupLayer,
-						setDownloadDialogOpen: setDownloadDialogOpen
+						setDownloadDialogOpen: setDownloadDialogOpen,
 					});
 				})()
 			) : (

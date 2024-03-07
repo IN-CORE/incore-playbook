@@ -10,5 +10,5 @@ export const IncoreInputLabel = styled(Typography)({
 	marginBottom: "11px",
 	width: "100%",
 	textTransform: "capitalize",
-	position: "inherit"
+	position: "inherit",
 });

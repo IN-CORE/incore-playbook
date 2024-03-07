@@ -1,4 +1,12 @@
-import { Box, Container, Dialog, DialogActions, DialogContent, IconButton, Typography } from "@material-ui/core";
+import {
+	Box,
+	Container,
+	Dialog,
+	DialogActions,
+	DialogContent,
+	IconButton,
+	Typography,
+} from "@material-ui/core";
 import CloseIcon from "@material-ui/icons/Close";
 import Map from "../map/Map";
 import { fromLonLat, getTransform } from "ol/proj";
@@ -13,7 +21,12 @@ import CameraAltIcon from "@material-ui/icons/CameraAlt";
 import { Collection } from "ol";
 
 export default function Interdependency(props) {
-	let { executionItem, previewOn, handlePreviewClose, datawolfDatasetConfigItems } = props;
+	let {
+		executionItem,
+		previewOn,
+		handlePreviewClose,
+		datawolfDatasetConfigItems,
+	} = props;
 
 	const mapConfig = useSelector((state) => state.config.mapConfig);
 	const datawolfConfig = useSelector((state) => state.config.datawolfConfig);
@@ -34,7 +47,7 @@ export default function Interdependency(props) {
 				const substationMaxDmgStateINCOREId = await getOutputFileContent(
 					datawolfConfig,
 					executionItem,
-					datawolfDatasetConfigItem.datasetId
+					datawolfDatasetConfigItem.datasetId,
 				);
 				const layerDef = [
 					{
@@ -42,15 +55,15 @@ export default function Interdependency(props) {
 						layerStyles: null,
 						title: "Interdependency Network",
 						opacity: 0.7,
-						zIndex: 1
+						zIndex: 1,
 					},
 					{
 						layerId: substationMaxDmgStateINCOREId,
 						layerStyles: mapConfig.LAYER_STYLES.Interdependency,
 						title: "EPF Substations",
 						opacity: 1,
-						zIndex: 2
-					}
+						zIndex: 2,
+					},
 				];
 				const previewLayers = generateLayers(globalConfig, layerDef);
 				setDamageLayers(previewLayers);
@@ -69,15 +82,22 @@ export default function Interdependency(props) {
 			scroll="paper"
 		>
 			<DialogContent className="previewModal" ref={printRef}>
-				<IconButton aria-label="Close" onClick={handlePreviewClose} style={{ float: "right" }}>
+				<IconButton
+					aria-label="Close"
+					onClick={handlePreviewClose}
+					style={{ float: "right" }}
+				>
 					<CloseIcon fontSize="small" />
 				</IconButton>
 				{/*title*/}
 				{/*TODO wrap into a component*/}
 				<Box className="previewTitleSection">
-					<Typography className="previewTitle">{selectedExecutionName}</Typography>
 					<Typography className="previewTitle">
-						Select Data: Interdependent Network of Building and Electric Power Facility
+						{selectedExecutionName}
+					</Typography>
+					<Typography className="previewTitle">
+						Select Data: Interdependent Network of Building and Electric Power
+						Facility
 					</Typography>
 				</Box>
 
@@ -89,7 +109,10 @@ export default function Interdependency(props) {
 							zoom={mapConfig.ZOOM}
 							minZoom={mapConfig.MIN_ZOOM}
 							maxZoom={mapConfig.MAX_ZOOM}
-							extent={applyTransform(mapConfig.MAP_BOUNDS, getTransform("EPSG:4326", "EPSG:3857"))}
+							extent={applyTransform(
+								mapConfig.MAP_BOUNDS,
+								getTransform("EPSG:4326", "EPSG:3857"),
+							)}
 							center={fromLonLat(mapConfig.MAP_CENTER)}
 							layers={[basicLayers, hazardLayers, damageLayers]}
 							layerSwitcherOptions={{}}
@@ -108,7 +131,10 @@ export default function Interdependency(props) {
 				>
 					Image
 				</IncoreButtonText>
-				<IncoreButtonText onClick={handlePreviewClose} startIcon={<CloseIcon />}>
+				<IncoreButtonText
+					onClick={handlePreviewClose}
+					startIcon={<CloseIcon />}
+				>
 					Close
 				</IncoreButtonText>
 			</DialogActions>
