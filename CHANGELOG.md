@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 - Remove the extra % sign from population dislocation comparison table [#362](https://github.com/IN-CORE/incore-playbook/issues/362)
+- Change default basemap and change height of the "Create Hazard" map [#359](https://github.com/IN-CORE/incore-playbook/issues/359)
 
 
 ## [0.6.0] - 2024-03-06

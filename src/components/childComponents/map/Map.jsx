@@ -234,7 +234,7 @@ const Map = (props) => {
 		};
 	}, []);
 
-	return (
+	return allowBuildingSelection ? (
 		<div style={{ position: "relative" }}>
 			<div
 				id={id}
@@ -338,6 +338,17 @@ const Map = (props) => {
 					</LoadingOverlay>
 				</TableContainer>
 			) : null}
+		</div>
+	) : (
+		<div
+			id={id}
+			style={{ width: "100%", height: "100%" }}
+			className={`ol-map ${className}`}
+			ref={fallbackContainer}
+		>
+			<MapContext.Provider value={{ map: mapRef.current }}>
+				{children}
+			</MapContext.Provider>
 		</div>
 	);
 };
