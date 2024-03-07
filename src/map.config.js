@@ -1,5 +1,5 @@
 const layerStyles = {
-	BldgDamage: "incore:bldg-dmg-summary",
+	BldgDamage: "incore:galveston-bldg-dmg-fema",
 	BldgFunctionality: "incore:bldg-func",
 	BldgMCS: "incore:bldg-mcs",
 	Interdependency: "incore:substations-label",
