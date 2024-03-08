@@ -1,31 +1,52 @@
 import { useSelector } from "react-redux";
 import * as React from "react";
 import { useEffect, useState } from "react";
-import { basicLayers, generateLayers } from "../../../utils/map";
+import { basicLayers } from "../../../utils/map";
 import { applyTransform } from "ol/extent";
 import { fromLonLat, getTransform } from "ol/proj";
 import { ZoneSelectionMap } from "./ZoneSelectionMap";
+import VectorLayer from "ol/layer/Vector";
+import VectorSource from "ol/source/Vector";
+import { GeoJSON } from "ol/format";
+import { Fill, Stroke, Style } from "ol/style";
 
 export const TestZoneSelectionMap = () => {
 	const mapConfig = useSelector((state) => state.config.mapConfig);
 	const globalConfig = useSelector((state) => state.config.globalConfig);
 
 	const [zoneLayer, setZoneLayer] = useState(null);
-	const activeLayerName = "Zone";
+	const [zoneNames, setZoneNames] = useState([]);
 
 	useEffect(() => {
-		const layerDef = [
-			{
-				layerId: "65ea380c4331420c85ddb211",
-				// TODO
-				layerStyles: mapConfig.LAYER_STYLES.Zone,
-				title: "SLC Municipal Boundary",
-				opacity: 1,
-				zIndex: 1,
-			},
-		];
-		const tmp = generateLayers(globalConfig, layerDef, activeLayerName);
-		setZoneLayer(tmp);
+		// Construct the WFS request URL
+		const wfsUrl = `${globalConfig.geoServerWFS}&typeName=incore:65ea380c4331420c85ddb211`;
+
+		const zoneLayer = new VectorLayer({
+			source: new VectorSource({
+				format: new GeoJSON(),
+				url: wfsUrl,
+			}),
+			style: new Style({
+				fill: new Fill({
+					color: "rgba(238, 238, 238, 0)",
+				}),
+				stroke: new Stroke({
+					color: "#777777",
+					width: 1,
+				}),
+			}),
+		});
+		const zoneLayerSource = zoneLayer.getSource();
+
+		// Listen for when features have been added to the source
+		zoneLayerSource.on("featuresloadend", () => {
+			const tmpZoneNames = zoneLayerSource
+				.getFeatures()
+				.map((feature) => feature.get("name"));
+			setZoneNames([...new Set(tmpZoneNames)]);
+		});
+
+		setZoneLayer(zoneLayer);
 	}, []);
 
 	return (
@@ -42,8 +63,8 @@ export const TestZoneSelectionMap = () => {
 					)}
 					center={fromLonLat(mapConfig.MAP_CENTER)}
 					layers={[basicLayers, zoneLayer]}
-					activeLayerName={activeLayerName}
 					layerSwitcherOptions={{}}
+					zoneNames={zoneNames}
 				/>
 			) : (
 				<div>Loading...</div>

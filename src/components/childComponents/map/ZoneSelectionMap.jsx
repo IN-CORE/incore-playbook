@@ -1,22 +1,28 @@
 import * as React from "react";
+import { useState } from "react";
 import { Map as OLMap, View } from "ol";
-// import {defaults as defaultControls} from "ol/control";
 import Overlay from "ol/Overlay";
 
-import { makeStyles } from "@material-ui/core/styles";
-
 import LayerSwitcher from "./LayerSwitcher";
-
-const useStyles = makeStyles({});
+import { Fill, Stroke, Style } from "ol/style";
+import Select from "ol/interaction/Select";
+import {
+	FormControl,
+	FormControlLabel,
+	Radio,
+	RadioGroup,
+	Typography,
+} from "@material-ui/core";
 
 export const MapContext = React.createContext({});
 
 export const ZoneSelectionMap = (props) => {
-	const { children, id, className, activeLayerName } = props;
+	const { children, id, className, zoneNames } = props;
 
 	const fallbackContainer = React.useRef();
 
 	const mapRef = React.useRef();
+	const [selectedZoneName, setSelectedZoneName] = useState("");
 
 	React.useEffect(() => {
 		const {
@@ -69,67 +75,32 @@ export const ZoneSelectionMap = (props) => {
 			map.addControl(layerSwitcher);
 		}
 
-		let zoneLayerGrp = null;
-		layers.forEach((layerGrp) => {
-			if (layerGrp.getProperties().title === activeLayerName) {
-				zoneLayerGrp = layerGrp;
-			}
+		// Define select interaction
+		const selectSingleClick = new Select({
+			style: new Style({
+				fill: new Fill({
+					color: "rgba(25, 118, 210, 0.3)",
+				}),
+				stroke: new Stroke({
+					color: "#1976D2",
+					width: 2,
+				}),
+			}),
 		});
 
-		// if (zoneLayerGrp !== null) {
-		//     const damageLayer = zoneLayerGrp.getLayers().getArray()[0];
-		//     const damageLayerSource = damageLayer.getSource();
-		//
-		//     // map.addLayer(markerLayer);
-		//
-		//     map.on("singleclick", (evt) => {
-		//         // clear out the previous marker if any
-		//
-		//         let coordinate = map.getCoordinateFromPixel(evt.pixel);
-		//         const view = map.getView();
-		//         const viewProjection = view.getProjection();
-		//         const viewResolution = view.getResolution();
-		//
-		//         const url = damageLayerSource.getFeatureInfoUrl(
-		//             coordinate,
-		//             viewResolution,
-		//             viewProjection,
-		//             {
-		//                 INFO_FORMAT: "application/json",
-		//                 FEATURE_COUNT: 1
-		//             }
-		//         );
-		//         if (url) {
-		//             fetch(url)
-		//             .then((response) => response.json())
-		//             .then((json) => {
-		//                 let bldg = json.features;
-		//                 // var markerGeometry = new Point(coordinate);
-		//                 if (bldg.length > 0) {
-		//                     // TODO: add a marker to the building
-		//                     // markerFeature.setGeometry(markerGeometry);
-		//                     // markerFeature.setStyle(markerStyle);
-		//
-		//                 } else if (bldg.length === 0) {
-		//                     // markerFeature.setGeometry(undefined);
-		//                     // markerFeature.setStyle(undefined);
-		//                 }
-		//             });
-		//         } else {
-		//             // markerFeature.setStyle(null);
-		//             // markerFeature.setGeometry(undefined);
-		//         }
-		//     });
-		//
-		//     map.on("pointermove", (evt) => {
-		//         if (evt.dragging) {
-		//             return;
-		//         }
-		//         const data = damageLayer.getData(evt.pixel);
-		//         const hit = data && data[3] > 0; // transparent pixels have zero for data[3]
-		//         map.getTargetElement().style.cursor = hit ? "pointer" : "";
-		//     });
-		// }
+		// Add select interaction to the map
+		map.addInteraction(selectSingleClick);
+
+		// Add event listener for the select interaction
+		selectSingleClick.on("select", function (e) {
+			const selectedFeature = e.selected[0]; // Get the first selected feature
+			if (selectedFeature) {
+				const name = selectedFeature.get("name"); // Retrieve the 'name' property of the selected feature
+				setSelectedZoneName(name);
+			} else {
+				setSelectedZoneName("");
+			}
+		});
 
 		if (updateMap) {
 			updateMap(map);
@@ -143,16 +114,23 @@ export const ZoneSelectionMap = (props) => {
 					map.un(event, handler);
 				});
 			}
-
-			map.setTarget(undefined);
+			if (map) {
+				map.removeInteraction(selectSingleClick);
+				map.setTarget(undefined);
+			}
 		};
 	}, []);
 
+	const handleChange = (event) => {
+		setSelectedZoneName(event.target.value);
+	};
+
 	return (
 		<div style={{ position: "relative" }}>
+			<Typography>Select a zone on the map or from the list:</Typography>
 			<div
 				id={id}
-				style={{ width: "100%", height: "366px" }}
+				style={{ width: "100%", height: "800px" }}
 				className={`ol-map ${className}`}
 				ref={fallbackContainer}
 			>
@@ -161,7 +139,23 @@ export const ZoneSelectionMap = (props) => {
 				</MapContext.Provider>
 			</div>
 			{/*Selection*/}
-			<>selection panel</>
+			<FormControl component="fieldset">
+				<RadioGroup
+					aria-label="zone"
+					name="zone"
+					value={selectedZoneName}
+					onChange={handleChange}
+				>
+					{zoneNames.map((name, index) => (
+						<FormControlLabel
+							key={index}
+							value={name}
+							control={<Radio />}
+							label={name}
+						/>
+					))}
+				</RadioGroup>
+			</FormControl>
 		</div>
 	);
 };
