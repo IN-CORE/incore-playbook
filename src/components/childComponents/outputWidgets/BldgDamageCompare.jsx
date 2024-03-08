@@ -136,6 +136,7 @@ export default function BldgDamageCompare(props) {
 						layerSwitcherOptionsB={{}}
 						height={mapHeight}
 						allowBuildingSelection={true}
+						fields={bldgDmgSummaryTableContents[comparisonKey[0]]}
 					/>
 				</Container>
 			) : (

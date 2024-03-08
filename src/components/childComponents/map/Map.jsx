@@ -63,7 +63,7 @@ const useStyles = makeStyles({
 export const MapContext = React.createContext({});
 
 const Map = (props) => {
-	const { children, id, className, allowBuildingSelection } = props;
+	const { children, id, className, allowBuildingSelection, fields } = props;
 	const classes = useStyles();
 
 	const [selectedBuilding, setSelectedBuilding] = React.useState(null);
@@ -72,6 +72,21 @@ const Map = (props) => {
 	const fallbackContainer = React.useRef();
 
 	const mapRef = React.useRef();
+
+	let max_state_mapping = (ds) => {
+		if (fields && "Insignificant" in fields["by_category"][0]) {
+			if (ds === "DS_0") return "Insignificant"
+			if (ds === "DS_1") return "Moderate"
+			if (ds === "DS_2") return "Extensive"
+			if (ds === "DS_3") return "Complete"
+		} else if (fields && "Affected" in fields["by_category"][0]) {
+			if (ds === "DS_0") return "Affected"
+			if (ds === "DS_1") return "Minor"
+			if (ds === "DS_2") return "Major"
+			if (ds === "DS_3") return "Destroyed"
+		}
+		return ds;
+	}
 
 	// var markerStyle = new Style({
 	// 	image: new CircleStyle({
@@ -324,11 +339,14 @@ const Map = (props) => {
 												{colName}
 											</TableCell>
 											<TableCell align="center">
-												{selectedBuilding[colName] === undefined ||
-												selectedBuilding[colName] === null ||
-												selectedBuilding[colName] === ""
-													? "-"
-													: selectedBuilding[colName]}
+												{colName === 'max_state' || colName.endsWith("_max_ds")
+													? max_state_mapping(selectedBuilding[colName])
+													: (selectedBuilding[colName] === undefined ||
+														selectedBuilding[colName] === null ||
+														selectedBuilding[colName] === ""
+														? "-"  // Fallback value for undefined, null, or empty strings
+														: selectedBuilding[colName])
+												}
 											</TableCell>
 										</TableRow>
 									);
