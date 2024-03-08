@@ -137,20 +137,12 @@ export const ZoneSelectionMap = (props) => {
 			}
 		});
 
-		// store name to feature map for reverse lookup when radio button is selected map selection
 		let nameToFeatureMap = {};
 		if (zoneLayer) {
 			const zoneLayerSource = zoneLayer.getSource();
-			zoneLayerSource.getFeatures().forEach((feature) => {
-				const name = feature.get("name");
-				if (name) {
-					nameToFeatureMap[name] = feature;
-				}
-			});
-
 			// Listen for when features have been added to the source
-			// populate the zone name list
 			zoneLayerSource.on("featuresloadend", () => {
+				// populate the zone name list
 				const tmpZoneNames = zoneLayerSource
 					.getFeatures()
 					.map((feature) => feature.get("name"));
@@ -158,6 +150,14 @@ export const ZoneSelectionMap = (props) => {
 					a.localeCompare(b),
 				);
 				setZoneNames(uniqueSortedZoneNames);
+
+				// store name to feature map for reverse lookup when radio button is selected map selection
+				zoneLayerSource.getFeatures().forEach((feature) => {
+					const name = feature.get("name");
+					if (name) {
+						nameToFeatureMap[name] = feature;
+					}
+				});
 			});
 		}
 
