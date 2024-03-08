@@ -215,7 +215,15 @@ export const ZoneSelectionMap = (props) => {
 									key={index}
 									value={name}
 									control={<Radio />}
-									label={name}
+									label={
+										<span
+											style={
+												name === selectedZoneName ? { fontWeight: "bold" } : {}
+											}
+										>
+											{name}
+										</span>
+									}
 								/>
 							))}
 						</RadioGroup>
@@ -236,7 +244,17 @@ export const ZoneSelectionMap = (props) => {
 										key={index}
 										value={name}
 										control={<Radio />}
-										label={name}
+										label={
+											<span
+												style={
+													name === selectedZoneName
+														? { fontWeight: "bold" }
+														: {}
+												}
+											>
+												{name}
+											</span>
+										}
 									/>
 								))}
 							</RadioGroup>
