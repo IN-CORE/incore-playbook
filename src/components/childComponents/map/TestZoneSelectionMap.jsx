@@ -15,13 +15,13 @@ export const TestZoneSelectionMap = () => {
 	const globalConfig = useSelector((state) => state.config.globalConfig);
 
 	const [zoneLayer, setZoneLayer] = useState(null);
-	const [zoneNames, setZoneNames] = useState([]);
 
 	useEffect(() => {
 		// Construct the WFS request URL
 		const wfsUrl = `${globalConfig.geoServerWFS}&typeName=incore:65ea380c4331420c85ddb211`;
 
 		const zoneLayer = new VectorLayer({
+			title: "Zone",
 			source: new VectorSource({
 				format: new GeoJSON(),
 				url: wfsUrl,
@@ -36,16 +36,6 @@ export const TestZoneSelectionMap = () => {
 				}),
 			}),
 		});
-		const zoneLayerSource = zoneLayer.getSource();
-
-		// Listen for when features have been added to the source
-		zoneLayerSource.on("featuresloadend", () => {
-			const tmpZoneNames = zoneLayerSource
-				.getFeatures()
-				.map((feature) => feature.get("name"));
-			setZoneNames([...new Set(tmpZoneNames)]);
-		});
-
 		setZoneLayer(zoneLayer);
 	}, []);
 
@@ -64,7 +54,7 @@ export const TestZoneSelectionMap = () => {
 					center={fromLonLat(mapConfig.MAP_CENTER)}
 					layers={[basicLayers, zoneLayer]}
 					layerSwitcherOptions={{}}
-					zoneNames={zoneNames}
+					activeLayerNames={"Zone"}
 				/>
 			) : (
 				<div>Loading...</div>
