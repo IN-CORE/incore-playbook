@@ -26,6 +26,11 @@ export const ZoneSelectionMap = (props) => {
 	const [selectedZoneName, setSelectedZoneName] = useState("");
 	const [featuresByName, setFeaturesByName] = useState({});
 	const [zoneNames, setZoneNames] = useState([]);
+	const [leftColumnZones, setLeftColumnZones] = useState([]);
+	const [rightColumnZones, setRightColumnZones] = useState([]);
+
+	const columnBreakpoint = 15;
+
 	const selectSingleClickRef = React.useRef();
 
 	React.useEffect(() => {
@@ -144,11 +149,15 @@ export const ZoneSelectionMap = (props) => {
 			});
 
 			// Listen for when features have been added to the source
+			// populate the zone name list
 			zoneLayerSource.on("featuresloadend", () => {
 				const tmpZoneNames = zoneLayerSource
 					.getFeatures()
 					.map((feature) => feature.get("name"));
-				setZoneNames([...new Set(tmpZoneNames)]);
+				const uniqueSortedZoneNames = [...new Set(tmpZoneNames)].sort((a, b) =>
+					a.localeCompare(b),
+				);
+				setZoneNames(uniqueSortedZoneNames);
 			});
 		}
 
@@ -170,6 +179,11 @@ export const ZoneSelectionMap = (props) => {
 		}
 	};
 
+	React.useEffect(() => {
+		setLeftColumnZones(zoneNames.slice(0, columnBreakpoint));
+		setRightColumnZones(zoneNames.slice(columnBreakpoint));
+	}, [zoneNames]);
+
 	return (
 		<>
 			<Typography>Select a zone on the map or from the list:</Typography>
@@ -178,7 +192,7 @@ export const ZoneSelectionMap = (props) => {
 				<Grid item xl={6} lg={6} md={6} sm={6} xs={12}>
 					<div
 						id={id}
-						style={{ width: "100%", height: "800px" }}
+						style={{ width: "100%", height: "600px" }}
 						className={`ol-map ${className}`}
 						ref={fallbackContainer}
 					>
@@ -188,15 +202,15 @@ export const ZoneSelectionMap = (props) => {
 					</div>
 				</Grid>
 				{/*Selection*/}
-				<Grid item xl={6} lg={6} md={6} sm={6} xs={12}>
+				<Grid item xl={3} lg={3} md={3} sm={3} xs={6}>
 					<FormControl component="fieldset">
 						<RadioGroup
-							aria-label="zone"
-							name="zone"
+							aria-label="zone-left"
+							name="zone-left"
 							value={selectedZoneName}
 							onChange={handleChange}
 						>
-							{zoneNames.map((name, index) => (
+							{leftColumnZones.map((name, index) => (
 								<FormControlLabel
 									key={index}
 									value={name}
@@ -207,6 +221,28 @@ export const ZoneSelectionMap = (props) => {
 						</RadioGroup>
 					</FormControl>
 				</Grid>
+				{/*break long list into two columns*/}
+				{zoneNames.length > columnBreakpoint && (
+					<Grid item xl={3} lg={3} md={3} sm={3} xs={6}>
+						<FormControl component="fieldset">
+							<RadioGroup
+								aria-label="zone-right"
+								name="zone-right"
+								value={selectedZoneName}
+								onChange={handleChange}
+							>
+								{rightColumnZones.map((name, index) => (
+									<FormControlLabel
+										key={index}
+										value={name}
+										control={<Radio />}
+										label={name}
+									/>
+								))}
+							</RadioGroup>
+						</FormControl>
+					</Grid>
+				)}
 			</Grid>
 		</>
 	);

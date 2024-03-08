@@ -8,7 +8,7 @@ import { AnticipatedPerformance } from "./components/AnticipatedPerformance";
 import { Login } from "./components/Login";
 import TeamMember from "./components/TeamMember";
 import { CompareAnalyses } from "./components/CompareAnalyses";
-import { TestZoneSelectionMap } from "./components/childComponents/map/TestZoneSelectionMap";
+import { ZoneSelectionMapDialog } from "./components/childComponents/map/ZoneSelectionMapDialog";
 
 const routes = {
 	"/": {
@@ -236,7 +236,7 @@ const routes = {
 	"/test-zone-selection": {
 		exact: false,
 		component: () => {
-			return <TestZoneSelectionMap />;
+			return <ZoneSelectionMapDialog open={true} />;
 		},
 	},
 };
