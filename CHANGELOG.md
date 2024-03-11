@@ -11,6 +11,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Fixed
 - Remove the extra % sign from population dislocation comparison table [#362](https://github.com/IN-CORE/incore-playbook/issues/362)
 - Sorted map attributes so there are in the same order during the comparison [#348](https://github.com/IN-CORE/incore-playbook/issues/348)
+- Wrong naming of the component ViewResults [#352](https://github.com/IN-CORE/incore-playbook/issues/352)
+
 
 ## [0.6.0] - 2024-03-06
 
