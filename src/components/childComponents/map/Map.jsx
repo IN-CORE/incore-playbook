@@ -1,18 +1,10 @@
 import * as React from "react";
-import { Map as OLMap, View, Feature } from "ol";
+import { Map as OLMap, View } from "ol";
 // import {defaults as defaultControls} from "ol/control";
 import Overlay from "ol/Overlay";
-import { Point } from "ol/geom";
-import Style from "ol/style/Style";
-import CircleStyle from "ol/style/Circle";
-import Fill from "ol/style/Fill";
-import Stroke from "ol/style/Stroke";
-import VectorLayer from "ol/layer/Vector";
-import VectorSource from "ol/source/Vector";
 
 import { makeStyles } from "@material-ui/core/styles";
 import {
-	IconButton,
 	Table,
 	TableBody,
 	TableCell,
@@ -21,9 +13,9 @@ import {
 	TableRow,
 } from "@material-ui/core";
 import LoadingOverlay from "react-loading-overlay";
-import CloseIcon from "@material-ui/icons/Close";
 
 import LayerSwitcher from "./LayerSwitcher";
+import { maxStateMapping } from "../../../utils/common";
 
 const useStyles = makeStyles({
 	table: {
@@ -72,21 +64,6 @@ const Map = (props) => {
 	const fallbackContainer = React.useRef();
 
 	const mapRef = React.useRef();
-
-	let max_state_mapping = (ds) => {
-		if (fields && "Insignificant" in fields["by_category"][0]) {
-			if (ds === "DS_0") return "Insignificant"
-			if (ds === "DS_1") return "Moderate"
-			if (ds === "DS_2") return "Extensive"
-			if (ds === "DS_3") return "Complete"
-		} else if (fields && "Affected" in fields["by_category"][0]) {
-			if (ds === "DS_0") return "Affected"
-			if (ds === "DS_1") return "Minor"
-			if (ds === "DS_2") return "Major"
-			if (ds === "DS_3") return "Destroyed"
-		}
-		return ds;
-	}
 
 	// var markerStyle = new Style({
 	// 	image: new CircleStyle({
@@ -339,14 +316,17 @@ const Map = (props) => {
 												{colName}
 											</TableCell>
 											<TableCell align="center">
-												{colName === 'max_state' || colName.endsWith("_max_ds")
-													? max_state_mapping(selectedBuilding[colName])
-													: (selectedBuilding[colName] === undefined ||
-														selectedBuilding[colName] === null ||
-														selectedBuilding[colName] === ""
-														? "-"  // Fallback value for undefined, null, or empty strings
-														: selectedBuilding[colName])
-												}
+												{colName === "max_state"
+													? maxStateMapping(
+															fields,
+															selectedBuilding[colName],
+															selectedBuilding["sw_max_state"],
+													  )
+													: selectedBuilding[colName] === undefined ||
+													    selectedBuilding[colName] === null ||
+													    selectedBuilding[colName] === ""
+													  ? "-" // Fallback value for undefined, null, or empty strings
+													  : selectedBuilding[colName]}
 											</TableCell>
 										</TableRow>
 									);

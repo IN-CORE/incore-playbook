@@ -12,6 +12,7 @@ import {
 } from "@material-ui/core";
 import LoadingOverlay from "react-loading-overlay";
 import { makeStyles } from "@material-ui/core/styles";
+import { maxStateMapping } from "../../../utils/common";
 
 export const MapContext = React.createContext({});
 
@@ -400,21 +401,6 @@ const OverlayTable = (props) => {
 	const { selectedBuilding, loading, right, fields } = props;
 	const classes = useStyles();
 
-	let max_state_mapping = (ds) => {
-		if (fields && "Insignificant" in fields["by_category"][0]) {
-			if (ds === "DS_0") return "Insignificant"
-			if (ds === "DS_1") return "Moderate"
-			if (ds === "DS_2") return "Extensive"
-			if (ds === "DS_3") return "Complete"
-		} else if (fields && "Affected" in fields["by_category"][0]) {
-			if (ds === "DS_0") return "Affected"
-			if (ds === "DS_1") return "Minor"
-			if (ds === "DS_2") return "Major"
-			if (ds === "DS_3") return "Destroyed"
-		}
-		return ds;
-	}
-
 	return (
 		<TableContainer
 			className={classes.tableContainer}
@@ -455,14 +441,17 @@ const OverlayTable = (props) => {
 										{colName}
 									</TableCell>
 									<TableCell align="center">
-										{colName === 'max_state' || colName.endsWith("_max_ds")
-											? max_state_mapping(selectedBuilding[colName])
-											: (selectedBuilding[colName] === undefined ||
-												selectedBuilding[colName] === null ||
-												selectedBuilding[colName] === ""
-												? "-"  // Fallback value for undefined, null, or empty strings
-												: selectedBuilding[colName])
-										}
+										{colName === "max_state" || colName.endsWith("_max_ds")
+											? maxStateMapping(
+													fields,
+													selectedBuilding[colName],
+													selectedBuilding["sw_max_state"],
+											  )
+											: selectedBuilding[colName] === undefined ||
+											    selectedBuilding[colName] === null ||
+											    selectedBuilding[colName] === ""
+											  ? "-" // Fallback value for undefined, null, or empty strings
+											  : selectedBuilding[colName]}
 									</TableCell>
 								</TableRow>
 							);
