@@ -1,5 +1,6 @@
 import * as React from "react";
 import { Map as OLMap, View } from "ol";
+import LayersIcon from "@material-ui/icons/Layers";
 // import {defaults as defaultControls} from "ol/control";
 import Overlay from "ol/Overlay";
 
@@ -50,6 +51,36 @@ const useStyles = makeStyles({
 		lineHeight: "18px",
 		border: "1px solid rgba(46,91,255,0.08)",
 	},
+	legend: {
+		position: "absolute",
+		bottom: "8.25%",
+		right: "42%",
+		backgroundColor: "white",
+		padding: "1%",
+		borderRadius: "5%",
+		boxShadow: "0 2px 10px rgba(0,0,0,0.3)",
+		opacity: 0.8,
+		zIndex: 1000, // Added z-index here
+	},
+	legendButton: {
+		position: "absolute",
+		top: "17%",
+		left: "0.5%",
+		width: "2.25em",
+		height: "2.25em",
+		backgroundColor: "#FFFFFF",
+		borderRadius: "10%",
+		boxShadow: "0 2px 10px rgba(0,0,0,0.3)",
+		opacity: 0.8,
+		zIndex: 1000,
+		border: "none",
+		padding: 0,
+		outline: "none",
+		cursor: "pointer",
+		display: "flex",
+		justifyContent: "center",
+		alignItems: "center",
+	},
 });
 
 export const MapContext = React.createContext({});
@@ -64,6 +95,9 @@ const Map = (props) => {
 	const fallbackContainer = React.useRef();
 
 	const mapRef = React.useRef();
+
+	// State variable to make legend collapsible
+	const [legendOpen, setLegendOpen] = React.useState(false);
 
 	// var markerStyle = new Style({
 	// 	image: new CircleStyle({
@@ -228,6 +262,12 @@ const Map = (props) => {
 
 	return allowBuildingSelection ? (
 		<div style={{ position: "relative" }}>
+			<button
+				onClick={() => setLegendOpen(!legendOpen)}
+				className={classes.legendButton}
+			>
+				<LayersIcon />
+			</button>
 			<div
 				id={id}
 				style={{ width: "100%", height: "366px" }}
