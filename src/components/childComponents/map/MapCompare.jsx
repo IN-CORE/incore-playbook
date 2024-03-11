@@ -69,7 +69,14 @@ const useStyles = makeStyles({
 });
 
 const MapCompare = (props) => {
-	const { children, className, height, allowBuildingSelection, fields } = props;
+	const {
+		children,
+		className,
+		height,
+		allowBuildingSelection,
+		fieldsA,
+		fieldsB,
+	} = props;
 	const classes = useStyles();
 
 	const [selectedBuildingA, setSelectedBuildingA] = React.useState(null);
@@ -374,7 +381,7 @@ const MapCompare = (props) => {
 				<OverlayTable
 					selectedBuilding={selectedBuildingA}
 					loading={loading}
-					fields={fields}
+					fields={fieldsA}
 				/>
 			) : (
 				<></>
@@ -384,7 +391,7 @@ const MapCompare = (props) => {
 					selectedBuilding={selectedBuildingB}
 					loading={loading}
 					right={true}
-					fields={fields}
+					fields={fieldsB}
 				/>
 			) : (
 				<></>
@@ -439,7 +446,7 @@ const OverlayTable = (props) => {
 											{colName}
 										</TableCell>
 										<TableCell align="center">
-											{colName === "max_state" || colName.endsWith("_max_ds")
+											{colName === "max_state"
 												? maxStateMapping(
 														fields,
 														selectedBuilding[colName],
