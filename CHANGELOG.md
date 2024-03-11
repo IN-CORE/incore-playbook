@@ -13,6 +13,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Sorted map attributes so there are in the same order during the comparison [#348](https://github.com/IN-CORE/incore-playbook/issues/348)
 - Wrong naming of the component ViewResults [#352](https://github.com/IN-CORE/incore-playbook/issues/352)
 - Make max damage state consistent with table headers [#374](https://github.com/IN-CORE/incore-playbook/issues/374)
+- Compare selection style [#357](https://github.com/IN-CORE/incore-playbook/issues/357)
 
 ## [0.6.0] - 2024-03-06
 
