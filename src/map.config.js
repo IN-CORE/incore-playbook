@@ -1,8 +1,8 @@
 const layerStyles = {
-	BldgDamage: "incore:bldg-dmg-summary",
-	BldgFunctionality: "incore:joplin-bldg-func",
-	BldgMCS: "incore:joplin-bldg-mcs",
-	Interdependency: "incore:joplin-substations-label",
+	BldgDamage: "incore:galveston-bldg-dmg-fema",
+	BldgFunctionality: "incore:bldg-func",
+	BldgMCS: "incore:bldg-mcs",
+	Interdependency: "incore:substations-label",
 	PoleDamage: "incore:epf-dmg-summary",
 	PopulationDislocation: {
 		bldgMaxDamageStateINCOREId: "incore:bldg-dmg-summary",

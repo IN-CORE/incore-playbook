@@ -370,9 +370,7 @@ const MapCompare = (props) => {
 					</MapContext.Provider>
 				</div>
 			</div>
-			{allowBuildingSelection &&
-			selectedBuildingA &&
-			selectedBuildingA !== undefined ? (
+			{allowBuildingSelection && selectedBuildingA ? (
 				<OverlayTable
 					selectedBuilding={selectedBuildingA}
 					loading={loading}
@@ -381,9 +379,7 @@ const MapCompare = (props) => {
 			) : (
 				<></>
 			)}
-			{allowBuildingSelection &&
-			selectedBuildingB &&
-			selectedBuildingB !== undefined ? (
+			{allowBuildingSelection && selectedBuildingB ? (
 				<OverlayTable
 					selectedBuilding={selectedBuildingB}
 					loading={loading}
@@ -429,33 +425,35 @@ const OverlayTable = (props) => {
 						</TableRow>
 					</TableHead>
 					<TableBody>
-						{Object.keys(selectedBuilding).map((colName) => {
-							if (colName === "guid") {
-								return null;
-							}
-							return (
-								<TableRow key={colName}>
-									<TableCell
-										style={{ backgroundColor: "#EFF2FF", color: "#69707F" }}
-									>
-										{colName}
-									</TableCell>
-									<TableCell align="center">
-										{colName === "max_state" || colName.endsWith("_max_ds")
-											? maxStateMapping(
-													fields,
-													selectedBuilding[colName],
-													selectedBuilding["sw_max_state"],
-											  )
-											: selectedBuilding[colName] === undefined ||
-											    selectedBuilding[colName] === null ||
-											    selectedBuilding[colName] === ""
-											  ? "-" // Fallback value for undefined, null, or empty strings
-											  : selectedBuilding[colName]}
-									</TableCell>
-								</TableRow>
-							);
-						})}
+						{Object.keys(selectedBuilding)
+							.sort()
+							.map((colName) => {
+								if (colName === "csv_guid") {
+									return null;
+								}
+								return (
+									<TableRow key={colName}>
+										<TableCell
+											style={{ backgroundColor: "#EFF2FF", color: "#69707F" }}
+										>
+											{colName}
+										</TableCell>
+										<TableCell align="center">
+											{colName === "max_state" || colName.endsWith("_max_ds")
+												? maxStateMapping(
+														fields,
+														selectedBuilding[colName],
+														selectedBuilding["sw_max_state"],
+												  )
+												: selectedBuilding[colName] === undefined ||
+												    selectedBuilding[colName] === null ||
+												    selectedBuilding[colName] === ""
+												  ? "-" // Fallback value for undefined, null, or empty strings
+												  : selectedBuilding[colName]}
+										</TableCell>
+									</TableRow>
+								);
+							})}
 					</TableBody>
 				</Table>
 			</LoadingOverlay>

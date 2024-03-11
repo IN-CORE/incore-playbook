@@ -304,33 +304,38 @@ const Map = (props) => {
 								</TableRow>
 							</TableHead>
 							<TableBody>
-								{Object.keys(selectedBuilding).map((colName) => {
-									if (colName === "guid") {
-										return null;
-									}
-									return (
-										<TableRow key={colName}>
-											<TableCell
-												style={{ backgroundColor: "#EFF2FF", color: "#69707F" }}
-											>
-												{colName}
-											</TableCell>
-											<TableCell align="center">
-												{colName === "max_state"
-													? maxStateMapping(
-															fields,
-															selectedBuilding[colName],
-															selectedBuilding["sw_max_state"],
-													  )
-													: selectedBuilding[colName] === undefined ||
-													    selectedBuilding[colName] === null ||
-													    selectedBuilding[colName] === ""
-													  ? "-" // Fallback value for undefined, null, or empty strings
-													  : selectedBuilding[colName]}
-											</TableCell>
-										</TableRow>
-									);
-								})}
+								{Object.keys(selectedBuilding)
+									.sort()
+									.map((colName) => {
+										if (colName === "csv_guid") {
+											return null;
+										}
+										return (
+											<TableRow key={colName}>
+												<TableCell
+													style={{
+														backgroundColor: "#EFF2FF",
+														color: "#69707F",
+													}}
+												>
+													{colName}
+												</TableCell>
+												<TableCell align="center">
+													{colName === "max_state"
+														? maxStateMapping(
+																fields,
+																selectedBuilding[colName],
+																selectedBuilding["sw_max_state"],
+														  )
+														: selectedBuilding[colName] === undefined ||
+														    selectedBuilding[colName] === null ||
+														    selectedBuilding[colName] === ""
+														  ? "-" // Fallback value for undefined, null, or empty strings
+														  : selectedBuilding[colName]}
+												</TableCell>
+											</TableRow>
+										);
+									})}
 							</TableBody>
 						</Table>
 					</LoadingOverlay>
