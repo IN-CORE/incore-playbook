@@ -24,6 +24,7 @@ import AddCircleOutlineIcon from "@material-ui/icons/AddCircleOutline";
 import LoadingOverlay from "react-loading-overlay";
 import fullHtml from "../public/steps/2-4.html";
 import CloseIcon from "@material-ui/icons/Close";
+import EditOutlinedIcon from "@material-ui/icons/EditOutlined";
 import FileUploadDrop from "./childComponents/form/FileUploadDrop";
 import { makeStyles } from "@material-ui/core/styles";
 import {
@@ -34,6 +35,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchDatasets } from "../actions/datasets";
 
 import Pagination from "./childComponents/navigation/Pagination";
+import RetrofitStrategyBuilder from "./childComponents/RetrofitStrategyBuilder";
 import { move2TestbedSpace } from "../utils/common";
 import { DownloadAlert } from "./childComponents/alert/DownloadAlert";
 
@@ -56,8 +58,14 @@ const useStyles = makeStyles({
 	subTitleRow: {
 		height: "50px",
 	},
+	subTitleBox: {
+		display: "flex",
+		height: "30px",
+		alignItems: "center",
+	},
 	subTitle: {
 		display: "inline",
+		marginBottom: "0px",
 	},
 	socioeconomicsSubBox: {
 		padding: "1em",
@@ -68,7 +76,7 @@ const useStyles = makeStyles({
 	plusButton: {
 		display: "inline",
 		float: "right",
-		padding: 0,
+		padding: 5,
 	},
 	subDivider: {
 		color: "#00619d",
@@ -142,6 +150,8 @@ export const BuiltEnvironment = ({ step, substep }) => {
 	const [pageNumberBlockGroups, setPageNumberBlockGroups] = React.useState(1);
 	const [pageNumberValueLosses, setPageNumberValueLosses] = React.useState(1);
 	const [downloadDialogOpen, setDownloadDialogOpen] = React.useState(false);
+	const [strategyBuilderModalStatus, setStrategyBuilderModalStatus] =
+		React.useState(false);
 
 	// load uploaded dataset
 	useEffect(() => {
@@ -163,6 +173,10 @@ export const BuiltEnvironment = ({ step, substep }) => {
 			setDisabled(false);
 		else setDisabled(true);
 	}, [title, description, datasetType, files]);
+
+	const onRetrofitStrategyBuilderClose = () => {
+		setStrategyBuilderModalStatus(false);
+	};
 
 	const onFileInputChange = (event) => {
 		const fileList = Array.from(event.target.files);
@@ -536,6 +550,14 @@ export const BuiltEnvironment = ({ step, substep }) => {
 															<AddCircleOutlineIcon />
 														</IconButton>
 													) : null}
+													<IconButton
+														className={classes.plusButton}
+														onClick={() => {
+															setStrategyBuilderModalStatus(true);
+														}}
+													>
+														<EditOutlinedIcon style={{ color: "#2E384D" }} />
+													</IconButton>
 													<Divider
 														orientation="horizontal"
 														className={classes.subDivider}
@@ -780,6 +802,11 @@ export const BuiltEnvironment = ({ step, substep }) => {
 							<StepInfo fullHtml={fullHtml} />
 						</Grid>
 					</Grid>
+					{/* For Retrofit Strategy Builder */}
+					<RetrofitStrategyBuilder
+						strategyBuilderModalStatus={strategyBuilderModalStatus}
+						onRetrofitStrategyBuilderClose={onRetrofitStrategyBuilderClose}
+					/>
 					{/*for individual analysis result preview*/}
 					<Dialog
 						open={uploadModalStatus}
