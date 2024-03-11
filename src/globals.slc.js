@@ -1,5 +1,7 @@
 const globals = {};
 
+// ******************* COMMON GLOBAL CONFIGS *******************
+
 let hostname = process.env.INCORE_REMOTE_HOSTNAME || "";
 
 globals["baseUrlRoute"] = "playbook";
@@ -13,56 +15,14 @@ globals["spaceServiceBase"] = `${hostname}/space/api/`;
 globals["setGravatarURL"] =
 	"https://en.gravatar.com/support/activating-your-account/";
 globals["allowUpload"] = true;
-
-// globals["maestroServiceBase"] = `${hostname}/maestro/joplin/`;
-// globals["allowedRegions"] = null;
-// globals["testbedSpace"] = "commresiliencejoplin";
-// globals["testbedGroup"] = "incore_joplin_user"; // incore_galveston_user, incore_joplin_user, incore_slc_user
-
-globals["maestroServiceBase"] = `${hostname}/maestro/slc/`;
-globals["allowedRegions"] = [
-	{
-		name: "R1",
-		value: "R1",
-	},
-	{
-		name: "R2",
-		value: "R2",
-	},
-];
-globals["testbedSpace"] = "commresilienceslc";
-globals["testbedGroup"] = "incore_slc_user"; // incore_galveston_user, incore_joplin_user, incore_slc_user
-
-// globals["maestroServiceBase"] = `${hostname}/maestro/galveston/`;
-// globals["allowedRegions"] = [
-// 	{
-// 		name: "Island",
-// 		value: "I"
-// 	},
-// 	{
-// 		name: "Mainland",
-// 		value: "M"
-// 	}
-// ];
-// globals["testbedSpace"] = "commresiliencegal";
-// globals["testbedGroup"] = "incore_galveston_user"; // incore_galveston_user, incore_joplin_user, incore_slc_user
-
 globals["registerNewUserURL"] =
 	"https://identity.ncsa.illinois.edu/register/BSKC2UKQPU";
 globals["resetPasswordURL"] = "https://identity.ncsa.illinois.edu/reset";
+globals["geoServerWFS"] =
+	`${hostname}/geoserver/incore/ows?service=WFS&version=1.0.0&request=GetFeature&outputFormat=application/json`;
 
 // might have multiple versions in the future
 globals["inputDatasetTypes"] = {
-	buildings: [
-		{
-			type: "ergo:buildingInventoryVer6",
-			// type: "ergo:buildingInventoryVer7",
-			format: "shapefile",
-			num: 20,
-			isSocioeconomics: false,
-			dispatchKey: "RECEIVE_BLDGS",
-		},
-	],
 	retrofitStrategies: [
 		{
 			type: "incore:retrofitStrategy",
@@ -238,6 +198,152 @@ globals["inputDatasetTypes"] = {
 			num: 5,
 			isSocioeconomics: true,
 			dispatchKey: "RECEIVE_VALUE_LOSS",
+		},
+	],
+};
+
+// ******************* SLC GLOBAL CONFIGS *******************
+
+globals["maestroServiceBase"] = `${hostname}/maestro/slc/`;
+globals["allowedRegions"] = [
+	{
+		name: "R1",
+		value: "R1",
+	},
+	{
+		name: "R2",
+		value: "R2",
+	},
+];
+globals["testbedSpace"] = "commresilienceslc";
+globals["testbedGroup"] = "incore_slc_user"; // incore_galveston_user, incore_joplin_user, incore_slc_user
+
+globals["inputDatasetTypes"].buildings = [
+	{
+		type: "ergo:buildingInventoryVer6",
+		format: "shapefile",
+		num: 20,
+		isSocioeconomics: false,
+		dispatchKey: "RECEIVE_BLDGS",
+	},
+];
+
+globals["retrofitStrategyBuilder"] = {
+	maxStrategies: 4,
+	displayValues: {
+		TaylorsvilleCity: "Taylorsville City",
+		RivertonCity: "Riverton City",
+		AltaTown: "AltaTown",
+		KearnsMetroTownship: "Kearns Metro Township",
+		BluffdaleCity: "Bluffdale City",
+		HolladayCity: "Holladay City",
+		MurrayCity: "Murray City",
+		SouthJordanCity: "South Jordan City",
+		SaltLakeCity: "Salt Lake City",
+		WestValleyCity: "West Valley City",
+		CottonwoodHeightsCity: "Cottonwood Heights City",
+		HerrimanCity: "Herriman City",
+		WhiteCityMetroTownship: "White City Metro Township",
+		SouthSaltLakeCity: "South Salt Lake City",
+		DraperCity: "Draper City",
+		WestJordanCity: "West Jordan City",
+		SandyCity: "Sandy City",
+		Millcreek: "Millcreek",
+		EmigrationCanyonMetroTownship: "Emigration Canyon Metro Township",
+		MagnaMetroTownship: "Magna Metro Township",
+		CoppertonMetroTownship: "Copperton Metro Township",
+		TownofBrighton: "Town of Brighton",
+		Unincorporated: "Unincorporated",
+		URMM: "URMM",
+		URML: "URML",
+		elevatedBy5Feet: "Elevated by 5 feet",
+		elevatedBy10Feet: "Elevated by 10 feet",
+	},
+	labelToValue: {
+		taylorsvillecity: "TaylorsvilleCity",
+		rivertoncity: "RivertonCity",
+		altatown: "AltaTown",
+		kearnsmetrotownship: "KearnsMetroTownship",
+		bluffdalecity: "BluffdaleCity",
+		holladaycity: "HolladayCity",
+		murraycity: "MurrayCity",
+		southjordancity: "SouthJordanCity",
+		saltlakecity: "SaltLakeCity",
+		westvalleycity: "WestValleyCity",
+		cottonwoodheightscity: "CottonwoodHeightsCity",
+		herrimancity: "HerrimanCity",
+		whitecitymetrotownship: "WhiteCityMetroTownship",
+		southsaltlakecity: "SouthSaltLakeCity",
+		drapercity: "DraperCity",
+		westjordancity: "WestJordanCity",
+		sandycity: "SandyCity",
+		millcreek: "Millcreek",
+		emigrationcanyonmetrotownship: "EmigrationCanyonMetroTownship",
+		magnametrotownship: "MagnaMetroTownship",
+		coppertonmetrotownship: "CoppertonMetroTownship",
+		townofbrighton: "TownofBrighton",
+		unincorporated: "Unincorporated",
+	},
+	conditions: [
+		{
+			label: "Flood Zone",
+			type: "mapSelect",
+			key: "zone",
+			possibleOptions: [
+				{
+					label: "1 % Annual Chance Flood Hazard",
+					value: "1percentannualchanceflood",
+				},
+				{
+					label: "0.2 % Annual Chance Flood Hazard",
+					value: "0.2percentannualchanceflood",
+				},
+				{ label: "Other Flood Zones", value: "otherfloodzone" },
+			],
+		},
+		{
+			label: "Building Archetypes",
+			type: "select",
+			key: "archetype",
+			possibleOptions: [
+				{
+					label:
+						"One-story single-family residential building on crawlspace foundation",
+					value: "F1",
+				},
+				{
+					label:
+						"One-story multiple-family residential building on slab-on-grade foundation",
+					value: "F2",
+				},
+				{
+					label:
+						"Two-Story single-family residential building on crawlspace foundation",
+					value: "F3",
+				},
+				{
+					label:
+						"Two-Story multi-family residential building on slab-on-grade foundation",
+					value: "F4",
+				},
+			],
+		},
+		{
+			label: "% number of Buildings",
+			type: "number",
+			key: "percent",
+			possibleOptions: null,
+		},
+	],
+	retrofitMethods: [
+		{
+			label: "",
+			type: "select",
+			key: "retrofitMethod",
+			possibleOptions: [
+				{ label: "Elevated by 5 feet", value: "elevatedBy5Feet" },
+				{ label: "Elevated by 10 feet", value: "elevatedBy10Feet" },
+			],
 		},
 	],
 };

@@ -18,14 +18,23 @@ import {
 export const MapContext = React.createContext({});
 
 export const ZoneSelectionMap = (props) => {
-	const { children, id, className, layers, activeLayerNames } = props;
+	const {
+		children,
+		id,
+		className,
+		layers,
+		activeLayerNames,
+		selectedZoneName,
+		setSelectedZoneName,
+		zoneNames,
+		setZoneNames,
+	} = props;
 
 	const fallbackContainer = React.useRef();
 
 	const mapRef = React.useRef();
-	const [selectedZoneName, setSelectedZoneName] = useState("");
 	const [featuresByName, setFeaturesByName] = useState({});
-	const [zoneNames, setZoneNames] = useState([]);
+	// const [zoneNames, setZoneNames] = useState([]);
 	const [leftColumnZones, setLeftColumnZones] = useState([]);
 	const [rightColumnZones, setRightColumnZones] = useState([]);
 
@@ -173,6 +182,8 @@ export const ZoneSelectionMap = (props) => {
 
 		// Find and select the feature corresponding to the selected zone name
 		const featureToSelect = featuresByName[selectedName];
+		console.log(featureToSelect);
+		console.log(featuresByName);
 		if (featureToSelect) {
 			// Temporarily add the feature to the select interaction for highlighting
 			selectSingleClickRef.current.getFeatures().push(featureToSelect);

@@ -14,19 +14,36 @@ import {
 	DialogActions,
 	DialogContent,
 	DialogTitle,
+	IconButton,
+	Typography,
 } from "@material-ui/core";
 import { IncoreButton } from "../../styledComponents/IncoreButton";
+import { makeStyles } from "@material-ui/core/styles";
+import CloseIcon from "@material-ui/icons/Close";
+
+const useStyles = makeStyles((theme) => ({
+	closeButton: {
+		position: "absolute",
+		right: theme.spacing(1),
+		top: theme.spacing(1),
+		color: theme.palette.grey[500],
+	},
+}));
 
 export const ZoneSelectionMapDialog = (props) => {
-	const { open, handleClose } = props;
+	const { open, handleClose, handleSave, zoneNames, setZoneNames } = props;
 	const mapConfig = useSelector((state) => state.config.mapConfig);
 	const globalConfig = useSelector((state) => state.config.globalConfig);
 
+	const classes = useStyles();
+
 	// TODO: These should be moved outside of this component to the parent; and passdown as props
 	const [zoneLayer, setZoneLayer] = useState(null);
+	const [selectedZoneName, setSelectedZoneName] = useState("");
+
 	useEffect(() => {
 		// Construct the WFS request URL
-		const wfsUrl = `${globalConfig.geoServerWFS}&typeName=incore:65ea380c4331420c85ddb211`;
+		const wfsUrl = `${globalConfig.geoServerWFS}&typeName=${globalConfig.zoneLayer}`;
 
 		const zoneLayer = new VectorLayer({
 			title: "Zone",
@@ -55,7 +72,16 @@ export const ZoneSelectionMapDialog = (props) => {
 			fullWidth
 			scroll="paper"
 		>
-			<DialogTitle id="Zone Selection Dialog">Zone Selection</DialogTitle>
+			<DialogTitle id="Zone Selection Dialog">
+				<Typography variant="h5">Zone Selection</Typography>
+				<IconButton
+					aria-label="close"
+					className={classes.closeButton}
+					onClick={handleClose}
+				>
+					<CloseIcon />
+				</IconButton>
+			</DialogTitle>
 			<DialogContent className="previewModal">
 				{basicLayers && zoneLayer ? (
 					<ZoneSelectionMap
@@ -71,6 +97,10 @@ export const ZoneSelectionMapDialog = (props) => {
 						layers={[basicLayers, zoneLayer]}
 						layerSwitcherOptions={{}}
 						activeLayerNames={"Zone"}
+						selectedZoneName={selectedZoneName}
+						setSelectedZoneName={setSelectedZoneName}
+						zoneNames={zoneNames}
+						setZoneNames={setZoneNames}
 					/>
 				) : (
 					<div>Loading...</div>
@@ -78,7 +108,10 @@ export const ZoneSelectionMapDialog = (props) => {
 			</DialogContent>
 			<DialogActions>
 				<IncoreButton
-					onClick={handleClose}
+					onClick={() => {
+						handleSave(selectedZoneName);
+						setSelectedZoneName("");
+					}}
 					color="primary"
 					style={{ width: "auto" }}
 				>

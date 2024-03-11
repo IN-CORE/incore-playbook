@@ -30,18 +30,20 @@ import ArrowBackIcon from "@material-ui/icons/ArrowBack";
 import CloseIcon from "@material-ui/icons/Close";
 import DeleteIcon from "@material-ui/icons/Delete";
 import EditIcon from "@material-ui/icons/Edit";
+import LoadingOverlay from "react-loading-overlay";
 import MapIcon from "@material-ui/icons/Map";
 import SaveIcon from "@material-ui/icons/Save";
 import StopRoundedIcon from "@material-ui/icons/StopRounded";
 import { makeStyles } from "@material-ui/core/styles";
 
-import ZoneSelectorDialog from "./ZoneSelectorDialog";
 import { IncoreInputLabel } from "../styledComponents/IncoreInputLabel";
 import { IncoreTextField } from "../styledComponents/IncoreInput";
+import { ZoneSelectionMapDialog } from "./map/ZoneSelectionMapDialog";
 import {
 	IncoreSelectBox,
 	IncoreMenuItem,
 } from "../styledComponents/IncoreSelect";
+import { set } from "ol/transform";
 
 const useStyles = makeStyles((theme) => ({
 	closeButton: {
@@ -104,6 +106,7 @@ const useStyles = makeStyles((theme) => ({
 		borderRight: "1px solid #0000001F",
 		borderLeft: "1px solid #0000001F",
 		width: "20%",
+		maxWidth: "20%",
 	},
 	tableHeaderCellActions: {
 		width: "10%",
@@ -149,6 +152,7 @@ export default function RetrofitStrategyBuilder(props) {
 	const globalConfig = useSelector((state) => state.config.globalConfig);
 
 	const [activeStep, setActiveStep] = React.useState(0);
+	const [loading, setLoading] = React.useState(false);
 
 	// Step 1
 	const [name, setName] = React.useState("");
@@ -164,6 +168,10 @@ export default function RetrofitStrategyBuilder(props) {
 	const [showAddRetrofitStrategyRow, setShowAddRetrofitStrategyRow] =
 		React.useState(false);
 	const [currentlyEditing, setCurrentlyEditing] = React.useState(null);
+	const [zoneNames, setZoneNames] = React.useState([]);
+
+	// Step 3
+	const [retrofitSummary, setRetrofitSummary] = React.useState({});
 
 	let conditionKeys = [];
 	let conditionSelectKeys = [];
@@ -484,6 +492,37 @@ export default function RetrofitStrategyBuilder(props) {
 		}
 	};
 
+	const handleSubmit = () => {
+		setLoading(true);
+		// make API call to save the strategy
+		let responseJson = {
+			total: {
+				num_bldg: 3283,
+				num_bldg_no_cost: 42,
+				cost: 117260721.43,
+			},
+			by_rule: {
+				0: {
+					num_bldg: 3191,
+					num_bldg_no_cost: 40,
+					cost: 94393478.73,
+				},
+				1: {
+					num_bldg: 90,
+					num_bldg_no_cost: 0,
+					cost: 22867242.7,
+				},
+				2: {
+					num_bldg: 2,
+					num_bldg_no_cost: 2,
+					cost: 0,
+				},
+			},
+		};
+		setActiveStep(activeStep + 1);
+		setLoading(false);
+	};
+
 	return (
 		<Dialog
 			open={strategyBuilderModalStatus}
@@ -511,253 +550,277 @@ export default function RetrofitStrategyBuilder(props) {
 						</Step>
 					))}
 				</Stepper>
-				<Grid container spacing={3}>
-					{activeStep === 0 ? (
-						<Grid item xs={12}>
-							<Box className="inputGroup" style={{ height: "auto" }}>
-								<IncoreInputLabel className="required-field">
-									Name
-								</IncoreInputLabel>
-								<IncoreTextField
-									variant="outlined"
-									value={name}
-									error={nameError}
-									helperText={
-										nameError
-											? "Name should not have special characters other than '-' and '_'. Please check."
-											: ""
-									}
-									placeholder="Name"
-									onChange={(e) => {
-										setNameError(false);
-										setName(e.target.value);
-									}}
-								/>
-							</Box>
-							<Box className="inputGroup" style={{ height: "auto" }}>
-								<IncoreInputLabel>Description</IncoreInputLabel>
-								<TextField
-									variant="outlined"
-									value={description}
-									placeholder="Description"
-									sx={{
-										height: "41px",
-										width: "100%",
-										color: "#2E384D",
-										fontSize: "15px",
-										fontWeight: 500,
-										letterSpacing: 0,
-										lineHeight: "18px",
-										backgroundColor: "#FFFFFF",
-									}}
-									multiline
-									minRows={4}
-									fullWidth
-									onChange={(e) => {
-										setDescription(e.target.value);
-									}}
-								/>
-							</Box>
-						</Grid>
-					) : null}
+				<LoadingOverlay active={loading} spinner text="Loading...">
+					<Grid container spacing={3}>
+						{activeStep === 0 ? (
+							<Grid item xs={12}>
+								<Box className="inputGroup" style={{ height: "auto" }}>
+									<IncoreInputLabel className="required-field">
+										Name
+									</IncoreInputLabel>
+									<IncoreTextField
+										variant="outlined"
+										value={name}
+										error={nameError}
+										helperText={
+											nameError
+												? "Name should not have special characters other than '-' and '_'. Please check."
+												: ""
+										}
+										placeholder="Name"
+										onChange={(e) => {
+											setNameError(false);
+											setName(e.target.value);
+										}}
+									/>
+								</Box>
+								<Box className="inputGroup" style={{ height: "auto" }}>
+									<IncoreInputLabel>Description</IncoreInputLabel>
+									<TextField
+										variant="outlined"
+										value={description}
+										placeholder="Description"
+										sx={{
+											height: "41px",
+											width: "100%",
+											color: "#2E384D",
+											fontSize: "15px",
+											fontWeight: 500,
+											letterSpacing: 0,
+											lineHeight: "18px",
+											backgroundColor: "#FFFFFF",
+										}}
+										multiline
+										minRows={4}
+										fullWidth
+										onChange={(e) => {
+											setDescription(e.target.value);
+										}}
+									/>
+								</Box>
+							</Grid>
+						) : null}
 
-					{activeStep === 1 ? (
-						<Grid item xs={12}>
-							<TableContainer className={classes.tableContainer}>
-								<Table className={classes.table} aria-label="simple table">
-									<TableHead>
-										<TableRow className={classes.tableHeaderRow}>
-											<TableCell className={classes.tableHeaderCellNo}>
-												No.
-											</TableCell>
-											<TableCell className={classes.tableHeaderCellConditions}>
-												Conditions
-											</TableCell>
-											<TableCell className={classes.tableHeaderCellRetrofit}>
-												Retrofit Methods
-											</TableCell>
-											<TableCell className={classes.tableHeaderCellActions}>
-												Actions
-											</TableCell>
-										</TableRow>
-									</TableHead>
-									<TableBody>
-										{addedRows.map((row, index) => {
-											if (currentlyEditing === index) {
-												return AddRetrofitStrategyRow();
-											}
-											return (
-												<TableRow key={index}>
-													<TableCell
-														component="th"
-														align="center"
-														scope="row"
-														className={classes.tableSavedCell}
-													>
-														<Grid container alignItems="center" spacing={0}>
-															<StopRoundedIcon
-																fontSize="large"
-																style={{ color: colorCodes[index] }}
-															/>
-															{index + 1}
-														</Grid>
-													</TableCell>
-													<TableCell className={classes.tableSavedCell}>
-														<TableContainer>
-															<Table>
-																<TableBody>
-																	{conditionKeys.map((key) => (
-																		<TableRow key={key}>
-																			<TableCell>
+						{activeStep === 1 ? (
+							<Grid item xs={12}>
+								<TableContainer className={classes.tableContainer}>
+									<Table className={classes.table} aria-label="simple table">
+										<TableHead>
+											<TableRow className={classes.tableHeaderRow}>
+												<TableCell className={classes.tableHeaderCellNo}>
+													No.
+												</TableCell>
+												<TableCell
+													className={classes.tableHeaderCellConditions}
+												>
+													Conditions
+												</TableCell>
+												<TableCell className={classes.tableHeaderCellRetrofit}>
+													Retrofit Methods
+												</TableCell>
+												<TableCell className={classes.tableHeaderCellActions}>
+													Actions
+												</TableCell>
+											</TableRow>
+										</TableHead>
+										<TableBody>
+											{addedRows.map((row, index) => {
+												if (currentlyEditing === index) {
+													return AddRetrofitStrategyRow();
+												}
+												return (
+													<TableRow key={index}>
+														<TableCell
+															component="th"
+															align="center"
+															scope="row"
+															className={classes.tableSavedCell}
+														>
+															<Grid container alignItems="center" spacing={0}>
+																<StopRoundedIcon
+																	fontSize="large"
+																	style={{ color: colorCodes[index] }}
+																/>
+																{index + 1}
+															</Grid>
+														</TableCell>
+														<TableCell className={classes.tableSavedCell}>
+															<TableContainer>
+																<Table>
+																	<TableBody>
+																		{conditionKeys.map((key) => (
+																			<TableRow key={key}>
+																				<TableCell>
+																					<Typography
+																						variant="body1"
+																						className={classes.tableSavedText}
+																					>
+																						{row[key].label}
+																					</Typography>
+																				</TableCell>
+																				<TableCell align="right">
+																					<Typography
+																						variant="body1"
+																						className={classes.tableSavedValue}
+																					>
+																						{row[key].type === "number"
+																							? row[key].value
+																							: globalConfig
+																									.retrofitStrategyBuilder
+																									.displayValues[
+																									row[key].value
+																							  ]}
+																					</Typography>
+																				</TableCell>
+																			</TableRow>
+																		))}
+																	</TableBody>
+																</Table>
+															</TableContainer>
+														</TableCell>
+														<TableCell
+															align="center"
+															className={classes.tableSavedCell}
+														>
+															<Grid container spacing={0}>
+																{retrofitMethodKeys.map((key, idx) => (
+																	<>
+																		{row[key].label === "" ? null : (
+																			<Grid
+																				item
+																				xs={4}
+																				key={key + 1}
+																				sx={{ p: 0 }}
+																			>
 																				<Typography
 																					variant="body1"
 																					className={classes.tableSavedText}
 																				>
 																					{row[key].label}
 																				</Typography>
-																			</TableCell>
-																			<TableCell align="right">
-																				<Typography
-																					variant="body1"
-																					className={classes.tableSavedValue}
-																				>
-																					{row[key].type === "number"
-																						? row[key].value
-																						: globalConfig
-																								.retrofitStrategyBuilder
-																								.displayValues[row[key].value]}
-																				</Typography>
-																			</TableCell>
-																		</TableRow>
-																	))}
-																</TableBody>
-															</Table>
-														</TableContainer>
-													</TableCell>
-													<TableCell
-														align="center"
-														className={classes.tableSavedCell}
-													>
-														<Grid container spacing={0}>
-															{retrofitMethodKeys.map((key, idx) => (
-																<>
-																	{row[key].label === "" ? null : (
+																			</Grid>
+																		)}
 																		<Grid
 																			item
-																			xs={4}
-																			key={key + 1}
+																			xs={row[key].label === "" ? 12 : 8}
+																			key={key + 2}
 																			sx={{ p: 0 }}
 																		>
-																			<Typography
-																				variant="body1"
-																				className={classes.tableSavedText}
-																			>
-																				{row[key].label}
+																			<Typography variant="body1">
+																				{
+																					globalConfig.retrofitStrategyBuilder
+																						.displayValues[row[key].value]
+																				}
 																			</Typography>
 																		</Grid>
-																	)}
-																	<Grid
-																		item
-																		xs={row[key].label === "" ? 12 : 8}
-																		key={key + 2}
-																		sx={{ p: 0 }}
-																	>
-																		<Typography variant="body1">
-																			{
-																				globalConfig.retrofitStrategyBuilder
-																					.displayValues[row[key].value]
-																			}
-																		</Typography>
-																	</Grid>
-																	{idx ===
-																	retrofitMethodKeys.length - 1 ? null : (
-																		<Divider />
-																	)}
-																</>
-															))}
-														</Grid>
-													</TableCell>
-													<TableCell
-														align="center"
-														className={classes.tableSavedCell}
-													>
-														<Button
-															className={classes.button}
-															startIcon={
-																<EditIcon style={{ color: "#0000008A" }} />
-															}
+																		{idx ===
+																		retrofitMethodKeys.length - 1 ? null : (
+																			<Divider />
+																		)}
+																	</>
+																))}
+															</Grid>
+														</TableCell>
+														<TableCell
+															align="center"
+															className={classes.tableSavedCell}
 														>
-															<Typography
-																className={classes.actionButtons}
+															<Button
+																className={classes.button}
+																startIcon={
+																	<EditIcon style={{ color: "#0000008A" }} />
+																}
+															>
+																<Typography
+																	className={classes.actionButtons}
+																	onClick={() => {
+																		setSelectedValues(row);
+																		setShowAddRetrofitStrategyRow(false);
+																		setCurrentlyEditing(index);
+																	}}
+																>
+																	Edit
+																</Typography>
+															</Button>
+															<Divider />
+															<Button
+																className={classes.button}
+																startIcon={
+																	<DeleteIcon style={{ color: "#0000008A" }} />
+																}
 																onClick={() => {
-																	setSelectedValues(row);
-																	setShowAddRetrofitStrategyRow(false);
-																	setCurrentlyEditing(index);
+																	const newRows = addedRows.filter(
+																		(r, i) => i !== index,
+																	);
+																	setNumRow(numRow - 1);
+																	setAddedRows(newRows);
 																}}
 															>
-																Edit
-															</Typography>
-														</Button>
-														<Divider />
-														<Button
-															className={classes.button}
-															startIcon={
-																<DeleteIcon style={{ color: "#0000008A" }} />
-															}
-															onClick={() => {
-																const newRows = addedRows.filter(
-																	(r, i) => i !== index,
-																);
-																setNumRow(numRow - 1);
-																setAddedRows(newRows);
-															}}
-														>
-															<Typography className={classes.actionButtons}>
-																Delete
-															</Typography>
-														</Button>
-													</TableCell>
-												</TableRow>
-											);
-										})}
-										{numRow === 1 ? AddRetrofitStrategyRow() : null}
-										{showAddRetrofitStrategyRow && numRow !== 1
-											? AddRetrofitStrategyRow()
-											: null}
-									</TableBody>
-								</Table>
-							</TableContainer>
-							<Grid item xs={4}>
-								<Button
-									disabled={
-										numRow ===
-										globalConfig.retrofitStrategyBuilder.maxStrategies + 1
-									}
-									variant="outlined"
-									className={classes.addMoreStrategyBtn}
-									startIcon={<AddIcon />}
-									onClick={() => {
-										setCurrentlyEditing(null);
-										if (!showAddRetrofitStrategyRow) {
-											setSelectedValues({});
+																<Typography className={classes.actionButtons}>
+																	Delete
+																</Typography>
+															</Button>
+														</TableCell>
+													</TableRow>
+												);
+											})}
+											{numRow === 1 ? AddRetrofitStrategyRow() : null}
+											{showAddRetrofitStrategyRow && numRow !== 1
+												? AddRetrofitStrategyRow()
+												: null}
+										</TableBody>
+									</Table>
+								</TableContainer>
+								<Grid item xs={4}>
+									<Button
+										disabled={
+											numRow ===
+											globalConfig.retrofitStrategyBuilder.maxStrategies + 1
 										}
-										setShowAddRetrofitStrategyRow(true);
-									}}
-								>
-									Add More Strategy
-								</Button>
+										variant="outlined"
+										className={classes.addMoreStrategyBtn}
+										startIcon={<AddIcon />}
+										onClick={() => {
+											setCurrentlyEditing(null);
+											if (!showAddRetrofitStrategyRow) {
+												setSelectedValues({});
+											}
+											setShowAddRetrofitStrategyRow(true);
+										}}
+									>
+										Add More Strategy
+									</Button>
+								</Grid>
 							</Grid>
-						</Grid>
-					) : null}
-					<ZoneSelectorDialog
-						mapDialogOpen={mapDialogOpen}
-						setMapDialogOpen={setMapDialogOpen}
-					/>
-				</Grid>
+						) : null}
+						<ZoneSelectionMapDialog
+							open={mapDialogOpen}
+							handleClose={() => setMapDialogOpen(false)}
+							handleSave={(selectedZoneName) => {
+								setSelectedValues({
+									...selectedValues,
+									zone: {
+										label:
+											globalConfig.retrofitStrategyBuilder.conditions[0].label,
+										type: "string",
+										value:
+											globalConfig.retrofitStrategyBuilder.labelToValue[
+												selectedZoneName.replace(/\s+/g, "").toLowerCase()
+											],
+									},
+								});
+								setMapDialogOpen(false);
+								setAddError(null);
+							}}
+							zoneNames={zoneNames}
+							setZoneNames={setZoneNames}
+						/>
+					</Grid>
+				</LoadingOverlay>
 			</DialogContent>
 			<DialogActions disableSpacing style={{ justifyContent: "space-between" }}>
 				<Button
-					disabled={activeStep === 0}
+					disabled={activeStep === 0 || loading}
 					variant="outlined"
 					onClick={() => setActiveStep(activeStep - 1)}
 					startIcon={<ArrowBackIcon />}
@@ -766,15 +829,21 @@ export default function RetrofitStrategyBuilder(props) {
 				</Button>
 				<Button
 					disabled={
-						activeStep === 0
+						(activeStep === 0
 							? name === ""
 							: activeStep === 1
 							  ? addedRows.length === 0
-							  : false
+							  : false) || loading
 					}
 					variant="contained"
 					className={classes.nxtBuildBtn}
-					onClick={handleNext}
+					onClick={
+						activeStep === 0
+							? handleNext
+							: activeStep === 1
+							  ? handleSubmit
+							  : onRetrofitStrategyBuilderClose
+					}
 				>
 					{activeStep === 0
 						? "Next Step"

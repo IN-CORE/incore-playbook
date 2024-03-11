@@ -8,7 +8,6 @@ import { AnticipatedPerformance } from "./components/AnticipatedPerformance";
 import { Login } from "./components/Login";
 import TeamMember from "./components/TeamMember";
 import { CompareAnalyses } from "./components/CompareAnalyses";
-import { ZoneSelectionMapDialog } from "./components/childComponents/map/ZoneSelectionMapDialog";
 
 const routes = {
 	"/": {
@@ -231,12 +230,6 @@ const routes = {
 		component: () => {
 			sessionStorage.setItem("menu", "6-3");
 			return <StaticSubStep menu={"6-3"} step={6} substep={3} />;
-		},
-	},
-	"/test-zone-selection": {
-		exact: false,
-		component: () => {
-			return <ZoneSelectionMapDialog open={true} />;
 		},
 	},
 };
