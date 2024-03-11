@@ -12,6 +12,7 @@ import {
 } from "@material-ui/core";
 import LoadingOverlay from "react-loading-overlay";
 import { makeStyles } from "@material-ui/core/styles";
+import { maxStateMapping } from "../../../utils/common";
 
 export const MapContext = React.createContext({});
 
@@ -68,7 +69,14 @@ const useStyles = makeStyles({
 });
 
 const MapCompare = (props) => {
-	const { children, className, height, allowBuildingSelection } = props;
+	const {
+		children,
+		className,
+		height,
+		allowBuildingSelection,
+		fieldsA,
+		fieldsB,
+	} = props;
 	const classes = useStyles();
 
 	const [selectedBuildingA, setSelectedBuildingA] = React.useState(null);
@@ -369,20 +377,21 @@ const MapCompare = (props) => {
 					</MapContext.Provider>
 				</div>
 			</div>
-			{allowBuildingSelection &&
-			selectedBuildingA &&
-			selectedBuildingA !== undefined ? (
-				<OverlayTable selectedBuilding={selectedBuildingA} loading={loading} />
+			{allowBuildingSelection && selectedBuildingA ? (
+				<OverlayTable
+					selectedBuilding={selectedBuildingA}
+					loading={loading}
+					fields={fieldsA}
+				/>
 			) : (
 				<></>
 			)}
-			{allowBuildingSelection &&
-			selectedBuildingB &&
-			selectedBuildingB !== undefined ? (
+			{allowBuildingSelection && selectedBuildingB ? (
 				<OverlayTable
 					selectedBuilding={selectedBuildingB}
 					loading={loading}
 					right={true}
+					fields={fieldsB}
 				/>
 			) : (
 				<></>
@@ -392,7 +401,7 @@ const MapCompare = (props) => {
 };
 
 const OverlayTable = (props) => {
-	const { selectedBuilding, loading, right } = props;
+	const { selectedBuilding, loading, right, fields } = props;
 	const classes = useStyles();
 
 	return (
@@ -426,7 +435,7 @@ const OverlayTable = (props) => {
 						{Object.keys(selectedBuilding)
 							.sort()
 							.map((colName) => {
-								if (colName === "guid") {
+								if (colName === "csv_guid") {
 									return null;
 								}
 								return (
@@ -437,11 +446,17 @@ const OverlayTable = (props) => {
 											{colName}
 										</TableCell>
 										<TableCell align="center">
-											{selectedBuilding[colName] === undefined ||
-											selectedBuilding[colName] === null ||
-											selectedBuilding[colName] === ""
-												? "-"
-												: selectedBuilding[colName]}
+											{colName === "max_state"
+												? maxStateMapping(
+														fields,
+														selectedBuilding[colName],
+														selectedBuilding["sw_max_state"],
+												  )
+												: selectedBuilding[colName] === undefined ||
+												    selectedBuilding[colName] === null ||
+												    selectedBuilding[colName] === ""
+												  ? "-" // Fallback value for undefined, null, or empty strings
+												  : selectedBuilding[colName]}
 										</TableCell>
 									</TableRow>
 								);

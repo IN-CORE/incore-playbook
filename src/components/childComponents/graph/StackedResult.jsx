@@ -23,37 +23,37 @@ export function StackedResult(props) {
 			"DS_0" in entry && entry.DS_0 >= 0
 				? entry.DS_0
 				: "Insignificant" in entry && entry.Insignificant >= 0
-				  ? entry.Insignificant
-				  : "Affected" in entry && entry.Affected >= 0
-				    ? entry.Affected
-				    : 0,
+					? entry.Insignificant
+					: "Affected" in entry && entry.Affected >= 0
+						? entry.Affected
+						: 0,
 		);
 		DS_1.push(
 			"DS_1" in entry && entry.DS_1 >= 0
 				? entry.DS_1
 				: "Moderate" in entry && entry.Moderate >= 0
-				  ? entry.Moderate
-				  : "Minor" in entry && entry.Minor >= 0
-				    ? entry.Minor
-				    : 0,
+					? entry.Moderate
+					: "Minor" in entry && entry.Minor >= 0
+						? entry.Minor
+						: 0,
 		);
 		DS_2.push(
 			"DS_2" in entry && entry.DS_2 >= 0
 				? entry.DS_2
 				: "Extensive" in entry && entry.Extensive >= 0
-				  ? entry.Extensive
-				  : "Major" in entry && entry.Major >= 0
-				    ? entry.Major
-				    : 0,
+					? entry.Extensive
+					: "Major" in entry && entry.Major >= 0
+						? entry.Major
+						: 0,
 		);
 		DS_3.push(
 			"DS_3" in entry && entry.DS_3 >= 0
 				? entry.DS_3
 				: "Complete" in entry && entry.Complete >= 0
-				  ? entry.Complete
-				  : "Destroyed" in entry && entry.Destroyed >= 0
-				    ? entry.Destroyed
-				    : 0,
+					? entry.Complete
+					: "Destroyed" in entry && entry.Destroyed >= 0
+						? entry.Destroyed
+						: 0,
 		);
 		totals.push(DS_0[idx] + DS_1[idx] + DS_2[idx] + DS_3[idx]);
 		categories.push([entry.category.trim(), `(total: ${totals[idx]})`]);
@@ -63,22 +63,26 @@ export function StackedResult(props) {
 		labels: categories,
 		datasets: [
 			{
-				label: "DS_0",
+				label: "Insignificant" in categorySummary[0]? "Insignificant":
+					"Affected" in categorySummary[0]? "Affected": "DS_0",
 				backgroundColor: "#96B712",
 				data: DS_0,
 			},
 			{
-				label: "DS_1",
+				label: "Moderate" in categorySummary[0]? "Moderate":
+					"Minor" in categorySummary[0]? "Minor": "DS_1",
 				backgroundColor: "#F7C137",
 				data: DS_1,
 			},
 			{
-				label: "DS_2",
+				label: "Extensive" in categorySummary[0]? "Extensive":
+					"Major" in categorySummary[0]? "Major": "DS_2",
 				backgroundColor: "#ED8036",
 				data: DS_2,
 			},
 			{
-				label: "DS_3",
+				label: "Complete" in categorySummary[0]? "Complete":
+					"Destroyed" in categorySummary[0]? "Destroyed": "DS_3",
 				backgroundColor: "#D63649",
 				data: DS_3,
 			},
