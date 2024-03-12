@@ -12,7 +12,8 @@ import {
 } from "@material-ui/core";
 import LoadingOverlay from "react-loading-overlay";
 import { makeStyles } from "@material-ui/core/styles";
-import { maxStateMapping } from "../../../utils/common";
+import { maxStateMapping, fetchLegendsForLayers } from "../../../utils/common";
+import LayersIcon from "@material-ui/icons/Layers";
 
 export const MapContext = React.createContext({});
 
@@ -66,6 +67,41 @@ const useStyles = makeStyles({
 			display: "none", // Hide the scrollbar for IE
 		},
 	},
+	legendDiv: {
+		display: "flex",
+		flexDirection: "row",
+		padding: "10px",
+		gap: "20px",
+	},
+	legendTitle: {
+		fontWeight: "bold",
+		marginBottom: "0.4em",
+		marginLeft: "1em",
+	},
+	legendGroup: {
+		minWidth: "200px",
+		backgroundColor: "#f5f5f5",
+		borderRadius: "4px",
+		padding: "10px",
+	},
+	legendsContainer: {
+		maxHeight: "200px",
+		overflowY: "auto",
+		marginTop: "10px",
+	},
+	groupTitle: {
+		fontWeight: "bold",
+	},
+	layer: {
+		marginBottom: "10px",
+	},
+	layerName: {
+		fontWeight: "bold",
+	},
+	legendImage: {
+		maxWidth: "100%",
+		height: "auto",
+	},
 });
 
 const MapCompare = (props) => {
@@ -88,6 +124,11 @@ const MapCompare = (props) => {
 
 	const mapRefA = React.useRef();
 	const mapRefB = React.useRef();
+
+	// State variable to make legend collapsible
+	const [legendOpen, setLegendOpen] = React.useState(false);
+	// State variable to store legends
+	const [legends, setLegends] = React.useState([]);
 
 	React.useEffect(() => {
 		const {
@@ -178,6 +219,9 @@ const MapCompare = (props) => {
 
 		mapRefA.current = mapA;
 		mapRefB.current = mapB;
+
+		// Fetch legends for layers
+		setLegends(fetchLegendsForLayers(layersA));
 
 		return () => {
 			if (events) {
@@ -396,6 +440,39 @@ const MapCompare = (props) => {
 			) : (
 				<></>
 			)}
+			<div>
+				<button
+					onClick={() => setLegendOpen(!legendOpen)}
+					className={classes.legendButton}
+				>
+					<LayersIcon />
+				</button>
+				{legendOpen && (
+					<div style={{ backgroundColor: "#f5f5f5" }}>
+						<h3 className={classes.legendTitle}>Legends</h3>
+						<div className={classes.legendDiv}>
+							<br />
+							{Object.entries(legends).map(([layerGroupName, layers]) => (
+								<div key={layerGroupName} className={classes.legendGroup}>
+									<div className={classes.groupTitle}>{layerGroupName}</div>
+									<div className={classes.legendsContainer}>
+										{Object.entries(layers).map(([layerName, { url }]) => (
+											<div key={layerName} className={classes.layer}>
+												<div className={classes.layerName}>{layerName}</div>
+												<img
+													src={url}
+													alt={`Legend for ${layerName}`}
+													className={classes.legendImage}
+												/>
+											</div>
+										))}
+									</div>
+								</div>
+							))}
+						</div>
+					</div>
+				)}
+			</div>
 		</div>
 	);
 };
