@@ -43,7 +43,7 @@ export const ZoneSelectionMapDialog = (props) => {
 
 	useEffect(() => {
 		// Construct the WFS request URL
-		const wfsUrl = `${globalConfig.geoServerWFS}&typeName=${globalConfig.zoneLayer}`;
+		const wfsUrl = `${globalConfig.geoServerWFS}&typeName=${globalConfig.retrofitStrategyBuilder["zoneLayerId"]}`;
 
 		const zoneLayer = new VectorLayer({
 			title: "Zone",
@@ -96,7 +96,9 @@ export const ZoneSelectionMapDialog = (props) => {
 						center={fromLonLat(mapConfig.MAP_CENTER)}
 						layers={[basicLayers, zoneLayer]}
 						layerSwitcherOptions={{}}
-						activeLayerNames={"Zone"}
+						activeLayerNames={
+							globalConfig.retrofitStrategyBuilder["activeLayerNames"]
+						}
 						selectedZoneName={selectedZoneName}
 						setSelectedZoneName={setSelectedZoneName}
 						zoneNames={zoneNames}
@@ -110,7 +112,6 @@ export const ZoneSelectionMapDialog = (props) => {
 				<IncoreButton
 					onClick={() => {
 						handleSave(selectedZoneName);
-						setSelectedZoneName("");
 					}}
 					color="primary"
 					style={{ width: "auto" }}

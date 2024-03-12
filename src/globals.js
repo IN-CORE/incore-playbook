@@ -204,7 +204,6 @@ globals["inputDatasetTypes"] = {
 
 globals["geoServerWFS"] =
 	`${hostname}/geoserver/incore/ows?service=WFS&version=1.0.0&request=GetFeature&outputFormat=application/json`;
-globals["zoneLayer"] = "incore:65ea380c4331420c85ddb211";
 globals["maestroServiceBase"] = `${hostname}/maestro/slc/`;
 globals["allowedRegions"] = [
 	{
@@ -233,6 +232,7 @@ globals["testBed"] = "slc";
 
 globals["retrofitStrategyBuilder"] = {
 	maxStrategies: 4,
+	// TODO i would get that from the layer
 	displayValues: {
 		TaylorsvilleCity: "Taylorsville City",
 		RivertonCity: "Riverton City",
@@ -361,6 +361,8 @@ globals["retrofitStrategyBuilder"] = {
 			],
 		},
 	],
+	zoneLayerId: "incore:65ea380c4331420c85ddb211",
+	activeLayerNames: "Zone",
 };
 
 export { globals };
