@@ -83,11 +83,12 @@ const useStyles = makeStyles((theme) => ({
 	},
 	mapHeaderText: {
 		font: "Roboto",
-		fontSize: "16px",
-		fontWeight: 400,
+		fontSize: "20px",
+		fontWeight: 600,
 		lineHeight: "25.12px",
 		letterSpacing: "0.1px",
 		color: "#000000DE",
+		marginTop: "20px",
 	},
 	summaryTableCellLeft: {
 		borderRight: "1px solid #0000001F",
@@ -212,6 +213,14 @@ export default function RetrofitStrategySummary(props) {
 							className={classes.summaryTableSavedText}
 						>
 							{retrofitSummary.total.num_bldg}
+						</Typography>
+						<Typography
+							variant="body1"
+							className={classes.summaryTableSavedText}
+						>
+							{retrofitSummary.total.num_bldg_no_cost > 0
+								? `(${retrofitSummary.total.num_bldg_no_cost} buildings with no cost)`
+								: null}
 						</Typography>
 					</Grid>
 				</Grid>
@@ -380,6 +389,18 @@ export default function RetrofitStrategySummary(props) {
 													className={classes.tableSavedValue}
 												>
 													{retrofitSummary.by_rule[`${index}`].num_bldg}
+												</Typography>
+												<Typography
+													variant="body1"
+													className={classes.tableSavedValue}
+												>
+													{retrofitSummary.by_rule[`${index}`]
+														.num_bldg_no_cost > 0
+														? `(${
+																retrofitSummary.by_rule[`${index}`]
+																	.num_bldg_no_cost
+														  } buildings with no cost)`
+														: null}
 												</Typography>
 											</TableCell>
 										</TableRow>
