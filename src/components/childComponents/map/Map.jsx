@@ -53,13 +53,14 @@ const useStyles = makeStyles({
 	},
 	legend: {
 		position: "absolute",
-		bottom: "8.25%",
-		right: "42%",
+		top: "27%",
+		left: "0.5%",
 		backgroundColor: "white",
 		padding: "1%",
 		borderRadius: "5%",
 		boxShadow: "0 2px 10px rgba(0,0,0,0.3)",
-		opacity: 0.8,
+		maxHeight: "70%",
+		overflowY: "auto",
 		zIndex: 1000, // Added z-index here
 	},
 	legendButton: {
@@ -98,6 +99,8 @@ const Map = (props) => {
 
 	// State variable to make legend collapsible
 	const [legendOpen, setLegendOpen] = React.useState(false);
+	// State variable to store legends
+	const [legends, setLegends] = React.useState([]);
 
 	// var markerStyle = new Style({
 	// 	image: new CircleStyle({
@@ -123,6 +126,28 @@ const Map = (props) => {
 	// 	title: "BuildingPointMarker",
 	// 	source: vectorSource
 	// });
+
+	function fetchLegendsForLayers(layers) {
+		const legends = {};
+
+		layers.forEach((layerGrp) => {
+			const layersArray = layerGrp.getLayers().getArray();
+			const layerGrpTitle = layerGrp.getProperties().title;
+
+			// Check if there are valid layers in group, for example no need for Basemap group
+			if (layersArray[0].getSource().params_) {
+				legends[layerGrpTitle] = layersArray.reduce((acc, layer) => {
+					const layerJSON = layer.getSource().params_;
+					if (layerJSON) {
+						const legendUrl = `https://incore-dev.ncsa.illinois.edu/geoserver/wms?REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=20&HEIGHT=20&LAYER=${layerJSON.LAYERS}&STYLE=${layerJSON.STYLES}`;
+						acc[layer.get("title")] = { url: legendUrl };
+					}
+					return acc;
+				}, {});
+			}
+		});
+		return legends;
+	}
 
 	React.useEffect(() => {
 		const {
@@ -249,6 +274,8 @@ const Map = (props) => {
 
 		mapRef.current = map;
 
+		setLegends(fetchLegendsForLayers(layers));
+
 		return () => {
 			if (events) {
 				Object.entries(events).forEach(([event, handler]) => {
@@ -268,6 +295,31 @@ const Map = (props) => {
 			>
 				<LayersIcon />
 			</button>
+			{legendOpen && (
+				<div className={classes.legend}>
+					{Object.entries(legends).map(([layerGroupName, layers]) => (
+						<div key={layerGroupName} style={{ marginBottom: "20px" }}>
+							<h2>{layerGroupName}</h2>
+							<ul style={{ listStyleType: "none" }}>
+								{Object.entries(layers).map(([layerName, { url }]) => (
+									<li key={layerName} style={{ marginBottom: "10px" }}>
+										<div style={{ fontWeight: "bold" }}>{layerName}</div>
+										<img
+											src={url}
+											alt={`Legend for ${layerName}`}
+											style={{
+												maxWidth: "100%",
+												height: "auto",
+												marginTop: "5px",
+											}}
+										/>
+									</li>
+								))}
+							</ul>
+						</div>
+					))}
+				</div>
+			)}
 			<div
 				id={id}
 				style={{ width: "100%", height: "366px" }}
