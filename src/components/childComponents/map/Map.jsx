@@ -16,7 +16,7 @@ import {
 import LoadingOverlay from "react-loading-overlay";
 
 import LayerSwitcher from "./LayerSwitcher";
-import { maxStateMapping } from "../../../utils/common";
+import { maxStateMapping, fetchLegendsForLayers } from "../../../utils/common";
 
 const useStyles = makeStyles({
 	table: {
@@ -126,28 +126,6 @@ const Map = (props) => {
 	// 	title: "BuildingPointMarker",
 	// 	source: vectorSource
 	// });
-
-	function fetchLegendsForLayers(layers) {
-		const legends = {};
-
-		layers.forEach((layerGrp) => {
-			const layersArray = layerGrp.getLayers().getArray();
-			const layerGrpTitle = layerGrp.getProperties().title;
-
-			// Check if there are valid layers in group, for example no need for Basemap group
-			if (layersArray[0].getSource().params_) {
-				legends[layerGrpTitle] = layersArray.reduce((acc, layer) => {
-					const layerJSON = layer.getSource().params_;
-					if (layerJSON) {
-						const legendUrl = `https://incore-dev.ncsa.illinois.edu/geoserver/wms?REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=20&HEIGHT=20&LAYER=${layerJSON.LAYERS}&STYLE=${layerJSON.STYLES}`;
-						acc[layer.get("title")] = { url: legendUrl };
-					}
-					return acc;
-				}, {});
-			}
-		});
-		return legends;
-	}
 
 	React.useEffect(() => {
 		const {
