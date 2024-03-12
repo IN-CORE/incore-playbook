@@ -299,16 +299,16 @@ const Map = (props) => {
 				<div className={classes.legend}>
 					{Object.entries(legends).map(([layerGroupName, layers]) => (
 						<div key={layerGroupName} style={{ marginBottom: "20px" }}>
-							<h2>{layerGroupName}</h2>
+							<h3>{layerGroupName}</h3>
 							<ul style={{ listStyleType: "none" }}>
 								{Object.entries(layers).map(([layerName, { url }]) => (
 									<li key={layerName} style={{ marginBottom: "10px" }}>
-										<div style={{ fontWeight: "bold" }}>{layerName}</div>
+										<div>{layerName}</div>
 										<img
 											src={url}
 											alt={`Legend for ${layerName}`}
 											style={{
-												maxWidth: "100%",
+												maxWidth: "70%",
 												height: "auto",
 												marginTop: "5px",
 											}}
