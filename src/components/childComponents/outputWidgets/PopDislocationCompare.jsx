@@ -188,13 +188,13 @@ export default function PopDislocationCompare(props) {
 						center={fromLonLat(mapConfig.MAP_CENTER)}
 						layersA={[
 							basicLayersA,
-							hazardLayers[comparisonKey[0]],
+							hazardLayers[globalConfig.comparisonKey[0]],
 							damageLayersA1,
 							damageLayersA2,
 						]}
 						layersB={[
 							basicLayersB,
-							hazardLayers[comparisonKey[1]],
+							hazardLayers[globalConfig.comparisonKey[1]],
 							damageLayersB1,
 							damageLayersB2,
 						]}
@@ -252,16 +252,26 @@ export default function PopDislocationCompare(props) {
 					dislocationByHousingTypeContent ? (
 						<HuaResultsTableCompare
 							resultsJsonA={{
-								income: dislocationByIncomeContent[comparisonKey[0]],
-								race: dislocationByRaceContent[comparisonKey[0]],
-								tenure: dislocationByTenureContent[comparisonKey[0]],
-								housingType: dislocationByHousingTypeContent[comparisonKey[0]],
+								income:
+									dislocationByIncomeContent[globalConfig.comparisonKey[0]],
+								race: dislocationByRaceContent[globalConfig.comparisonKey[0]],
+								tenure:
+									dislocationByTenureContent[globalConfig.comparisonKey[0]],
+								housingType:
+									dislocationByHousingTypeContent[
+										globalConfig.comparisonKey[0]
+									],
 							}}
 							resultsJsonB={{
-								income: dislocationByIncomeContent[comparisonKey[1]],
-								race: dislocationByRaceContent[comparisonKey[1]],
-								tenure: dislocationByTenureContent[comparisonKey[1]],
-								housingType: dislocationByHousingTypeContent[comparisonKey[1]],
+								income:
+									dislocationByIncomeContent[globalConfig.comparisonKey[1]],
+								race: dislocationByRaceContent[globalConfig.comparisonKey[1]],
+								tenure:
+									dislocationByTenureContent[globalConfig.comparisonKey[1]],
+								housingType:
+									dislocationByHousingTypeContent[
+										globalConfig.comparisonKey[1]
+									],
 							}}
 						/>
 					) : (
