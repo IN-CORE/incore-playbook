@@ -26,15 +26,13 @@ export const ZoneSelectionMap = (props) => {
 		activeLayerNames,
 		selectedZoneName,
 		setSelectedZoneName,
-		zoneNames,
-		setZoneNames,
 	} = props;
 
 	const fallbackContainer = React.useRef();
 
 	const mapRef = React.useRef();
 	const [featuresByName, setFeaturesByName] = useState({});
-	// const [zoneNames, setZoneNames] = useState([]);
+	const [zoneNames, setZoneNames] = useState([]);
 	const [leftColumnZones, setLeftColumnZones] = useState([]);
 	const [rightColumnZones, setRightColumnZones] = useState([]);
 
@@ -139,39 +137,51 @@ export const ZoneSelectionMap = (props) => {
 	}, []);
 
 	React.useEffect(() => {
-		let zoneLayer = null;
-		layers.forEach((layer) => {
-			if (layer.getProperties().title === activeLayerNames) {
-				zoneLayer = layer;
-			}
-		});
+		const zoneLayer = layers.find(
+			(layer) => layer.getProperties().title === activeLayerNames,
+		);
 
-		let nameToFeatureMap = {};
 		if (zoneLayer) {
 			const zoneLayerSource = zoneLayer.getSource();
-			// Listen for when features have been added to the source
-			zoneLayerSource.on("featuresloadend", () => {
-				// populate the zone name list
+
+			const updateFeaturesAndNames = () => {
+				// Directly attempt to populate names and the name-to-feature map
 				const tmpZoneNames = zoneLayerSource
 					.getFeatures()
 					.map((feature) => feature.get("name"));
 				const uniqueSortedZoneNames = [...new Set(tmpZoneNames)].sort((a, b) =>
 					a.localeCompare(b),
 				);
+
+				// Update state with the unique, sorted zone names
 				setZoneNames(uniqueSortedZoneNames);
 
-				// store name to feature map for reverse lookup when radio button is selected map selection
-				zoneLayerSource.getFeatures().forEach((feature) => {
-					const name = feature.get("name");
-					if (name) {
-						nameToFeatureMap[name] = feature;
-					}
-				});
-			});
-		}
+				// Update the name-to-feature map for reverse lookup
+				const nameToFeatureMap = zoneLayerSource
+					.getFeatures()
+					.reduce((acc, feature) => {
+						const name = feature.get("name");
+						if (name) {
+							acc[name] = feature;
+						}
+						return acc;
+					}, {});
 
-		setFeaturesByName(nameToFeatureMap);
-	}, [layers]);
+				setFeaturesByName(nameToFeatureMap);
+			};
+
+			// Listen for changes on the source
+			zoneLayerSource.on("change", updateFeaturesAndNames);
+
+			// Initial update in case features are already loaded before the listener is attached
+			updateFeaturesAndNames();
+
+			return () => {
+				// Cleanup: remove the event listener
+				zoneLayerSource.un("change", updateFeaturesAndNames);
+			};
+		}
+	}, [layers, activeLayerNames]);
 
 	const handleChange = (event) => {
 		const selectedName = event.target.value;
@@ -182,8 +192,6 @@ export const ZoneSelectionMap = (props) => {
 
 		// Find and select the feature corresponding to the selected zone name
 		const featureToSelect = featuresByName[selectedName];
-		console.log(featureToSelect);
-		console.log(featuresByName);
 		if (featureToSelect) {
 			// Temporarily add the feature to the select interaction for highlighting
 			selectSingleClickRef.current.getFeatures().push(featureToSelect);
