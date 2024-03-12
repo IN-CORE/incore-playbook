@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Wrong naming of the component ViewResults [#352](https://github.com/IN-CORE/incore-playbook/issues/352)
 - Make max damage state consistent with table headers [#374](https://github.com/IN-CORE/incore-playbook/issues/374)
 - Compare selection style [#357](https://github.com/IN-CORE/incore-playbook/issues/357)
+- Fix damage comparison table alignment bug [#358](https://github.com/IN-CORE/incore-playbook/issues/358)
 
 ### Changed
 - Remove screenshot button on comparison interface [#364](https://github.com/IN-CORE/incore-playbook/issues/364)
