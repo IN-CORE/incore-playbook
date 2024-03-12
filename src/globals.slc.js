@@ -227,6 +227,7 @@ globals["inputDatasetTypes"].buildings = [
 		dispatchKey: "RECEIVE_BLDGS",
 	},
 ];
+globals["testBed"] = "slc";
 
 globals["retrofitStrategyBuilder"] = {
 	maxStrategies: 4,

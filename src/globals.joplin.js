@@ -206,7 +206,7 @@ globals["maestroServiceBase"] = `${hostname}/maestro/joplin/`;
 globals["allowedRegions"] = null;
 globals["testbedSpace"] = "commresiliencejoplin";
 globals["testbedGroup"] = "incore_joplin_user"; // incore_galveston_user, incore_joplin_user, incore_slc_user
-(globals["inputDatasetTypes"].buildings = [
+globals["inputDatasetTypes"].buildings = [
 	{
 		type: "ergo:buildingInventoryVer6",
 		format: "shapefile",
@@ -214,83 +214,86 @@ globals["testbedGroup"] = "incore_joplin_user"; // incore_galveston_user, incore
 		isSocioeconomics: false,
 		dispatchKey: "RECEIVE_BLDGS",
 	},
-]),
-	(globals["retrofitStrategyBuilder"] = {
-		maxStrategies: 4,
-		displayValues: {
-			"1percentannualchanceflood": "1 % Annual Chance Flood Hazard",
-			"0.2percentannualchanceflood": "0.2 % Annual Chance Flood Hazard",
-			otherfloodzone: "Other Flood Zones",
-			F1: "One-story single-family residential building on crawlspace foundation",
-			F2: "One-story multiple-family residential building on slab-on-grade foundation",
-			F3: "Two-Story single-family residential building on crawlspace foundation",
-			F4: "Two-Story multi-family residential building on slab-on-grade foundation",
-			elevatedBy5Feet: "Elevated by 5 feet",
-			elevatedBy10Feet: "Elevated by 10 feet",
+];
+
+globals["testBed"] = "jop";
+
+globals["retrofitStrategyBuilder"] = {
+	maxStrategies: 4,
+	displayValues: {
+		"1percentannualchanceflood": "1 % Annual Chance Flood Hazard",
+		"0.2percentannualchanceflood": "0.2 % Annual Chance Flood Hazard",
+		otherfloodzone: "Other Flood Zones",
+		F1: "One-story single-family residential building on crawlspace foundation",
+		F2: "One-story multiple-family residential building on slab-on-grade foundation",
+		F3: "Two-Story single-family residential building on crawlspace foundation",
+		F4: "Two-Story multi-family residential building on slab-on-grade foundation",
+		elevatedBy5Feet: "Elevated by 5 feet",
+		elevatedBy10Feet: "Elevated by 10 feet",
+	},
+	conditions: [
+		{
+			label: "Flood Zone",
+			type: "mapSelect",
+			key: "zone",
+			possibleOptions: [
+				{
+					label: "1 % Annual Chance Flood Hazard",
+					value: "1percentannualchanceflood",
+				},
+				{
+					label: "0.2 % Annual Chance Flood Hazard",
+					value: "0.2percentannualchanceflood",
+				},
+				{ label: "Other Flood Zones", value: "otherfloodzone" },
+			],
 		},
-		conditions: [
-			{
-				label: "Flood Zone",
-				type: "mapSelect",
-				key: "zone",
-				possibleOptions: [
-					{
-						label: "1 % Annual Chance Flood Hazard",
-						value: "1percentannualchanceflood",
-					},
-					{
-						label: "0.2 % Annual Chance Flood Hazard",
-						value: "0.2percentannualchanceflood",
-					},
-					{ label: "Other Flood Zones", value: "otherfloodzone" },
-				],
-			},
-			{
-				label: "Building Archetypes",
-				type: "select",
-				key: "archetype",
-				possibleOptions: [
-					{
-						label:
-							"One-story single-family residential building on crawlspace foundation",
-						value: "F1",
-					},
-					{
-						label:
-							"One-story multiple-family residential building on slab-on-grade foundation",
-						value: "F2",
-					},
-					{
-						label:
-							"Two-Story single-family residential building on crawlspace foundation",
-						value: "F3",
-					},
-					{
-						label:
-							"Two-Story multi-family residential building on slab-on-grade foundation",
-						value: "F4",
-					},
-				],
-			},
-			{
-				label: "% number of Buildings",
-				type: "number",
-				key: "percent",
-				possibleOptions: null,
-			},
-		],
-		retrofitMethods: [
-			{
-				label: "",
-				type: "select",
-				key: "retrofitMethod",
-				possibleOptions: [
-					{ label: "Elevated by 5 feet", value: "elevatedBy5Feet" },
-					{ label: "Elevated by 10 feet", value: "elevatedBy10Feet" },
-				],
-			},
-		],
-	});
+		{
+			label: "Building Archetypes",
+			type: "select",
+			key: "archetype",
+			possibleOptions: [
+				{
+					label:
+						"One-story single-family residential building on crawlspace foundation",
+					value: "F1",
+				},
+				{
+					label:
+						"One-story multiple-family residential building on slab-on-grade foundation",
+					value: "F2",
+				},
+				{
+					label:
+						"Two-Story single-family residential building on crawlspace foundation",
+					value: "F3",
+				},
+				{
+					label:
+						"Two-Story multi-family residential building on slab-on-grade foundation",
+					value: "F4",
+				},
+			],
+		},
+		{
+			label: "% number of Buildings",
+			type: "number",
+			key: "percent",
+			possibleOptions: null,
+		},
+	],
+	retrofitMethods: [
+		{
+			label: "",
+			type: "select",
+			key: "retrofitMethod",
+			possibleOptions: [
+				{ label: "Elevated by 5 feet", value: "elevatedBy5Feet" },
+				{ label: "Elevated by 10 feet", value: "elevatedBy10Feet" },
+			],
+		},
+	],
+};
 
 export { globals };
 

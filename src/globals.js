@@ -229,6 +229,8 @@ globals["inputDatasetTypes"].buildings = [
 	},
 ];
 
+globals["testBed"] = "slc";
+
 globals["retrofitStrategyBuilder"] = {
 	maxStrategies: 4,
 	displayValues: {

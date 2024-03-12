@@ -39,6 +39,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import { IncoreInputLabel } from "../styledComponents/IncoreInputLabel";
 import { IncoreTextField } from "../styledComponents/IncoreInput";
 import { ZoneSelectionMapDialog } from "./map/ZoneSelectionMapDialog";
+import RetrofitStrategySummary from "./RetrofitStrategySummary";
 import {
 	IncoreSelectBox,
 	IncoreMenuItem,
@@ -122,6 +123,7 @@ const useStyles = makeStyles((theme) => ({
 	},
 	tableSavedCell: {
 		padding: 0,
+		backgroundColor: "#FBFBFB",
 		border: "1px solid #E0E0E0",
 	},
 	tableUnSavedCell: {
@@ -251,6 +253,7 @@ export default function RetrofitStrategyBuilder(props) {
 		setAddedRows(updateRows);
 		setShowAddRetrofitStrategyRow(false);
 		setSelectedValues({});
+		setShowAddRetrofitStrategyRow(false);
 	};
 
 	const steps = [
@@ -493,6 +496,23 @@ export default function RetrofitStrategyBuilder(props) {
 	};
 
 	const handleSubmit = () => {
+		// prepare data
+		let payload = {
+			testbed: globalConfig.testbed,
+			rules: addedRows.length,
+			zones: [],
+			strtypes: [],
+			pcts: [],
+			retrofit: [],
+		};
+		// when new condition or retrofit method is added, the payload should be updated
+		addedRows.forEach((row) => {
+			payload.zones.push(row.zone);
+			payload.strtypes.push(row.archetype);
+			payload.pcts.push(row.percent);
+			payload.retrofit.push(row.retrofitMethod);
+		});
+
 		setLoading(true);
 		// make API call to save the strategy
 		let responseJson = {
@@ -519,8 +539,25 @@ export default function RetrofitStrategyBuilder(props) {
 				},
 			},
 		};
+		setRetrofitSummary(responseJson);
 		setActiveStep(activeStep + 1);
 		setLoading(false);
+	};
+
+	const handleCloseSummary = () => {
+		onRetrofitStrategyBuilderClose();
+
+		setActiveStep(0);
+		// Step 1
+		setName("");
+		setDescription("");
+		// Step 2
+		setAddedRows([]);
+		setNumRow(1);
+		setSelectedValues({});
+		setCurrentlyEditing(null);
+		// Step 3
+		setRetrofitSummary({});
 	};
 
 	return (
@@ -636,7 +673,12 @@ export default function RetrofitStrategyBuilder(props) {
 															scope="row"
 															className={classes.tableSavedCell}
 														>
-															<Grid container alignItems="center" spacing={0}>
+															<Grid
+																container
+																alignItems="center"
+																justifyContent="center"
+																spacing={0}
+															>
 																<StopRoundedIcon
 																	fontSize="large"
 																	style={{ color: colorCodes[index] }}
@@ -664,7 +706,7 @@ export default function RetrofitStrategyBuilder(props) {
 																						className={classes.tableSavedValue}
 																					>
 																						{row[key].type === "number"
-																							? row[key].value
+																							? row[key].value + " %"
 																							: globalConfig
 																									.retrofitStrategyBuilder
 																									.displayValues[
@@ -793,6 +835,19 @@ export default function RetrofitStrategyBuilder(props) {
 								</Grid>
 							</Grid>
 						) : null}
+
+						{activeStep === 2 ? (
+							<RetrofitStrategySummary
+								addedStrategies={addedRows}
+								retrofitSummary={retrofitSummary}
+								colorCodes={colorCodes}
+								conditionKeys={conditionKeys}
+								retrofitMethodKeys={retrofitMethodKeys}
+								name={name}
+								description={description}
+							/>
+						) : null}
+
 						<ZoneSelectionMapDialog
 							open={mapDialogOpen}
 							handleClose={() => setMapDialogOpen(false)}
@@ -818,15 +873,22 @@ export default function RetrofitStrategyBuilder(props) {
 					</Grid>
 				</LoadingOverlay>
 			</DialogContent>
-			<DialogActions disableSpacing style={{ justifyContent: "space-between" }}>
-				<Button
-					disabled={activeStep === 0 || loading}
-					variant="outlined"
-					onClick={() => setActiveStep(activeStep - 1)}
-					startIcon={<ArrowBackIcon />}
-				>
-					Previous
-				</Button>
+			<DialogActions
+				disableSpacing
+				style={{
+					justifyContent: activeStep === 2 ? "flex-end" : "space-between",
+				}}
+			>
+				{activeStep < 2 ? (
+					<Button
+						disabled={activeStep === 0}
+						variant="outlined"
+						onClick={() => setActiveStep(activeStep - 1)}
+						startIcon={<ArrowBackIcon />}
+					>
+						Previous
+					</Button>
+				) : null}
 				<Button
 					disabled={
 						(activeStep === 0
@@ -842,7 +904,7 @@ export default function RetrofitStrategyBuilder(props) {
 							? handleNext
 							: activeStep === 1
 							  ? handleSubmit
-							  : onRetrofitStrategyBuilderClose
+							  : handleCloseSummary
 					}
 				>
 					{activeStep === 0
