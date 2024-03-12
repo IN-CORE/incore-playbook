@@ -104,39 +104,33 @@ export default function BldgDamageCompare(props) {
 			hazardLayers &&
 			damageLayersA &&
 			damageLayersB ? (
-				<Container
-					className="mapContainer"
-					disableGutters
-					style={{ height: `${mapHeight}px` }}
-				>
-					<MapCompare
-						className="fillContainer"
-						zoom={mapConfig.ZOOM}
-						minZoom={mapConfig.MIN_ZOOM}
-						maxZoom={mapConfig.MAX_ZOOM}
-						extent={applyTransform(
-							mapConfig.MAP_BOUNDS,
-							getTransform("EPSG:4326", "EPSG:3857"),
-						)}
-						center={fromLonLat(mapConfig.MAP_CENTER)}
-						layersA={[
-							basicLayersA,
-							hazardLayers[globalConfig.comparisonKey[0]],
-							damageLayersA,
-						]}
-						layersB={[
-							basicLayersB,
-							hazardLayers[globalConfig.comparisonKey[1]],
-							damageLayersB,
-						]}
-						layerSwitcherOptionsA={{}}
-						layerSwitcherOptionsB={{}}
-						height={mapHeight}
-						allowBuildingSelection={true}
-						fieldsA={bldgDmgSummaryTableContents[globalConfig.comparisonKey[0]]}
-						fieldsB={bldgDmgSummaryTableContents[globalConfig.comparisonKey[1]]}
-					/>
-				</Container>
+				<MapCompare
+					className="fillContainer"
+					zoom={mapConfig.ZOOM}
+					minZoom={mapConfig.MIN_ZOOM}
+					maxZoom={mapConfig.MAX_ZOOM}
+					extent={applyTransform(
+						mapConfig.MAP_BOUNDS,
+						getTransform("EPSG:4326", "EPSG:3857"),
+					)}
+					center={fromLonLat(mapConfig.MAP_CENTER)}
+					layersA={[
+						basicLayersA,
+						hazardLayers[comparisonKey[0]],
+						damageLayersA,
+					]}
+					layersB={[
+						basicLayersB,
+						hazardLayers[comparisonKey[1]],
+						damageLayersB,
+					]}
+					layerSwitcherOptionsA={{}}
+					layerSwitcherOptionsB={{}}
+					height={mapHeight}
+					allowBuildingSelection={true}
+					fieldsA={bldgDmgSummaryTableContents[comparisonKey[0]]}
+					fieldsB={bldgDmgSummaryTableContents[comparisonKey[1]]}
+				/>
 			) : (
 				<></>
 			)}

@@ -3,6 +3,9 @@ import { Map as OLMap, View } from "ol";
 import Overlay from "ol/Overlay";
 import LayerSwitcher from "./LayerSwitcher";
 import {
+	Grid,
+	Container,
+	Collapse,
 	Table,
 	TableBody,
 	TableCell,
@@ -82,7 +85,6 @@ const useStyles = makeStyles({
 		minWidth: "200px",
 		backgroundColor: "#f5f5f5",
 		borderRadius: "4px",
-		padding: "10px",
 	},
 	legendsContainer: {
 		maxHeight: "200px",
@@ -400,80 +402,102 @@ const MapCompare = (props) => {
 	}
 
 	return (
-		<div style={{ position: "relative" }}>
-			<div style={{ width: "100%", height: `${height}px`, display: "flex" }}>
-				<div
-					className={`ol-map ${className}`}
-					ref={fallbackContainerA}
-					style={{ width: "50%", height: `${height}px`, marginRight: "5px" }}
+		<Grid container styles={{ marginBottom: "2em" }}>
+			<Grid item xs={12}>
+				<Container
+					className="mapContainer"
+					disableGutters
+					style={{ height: `${height}px` }}
 				>
-					<MapContext.Provider value={{ map: mapRefA.current }}>
-						{children}
-					</MapContext.Provider>
-				</div>
-				<div
-					className={`ol-map ${className}`}
-					ref={fallbackContainerB}
-					style={{ width: "50%", height: `${height}px`, marginLeft: "5px" }}
-				>
-					<MapContext.Provider value={{ map: mapRefB.current }}>
-						{children}
-					</MapContext.Provider>
-				</div>
-			</div>
-			{allowBuildingSelection && selectedBuildingA ? (
-				<OverlayTable
-					selectedBuilding={selectedBuildingA}
-					loading={loading}
-					fields={fieldsA}
-				/>
-			) : (
-				<></>
-			)}
-			{allowBuildingSelection && selectedBuildingB ? (
-				<OverlayTable
-					selectedBuilding={selectedBuildingB}
-					loading={loading}
-					right={true}
-					fields={fieldsB}
-				/>
-			) : (
-				<></>
-			)}
-			<div>
-				<button
-					onClick={() => setLegendOpen(!legendOpen)}
-					className={classes.legendButton}
-				>
-					<LayersIcon />
-				</button>
-				{legendOpen && (
-					<div style={{ backgroundColor: "#f5f5f5" }}>
-						<h3 className={classes.legendTitle}>Legends</h3>
-						<div className={classes.legendDiv}>
-							<br />
-							{Object.entries(legends).map(([layerGroupName, layers]) => (
-								<div key={layerGroupName} className={classes.legendGroup}>
-									<div className={classes.groupTitle}>{layerGroupName}</div>
-									<div className={classes.legendsContainer}>
-										{Object.entries(layers).map(([layerName, { url }]) => (
-											<div key={layerName} className={classes.layer}>
-												<div className={classes.layerName}>{layerName}</div>
-												<img
-													src={url}
-													alt={`Legend for ${layerName}`}
-													className={classes.legendImage}
-												/>
-											</div>
-										))}
-									</div>
-								</div>
-							))}
+					<div style={{ position: "relative" }}>
+						<div
+							style={{ width: "100%", height: `${height}px`, display: "flex" }}
+						>
+							<div
+								className={`ol-map ${className}`}
+								ref={fallbackContainerA}
+								style={{
+									width: "50%",
+									height: `${height}px`,
+									marginRight: "5px",
+								}}
+							>
+								<MapContext.Provider value={{ map: mapRefA.current }}>
+									{children}
+								</MapContext.Provider>
+							</div>
+							<div
+								className={`ol-map ${className}`}
+								ref={fallbackContainerB}
+								style={{
+									width: "50%",
+									height: `${height}px`,
+									marginLeft: "5px",
+								}}
+							>
+								<MapContext.Provider value={{ map: mapRefB.current }}>
+									{children}
+								</MapContext.Provider>
+							</div>
 						</div>
+						{allowBuildingSelection && selectedBuildingA ? (
+							<OverlayTable
+								selectedBuilding={selectedBuildingA}
+								loading={loading}
+								fields={fieldsA}
+							/>
+						) : (
+							<></>
+						)}
+						{allowBuildingSelection && selectedBuildingB ? (
+							<OverlayTable
+								selectedBuilding={selectedBuildingB}
+								loading={loading}
+								right={true}
+								fields={fieldsB}
+							/>
+						) : (
+							<></>
+						)}
 					</div>
-				)}
-			</div>
-		</div>
+				</Container>
+			</Grid>
+			<Grid item xs={12}>
+				<div>
+					<button
+						onClick={() => setLegendOpen(!legendOpen)}
+						className={classes.legendButton}
+					>
+						<LayersIcon />
+					</button>
+					<Collapse in={legendOpen}>
+						<div style={{ backgroundColor: "#f5f5f5" }}>
+							<h3 className={classes.legendTitle}>Legends</h3>
+							<div className={classes.legendDiv}>
+								<br />
+								{Object.entries(legends).map(([layerGroupName, layers]) => (
+									<div key={layerGroupName} className={classes.legendGroup}>
+										<div className={classes.groupTitle}>{layerGroupName}</div>
+										<div className={classes.legendsContainer}>
+											{Object.entries(layers).map(([layerName, { url }]) => (
+												<div key={layerName} className={classes.layer}>
+													<div className={classes.layerName}>{layerName}</div>
+													<img
+														src={url}
+														alt={`Legend for ${layerName}`}
+														className={classes.legendImage}
+													/>
+												</div>
+											))}
+										</div>
+									</div>
+								))}
+							</div>
+						</div>
+					</Collapse>
+				</div>
+			</Grid>
+		</Grid>
 	);
 };
 

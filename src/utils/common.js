@@ -421,7 +421,7 @@ export const fetchLegendsForLayers = (layers) => {
 		const layerGrpTitle = layerGrp.getProperties().title;
 
 		// Check if there are valid layers in group, for example no need for Basemap group
-		if (layersArray[0].getSource().params_) {
+		if (layersArray.length !== 0 && layersArray[0].getSource().params_) {
 			legends[layerGrpTitle] = layersArray.reduce((acc, layer) => {
 				const layerJSON = layer.getSource().params_;
 				if (layerJSON) {
