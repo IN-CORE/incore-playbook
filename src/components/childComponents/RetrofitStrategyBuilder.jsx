@@ -70,8 +70,8 @@ const useStyles = makeStyles((theme) => ({
 		lineHeight: "26px",
 		letterSpacing: "0.46px",
 		textAlign: "left",
-		borderColor: "#1976D2",
-		color: "#1976D2",
+		borderColor: "#00619D",
+		color: "#00619D",
 		marginTop: "20px",
 	},
 	nxtBuildBtn: {
@@ -80,15 +80,12 @@ const useStyles = makeStyles((theme) => ({
 		fontWeight: 500,
 		lineHeight: "24px",
 		letterSpacing: "0.4px",
-		backgroundColor: "#1976D2",
+		backgroundColor: "#00619D",
 		color: "#FFFFFF",
 	},
 	instructions: {
 		marginTop: theme.spacing(1),
 		marginBottom: theme.spacing(1),
-	},
-	queryBuilderDialog: {
-		height: "911px",
 	},
 	table: {
 		minWidth: 650,
@@ -412,7 +409,7 @@ export default function RetrofitStrategyBuilder(props) {
 															setAddError(null);
 														}
 													}}
-													inputProps={{ min: 0, max: 100, step: 0.01 }}
+													inputProps={{ min: 0, max: 100, step: 1 }}
 													InputProps={{
 														endAdornment: (
 															<InputAdornment position="end">%</InputAdornment>
@@ -608,7 +605,9 @@ export default function RetrofitStrategyBuilder(props) {
 		<Dialog
 			open={strategyBuilderModalStatus}
 			onClose={onRetrofitStrategyBuilderClose}
-			className={classes.queryBuilderDialog}
+			PaperProps={{
+				style: { minHeight: "600px" }, // Set your desired minimum height here
+			}}
 			maxWidth="lg"
 			fullWidth
 			scroll="paper"
