@@ -9,7 +9,7 @@ import Cookies from "universal-cookie";
 import { setMenuState } from "../actions/layout";
 
 import HeaderWithMenu from "../components/childComponents/navigation/HeaderWithMenu";
-import { isAuthorized } from "../utils/common";
+import { isAuthorized, PLAYBOOK_AUTH_COOKIE } from "../utils/common";
 
 import { useDispatch, useSelector } from "react-redux";
 import { IncoreLink } from "./styledComponents/IncoreLink";
@@ -151,7 +151,7 @@ export const Login = () => {
 
 		if (tokenJson["access_token"] !== undefined) {
 			// set the cookie
-			cookies.set("Authorization", `bearer ${tokenJson["access_token"]}`, {
+			cookies.set(PLAYBOOK_AUTH_COOKIE, `bearer ${tokenJson["access_token"]}`, {
 				maxAge: tokenJson["expires_in"],
 				path: "/",
 				// TODO these flag doesn't work; it only affects cross site (localhost to geoserver) though
