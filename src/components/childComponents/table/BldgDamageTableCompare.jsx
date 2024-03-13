@@ -92,6 +92,10 @@ function calcPercentage(partialValue, totalValue) {
 	return ` (${parseFloat(((100 * partialValue) / totalValue).toFixed(2))}%)`;
 }
 
+function checkNA(obj, key) {
+	return obj[key] === NA_value || !(key in obj);
+}
+
 export function BldgDamageTableCompare(props) {
 	const { fieldsA, fieldsB } = props;
 
@@ -232,7 +236,7 @@ export function BldgDamageTableCompare(props) {
 														key={`${idxx}-insig`}
 														className={classes.tableBodyCell}
 													>
-														{clusterItemA[tableHeadersA[0]] === NA_value
+														{checkNA(clusterItemA, tableHeadersA[0])
 															? "-"
 															: clusterItemA[tableHeadersA[0]]}
 													</TableCell>
@@ -240,7 +244,7 @@ export function BldgDamageTableCompare(props) {
 														key={`${idxx}-mod`}
 														className={classes.tableBodyCell}
 													>
-														{clusterItemA[tableHeadersA[1]] === NA_value
+														{checkNA(clusterItemA, tableHeadersA[1])
 															? "-"
 															: clusterItemA[tableHeadersA[1]]}
 													</TableCell>
@@ -248,7 +252,7 @@ export function BldgDamageTableCompare(props) {
 														key={`${idxx}-extensi`}
 														className={classes.tableBodyCell}
 													>
-														{clusterItemA[tableHeadersA[2]] === NA_value
+														{checkNA(clusterItemA, tableHeadersA[2])
 															? "-"
 															: clusterItemA[tableHeadersA[2]]}
 													</TableCell>
@@ -256,7 +260,7 @@ export function BldgDamageTableCompare(props) {
 														key={`${idxx}-comp`}
 														className={classes.tableBodyCell}
 													>
-														{clusterItemA[tableHeadersA[3]] === NA_value
+														{checkNA(clusterItemA, tableHeadersA[3])
 															? "-"
 															: clusterItemA[tableHeadersA[3]]}
 													</TableCell>
@@ -307,7 +311,7 @@ export function BldgDamageTableCompare(props) {
 														key={`${idxx}-insig`}
 														className={classes.tableBodyCell}
 													>
-														{clusterItemB[tableHeadersB[0]] === NA_value
+														{checkNA(clusterItemB, tableHeadersB[0])
 															? "-"
 															: clusterItemB[tableHeadersB[0]]}
 													</TableCell>
@@ -315,7 +319,7 @@ export function BldgDamageTableCompare(props) {
 														key={`${idxx}-mod`}
 														className={classes.tableBodyCell}
 													>
-														{clusterItemB[tableHeadersB[1]] === NA_value
+														{checkNA(clusterItemB, tableHeadersB[1])
 															? "-"
 															: clusterItemB[tableHeadersB[1]]}
 													</TableCell>
@@ -323,7 +327,7 @@ export function BldgDamageTableCompare(props) {
 														key={`${idxx}-extensi`}
 														className={classes.tableBodyCell}
 													>
-														{clusterItemB[tableHeadersB[2]] === NA_value
+														{checkNA(clusterItemB, tableHeadersB[2])
 															? "-"
 															: clusterItemB[tableHeadersB[2]]}
 													</TableCell>
@@ -331,7 +335,7 @@ export function BldgDamageTableCompare(props) {
 														key={`${idxx}-comp`}
 														className={classes.tableBodyCell}
 													>
-														{clusterItemB[tableHeadersB[3]] === NA_value
+														{checkNA(clusterItemB, tableHeadersB[3])
 															? "-"
 															: clusterItemB[tableHeadersB[3]]}
 													</TableCell>
@@ -353,8 +357,8 @@ export function BldgDamageTableCompare(props) {
 														key={`${idxx}-insig`}
 														className={classes.tableBodyCell}
 													>
-														{clusterItemA[tableHeadersA[0]] === NA_value ||
-														clusterItemB[tableHeadersB[0]] === NA_value
+														{checkNA(clusterItemA, tableHeadersA[0]) ||
+														checkNA(clusterItemB, tableHeadersB[0])
 															? "-"
 															: parseFloat(clusterItemB[tableHeadersB[0]]) -
 																		parseFloat(clusterItemA[tableHeadersA[0]]) >
@@ -370,8 +374,8 @@ export function BldgDamageTableCompare(props) {
 														key={`${idxx}-mod`}
 														className={classes.tableBodyCell}
 													>
-														{clusterItemA[tableHeadersA[1]] === NA_value ||
-														clusterItemB[tableHeadersB[1]] === NA_value
+														{checkNA(clusterItemA, tableHeadersA[1]) ||
+														checkNA(clusterItemB, tableHeadersB[1])
 															? "-"
 															: parseFloat(clusterItemB[tableHeadersB[1]]) -
 																		parseFloat(clusterItemA[tableHeadersA[1]]) >
@@ -387,8 +391,8 @@ export function BldgDamageTableCompare(props) {
 														key={`${idxx}-extensi`}
 														className={classes.tableBodyCell}
 													>
-														{clusterItemA[tableHeadersA[2]] === NA_value ||
-														clusterItemB[tableHeadersB[2]] === NA_value
+														{checkNA(clusterItemA, tableHeadersA[2]) ||
+														checkNA(clusterItemB, tableHeadersB[2])
 															? "-"
 															: parseFloat(clusterItemB[tableHeadersB[2]]) -
 																		parseFloat(clusterItemA[tableHeadersA[2]]) >
@@ -404,8 +408,8 @@ export function BldgDamageTableCompare(props) {
 														key={`${idxx}-comp`}
 														className={classes.tableBodyCell}
 													>
-														{clusterItemA[tableHeadersA[3]] === NA_value ||
-														clusterItemB[tableHeadersB[3]] === NA_value
+														{checkNA(clusterItemA, tableHeadersA[3]) ||
+														checkNA(clusterItemB, tableHeadersB[3])
 															? "-"
 															: parseFloat(clusterItemB[tableHeadersA[3]]) -
 																		parseFloat(clusterItemA[tableHeadersA[3]]) >
@@ -451,7 +455,7 @@ export function BldgDamageTableCompare(props) {
 										className={classes.tableBodyCell}
 										style={{ fontWeight: 500, backgroundColor: "#EEF3F5" }}
 									>
-										{categoryItemA[tableHeadersA[0]] === NA_value
+										{checkNA(categoryItemA, tableHeadersA[0])
 											? "-"
 											: categoryItemA[tableHeadersA[0]]}
 									</TableCell>
@@ -460,7 +464,7 @@ export function BldgDamageTableCompare(props) {
 										className={classes.tableBodyCell}
 										style={{ fontWeight: 500, backgroundColor: "#EEF3F5" }}
 									>
-										{categoryItemA[tableHeadersA[1]] === NA_value
+										{checkNA(categoryItemA, tableHeadersA[1])
 											? "-"
 											: categoryItemA[tableHeadersA[1]]}
 									</TableCell>
@@ -469,7 +473,7 @@ export function BldgDamageTableCompare(props) {
 										className={classes.tableBodyCell}
 										style={{ fontWeight: 500, backgroundColor: "#EEF3F5" }}
 									>
-										{categoryItemA[tableHeadersA[2]] === NA_value
+										{checkNA(categoryItemA, tableHeadersA[2])
 											? "-"
 											: categoryItemA[tableHeadersA[2]]}
 									</TableCell>
@@ -478,7 +482,7 @@ export function BldgDamageTableCompare(props) {
 										className={classes.tableBodyCell}
 										style={{ fontWeight: 500, backgroundColor: "#EEF3F5" }}
 									>
-										{categoryItemA[tableHeadersA[3]] === NA_value
+										{checkNA(categoryItemA, tableHeadersA[3])
 											? "-"
 											: categoryItemA[tableHeadersA[3]]}
 									</TableCell>
@@ -532,7 +536,7 @@ export function BldgDamageTableCompare(props) {
 										className={classes.tableBodyCell}
 										style={{ fontWeight: 500, backgroundColor: "#EEF3F5" }}
 									>
-										{categoryItemB[tableHeadersB[0]] === NA_value
+										{checkNA(categoryItemB, tableHeadersB[0])
 											? "-"
 											: categoryItemB[tableHeadersB[0]]}
 									</TableCell>
@@ -541,7 +545,7 @@ export function BldgDamageTableCompare(props) {
 										className={classes.tableBodyCell}
 										style={{ fontWeight: 500, backgroundColor: "#EEF3F5" }}
 									>
-										{categoryItemB[tableHeadersB[1]] === NA_value
+										{checkNA(categoryItemB, tableHeadersB[1])
 											? "-"
 											: categoryItemB[tableHeadersB[1]]}
 									</TableCell>
@@ -550,7 +554,7 @@ export function BldgDamageTableCompare(props) {
 										className={classes.tableBodyCell}
 										style={{ fontWeight: 500, backgroundColor: "#EEF3F5" }}
 									>
-										{categoryItemB[tableHeadersB[2]] === NA_value
+										{checkNA(categoryItemB, tableHeadersB[2])
 											? "-"
 											: categoryItemB[tableHeadersB[2]]}
 									</TableCell>
@@ -559,7 +563,7 @@ export function BldgDamageTableCompare(props) {
 										className={classes.tableBodyCell}
 										style={{ fontWeight: 500, backgroundColor: "#EEF3F5" }}
 									>
-										{categoryItemB[tableHeadersB[3]] === NA_value
+										{checkNA(categoryItemB, tableHeadersB[3])
 											? "-"
 											: categoryItemB[tableHeadersB[3]]}
 									</TableCell>
@@ -581,8 +585,8 @@ export function BldgDamageTableCompare(props) {
 										className={classes.tableBodyCell}
 										style={{ fontWeight: 500, backgroundColor: "#EEF3F5" }}
 									>
-										{categoryItemA[tableHeadersA[0]] === NA_value ||
-										categoryItemB[tableHeadersB[0]] === NA_value
+										{checkNA(categoryItemA, tableHeadersA[0]) ||
+										checkNA(categoryItemB, tableHeadersB[0])
 											? "-"
 											: parseFloat(categoryItemB[tableHeadersB[0]]) -
 														parseFloat(categoryItemA[tableHeadersA[0]]) >
@@ -599,8 +603,8 @@ export function BldgDamageTableCompare(props) {
 										className={classes.tableBodyCell}
 										style={{ fontWeight: 500, backgroundColor: "#EEF3F5" }}
 									>
-										{categoryItemA[tableHeadersA[1]] === NA_value ||
-										categoryItemB[tableHeadersB[1]] === NA_value
+										{checkNA(categoryItemA, tableHeadersA[1]) ||
+										checkNA(categoryItemB, tableHeadersB[1])
 											? "-"
 											: parseFloat(categoryItemB[tableHeadersB[1]]) -
 														parseFloat(categoryItemA[tableHeadersA[1]]) >
@@ -617,8 +621,8 @@ export function BldgDamageTableCompare(props) {
 										className={classes.tableBodyCell}
 										style={{ fontWeight: 500, backgroundColor: "#EEF3F5" }}
 									>
-										{categoryItemA[tableHeadersA[2]] === NA_value ||
-										categoryItemB[tableHeadersB[2]] === NA_value
+										{checkNA(categoryItemA, tableHeadersA[2]) ||
+										checkNA(categoryItemB, tableHeadersB[2])
 											? "-"
 											: parseFloat(categoryItemB[tableHeadersB[2]]) -
 														parseFloat(categoryItemA[tableHeadersA[2]]) >
@@ -635,8 +639,8 @@ export function BldgDamageTableCompare(props) {
 										className={classes.tableBodyCell}
 										style={{ fontWeight: 500, backgroundColor: "#EEF3F5" }}
 									>
-										{categoryItemA[tableHeadersA[3]] === NA_value ||
-										categoryItemB[tableHeadersB[3]] === NA_value
+										{checkNA(categoryItemA, tableHeadersA[3]) ||
+										checkNA(categoryItemB, tableHeadersB[3])
 											? "-"
 											: parseFloat(categoryItemB[tableHeadersB[3]]) -
 														parseFloat(categoryItemA[tableHeadersA[3]]) >
