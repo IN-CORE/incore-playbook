@@ -13,27 +13,32 @@ export function receiveAttributes(type, json) {
 }
 
 export const UPDATE_ZONENAMES = "UPDATE_ZONENAMES";
-export const updateZoneNames = (zoneNames) => ({
-	type: UPDATE_ZONENAMES,
+export const updateZoneNames = (type, zoneNames) => ({
+	type: type,
 	zoneNames: zoneNames,
 	receivedAt: Date.now(),
 });
 
-export function fetchAttributes(
-	globalConfig = defaultGlobalConfig,
-	id,
-	sortColumnName,
-) {
-	let url = `${globalConfig.geoServerWFS}?service=WFS&version=1.0.0&request=GetFeature&outputFormat=JSON`;
-	url = `${url}&typename=${id}&sortBy=${sortColumnName}+D`;
+export function fetchZoneGeoJson(globalConfig = defaultGlobalConfig) {
+	const url = `${globalConfig.geoServerWFS}&typeName=${globalConfig.retrofitStrategyBuilder["zoneLayerId"]}`;
 	return (dispatch) => {
 		return fetch(url, { mode: "cors" }).then((response) => {
 			if (response.status === 200) {
 				response.json().then((json) => {
-					dispatch(receiveAttributes(RECEIVE_ATTRIBUTES, json["features"]));
+					const tmpZoneNames = json["features"].map(
+						(feature) => feature.properties.name,
+					);
+
+					// Removing duplicates and sorting the zone names alphabetically
+					const uniqueSortedZoneNames = [...new Set(tmpZoneNames)].sort(
+						(a, b) => a.localeCompare(b),
+					);
+
+					// Dispatching with the unique and sorted zoneNames list
+					dispatch(updateZoneNames(UPDATE_ZONENAMES, uniqueSortedZoneNames));
 				});
 			} else {
-				dispatch(receiveAttributes(RECEIVE_ATTRIBUTES, []));
+				dispatch(updateZoneNames(UPDATE_ZONENAMES, []));
 			}
 		});
 	};

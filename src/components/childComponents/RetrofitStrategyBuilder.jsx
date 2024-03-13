@@ -1,20 +1,20 @@
-import React from "react";
-import { useSelector } from "react-redux";
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 
 import {
 	Box,
 	Button,
 	Dialog,
-	DialogTitle,
-	DialogContent,
 	DialogActions,
+	DialogContent,
+	DialogTitle,
 	Divider,
 	Grid,
 	IconButton,
 	InputAdornment,
-	Stepper,
 	Step,
 	StepLabel,
+	Stepper,
 	Table,
 	TableBody,
 	TableCell,
@@ -41,10 +41,10 @@ import { IncoreTextField } from "../styledComponents/IncoreInput";
 import { ZoneSelectionMapDialog } from "./map/ZoneSelectionMapDialog";
 import RetrofitStrategySummary from "./RetrofitStrategySummary";
 import {
-	IncoreSelectBox,
 	IncoreMenuItem,
+	IncoreSelectBox,
 } from "../styledComponents/IncoreSelect";
-import { set } from "ol/transform";
+import { fetchZoneGeoJson as fetchZoneGeoJsonAction } from "../../actions/attributes";
 
 const useStyles = makeStyles((theme) => ({
 	closeButton: {
@@ -70,8 +70,8 @@ const useStyles = makeStyles((theme) => ({
 		lineHeight: "26px",
 		letterSpacing: "0.46px",
 		textAlign: "left",
-		borderColor: "#1976D2",
-		color: "#1976D2",
+		borderColor: "#00619D",
+		color: "#00619D",
 		marginTop: "20px",
 	},
 	nxtBuildBtn: {
@@ -80,15 +80,12 @@ const useStyles = makeStyles((theme) => ({
 		fontWeight: 500,
 		lineHeight: "24px",
 		letterSpacing: "0.4px",
-		backgroundColor: "#1976D2",
+		backgroundColor: "#00619D",
 		color: "#FFFFFF",
 	},
 	instructions: {
 		marginTop: theme.spacing(1),
 		marginBottom: theme.spacing(1),
-	},
-	queryBuilderDialog: {
-		height: "911px",
 	},
 	table: {
 		minWidth: 650,
@@ -170,7 +167,11 @@ export default function RetrofitStrategyBuilder(props) {
 	const [showAddRetrofitStrategyRow, setShowAddRetrofitStrategyRow] =
 		React.useState(false);
 	const [currentlyEditing, setCurrentlyEditing] = React.useState(null);
-	const [zoneNames, setZoneNames] = React.useState([]);
+	// get zone name for redux
+	const zoneNames = useSelector((state) => state.attribute.zoneNames);
+	const dispatch = useDispatch();
+	const fetchZoneGeoJson = (globalConfig) =>
+		dispatch(fetchZoneGeoJsonAction(globalConfig));
 
 	// Step 3
 	const [retrofitSummary, setRetrofitSummary] = React.useState({});
@@ -187,6 +188,11 @@ export default function RetrofitStrategyBuilder(props) {
 	globalConfig.retrofitStrategyBuilder.retrofitMethods.forEach((method) =>
 		retrofitMethodKeys.push(method.key),
 	);
+
+	useEffect(() => {
+		// get zone name for redux
+		fetchZoneGeoJson(globalConfig);
+	}, []);
 
 	const handleAddRow = () => {
 		// for any missing fields
@@ -262,8 +268,6 @@ export default function RetrofitStrategyBuilder(props) {
 		"Review Retrofit Summary",
 	];
 
-	const colorCodes = ["#00B654", "#FF88CF", "#36C1ED", "#FFB067", "#9C4EFF"];
-
 	const AddRetrofitStrategyRow = () => {
 		return (
 			<TableRow>
@@ -279,18 +283,14 @@ export default function RetrofitStrategyBuilder(props) {
 					>
 						{globalConfig.retrofitStrategyBuilder.conditions.map(
 							(condition) => {
-								if (
-									condition.type === "mapSelect" ||
-									condition.type === "select"
-								) {
+								// Map select need to fill in the options with zone name
+								if (condition.type === "mapSelect") {
 									let selectEndIconProp = {};
-									if (condition.type === "mapSelect") {
-										selectEndIconProp.IconComponent = () => (
-											<IconButton onClick={() => setMapDialogOpen(true)}>
-												<MapIcon />
-											</IconButton>
-										);
-									}
+									selectEndIconProp.IconComponent = () => (
+										<IconButton onClick={() => setMapDialogOpen(true)}>
+											<MapIcon />
+										</IconButton>
+									);
 									return (
 										<>
 											<Grid item xs={3} key={condition.label + 1}>
@@ -310,7 +310,9 @@ export default function RetrofitStrategyBuilder(props) {
 																[condition.key]: {
 																	label: condition.label,
 																	type: "string",
+																	// assume zone label and name are the same
 																	value: e.target.value,
+																	valueLabel: e.target.value,
 																},
 															});
 															setAddError(null);
@@ -322,6 +324,56 @@ export default function RetrofitStrategyBuilder(props) {
 															: ""
 													}
 													{...selectEndIconProp}
+												>
+													{zoneNames.map((zoneOption) => (
+														<IncoreMenuItem value={zoneOption} key={zoneOption}>
+															{zoneOption}
+														</IncoreMenuItem>
+													))}
+												</IncoreSelectBox>
+											</Grid>
+										</>
+									);
+								} else if (condition.type === "select") {
+									return (
+										<>
+											<Grid item xs={3} key={condition.label + 1}>
+												<Typography variant="body1">
+													{condition.label}
+												</Typography>
+											</Grid>
+											<Grid item xs={9} key={condition.label + 2}>
+												<IncoreSelectBox
+													labelId="label"
+													id={`${condition.label}Select`}
+													variant="outlined"
+													onChange={(e) => {
+														if (e.target.value !== "") {
+															const value = e.target.value;
+															const selectedOption =
+																condition.possibleOptions.find(
+																	(option) => option.value === value,
+																);
+															const selectedOptionLabel = selectedOption
+																? selectedOption.label
+																: "";
+															setSelectedValues({
+																...selectedValues,
+																[condition.key]: {
+																	label: condition.label,
+																	type: "string",
+																	value: value,
+																	valueLabel: selectedOptionLabel,
+																},
+															});
+															setAddError(null);
+														}
+													}}
+													value={
+														selectedValues[condition.key]
+															? selectedValues[condition.key].value
+															: ""
+													}
 												>
 													{condition.possibleOptions.map((option) => (
 														<IncoreMenuItem
@@ -363,12 +415,13 @@ export default function RetrofitStrategyBuilder(props) {
 																	label: condition.label,
 																	type: "number",
 																	value: e.target.value,
+																	valueLabel: `${e.target.value}%`,
 																},
 															});
 															setAddError(null);
 														}
 													}}
-													inputProps={{ min: 0, max: 100, step: 0.01 }}
+													inputProps={{ min: 0, max: 100, step: 1 }}
 													InputProps={{
 														endAdornment: (
 															<InputAdornment position="end">%</InputAdornment>
@@ -409,12 +462,21 @@ export default function RetrofitStrategyBuilder(props) {
 													variant="outlined"
 													onChange={(e) => {
 														if (e.target.value !== "") {
+															const value = e.target.value;
+															const selectedOption =
+																method.possibleOptions.find(
+																	(option) => option.value === value,
+																);
+															const selectedOptionLabel = selectedOption
+																? selectedOption.label
+																: "";
 															setSelectedValues({
 																...selectedValues,
 																[method.key]: {
 																	label: method.label,
 																	type: "string",
-																	value: e.target.value,
+																	value: value,
+																	valueLabel: selectedOptionLabel,
 																},
 															});
 															setAddError(null);
@@ -451,7 +513,7 @@ export default function RetrofitStrategyBuilder(props) {
 									currentlyEditing !== null
 										? false
 										: numRow ===
-										  globalConfig.retrofitStrategyBuilder.maxStrategies + 1
+										  globalConfig.retrofitStrategyBuilder.maxStrategies
 								}
 								variant="outlined"
 								color="primary"
@@ -564,7 +626,9 @@ export default function RetrofitStrategyBuilder(props) {
 		<Dialog
 			open={strategyBuilderModalStatus}
 			onClose={onRetrofitStrategyBuilderClose}
-			className={classes.queryBuilderDialog}
+			PaperProps={{
+				style: { minHeight: "600px" }, // Set your desired minimum height here
+			}}
 			maxWidth="lg"
 			fullWidth
 			scroll="paper"
@@ -681,7 +745,11 @@ export default function RetrofitStrategyBuilder(props) {
 															>
 																<StopRoundedIcon
 																	fontSize="large"
-																	style={{ color: colorCodes[index] }}
+																	style={{
+																		color:
+																			globalConfig.retrofitStrategyBuilder
+																				.colorCodes[index],
+																	}}
 																/>
 																{index + 1}
 															</Grid>
@@ -705,19 +773,7 @@ export default function RetrofitStrategyBuilder(props) {
 																						variant="body1"
 																						className={classes.tableSavedValue}
 																					>
-																						{row[key].type === "number"
-																							? row[key].value + " %"
-																							: globalConfig
-																										.retrofitStrategyBuilder
-																										.displayValues[
-																										row[key].value
-																							    ] === undefined
-																							  ? row[key].value
-																							  : globalConfig
-																										.retrofitStrategyBuilder
-																										.displayValues[
-																										row[key].value
-																							    ]}
+																						{row[key].valueLabel}
 																					</Typography>
 																				</TableCell>
 																			</TableRow>
@@ -820,7 +876,7 @@ export default function RetrofitStrategyBuilder(props) {
 									<Button
 										disabled={
 											numRow ===
-											globalConfig.retrofitStrategyBuilder.maxStrategies + 1
+											globalConfig.retrofitStrategyBuilder.maxStrategies
 										}
 										variant="outlined"
 										className={classes.addMoreStrategyBtn}
@@ -843,7 +899,7 @@ export default function RetrofitStrategyBuilder(props) {
 							<RetrofitStrategySummary
 								addedStrategies={addedRows}
 								retrofitSummary={retrofitSummary}
-								colorCodes={colorCodes}
+								colorCodes={globalConfig.retrofitStrategyBuilder.colorCodes}
 								conditionKeys={conditionKeys}
 								retrofitMethodKeys={retrofitMethodKeys}
 								name={name}
@@ -861,14 +917,14 @@ export default function RetrofitStrategyBuilder(props) {
 										label:
 											globalConfig.retrofitStrategyBuilder.conditions[0].label,
 										type: "string",
+										// zone label and key are the same
 										value: selectedZoneName,
+										valueLabel: selectedZoneName,
 									},
 								});
 								setMapDialogOpen(false);
 								setAddError(null);
 							}}
-							zoneNames={zoneNames}
-							setZoneNames={setZoneNames}
 						/>
 					</Grid>
 				</LoadingOverlay>
