@@ -71,6 +71,15 @@ const useStyles = makeStyles({
 		},
 	},
 	legendDiv: {
+		backgroundColor: "#f5f5f5",
+		border: "1px solid #e0e0e0",
+		borderRadius: "1em",
+	},
+	legendButton: {
+		border: "none",
+		backgroundColor: "transparent",
+	},
+	innerLegendDiv: {
 		display: "flex",
 		flexDirection: "row",
 		padding: "10px",
@@ -83,8 +92,10 @@ const useStyles = makeStyles({
 	},
 	legendGroup: {
 		minWidth: "200px",
-		backgroundColor: "#f5f5f5",
-		borderRadius: "4px",
+		backgroundColor: "#ffffff",
+		borderRadius: "4%",
+		padding: "1em",
+		boxShadow: "0 0 10px 0 rgba(0, 0, 0, 0.1)",
 	},
 	legendsContainer: {
 		maxHeight: "200px",
@@ -93,12 +104,13 @@ const useStyles = makeStyles({
 	},
 	groupTitle: {
 		fontWeight: "bold",
+		fontSize: "1.2em",
 	},
 	layer: {
 		marginBottom: "10px",
 	},
 	layerName: {
-		fontWeight: "bold",
+		fontSize: "0.5 em",
 	},
 	legendImage: {
 		maxWidth: "100%",
@@ -463,36 +475,33 @@ const MapCompare = (props) => {
 				</Container>
 			</Grid>
 			<Grid item xs={12}>
-				<div>
+				<div className={classes.legendDiv}>
 					<button
-						onClick={() => setLegendOpen(!legendOpen)}
 						className={classes.legendButton}
+						onClick={() => setLegendOpen(!legendOpen)}
 					>
-						<LayersIcon />
+						<h3>Legends ></h3>
 					</button>
 					<Collapse in={legendOpen}>
-						<div style={{ backgroundColor: "#f5f5f5" }}>
-							<h3 className={classes.legendTitle}>Legends</h3>
-							<div className={classes.legendDiv}>
-								<br />
-								{Object.entries(legends).map(([layerGroupName, layers]) => (
-									<div key={layerGroupName} className={classes.legendGroup}>
-										<div className={classes.groupTitle}>{layerGroupName}</div>
-										<div className={classes.legendsContainer}>
-											{Object.entries(layers).map(([layerName, { url }]) => (
-												<div key={layerName} className={classes.layer}>
-													<div className={classes.layerName}>{layerName}</div>
-													<img
-														src={url}
-														alt={`Legend for ${layerName}`}
-														className={classes.legendImage}
-													/>
-												</div>
-											))}
-										</div>
+						<div className={classes.innerLegendDiv}>
+							<br />
+							{Object.entries(legends).map(([layerGroupName, layers]) => (
+								<div key={layerGroupName} className={classes.legendGroup}>
+									<div className={classes.groupTitle}>{layerGroupName}</div>
+									<div className={classes.legendsContainer}>
+										{Object.entries(layers).map(([layerName, { url }]) => (
+											<div key={layerName} className={classes.layer}>
+												<div className={classes.layerName}>{layerName}</div>
+												<img
+													src={url}
+													alt={`Legend for ${layerName}`}
+													className={classes.legendImage}
+												/>
+											</div>
+										))}
 									</div>
-								))}
-							</div>
+								</div>
+							))}
 						</div>
 					</Collapse>
 				</div>
