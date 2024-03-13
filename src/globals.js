@@ -6,6 +6,8 @@ let hostname = process.env.INCORE_REMOTE_HOSTNAME || "";
 
 globals["baseUrlRoute"] = "playbook";
 globals["geoServerWMS"] = `${hostname}/geoserver/incore/wms`;
+globals["geoServerWFS"] =
+	`${hostname}/geoserver/incore/ows?service=WFS&version=1.0.0&request=GetFeature&outputFormat=application/json`;
 globals["client_id"] = "react-auth";
 globals["authService"] =
 	`${hostname}/auth/realms/In-core/protocol/openid-connect/token`;
@@ -201,9 +203,6 @@ globals["inputDatasetTypes"] = {
 };
 
 // ******************* SLC GLOBAL CONFIGS *******************
-
-globals["geoServerWFS"] =
-	`${hostname}/geoserver/incore/ows?service=WFS&version=1.0.0&request=GetFeature&outputFormat=application/json`;
 globals["maestroServiceBase"] = `${hostname}/maestro/slc/`;
 globals["allowedRegions"] = [
 	{
@@ -241,46 +240,7 @@ globals["retrofitStrategyBuilder"] = {
 			label: "Flood Zone",
 			type: "mapSelect",
 			key: "zone",
-			possibleOptions: [
-				{
-					label: "Taylorsville City",
-					value: "Taylorsville City",
-				},
-				{
-					label: "Riverton City",
-					value: "Riverton City",
-				},
-				{ label: "Alta Town", value: "Alta Town" },
-				{ label: "Kearns Metro Township", value: "Kearns Metro Township" },
-				{ label: "Bluffdale City", value: "Bluffdale City" },
-				{ label: "Holladay City", value: "Holladay City" },
-				{ label: "Murray City", value: "Murray City" },
-				{ label: "South Jordan City", value: "South Jordan City" },
-				{ label: "Salt Lake City", value: "Salt Lake City" },
-				{ label: "West Valley City", value: "West Valley City" },
-				{ label: "Cottonwood Heights City", value: "Cottonwood Heights City" },
-				{ label: "Herriman City", value: "Herriman City" },
-				{
-					label: "White City Metro Township",
-					value: "White City Metro Township",
-				},
-				{ label: "South Salt Lake City", value: "South SaltLake City" },
-				{ label: "Draper City", value: "Draper City" },
-				{ label: "West Jordan City", value: "West Jordan City" },
-				{ label: "Sandy City", value: "Sandy City" },
-				{ label: "Millcreek", value: "Millcreek" },
-				{
-					label: "Emigration Canyon Metro Township",
-					value: "Emigration Canyon Metro Township",
-				},
-				{ label: "Magna Metro Township", value: "Magna Metro Township" },
-				{
-					label: "Copperton Metro Township",
-					value: "Copperton Metro Township",
-				},
-				{ label: "Town of Brighton", value: "Town of Brighton" },
-				{ label: "Unincorporated", value: "Unincorporated" },
-			],
+			possibleOptions: [],
 		},
 		{
 			label: "Building Archetypes",

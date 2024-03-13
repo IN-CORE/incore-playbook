@@ -1,20 +1,20 @@
-import React from "react";
-import { useSelector } from "react-redux";
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 
 import {
 	Box,
 	Button,
 	Dialog,
-	DialogTitle,
-	DialogContent,
 	DialogActions,
+	DialogContent,
+	DialogTitle,
 	Divider,
 	Grid,
 	IconButton,
 	InputAdornment,
-	Stepper,
 	Step,
 	StepLabel,
+	Stepper,
 	Table,
 	TableBody,
 	TableCell,
@@ -41,10 +41,10 @@ import { IncoreTextField } from "../styledComponents/IncoreInput";
 import { ZoneSelectionMapDialog } from "./map/ZoneSelectionMapDialog";
 import RetrofitStrategySummary from "./RetrofitStrategySummary";
 import {
-	IncoreSelectBox,
 	IncoreMenuItem,
+	IncoreSelectBox,
 } from "../styledComponents/IncoreSelect";
-import { set } from "ol/transform";
+import { fetchZoneGeoJson as fetchZoneGeoJsonAction } from "../../actions/attributes";
 
 const useStyles = makeStyles((theme) => ({
 	closeButton: {
@@ -170,7 +170,11 @@ export default function RetrofitStrategyBuilder(props) {
 	const [showAddRetrofitStrategyRow, setShowAddRetrofitStrategyRow] =
 		React.useState(false);
 	const [currentlyEditing, setCurrentlyEditing] = React.useState(null);
-	const [zoneNames, setZoneNames] = React.useState([]);
+	// get zone name for redux
+	const zoneNames = useSelector((state) => state.attribute.zoneNames);
+	const dispatch = useDispatch();
+	const fetchZoneGeoJson = (globalConfig) =>
+		dispatch(fetchZoneGeoJsonAction(globalConfig));
 
 	// Step 3
 	const [retrofitSummary, setRetrofitSummary] = React.useState({});
@@ -187,6 +191,11 @@ export default function RetrofitStrategyBuilder(props) {
 	globalConfig.retrofitStrategyBuilder.retrofitMethods.forEach((method) =>
 		retrofitMethodKeys.push(method.key),
 	);
+
+	useEffect(() => {
+		// get zone name for redux
+		fetchZoneGeoJson(globalConfig);
+	}, []);
 
 	const handleAddRow = () => {
 		// for any missing fields
@@ -706,7 +715,7 @@ export default function RetrofitStrategyBuilder(props) {
 																						className={classes.tableSavedValue}
 																					>
 																						{row[key].type === "number"
-																							? row[key].value + " %"
+																							? `${row[key].value} %`
 																							: globalConfig
 																										.retrofitStrategyBuilder
 																										.displayValues[
@@ -867,8 +876,6 @@ export default function RetrofitStrategyBuilder(props) {
 								setMapDialogOpen(false);
 								setAddError(null);
 							}}
-							zoneNames={zoneNames}
-							setZoneNames={setZoneNames}
 						/>
 					</Grid>
 				</LoadingOverlay>
