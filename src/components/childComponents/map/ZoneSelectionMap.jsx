@@ -1,9 +1,11 @@
 import * as React from "react";
 import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { Map as OLMap, View } from "ol";
 import Overlay from "ol/Overlay";
 
 import LayerSwitcher from "./LayerSwitcher";
+import { updateZoneNames } from "../../../actions/attributes";
 import { Fill, Stroke, Style } from "ol/style";
 import Select from "ol/interaction/Select";
 import {
@@ -32,9 +34,12 @@ export const ZoneSelectionMap = (props) => {
 
 	const mapRef = React.useRef();
 	const [featuresByName, setFeaturesByName] = useState({});
-	const [zoneNames, setZoneNames] = useState([]);
+	// const [zoneNames, setZoneNames] = useState([]);
 	const [leftColumnZones, setLeftColumnZones] = useState([]);
 	const [rightColumnZones, setRightColumnZones] = useState([]);
+
+	const dispatch = useDispatch();
+	const zoneNames = useSelector((state) => state.attributes.zoneNames);
 
 	const columnBreakpoint = 15;
 
@@ -154,7 +159,8 @@ export const ZoneSelectionMap = (props) => {
 				);
 
 				// Update state with the unique, sorted zone names
-				setZoneNames(uniqueSortedZoneNames);
+				// setZoneNames(uniqueSortedZoneNames);
+				dispatch(updateZoneNames(uniqueSortedZoneNames));
 
 				// Update the name-to-feature map for reverse lookup
 				const nameToFeatureMap = zoneLayerSource

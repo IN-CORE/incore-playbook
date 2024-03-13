@@ -321,7 +321,14 @@ export default function RetrofitStrategySummary(props) {
 																			{strategy[key].type === "number"
 																				? strategy[key].value + " %"
 																				: globalConfig.retrofitStrategyBuilder
-																						.displayValues[strategy[key].value]}
+																							.displayValues[
+																							strategy[key].value
+																				    ] === undefined
+																				  ? strategy[key].value
+																				  : globalConfig.retrofitStrategyBuilder
+																							.displayValues[
+																							strategy[key].value
+																				    ]}
 																		</Typography>
 																	</TableCell>
 																</TableRow>
@@ -354,10 +361,7 @@ export default function RetrofitStrategySummary(props) {
 																sx={{ p: 0 }}
 															>
 																<Typography variant="body1">
-																	{
-																		globalConfig.retrofitStrategyBuilder
-																			.displayValues[strategy[key].value]
-																	}
+																	{strategy[key].value}
 																</Typography>
 															</Grid>
 															{idx === retrofitMethodKeys.length - 1 ? null : (

@@ -708,10 +708,16 @@ export default function RetrofitStrategyBuilder(props) {
 																						{row[key].type === "number"
 																							? row[key].value + " %"
 																							: globalConfig
-																									.retrofitStrategyBuilder
-																									.displayValues[
-																									row[key].value
-																							  ]}
+																										.retrofitStrategyBuilder
+																										.displayValues[
+																										row[key].value
+																							    ] === undefined
+																							  ? row[key].value
+																							  : globalConfig
+																										.retrofitStrategyBuilder
+																										.displayValues[
+																										row[key].value
+																							    ]}
 																					</Typography>
 																				</TableCell>
 																			</TableRow>
@@ -749,10 +755,7 @@ export default function RetrofitStrategyBuilder(props) {
 																			sx={{ p: 0 }}
 																		>
 																			<Typography variant="body1">
-																				{
-																					globalConfig.retrofitStrategyBuilder
-																						.displayValues[row[key].value]
-																				}
+																				{row[key].value}
 																			</Typography>
 																		</Grid>
 																		{idx ===
@@ -858,10 +861,7 @@ export default function RetrofitStrategyBuilder(props) {
 										label:
 											globalConfig.retrofitStrategyBuilder.conditions[0].label,
 										type: "string",
-										value:
-											globalConfig.retrofitStrategyBuilder.labelToValue[
-												selectedZoneName.replace(/\s+/g, "").toLowerCase()
-											],
+										value: selectedZoneName,
 									},
 								});
 								setMapDialogOpen(false);

@@ -31,7 +31,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export const ZoneSelectionMapDialog = (props) => {
-	const { open, handleClose, handleSave, zoneNames, setZoneNames } = props;
+	const { open, handleClose, handleSave } = props;
 	const mapConfig = useSelector((state) => state.config.mapConfig);
 	const globalConfig = useSelector((state) => state.config.globalConfig);
 
@@ -101,8 +101,6 @@ export const ZoneSelectionMapDialog = (props) => {
 						}
 						selectedZoneName={selectedZoneName}
 						setSelectedZoneName={setSelectedZoneName}
-						zoneNames={zoneNames}
-						setZoneNames={setZoneNames}
 					/>
 				) : (
 					<div>Loading...</div>

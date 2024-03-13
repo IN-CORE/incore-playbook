@@ -12,6 +12,13 @@ export function receiveAttributes(type, json) {
 	};
 }
 
+export const UPDATE_ZONENAMES = "UPDATE_ZONENAMES";
+export const updateZoneNames = (zoneNames) => ({
+	type: UPDATE_ZONENAMES,
+	zoneNames: zoneNames,
+	receivedAt: Date.now(),
+});
+
 export function fetchAttributes(
 	globalConfig = defaultGlobalConfig,
 	id,
