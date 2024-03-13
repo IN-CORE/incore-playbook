@@ -28,9 +28,6 @@ export default function BldgMCSCompare(props) {
 	const basicLayersA = createBasicLayers("Base Maps");
 	const basicLayersB = createBasicLayers("Base Maps");
 
-	// print container
-	const printRef = useRef();
-
 	const mapHeight = 300; // px
 
 	useEffect(() => {
@@ -79,7 +76,7 @@ export default function BldgMCSCompare(props) {
 	}, [executionItems, datawolfDatasetConfigItems]);
 
 	return (
-		<Box ref={printRef}>
+		<Box>
 			{/*for chart*/}
 			<Box className="chartContainer">
 				<Grid container spacing={3} justify="center">

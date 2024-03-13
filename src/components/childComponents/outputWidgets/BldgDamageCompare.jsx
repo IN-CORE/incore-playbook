@@ -6,9 +6,6 @@ import {
 	getOutputFileContentJSON,
 } from "../../../utils/datawolf";
 import { createBasicLayers, generateLayers } from "../../../utils/map";
-import { downloadImg } from "../../../utils/image";
-import CameraAltIcon from "@material-ui/icons/CameraAlt";
-import { IncoreButtonText } from "../../styledComponents/IncoreButtonText";
 import { comparisonKey } from "../../../globals";
 import { BldgDamageTableCompare } from "../table/BldgDamageTableCompare";
 import MapCompare from "../map/MapCompare";
@@ -155,16 +152,6 @@ export default function BldgDamageCompare(props) {
 			) : (
 				<></>
 			)}
-
-			{/*Print*/}
-			<IncoreButtonText
-				onClick={() => {
-					downloadImg(printRef.current, "Building_Damage");
-				}}
-				startIcon={<CameraAltIcon />}
-			>
-				Image
-			</IncoreButtonText>
 		</Box>
 	);
 }
