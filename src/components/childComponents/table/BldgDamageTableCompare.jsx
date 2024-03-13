@@ -41,6 +41,7 @@ const useStyles = makeStyles({
 		lineHeight: "18px",
 		border: "1px solid rgba(46,91,255,0.08)",
 		textAlign: "center",
+		paddingRight: "16px",
 	},
 	tableBodyCategoryCell: {
 		height: "21px",

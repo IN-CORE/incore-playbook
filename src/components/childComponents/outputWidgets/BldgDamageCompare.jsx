@@ -6,9 +6,6 @@ import {
 	getOutputFileContentJSON,
 } from "../../../utils/datawolf";
 import { createBasicLayers, generateLayers } from "../../../utils/map";
-import { downloadImg } from "../../../utils/image";
-import CameraAltIcon from "@material-ui/icons/CameraAlt";
-import { IncoreButtonText } from "../../styledComponents/IncoreButtonText";
 import { comparisonKey } from "../../../globals";
 import { BldgDamageTableCompare } from "../table/BldgDamageTableCompare";
 import MapCompare from "../map/MapCompare";
@@ -68,7 +65,7 @@ export default function BldgDamageCompare(props) {
 						);
 						setBldgDmgSummaryTableContents((prevState) => ({
 							...prevState,
-							[comparisonKey[i]]: content,
+							[globalConfig.comparisonKey[i]]: content,
 						}));
 					}
 				}
@@ -124,18 +121,20 @@ export default function BldgDamageCompare(props) {
 						center={fromLonLat(mapConfig.MAP_CENTER)}
 						layersA={[
 							basicLayersA,
-							hazardLayers[comparisonKey[0]],
+							hazardLayers[globalConfig.comparisonKey[0]],
 							damageLayersA,
 						]}
 						layersB={[
 							basicLayersB,
-							hazardLayers[comparisonKey[1]],
+							hazardLayers[globalConfig.comparisonKey[1]],
 							damageLayersB,
 						]}
 						layerSwitcherOptionsA={{}}
 						layerSwitcherOptionsB={{}}
 						height={mapHeight}
 						allowBuildingSelection={true}
+						fieldsA={bldgDmgSummaryTableContents[globalConfig.comparisonKey[0]]}
+						fieldsB={bldgDmgSummaryTableContents[globalConfig.comparisonKey[1]]}
 					/>
 				</Container>
 			) : (
@@ -146,23 +145,13 @@ export default function BldgDamageCompare(props) {
 			{Object.keys(bldgDmgSummaryTableContents).length >= 2 ? (
 				<Box>
 					<BldgDamageTableCompare
-						fieldsA={bldgDmgSummaryTableContents[comparisonKey[0]]}
-						fieldsB={bldgDmgSummaryTableContents[comparisonKey[1]]}
+						fieldsA={bldgDmgSummaryTableContents[globalConfig.comparisonKey[0]]}
+						fieldsB={bldgDmgSummaryTableContents[globalConfig.comparisonKey[1]]}
 					/>
 				</Box>
 			) : (
 				<></>
 			)}
-
-			{/*Print*/}
-			<IncoreButtonText
-				onClick={() => {
-					downloadImg(printRef.current, "Building_Damage");
-				}}
-				startIcon={<CameraAltIcon />}
-			>
-				Image
-			</IncoreButtonText>
 		</Box>
 	);
 }

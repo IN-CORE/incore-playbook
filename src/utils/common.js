@@ -397,3 +397,18 @@ function ObjectByString(o, s) {
 	}
 	return o;
 }
+
+export const maxStateMapping = (fields, max_state, sw_max_state) => {
+	if (fields && "Insignificant" in fields["by_category"][0]) {
+		if (max_state === "DS_0") return "Insignificant";
+		if (max_state === "DS_1") return "Moderate";
+		if (max_state === "DS_2") return "Extensive";
+		if (max_state === "DS_3") return "Complete";
+	} else if (fields && "Affected" in fields["by_category"][0]) {
+		if (max_state === "DS_0" || max_state === "DS_1") return "Affected";
+		if (max_state === "DS_2") return "Minor";
+		if (max_state === "DS_3") return "Major";
+		if (sw_max_state === "DS_3") return "Destroyed";
+	}
+	return max_state;
+};

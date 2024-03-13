@@ -241,6 +241,8 @@ globals["inputDatasetTypes"] = {
 	],
 };
 
+globals["comparisonKey"] = ["A", "B"];
+
 export { globals };
 
 export const testUserInfo = "commresilience";
@@ -274,5 +276,3 @@ export const processStatus = [
 	{ name: "IN PROGRESS", key: "in_progress" },
 	{ name: "COMPLETE", key: "complete" },
 ];
-
-export const comparisonKey = ["A", "B"];
