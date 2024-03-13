@@ -310,7 +310,9 @@ export default function RetrofitStrategyBuilder(props) {
 																[condition.key]: {
 																	label: condition.label,
 																	type: "string",
+																	// assume zone label and name are the same
 																	value: e.target.value,
+																	valueLabel: e.target.value,
 																},
 															});
 															setAddError(null);
