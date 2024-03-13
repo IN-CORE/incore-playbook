@@ -271,8 +271,6 @@ export default function RetrofitStrategyBuilder(props) {
 		"Review Retrofit Summary",
 	];
 
-	const colorCodes = ["#00B654", "#FF88CF", "#36C1ED", "#FFB067", "#9C4EFF"];
-
 	const AddRetrofitStrategyRow = () => {
 		return (
 			<TableRow>
@@ -288,18 +286,14 @@ export default function RetrofitStrategyBuilder(props) {
 					>
 						{globalConfig.retrofitStrategyBuilder.conditions.map(
 							(condition) => {
-								if (
-									condition.type === "mapSelect" ||
-									condition.type === "select"
-								) {
+								// Map select need to fill in the options with zone name
+								if (condition.type === "mapSelect") {
 									let selectEndIconProp = {};
-									if (condition.type === "mapSelect") {
-										selectEndIconProp.IconComponent = () => (
-											<IconButton onClick={() => setMapDialogOpen(true)}>
-												<MapIcon />
-											</IconButton>
-										);
-									}
+									selectEndIconProp.IconComponent = () => (
+										<IconButton onClick={() => setMapDialogOpen(true)}>
+											<MapIcon />
+										</IconButton>
+									);
 									return (
 										<>
 											<Grid item xs={3} key={condition.label + 1}>
@@ -331,6 +325,47 @@ export default function RetrofitStrategyBuilder(props) {
 															: ""
 													}
 													{...selectEndIconProp}
+												>
+													{zoneNames.map((zoneOption) => (
+														<IncoreMenuItem value={zoneOption} key={zoneOption}>
+															{zoneOption}
+														</IncoreMenuItem>
+													))}
+												</IncoreSelectBox>
+											</Grid>
+										</>
+									);
+								} else if (condition.type === "select") {
+									return (
+										<>
+											<Grid item xs={3} key={condition.label + 1}>
+												<Typography variant="body1">
+													{condition.label}
+												</Typography>
+											</Grid>
+											<Grid item xs={9} key={condition.label + 2}>
+												<IncoreSelectBox
+													labelId="label"
+													id={`${condition.label}Select`}
+													variant="outlined"
+													onChange={(e) => {
+														if (e.target.value !== "") {
+															setSelectedValues({
+																...selectedValues,
+																[condition.key]: {
+																	label: condition.label,
+																	type: "string",
+																	value: e.target.value,
+																},
+															});
+															setAddError(null);
+														}
+													}}
+													value={
+														selectedValues[condition.key]
+															? selectedValues[condition.key].value
+															: ""
+													}
 												>
 													{condition.possibleOptions.map((option) => (
 														<IncoreMenuItem
@@ -460,7 +495,7 @@ export default function RetrofitStrategyBuilder(props) {
 									currentlyEditing !== null
 										? false
 										: numRow ===
-										  globalConfig.retrofitStrategyBuilder.maxStrategies + 1
+										  globalConfig.retrofitStrategyBuilder.maxStrategies
 								}
 								variant="outlined"
 								color="primary"
@@ -690,7 +725,11 @@ export default function RetrofitStrategyBuilder(props) {
 															>
 																<StopRoundedIcon
 																	fontSize="large"
-																	style={{ color: colorCodes[index] }}
+																	style={{
+																		color:
+																			globalConfig.retrofitStrategyBuilder
+																				.colorCodes[index],
+																	}}
 																/>
 																{index + 1}
 															</Grid>
@@ -829,7 +868,7 @@ export default function RetrofitStrategyBuilder(props) {
 									<Button
 										disabled={
 											numRow ===
-											globalConfig.retrofitStrategyBuilder.maxStrategies + 1
+											globalConfig.retrofitStrategyBuilder.maxStrategies
 										}
 										variant="outlined"
 										className={classes.addMoreStrategyBtn}
@@ -852,7 +891,7 @@ export default function RetrofitStrategyBuilder(props) {
 							<RetrofitStrategySummary
 								addedStrategies={addedRows}
 								retrofitSummary={retrofitSummary}
-								colorCodes={colorCodes}
+								colorCodes={globalConfig.retrofitStrategyBuilder.colorCodes}
 								conditionKeys={conditionKeys}
 								retrofitMethodKeys={retrofitMethodKeys}
 								name={name}

@@ -230,22 +230,23 @@ globals["inputDatasetTypes"].buildings = [
 globals["testBed"] = "slc";
 
 globals["retrofitStrategyBuilder"] = {
-	maxStrategies: 4,
+	colorCodes: ["#00B654", "#FF88CF", "#36C1ED", "#FFB067", "#9C4EFF"],
+	maxStrategies: 5,
 	displayValues: {
 		URMM: "URMM",
 		URML: "URML",
 	},
 	conditions: [
 		{
-			label: "Flood Zone",
+			label: "City Council District",
 			type: "mapSelect",
 			key: "zone",
 			possibleOptions: [],
 		},
 		{
-			label: "Building Archetypes",
+			label: "Building Structural Type",
 			type: "select",
-			key: "archetype",
+			key: "struct_typ",
 			possibleOptions: [
 				{
 					label: "URMM",
