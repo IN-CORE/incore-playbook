@@ -137,7 +137,6 @@ const Map = (props) => {
 			minZoom,
 			maxZoom,
 			extent,
-			// TODO: Legend needs to be a boolean value cos some maps dont need legends
 			// controls,
 			layers,
 			layerSwitcherOptions,
