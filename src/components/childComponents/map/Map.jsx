@@ -88,6 +88,7 @@ export const MapContext = React.createContext({});
 
 const Map = (props) => {
 	const { children, id, className, allowBuildingSelection, fields } = props;
+	const hasLegend = props.hasLegend !== undefined ? props.hasLegend : true;
 	const classes = useStyles();
 
 	const [selectedBuilding, setSelectedBuilding] = React.useState(null);
@@ -136,7 +137,6 @@ const Map = (props) => {
 			minZoom,
 			maxZoom,
 			extent,
-			// TODO: Legend needs to be a boolean value cos some maps dont need legends
 			// controls,
 			layers,
 			layerSwitcherOptions,
@@ -268,36 +268,40 @@ const Map = (props) => {
 
 	return allowBuildingSelection ? (
 		<div style={{ position: "relative" }}>
-			<button
-				onClick={() => setLegendOpen(!legendOpen)}
-				className={classes.legendButton}
-			>
-				<LayersIcon />
-			</button>
-			{legendOpen && (
-				<div className={classes.legend}>
-					{Object.entries(legends).map(([layerGroupName, layers]) => (
-						<div key={layerGroupName} style={{ marginBottom: "20px" }}>
-							<h3>{layerGroupName}</h3>
-							<ul style={{ listStyleType: "none" }}>
-								{Object.entries(layers).map(([layerName, { url }]) => (
-									<li key={layerName} style={{ marginBottom: "10px" }}>
-										<div>{layerName}</div>
-										<img
-											src={url}
-											alt={`Legend for ${layerName}`}
-											style={{
-												maxWidth: "70%",
-												height: "auto",
-												marginTop: "5px",
-											}}
-										/>
-									</li>
-								))}
-							</ul>
+			{hasLegend && (
+				<>
+					<button
+						onClick={() => setLegendOpen(!legendOpen)}
+						className={classes.legendButton}
+					>
+						<LayersIcon />
+					</button>
+					{legendOpen && (
+						<div className={classes.legend}>
+							{Object.entries(legends).map(([layerGroupName, layers]) => (
+								<div key={layerGroupName} style={{ marginBottom: "20px" }}>
+									<h3>{layerGroupName}</h3>
+									<ul style={{ listStyleType: "none" }}>
+										{Object.entries(layers).map(([layerName, { url }]) => (
+											<li key={layerName} style={{ marginBottom: "10px" }}>
+												<div>{layerName}</div>
+												<img
+													src={url}
+													alt={`Legend for ${layerName}`}
+													style={{
+														maxWidth: "70%",
+														height: "auto",
+														marginTop: "5px",
+													}}
+												/>
+											</li>
+										))}
+									</ul>
+								</div>
+							))}
 						</div>
-					))}
-				</div>
+					)}
+				</>
 			)}
 			<div
 				id={id}
