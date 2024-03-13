@@ -232,10 +232,6 @@ globals["testBed"] = "slc";
 globals["retrofitStrategyBuilder"] = {
 	colorCodes: ["#00B654", "#FF88CF", "#36C1ED", "#FFB067", "#9C4EFF"],
 	maxStrategies: 5,
-	displayValues: {
-		URMM: "URMM",
-		URML: "URML",
-	},
 	conditions: [
 		{
 			label: "City Council District",

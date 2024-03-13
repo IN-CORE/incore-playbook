@@ -347,12 +347,21 @@ export default function RetrofitStrategyBuilder(props) {
 													variant="outlined"
 													onChange={(e) => {
 														if (e.target.value !== "") {
+															const value = e.target.value;
+															const selectedOption =
+																condition.possibleOptions.find(
+																	(option) => option.value === value,
+																);
+															const selectedOptionLabel = selectedOption
+																? selectedOption.label
+																: "";
 															setSelectedValues({
 																...selectedValues,
 																[condition.key]: {
 																	label: condition.label,
 																	type: "string",
-																	value: e.target.value,
+																	value: value,
+																	valueLabel: selectedOptionLabel,
 																},
 															});
 															setAddError(null);
@@ -404,6 +413,7 @@ export default function RetrofitStrategyBuilder(props) {
 																	label: condition.label,
 																	type: "number",
 																	value: e.target.value,
+																	valueLabel: `${e.target.value}%`,
 																},
 															});
 															setAddError(null);
@@ -450,12 +460,21 @@ export default function RetrofitStrategyBuilder(props) {
 													variant="outlined"
 													onChange={(e) => {
 														if (e.target.value !== "") {
+															const value = e.target.value;
+															const selectedOption =
+																method.possibleOptions.find(
+																	(option) => option.value === value,
+																);
+															const selectedOptionLabel = selectedOption
+																? selectedOption.label
+																: "";
 															setSelectedValues({
 																...selectedValues,
 																[method.key]: {
 																	label: method.label,
 																	type: "string",
-																	value: e.target.value,
+																	value: value,
+																	valueLabel: selectedOptionLabel,
 																},
 															});
 															setAddError(null);
@@ -752,19 +771,7 @@ export default function RetrofitStrategyBuilder(props) {
 																						variant="body1"
 																						className={classes.tableSavedValue}
 																					>
-																						{row[key].type === "number"
-																							? `${row[key].value} %`
-																							: globalConfig
-																										.retrofitStrategyBuilder
-																										.displayValues[
-																										row[key].value
-																							    ] === undefined
-																							  ? row[key].value
-																							  : globalConfig
-																										.retrofitStrategyBuilder
-																										.displayValues[
-																										row[key].value
-																							    ]}
+																						{row[key].valueLabel}
 																					</Typography>
 																				</TableCell>
 																			</TableRow>
@@ -908,7 +915,9 @@ export default function RetrofitStrategyBuilder(props) {
 										label:
 											globalConfig.retrofitStrategyBuilder.conditions[0].label,
 										type: "string",
+										// zone label and key are the same
 										value: selectedZoneName,
+										valueLabel: selectedZoneName,
 									},
 								});
 								setMapDialogOpen(false);
