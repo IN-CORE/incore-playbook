@@ -65,7 +65,7 @@ export default function BldgFunctionality(props) {
 						);
 						setBldgFuncSummaryTableContents((prevState) => ({
 							...prevState,
-							[comparisonKey[i]]: content,
+							[globalConfig.comparisonKey[i]]: content,
 						}));
 					}
 				}
@@ -81,15 +81,23 @@ export default function BldgFunctionality(props) {
 			<Box className="chartContainer">
 				<Grid container spacing={3} justify="center">
 					{Object.keys(bldgFuncSummaryTableContents).length >= 2 &&
-					bldgFuncSummaryTableContents[comparisonKey[0]]["by_category"] &&
-					bldgFuncSummaryTableContents[comparisonKey[1]]["by_category"] ? (
+					bldgFuncSummaryTableContents[globalConfig.comparisonKey[0]][
+						"by_category"
+					] &&
+					bldgFuncSummaryTableContents[globalConfig.comparisonKey[1]][
+						"by_category"
+					] ? (
 						<Grid item style={{ minWidth: "90%" }}>
 							<FunctionalityGraphCompare
 								categorySummaryA={
-									bldgFuncSummaryTableContents[comparisonKey[0]]["by_category"]
+									bldgFuncSummaryTableContents[globalConfig.comparisonKey[0]][
+										"by_category"
+									]
 								}
 								categorySummaryB={
-									bldgFuncSummaryTableContents[comparisonKey[1]]["by_category"]
+									bldgFuncSummaryTableContents[globalConfig.comparisonKey[1]][
+										"by_category"
+									]
 								}
 							/>
 						</Grid>
@@ -122,12 +130,12 @@ export default function BldgFunctionality(props) {
 						center={fromLonLat(mapConfig.MAP_CENTER)}
 						layersA={[
 							basicLayersA,
-							hazardLayers[comparisonKey[0]],
+							hazardLayers[globalConfig.comparisonKey[0]],
 							damageLayersA,
 						]}
 						layersB={[
 							basicLayersB,
-							hazardLayers[comparisonKey[1]],
+							hazardLayers[globalConfig.comparisonKey[1]],
 							damageLayersB,
 						]}
 						layerSwitcherOptionsA={{}}
@@ -144,8 +152,12 @@ export default function BldgFunctionality(props) {
 			{Object.keys(bldgFuncSummaryTableContents).length >= 2 ? (
 				<Box>
 					<FunctionalityTableCompare
-						funcResultsA={bldgFuncSummaryTableContents[comparisonKey[0]]}
-						funcResultsB={bldgFuncSummaryTableContents[comparisonKey[1]]}
+						funcResultsA={
+							bldgFuncSummaryTableContents[globalConfig.comparisonKey[0]]
+						}
+						funcResultsB={
+							bldgFuncSummaryTableContents[globalConfig.comparisonKey[1]]
+						}
 					/>
 				</Box>
 			) : (

@@ -65,7 +65,7 @@ export default function BldgDamageCompare(props) {
 						);
 						setBldgDmgSummaryTableContents((prevState) => ({
 							...prevState,
-							[comparisonKey[i]]: content,
+							[globalConfig.comparisonKey[i]]: content,
 						}));
 					}
 				}
@@ -121,20 +121,20 @@ export default function BldgDamageCompare(props) {
 						center={fromLonLat(mapConfig.MAP_CENTER)}
 						layersA={[
 							basicLayersA,
-							hazardLayers[comparisonKey[0]],
+							hazardLayers[globalConfig.comparisonKey[0]],
 							damageLayersA,
 						]}
 						layersB={[
 							basicLayersB,
-							hazardLayers[comparisonKey[1]],
+							hazardLayers[globalConfig.comparisonKey[1]],
 							damageLayersB,
 						]}
 						layerSwitcherOptionsA={{}}
 						layerSwitcherOptionsB={{}}
 						height={mapHeight}
 						allowBuildingSelection={true}
-						fieldsA={bldgDmgSummaryTableContents[comparisonKey[0]]}
-						fieldsB={bldgDmgSummaryTableContents[comparisonKey[1]]}
+						fieldsA={bldgDmgSummaryTableContents[globalConfig.comparisonKey[0]]}
+						fieldsB={bldgDmgSummaryTableContents[globalConfig.comparisonKey[1]]}
 					/>
 				</Container>
 			) : (
@@ -145,8 +145,8 @@ export default function BldgDamageCompare(props) {
 			{Object.keys(bldgDmgSummaryTableContents).length >= 2 ? (
 				<Box>
 					<BldgDamageTableCompare
-						fieldsA={bldgDmgSummaryTableContents[comparisonKey[0]]}
-						fieldsB={bldgDmgSummaryTableContents[comparisonKey[1]]}
+						fieldsA={bldgDmgSummaryTableContents[globalConfig.comparisonKey[0]]}
+						fieldsB={bldgDmgSummaryTableContents[globalConfig.comparisonKey[1]]}
 					/>
 				</Box>
 			) : (
