@@ -15,6 +15,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Make max damage state consistent with table headers [#374](https://github.com/IN-CORE/incore-playbook/issues/374)
 - Comparison key bug [#375](https://github.com/IN-CORE/incore-playbook/issues/375)
 - Compare selection style [#357](https://github.com/IN-CORE/incore-playbook/issues/357)
+- Fix damage comparison table alignment bug [#358](https://github.com/IN-CORE/incore-playbook/issues/358)
+
+### Changed
+- Remove screenshot button on comparison interface [#364](https://github.com/IN-CORE/incore-playbook/issues/364)
 
 ## [0.6.0] - 2024-03-06
 

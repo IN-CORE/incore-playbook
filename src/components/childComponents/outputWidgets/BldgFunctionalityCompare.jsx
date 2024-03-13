@@ -6,9 +6,7 @@ import {
 	getOutputFileContentJSON,
 } from "../../../utils/datawolf";
 import { createBasicLayers, generateLayers } from "../../../utils/map";
-import { IncoreButtonText } from "../../styledComponents/IncoreButtonText";
-import { downloadImg } from "../../../utils/image";
-import CameraAltIcon from "@material-ui/icons/CameraAlt";
+import { comparisonKey } from "../../../globals";
 import { FunctionalityTableCompare } from "../table/FunctionalityTableCompare";
 import { FunctionalityGraphCompare } from "../graph/FunctionalityGraphCompare";
 import MapCompare from "../map/MapCompare";
@@ -32,9 +30,6 @@ export default function BldgFunctionality(props) {
 	const basicLayersB = createBasicLayers("Base Maps");
 
 	const mapHeight = 300; // px
-
-	// print container
-	const printRef = useRef();
 
 	useEffect(() => {
 		const fetchData = async () => {
@@ -81,7 +76,7 @@ export default function BldgFunctionality(props) {
 	}, [executionItems, datawolfDatasetConfigItems]);
 
 	return (
-		<Box ref={printRef}>
+		<Box>
 			{/*for chart*/}
 			<Box className="chartContainer">
 				<Grid container spacing={3} justify="center">
@@ -168,16 +163,6 @@ export default function BldgFunctionality(props) {
 			) : (
 				<></>
 			)}
-
-			{/*Print*/}
-			<IncoreButtonText
-				onClick={() => {
-					downloadImg(printRef.current, "Building_Functionality");
-				}}
-				startIcon={<CameraAltIcon />}
-			>
-				Image
-			</IncoreButtonText>
 		</Box>
 	);
 }

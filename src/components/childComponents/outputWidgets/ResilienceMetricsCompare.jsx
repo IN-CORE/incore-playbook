@@ -3,9 +3,6 @@ import React, { useEffect, useRef, useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { getOutputFileContentJSON } from "../../../utils/datawolf";
 import { useSelector } from "react-redux";
-import { IncoreButtonText } from "../../styledComponents/IncoreButtonText";
-import { downloadImg } from "../../../utils/image";
-import CameraAltIcon from "@material-ui/icons/CameraAlt";
 import FormLabel from "@material-ui/core/FormLabel";
 import { IncoreRadioGroup } from "../form/IncoreRadioGroup";
 import { HuaResultsTableCompare } from "../table/HuaResultsTableCompare";
@@ -101,9 +98,6 @@ export default function ResilienceMetricsCompare(props) {
 			  }, [])
 			: [],
 	);
-
-	// print container
-	const printRef = useRef();
 
 	useEffect(() => {
 		const fetchData = async () => {
@@ -209,7 +203,7 @@ export default function ResilienceMetricsCompare(props) {
 	}, [executionItems, datawolfDatasetConfigItems]);
 
 	return (
-		<Box ref={printRef}>
+		<Box>
 			{/*tabs*/}
 			<Tabs
 				TabIndicatorProps={{
@@ -440,14 +434,6 @@ export default function ResilienceMetricsCompare(props) {
 					<></>
 				)}
 			</div>
-			<IncoreButtonText
-				onClick={() => {
-					downloadImg(printRef.current, "Resilience_Metrics");
-				}}
-				startIcon={<CameraAltIcon />}
-			>
-				Image
-			</IncoreButtonText>
 		</Box>
 	);
 }
