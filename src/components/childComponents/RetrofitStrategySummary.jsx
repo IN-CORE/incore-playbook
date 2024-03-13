@@ -320,15 +320,7 @@ export default function RetrofitStrategySummary(props) {
 																		>
 																			{strategy[key].type === "number"
 																				? strategy[key].value + " %"
-																				: globalConfig.retrofitStrategyBuilder
-																							.displayValues[
-																							strategy[key].value
-																				    ] === undefined
-																				  ? strategy[key].value
-																				  : globalConfig.retrofitStrategyBuilder
-																							.displayValues[
-																							strategy[key].value
-																				    ]}
+																				: strategy[key].value}
 																		</Typography>
 																	</TableCell>
 																</TableRow>
