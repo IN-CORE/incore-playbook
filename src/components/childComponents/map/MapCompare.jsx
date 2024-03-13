@@ -480,7 +480,7 @@ const MapCompare = (props) => {
 						className={classes.legendButton}
 						onClick={() => setLegendOpen(!legendOpen)}
 					>
-						<h3 style={{ paddingLeft: "1em" }}>Legends </h3>
+						<h3 style={{ paddingLeft: "1em" }}>Legends &gt;</h3>
 					</button>
 					<Collapse in={legendOpen}>
 						<div className={classes.innerLegendDiv}>
