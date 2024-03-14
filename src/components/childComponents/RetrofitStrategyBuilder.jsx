@@ -161,7 +161,7 @@ export default function RetrofitStrategyBuilder(props) {
 	const [selectedValues, setSelectedValues] = React.useState({});
 	const [addError, setAddError] = React.useState(null);
 	const [showAddRetrofitStrategyRow, setShowAddRetrofitStrategyRow] =
-		React.useState(false);
+		React.useState(true);
 	const [currentlyEditing, setCurrentlyEditing] = React.useState(null);
 	// get zone name for redux
 	const zoneNames = useSelector((state) => state.attribute.zoneNames);
@@ -220,7 +220,11 @@ export default function RetrofitStrategyBuilder(props) {
 			}
 			let matches = [];
 			conditionSelectKeys.forEach((key) => {
-				if (row[key].value === selectedValues[key].value) {
+				if (
+					row[key] !== undefined &&
+					selectedValues[key] !== undefined &&
+					row[key].value === selectedValues[key].value
+				) {
 					matches.push(true);
 				} else {
 					matches.push(false);
@@ -800,15 +804,21 @@ export default function RetrofitStrategyBuilder(props) {
 																startIcon={
 																	<EditIcon style={{ color: "#0000008A" }} />
 																}
-															>
-																<Typography
-																	className={classes.actionButtons}
-																	onClick={() => {
+																// if there is an open row we shouldn't allow edit
+																onClick={() => {
+																	if (showAddRetrofitStrategyRow) {
+																		setAddError(
+																			"Save the current rule before editing.",
+																		);
+																	} else {
 																		setSelectedValues(row);
-																		setShowAddRetrofitStrategyRow(false);
+																		setShowAddRetrofitStrategyRow(true);
 																		setCurrentlyEditing(index);
-																	}}
-																>
+																		setAddError(null);
+																	}
+																}}
+															>
+																<Typography className={classes.actionButtons}>
 																	Edit
 																</Typography>
 															</Button>
@@ -818,11 +828,16 @@ export default function RetrofitStrategyBuilder(props) {
 																	<DeleteIcon style={{ color: "#0000008A" }} />
 																}
 																onClick={() => {
-																	const newRows = addedRows.filter(
-																		(r, i) => i !== index,
-																	);
-																	setNumRow(numRow - 1);
-																	setAddedRows(newRows);
+																	// should't allow delete if there is only one row
+																	if (numRow > 1) {
+																		const newRows = addedRows.filter(
+																			(r, i) => i !== index,
+																		);
+																		setNumRow(numRow - 1);
+																		setAddedRows(newRows);
+																		// reset error message
+																		setAddError(null);
+																	}
 																}}
 															>
 																<Typography className={classes.actionButtons}>
@@ -833,8 +848,8 @@ export default function RetrofitStrategyBuilder(props) {
 													</TableRow>
 												);
 											})}
-											{numRow === 1 ? AddRetrofitStrategyRow() : null}
-											{showAddRetrofitStrategyRow && numRow !== 1
+											{/* not editing adding new row*/}
+											{currentlyEditing === null && showAddRetrofitStrategyRow
 												? AddRetrofitStrategyRow()
 												: null}
 										</TableBody>
@@ -850,12 +865,16 @@ export default function RetrofitStrategyBuilder(props) {
 										className={classes.addMoreStrategyBtn}
 										startIcon={<AddIcon />}
 										onClick={() => {
-											const allowRowAdded = sanityCheck();
-											if (allowRowAdded) {
+											if (showAddRetrofitStrategyRow && selectedValues !== {}) {
+												setAddError(
+													"Save the current rule before adding more.",
+												);
+											} else {
+												// reset editing
 												setCurrentlyEditing(null);
-												if (!showAddRetrofitStrategyRow) {
-													setSelectedValues({});
-												}
+												// reset error message
+												setAddError(null);
+												// deposit the new row
 												setShowAddRetrofitStrategyRow(true);
 											}
 										}}

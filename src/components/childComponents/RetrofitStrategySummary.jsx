@@ -169,34 +169,6 @@ export default function RetrofitStrategySummary(props) {
 						</Box>
 					</Box>
 				</Box>
-				{/*<Grid container alignItems="center" spacing={3}>*/}
-				{/*<Grid item xs={4}>*/}
-				{/*    <Typography variant="h6" className={classes.tableSavedText}>*/}
-				{/*        Name*/}
-				{/*    </Typography>*/}
-				{/*</Grid>*/}
-				{/*<Grid item xs={8}>*/}
-				{/*    <Typography*/}
-				{/*        variant="body1"*/}
-				{/*        className={classes.summaryTableSavedText}*/}
-				{/*    >*/}
-				{/*        {name}*/}
-				{/*    </Typography>*/}
-				{/*</Grid>*/}
-				{/*<Grid item xs={4}>*/}
-				{/*    <Typography variant="h6" className={classes.tableSavedText}>*/}
-				{/*        Description*/}
-				{/*    </Typography>*/}
-				{/*</Grid>*/}
-				{/*<Grid item xs={8}>*/}
-				{/*    <Typography*/}
-				{/*        variant="body1"*/}
-				{/*        className={classes.summaryTableSavedText}*/}
-				{/*    >*/}
-				{/*        {description}*/}
-				{/*    </Typography>*/}
-				{/*</Grid>*/}
-				{/*</Grid>*/}
 			</Grid>
 			<Grid item xs={6} style={{ borderLeft: "1px solid #0000001F" }}>
 				<Grid container alignItems="center" spacing={3}>
@@ -290,13 +262,13 @@ export default function RetrofitStrategySummary(props) {
 										Conditions
 									</TableCell>
 									<TableCell className={classes.tableHeaderCellRetrofit}>
-										Retrofit Methods
+										Methods
 									</TableCell>
 									<TableCell className={classes.tableHeaderCellRetrofitCosts}>
-										Retrofit Costs
+										Costs
 									</TableCell>
 									<TableCell className={classes.tableHeaderCellRetrofitBldgs}>
-										Retrofitted Buildings
+										No. of Buildings
 									</TableCell>
 								</TableRow>
 							</TableHead>
