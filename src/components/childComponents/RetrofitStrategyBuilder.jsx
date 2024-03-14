@@ -56,17 +56,16 @@ const useStyles = makeStyles((theme) => ({
 		margin: theme.spacing(1),
 	},
 	actionButtons: {
-		fontSize: "16px",
+		fontSize: "15px",
 		fontWeight: 400,
 		letterSpacing: "0.15px",
-		lineHeight: "18.75px",
 		color: "#000000B2",
+		textTransform: "capitalize",
 	},
 	addMoreStrategyBtn: {
 		font: "Roboto",
 		fontSize: "15px",
 		fontWeight: 600,
-		lineHeight: "26px",
 		letterSpacing: "0.46px",
 		textAlign: "left",
 		borderColor: "#00619D",
@@ -75,9 +74,8 @@ const useStyles = makeStyles((theme) => ({
 	},
 	nxtBuildBtn: {
 		font: "Roboto",
-		fontSize: "14px",
+		fontSize: "15px",
 		fontWeight: 500,
-		lineHeight: "24px",
 		letterSpacing: "0.4px",
 		backgroundColor: "#00619D",
 		color: "#FFFFFF",
@@ -102,17 +100,16 @@ const useStyles = makeStyles((theme) => ({
 	tableHeaderCellRetrofit: {
 		borderRight: "1px solid #0000001F",
 		borderLeft: "1px solid #0000001F",
-		width: "20%",
-		maxWidth: "20%",
+		width: "30%",
+		maxWidth: "30%",
 	},
 	tableHeaderCellActions: {
 		width: "10%",
 	},
 	tableHeaderRow: {
 		font: "Roboto",
-		fontSize: "14px",
+		fontSize: "15px",
 		fontWeight: 400,
-		lineHeight: "24px",
 		letterSpacing: "0.17px",
 		backgroundColor: "#EDF1F4",
 		color: "#000000DE",
@@ -128,17 +125,15 @@ const useStyles = makeStyles((theme) => ({
 	},
 	tableSavedText: {
 		font: "Roboto",
-		fontSize: "14px",
+		fontSize: "15px",
 		fontWeight: 400,
-		lineHeight: "16.41px",
 		letterSpacing: "0.15px",
 		color: "#0000008A",
 	},
 	tableSavedValue: {
 		font: "Roboto",
-		fontSize: "14px",
+		fontSize: "15px",
 		fontWeight: 400,
-		lineHeight: "16.41px",
 		letterSpacing: "0.15px",
 		color: "#000000DE",
 	},
@@ -277,7 +272,12 @@ export default function RetrofitStrategyBuilder(props) {
 	const AddRetrofitStrategyRow = () => {
 		return (
 			<TableRow>
-				<TableCell align="center" className={classes.tableUnSavedCell}>
+				{/*number cell align middle veritcally*/}
+				<TableCell
+					align="center"
+					className={classes.tableUnSavedCell}
+					style={{ verticalAlign: "middle" }}
+				>
 					{currentlyEditing !== null ? currentlyEditing + 1 : numRow}
 				</TableCell>
 				<TableCell className={classes.tableUnSavedCell}>
@@ -484,7 +484,6 @@ export default function RetrofitStrategyBuilder(props) {
 															? selectedValues[method.key].value
 															: ""
 													}
-													style={{ minWidth: "300px" }}
 												>
 													{method.possibleOptions.map((option) => (
 														<IncoreMenuItem
@@ -726,11 +725,11 @@ export default function RetrofitStrategyBuilder(props) {
 															scope="row"
 															className={classes.tableSavedCell}
 														>
-															<Grid
-																container
+															<Box
+																display="flex"
+																flexDirection="row"
 																alignItems="center"
 																justifyContent="center"
-																spacing={0}
 															>
 																<StopRoundedIcon
 																	fontSize="large"
@@ -741,7 +740,7 @@ export default function RetrofitStrategyBuilder(props) {
 																	}}
 																/>
 																{index + 1}
-															</Grid>
+															</Box>
 														</TableCell>
 														<TableCell className={classes.tableSavedCell}>
 															<TableContainer>
@@ -772,44 +771,24 @@ export default function RetrofitStrategyBuilder(props) {
 															</TableContainer>
 														</TableCell>
 														<TableCell
-															align="left"
+															align="center"
 															className={classes.tableSavedCell}
+															style={{ padding: "16px" }}
 														>
-															<Grid container spacing={0}>
-																{retrofitMethodKeys.map((key, idx) => (
-																	<>
-																		{row[key].label === "" ? null : (
-																			<Grid
-																				item
-																				xs={4}
-																				key={key + 1}
-																				sx={{ p: 0 }}
-																			>
-																				<Typography
-																					variant="body1"
-																					className={classes.tableSavedText}
-																				>
-																					{row[key].label}
-																				</Typography>
-																			</Grid>
-																		)}
-																		<Grid
-																			item
-																			xs={row[key].label === "" ? 12 : 8}
-																			key={key + 2}
-																			sx={{ p: 0 }}
-																		>
-																			<Typography variant="body1">
-																				{row[key].value}
-																			</Typography>
-																		</Grid>
-																		{idx ===
-																		retrofitMethodKeys.length - 1 ? null : (
-																			<Divider />
-																		)}
-																	</>
-																))}
-															</Grid>
+															{retrofitMethodKeys.map((key, idx) => (
+																<>
+																	<Typography
+																		variant="body1"
+																		className={classes.tableSavedValue}
+																	>
+																		{row[key].value}
+																	</Typography>
+																	{idx ===
+																	retrofitMethodKeys.length - 1 ? null : (
+																		<Divider />
+																	)}
+																</>
+															))}
 														</TableCell>
 														<TableCell
 															align="left"
@@ -832,7 +811,6 @@ export default function RetrofitStrategyBuilder(props) {
 																	Edit
 																</Typography>
 															</Button>
-															<Divider />
 															<Button
 																className={classes.button}
 																startIcon={
