@@ -230,8 +230,29 @@ globals["inputDatasetTypes"].buildings = [
 globals["testBed"] = "slc";
 
 globals["retrofitStrategyBuilder"] = {
-	colorCodes: ["#00B654", "#FF88CF", "#36C1ED", "#FFB067", "#9C4EFF"],
-	maxStrategies: 5,
+	colorCodes: [
+		"#C32541",
+		"#1B3EBB",
+		"#76930F",
+		"#268FB0",
+		"#BB772B",
+		"#F54362",
+		"#456AEA",
+		"#98BB1D",
+		"#47B4D6",
+		"#E29D50",
+		"#FC7F95",
+		"#7C95EC",
+		"#C9DF7A",
+		"#83DEF2",
+		"#F4C189",
+		"#FDBBC9",
+		"#DBD2FC",
+		"#E0E9C2",
+		"#CDECF0",
+		"#FFE3C4",
+	],
+	maxStrategies: 20,
 	conditions: [
 		{
 			label: "City Council District",
