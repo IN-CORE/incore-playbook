@@ -44,6 +44,7 @@ import {
 	IncoreSelectBox,
 } from "../styledComponents/IncoreSelect";
 import { fetchZoneGeoJson as fetchZoneGeoJsonAction } from "../../actions/attributes";
+import { IncoreFootNote } from "../styledComponents/IncoreFootNote";
 
 const useStyles = makeStyles((theme) => ({
 	closeButton: {
@@ -520,9 +521,9 @@ export default function RetrofitStrategyBuilder(props) {
 							</Button>
 						</Grid>
 						<Grid item xs={12}>
-							<Typography variant="body1" color="error">
+							<IncoreFootNote style={{ color: "red" }}>
 								{addError}
-							</Typography>
+							</IncoreFootNote>
 						</Grid>
 					</Grid>
 				</TableCell>

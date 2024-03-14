@@ -22,8 +22,9 @@ import { applyTransform } from "ol/extent";
 
 import { basicLayers } from "../../utils/map";
 import Map from "./map/Map";
+import { IncoreFootNote } from "../styledComponents/IncoreFootNote";
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(() => ({
 	table: {
 		minWidth: 650,
 	},
@@ -49,10 +50,7 @@ const useStyles = makeStyles((theme) => ({
 		width: "15%",
 	},
 	tableHeaderRow: {
-		font: "Roboto",
-		fontSize: "14px",
-		fontWeight: 400,
-		lineHeight: "24px",
+		fontSize: "15px",
 		letterSpacing: "0.17px",
 		backgroundColor: "#EDF1F4",
 		color: "#000000DE",
@@ -66,26 +64,18 @@ const useStyles = makeStyles((theme) => ({
 		border: "1px solid #E0E0E0",
 	},
 	tableSavedText: {
-		font: "Roboto",
-		fontSize: "14px",
-		fontWeight: 400,
-		lineHeight: "16.41px",
+		fontSize: "15px",
 		letterSpacing: "0.15px",
 		color: "#0000008A",
 	},
 	tableSavedValue: {
-		font: "Roboto",
-		fontSize: "14px",
-		fontWeight: 400,
-		lineHeight: "16.41px",
+		fontSize: "15px",
 		letterSpacing: "0.15px",
 		color: "#000000DE",
 	},
 	mapHeaderText: {
-		font: "Roboto",
-		fontSize: "20px",
-		fontWeight: 600,
-		lineHeight: "25.12px",
+		fontSize: "16px",
+		fontWeight: 500,
 		letterSpacing: "0.1px",
 		color: "#000000DE",
 		marginTop: "20px",
@@ -98,10 +88,8 @@ const useStyles = makeStyles((theme) => ({
 	},
 	summaryTableSavedText: {
 		textAlign: "right",
-		font: "Roboto",
 		fontSize: "16px",
-		fontWeight: 600,
-		lineHeight: "25.6px",
+		fontWeight: 500,
 		letterSpacing: "0.15px",
 		color: "#000000DE",
 	},
@@ -135,7 +123,7 @@ export default function RetrofitStrategySummary(props) {
 	return (
 		<Grid
 			container
-			alignItems="center"
+			alignItems="flex-start"
 			spacing={3}
 			style={{ marginLeft: "25px", marginRight: "25px" }}
 		>
@@ -145,34 +133,70 @@ export default function RetrofitStrategySummary(props) {
 				</Typography>
 			</Grid>
 			<Grid item xs={6}>
-				<Grid container alignItems="center" spacing={3}>
-					<Grid item xs={4}>
-						<Typography variant="h6" className={classes.tableSavedText}>
-							Name
-						</Typography>
-					</Grid>
-					<Grid item xs={8}>
-						<Typography
-							variant="body1"
-							className={classes.summaryTableSavedText}
-						>
-							{name}
-						</Typography>
-					</Grid>
-					<Grid item xs={4}>
-						<Typography variant="h6" className={classes.tableSavedText}>
-							description
-						</Typography>
-					</Grid>
-					<Grid item xs={8}>
-						<Typography
-							variant="body1"
-							className={classes.summaryTableSavedText}
-						>
-							{description}
-						</Typography>
-					</Grid>
-				</Grid>
+				<Box display="flex" flexDirection="column" width="100%">
+					<Box display="flex" mb={2}>
+						{" "}
+						{/* Margin bottom for spacing */}
+						<Box flex={1}>
+							<Typography variant="h6" className={classes.tableSavedText}>
+								Name
+							</Typography>
+						</Box>
+						<Box flex={2}>
+							<Typography
+								variant="body1"
+								className={classes.summaryTableSavedText}
+							>
+								{name}
+							</Typography>
+						</Box>
+					</Box>
+					<Box display="flex" mb={2}>
+						{" "}
+						{/* Repeat for Description */}
+						<Box flex={1}>
+							<Typography variant="h6" className={classes.tableSavedText}>
+								Description
+							</Typography>
+						</Box>
+						<Box flex={2}>
+							<Typography
+								variant="body1"
+								className={classes.summaryTableSavedText}
+							>
+								{description}
+							</Typography>
+						</Box>
+					</Box>
+				</Box>
+				{/*<Grid container alignItems="center" spacing={3}>*/}
+				{/*<Grid item xs={4}>*/}
+				{/*    <Typography variant="h6" className={classes.tableSavedText}>*/}
+				{/*        Name*/}
+				{/*    </Typography>*/}
+				{/*</Grid>*/}
+				{/*<Grid item xs={8}>*/}
+				{/*    <Typography*/}
+				{/*        variant="body1"*/}
+				{/*        className={classes.summaryTableSavedText}*/}
+				{/*    >*/}
+				{/*        {name}*/}
+				{/*    </Typography>*/}
+				{/*</Grid>*/}
+				{/*<Grid item xs={4}>*/}
+				{/*    <Typography variant="h6" className={classes.tableSavedText}>*/}
+				{/*        Description*/}
+				{/*    </Typography>*/}
+				{/*</Grid>*/}
+				{/*<Grid item xs={8}>*/}
+				{/*    <Typography*/}
+				{/*        variant="body1"*/}
+				{/*        className={classes.summaryTableSavedText}*/}
+				{/*    >*/}
+				{/*        {description}*/}
+				{/*    </Typography>*/}
+				{/*</Grid>*/}
+				{/*</Grid>*/}
 			</Grid>
 			<Grid item xs={6} style={{ borderLeft: "1px solid #0000001F" }}>
 				<Grid container alignItems="center" spacing={3}>
@@ -214,14 +238,11 @@ export default function RetrofitStrategySummary(props) {
 						>
 							{retrofitSummary.total.num_bldg}
 						</Typography>
-						<Typography
-							variant="body1"
-							className={classes.summaryTableSavedText}
-						>
+						<IncoreFootNote style={{ color: "red", textAlign: "right" }}>
 							{retrofitSummary.total.num_bldg_no_cost > 0
 								? `(${retrofitSummary.total.num_bldg_no_cost} buildings with no cost)`
 								: null}
-						</Typography>
+						</IncoreFootNote>
 					</Grid>
 				</Grid>
 			</Grid>
@@ -259,7 +280,10 @@ export default function RetrofitStrategySummary(props) {
 						<Table className={classes.table} aria-label="simple table">
 							<TableHead>
 								<TableRow className={classes.tableHeaderRow}>
-									<TableCell className={classes.tableHeaderCellNo}>
+									<TableCell
+										className={classes.tableHeaderCellNo}
+										align="center"
+									>
 										No.
 									</TableCell>
 									<TableCell className={classes.tableHeaderCellConditions}>
@@ -272,7 +296,7 @@ export default function RetrofitStrategySummary(props) {
 										Retrofit Costs
 									</TableCell>
 									<TableCell className={classes.tableHeaderCellRetrofitBldgs}>
-										No. of Retrofitted Buildings
+										Retrofitted Buildings
 									</TableCell>
 								</TableRow>
 							</TableHead>
@@ -286,18 +310,23 @@ export default function RetrofitStrategySummary(props) {
 												scope="row"
 												className={classes.tableSavedCell}
 											>
-												<Grid
-													container
+												<Box
+													display="flex"
+													flexDirection="row"
 													alignItems="center"
 													justifyContent="center"
-													spacing={0}
 												>
 													<StopRoundedIcon
 														fontSize="large"
-														style={{ color: colorCodes[index] }}
+														style={{
+															color:
+																globalConfig.retrofitStrategyBuilder.colorCodes[
+																	index
+																],
+														}}
 													/>
 													{index + 1}
-												</Grid>
+												</Box>
 											</TableCell>
 											<TableCell className={classes.tableSavedCell}>
 												<TableContainer>
@@ -319,7 +348,7 @@ export default function RetrofitStrategySummary(props) {
 																			className={classes.tableSavedValue}
 																		>
 																			{strategy[key].type === "number"
-																				? strategy[key].value + " %"
+																				? `${strategy[key].value} %`
 																				: strategy[key].value}
 																		</Typography>
 																	</TableCell>
@@ -332,40 +361,23 @@ export default function RetrofitStrategySummary(props) {
 											<TableCell
 												align="center"
 												className={classes.tableSavedCell}
+												style={{ padding: "16px" }}
 											>
-												<Grid container spacing={0}>
-													{retrofitMethodKeys.map((key, idx) => (
-														<>
-															{strategy[key].label === "" ? null : (
-																<Grid item xs={4} key={key + 1} sx={{ p: 0 }}>
-																	<Typography
-																		variant="body1"
-																		className={classes.tableSavedText}
-																	>
-																		{strategy[key].label}
-																	</Typography>
-																</Grid>
-															)}
-															<Grid
-																item
-																xs={strategy[key].label === "" ? 12 : 8}
-																key={key + 2}
-																sx={{ p: 0 }}
-															>
-																<Typography variant="body1">
-																	{strategy[key].value}
-																</Typography>
-															</Grid>
-															{idx === retrofitMethodKeys.length - 1 ? null : (
-																<Divider />
-															)}
-														</>
-													))}
-												</Grid>
+												{retrofitMethodKeys.map((key, idx) => (
+													<>
+														<Typography variant="body1">
+															{strategy[key].value}
+														</Typography>
+														{idx === retrofitMethodKeys.length - 1 ? null : (
+															<Divider />
+														)}
+													</>
+												))}
 											</TableCell>
 											<TableCell
 												align="center"
 												className={classes.tableSavedCell}
+												style={{ padding: "16px" }}
 											>
 												<Typography
 													variant="body1"
@@ -379,6 +391,7 @@ export default function RetrofitStrategySummary(props) {
 											<TableCell
 												align="center"
 												className={classes.tableSavedCell}
+												style={{ padding: "16px" }}
 											>
 												<Typography
 													variant="body1"
@@ -386,10 +399,7 @@ export default function RetrofitStrategySummary(props) {
 												>
 													{retrofitSummary.by_rule[`${index}`].num_bldg}
 												</Typography>
-												<Typography
-													variant="body1"
-													className={classes.tableSavedValue}
-												>
+												<IncoreFootNote style={{ color: "red" }}>
 													{retrofitSummary.by_rule[`${index}`]
 														.num_bldg_no_cost > 0
 														? `(${
@@ -397,7 +407,7 @@ export default function RetrofitStrategySummary(props) {
 																	.num_bldg_no_cost
 														  } buildings with no cost)`
 														: null}
-												</Typography>
+												</IncoreFootNote>
 											</TableCell>
 										</TableRow>
 									);
