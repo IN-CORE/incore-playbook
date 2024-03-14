@@ -124,6 +124,7 @@ const useStyles = makeStyles((theme) => ({
 	},
 	tableUnSavedCell: {
 		border: "1px solid #E0E0E0",
+		verticalAlign: "top",
 	},
 	tableSavedText: {
 		font: "Roboto",
@@ -193,7 +194,7 @@ export default function RetrofitStrategyBuilder(props) {
 		fetchZoneGeoJson(globalConfig);
 	}, []);
 
-	const handleAddRow = () => {
+	const sanityCheck = () => {
 		// for any missing fields
 		let disabled = false;
 		conditionKeys.forEach((key) => {
@@ -214,7 +215,6 @@ export default function RetrofitStrategyBuilder(props) {
 		});
 		if (disabled) {
 			setAddError("Please fill all the fields");
-			return;
 		}
 
 		// for any duplicates
@@ -236,29 +236,36 @@ export default function RetrofitStrategyBuilder(props) {
 
 		if (matches.length > 0) {
 			setAddError("Duplicate entry, please choose unique conditions");
-			return;
+			disabled = true;
 		}
 
-		if (currentlyEditing !== null) {
-			const updatedRows = addedRows.map((row, i) => {
-				if (i === currentlyEditing) {
-					return selectedValues;
-				}
-				return row;
-			});
-			setAddedRows(updatedRows);
-			setCurrentlyEditing(null);
+		return !disabled;
+	};
+
+	const handleAddRow = () => {
+		// perform sanity check
+		const allowRowAdded = sanityCheck();
+		if (allowRowAdded) {
+			if (currentlyEditing !== null) {
+				const updatedRows = addedRows.map((row, i) => {
+					if (i === currentlyEditing) {
+						return selectedValues;
+					}
+					return row;
+				});
+				setAddedRows(updatedRows);
+				setCurrentlyEditing(null);
+				setSelectedValues({});
+				setShowAddRetrofitStrategyRow(false);
+				return;
+			}
+
+			setNumRow(numRow + 1);
+			const updateRows = [...addedRows, selectedValues];
+			setAddedRows(updateRows);
 			setSelectedValues({});
 			setShowAddRetrofitStrategyRow(false);
-			return;
 		}
-
-		setNumRow(numRow + 1);
-		const updateRows = [...addedRows, selectedValues];
-		setAddedRows(updateRows);
-		setShowAddRetrofitStrategyRow(false);
-		setSelectedValues({});
-		setShowAddRetrofitStrategyRow(false);
 	};
 
 	const steps = [
@@ -270,7 +277,7 @@ export default function RetrofitStrategyBuilder(props) {
 	const AddRetrofitStrategyRow = () => {
 		return (
 			<TableRow>
-				<TableCell align="left" className={classes.tableUnSavedCell}>
+				<TableCell align="center" className={classes.tableUnSavedCell}>
 					{currentlyEditing !== null ? currentlyEditing + 1 : numRow}
 				</TableCell>
 				<TableCell className={classes.tableUnSavedCell}>
@@ -324,11 +331,14 @@ export default function RetrofitStrategyBuilder(props) {
 													}
 													{...selectEndIconProp}
 												>
-													{zoneNames.map((zoneOption) => (
-														<IncoreMenuItem value={zoneOption} key={zoneOption}>
-															{zoneOption}
-														</IncoreMenuItem>
-													))}
+													<IncoreMenuItem value="placeholder" key="placeholder">
+														placeholder
+													</IncoreMenuItem>
+													{/*{zoneNames.map((zoneOption) => (*/}
+													{/*    <IncoreMenuItem value={zoneOption} key={zoneOption}>*/}
+													{/*        {zoneOption}*/}
+													{/*    </IncoreMenuItem>*/}
+													{/*))}*/}
 												</IncoreSelectBox>
 											</Grid>
 										</>
@@ -444,7 +454,7 @@ export default function RetrofitStrategyBuilder(props) {
 										<>
 											<Grid item xs={12} key={method.label + 1}>
 												<IncoreSelectBox
-													labelId="label"
+													labelId={`${method.label}Select`}
 													id={`${method.label}Select`}
 													variant="outlined"
 													onChange={(e) => {
@@ -474,6 +484,7 @@ export default function RetrofitStrategyBuilder(props) {
 															? selectedValues[method.key].value
 															: ""
 													}
+													style={{ minWidth: "300px" }}
 												>
 													{method.possibleOptions.map((option) => (
 														<IncoreMenuItem
@@ -608,7 +619,8 @@ export default function RetrofitStrategyBuilder(props) {
 
 	return (
 		<Dialog
-			open={strategyBuilderModalStatus}
+			// open={strategyBuilderModalStatus}
+			open={true}
 			onClose={onRetrofitStrategyBuilderClose}
 			PaperProps={{
 				style: { minHeight: "800px" }, // Set your desired minimum height here
@@ -682,7 +694,10 @@ export default function RetrofitStrategyBuilder(props) {
 									<Table className={classes.table} aria-label="simple table">
 										<TableHead>
 											<TableRow className={classes.tableHeaderRow}>
-												<TableCell className={classes.tableHeaderCellNo}>
+												<TableCell
+													className={classes.tableHeaderCellNo}
+													align="center"
+												>
 													No.
 												</TableCell>
 												<TableCell
@@ -707,7 +722,7 @@ export default function RetrofitStrategyBuilder(props) {
 													<TableRow key={index}>
 														<TableCell
 															component="th"
-															align="left"
+															align="center"
 															scope="row"
 															className={classes.tableSavedCell}
 														>
@@ -852,18 +867,21 @@ export default function RetrofitStrategyBuilder(props) {
 											numRow ===
 											globalConfig.retrofitStrategyBuilder.maxStrategies
 										}
-										variant="outlined"
+										variant="text"
 										className={classes.addMoreStrategyBtn}
 										startIcon={<AddIcon />}
 										onClick={() => {
-											setCurrentlyEditing(null);
-											if (!showAddRetrofitStrategyRow) {
-												setSelectedValues({});
+											const allowRowAdded = sanityCheck();
+											if (allowRowAdded) {
+												setCurrentlyEditing(null);
+												if (!showAddRetrofitStrategyRow) {
+													setSelectedValues({});
+												}
+												setShowAddRetrofitStrategyRow(true);
 											}
-											setShowAddRetrofitStrategyRow(true);
 										}}
 									>
-										Add More Strategy
+										Add more conditions and methods
 									</Button>
 								</Grid>
 							</Grid>
