@@ -242,7 +242,7 @@ globals["retrofitStrategyBuilder"] = {
 		{
 			label: "Building Structural Type",
 			type: "select",
-			key: "struct_typ",
+			key: "strtype",
 			possibleOptions: [
 				{
 					label: "URMM",
@@ -257,15 +257,15 @@ globals["retrofitStrategyBuilder"] = {
 		{
 			label: "% number of Buildings",
 			type: "number",
-			key: "percent",
+			key: "pct",
 			possibleOptions: null,
 		},
 	],
 	retrofitMethods: [
 		{
-			label: "",
+			label: "Retrofit Method",
 			type: "select",
-			key: "retrofitMethod",
+			key: "retrofit",
 			possibleOptions: [
 				{
 					label: "Wood or Metal Deck Diaphragms",
@@ -276,6 +276,7 @@ globals["retrofitStrategyBuilder"] = {
 	],
 	zoneLayerId: "incore:65ea380c4331420c85ddb211",
 	activeLayerNames: "Zone",
+	activeLayerFieldname: "name",
 };
 
 export { globals };

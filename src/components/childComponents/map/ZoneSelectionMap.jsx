@@ -140,7 +140,7 @@ export const ZoneSelectionMap = (props) => {
 
 	React.useEffect(() => {
 		const zoneLayer = layers.find(
-			(layer) => layer.getProperties().title === activeLayerNames,
+			(layer) => layer.getProperties().title === activeLayerNames ?? "Zone",
 		);
 
 		if (zoneLayer) {

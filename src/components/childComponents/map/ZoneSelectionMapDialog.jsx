@@ -46,7 +46,7 @@ export const ZoneSelectionMapDialog = (props) => {
 		const wfsUrl = `${globalConfig.geoServerWFS}&typeName=${globalConfig.retrofitStrategyBuilder["zoneLayerId"]}`;
 
 		const zoneLayer = new VectorLayer({
-			title: "Zone",
+			title: globalConfig.retrofitStrategyBuilder.activeLayerNames ?? "Zone",
 			source: new VectorSource({
 				format: new GeoJSON(),
 				url: wfsUrl,

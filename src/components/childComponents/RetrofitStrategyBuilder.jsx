@@ -32,7 +32,6 @@ import DeleteIcon from "@material-ui/icons/Delete";
 import EditIcon from "@material-ui/icons/Edit";
 import LoadingOverlay from "react-loading-overlay";
 import MapIcon from "@material-ui/icons/Map";
-import SaveIcon from "@material-ui/icons/Save";
 import StopRoundedIcon from "@material-ui/icons/StopRounded";
 import { makeStyles } from "@material-ui/core/styles";
 
@@ -271,7 +270,7 @@ export default function RetrofitStrategyBuilder(props) {
 	const AddRetrofitStrategyRow = () => {
 		return (
 			<TableRow>
-				<TableCell align="center" className={classes.tableUnSavedCell}>
+				<TableCell align="left" className={classes.tableUnSavedCell}>
 					{currentlyEditing !== null ? currentlyEditing + 1 : numRow}
 				</TableCell>
 				<TableCell className={classes.tableUnSavedCell}>
@@ -293,12 +292,12 @@ export default function RetrofitStrategyBuilder(props) {
 									);
 									return (
 										<>
-											<Grid item xs={3} key={condition.label + 1}>
+											<Grid item xs={4} key={condition.label + 1}>
 												<Typography variant="body1">
 													{condition.label}
 												</Typography>
 											</Grid>
-											<Grid item xs={9} key={condition.label + 2}>
+											<Grid item xs={8} key={condition.label + 2}>
 												<IncoreSelectBox
 													labelId="label"
 													id={`${condition.label}Select`}
@@ -337,12 +336,12 @@ export default function RetrofitStrategyBuilder(props) {
 								} else if (condition.type === "select") {
 									return (
 										<>
-											<Grid item xs={3} key={condition.label + 1}>
+											<Grid item xs={4} key={condition.label + 1}>
 												<Typography variant="body1">
 													{condition.label}
 												</Typography>
 											</Grid>
-											<Grid item xs={9} key={condition.label + 2}>
+											<Grid item xs={8} key={condition.label + 2}>
 												<IncoreSelectBox
 													labelId="label"
 													id={`${condition.label}Select`}
@@ -390,12 +389,12 @@ export default function RetrofitStrategyBuilder(props) {
 								} else if (condition.type === "number") {
 									return (
 										<>
-											<Grid item xs={3} key={condition.label + 1}>
+											<Grid item xs={4} key={condition.label + 1}>
 												<Typography variant="body1">
 													{condition.label}
 												</Typography>
 											</Grid>
-											<Grid item xs={9} key={condition.label + 2}>
+											<Grid item xs={8} key={condition.label + 2}>
 												<IncoreTextField
 													variant="outlined"
 													value={
@@ -436,26 +435,14 @@ export default function RetrofitStrategyBuilder(props) {
 						)}
 					</Grid>
 				</TableCell>
-				<TableCell className={classes.tableUnSavedCell} align="center">
+				<TableCell className={classes.tableUnSavedCell} align="left">
 					<Grid container alignItems="center" spacing={3}>
 						{globalConfig.retrofitStrategyBuilder.retrofitMethods.map(
 							(method) => {
 								if (method.type === "select") {
 									return (
 										<>
-											{method.label === "" ? null : (
-												<Grid item xs={3} key={method.label + 1}>
-													<Typography variant="body1">
-														{method.label}
-													</Typography>
-												</Grid>
-											)}
-
-											<Grid
-												item
-												xs={method.label === "" ? 12 : 9}
-												key={method.label + 1}
-											>
+											<Grid item xs={12} key={method.label + 1}>
 												<IncoreSelectBox
 													labelId="label"
 													id={`${method.label}Select`}
@@ -505,7 +492,7 @@ export default function RetrofitStrategyBuilder(props) {
 						)}
 					</Grid>
 				</TableCell>
-				<TableCell className={classes.tableUnSavedCell} align="center">
+				<TableCell className={classes.tableUnSavedCell} align="left">
 					<Grid container spacing={0}>
 						<Grid item xs={12}>
 							<Button
@@ -517,9 +504,6 @@ export default function RetrofitStrategyBuilder(props) {
 								}
 								variant="outlined"
 								color="primary"
-								startIcon={
-									currentlyEditing !== null ? <SaveIcon /> : <AddIcon />
-								}
 								onClick={handleAddRow}
 							>
 								{currentlyEditing !== null ? "Save" : "Add"}
@@ -627,7 +611,7 @@ export default function RetrofitStrategyBuilder(props) {
 			open={strategyBuilderModalStatus}
 			onClose={onRetrofitStrategyBuilderClose}
 			PaperProps={{
-				style: { minHeight: "600px" }, // Set your desired minimum height here
+				style: { minHeight: "800px" }, // Set your desired minimum height here
 			}}
 			maxWidth="lg"
 			fullWidth
@@ -681,18 +665,8 @@ export default function RetrofitStrategyBuilder(props) {
 										variant="outlined"
 										value={description}
 										placeholder="Description"
-										sx={{
-											height: "41px",
-											width: "100%",
-											color: "#2E384D",
-											fontSize: "15px",
-											fontWeight: 500,
-											letterSpacing: 0,
-											lineHeight: "18px",
-											backgroundColor: "#FFFFFF",
-										}}
 										multiline
-										minRows={4}
+										rows={6}
 										fullWidth
 										onChange={(e) => {
 											setDescription(e.target.value);
@@ -733,7 +707,7 @@ export default function RetrofitStrategyBuilder(props) {
 													<TableRow key={index}>
 														<TableCell
 															component="th"
-															align="center"
+															align="left"
 															scope="row"
 															className={classes.tableSavedCell}
 														>
@@ -783,7 +757,7 @@ export default function RetrofitStrategyBuilder(props) {
 															</TableContainer>
 														</TableCell>
 														<TableCell
-															align="center"
+															align="left"
 															className={classes.tableSavedCell}
 														>
 															<Grid container spacing={0}>
@@ -823,7 +797,7 @@ export default function RetrofitStrategyBuilder(props) {
 															</Grid>
 														</TableCell>
 														<TableCell
-															align="center"
+															align="left"
 															className={classes.tableSavedCell}
 														>
 															<Button
@@ -932,10 +906,11 @@ export default function RetrofitStrategyBuilder(props) {
 			<DialogActions
 				disableSpacing
 				style={{
-					justifyContent: activeStep === 2 ? "flex-end" : "space-between",
+					justifyContent:
+						activeStep === 0 || activeStep === 2 ? "flex-end" : "space-between",
 				}}
 			>
-				{activeStep < 2 ? (
+				{activeStep > 0 && activeStep < 2 ? (
 					<Button
 						disabled={activeStep === 0}
 						variant="outlined"
