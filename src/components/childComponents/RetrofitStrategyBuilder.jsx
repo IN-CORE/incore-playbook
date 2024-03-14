@@ -336,14 +336,11 @@ export default function RetrofitStrategyBuilder(props) {
 													}
 													{...selectEndIconProp}
 												>
-													<IncoreMenuItem value="placeholder" key="placeholder">
-														placeholder
-													</IncoreMenuItem>
-													{/*{zoneNames.map((zoneOption) => (*/}
-													{/*    <IncoreMenuItem value={zoneOption} key={zoneOption}>*/}
-													{/*        {zoneOption}*/}
-													{/*    </IncoreMenuItem>*/}
-													{/*))}*/}
+													{zoneNames.map((zoneOption) => (
+														<IncoreMenuItem value={zoneOption} key={zoneOption}>
+															{zoneOption}
+														</IncoreMenuItem>
+													))}
 												</IncoreSelectBox>
 											</Grid>
 										</>
@@ -623,8 +620,7 @@ export default function RetrofitStrategyBuilder(props) {
 
 	return (
 		<Dialog
-			// open={strategyBuilderModalStatus}
-			open={true}
+			open={strategyBuilderModalStatus}
 			onClose={onRetrofitStrategyBuilderClose}
 			PaperProps={{
 				style: { minHeight: "800px" }, // Set your desired minimum height here

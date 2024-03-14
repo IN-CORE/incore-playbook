@@ -258,7 +258,7 @@ globals["retrofitStrategyBuilder"] = {
 			label: "City Council District",
 			type: "mapSelect",
 			key: "zone",
-			possibleOptions: [{ label: "placeholder", value: "placeholder" }],
+			possibleOptions: [],
 		},
 		{
 			label: "Building Structural Type",
