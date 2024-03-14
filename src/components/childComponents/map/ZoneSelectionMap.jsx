@@ -37,6 +37,7 @@ export const ZoneSelectionMap = (props) => {
 	const [rightColumnZones, setRightColumnZones] = useState([]);
 
 	const zoneNames = useSelector((state) => state.attribute.zoneNames);
+	const globalConfig = useSelector((state) => state.config.globalConfig);
 
 	const columnBreakpoint = 15;
 
@@ -112,7 +113,10 @@ export const ZoneSelectionMap = (props) => {
 		selectSingleClickRef.current.on("select", function (e) {
 			const selectedFeature = e.selected[0]; // Get the first selected feature
 			if (selectedFeature) {
-				const name = selectedFeature.get("name"); // Retrieve the 'name' property of the selected feature
+				// Retrieve the property of the selected feature e.g. 'name' or "fld_zone"
+				const name = selectedFeature.get(
+					globalConfig.retrofitStrategyBuilder.activeLayerFieldname ?? "name",
+				);
 				setSelectedZoneName(name);
 			} else {
 				setSelectedZoneName("");
