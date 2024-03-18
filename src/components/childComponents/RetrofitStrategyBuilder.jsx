@@ -861,7 +861,10 @@ export default function RetrofitStrategyBuilder(props) {
 										className={classes.addMoreStrategyBtn}
 										startIcon={<AddIcon />}
 										onClick={() => {
-											if (showAddRetrofitStrategyRow && selectedValues !== {}) {
+											if (
+												showAddRetrofitStrategyRow &&
+												Object.keys(selectedValues).length > 0
+											) {
 												setAddError(
 													"Save the current rule before adding more.",
 												);
