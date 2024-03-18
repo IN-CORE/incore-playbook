@@ -77,14 +77,10 @@ const useStyles = makeStyles({
 
 const NA_value = -1; // TODO need to change to -1
 
-function checkNA(obj, key) {
-	return obj[key] === NA_value || !(key in obj);
-}
-
 function fillNA(obj, currentKey, keys) {
-	let NA_display = "-";
+	let NA_display = obj[currentKey];
 	if (!(currentKey in obj)) {
-		NA_display = "0"; // Return "0" if currentKey was not in obj
+		NA_display = 0; // Return 0 if currentKey was not in obj
 	}
 
 	// If any of the keys in keys is in obj and its value is NA_value, overwrite it with "-"
@@ -257,13 +253,11 @@ export function BldgDamageTable(props) {
 														className={classes.tableBodyCell}
 													>
 														<td>
-															{checkNA(clusterItem, tableHeaders[0])
-																? fillNA(
-																		clusterItem,
-																		tableHeaders[0],
-																		tableHeaders,
-																  )
-																: clusterItem[tableHeaders[0]]}
+															{fillNA(
+																clusterItem,
+																tableHeaders[0],
+																tableHeaders,
+															)}
 														</td>
 														<td
 															style={
@@ -287,13 +281,11 @@ export function BldgDamageTable(props) {
 														className={classes.tableBodyCell}
 													>
 														<td>
-															{checkNA(clusterItem, tableHeaders[1])
-																? fillNA(
-																		clusterItem,
-																		tableHeaders[1],
-																		tableHeaders,
-																  )
-																: clusterItem[tableHeaders[1]]}
+															{fillNA(
+																clusterItem,
+																tableHeaders[1],
+																tableHeaders,
+															)}
 														</td>
 														<td
 															style={
@@ -317,13 +309,11 @@ export function BldgDamageTable(props) {
 														className={classes.tableBodyCell}
 													>
 														<td>
-															{checkNA(clusterItem, tableHeaders[2])
-																? fillNA(
-																		clusterItem,
-																		tableHeaders[2],
-																		tableHeaders,
-																  )
-																: clusterItem[tableHeaders[2]]}
+															{fillNA(
+																clusterItem,
+																tableHeaders[2],
+																tableHeaders,
+															)}
 														</td>
 														<td
 															style={
@@ -347,13 +337,11 @@ export function BldgDamageTable(props) {
 														className={classes.tableBodyCell}
 													>
 														<td>
-															{checkNA(clusterItem, tableHeaders[3])
-																? fillNA(
-																		clusterItem,
-																		tableHeaders[3],
-																		tableHeaders,
-																  )
-																: clusterItem[tableHeaders[3]]}
+															{fillNA(
+																clusterItem,
+																tableHeaders[3],
+																tableHeaders,
+															)}
 														</td>
 														<td
 															style={
@@ -397,9 +385,7 @@ export function BldgDamageTable(props) {
 											style={{ fontWeight: 500, backgroundColor: "#EEF3F5" }}
 										>
 											<td>
-												{checkNA(categoryItem, tableHeaders[0])
-													? fillNA(categoryItem, tableHeaders[0], tableHeaders)
-													: categoryItem[tableHeaders[0]]}
+												{fillNA(categoryItem, tableHeaders[0], tableHeaders)}
 											</td>
 											<td
 												style={
@@ -423,9 +409,7 @@ export function BldgDamageTable(props) {
 											style={{ fontWeight: 500, backgroundColor: "#EEF3F5" }}
 										>
 											<td>
-												{checkNA(categoryItem, tableHeaders[1])
-													? fillNA(categoryItem, tableHeaders[1], tableHeaders)
-													: categoryItem[tableHeaders[1]]}
+												{fillNA(categoryItem, tableHeaders[1], tableHeaders)}
 											</td>
 											<td
 												style={
@@ -449,9 +433,7 @@ export function BldgDamageTable(props) {
 											style={{ fontWeight: 500, backgroundColor: "#EEF3F5" }}
 										>
 											<td>
-												{checkNA(categoryItem, tableHeaders[2])
-													? fillNA(categoryItem, tableHeaders[2], tableHeaders)
-													: categoryItem[tableHeaders[2]]}
+												{fillNA(categoryItem, tableHeaders[2], tableHeaders)}
 											</td>
 											<td
 												style={
@@ -475,9 +457,7 @@ export function BldgDamageTable(props) {
 											style={{ fontWeight: 500, backgroundColor: "#EEF3F5" }}
 										>
 											<td>
-												{checkNA(categoryItem, tableHeaders[3])
-													? fillNA(categoryItem, tableHeaders[3], tableHeaders)
-													: categoryItem[tableHeaders[3]]}
+												{fillNA(categoryItem, tableHeaders[3], tableHeaders)}
 											</td>
 											<td
 												style={
