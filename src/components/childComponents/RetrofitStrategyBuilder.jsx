@@ -558,6 +558,10 @@ export default function RetrofitStrategyBuilder(props) {
 	};
 
 	const handleSubmit = () => {
+		if (showAddRetrofitStrategyRow) {
+			setAddError("Save the current rule before submitting.");
+			return;
+		}
 		// prepare data
 		let payload = {
 			testbed: globalConfig.testbed,
@@ -618,6 +622,7 @@ export default function RetrofitStrategyBuilder(props) {
 		setNumRow(1);
 		setSelectedValues({});
 		setCurrentlyEditing(null);
+		setShowAddRetrofitStrategyRow(true);
 		// Step 3
 		setRetrofitSummary({});
 	};
