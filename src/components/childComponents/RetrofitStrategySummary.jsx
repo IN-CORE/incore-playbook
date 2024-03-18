@@ -92,6 +92,7 @@ const useStyles = makeStyles(() => ({
 		fontWeight: 500,
 		letterSpacing: "0.15px",
 		color: "#000000DE",
+		wordBreak: "break-all",
 	},
 }));
 
@@ -113,7 +114,6 @@ export default function RetrofitStrategySummary(props) {
 	const {
 		addedStrategies,
 		retrofitSummary,
-		colorCodes,
 		conditionKeys,
 		retrofitMethodKeys,
 		name,

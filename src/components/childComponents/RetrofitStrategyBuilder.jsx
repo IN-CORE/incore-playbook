@@ -897,7 +897,6 @@ export default function RetrofitStrategyBuilder(props) {
 							<RetrofitStrategySummary
 								addedStrategies={addedRows}
 								retrofitSummary={retrofitSummary}
-								colorCodes={globalConfig.retrofitStrategyBuilder.colorCodes}
 								conditionKeys={conditionKeys}
 								retrofitMethodKeys={retrofitMethodKeys}
 								name={name}
