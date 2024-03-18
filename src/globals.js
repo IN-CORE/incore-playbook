@@ -257,13 +257,13 @@ globals["retrofitStrategyBuilder"] = {
 		{
 			label: "City Council District",
 			type: "mapSelect",
-			key: "zone",
+			key: "zones",
 			possibleOptions: [],
 		},
 		{
 			label: "Building Structural Type",
 			type: "select",
-			key: "strtype",
+			key: "strtypes",
 			possibleOptions: [
 				{
 					label: "Mid-Rise Unreinforced Masonry Bearing Walls",
@@ -278,7 +278,7 @@ globals["retrofitStrategyBuilder"] = {
 		{
 			label: "% number of Buildings",
 			type: "number",
-			key: "pct",
+			key: "pcts",
 			possibleOptions: null,
 		},
 	],
@@ -286,7 +286,7 @@ globals["retrofitStrategyBuilder"] = {
 		{
 			label: "Retrofit Method",
 			type: "select",
-			key: "retrofit",
+			key: "retrofits",
 			possibleOptions: [
 				{
 					label: "Wood or Metal Deck Diaphragms",

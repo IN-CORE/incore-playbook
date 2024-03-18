@@ -584,8 +584,7 @@ export default function RetrofitStrategyBuilder(props) {
 		setLoading(true);
 		// make API call to save the strategy
 		let responseJson = {
-			testbed: "slc",
-			name: "dummy name",
+			title: "dummy name",
 			description: "dummy description",
 			total: {
 				num_bldg: 3283,
@@ -597,30 +596,30 @@ export default function RetrofitStrategyBuilder(props) {
 					num_bldg: 3191,
 					num_bldg_no_cost: 40,
 					cost: 94393478.73,
-					zone: { label: "City Council District", valueLabel: "HOLLADAY CITY" },
-					struct_typ: { label: "Building Structural Type", valueLabel: "URMM" },
-					percent: 1,
-					retrofitMethod: "dummy retrofit method 1",
 				},
 				1: {
 					num_bldg: 90,
 					num_bldg_no_cost: 0,
 					cost: 22867242.7,
-					zone: { label: "City Council District", valueLabel: "SANDY CITY" },
-					struct_typ: { label: "Building Structural Type", valueLabel: "URML" },
-					percent: 1,
-					retrofitMethod: "dummy retrofit method 2",
 				},
 				2: {
 					num_bldg: 2,
 					num_bldg_no_cost: 2,
 					cost: 0,
-					zone: { label: "City Council District", valueLabel: "SANDY CITY" },
-					struct_typ: { label: "Building Structural Type", valueLabel: "URML" },
-					percent: 1,
-					retrofitMethod: "dummy retrofit method 3",
 				},
 			},
+			rules: {
+				testbed: "galveston",
+				rules: 3,
+				zones: ["1P", "1P", "0.2P"],
+				strtypes: ["1", "2", "1"],
+				pcts: [1, 1, 1],
+			},
+			retrofits: {
+				ret_keys: ["elevation", "elevation", "elevation"],
+				ret_vals: [5, 10, 5],
+			},
+			rsDetailsLayerId: "dummy_layer_id",
 		};
 		setRetrofitSummary(responseJson);
 		setActiveStep(activeStep + 1);
@@ -911,14 +910,7 @@ export default function RetrofitStrategyBuilder(props) {
 						) : null}
 
 						{activeStep === 2 ? (
-							<RetrofitStrategySummary
-								addedStrategies={addedRows}
-								retrofitSummary={retrofitSummary}
-								conditionKeys={conditionKeys}
-								retrofitMethodKeys={retrofitMethodKeys}
-								name={name}
-								description={description}
-							/>
+							<RetrofitStrategySummary retrofitSummary={retrofitSummary} />
 						) : null}
 
 						<ZoneSelectionMapDialog

@@ -113,14 +113,7 @@ export default function RetrofitStrategySummary(props) {
 		return `$ ${formattedNum}`;
 	};
 
-	const {
-		addedStrategies,
-		retrofitSummary,
-		conditionKeys,
-		retrofitMethodKeys,
-		name,
-		description,
-	} = props;
+	const { retrofitSummary } = props;
 
 	// TODO replace with real interaction
 	useEffect(() => {
@@ -179,7 +172,7 @@ export default function RetrofitStrategySummary(props) {
 								variant="body1"
 								className={classes.summaryTableSavedText}
 							>
-								{name}
+								{retrofitSummary.title}
 							</Typography>
 						</Box>
 					</Box>
@@ -196,7 +189,7 @@ export default function RetrofitStrategySummary(props) {
 								variant="body1"
 								className={classes.summaryTableSavedText}
 							>
-								{description}
+								{retrofitSummary.description}
 							</Typography>
 						</Box>
 					</Box>
@@ -227,7 +220,7 @@ export default function RetrofitStrategySummary(props) {
 							variant="body1"
 							className={classes.summaryTableSavedText}
 						>
-							{addedStrategies.length}
+							{Object.keys(retrofitSummary.by_rule).length}
 						</Typography>
 					</Grid>
 					<Grid item xs={4}>
@@ -279,7 +272,7 @@ export default function RetrofitStrategySummary(props) {
 					<></>
 				)}
 			</Grid>
-			{addedStrategies.length > 0 ? (
+			{retrofitSummary ? (
 				<Grid item xs={12}>
 					<TableContainer>
 						<Table className={classes.table} aria-label="simple table">
@@ -306,9 +299,9 @@ export default function RetrofitStrategySummary(props) {
 								</TableRow>
 							</TableHead>
 							<TableBody>
-								{addedStrategies.map((strategy, index) => {
+								{Object.keys(retrofitSummary.by_rule).map((key) => {
 									return (
-										<TableRow key={index}>
+										<TableRow key={key}>
 											<TableCell
 												component="th"
 												align="center"
@@ -326,39 +319,49 @@ export default function RetrofitStrategySummary(props) {
 														style={{
 															color:
 																globalConfig.retrofitStrategyBuilder.colorCodes[
-																	index
+																	key
 																],
 														}}
 													/>
-													{index + 1}
+													{key + 1}
 												</Box>
 											</TableCell>
 											<TableCell className={classes.tableSavedCell}>
 												<TableContainer>
 													<Table>
 														<TableBody>
-															{conditionKeys.map((key) => (
-																<TableRow key={key}>
-																	<TableCell>
-																		<Typography
-																			variant="body1"
-																			className={classes.tableSavedText}
-																		>
-																			{strategy[key].label}
-																		</Typography>
-																	</TableCell>
-																	<TableCell align="right">
-																		<Typography
-																			variant="body1"
-																			className={classes.tableSavedValue}
-																		>
-																			{strategy[key].type === "number"
-																				? `${strategy[key].value} %`
-																				: strategy[key].value}
-																		</Typography>
-																	</TableCell>
-																</TableRow>
-															))}
+															{globalConfig.retrofitStrategyBuilder.conditions.map(
+																(condition) => {
+																	return (
+																		<TableRow key={key}>
+																			<TableCell>
+																				<Typography
+																					variant="body1"
+																					className={classes.tableSavedText}
+																				>
+																					{condition.label}
+																				</Typography>
+																			</TableCell>
+																			<TableCell align="right">
+																				<Typography
+																					variant="body1"
+																					className={classes.tableSavedValue}
+																				>
+																					{condition.type === "number"
+																						? `${
+																								retrofitSummary.rules[
+																									condition.key
+																								][key]
+																						  } %`
+																						: retrofitSummary.rules[
+																								condition.key
+																						  ][key]}
+																				</Typography>
+																			</TableCell>
+																		</TableRow>
+																	);
+																},
+															)}
 														</TableBody>
 													</Table>
 												</TableContainer>
@@ -368,16 +371,23 @@ export default function RetrofitStrategySummary(props) {
 												className={classes.tableSavedCell}
 												style={{ padding: "16px" }}
 											>
-												{retrofitMethodKeys.map((key, idx) => (
-													<>
-														<Typography variant="body1">
-															{strategy[key].value}
-														</Typography>
-														{idx === retrofitMethodKeys.length - 1 ? null : (
-															<Divider />
-														)}
-													</>
-												))}
+												{globalConfig.retrofitStrategyBuilder.retrofitMethods.map(
+													(method, idx) => {
+														return (
+															<>
+																<Typography variant="body1">
+																	{retrofitSummary[method.key].ret_keys[key]}
+																</Typography>
+																{idx ===
+																globalConfig.retrofitStrategyBuilder
+																	.retrofitMethods.length -
+																	1 ? null : (
+																	<Divider />
+																)}
+															</>
+														);
+													},
+												)}
 											</TableCell>
 											<TableCell
 												align="center"
@@ -389,7 +399,7 @@ export default function RetrofitStrategySummary(props) {
 													className={classes.tableSavedValue}
 												>
 													{getDollarString(
-														retrofitSummary.by_rule[`${index}`].cost,
+														retrofitSummary.by_rule[`${key}`].cost,
 													)}
 												</Typography>
 											</TableCell>
@@ -402,13 +412,13 @@ export default function RetrofitStrategySummary(props) {
 													variant="body1"
 													className={classes.tableSavedValue}
 												>
-													{retrofitSummary.by_rule[`${index}`].num_bldg}
+													{retrofitSummary.by_rule[`${key}`].num_bldg}
 												</Typography>
 												<IncoreFootNote style={{ color: "red" }}>
-													{retrofitSummary.by_rule[`${index}`]
-														.num_bldg_no_cost > 0
+													{retrofitSummary.by_rule[`${key}`].num_bldg_no_cost >
+													0
 														? `(${
-																retrofitSummary.by_rule[`${index}`]
+																retrofitSummary.by_rule[`${key}`]
 																	.num_bldg_no_cost
 														  } buildings with no cost)`
 														: null}
