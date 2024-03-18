@@ -45,6 +45,7 @@ import {
 } from "../styledComponents/IncoreSelect";
 import { fetchZoneGeoJson as fetchZoneGeoJsonAction } from "../../actions/attributes";
 import { IncoreFootNote } from "../styledComponents/IncoreFootNote";
+import SaveIcon from "@material-ui/icons/Save";
 
 const useStyles = makeStyles((theme) => ({
 	closeButton: {
@@ -517,6 +518,9 @@ export default function RetrofitStrategyBuilder(props) {
 								variant="outlined"
 								color="primary"
 								onClick={handleAddRow}
+								startIcon={
+									currentlyEditing !== null ? <SaveIcon /> : <AddIcon />
+								}
 							>
 								{currentlyEditing !== null ? "Save" : "Add"}
 							</Button>
