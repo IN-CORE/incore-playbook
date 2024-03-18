@@ -1,8 +1,8 @@
 const datawolfWorkflowConfig = {
-	title: "galveston-community-wf-v1",
-	description: "2023-03-24 full workflow v1",
-	wfTitle: "galveston-community-wf-v1",
-	wfId: "9c1c11c8-9ba5-4125-bb35-e032095983af",
+	title: "slc-community-wf-v2",
+	description: "2023-03-07 full workflow v2",
+	wfTitle: "slc-community-wf-v2",
+	wfId: "c81ab517-77a3-472a-a1a6-db08d1fadb35",
 	creatorId: "d39e1679-4dcc-4158-9655-a604801871a7",
 	inputs: {
 		parameters: [
@@ -12,7 +12,7 @@ const datawolfWorkflowConfig = {
 				variableName: "resultName",
 				widget: null,
 				hidden: true,
-				defaultValue: "Galveston",
+				defaultValue: "SLC",
 				parametersMap: [
 					{
 						paramId: "103b5143-8059-4052-bb9c-10fb6b956471",
@@ -24,8 +24,71 @@ const datawolfWorkflowConfig = {
 					{
 						paramId: "bb421a94-e990-483d-d08f-7b67961eb2b2",
 						parameters: {
-							step: "Pole-Max-Dmg-State",
+							step: "Sub-Max-Dmg-State",
 							title: "Result Name",
+						},
+					},
+					{
+						paramId: "db1d7f2b-be47-41f1-87f6-d4624e0c8de9",
+						parameters: {
+							step: "Bldg-MonteCarloFailureProbability",
+							title: "result_name",
+						},
+					},
+					{
+						paramId: "ecc1d35f-3a34-46d9-e306-dc8bc5738eed",
+						parameters: {
+							step: "Sub-MonteCarloFailureProbability",
+							title: "result_name",
+						},
+					},
+					{
+						paramId: "ffca1ace-2264-4dbe-e7c8-ecedc2dc748b",
+						parameters: {
+							step: "Sub-EpfDamage",
+							title: "result_name",
+						},
+					},
+					{
+						paramId: "35ddf87b-7eb4-4b5f-d606-b0d73fb904cc",
+						parameters: {
+							step: "SocialVulnerability",
+							title: "result_name",
+						},
+					},
+					{
+						paramId: "15e42c27-cec2-471e-a231-0938a461c9ea",
+						parameters: {
+							step: "PopulationDislocation",
+							title: "result_name",
+						},
+					},
+					{
+						paramId: "be9266c0-6fc5-4861-9844-9c31d7bf2c78",
+						parameters: {
+							step: "BuildingDamage",
+							title: "result_name",
+						},
+					},
+					{
+						paramId: "df9ccac3-5480-4053-a342-2c4a0bc29f9d",
+						parameters: {
+							step: "BuildingFunctionality-sub-only",
+							title: "result_name",
+						},
+					},
+					{
+						paramId: "59b0b59b-db87-408f-9d40-2103af92d74b",
+						parameters: {
+							step: "CapitalShocks",
+							title: "result_name",
+						},
+					},
+					{
+						paramId: "419c1e2c-3e8e-4354-e883-e0f4d49576c5",
+						parameters: {
+							step: "HousingRecoverySequential",
+							title: "result_name",
 						},
 					},
 					{
@@ -64,87 +127,38 @@ const datawolfWorkflowConfig = {
 						},
 					},
 					{
-						paramId: "db1d7f2b-be47-41f1-87f6-d4624e0c8de9",
+						paramId: "971cc30c-79db-4045-9cc1-0c89bc2b66b3",
 						parameters: {
-							step: "Bldg-MonteCarloFailureProbability",
-							title: "result_name",
+							step: "Bldg-Func-Store Result",
+							title: "Result Name",
 						},
 					},
 					{
-						paramId: "ecc1d35f-3a34-46d9-e306-dc8bc5738eed",
+						paramId: "f0028ea0-f38d-45f2-ca9c-3962a676e5ce",
 						parameters: {
-							step: "Pole-MonteCarloFailureProbability",
-							title: "result_name",
+							step: "Bldg-FailProb-Store Result",
+							title: "Result Name",
 						},
 					},
 					{
-						paramId: "ffca1ace-2264-4dbe-e7c8-ecedc2dc748b",
+						paramId: "8edb0d54-c402-481b-e5a9-874bd04b0f8e",
 						parameters: {
-							step: "Pole-EpfDamage",
-							title: "result_name",
+							step: "Bldg-Max-Store Result",
+							title: "Result Name",
 						},
 					},
 					{
-						paramId: "35ddf87b-7eb4-4b5f-d606-b0d73fb904cc",
+						paramId: "a3cc1a27-a80a-45c5-a955-76a318507824",
 						parameters: {
-							step: "SocialVulnerability",
-							title: "result_name",
+							step: "HeatMap-Store Result",
+							title: "Result Name",
 						},
 					},
 					{
-						paramId: "15e42c27-cec2-471e-a231-0938a461c9ea",
+						paramId: "d6a9b9c3-6c10-41a1-84b7-81c554d0e956",
 						parameters: {
-							step: "PopulationDislocation",
-							title: "result_name",
-						},
-					},
-					{
-						paramId: "be9266c0-6fc5-4861-9844-9c31d7bf2c78",
-						parameters: {
-							step: "BuildingDamage-Surge",
-							title: "result_name",
-						},
-					},
-					{
-						paramId: "5a644796-4ea5-447d-8ff4-70f34dc5548b",
-						parameters: {
-							step: "BuildingDamage-Wind",
-							title: "result_name",
-						},
-					},
-					{
-						paramId: "ea439f27-c1aa-4103-d10a-b55ba8c82912",
-						parameters: {
-							step: "BuildingDamage-Flood",
-							title: "result_name",
-						},
-					},
-					{
-						paramId: "59b0b59b-db87-408f-9d40-2103af92d74b",
-						parameters: {
-							step: "CapitalShocks",
-							title: "result_name",
-						},
-					},
-					{
-						paramId: "419c1e2c-3e8e-4354-e883-e0f4d49576c5",
-						parameters: {
-							step: "HousingRecoverySequential",
-							title: "result_name",
-						},
-					},
-					{
-						paramId: "cbec56c7-c1c7-4dd3-bb9c-f0834c4bd70a",
-						parameters: {
-							step: "CombinedWindWaveSurgeBuildingDamage",
-							title: "result_name",
-						},
-					},
-					{
-						paramId: "59331924-949f-4c78-ffa1-706f4ed0b6f3",
-						parameters: {
-							step: "BuildingFunctionality-pole-only",
-							title: "result_name",
+							step: "Sub-Max-Store Result",
+							title: "Result Name",
 						},
 					},
 				],
@@ -177,7 +191,7 @@ const datawolfWorkflowConfig = {
 					{
 						paramId: "2d42149f-dee4-4888-d26c-f4150bfd62c3",
 						parameters: {
-							step: "Pole-MonteCarloFailureProbability",
+							step: "Sub-MonteCarloFailureProbability",
 							title: "damage_interval_keys",
 						},
 					},
@@ -211,7 +225,7 @@ const datawolfWorkflowConfig = {
 					{
 						paramId: "433418a3-10b6-42e7-e947-bc2a4a9f7334",
 						parameters: {
-							step: "Pole-MonteCarloFailureProbability",
+							step: "Sub-MonteCarloFailureProbability",
 							title: "failure_state_keys",
 						},
 					},
@@ -235,7 +249,7 @@ const datawolfWorkflowConfig = {
 					{
 						paramId: "03d4fe6f-d9d6-4bfb-900d-5c17c6a91b49",
 						parameters: {
-							step: "Pole-MonteCarloFailureProbability",
+							step: "Sub-MonteCarloFailureProbability",
 							title: "seed",
 						},
 					},
@@ -249,21 +263,7 @@ const datawolfWorkflowConfig = {
 					{
 						paramId: "d109c67d-c547-4d86-da41-12d2b4d389bb",
 						parameters: {
-							step: "BuildingDamage-Surge",
-							title: "seed",
-						},
-					},
-					{
-						paramId: "cd35e4d1-f2cc-4329-ccd9-6e679f7468ab",
-						parameters: {
-							step: "BuildingDamage-Wind",
-							title: "seed",
-						},
-					},
-					{
-						paramId: "b6280019-3f7c-45ab-c4ab-f5914ff57416",
-						parameters: {
-							step: "BuildingDamage-Flood",
+							step: "BuildingDamage",
 							title: "seed",
 						},
 					},
@@ -294,7 +294,7 @@ const datawolfWorkflowConfig = {
 					{
 						paramId: "1fa63fcb-7093-4737-b3a8-0e1fd6c00cac",
 						parameters: {
-							step: "Pole-MonteCarloFailureProbability",
+							step: "Sub-MonteCarloFailureProbability",
 							title: "num_samples",
 						},
 					},
@@ -318,35 +318,14 @@ const datawolfWorkflowConfig = {
 					{
 						paramId: "145a7b7c-19f3-40cb-9d7f-3131d8d39d1b",
 						parameters: {
-							step: "Pole-MonteCarloFailureProbability",
+							step: "Sub-MonteCarloFailureProbability",
 							title: "num_cpu",
 						},
 					},
 					{
 						paramId: "9eefb251-7b32-4101-823e-1da5f3bfcda5",
 						parameters: {
-							step: "Pole-EpfDamage",
-							title: "num_cpu",
-						},
-					},
-					{
-						paramId: "937224ee-0e6c-40d7-dd2e-6a40018c1a02",
-						parameters: {
-							step: "BuildingDamage-Surge",
-							title: "num_cpu",
-						},
-					},
-					{
-						paramId: "e588c1a2-9716-41ed-850c-70f626ce0b5a",
-						parameters: {
-							step: "BuildingDamage-Wind",
-							title: "num_cpu",
-						},
-					},
-					{
-						paramId: "1f439687-ddd2-4822-e5e0-40a33860b308",
-						parameters: {
-							step: "BuildingDamage-Flood",
+							step: "Sub-EpfDamage",
 							title: "num_cpu",
 						},
 					},
@@ -354,6 +333,13 @@ const datawolfWorkflowConfig = {
 						paramId: "fa432b67-adb9-47cb-bd0e-aa7197aada15",
 						parameters: {
 							step: "HousingRecoverySequential",
+							title: "num_cpu",
+						},
+					},
+					{
+						paramId: "937224ee-0e6c-40d7-dd2e-6a40018c1a02",
+						parameters: {
+							step: "BuildingDamage",
 							title: "num_cpu",
 						},
 					},
@@ -377,14 +363,14 @@ const datawolfWorkflowConfig = {
 					{
 						paramId: "62a70e86-ae79-42cd-f5a5-58c9cabb2b05",
 						parameters: {
-							step: "Pole-MonteCarloFailureProbability",
+							step: "Sub-MonteCarloFailureProbability",
 							title: "IN-CORE Service",
 						},
 					},
 					{
 						paramId: "b9ef16f4-c7ad-4102-d655-3e003d07e19a",
 						parameters: {
-							step: "Pole-EpfDamage",
+							step: "Sub-EpfDamage",
 							title: "IN-CORE Service",
 						},
 					},
@@ -426,21 +412,14 @@ const datawolfWorkflowConfig = {
 					{
 						paramId: "ad3f373b-83a4-4a64-9a52-286989e8fae1",
 						parameters: {
-							step: "BuildingDamage-Surge",
+							step: "BuildingDamage",
 							title: "IN-CORE Service",
 						},
 					},
 					{
-						paramId: "1199d11d-6354-45af-ec56-3b95c684df3b",
+						paramId: "7c86cc07-37d6-48cb-f75f-8c90d9512023",
 						parameters: {
-							step: "BuildingDamage-Wind",
-							title: "IN-CORE Service",
-						},
-					},
-					{
-						paramId: "b1d78389-bc45-424e-8310-bd502451fa08",
-						parameters: {
-							step: "BuildingDamage-Flood",
+							step: "BuildingFunctionality-sub-only",
 							title: "IN-CORE Service",
 						},
 					},
@@ -448,6 +427,13 @@ const datawolfWorkflowConfig = {
 						paramId: "e58893b5-d7a0-428a-ec04-0965c6b0af0e",
 						parameters: {
 							step: "CapitalShocks",
+							title: "IN-CORE Service",
+						},
+					},
+					{
+						paramId: "efd1f25b-9379-4002-81c4-9b3a87981a21",
+						parameters: {
+							step: "SaltLakeCGEModel",
 							title: "IN-CORE Service",
 						},
 					},
@@ -489,28 +475,7 @@ const datawolfWorkflowConfig = {
 					{
 						paramId: "35afa396-03c6-4b47-e3b0-de80120f48a1",
 						parameters: {
-							step: "Pole-Max-Store Result",
-							title: "IN-CORE Service",
-						},
-					},
-					{
-						paramId: "753e2aaa-1f32-4c2d-bade-88ec43c8435c",
-						parameters: {
-							step: "CombinedWindWaveSurgeBuildingDamage",
-							title: "IN-CORE Service",
-						},
-					},
-					{
-						paramId: "9c9e4b0d-28d0-46f8-9288-6a0ce27a1c49",
-						parameters: {
-							step: "BuildingFunctionality-pole-only",
-							title: "IN-CORE Service",
-						},
-					},
-					{
-						paramId: "0d10cacb-6926-46c3-d8a6-f96e2a7f540e",
-						parameters: {
-							step: "GalvestonCGEModel",
+							step: "Sub-Max-Store Result",
 							title: "IN-CORE Service",
 						},
 					},
@@ -527,28 +492,14 @@ const datawolfWorkflowConfig = {
 					{
 						paramId: "706184d5-85da-4245-c28e-98fde1bf3150",
 						parameters: {
-							step: "Pole-EpfDamage",
+							step: "Sub-EpfDamage",
 							title: "hazard_type",
 						},
 					},
 					{
 						paramId: "a385ac10-a8c4-44e0-8293-75d77d4c3793",
 						parameters: {
-							step: "BuildingDamage-Surge",
-							title: "hazard_type",
-						},
-					},
-					{
-						paramId: "5f4dd770-c0ce-4387-c29b-2316dfa2c437",
-						parameters: {
-							step: "BuildingDamage-Wind",
-							title: "hazard_type",
-						},
-					},
-					{
-						paramId: "32899621-936b-417a-e205-533ed2533654",
-						parameters: {
-							step: "BuildingDamage-Flood",
+							step: "BuildingDamage",
 							title: "hazard_type",
 						},
 					},
@@ -565,28 +516,14 @@ const datawolfWorkflowConfig = {
 					{
 						paramId: "69a4732f-c914-40ca-c2ac-f61242bf2190",
 						parameters: {
-							step: "Pole-EpfDamage",
+							step: "Sub-EpfDamage",
 							title: "hazard_id",
 						},
 					},
 					{
 						paramId: "71e714b0-fa46-4e39-923c-7c5087665f86",
 						parameters: {
-							step: "BuildingDamage-Surge",
-							title: "hazard_id",
-						},
-					},
-					{
-						paramId: "f187f11f-8ffe-468c-b909-c7c154e8ccf6",
-						parameters: {
-							step: "BuildingDamage-Wind",
-							title: "hazard_id",
-						},
-					},
-					{
-						paramId: "a25766e2-b8d3-45dc-86f1-c8dc86582095",
-						parameters: {
-							step: "BuildingDamage-Flood",
+							step: "BuildingDamage",
 							title: "hazard_id",
 						},
 					},
@@ -595,46 +532,22 @@ const datawolfWorkflowConfig = {
 			{
 				title: "fragility_key",
 				description: "fragility_key",
-				variableName: "epfFragilityKey",
-				widget: null,
-				hidden: true,
-				defaultValue: "Non-Retrofit Fragility ID Code",
-				parametersMap: [
-					{
-						paramId: "43c0d905-d219-40c1-a95a-aabbc164f59c",
-						parameters: {
-							step: "Pole-EpfDamage",
-							title: "fragility_key",
-						},
-					},
-				],
-			},
-			{
-				title: "fragility_key",
-				description: "fragility_key",
-				variableName: "bldgFragilityKey",
+				variableName: "fragilityKey",
 				widget: null,
 				hidden: true,
 				defaultValue: "",
 				parametersMap: [
 					{
+						paramId: "43c0d905-d219-40c1-a95a-aabbc164f59c",
+						parameters: {
+							step: "Sub-EpfDamage",
+							title: "fragility_key",
+						},
+					},
+					{
 						paramId: "28e71889-26b7-4178-b3c3-55b71b18d6bc",
 						parameters: {
-							step: "BuildingDamage-Surge",
-							title: "fragility_key",
-						},
-					},
-					{
-						paramId: "3e537d73-25c3-4432-e208-88a9a32001ce",
-						parameters: {
-							step: "BuildingDamage-Wind",
-							title: "fragility_key",
-						},
-					},
-					{
-						paramId: "f0bc6779-2264-45da-ec0b-e07edda2434a",
-						parameters: {
-							step: "BuildingDamage-Flood",
+							step: "BuildingDamage",
 							title: "fragility_key",
 						},
 					},
@@ -651,7 +564,7 @@ const datawolfWorkflowConfig = {
 					{
 						paramId: "a0c5a39b-ff11-4898-a2dc-dd5ca139c732",
 						parameters: {
-							step: "Pole-EpfDamage",
+							step: "Sub-EpfDamage",
 							title: "liquefaction_fragility_key",
 						},
 					},
@@ -663,33 +576,19 @@ const datawolfWorkflowConfig = {
 				variableName: "useLiquefaction",
 				widget: null,
 				hidden: true,
-				defaultValue: "",
+				defaultValue: "true",
 				parametersMap: [
 					{
 						paramId: "80231a18-429b-43fa-de34-c8ab054b417e",
 						parameters: {
-							step: "Pole-EpfDamage",
+							step: "Sub-EpfDamage",
 							title: "use_liquefaction",
 						},
 					},
 					{
 						paramId: "4f2cfa0a-9e3c-4117-c3e1-37eef6d924d1",
 						parameters: {
-							step: "BuildingDamage-Surge",
-							title: "use_liquefaction",
-						},
-					},
-					{
-						paramId: "e119477e-7b01-4447-a5cc-c74e5b2e5fd1",
-						parameters: {
-							step: "BuildingDamage-Wind",
-							title: "use_liquefaction",
-						},
-					},
-					{
-						paramId: "cd604605-3bf0-4bbe-bcc4-dc03806d5db2",
-						parameters: {
-							step: "BuildingDamage-Flood",
+							step: "BuildingDamage",
 							title: "use_liquefaction",
 						},
 					},
@@ -701,33 +600,19 @@ const datawolfWorkflowConfig = {
 				variableName: "liquefactionGeologyDataset",
 				widget: null,
 				hidden: true,
-				defaultValue: "",
+				defaultValue: "6335ae58ac33a63950a9d8a1",
 				parametersMap: [
 					{
 						paramId: "e0a8a11f-ed36-49b4-a6e8-a3c92c939bb6",
 						parameters: {
-							step: "Pole-EpfDamage",
+							step: "Sub-EpfDamage",
 							title: "liquefaction_geology_dataset_id",
 						},
 					},
 					{
 						paramId: "dad935c9-0369-4ca3-ab93-aacaa43885f6",
 						parameters: {
-							step: "BuildingDamage-Surge",
-							title: "liquefaction_geology_dataset_id",
-						},
-					},
-					{
-						paramId: "deb73def-173f-4df6-b49f-0716964ebc24",
-						parameters: {
-							step: "BuildingDamage-Wind",
-							title: "liquefaction_geology_dataset_id",
-						},
-					},
-					{
-						paramId: "ce7e0bd4-00b0-4c64-8466-30720922d7a9",
-						parameters: {
-							step: "BuildingDamage-Flood",
+							step: "BuildingDamage",
 							title: "liquefaction_geology_dataset_id",
 						},
 					},
@@ -744,28 +629,14 @@ const datawolfWorkflowConfig = {
 					{
 						paramId: "2cf39637-68c6-4dfb-f953-3494363483cd",
 						parameters: {
-							step: "Pole-EpfDamage",
+							step: "Sub-EpfDamage",
 							title: "use_hazard_uncertainty",
 						},
 					},
 					{
 						paramId: "5f2b59eb-6041-4389-c13a-fe2d6c5d51ee",
 						parameters: {
-							step: "BuildingDamage-Surge",
-							title: "use_hazard_uncertainty",
-						},
-					},
-					{
-						paramId: "c800feb2-8515-4ea6-b52c-817d51c3a271",
-						parameters: {
-							step: "BuildingDamage-Wind",
-							title: "use_hazard_uncertainty",
-						},
-					},
-					{
-						paramId: "60df1d7f-cd4e-431e-a8d8-d65bddc33d3a",
-						parameters: {
-							step: "BuildingDamage-Flood",
+							step: "BuildingDamage",
 							title: "use_hazard_uncertainty",
 						},
 					},
@@ -773,23 +644,23 @@ const datawolfWorkflowConfig = {
 			},
 			{
 				title: "Buildings",
-				description: "Building inventory",
+				description: "Building Inventory",
 				variableName: "selectedBldgId",
 				widget: "Buildings",
 				hidden: false,
 				defaultValue: null,
 				parametersMap: [
 					{
-						paramId: "3f8b0db0-c24b-4cc5-85fc-e9b06b9db485",
+						paramId: "37cf203f-36c8-4ff7-c2a2-3e67cfca42ec",
 						parameters: {
-							step: "Building-Failure-Cluster",
+							step: "Building-Func-Cluster",
 							title: "Buildings",
 						},
 					},
 					{
-						paramId: "37cf203f-36c8-4ff7-c2a2-3e67cfca42ec",
+						paramId: "3f8b0db0-c24b-4cc5-85fc-e9b06b9db485",
 						parameters: {
-							step: "Building-Func-Cluster",
+							step: "Building-Failure-Cluster",
 							title: "Buildings",
 						},
 					},
@@ -803,21 +674,7 @@ const datawolfWorkflowConfig = {
 					{
 						paramId: "7a831e75-2a5c-4be9-c792-c4dd8d9fc64d",
 						parameters: {
-							step: "BuildingDamage-Surge",
-							title: "buildings",
-						},
-					},
-					{
-						paramId: "dcf00197-caa3-44e8-fd33-126c73ea7672",
-						parameters: {
-							step: "BuildingDamage-Wind",
-							title: "buildings",
-						},
-					},
-					{
-						paramId: "5811164f-aa54-4155-db3d-a8f174785546",
-						parameters: {
-							step: "BuildingDamage-Flood",
+							step: "BuildingDamage",
 							title: "buildings",
 						},
 					},
@@ -859,7 +716,7 @@ const datawolfWorkflowConfig = {
 				],
 			},
 			{
-				title: "retrofit strategy",
+				title: "retrofit strategies",
 				description: "retrofit_strategy",
 				variableName: "selectedRetrofitStrategyId",
 				widget: "RetrofitStrategies",
@@ -869,40 +726,16 @@ const datawolfWorkflowConfig = {
 					{
 						paramId: "3091cc60-86cf-44ce-9dcf-2ef2b227aab4",
 						parameters: {
-							step: "BuildingDamage-Surge",
-							title: "retrofit_strategy",
-						},
-					},
-					{
-						paramId: "36b8c16f-9dc7-4d3e-f1fe-36c978b9f84c",
-						parameters: {
-							step: "BuildingDamage-Flood",
+							step: "BuildingDamage",
 							title: "retrofit_strategy",
 						},
 					},
 				],
 			},
 			{
-				title: "retrofit strategy not needed",
-				description: "retrofit_strategy not needed",
-				variableName: "selectedRetrofitStrategyId",
-				widget: null,
-				hidden: true,
-				defaultValue: "",
-				parametersMap: [
-					{
-						paramId: "1ebbf186-ddba-45b4-c570-0406915a37ab",
-						parameters: {
-							step: "BuildingDamage-Wind",
-							title: "retrofit_strategy",
-						},
-					},
-				],
-			},
-			{
-				title: "epfs pole",
-				description: "epfs pole",
-				variableName: "selectedPoleId",
+				title: "Electric Power Substations",
+				description: "epfs",
+				variableName: "selectedSubstationId",
 				widget: "Epfs",
 				hidden: false,
 				defaultValue: null,
@@ -910,15 +743,32 @@ const datawolfWorkflowConfig = {
 					{
 						paramId: "03bf9f80-8544-464d-c867-d7c0c0c495b4",
 						parameters: {
-							step: "Pole-EpfDamage",
+							step: "Sub-EpfDamage",
 							title: "epfs",
 						},
 					},
 					{
 						paramId: "9c9956ee-cff1-4f94-8e48-cafad3f898e8",
 						parameters: {
-							step: "Pole-Max-Store Result",
+							step: "Sub-Max-Store Result",
 							title: "Source ID",
+						},
+					},
+				],
+			},
+			{
+				title: "Network Interdependency",
+				description: "interdependency_dictionary",
+				variableName: "selectedInterdNetworkId",
+				widget: "InterdNetworks",
+				hidden: false,
+				defaultValue: null,
+				parametersMap: [
+					{
+						paramId: "273dac0a-662c-4791-f8d7-803595ee1b33",
+						parameters: {
+							step: "BuildingFunctionality-sub-only",
+							title: "interdependency_dictionary",
 						},
 					},
 				],
@@ -929,12 +779,12 @@ const datawolfWorkflowConfig = {
 				variableName: "epfMapping",
 				widget: null,
 				hidden: true,
-				defaultValue: "62fac92ecef2881193f22613",
+				defaultValue: "5b47be62337d4a37b6197a3a",
 				parametersMap: [
 					{
 						paramId: "6cf1350a-b5d8-4921-fed0-35acd1b2ab12",
 						parameters: {
-							step: "Pole-EpfDamage",
+							step: "Sub-EpfDamage",
 							title: "dfr3_mapping_set",
 						},
 					},
@@ -980,13 +830,30 @@ const datawolfWorkflowConfig = {
 				variableName: "demFactor",
 				widget: null,
 				hidden: true,
-				defaultValue: "6420bd8cb18d026e7c7db2d8",
+				defaultValue: "63daaa2c695e0f57262c7d95",
 				parametersMap: [
 					{
 						paramId: "1eb72116-ce74-4e66-fab5-495995fd084e",
 						parameters: {
 							step: "SocialVulnerability",
 							title: "social_vulnerability_demographic_factors",
+						},
+					},
+				],
+			},
+			{
+				title: "Buildings to Sectors Table",
+				description: "buildings_to_sectors",
+				variableName: "selectedBldgToSector",
+				widget: "SectorShocks",
+				hidden: false,
+				defaultValue: null,
+				parametersMap: [
+					{
+						paramId: "13b87f69-109f-452d-a0fe-4b4c10692950",
+						parameters: {
+							step: "CapitalShocks",
+							title: "buildings_to_sectors",
 						},
 					},
 				],
@@ -1048,7 +915,7 @@ const datawolfWorkflowConfig = {
 				variableName: "regions",
 				widget: null,
 				hidden: true,
-				defaultValue: "",
+				defaultValue: "R1,R2",
 				parametersMap: [
 					{
 						paramId: "46509d68-7f9e-447f-eb76-de5a884cf3b0",
@@ -1065,7 +932,7 @@ const datawolfWorkflowConfig = {
 				variableName: "hhCategories",
 				widget: null,
 				hidden: true,
-				defaultValue: "IHH1,IHH2,IHH3,IHH4,IHH5,MHH1,MHH2,MHH3,MHH4,MHH5",
+				defaultValue: "HH1,HH2,HH3,HH4",
 				parametersMap: [
 					{
 						paramId: "fc7b149e-61be-4b34-a884-1234af9e98b0",
@@ -1078,12 +945,11 @@ const datawolfWorkflowConfig = {
 			},
 			{
 				title: "Demand Categories",
-				description: "Demand Categories",
+				description: "Demand Categories for employoment",
 				variableName: "demCategories",
 				widget: null,
 				hidden: true,
-				defaultValue:
-					"IAGMIN,IUTIL,ICONS,IMANU,IWHOLE,IRETAIL,ITRANS,IPROFSER,IREALE,IEDU,IHEALTH,IART,IACCO,MAGMIN,MUTIL,MCONS,MMANU,MWHOLE,MRETAIL,MTRANS,MPROFSER,MREALE,MEDU,MHEALTH,MART,MACCO,HS1I,HS2I,HS3I,HS1M,HS2M,HS3M",
+				defaultValue: "AG_MI,UTIL,CONS,MANU,COMMER,EDU,HEALTH,ART_ACC,RELIG",
 				parametersMap: [
 					{
 						paramId: "e838c579-15d3-43e7-dada-0f8345e15b21",
@@ -1101,7 +967,7 @@ const datawolfWorkflowConfig = {
 				widget: null,
 				hidden: true,
 				defaultValue:
-					"IAGMIN,IUTIL,ICONS,IMANU,IWHOLE,IRETAIL,ITRANS,IPROFSER,IREALE,IEDU,IHEALTH,IART,IACCO,MAGMIN,MUTIL,MCONS,MMANU,MWHOLE,MRETAIL,MTRANS,MPROFSER,MREALE,MEDU,MHEALTH,MART,MACCO,HS1I,HS2I,HS3I,HS1M,HS2M,HS3M",
+					"AG_MI,UTIL,CONS,MANU,COMMER,EDU,HEALTH,ART_ACC,RELIG,HS1,HS2,HS3",
 				parametersMap: [
 					{
 						paramId: "7c88cdbf-3801-4371-e709-50be083c7f75",
@@ -1118,7 +984,7 @@ const datawolfWorkflowConfig = {
 				variableName: "archetypeMapping",
 				widget: null,
 				hidden: true,
-				defaultValue: "6420befbb18d026e7c7dbafc",
+				defaultValue: "63c978b44b843238326c464b",
 				parametersMap: [
 					{
 						paramId: "560c01da-6df8-4602-80b1-d321e4fac114",
@@ -1149,7 +1015,7 @@ const datawolfWorkflowConfig = {
 				variableName: "clusterColumn",
 				widget: null,
 				hidden: true,
-				defaultValue: "arch_wind",
+				defaultValue: "occ_type",
 				parametersMap: [
 					{
 						paramId: "fa7e3420-a267-4196-d09b-5dca688a37ed",
@@ -1194,67 +1060,203 @@ const datawolfWorkflowConfig = {
 			{
 				title: "dfr3_mapping_set",
 				description: "dfr3_mapping_set",
-				variableName: "bldgSurgeWaveMapping",
+				variableName: "bldgMapping",
 				widget: null,
 				hidden: true,
-				defaultValue: "6303e51bd76c6d0e1f6be080",
+				defaultValue: "6309005ad76c6d0e1f6be081",
 				parametersMap: [
 					{
 						paramId: "590311bd-4ba7-414f-e249-7a3d5524bef0",
 						parameters: {
-							step: "BuildingDamage-Surge",
+							step: "BuildingDamage",
 							title: "dfr3_mapping_set",
 						},
 					},
 				],
 			},
 			{
-				title: "dfr3_mapping_set",
-				description: "dfr3_mapping_set",
-				variableName: "bldgWindMapping",
+				title: "poles_damage_mcs_samples",
+				description: "poles_damage_mcs_samples",
+				variableName: "polesDmgMcsSamples",
 				widget: null,
 				hidden: true,
-				defaultValue: "62fef3a6cef2881193f2261d",
+				defaultValue: "",
 				parametersMap: [
 					{
-						paramId: "3be2570a-cb50-4c00-fcd7-9bad28979819",
+						paramId: "2c478590-c6bc-4ea2-9598-595a91a749b9",
 						parameters: {
-							step: "BuildingDamage-Wind",
-							title: "dfr3_mapping_set",
+							step: "BuildingFunctionality-sub-only",
+							title: "poles_damage_mcs_samples",
 						},
 					},
 				],
 			},
 			{
-				title: "dfr3_mapping_set",
-				description: "dfr3_mapping_set",
-				variableName: "bldgFloodMapping",
+				title: "model_iterations",
+				description: "model_iterations",
+				variableName: "modelIteration",
 				widget: null,
 				hidden: true,
-				defaultValue: "62fefd688a30d30dac57bbd7",
+				defaultValue: "1",
 				parametersMap: [
 					{
-						paramId: "17a98e75-4978-4ecf-8d5a-56ecdcc0e4e0",
+						paramId: "879e94d0-a95a-4820-e71a-c13120277ca9",
 						parameters: {
-							step: "BuildingDamage-Flood",
-							title: "dfr3_mapping_set",
+							step: "SaltLakeCGEModel",
+							title: "model_iterations",
 						},
 					},
 				],
 			},
 			{
-				title: "Buildings to Sectors Table",
-				description: "buildings_to_sectors",
-				variableName: "selectedBldgToSector",
-				widget: "SectorShocks",
-				hidden: false,
-				defaultValue: null,
+				title: "solver_path",
+				description: "solver_path",
+				variableName: "solverPath",
+				widget: null,
+				hidden: true,
+				defaultValue: "",
 				parametersMap: [
 					{
-						paramId: "13b87f69-109f-452d-a0fe-4b4c10692950",
+						paramId: "0a2086a4-ce3e-45c0-82b6-4ba4af1836b4",
 						parameters: {
-							step: "CapitalShocks",
-							title: "buildings_to_sectors",
+							step: "SaltLakeCGEModel",
+							title: "solver_path",
+						},
+					},
+				],
+			},
+			{
+				title: "SAM",
+				description: "SAM",
+				variableName: "sam",
+				widget: null,
+				hidden: true,
+				defaultValue: "640758d66121f943887299a2",
+				parametersMap: [
+					{
+						paramId: "2032accf-0ef0-440c-d4b7-1cff6f9bbd5f",
+						parameters: {
+							step: "SaltLakeCGEModel",
+							title: "SAM",
+						},
+					},
+				],
+			},
+			{
+				title: "BB",
+				description: "BB",
+				variableName: "bb",
+				widget: null,
+				hidden: true,
+				defaultValue: "640759b56121f94388729d01",
+				parametersMap: [
+					{
+						paramId: "d4568d6d-32eb-4035-ccbd-8239e5699e01",
+						parameters: {
+							step: "SaltLakeCGEModel",
+							title: "BB",
+						},
+					},
+				],
+			},
+			{
+				title: "IOUT",
+				description: "IOUT",
+				variableName: "iout",
+				widget: null,
+				hidden: true,
+				defaultValue: "",
+				parametersMap: [
+					{
+						paramId: "ce885abb-ab3c-43e8-89c2-c1ca3b3ff727",
+						parameters: {
+							step: "SaltLakeCGEModel",
+							title: "IOUT",
+						},
+					},
+				],
+			},
+			{
+				title: "MISC",
+				description: "MISC",
+				variableName: "misc",
+				widget: null,
+				hidden: true,
+				defaultValue: "",
+				parametersMap: [
+					{
+						paramId: "6785c9c4-ba9b-4f99-b1c0-7e69f9ba0a02",
+						parameters: {
+							step: "SaltLakeCGEModel",
+							title: "MISC",
+						},
+					},
+				],
+			},
+			{
+				title: "MISCH",
+				description: "MISCH",
+				variableName: "misch",
+				widget: null,
+				hidden: true,
+				defaultValue: "64075a5d6121f94388729f8a",
+				parametersMap: [
+					{
+						paramId: "5e8af984-79d2-463b-8ca4-fc946a1c0b4c",
+						parameters: {
+							step: "SaltLakeCGEModel",
+							title: "MISCH",
+						},
+					},
+				],
+			},
+			{
+				title: "EMPLOY",
+				description: "EMPLOY",
+				variableName: "employ",
+				widget: null,
+				hidden: true,
+				defaultValue: "64075b116121f94388729f91",
+				parametersMap: [
+					{
+						paramId: "3e7ed836-2114-4dea-ef3d-91074d6b821d",
+						parameters: {
+							step: "SaltLakeCGEModel",
+							title: "EMPLOY",
+						},
+					},
+				],
+			},
+			{
+				title: "JOBCR",
+				description: "JOBCR",
+				variableName: "jobcr",
+				widget: null,
+				hidden: true,
+				defaultValue: "64075d1c6121f9438872a648",
+				parametersMap: [
+					{
+						paramId: "80b43ed6-a66f-4891-fb46-194ee94d009c",
+						parameters: {
+							step: "SaltLakeCGEModel",
+							title: "JOBCR",
+						},
+					},
+				],
+			},
+			{
+				title: "OUTCR",
+				description: "OUTCR",
+				variableName: "outcr",
+				widget: null,
+				hidden: true,
+				defaultValue: "64075e306121f9438872a7fb",
+				parametersMap: [
+					{
+						paramId: "e9b22eb0-bb25-4e60-a0c7-ceb111770e28",
+						parameters: {
+							step: "SaltLakeCGEModel",
+							title: "OUTCR",
 						},
 					},
 				],
@@ -1316,7 +1318,7 @@ const datawolfWorkflowConfig = {
 				variableName: "initialStageProbabilities",
 				widget: null,
 				hidden: true,
-				defaultValue: "6420c184b18d026e7c7dc321",
+				defaultValue: "60ef532e02897f12fcd9ac63",
 				parametersMap: [
 					{
 						paramId: "34fff30f-d199-4545-b7f6-138c4e5d0c24",
@@ -1379,7 +1381,7 @@ const datawolfWorkflowConfig = {
 					{
 						paramId: "e97632f0-ff75-4f82-fab5-1d9fccc07c33",
 						parameters: {
-							step: "Pole-Max-Store Result",
+							step: "Sub-Max-Store Result",
 							title: "Output Type",
 						},
 					},
@@ -1434,7 +1436,7 @@ const datawolfWorkflowConfig = {
 					{
 						paramId: "18d0b09b-b180-487b-fa2c-e7436edd8add",
 						parameters: {
-							step: "Pole-Max-Store Result",
+							step: "Sub-Max-Store Result",
 							title: "Output format",
 						},
 					},
@@ -1463,7 +1465,7 @@ const datawolfWorkflowConfig = {
 				variableName: "space",
 				widget: null,
 				hidden: true,
-				defaultValue: "commresiliencegal",
+				defaultValue: "commresilienceslc",
 				parametersMap: [
 					{
 						paramId: "c528ca2d-f572-45b0-b038-2954415b4b09",
@@ -1496,178 +1498,8 @@ const datawolfWorkflowConfig = {
 					{
 						paramId: "0f6c26c1-4d99-4e2b-bd36-12b1f6a22f9f",
 						parameters: {
-							step: "Pole-Max-Store Result",
+							step: "Sub-Max-Store Result",
 							title: "Spaces",
-						},
-					},
-				],
-			},
-			{
-				title: "substations_damage_mcs_samples",
-				description: "substations_damage_mcs_samples",
-				variableName: "substationsDmgMcsSamples",
-				widget: null,
-				hidden: true,
-				defaultValue: "",
-				parametersMap: [
-					{
-						paramId: "09d53917-3618-4a91-99bc-8304a859a97e",
-						parameters: {
-							step: "BuildingFunctionality-pole-only",
-							title: "substations_damage_mcs_samples",
-						},
-					},
-				],
-			},
-			{
-				title: "Network Interdependency",
-				description: "interdependency_dictionary",
-				variableName: "selectedInterdNetworkId",
-				widget: "InterdNetworks",
-				hidden: false,
-				defaultValue: null,
-				parametersMap: [
-					{
-						paramId: "5adea2be-db15-4aa8-c3ef-2b1432bb6267",
-						parameters: {
-							step: "BuildingFunctionality-pole-only",
-							title: "interdependency_dictionary",
-						},
-					},
-				],
-			},
-			{
-				title: "model_iterations",
-				description: "model_iterations",
-				variableName: "modelIteration",
-				widget: null,
-				hidden: true,
-				defaultValue: "1",
-				parametersMap: [
-					{
-						paramId: "60757a49-6019-4ec7-cea4-f3f62aece949",
-						parameters: {
-							step: "GalvestonCGEModel",
-							title: "model_iterations",
-						},
-					},
-				],
-			},
-			{
-				title: "solver_path",
-				description: "solver_path",
-				variableName: "solverPath",
-				widget: null,
-				hidden: true,
-				defaultValue: "",
-				parametersMap: [
-					{
-						paramId: "bc73d0f5-e81e-40b6-acb7-c1670bdbf3a1",
-						parameters: {
-							step: "GalvestonCGEModel",
-							title: "solver_path",
-						},
-					},
-				],
-			},
-			{
-				title: "SAM",
-				description: "SAM",
-				variableName: "sam",
-				widget: null,
-				hidden: true,
-				defaultValue: "6420c377b18d026e7c7dc327",
-				parametersMap: [
-					{
-						paramId: "d283a461-3dd7-48bb-c272-d956d6f1fb9c",
-						parameters: {
-							step: "GalvestonCGEModel",
-							title: "SAM",
-						},
-					},
-				],
-			},
-			{
-				title: "BB",
-				description: "BB",
-				variableName: "bb",
-				widget: null,
-				hidden: true,
-				defaultValue: "6420c3d2b18d026e7c7dc328",
-				parametersMap: [
-					{
-						paramId: "9c1bc5cf-83c3-4be8-8d3f-96b4c9189a72",
-						parameters: {
-							step: "GalvestonCGEModel",
-							title: "BB",
-						},
-					},
-				],
-			},
-			{
-				title: "MISCH",
-				description: "MISCH",
-				variableName: "misch",
-				widget: null,
-				hidden: true,
-				defaultValue: "6420c434b18d026e7c7dc32e",
-				parametersMap: [
-					{
-						paramId: "d7726876-6dd9-4690-d141-b34e3b1e8f0a",
-						parameters: {
-							step: "GalvestonCGEModel",
-							title: "MISCH",
-						},
-					},
-				],
-			},
-			{
-				title: "EMPLOY",
-				description: "EMPLOY",
-				variableName: "employ",
-				widget: null,
-				hidden: true,
-				defaultValue: "6420c474b18d026e7c7dc334",
-				parametersMap: [
-					{
-						paramId: "a17d2606-cddd-4a1e-d218-bec8299cb94d",
-						parameters: {
-							step: "GalvestonCGEModel",
-							title: "EMPLOY",
-						},
-					},
-				],
-			},
-			{
-				title: "JOBCR",
-				description: "JOBCR",
-				variableName: "jobcr",
-				widget: null,
-				hidden: true,
-				defaultValue: "6420c4d9b18d026e7c7dc33a",
-				parametersMap: [
-					{
-						paramId: "4870c4dd-273b-4129-81a8-9f5a93145542",
-						parameters: {
-							step: "GalvestonCGEModel",
-							title: "JOBCR",
-						},
-					},
-				],
-			},
-			{
-				title: "OUTCR",
-				description: "OUTCR",
-				variableName: "outcr",
-				widget: null,
-				hidden: true,
-				defaultValue: "6420c511b18d026e7c7dc340",
-				parametersMap: [
-					{
-						paramId: "43d1286d-2731-4a37-bf7e-321fd56d5323",
-						parameters: {
-							step: "GalvestonCGEModel",
-							title: "OUTCR",
 						},
 					},
 				],
@@ -1691,14 +1523,14 @@ const datawolfWorkflowConfig = {
 					{
 						datasetId: "97a3ce6f-5b5f-40c0-8a0c-e26ceb92635c",
 						datasets: {
-							step: "Pole-MonteCarloFailureProbability",
+							step: "Sub-MonteCarloFailureProbability",
 							title: "Token",
 						},
 					},
 					{
 						datasetId: "c9ab0651-864f-4b6b-c1c1-fc64d1f58de3",
 						datasets: {
-							step: "Pole-EpfDamage",
+							step: "Sub-EpfDamage",
 							title: "Token",
 						},
 					},
@@ -1740,21 +1572,14 @@ const datawolfWorkflowConfig = {
 					{
 						datasetId: "b7c3e9d1-9697-4ebd-d79a-9daaf66b4fc1",
 						datasets: {
-							step: "BuildingDamage-Surge",
+							step: "BuildingDamage",
 							title: "Token",
 						},
 					},
 					{
-						datasetId: "6bb8a788-b553-42c0-93bc-56d76b907781",
+						datasetId: "7e031d84-c5ac-422c-fde4-7c2c5c0eed06",
 						datasets: {
-							step: "BuildingDamage-Wind",
-							title: "Token",
-						},
-					},
-					{
-						datasetId: "63a39c9d-9d9c-491c-ddba-ba7497ec0348",
-						datasets: {
-							step: "BuildingDamage-Flood",
+							step: "BuildingFunctionality-sub-only",
 							title: "Token",
 						},
 					},
@@ -1762,6 +1587,13 @@ const datawolfWorkflowConfig = {
 						datasetId: "1fb15ca5-55db-4066-dbb6-a6f75d49aeb6",
 						datasets: {
 							step: "CapitalShocks",
+							title: "Token",
+						},
+					},
+					{
+						datasetId: "60986703-1f86-4f8a-87a1-6e360a185f2e",
+						datasets: {
+							step: "SaltLakeCGEModel",
 							title: "Token",
 						},
 					},
@@ -1803,28 +1635,7 @@ const datawolfWorkflowConfig = {
 					{
 						datasetId: "a201283a-e5bb-43ed-9f0f-06716ff1ef96",
 						datasets: {
-							step: "Pole-Max-Store Result",
-							title: "Token",
-						},
-					},
-					{
-						datasetId: "fd6039d6-3cc3-41f3-8de9-1836c579ad4a",
-						datasets: {
-							step: "CombinedWindWaveSurgeBuildingDamage",
-							title: "Token",
-						},
-					},
-					{
-						datasetId: "6624d5c8-e7b8-42c4-aa0b-ea67b008912b",
-						datasets: {
-							step: "BuildingFunctionality-pole-only",
-							title: "Token",
-						},
-					},
-					{
-						datasetId: "eae9e675-44f8-4eb8-952b-415d41d31ecb",
-						datasets: {
-							step: "GalvestonCGEModel",
+							step: "Sub-Max-Store Result",
 							title: "Token",
 						},
 					},
@@ -1843,8 +1654,17 @@ const datawolfWorkflowConfig = {
 						datasets: {
 							step: "Disl-Post-Process",
 							title: "Disl-Post-Process",
-							variableName: "DislPostProcessLog",
+							variableName: "Disl-Post-ProcessLog",
 							widget: "Log",
+						},
+					},
+					{
+						datasetId: "27147921-dc89-4693-f0f2-5d63b1b5a3cc",
+						datasets: {
+							step: "PopulationDislocation",
+							title: "result",
+							variableName: "populationDislocationDownload",
+							widget: "PopDislocation",
 						},
 					},
 					{
@@ -1915,7 +1735,7 @@ const datawolfWorkflowConfig = {
 						datasets: {
 							step: "Bldg-Max-Dmg-State",
 							title: "Bldg-Max-Dmg-State",
-							variableName: "BldgMaxDmgStateLog",
+							variableName: "Bldg-Max-Dmg-StateLog",
 							widget: "Log",
 						},
 					},
@@ -1924,61 +1744,34 @@ const datawolfWorkflowConfig = {
 						datasets: {
 							step: "Bldg-MonteCarloFailureProbability",
 							title: "Bldg-MonteCarloFailureProbability",
-							variableName: "BldgMonteCarloFailureProbabilityLog",
+							variableName: "Bldg-MonteCarloFailureProbabilityLog",
 							widget: "Log",
-						},
-					},
-					{
-						datasetId: "4a7456d5-3153-4074-ac04-988d52a867e7",
-						datasets: {
-							step: "Bldg-MonteCarloFailureProbability",
-							title: "failure_probability",
-							variableName: "mcsBldgFailureProbDownload",
-							widget: "BldgMCS",
 						},
 					},
 					{
 						datasetId: "180d1ee1-d74a-4046-c2d5-2694435c2a3e",
 						datasets: {
-							step: "Pole-MonteCarloFailureProbability",
-							title: "Pole-MonteCarloFailureProbability",
-							variableName: "PoleMonteCarloFailureProbabilityLog",
+							step: "Sub-MonteCarloFailureProbability",
+							title: "Sub-MonteCarloFailureProbability",
+							variableName: "Sub-MonteCarloFailureProbabilityLog",
 							widget: "Log",
-						},
-					},
-					{
-						datasetId: "a1eddb50-15c3-4513-d03b-12624ff35b84",
-						datasets: {
-							step: "Pole-MonteCarloFailureProbability",
-							title: "failure_probability",
-							variableName: "bldgFuncProbDownload",
-							widget: "BldgFunctionality",
 						},
 					},
 					{
 						datasetId: "81650d08-7afb-4d03-b19d-3cab35ea9033",
 						datasets: {
-							step: "Pole-EpfDamage",
-							title: "Pole-EpfDamage",
-							variableName: "PoleEpfDamageLog",
+							step: "Sub-EpfDamage",
+							title: "Sub-EpfDamage",
+							variableName: "Sub-EpfDamageLog",
 							widget: "Log",
-						},
-					},
-					{
-						datasetId: "0c2c6744-1097-4bca-e479-6158c6e396e8",
-						datasets: {
-							step: "Pole-EpfDamage",
-							title: "result",
-							variableName: "poleDmgDsResultDownload",
-							widget: "PoleDamage",
 						},
 					},
 					{
 						datasetId: "b4019522-2d8c-4ca3-e919-d2023a13b40e",
 						datasets: {
-							step: "Pole-Max-Dmg-State",
-							title: "Pole-Max-Dmg-State",
-							variableName: "PoleMaxDmgStateLog",
+							step: "Sub-Max-Dmg-State",
+							title: "Sub-Max-Dmg-State",
+							variableName: "Sub-Max-Dmg-StateLog",
 							widget: "Log",
 						},
 					},
@@ -2001,6 +1794,15 @@ const datawolfWorkflowConfig = {
 						},
 					},
 					{
+						datasetId: "45173a06-901f-4101-c8eb-5e15429d7e55",
+						datasets: {
+							step: "HousingRecoverySequential",
+							title: "Housing Recovery",
+							variableName: "HhsDownload",
+							widget: "HHS",
+						},
+					},
+					{
 						datasetId: "4f9a7142-d382-4913-8894-7549ef77e50d",
 						datasets: {
 							step: "SocialVulnerability",
@@ -2019,20 +1821,11 @@ const datawolfWorkflowConfig = {
 						},
 					},
 					{
-						datasetId: "27147921-dc89-4693-f0f2-5d63b1b5a3cc",
-						datasets: {
-							step: "PopulationDislocation",
-							title: "result",
-							variableName: "populationDislocationDownload",
-							widget: "PopDislocation",
-						},
-					},
-					{
 						datasetId: "e2867e0d-b637-4bea-dd14-b6beb03a0335",
 						datasets: {
 							step: "CGE-Output-Process",
 							title: "CGE-Output-Process",
-							variableName: "CGEOutputProcessLog",
+							variableName: "CGE-Output-ProcessLog",
 							widget: "Log",
 						},
 					},
@@ -2064,11 +1857,47 @@ const datawolfWorkflowConfig = {
 						},
 					},
 					{
+						datasetId: "03488efa-bd41-42d5-d621-0ac9a2fb4a8f",
+						datasets: {
+							step: "SaltLakeCGEModel",
+							title: "domestic-supply",
+							variableName: "cgeDomesticSupplyDownload",
+							widget: "CGE",
+						},
+					},
+					{
+						datasetId: "795a1e3a-c363-4839-c060-ef449ac6205f",
+						datasets: {
+							step: "SaltLakeCGEModel",
+							title: "gross-income",
+							variableName: "cgeHouseholdIncomeDownload",
+							widget: "CGE",
+						},
+					},
+					{
+						datasetId: "4335c8c8-2382-44b3-829e-5c0169082062",
+						datasets: {
+							step: "SaltLakeCGEModel",
+							title: "pre-disaster-factor-demand",
+							variableName: "cgeEmploymentPreDownload",
+							widget: "CGE",
+						},
+					},
+					{
+						datasetId: "198cf559-5e83-481f-8df6-b63befc84072",
+						datasets: {
+							step: "SaltLakeCGEModel",
+							title: "post-disaster-factor-demand",
+							variableName: "cgeEmploymentPostDownload",
+							widget: "CGE",
+						},
+					},
+					{
 						datasetId: "7b82b481-32ae-4c3b-8e32-21f6c46c3a97",
 						datasets: {
 							step: "Building-Func-Cluster",
 							title: "Building-Func-Cluster",
-							variableName: "BuildingFuncClusterLog",
+							variableName: "Building-Func-ClusterLog",
 							widget: "Log",
 						},
 					},
@@ -2086,7 +1915,7 @@ const datawolfWorkflowConfig = {
 						datasets: {
 							step: "Building-Failure-Cluster",
 							title: "Building-Failure-Cluster",
-							variableName: "BuildingFailureClusterLog",
+							variableName: "Building-Failure-ClusterLog",
 							widget: "Log",
 						},
 					},
@@ -2100,11 +1929,20 @@ const datawolfWorkflowConfig = {
 						},
 					},
 					{
+						datasetId: "4a7456d5-3153-4074-ac04-988d52a867e7",
+						datasets: {
+							step: "Bldg-MonteCarloFailureProbability",
+							title: "failure_probability",
+							variableName: "mcsBldgFailureProbDownload",
+							widget: "BldgMCS",
+						},
+					},
+					{
 						datasetId: "733108d3-6343-4a91-f657-98b36a5647bb",
 						datasets: {
 							step: "Building-Dmg-Summary",
 							title: "Building-Dmg-Summary",
-							variableName: "BuildingDmgSummaryLog",
+							variableName: "Building-Dmg-SummaryLog",
 							widget: "Log",
 						},
 					},
@@ -2118,11 +1956,29 @@ const datawolfWorkflowConfig = {
 						},
 					},
 					{
+						datasetId: "4e4aa0c6-59fe-4d4a-cb34-f9a0f6a7ea28",
+						datasets: {
+							step: "BuildingDamage",
+							title: "ds_result",
+							variableName: "bldgDmgDsResultDownload",
+							widget: "BldgDamage",
+						},
+					},
+					{
 						datasetId: "3b71fa25-a661-4c7a-a981-907b1867d6d4",
 						datasets: {
-							step: "BuildingDamage-Surge",
-							title: "BuildingDamage-Surge",
-							variableName: "BuildingDamageSurgeLog",
+							step: "BuildingDamage",
+							title: "BuildingDamage",
+							variableName: "BuildingDamageLog",
+							widget: "Log",
+						},
+					},
+					{
+						datasetId: "b3ed7b36-1782-424b-b2a5-3b355bf4ef0c",
+						datasets: {
+							step: "BuildingFunctionality-sub-only",
+							title: "BuildingFunctionality-sub-only",
+							variableName: "BuildingFunctionality-sub-onlyLog",
 							widget: "Log",
 						},
 					},
@@ -2145,6 +2001,15 @@ const datawolfWorkflowConfig = {
 						},
 					},
 					{
+						datasetId: "eba2e2ae-4b3f-4ce0-d4fe-152973b810f6",
+						datasets: {
+							step: "SaltLakeCGEModel",
+							title: "SaltLakeCGEModel",
+							variableName: "SaltLakeCGEModelLog",
+							widget: "Log",
+						},
+					},
+					{
 						datasetId: "07b2567f-aca6-4d45-ec5d-4475f9cf16e5",
 						datasets: {
 							step: "HousingRecoverySequential",
@@ -2154,20 +2019,11 @@ const datawolfWorkflowConfig = {
 						},
 					},
 					{
-						datasetId: "45173a06-901f-4101-c8eb-5e15429d7e55",
-						datasets: {
-							step: "HousingRecoverySequential",
-							title: "HousingRecoverySequential",
-							variableName: "HhsDownload",
-							widget: "HHS",
-						},
-					},
-					{
 						datasetId: "959a0818-6da4-4a0c-b119-3251916848c1",
 						datasets: {
 							step: "Bldg-Func-Store Result",
 							title: "Bldg-Func-Store Result",
-							variableName: "BldgFuncStoreResultLog",
+							variableName: "Bldg-Func-StoreResultLog",
 							widget: "Log",
 						},
 					},
@@ -2181,11 +2037,20 @@ const datawolfWorkflowConfig = {
 						},
 					},
 					{
+						datasetId: "04c0b274-841f-4e8a-dd67-b97a8a5fc235",
+						datasets: {
+							step: "BuildingFunctionality-sub-only",
+							title: "functionality_probability",
+							variableName: "bldgFuncProbDownload",
+							widget: "BldgFunctionality",
+						},
+					},
+					{
 						datasetId: "2f1252f1-3665-425c-ad5e-18a6bc72a898",
 						datasets: {
 							step: "Bldg-FailProb-Store Result",
 							title: "Bldg-FailProb-Store Result",
-							variableName: "BldgFailProbStoreResultLog",
+							variableName: "Bldg-FailProb-StoreResultLog",
 							widget: "Log",
 						},
 					},
@@ -2203,7 +2068,7 @@ const datawolfWorkflowConfig = {
 						datasets: {
 							step: "Bldg-Max-Store Result",
 							title: "Bldg-Max-Store Result",
-							variableName: "BldgMaxStoreResultLog",
+							variableName: "Bldg-Max-StoreResultLog",
 							widget: "Log",
 						},
 					},
@@ -2221,7 +2086,7 @@ const datawolfWorkflowConfig = {
 						datasets: {
 							step: "HeatMap-Store Result",
 							title: "HeatMap-Store Result",
-							variableName: "HeatMapStoreResultLog",
+							variableName: "HeatMap-StoreResultLog",
 							widget: "Log",
 						},
 					},
@@ -2237,118 +2102,28 @@ const datawolfWorkflowConfig = {
 					{
 						datasetId: "ac671bc7-ccdc-488d-8bb8-30edd9a97884",
 						datasets: {
-							step: "Pole-Max-Store Result",
-							title: "Pole-Max-Store Result",
-							variableName: "PoleMaxStoreResultLog",
+							step: "Sub-Max-Store Result",
+							title: "Sub-Max-Store Result",
+							variableName: "Sub-Max-StoreResultLog",
 							widget: "Log",
 						},
 					},
 					{
 						datasetId: "7ec7d80e-e95a-4c5f-e148-8f60376bb3ae",
 						datasets: {
-							step: "Pole-Max-Store Result",
+							step: "Sub-Max-Store Result",
 							title: "Dataset ID",
-							variableName: "poleMaxDmgStateINCOREId",
-							widget: "PoleDamage",
+							variableName: "substationMaxDmgStateINCOREId",
+							widget: "SubstationDamage",
 						},
 					},
 					{
-						datasetId: "23c0b341-cfe0-44df-d932-9d4f8ff9fa76",
+						datasetId: "0c2c6744-1097-4bca-e479-6158c6e396e8",
 						datasets: {
-							step: "CombinedWindWaveSurgeBuildingDamage",
-							title: "CombinedWindWaveSurgeBuildingDamage",
-							variableName: "CombinedWindWaveSurgeBuildingDamageLog",
-							widget: "Log",
-						},
-					},
-					{
-						datasetId: "749639e9-7eaf-4961-e88d-512efd562785",
-						datasets: {
-							step: "CombinedWindWaveSurgeBuildingDamage",
-							title: "ds_result",
-							variableName: "bldgDmgDsResultDownload",
-							widget: "BldgDamage",
-						},
-					},
-					{
-						datasetId: "c575a619-071a-468f-a59a-14dcb722ebaa",
-						datasets: {
-							step: "BuildingDamage-Wind",
-							title: "BuildingDamage-Wind",
-							variableName: "BuildingDamageWindLog",
-							widget: "Log",
-						},
-					},
-					{
-						datasetId: "fe79ef7a-06cc-438c-be0f-4f5c61351185",
-						datasets: {
-							step: "BuildingDamage-Flood",
-							title: "BuildingDamage-Flood",
-							variableName: "BuildingDamageFloodLog",
-							widget: "Log",
-						},
-					},
-					{
-						datasetId: "23ca622b-929f-4765-8e83-c08a4b4625d3",
-						datasets: {
-							step: "BuildingFunctionality-pole-only",
-							title: "BuildingFunctionality-pole-only",
-							variableName: "BuildingFunctionalitypoleonlyLog",
-							widget: "Log",
-						},
-					},
-					{
-						datasetId: "f8e3974a-3bdb-4001-c5b7-dff2700842ed",
-						datasets: {
-							step: "BuildingFunctionality-pole-only",
-							title: "functionality_probability",
-							variableName: "bldgFuncProbDownload",
-							widget: "BldgFunctionality",
-						},
-					},
-					{
-						datasetId: "097eae99-0e45-4351-fb5a-51c067a8e13e",
-						datasets: {
-							step: "GalvestonCGEModel",
-							title: "GalvestonCGEModel",
-							variableName: "GalvestonCGEModelLog",
-							widget: "Log",
-						},
-					},
-					{
-						datasetId: "3e199adc-3b9f-436c-ac0e-c4e0d0d2b7ba",
-						datasets: {
-							step: "GalvestonCGEModel",
-							title: "domestic-supply",
-							variableName: "cgeDomesticSupplyDownload",
-							widget: "CGE",
-						},
-					},
-					{
-						datasetId: "9c82bbff-8089-4e78-8f51-9509ab153f23",
-						datasets: {
-							step: "GalvestonCGEModel",
-							title: "gross-income",
-							variableName: "cgeHouseholdIncomeDownload",
-							widget: "CGE",
-						},
-					},
-					{
-						datasetId: "3eac776e-3a12-443a-91fc-785301f4b7db",
-						datasets: {
-							step: "GalvestonCGEModel",
-							title: "pre-disaster-factor-demand",
-							variableName: "cgeEmploymentPreDownload",
-							widget: "CGE",
-						},
-					},
-					{
-						datasetId: "a6e4de80-220d-4f8a-e68c-41cdf95883c0",
-						datasets: {
-							step: "GalvestonCGEModel",
-							title: "post-disaster-factor-demand",
-							variableName: "cgeEmploymentPostDownload",
-							widget: "CGE",
+							step: "Sub-EpfDamage",
+							title: "result",
+							variableName: "substationDmgDsResultDownload",
+							widget: "SubstationDamage",
 						},
 					},
 				],

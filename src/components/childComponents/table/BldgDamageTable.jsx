@@ -81,12 +81,20 @@ function checkNA(obj, key) {
 	return obj[key] === NA_value || !(key in obj);
 }
 
-function fillNA(obj, key) {
-	if (obj[key] === NA_value) {
-		return "-";
-	} else if (!(key in obj)) {
-		return "0";
+function fillNA(obj, currentKey, keys) {
+	let NA_display = "-";
+	if (!(currentKey in obj)) {
+		NA_display = "0"; // Return "0" if currentKey was not in obj
 	}
+
+	// If any of the keys in keys is in obj and its value is NA_value, overwrite it with "-"
+	keys.forEach((key) => {
+		if (key in obj && obj[key] === NA_value) {
+			NA_display = "-";
+		}
+	});
+
+	return NA_display;
 }
 
 function calcClusterNumInCategory(fields) {
@@ -250,7 +258,11 @@ export function BldgDamageTable(props) {
 													>
 														<td>
 															{checkNA(clusterItem, tableHeaders[0])
-																? fillNA(clusterItem, tableHeaders[0])
+																? fillNA(
+																		clusterItem,
+																		tableHeaders[0],
+																		tableHeaders,
+																  )
 																: clusterItem[tableHeaders[0]]}
 														</td>
 														<td
@@ -276,7 +288,11 @@ export function BldgDamageTable(props) {
 													>
 														<td>
 															{checkNA(clusterItem, tableHeaders[1])
-																? fillNA(clusterItem, tableHeaders[1])
+																? fillNA(
+																		clusterItem,
+																		tableHeaders[1],
+																		tableHeaders,
+																  )
 																: clusterItem[tableHeaders[1]]}
 														</td>
 														<td
@@ -302,7 +318,11 @@ export function BldgDamageTable(props) {
 													>
 														<td>
 															{checkNA(clusterItem, tableHeaders[2])
-																? fillNA(clusterItem, tableHeaders[2])
+																? fillNA(
+																		clusterItem,
+																		tableHeaders[2],
+																		tableHeaders,
+																  )
 																: clusterItem[tableHeaders[2]]}
 														</td>
 														<td
@@ -328,7 +348,11 @@ export function BldgDamageTable(props) {
 													>
 														<td>
 															{checkNA(clusterItem, tableHeaders[3])
-																? fillNA(clusterItem, tableHeaders[3])
+																? fillNA(
+																		clusterItem,
+																		tableHeaders[3],
+																		tableHeaders,
+																  )
 																: clusterItem[tableHeaders[3]]}
 														</td>
 														<td
@@ -374,7 +398,7 @@ export function BldgDamageTable(props) {
 										>
 											<td>
 												{checkNA(categoryItem, tableHeaders[0])
-													? fillNA(categoryItem, tableHeaders[0])
+													? fillNA(categoryItem, tableHeaders[0], tableHeaders)
 													: categoryItem[tableHeaders[0]]}
 											</td>
 											<td
@@ -400,7 +424,7 @@ export function BldgDamageTable(props) {
 										>
 											<td>
 												{checkNA(categoryItem, tableHeaders[1])
-													? fillNA(categoryItem, tableHeaders[1])
+													? fillNA(categoryItem, tableHeaders[1], tableHeaders)
 													: categoryItem[tableHeaders[1]]}
 											</td>
 											<td
@@ -426,7 +450,7 @@ export function BldgDamageTable(props) {
 										>
 											<td>
 												{checkNA(categoryItem, tableHeaders[2])
-													? fillNA(categoryItem, tableHeaders[2])
+													? fillNA(categoryItem, tableHeaders[2], tableHeaders)
 													: categoryItem[tableHeaders[2]]}
 											</td>
 											<td
@@ -452,7 +476,7 @@ export function BldgDamageTable(props) {
 										>
 											<td>
 												{checkNA(categoryItem, tableHeaders[3])
-													? fillNA(categoryItem, tableHeaders[3])
+													? fillNA(categoryItem, tableHeaders[3], tableHeaders)
 													: categoryItem[tableHeaders[3]]}
 											</td>
 											<td
