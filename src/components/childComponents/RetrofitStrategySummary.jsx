@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 
 import {
@@ -20,7 +20,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import { fromLonLat, getTransform } from "ol/proj";
 import { applyTransform } from "ol/extent";
 
-import { basicLayers } from "../../utils/map";
+import { basicLayers, generateLayers } from "../../utils/map";
 import Map from "./map/Map";
 import { IncoreFootNote } from "../styledComponents/IncoreFootNote";
 
@@ -99,6 +99,7 @@ const useStyles = makeStyles(() => ({
 export default function RetrofitStrategySummary(props) {
 	const mapConfig = useSelector((state) => state.config.mapConfig);
 	const globalConfig = useSelector((state) => state.config.globalConfig);
+	const [retrofitLayer, setRetrofitLayer] = useState(null);
 
 	const classes = useStyles();
 
@@ -119,6 +120,21 @@ export default function RetrofitStrategySummary(props) {
 		name,
 		description,
 	} = props;
+
+	// TODO replace with real interaction
+	useEffect(() => {
+		const layerDef = [
+			{
+				layerId: "65f87717e42f3b0da55e47fe",
+				layerStyles: mapConfig.LAYER_STYLES.RetrofitStrategy,
+				title: "Retrofit Strategy Details",
+				opacity: 1,
+				zIndex: 1,
+			},
+		];
+		const retrofitLayer = generateLayers(globalConfig, layerDef);
+		setRetrofitLayer(retrofitLayer);
+	}, []);
 
 	return (
 		<Grid
@@ -225,10 +241,10 @@ export default function RetrofitStrategySummary(props) {
 			</Grid>
 			<Grid item xs={12}>
 				{/*for map*/}
-				{basicLayers ? (
+				{basicLayers && retrofitLayer ? (
 					<Container className="mapContainer" disableGutters>
 						<Map
-							className="fillContainer-BldgDamage"
+							className="fillContainer-retrofitStrategy"
 							zoom={mapConfig.ZOOM}
 							minZoom={mapConfig.MIN_ZOOM}
 							maxZoom={mapConfig.MAX_ZOOM}
@@ -237,9 +253,9 @@ export default function RetrofitStrategySummary(props) {
 								getTransform("EPSG:4326", "EPSG:3857"),
 							)}
 							center={fromLonLat(mapConfig.MAP_CENTER)}
-							layers={[basicLayers]}
+							layers={[basicLayers, retrofitLayer]}
 							layerSwitcherOptions={{}}
-							allowBuildingSelection={false}
+							allowBuildingSelection={true}
 						/>
 					</Container>
 				) : (
