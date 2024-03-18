@@ -538,18 +538,17 @@ export const BuiltEnvironment = ({ step, substep }) => {
 													<IncoreInputLabel className={classes.subTitle}>
 														Building Retrofit Plans
 													</IncoreInputLabel>
-													{globalConfig.allowUpload ? (
-														<IconButton
-															className={classes.plusButton}
-															onClick={() => {
-																setUploadModalStatus(true);
-																setDatasetType("incore:retrofitStrategy");
-																setCategory("retrofitStrategies");
-															}}
-														>
-															<AddCircleOutlineIcon />
-														</IconButton>
-													) : null}
+													{/*Always allow upload of retrofit strategies*/}
+													<IconButton
+														className={classes.plusButton}
+														onClick={() => {
+															setUploadModalStatus(true);
+															setDatasetType("incore:retrofitStrategy");
+															setCategory("retrofitStrategies");
+														}}
+													>
+														<AddCircleOutlineIcon />
+													</IconButton>
 													<IconButton
 														className={classes.plusButton}
 														onClick={() => {
