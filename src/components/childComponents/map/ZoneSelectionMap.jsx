@@ -155,7 +155,10 @@ export const ZoneSelectionMap = (props) => {
 				const nameToFeatureMap = zoneLayerSource
 					.getFeatures()
 					.reduce((acc, feature) => {
-						const name = feature.get("name");
+						const name = feature.get(
+							globalConfig.retrofitStrategyBuilder.activeLayerFieldname ??
+								"name",
+						);
 						if (name) {
 							acc[name] = feature;
 						}
