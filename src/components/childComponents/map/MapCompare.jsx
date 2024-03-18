@@ -4,8 +4,9 @@ import Overlay from "ol/Overlay";
 import LayerSwitcher from "./LayerSwitcher";
 import {
 	Grid,
-	Container,
-	Collapse,
+	Accordion,
+	AccordionSummary,
+	AccordionDetails,
 	Table,
 	TableBody,
 	TableCell,
@@ -16,7 +17,7 @@ import {
 import LoadingOverlay from "react-loading-overlay";
 import { makeStyles } from "@material-ui/core/styles";
 import { maxStateMapping, fetchLegendsForLayers } from "../../../utils/common";
-import LayersIcon from "@material-ui/icons/Layers";
+import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 
 export const MapContext = React.createContext({});
 
@@ -71,13 +72,8 @@ const useStyles = makeStyles({
 		},
 	},
 	legendDiv: {
-		backgroundColor: "#f5f5f5",
+		backgroundColor: "#ffffff",
 		border: "1px solid #e0e0e0",
-		borderRadius: "1em",
-	},
-	legendButton: {
-		border: "none",
-		backgroundColor: "transparent",
 	},
 	innerLegendDiv: {
 		display: "flex",
@@ -87,8 +83,8 @@ const useStyles = makeStyles({
 	},
 	legendTitle: {
 		fontWeight: "bold",
-		marginBottom: "0.4em",
-		marginLeft: "1em",
+		fontSize: "1.5em",
+		color: "#154D8B",
 	},
 	legendGroup: {
 		minWidth: "200px",
@@ -139,8 +135,6 @@ const MapCompare = (props) => {
 	const mapRefA = React.useRef();
 	const mapRefB = React.useRef();
 
-	// State variable to make legend collapsible
-	const [legendOpen, setLegendOpen] = React.useState(false);
 	// State variable to store legends
 	const [legends, setLegends] = React.useState([]);
 
@@ -416,73 +410,68 @@ const MapCompare = (props) => {
 	return (
 		<Grid container styles={{ marginBottom: "2em" }}>
 			<Grid item xs={12}>
-				<Container
-					className="mapContainer"
-					disableGutters
-					style={{ height: `${height}px` }}
-				>
-					<div style={{ position: "relative" }}>
+				<div style={{ position: "relative" }}>
+					<div
+						style={{ width: "100%", height: `${height}px`, display: "flex" }}
+					>
 						<div
-							style={{ width: "100%", height: `${height}px`, display: "flex" }}
+							className={`ol-map ${className}`}
+							ref={fallbackContainerA}
+							style={{
+								width: "100%",
+								height: `${height}px`,
+								marginRight: "5px",
+							}}
 						>
-							<div
-								className={`ol-map ${className}`}
-								ref={fallbackContainerA}
-								style={{
-									width: "50%",
-									height: `${height}px`,
-									marginRight: "5px",
-								}}
-							>
-								<MapContext.Provider value={{ map: mapRefA.current }}>
-									{children}
-								</MapContext.Provider>
-							</div>
-							<div
-								className={`ol-map ${className}`}
-								ref={fallbackContainerB}
-								style={{
-									width: "50%",
-									height: `${height}px`,
-									marginLeft: "5px",
-								}}
-							>
-								<MapContext.Provider value={{ map: mapRefB.current }}>
-									{children}
-								</MapContext.Provider>
-							</div>
+							<MapContext.Provider value={{ map: mapRefA.current }}>
+								{children}
+							</MapContext.Provider>
 						</div>
-						{allowBuildingSelection && selectedBuildingA ? (
-							<OverlayTable
-								selectedBuilding={selectedBuildingA}
-								loading={loading}
-								fields={fieldsA}
-							/>
-						) : (
-							<></>
-						)}
-						{allowBuildingSelection && selectedBuildingB ? (
-							<OverlayTable
-								selectedBuilding={selectedBuildingB}
-								loading={loading}
-								right={true}
-								fields={fieldsB}
-							/>
-						) : (
-							<></>
-						)}
+						<div
+							className={`ol-map ${className}`}
+							ref={fallbackContainerB}
+							style={{
+								width: "100%",
+								height: `${height}px`,
+								marginLeft: "5px",
+							}}
+						>
+							<MapContext.Provider value={{ map: mapRefB.current }}>
+								{children}
+							</MapContext.Provider>
+						</div>
 					</div>
-				</Container>
+					{allowBuildingSelection && selectedBuildingA ? (
+						<OverlayTable
+							selectedBuilding={selectedBuildingA}
+							loading={loading}
+							fields={fieldsA}
+						/>
+					) : (
+						<></>
+					)}
+					{allowBuildingSelection && selectedBuildingB ? (
+						<OverlayTable
+							selectedBuilding={selectedBuildingB}
+							loading={loading}
+							right={true}
+							fields={fieldsB}
+						/>
+					) : (
+						<></>
+					)}
+				</div>
 			</Grid>
 			<Grid item xs={12}>
-				<div className={classes.legendDiv}>
-					<button
-						className={classes.legendButton}
-						onClick={() => setLegendOpen(!legendOpen)}
+				<Accordion>
+					<AccordionSummary
+						expandIcon={<ExpandMoreIcon />}
+						aria-controls="panel1a-content"
+						id="panel1a-header"
 					>
-						<h3 style={{ paddingLeft: "1em" }}>Legends &gt;</h3>
-					</button>
-					<Collapse in={legendOpen}>
+						<h3 className={classes.legendTitle}>Legends</h3>
+					</AccordionSummary>
+					<AccordionDetails>
 						<div className={classes.innerLegendDiv}>
 							<br />
 							{Object.entries(legends).map(([layerGroupName, layers]) => (
@@ -503,8 +492,8 @@ const MapCompare = (props) => {
 								</div>
 							))}
 						</div>
-					</Collapse>
-				</div>
+					</AccordionDetails>
+				</Accordion>
 			</Grid>
 		</Grid>
 	);
