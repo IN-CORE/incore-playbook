@@ -230,8 +230,29 @@ globals["inputDatasetTypes"].buildings = [
 globals["testBed"] = "slc";
 
 globals["retrofitStrategyBuilder"] = {
-	colorCodes: ["#00B654", "#FF88CF", "#36C1ED", "#FFB067", "#9C4EFF"],
-	maxStrategies: 5,
+	colorCodes: [
+		"#C32541",
+		"#1B3EBB",
+		"#76930F",
+		"#268FB0",
+		"#BB772B",
+		"#F54362",
+		"#456AEA",
+		"#98BB1D",
+		"#47B4D6",
+		"#E29D50",
+		"#FC7F95",
+		"#7C95EC",
+		"#C9DF7A",
+		"#83DEF2",
+		"#F4C189",
+		"#FDBBC9",
+		"#DBD2FC",
+		"#E0E9C2",
+		"#CDECF0",
+		"#FFE3C4",
+	],
+	maxStrategies: 20,
 	conditions: [
 		{
 			label: "City Council District",
@@ -242,14 +263,14 @@ globals["retrofitStrategyBuilder"] = {
 		{
 			label: "Building Structural Type",
 			type: "select",
-			key: "struct_typ",
+			key: "strtype",
 			possibleOptions: [
 				{
-					label: "URMM",
+					label: "Mid-Rise Unreinforced Masonry Bearing Walls",
 					value: "URMM",
 				},
 				{
-					label: "URML",
+					label: "Low-Rise Unreinforced Masonry Bearing Walls",
 					value: "URML",
 				},
 			],
@@ -257,15 +278,15 @@ globals["retrofitStrategyBuilder"] = {
 		{
 			label: "% number of Buildings",
 			type: "number",
-			key: "percent",
+			key: "pct",
 			possibleOptions: null,
 		},
 	],
 	retrofitMethods: [
 		{
-			label: "",
+			label: "Retrofit Method",
 			type: "select",
-			key: "retrofitMethod",
+			key: "retrofit",
 			possibleOptions: [
 				{
 					label: "Wood or Metal Deck Diaphragms",
@@ -274,8 +295,9 @@ globals["retrofitStrategyBuilder"] = {
 			],
 		},
 	],
-	zoneLayerId: "incore:65ea380c4331420c85ddb211",
+	zoneLayerId: "65f509b6e42f3b0da55d74cf", // city council district
 	activeLayerNames: "Zone",
+	activeLayerFieldname: "NAME",
 };
 
 export { globals };

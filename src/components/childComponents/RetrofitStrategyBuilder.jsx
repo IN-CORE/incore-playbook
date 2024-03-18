@@ -32,7 +32,6 @@ import DeleteIcon from "@material-ui/icons/Delete";
 import EditIcon from "@material-ui/icons/Edit";
 import LoadingOverlay from "react-loading-overlay";
 import MapIcon from "@material-ui/icons/Map";
-import SaveIcon from "@material-ui/icons/Save";
 import StopRoundedIcon from "@material-ui/icons/StopRounded";
 import { makeStyles } from "@material-ui/core/styles";
 
@@ -45,6 +44,8 @@ import {
 	IncoreSelectBox,
 } from "../styledComponents/IncoreSelect";
 import { fetchZoneGeoJson as fetchZoneGeoJsonAction } from "../../actions/attributes";
+import { IncoreFootNote } from "../styledComponents/IncoreFootNote";
+import SaveIcon from "@material-ui/icons/Save";
 
 const useStyles = makeStyles((theme) => ({
 	closeButton: {
@@ -57,17 +58,16 @@ const useStyles = makeStyles((theme) => ({
 		margin: theme.spacing(1),
 	},
 	actionButtons: {
-		fontSize: "16px",
+		fontSize: "15px",
 		fontWeight: 400,
 		letterSpacing: "0.15px",
-		lineHeight: "18.75px",
 		color: "#000000B2",
+		textTransform: "capitalize",
 	},
 	addMoreStrategyBtn: {
 		font: "Roboto",
 		fontSize: "15px",
 		fontWeight: 600,
-		lineHeight: "26px",
 		letterSpacing: "0.46px",
 		textAlign: "left",
 		borderColor: "#00619D",
@@ -76,9 +76,8 @@ const useStyles = makeStyles((theme) => ({
 	},
 	nxtBuildBtn: {
 		font: "Roboto",
-		fontSize: "14px",
+		fontSize: "15px",
 		fontWeight: 500,
-		lineHeight: "24px",
 		letterSpacing: "0.4px",
 		backgroundColor: "#00619D",
 		color: "#FFFFFF",
@@ -103,17 +102,16 @@ const useStyles = makeStyles((theme) => ({
 	tableHeaderCellRetrofit: {
 		borderRight: "1px solid #0000001F",
 		borderLeft: "1px solid #0000001F",
-		width: "20%",
-		maxWidth: "20%",
+		width: "30%",
+		maxWidth: "30%",
 	},
 	tableHeaderCellActions: {
 		width: "10%",
 	},
 	tableHeaderRow: {
 		font: "Roboto",
-		fontSize: "14px",
+		fontSize: "15px",
 		fontWeight: 400,
-		lineHeight: "24px",
 		letterSpacing: "0.17px",
 		backgroundColor: "#EDF1F4",
 		color: "#000000DE",
@@ -125,20 +123,19 @@ const useStyles = makeStyles((theme) => ({
 	},
 	tableUnSavedCell: {
 		border: "1px solid #E0E0E0",
+		verticalAlign: "top",
 	},
 	tableSavedText: {
 		font: "Roboto",
-		fontSize: "14px",
+		fontSize: "15px",
 		fontWeight: 400,
-		lineHeight: "16.41px",
 		letterSpacing: "0.15px",
 		color: "#0000008A",
 	},
 	tableSavedValue: {
 		font: "Roboto",
-		fontSize: "14px",
+		fontSize: "15px",
 		fontWeight: 400,
-		lineHeight: "16.41px",
 		letterSpacing: "0.15px",
 		color: "#000000DE",
 	},
@@ -165,7 +162,7 @@ export default function RetrofitStrategyBuilder(props) {
 	const [selectedValues, setSelectedValues] = React.useState({});
 	const [addError, setAddError] = React.useState(null);
 	const [showAddRetrofitStrategyRow, setShowAddRetrofitStrategyRow] =
-		React.useState(false);
+		React.useState(true);
 	const [currentlyEditing, setCurrentlyEditing] = React.useState(null);
 	// get zone name for redux
 	const zoneNames = useSelector((state) => state.attribute.zoneNames);
@@ -194,7 +191,7 @@ export default function RetrofitStrategyBuilder(props) {
 		fetchZoneGeoJson(globalConfig);
 	}, []);
 
-	const handleAddRow = () => {
+	const sanityCheck = () => {
 		// for any missing fields
 		let disabled = false;
 		conditionKeys.forEach((key) => {
@@ -215,7 +212,6 @@ export default function RetrofitStrategyBuilder(props) {
 		});
 		if (disabled) {
 			setAddError("Please fill all the fields");
-			return;
 		}
 
 		// for any duplicates
@@ -225,7 +221,11 @@ export default function RetrofitStrategyBuilder(props) {
 			}
 			let matches = [];
 			conditionSelectKeys.forEach((key) => {
-				if (row[key].value === selectedValues[key].value) {
+				if (
+					row[key] !== undefined &&
+					selectedValues[key] !== undefined &&
+					row[key].value === selectedValues[key].value
+				) {
 					matches.push(true);
 				} else {
 					matches.push(false);
@@ -237,29 +237,36 @@ export default function RetrofitStrategyBuilder(props) {
 
 		if (matches.length > 0) {
 			setAddError("Duplicate entry, please choose unique conditions");
-			return;
+			disabled = true;
 		}
 
-		if (currentlyEditing !== null) {
-			const updatedRows = addedRows.map((row, i) => {
-				if (i === currentlyEditing) {
-					return selectedValues;
-				}
-				return row;
-			});
-			setAddedRows(updatedRows);
-			setCurrentlyEditing(null);
+		return !disabled;
+	};
+
+	const handleAddRow = () => {
+		// perform sanity check
+		const allowRowAdded = sanityCheck();
+		if (allowRowAdded) {
+			if (currentlyEditing !== null) {
+				const updatedRows = addedRows.map((row, i) => {
+					if (i === currentlyEditing) {
+						return selectedValues;
+					}
+					return row;
+				});
+				setAddedRows(updatedRows);
+				setCurrentlyEditing(null);
+				setSelectedValues({});
+				setShowAddRetrofitStrategyRow(false);
+				return;
+			}
+
+			setNumRow(numRow + 1);
+			const updateRows = [...addedRows, selectedValues];
+			setAddedRows(updateRows);
 			setSelectedValues({});
 			setShowAddRetrofitStrategyRow(false);
-			return;
 		}
-
-		setNumRow(numRow + 1);
-		const updateRows = [...addedRows, selectedValues];
-		setAddedRows(updateRows);
-		setShowAddRetrofitStrategyRow(false);
-		setSelectedValues({});
-		setShowAddRetrofitStrategyRow(false);
 	};
 
 	const steps = [
@@ -271,7 +278,12 @@ export default function RetrofitStrategyBuilder(props) {
 	const AddRetrofitStrategyRow = () => {
 		return (
 			<TableRow>
-				<TableCell align="center" className={classes.tableUnSavedCell}>
+				{/*number cell align middle veritcally*/}
+				<TableCell
+					align="center"
+					className={classes.tableUnSavedCell}
+					style={{ verticalAlign: "middle" }}
+				>
 					{currentlyEditing !== null ? currentlyEditing + 1 : numRow}
 				</TableCell>
 				<TableCell className={classes.tableUnSavedCell}>
@@ -293,12 +305,12 @@ export default function RetrofitStrategyBuilder(props) {
 									);
 									return (
 										<>
-											<Grid item xs={3} key={condition.label + 1}>
+											<Grid item xs={4} key={condition.label + 1}>
 												<Typography variant="body1">
 													{condition.label}
 												</Typography>
 											</Grid>
-											<Grid item xs={9} key={condition.label + 2}>
+											<Grid item xs={8} key={condition.label + 2}>
 												<IncoreSelectBox
 													labelId="label"
 													id={`${condition.label}Select`}
@@ -337,12 +349,12 @@ export default function RetrofitStrategyBuilder(props) {
 								} else if (condition.type === "select") {
 									return (
 										<>
-											<Grid item xs={3} key={condition.label + 1}>
+											<Grid item xs={4} key={condition.label + 1}>
 												<Typography variant="body1">
 													{condition.label}
 												</Typography>
 											</Grid>
-											<Grid item xs={9} key={condition.label + 2}>
+											<Grid item xs={8} key={condition.label + 2}>
 												<IncoreSelectBox
 													labelId="label"
 													id={`${condition.label}Select`}
@@ -390,12 +402,12 @@ export default function RetrofitStrategyBuilder(props) {
 								} else if (condition.type === "number") {
 									return (
 										<>
-											<Grid item xs={3} key={condition.label + 1}>
+											<Grid item xs={4} key={condition.label + 1}>
 												<Typography variant="body1">
 													{condition.label}
 												</Typography>
 											</Grid>
-											<Grid item xs={9} key={condition.label + 2}>
+											<Grid item xs={8} key={condition.label + 2}>
 												<IncoreTextField
 													variant="outlined"
 													value={
@@ -436,28 +448,16 @@ export default function RetrofitStrategyBuilder(props) {
 						)}
 					</Grid>
 				</TableCell>
-				<TableCell className={classes.tableUnSavedCell} align="center">
+				<TableCell className={classes.tableUnSavedCell} align="left">
 					<Grid container alignItems="center" spacing={3}>
 						{globalConfig.retrofitStrategyBuilder.retrofitMethods.map(
 							(method) => {
 								if (method.type === "select") {
 									return (
 										<>
-											{method.label === "" ? null : (
-												<Grid item xs={3} key={method.label + 1}>
-													<Typography variant="body1">
-														{method.label}
-													</Typography>
-												</Grid>
-											)}
-
-											<Grid
-												item
-												xs={method.label === "" ? 12 : 9}
-												key={method.label + 1}
-											>
+											<Grid item xs={12} key={method.label + 1}>
 												<IncoreSelectBox
-													labelId="label"
+													labelId={`${method.label}Select`}
 													id={`${method.label}Select`}
 													variant="outlined"
 													onChange={(e) => {
@@ -505,7 +505,7 @@ export default function RetrofitStrategyBuilder(props) {
 						)}
 					</Grid>
 				</TableCell>
-				<TableCell className={classes.tableUnSavedCell} align="center">
+				<TableCell className={classes.tableUnSavedCell} align="left">
 					<Grid container spacing={0}>
 						<Grid item xs={12}>
 							<Button
@@ -517,18 +517,18 @@ export default function RetrofitStrategyBuilder(props) {
 								}
 								variant="outlined"
 								color="primary"
+								onClick={handleAddRow}
 								startIcon={
 									currentlyEditing !== null ? <SaveIcon /> : <AddIcon />
 								}
-								onClick={handleAddRow}
 							>
 								{currentlyEditing !== null ? "Save" : "Add"}
 							</Button>
 						</Grid>
 						<Grid item xs={12}>
-							<Typography variant="body1" color="error">
+							<IncoreFootNote style={{ color: "red" }}>
 								{addError}
-							</Typography>
+							</IncoreFootNote>
 						</Grid>
 					</Grid>
 				</TableCell>
@@ -558,6 +558,10 @@ export default function RetrofitStrategyBuilder(props) {
 	};
 
 	const handleSubmit = () => {
+		if (showAddRetrofitStrategyRow) {
+			setAddError("Save the current rule before submitting.");
+			return;
+		}
 		// prepare data
 		let payload = {
 			testbed: globalConfig.testbed,
@@ -618,6 +622,7 @@ export default function RetrofitStrategyBuilder(props) {
 		setNumRow(1);
 		setSelectedValues({});
 		setCurrentlyEditing(null);
+		setShowAddRetrofitStrategyRow(true);
 		// Step 3
 		setRetrofitSummary({});
 	};
@@ -627,7 +632,7 @@ export default function RetrofitStrategyBuilder(props) {
 			open={strategyBuilderModalStatus}
 			onClose={onRetrofitStrategyBuilderClose}
 			PaperProps={{
-				style: { minHeight: "600px" }, // Set your desired minimum height here
+				style: { minHeight: "800px" }, // Set your desired minimum height here
 			}}
 			maxWidth="lg"
 			fullWidth
@@ -681,18 +686,8 @@ export default function RetrofitStrategyBuilder(props) {
 										variant="outlined"
 										value={description}
 										placeholder="Description"
-										sx={{
-											height: "41px",
-											width: "100%",
-											color: "#2E384D",
-											fontSize: "15px",
-											fontWeight: 500,
-											letterSpacing: 0,
-											lineHeight: "18px",
-											backgroundColor: "#FFFFFF",
-										}}
 										multiline
-										minRows={4}
+										rows={6}
 										fullWidth
 										onChange={(e) => {
 											setDescription(e.target.value);
@@ -708,7 +703,10 @@ export default function RetrofitStrategyBuilder(props) {
 									<Table className={classes.table} aria-label="simple table">
 										<TableHead>
 											<TableRow className={classes.tableHeaderRow}>
-												<TableCell className={classes.tableHeaderCellNo}>
+												<TableCell
+													className={classes.tableHeaderCellNo}
+													align="center"
+												>
 													No.
 												</TableCell>
 												<TableCell
@@ -737,11 +735,11 @@ export default function RetrofitStrategyBuilder(props) {
 															scope="row"
 															className={classes.tableSavedCell}
 														>
-															<Grid
-																container
+															<Box
+																display="flex"
+																flexDirection="row"
 																alignItems="center"
 																justifyContent="center"
-																spacing={0}
 															>
 																<StopRoundedIcon
 																	fontSize="large"
@@ -752,7 +750,7 @@ export default function RetrofitStrategyBuilder(props) {
 																	}}
 																/>
 																{index + 1}
-															</Grid>
+															</Box>
 														</TableCell>
 														<TableCell className={classes.tableSavedCell}>
 															<TableContainer>
@@ -785,45 +783,25 @@ export default function RetrofitStrategyBuilder(props) {
 														<TableCell
 															align="center"
 															className={classes.tableSavedCell}
+															style={{ padding: "16px" }}
 														>
-															<Grid container spacing={0}>
-																{retrofitMethodKeys.map((key, idx) => (
-																	<>
-																		{row[key].label === "" ? null : (
-																			<Grid
-																				item
-																				xs={4}
-																				key={key + 1}
-																				sx={{ p: 0 }}
-																			>
-																				<Typography
-																					variant="body1"
-																					className={classes.tableSavedText}
-																				>
-																					{row[key].label}
-																				</Typography>
-																			</Grid>
-																		)}
-																		<Grid
-																			item
-																			xs={row[key].label === "" ? 12 : 8}
-																			key={key + 2}
-																			sx={{ p: 0 }}
-																		>
-																			<Typography variant="body1">
-																				{row[key].value}
-																			</Typography>
-																		</Grid>
-																		{idx ===
-																		retrofitMethodKeys.length - 1 ? null : (
-																			<Divider />
-																		)}
-																	</>
-																))}
-															</Grid>
+															{retrofitMethodKeys.map((key, idx) => (
+																<>
+																	<Typography
+																		variant="body1"
+																		className={classes.tableSavedValue}
+																	>
+																		{row[key].value}
+																	</Typography>
+																	{idx ===
+																	retrofitMethodKeys.length - 1 ? null : (
+																		<Divider />
+																	)}
+																</>
+															))}
 														</TableCell>
 														<TableCell
-															align="center"
+															align="left"
 															className={classes.tableSavedCell}
 														>
 															<Button
@@ -831,30 +809,40 @@ export default function RetrofitStrategyBuilder(props) {
 																startIcon={
 																	<EditIcon style={{ color: "#0000008A" }} />
 																}
-															>
-																<Typography
-																	className={classes.actionButtons}
-																	onClick={() => {
+																// if there is an open row we shouldn't allow edit
+																onClick={() => {
+																	if (showAddRetrofitStrategyRow) {
+																		setAddError(
+																			"Save the current rule before editing.",
+																		);
+																	} else {
 																		setSelectedValues(row);
-																		setShowAddRetrofitStrategyRow(false);
+																		setShowAddRetrofitStrategyRow(true);
 																		setCurrentlyEditing(index);
-																	}}
-																>
+																		setAddError(null);
+																	}
+																}}
+															>
+																<Typography className={classes.actionButtons}>
 																	Edit
 																</Typography>
 															</Button>
-															<Divider />
 															<Button
 																className={classes.button}
 																startIcon={
 																	<DeleteIcon style={{ color: "#0000008A" }} />
 																}
 																onClick={() => {
-																	const newRows = addedRows.filter(
-																		(r, i) => i !== index,
-																	);
-																	setNumRow(numRow - 1);
-																	setAddedRows(newRows);
+																	// should't allow delete if there is only one row
+																	if (numRow > 1) {
+																		const newRows = addedRows.filter(
+																			(r, i) => i !== index,
+																		);
+																		setNumRow(numRow - 1);
+																		setAddedRows(newRows);
+																		// reset error message
+																		setAddError(null);
+																	}
 																}}
 															>
 																<Typography className={classes.actionButtons}>
@@ -865,8 +853,8 @@ export default function RetrofitStrategyBuilder(props) {
 													</TableRow>
 												);
 											})}
-											{numRow === 1 ? AddRetrofitStrategyRow() : null}
-											{showAddRetrofitStrategyRow && numRow !== 1
+											{/* not editing adding new row*/}
+											{currentlyEditing === null && showAddRetrofitStrategyRow
 												? AddRetrofitStrategyRow()
 												: null}
 										</TableBody>
@@ -878,18 +866,28 @@ export default function RetrofitStrategyBuilder(props) {
 											numRow ===
 											globalConfig.retrofitStrategyBuilder.maxStrategies
 										}
-										variant="outlined"
+										variant="text"
 										className={classes.addMoreStrategyBtn}
 										startIcon={<AddIcon />}
 										onClick={() => {
-											setCurrentlyEditing(null);
-											if (!showAddRetrofitStrategyRow) {
-												setSelectedValues({});
+											if (
+												showAddRetrofitStrategyRow &&
+												Object.keys(selectedValues).length > 0
+											) {
+												setAddError(
+													"Save the current rule before adding more.",
+												);
+											} else {
+												// reset editing
+												setCurrentlyEditing(null);
+												// reset error message
+												setAddError(null);
+												// deposit the new row
+												setShowAddRetrofitStrategyRow(true);
 											}
-											setShowAddRetrofitStrategyRow(true);
 										}}
 									>
-										Add More Strategy
+										Add more conditions and methods
 									</Button>
 								</Grid>
 							</Grid>
@@ -899,7 +897,6 @@ export default function RetrofitStrategyBuilder(props) {
 							<RetrofitStrategySummary
 								addedStrategies={addedRows}
 								retrofitSummary={retrofitSummary}
-								colorCodes={globalConfig.retrofitStrategyBuilder.colorCodes}
 								conditionKeys={conditionKeys}
 								retrofitMethodKeys={retrofitMethodKeys}
 								name={name}
@@ -932,10 +929,11 @@ export default function RetrofitStrategyBuilder(props) {
 			<DialogActions
 				disableSpacing
 				style={{
-					justifyContent: activeStep === 2 ? "flex-end" : "space-between",
+					justifyContent:
+						activeStep === 0 || activeStep === 2 ? "flex-end" : "space-between",
 				}}
 			>
-				{activeStep < 2 ? (
+				{activeStep > 0 && activeStep < 2 ? (
 					<Button
 						disabled={activeStep === 0}
 						variant="outlined"
