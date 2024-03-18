@@ -100,6 +100,7 @@ export default function RetrofitStrategySummary(props) {
 	const mapConfig = useSelector((state) => state.config.mapConfig);
 	const globalConfig = useSelector((state) => state.config.globalConfig);
 	const [retrofitLayer, setRetrofitLayer] = useState(null);
+	const [zoneLayer, setZoneLayer] = useState(null);
 
 	const classes = useStyles();
 
@@ -129,11 +130,26 @@ export default function RetrofitStrategySummary(props) {
 				layerStyles: mapConfig.LAYER_STYLES.RetrofitStrategy,
 				title: "Retrofit Strategy Details",
 				opacity: 1,
+				zIndex: 2,
+			},
+		];
+		const retrofitLayer = generateLayers(
+			globalConfig,
+			layerDef,
+			"Retrofit Strategy",
+		);
+		setRetrofitLayer(retrofitLayer);
+
+		const zoneLayerDef = [
+			{
+				layerId: globalConfig.retrofitStrategyBuilder.zoneLayerId,
+				title: "Zone",
+				opacity: 0.3,
 				zIndex: 1,
 			},
 		];
-		const retrofitLayer = generateLayers(globalConfig, layerDef);
-		setRetrofitLayer(retrofitLayer);
+		const zoneLayer = generateLayers(globalConfig, zoneLayerDef, "Zone");
+		setZoneLayer(zoneLayer);
 	}, []);
 
 	return (
@@ -241,7 +257,7 @@ export default function RetrofitStrategySummary(props) {
 			</Grid>
 			<Grid item xs={12}>
 				{/*for map*/}
-				{basicLayers && retrofitLayer ? (
+				{basicLayers && retrofitLayer && zoneLayer ? (
 					<Container className="mapContainer" disableGutters>
 						<Map
 							className="fillContainer-retrofitStrategy"
@@ -253,9 +269,10 @@ export default function RetrofitStrategySummary(props) {
 								getTransform("EPSG:4326", "EPSG:3857"),
 							)}
 							center={fromLonLat(mapConfig.MAP_CENTER)}
-							layers={[basicLayers, retrofitLayer]}
+							layers={[basicLayers, zoneLayer, retrofitLayer]}
 							layerSwitcherOptions={{}}
 							allowBuildingSelection={true}
+							activeLayerNames="Retrofit Strategy"
 						/>
 					</Container>
 				) : (

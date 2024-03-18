@@ -43,7 +43,7 @@ export const ZoneSelectionMapDialog = (props) => {
 
 	useEffect(() => {
 		// Construct the WFS request URL
-		const wfsUrl = `${globalConfig.geoServerWFS}&typeName=${globalConfig.retrofitStrategyBuilder["zoneLayerId"]}`;
+		const wfsUrl = `${globalConfig.geoServerWFS}&typeName=incore:${globalConfig.retrofitStrategyBuilder["zoneLayerId"]}`;
 
 		const zoneLayer = new VectorLayer({
 			title: globalConfig.retrofitStrategyBuilder.activeLayerNames ?? "Zone",

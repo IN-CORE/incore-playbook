@@ -295,7 +295,7 @@ globals["retrofitStrategyBuilder"] = {
 			],
 		},
 	],
-	zoneLayerId: "incore:65f509b6e42f3b0da55d74cf", // city council district
+	zoneLayerId: "65f509b6e42f3b0da55d74cf", // city council district
 	activeLayerNames: "Zone",
 	activeLayerFieldname: "NAME",
 };

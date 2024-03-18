@@ -1,18 +1,10 @@
 import * as React from "react";
-import { Map as OLMap, View, Feature } from "ol";
+import { Map as OLMap, View } from "ol";
 // import {defaults as defaultControls} from "ol/control";
 import Overlay from "ol/Overlay";
-import { Point } from "ol/geom";
-import Style from "ol/style/Style";
-import CircleStyle from "ol/style/Circle";
-import Fill from "ol/style/Fill";
-import Stroke from "ol/style/Stroke";
-import VectorLayer from "ol/layer/Vector";
-import VectorSource from "ol/source/Vector";
 
 import { makeStyles } from "@material-ui/core/styles";
 import {
-	IconButton,
 	Table,
 	TableBody,
 	TableCell,
@@ -21,7 +13,6 @@ import {
 	TableRow,
 } from "@material-ui/core";
 import LoadingOverlay from "react-loading-overlay";
-import CloseIcon from "@material-ui/icons/Close";
 
 import LayerSwitcher from "./LayerSwitcher";
 
@@ -63,7 +54,8 @@ const useStyles = makeStyles({
 export const MapContext = React.createContext({});
 
 const Map = (props) => {
-	const { children, id, className, allowBuildingSelection } = props;
+	const { children, id, className, allowBuildingSelection, activeLayerNames } =
+		props;
 	const classes = useStyles();
 
 	const [selectedBuilding, setSelectedBuilding] = React.useState(null);
@@ -152,7 +144,7 @@ const Map = (props) => {
 
 		let damageLayerGrp = null;
 		layers.forEach((layerGrp) => {
-			if (layerGrp.getProperties().title === "Damage") {
+			if (layerGrp.getProperties().title === activeLayerNames ?? "Damage") {
 				damageLayerGrp = layerGrp;
 			}
 		});
