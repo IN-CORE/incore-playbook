@@ -279,9 +279,24 @@ export default function ViewResult(props) {
 			/>
 			{/*for analysis list*/}
 			<Box>
-				<Box className={classes.statTitle}>
+				<Box
+					className={classes.statTitle}
+					style={{
+						display: "flex",
+						justifyContent: "space-between",
+						alignItems: "center",
+						marginBottom: "8px",
+						marginTop: "15px",
+					}}
+				>
 					<IncoreInputLabel>{`Completed Analysis (${numCompleted})`}</IncoreInputLabel>
-					<Box style={{ float: "right" }}>
+					<Box
+						style={{
+							display: "flex",
+							justifyContent: "flex-end",
+							width: "140px",
+						}}
+					>
 						<FormControlLabel
 							control={
 								<Switch
