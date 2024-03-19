@@ -136,14 +136,16 @@ export async function submitExecution(
 		datasets: datasets,
 	};
 
-	let datawolfResponse = await fetch(`${datawolfConfig["executionPostURL"]}`, {
-		method: "POST",
-		headers: authHeader,
-		body: JSON.stringify(requestBody),
-		mode: "cors",
-	});
+	console.log(requestBody);
 
-	return datawolfResponse.status;
+	// let datawolfResponse = await fetch(`${datawolfConfig["executionPostURL"]}`, {
+	// 	method: "POST",
+	// 	headers: authHeader,
+	// 	body: JSON.stringify(requestBody),
+	// 	mode: "cors",
+	// });
+	//
+	// return datawolfResponse.status;
 }
 
 // TODO move this to redux

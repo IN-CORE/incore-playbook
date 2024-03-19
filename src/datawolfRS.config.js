@@ -41,26 +41,9 @@ const datawolfRsWorkflowConfig = {
 				],
 			},
 			{
-				title: "Retrofits",
-				description: "Retrofit methods and values",
-				variableName: "retrofits",
-				widget: null,
-				hidden: true,
-				defaultValue: "",
-				parametersMap: [
-					{
-						paramId: "ce6a1f7e-4b0d-40bc-b36b-68a0e43c66be",
-						parameters: {
-							step: "retrofit-strategy-builder",
-							title: "Retrofits",
-						},
-					},
-				],
-			},
-			{
 				title: "Result Name",
 				description: "Strategy Related Results Name",
-				variableName: "resultName",
+				variableName: "name",
 				widget: null,
 				hidden: true,
 				defaultValue: "",
@@ -80,7 +63,7 @@ const datawolfRsWorkflowConfig = {
 				variableName: "incoreServiceUrl",
 				widget: null,
 				hidden: true,
-				defaultValue: "",
+				defaultValue: "https://incore-dev.ncsa.illinois.edu",
 				parametersMap: [
 					{
 						paramId: "c67ef86a-568f-46dd-aced-3cdaa851da97",

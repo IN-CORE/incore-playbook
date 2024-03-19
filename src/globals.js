@@ -203,7 +203,8 @@ globals["inputDatasetTypes"] = {
 };
 
 // ******************* SLC GLOBAL CONFIGS *******************
-globals["maestroServiceBase"] = `${hostname}/maestro/slc/`;
+const testbed = "slc";
+globals["maestroServiceBase"] = `${hostname}/maestro/${testbed}/`;
 globals["allowedRegions"] = [
 	{
 		name: "R1",
@@ -214,6 +215,7 @@ globals["allowedRegions"] = [
 		value: "R2",
 	},
 ];
+globals["testbed"] = testbed;
 globals["testbedSpace"] = "commresilienceslc";
 globals["testbedGroup"] = "incore_slc_user"; // incore_galveston_user, incore_joplin_user, incore_slc_user
 
@@ -226,8 +228,6 @@ globals["inputDatasetTypes"].buildings = [
 		dispatchKey: "RECEIVE_BLDGS",
 	},
 ];
-
-globals["testBed"] = "slc";
 
 globals["retrofitStrategyBuilder"] = {
 	colorCodes: [

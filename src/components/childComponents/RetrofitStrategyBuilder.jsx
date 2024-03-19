@@ -46,6 +46,7 @@ import {
 import { fetchZoneGeoJson as fetchZoneGeoJsonAction } from "../../actions/attributes";
 import { IncoreFootNote } from "../styledComponents/IncoreFootNote";
 import SaveIcon from "@material-ui/icons/Save";
+import { submitExecution } from "../../utils/datawolf";
 
 const useStyles = makeStyles((theme) => ({
 	closeButton: {
@@ -186,6 +187,14 @@ export default function RetrofitStrategyBuilder(props) {
 	});
 	globalConfig.retrofitStrategyBuilder.retrofitMethods.forEach((method) =>
 		retrofitMethodKeys.push(method.key),
+	);
+
+	// Datawolf setting
+	const datawolfRsConfig = useSelector(
+		(state) => state.config.datawolfRsConfig,
+	);
+	const datawolfRsWorkflowConfig = useSelector(
+		(state) => state.config.datawolfRsWorkflowConfig,
 	);
 
 	useEffect(() => {
@@ -561,80 +570,83 @@ export default function RetrofitStrategyBuilder(props) {
 		}
 	};
 
-	const handleSubmit = () => {
+	const _convertToDatawolfParmas = (addedRows, testbed) => {
+		let rules = {
+			testbed: testbed,
+			rules: 0,
+			zones: [],
+			strtypes: [],
+			pcts: [],
+		};
+
+		let retrofits = {
+			ret_keys: [],
+			ret_vals: [],
+		};
+
+		addedRows.forEach((row) => {
+			rules.zones.push(row.zones.value);
+			rules.strtypes.push(row.strtypes.value);
+			rules.pcts.push(parseFloat(row.pcts.value));
+			retrofits.ret_keys.push(`${row.retrofits.value.ret_key}`);
+			retrofits.ret_vals.push(row.retrofits.value.ret_val);
+		});
+
+		// Update 'rules' with the count of unique 'zones' as an example dynamic value
+		rules.rules = rules.zones.length;
+		rules.testbed = testbed;
+
+		return { rules, retrofits };
+	};
+
+	const handleSubmit = async () => {
 		if (showAddRetrofitStrategyRow) {
 			setAddError("Save the current rule before submitting.");
 			return;
 		}
-		// prepare data
-		let payload = {
-			name: name,
-			description: description,
-			testbed: globalConfig.testBed,
-			rules: addedRows.length,
-		};
+		// prepare datawolf payload
+		const { rules, retrofits } = _convertToDatawolfParmas(
+			addedRows,
+			globalConfig.testbed,
+		);
+		let parameters = datawolfRsWorkflowConfig.inputs.parameters;
+		let datawolfFormState = parameters.reduce((state, p) => {
+			let mapState = {};
+			let value;
 
-		conditionKeys.forEach((key) => (payload[key] = [])); // add all condition keys to payload
-		retrofitMethodKeys.forEach(
-			(key) => (payload[key] = { ret_keys: [], ret_vals: [] }),
-		); // add all retrofit method keys to payload
+			// TODO: I don't like this hard-coding at all
+			if (p.variableName === "name") {
+				value = name;
+			} else if (p.variableName === "retrofits") {
+				value = JSON.stringify(retrofits);
+			} else if (p.variableName === "rules") {
+				value = JSON.stringify(rules);
+			}
 
-		// when new condition or retrofit method is added, the payload should be updated
-		addedRows.forEach((row) => {
-			conditionKeys.forEach((key) => payload[key].push(row[key].value)); // add all condition keys to payload
-			retrofitMethodKeys.forEach((key) => {
-				payload[key].ret_keys.push(row[key].value.ret_key);
-				payload[key].ret_vals.push(row[key].value.ret_val);
-			}); // add all retrofit method keys to payload
-		});
+			// pre-populate the default fields
+			p.parametersMap.map((pm) => {
+				mapState[pm.paramId] = p.defaultValue;
+				if (value) mapState[pm.paramId] = value;
+			}, {});
 
-		console.log(payload);
+			return { ...state, [p.variableName]: mapState };
+		}, {});
 
-		setLoading(true);
-		// make API call to save the strategy
-		let responseJson = {
-			total: {
-				num_bldg: 3283,
-				num_bldg_no_cost: 42,
-				cost: 117260721.43,
-			},
-			by_rule: {
-				0: {
-					num_bldg: 3191,
-					num_bldg_no_cost: 40,
-					cost: 94393478.73,
-				},
-				1: {
-					num_bldg: 90,
-					num_bldg_no_cost: 0,
-					cost: 22867242.7,
-				},
-				2: {
-					num_bldg: 2,
-					num_bldg_no_cost: 2,
-					cost: 0,
-				},
-			},
-		};
+		const datawolfExecutionStatus = await submitExecution(
+			datawolfRsConfig,
+			datawolfRsWorkflowConfig,
+			name,
+			description,
+			datawolfFormState,
+		);
 
-		let rsDetailsLayerId = "dummy_layer_id";
-
-		let samplePayload = {
-			testbed: "galveston",
-			rules: 3,
-			zones: ["1P", "1P", "0.2P"],
-			strtypes: ["1", "2", "1"],
-			pcts: [1, 1, 1],
-			retrofits: {
-				ret_keys: ["elevation", "elevation", "elevation"],
-				ret_vals: [5, 10, 5],
-			},
-		};
-		setRsLayerId(rsDetailsLayerId);
-		setRules(samplePayload);
-		setRetrofitSummary(responseJson);
-		setActiveStep(activeStep + 1);
-		setLoading(false);
+		if (datawolfExecutionStatus !== 200) {
+			// TODO
+			// setErrorAlertOpen(true);
+			// setErrorMessage(submitExecutionErrorMessage);
+			// setErrorStatus(datawolfExecutionStatus);
+			console.log("Error in submitting the retrofit strategy");
+		}
 	};
 
 	const handleCloseSummary = () => {
