@@ -144,7 +144,7 @@ export async function submitExecution(
 	});
 
 	const status = datawolfResponse.status;
-	const responseBody = await datawolfResponse.json();
+	const responseBody = await datawolfResponse.text();
 
 	return {
 		datawolfExecutionStatus: status,
