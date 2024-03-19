@@ -111,8 +111,6 @@ function fillNA(obj, currentKey, keys) {
 function fillNADiff(A, B) {
 	if (A === "-" || B === "-") {
 		return "-";
-	} else if (A === 0 || B === 0) {
-		return 0;
 	} else {
 		return parseFloat(B) - parseFloat(A) > 0
 			? `+${parseFloat(B) - parseFloat(A)}`
