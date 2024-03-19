@@ -40,7 +40,7 @@ export default function CGEBarChart(props) {
 			<Chart
 				width={width}
 				height={height}
-				chartType="Bar"
+				chartType="BarChart"
 				loader={<div>Loading Chart</div>}
 				data={ParseData(data, region, yAxisLegend)}
 				options={{
