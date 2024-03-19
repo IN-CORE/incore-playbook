@@ -182,7 +182,7 @@ export default function RetrofitStrategyBuilder(props) {
 	const [rules, setRules] = React.useState(null);
 	const [retrofits, setRetrofits] = React.useState(null);
 	const [rsLayerId, setRsLayerId] = React.useState(null);
-	const [executionId, setExecutionId] = React.useState(null);
+	const [executionId, setExecutionId] = React.useState();
 
 	let conditionKeys = [];
 	let conditionSelectKeys = [];
@@ -739,6 +739,17 @@ export default function RetrofitStrategyBuilder(props) {
 		setShowAddRetrofitStrategyRow(true);
 		// Step 3
 		setRetrofitSummary({});
+
+		// clean up rules/retrofits
+		setRules();
+		setRetrofits();
+		setRsLayerId();
+		setExecutionId();
+
+		// clean interval if applicable
+		if (intervalRef.current) {
+			clearInterval(intervalRef.current);
+		}
 	};
 
 	return (
