@@ -75,7 +75,7 @@ const useStyles = makeStyles({
 		backgroundColor: "#FFFFFF",
 		borderRadius: "10%",
 		boxShadow: "0 2px 10px rgba(0,0,0,0.3)",
-		opacity: 0.8,
+		opacity: 0.9,
 		zIndex: 1000,
 		border: "none",
 		padding: 0,
