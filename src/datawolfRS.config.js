@@ -189,6 +189,6 @@ datawolfRsConfig["executionPostURL"] = `${hostname}/datawolf/executions`;
 datawolfRsConfig["datasetBaseURL"] = `${hostname}/datawolf/datasets`;
 datawolfRsConfig["datawolfPersonsDetail"] =
 	`${hostname}/datawolf/persons?email=`;
-datawolfRsConfig["retreiveTimeInterval"] = 10 * 1000;
+datawolfRsConfig["retreiveTimeInterval"] = 1 * 1000; // 1 second
 
 export { datawolfRsWorkflowConfig, datawolfRsConfig };

@@ -133,7 +133,7 @@ export default function RetrofitStrategySummary(props) {
 	useEffect(() => {
 		const layerDef = [
 			{
-				layerId: "65f87717e42f3b0da55e47fe",
+				layerId: rsLayerId,
 				layerStyles: mapConfig.LAYER_STYLES.RetrofitStrategy,
 				title: "Retrofit Strategy Details",
 				opacity: 1,
@@ -333,7 +333,7 @@ export default function RetrofitStrategySummary(props) {
 															],
 													}}
 												/>
-												{key + 1}
+												{parseInt(key) + 1}
 											</Box>
 										</TableCell>
 										<TableCell className={classes.tableSavedCell}>
@@ -386,8 +386,8 @@ export default function RetrofitStrategySummary(props) {
 														<>
 															<Typography variant="body1">
 																{getRetrofitOptionLabel(
-																	retrofits[method.key].ret_keys[key],
-																	retrofits[method.key].ret_vals[key],
+																	retrofits.ret_keys[key],
+																	retrofits.ret_vals[key],
 																	method.possibleOptions,
 																)}
 															</Typography>

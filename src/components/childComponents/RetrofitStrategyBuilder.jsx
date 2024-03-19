@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import {
@@ -46,7 +46,8 @@ import {
 import { fetchZoneGeoJson as fetchZoneGeoJsonAction } from "../../actions/attributes";
 import { IncoreFootNote } from "../styledComponents/IncoreFootNote";
 import SaveIcon from "@material-ui/icons/Save";
-import { submitExecution } from "../../utils/datawolf";
+import { fetchExecutionItem as fetchExecutionItemAction } from "../../actions/datawolf";
+import { extractStatus } from "../../utils/common";
 
 const useStyles = makeStyles((theme) => ({
 	closeButton: {
@@ -198,6 +199,9 @@ export default function RetrofitStrategyBuilder(props) {
 	const datawolfRsWorkflowConfig = useSelector(
 		(state) => state.config.datawolfRsWorkflowConfig,
 	);
+	const getExecutionItem = (datawolfConfig, executionId) =>
+		dispatch(fetchExecutionItemAction(datawolfConfig, executionId));
+	const executionItem = useSelector((state) => state.execution.executionItem);
 
 	useEffect(() => {
 		// get zone name for redux
@@ -636,26 +640,88 @@ export default function RetrofitStrategyBuilder(props) {
 			return { ...state, [p.variableName]: mapState };
 		}, {});
 
-		const { datawolfExecutionStatus, datawolfExecutionId } =
-			await submitExecution(
-				datawolfRsConfig,
-				datawolfRsWorkflowConfig,
-				name,
-				description,
-				datawolfFormState,
+		// const { datawolfExecutionStatus, datawolfExecutionId } =
+		//     await submitExecution(
+		//         datawolfRsConfig,
+		//         datawolfRsWorkflowConfig,
+		//         name,
+		//         description,
+		//         datawolfFormState
+		//     );
+		//
+		// if (datawolfExecutionStatus !== 200) {
+		//     // TODO
+		//     // setErrorAlertOpen(true);
+		//     // setErrorMessage(submitExecutionErrorMessage);
+		//     // setErrorStatus(datawolfExecutionStatus);
+		//     console.log("Error in submitting the retrofit strategy");
+		// } else {
+		//     setLoading(true);
+		//     setExecutionId(datawolfExecutionId);
+		// }
+		setLoading(true);
+		setExecutionId("da7dad75-b06e-4838-b1ae-8c5d7119b7c3");
+	};
+
+	// listen to the executionId change and get datasets
+	const intervalRef = useRef(null);
+	useEffect(() => {
+		if (executionId) {
+			// Start a new interval timer and register that timer
+			intervalRef.current = setInterval(
+				() => {
+					getExecutionItem(datawolfRsConfig, executionId);
+				},
+				datawolfRsConfig["retreiveTimeInterval"] ?? 10 * 1000,
 			);
 
-		if (datawolfExecutionStatus !== 200) {
-			// TODO
-			// setErrorAlertOpen(true);
-			// setErrorMessage(submitExecutionErrorMessage);
-			// setErrorStatus(datawolfExecutionStatus);
-			console.log("Error in submitting the retrofit strategy");
-		} else {
-			console.log(datawolfExecutionId);
-			setExecutionId(datawolfExecutionId);
+			return () => {
+				// Clear interval on component unmount or executionId change
+				if (intervalRef.current) {
+					clearInterval(intervalRef.current);
+				}
+			};
 		}
-	};
+	}, [executionId]);
+
+	useEffect(() => {
+		if (
+			Object.keys(executionItem).length > 0 &&
+			extractStatus(executionItem) === "FINISHED"
+		) {
+			// Clear the interval
+			if (intervalRef.current) {
+				clearInterval(intervalRef.current);
+			}
+			setRsLayerId("65f87717e42f3b0da55e47fe");
+			setRetrofitSummary({
+				total: {
+					num_bldg: 3283,
+					num_bldg_no_cost: 42,
+					cost: 117260721.43,
+				},
+				by_rule: {
+					0: {
+						num_bldg: 3191,
+						num_bldg_no_cost: 40,
+						cost: 94393478.73,
+					},
+					1: {
+						num_bldg: 90,
+						num_bldg_no_cost: 0,
+						cost: 22867242.7,
+					},
+					2: {
+						num_bldg: 2,
+						num_bldg_no_cost: 2,
+						cost: 0,
+					},
+				},
+			});
+			setActiveStep(activeStep + 1);
+			setLoading(false);
+		}
+	}, [executionItem]);
 
 	const handleCloseSummary = () => {
 		onRetrofitStrategyBuilderClose();
