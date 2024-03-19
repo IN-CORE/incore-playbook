@@ -113,7 +113,8 @@ export default function RetrofitStrategySummary(props) {
 		return `$ ${formattedNum}`;
 	};
 
-	const { name, description, retrofitDetails, rules, rsLayerId } = props;
+	const { name, description, retrofitDetails, rules, retrofits, rsLayerId } =
+		props;
 
 	const getLabel = (value, possibleOptions) => {
 		const option = possibleOptions.find((option) => option.value === value);
@@ -385,8 +386,8 @@ export default function RetrofitStrategySummary(props) {
 														<>
 															<Typography variant="body1">
 																{getRetrofitOptionLabel(
-																	rules[method.key].ret_keys[key],
-																	rules[method.key].ret_vals[key],
+																	retrofits[method.key].ret_keys[key],
+																	retrofits[method.key].ret_vals[key],
 																	method.possibleOptions,
 																)}
 															</Typography>

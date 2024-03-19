@@ -174,7 +174,9 @@ export default function RetrofitStrategyBuilder(props) {
 	// Step 3
 	const [retrofitSummary, setRetrofitSummary] = React.useState({});
 	const [rules, setRules] = React.useState(null);
+	const [retrofits, setRetrofits] = React.useState(null);
 	const [rsLayerId, setRsLayerId] = React.useState(null);
+	const [executionId, setExecutionId] = React.useState(null);
 
 	let conditionKeys = [];
 	let conditionSelectKeys = [];
@@ -596,6 +598,8 @@ export default function RetrofitStrategyBuilder(props) {
 		rules.rules = rules.zones.length;
 		rules.testbed = testbed;
 
+		setRules(rules);
+		setRetrofits(retrofits);
 		return { rules, retrofits };
 	};
 
@@ -632,13 +636,14 @@ export default function RetrofitStrategyBuilder(props) {
 			return { ...state, [p.variableName]: mapState };
 		}, {});
 
-		const datawolfExecutionStatus = await submitExecution(
-			datawolfRsConfig,
-			datawolfRsWorkflowConfig,
-			name,
-			description,
-			datawolfFormState,
-		);
+		const { datawolfExecutionStatus, datawolfExecutionId } =
+			await submitExecution(
+				datawolfRsConfig,
+				datawolfRsWorkflowConfig,
+				name,
+				description,
+				datawolfFormState,
+			);
 
 		if (datawolfExecutionStatus !== 200) {
 			// TODO
@@ -646,6 +651,9 @@ export default function RetrofitStrategyBuilder(props) {
 			// setErrorMessage(submitExecutionErrorMessage);
 			// setErrorStatus(datawolfExecutionStatus);
 			console.log("Error in submitting the retrofit strategy");
+		} else {
+			console.log(datawolfExecutionId);
+			setExecutionId(datawolfExecutionId);
 		}
 	};
 
@@ -938,6 +946,7 @@ export default function RetrofitStrategyBuilder(props) {
 								description={description}
 								retrofitDetails={retrofitSummary}
 								rules={rules}
+								retrofits={retrofits}
 								rsLayerId={rsLayerId}
 							/>
 						) : null}
