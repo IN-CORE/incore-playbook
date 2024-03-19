@@ -83,7 +83,7 @@ const useStyles = makeStyles({
 	},
 	legendTitle: {
 		fontWeight: "bold",
-		fontSize: "1.5em",
+		fontSize: "1.25em",
 		color: "#154D8B",
 	},
 	legendGroup: {
@@ -469,7 +469,7 @@ const MapCompare = (props) => {
 						aria-controls="panel1a-content"
 						id="panel1a-header"
 					>
-						<h3 className={classes.legendTitle}>Legends</h3>
+						<p className={classes.legendTitle}>Legends</p>
 					</AccordionSummary>
 					<AccordionDetails>
 						<div className={classes.innerLegendDiv}>
