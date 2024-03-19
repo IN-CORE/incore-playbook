@@ -77,6 +77,22 @@ const useStyles = makeStyles({
 
 const NA_value = -1; // TODO need to change to -1
 
+function fillNA(obj, currentKey, keys) {
+	let NA_display = obj[currentKey];
+	if (!(currentKey in obj)) {
+		NA_display = 0; // Return 0 if currentKey was not in obj
+	}
+
+	// If any of the keys in keys is in obj and its value is NA_value, overwrite it with "-"
+	keys.forEach((key) => {
+		if (key in obj && obj[key] === NA_value) {
+			NA_display = "-";
+		}
+	});
+
+	return NA_display;
+}
+
 function calcClusterNumInCategory(fields) {
 	let count = {};
 	fields["by_category"].map((categoryItem) => {
@@ -237,9 +253,11 @@ export function BldgDamageTable(props) {
 														className={classes.tableBodyCell}
 													>
 														<td>
-															{clusterItem[tableHeaders[0]] === NA_value
-																? "-"
-																: clusterItem[tableHeaders[0]]}
+															{fillNA(
+																clusterItem,
+																tableHeaders[0],
+																tableHeaders,
+															)}
 														</td>
 														<td
 															style={
@@ -263,9 +281,11 @@ export function BldgDamageTable(props) {
 														className={classes.tableBodyCell}
 													>
 														<td>
-															{clusterItem[tableHeaders[1]] === NA_value
-																? "-"
-																: clusterItem[tableHeaders[1]]}
+															{fillNA(
+																clusterItem,
+																tableHeaders[1],
+																tableHeaders,
+															)}
 														</td>
 														<td
 															style={
@@ -289,9 +309,11 @@ export function BldgDamageTable(props) {
 														className={classes.tableBodyCell}
 													>
 														<td>
-															{clusterItem[tableHeaders[2]] === NA_value
-																? "-"
-																: clusterItem[tableHeaders[2]]}
+															{fillNA(
+																clusterItem,
+																tableHeaders[2],
+																tableHeaders,
+															)}
 														</td>
 														<td
 															style={
@@ -315,9 +337,11 @@ export function BldgDamageTable(props) {
 														className={classes.tableBodyCell}
 													>
 														<td>
-															{clusterItem[tableHeaders[3]] === NA_value
-																? "-"
-																: clusterItem[tableHeaders[3]]}
+															{fillNA(
+																clusterItem,
+																tableHeaders[3],
+																tableHeaders,
+															)}
 														</td>
 														<td
 															style={
@@ -361,9 +385,7 @@ export function BldgDamageTable(props) {
 											style={{ fontWeight: 500, backgroundColor: "#EEF3F5" }}
 										>
 											<td>
-												{categoryItem[tableHeaders[0]] === NA_value
-													? "-"
-													: categoryItem[tableHeaders[0]]}
+												{fillNA(categoryItem, tableHeaders[0], tableHeaders)}
 											</td>
 											<td
 												style={
@@ -387,9 +409,7 @@ export function BldgDamageTable(props) {
 											style={{ fontWeight: 500, backgroundColor: "#EEF3F5" }}
 										>
 											<td>
-												{categoryItem[tableHeaders[1]] === NA_value
-													? "-"
-													: categoryItem[tableHeaders[1]]}
+												{fillNA(categoryItem, tableHeaders[1], tableHeaders)}
 											</td>
 											<td
 												style={
@@ -413,9 +433,7 @@ export function BldgDamageTable(props) {
 											style={{ fontWeight: 500, backgroundColor: "#EEF3F5" }}
 										>
 											<td>
-												{categoryItem[tableHeaders[2]] === NA_value
-													? "-"
-													: categoryItem[tableHeaders[2]]}
+												{fillNA(categoryItem, tableHeaders[2], tableHeaders)}
 											</td>
 											<td
 												style={
@@ -439,9 +457,7 @@ export function BldgDamageTable(props) {
 											style={{ fontWeight: 500, backgroundColor: "#EEF3F5" }}
 										>
 											<td>
-												{categoryItem[tableHeaders[3]] === NA_value
-													? "-"
-													: categoryItem[tableHeaders[3]]}
+												{fillNA(categoryItem, tableHeaders[3], tableHeaders)}
 											</td>
 											<td
 												style={
