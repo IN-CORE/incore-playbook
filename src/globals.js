@@ -290,7 +290,7 @@ globals["retrofitStrategyBuilder"] = {
 			possibleOptions: [
 				{
 					label: "Wood or Metal Deck Diaphragms",
-					value: "Wood or Metal Deck Diaphragms",
+					value: { ret_key: "Wood or Metal Deck Diaphragms", ret_val: "" },
 				},
 			],
 		},

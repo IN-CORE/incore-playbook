@@ -172,6 +172,8 @@ export default function RetrofitStrategyBuilder(props) {
 
 	// Step 3
 	const [retrofitSummary, setRetrofitSummary] = React.useState({});
+	const [rules, setRules] = React.useState(null);
+	const [rsLayerId, setRsLayerId] = React.useState(null);
 
 	let conditionKeys = [];
 	let conditionSelectKeys = [];
@@ -462,10 +464,12 @@ export default function RetrofitStrategyBuilder(props) {
 													variant="outlined"
 													onChange={(e) => {
 														if (e.target.value !== "") {
-															const value = e.target.value;
+															const value = JSON.parse(e.target.value);
 															const selectedOption =
 																method.possibleOptions.find(
-																	(option) => option.value === value,
+																	(option) =>
+																		option.value.ret_key === value.ret_key &&
+																		option.value.ret_val === value.ret_val,
 																);
 															const selectedOptionLabel = selectedOption
 																? selectedOption.label
@@ -484,14 +488,14 @@ export default function RetrofitStrategyBuilder(props) {
 													}}
 													value={
 														selectedValues[method.key]
-															? selectedValues[method.key].value
+															? JSON.stringify(selectedValues[method.key].value)
 															: ""
 													}
 												>
 													{method.possibleOptions.map((option) => (
 														<IncoreMenuItem
-															value={option.value}
-															key={option.value}
+															value={JSON.stringify(option.value)}
+															key={JSON.stringify(option.value)}
 														>
 															{option.label}
 														</IncoreMenuItem>
@@ -571,12 +575,17 @@ export default function RetrofitStrategyBuilder(props) {
 		};
 
 		conditionKeys.forEach((key) => (payload[key] = [])); // add all condition keys to payload
-		retrofitMethodKeys.forEach((key) => (payload[key] = [])); // add all retrofit method keys to payload
+		retrofitMethodKeys.forEach(
+			(key) => (payload[key] = { ret_keys: [], ret_vals: [] }),
+		); // add all retrofit method keys to payload
 
 		// when new condition or retrofit method is added, the payload should be updated
 		addedRows.forEach((row) => {
-			conditionKeys.forEach((key) => payload[key].push(row[key])); // add all condition keys to payload
-			retrofitMethodKeys.forEach((key) => payload[key].push(row[key])); // add all retrofit method keys to payload
+			conditionKeys.forEach((key) => payload[key].push(row[key].value)); // add all condition keys to payload
+			retrofitMethodKeys.forEach((key) => {
+				payload[key].ret_keys.push(row[key].value.ret_key);
+				payload[key].ret_vals.push(row[key].value.ret_val);
+			}); // add all retrofit method keys to payload
 		});
 
 		console.log(payload);
@@ -584,8 +593,6 @@ export default function RetrofitStrategyBuilder(props) {
 		setLoading(true);
 		// make API call to save the strategy
 		let responseJson = {
-			title: "dummy name",
-			description: "dummy description",
 			total: {
 				num_bldg: 3283,
 				num_bldg_no_cost: 42,
@@ -608,19 +615,23 @@ export default function RetrofitStrategyBuilder(props) {
 					cost: 0,
 				},
 			},
-			rules: {
-				testbed: "galveston",
-				rules: 3,
-				zones: ["1P", "1P", "0.2P"],
-				strtypes: ["1", "2", "1"],
-				pcts: [1, 1, 1],
-			},
+		};
+
+		let rsDetailsLayerId = "dummy_layer_id";
+
+		let samplePayload = {
+			testbed: "galveston",
+			rules: 3,
+			zones: ["1P", "1P", "0.2P"],
+			strtypes: ["1", "2", "1"],
+			pcts: [1, 1, 1],
 			retrofits: {
 				ret_keys: ["elevation", "elevation", "elevation"],
 				ret_vals: [5, 10, 5],
 			},
-			rsDetailsLayerId: "dummy_layer_id",
 		};
+		setRsLayerId(rsDetailsLayerId);
+		setRules(samplePayload);
 		setRetrofitSummary(responseJson);
 		setActiveStep(activeStep + 1);
 		setLoading(false);
@@ -807,7 +818,7 @@ export default function RetrofitStrategyBuilder(props) {
 																		variant="body1"
 																		className={classes.tableSavedValue}
 																	>
-																		{row[key].value}
+																		{row[key].valueLabel}
 																	</Typography>
 																	{idx ===
 																	retrofitMethodKeys.length - 1 ? null : (
@@ -910,7 +921,13 @@ export default function RetrofitStrategyBuilder(props) {
 						) : null}
 
 						{activeStep === 2 ? (
-							<RetrofitStrategySummary retrofitSummary={retrofitSummary} />
+							<RetrofitStrategySummary
+								name={name}
+								description={description}
+								retrofitDetails={retrofitSummary}
+								rules={rules}
+								rsLayerId={rsLayerId}
+							/>
 						) : null}
 
 						<ZoneSelectionMapDialog
