@@ -16,7 +16,8 @@ import { IncoreInputLabel } from "./styledComponents/IncoreInputLabel";
 export const CompareAnalyses = () => {
 	const [executionsCompared, setExecutionsCompared] = useState([]);
 	const [hazardGroupLayers, setHazardGroupLayers] = useState({}); // group layers of hazard to overlay on the map
-	const [selectedWidgetName, setSelectedWidgetName] = useState("BldgDamage"); // outputWidgets name
+	const [selectedWidgetName, setSelectedWidgetName] =
+		useState("ResilienceMetrics"); // outputWidgets name
 	const [datawolfDatasetConfigItems, setDatawolfDatasetConfigItems] = useState(
 		[],
 	); // datawolf dataset config items
