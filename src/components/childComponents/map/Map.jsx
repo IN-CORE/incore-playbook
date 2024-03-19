@@ -1,6 +1,5 @@
 import * as React from "react";
 import { Map as OLMap, View } from "ol";
-import LayersIcon from "@material-ui/icons/Layers";
 // import {defaults as defaultControls} from "ol/control";
 import Overlay from "ol/Overlay";
 
@@ -16,7 +15,11 @@ import {
 import LoadingOverlay from "react-loading-overlay";
 
 import LayerSwitcher from "./LayerSwitcher";
-import { maxStateMapping, fetchLegendsForLayers } from "../../../utils/common";
+import {
+	maxStateMapping,
+	fetchLegendsForLayers,
+	LegendIcon,
+} from "../../../utils/common";
 
 const useStyles = makeStyles({
 	table: {
@@ -274,7 +277,7 @@ const Map = (props) => {
 						onClick={() => setLegendOpen(!legendOpen)}
 						className={classes.legendButton}
 					>
-						<LayersIcon />
+						<LegendIcon />
 					</button>
 					{legendOpen && (
 						<div className={classes.legend}>
