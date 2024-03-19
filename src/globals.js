@@ -300,6 +300,7 @@ globals["retrofitStrategyBuilder"] = {
 	activeLayerFieldname: "NAME",
 };
 
+global["comparisonKey"] = ["A", "B"];
 export { globals };
 
 export const testUserInfo = "commresilience";

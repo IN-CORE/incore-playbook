@@ -48,6 +48,10 @@ import { IncoreFootNote } from "../styledComponents/IncoreFootNote";
 import SaveIcon from "@material-ui/icons/Save";
 import { fetchExecutionItem as fetchExecutionItemAction } from "../../actions/datawolf";
 import { extractStatus } from "../../utils/common";
+import {
+	getOutputFileContent,
+	getOutputFileContentJSON,
+} from "../../utils/datawolf";
 
 const useStyles = makeStyles((theme) => ({
 	closeButton: {
@@ -640,27 +644,25 @@ export default function RetrofitStrategyBuilder(props) {
 			return { ...state, [p.variableName]: mapState };
 		}, {});
 
-		// const { datawolfExecutionStatus, datawolfExecutionId } =
-		//     await submitExecution(
-		//         datawolfRsConfig,
-		//         datawolfRsWorkflowConfig,
-		//         name,
-		//         description,
-		//         datawolfFormState
-		//     );
-		//
-		// if (datawolfExecutionStatus !== 200) {
-		//     // TODO
-		//     // setErrorAlertOpen(true);
-		//     // setErrorMessage(submitExecutionErrorMessage);
-		//     // setErrorStatus(datawolfExecutionStatus);
-		//     console.log("Error in submitting the retrofit strategy");
-		// } else {
-		//     setLoading(true);
-		//     setExecutionId(datawolfExecutionId);
-		// }
-		setLoading(true);
-		setExecutionId("da7dad75-b06e-4838-b1ae-8c5d7119b7c3");
+		const { datawolfExecutionStatus, datawolfExecutionId } =
+			await submitExecution(
+				datawolfRsConfig,
+				datawolfRsWorkflowConfig,
+				name,
+				description,
+				datawolfFormState,
+			);
+
+		if (datawolfExecutionStatus !== 200) {
+			// TODO
+			// setErrorAlertOpen(true);
+			// setErrorMessage(submitExecutionErrorMessage);
+			// setErrorStatus(datawolfExecutionStatus);
+			console.log("Error in submitting the retrofit strategy");
+		} else {
+			setLoading(true);
+			setExecutionId(datawolfExecutionId);
+		}
 	};
 
 	// listen to the executionId change and get datasets
@@ -668,12 +670,9 @@ export default function RetrofitStrategyBuilder(props) {
 	useEffect(() => {
 		if (executionId) {
 			// Start a new interval timer and register that timer
-			intervalRef.current = setInterval(
-				() => {
-					getExecutionItem(datawolfRsConfig, executionId);
-				},
-				datawolfRsConfig["retreiveTimeInterval"] ?? 10 * 1000,
-			);
+			intervalRef.current = setInterval(() => {
+				getExecutionItem(datawolfRsConfig, executionId);
+			}, datawolfRsConfig["retreiveTimeInterval"] ?? 1000);
 
 			return () => {
 				// Clear interval on component unmount or executionId change
@@ -693,30 +692,31 @@ export default function RetrofitStrategyBuilder(props) {
 			if (intervalRef.current) {
 				clearInterval(intervalRef.current);
 			}
-			setRsLayerId("65f87717e42f3b0da55e47fe");
-			setRetrofitSummary({
-				total: {
-					num_bldg: 3283,
-					num_bldg_no_cost: 42,
-					cost: 117260721.43,
-				},
-				by_rule: {
-					0: {
-						num_bldg: 3191,
-						num_bldg_no_cost: 40,
-						cost: 94393478.73,
-					},
-					1: {
-						num_bldg: 90,
-						num_bldg_no_cost: 0,
-						cost: 22867242.7,
-					},
-					2: {
-						num_bldg: 2,
-						num_bldg_no_cost: 2,
-						cost: 0,
-					},
-				},
+
+			// TODO unnecessary logic need to clean up
+			const datawolfDatasetConfigItems =
+				datawolfRsWorkflowConfig.outputs.datasets.flatMap(
+					(dataset) => dataset.datasetsMap,
+				);
+			datawolfDatasetConfigItems.map(async (datawolfDatasetConfigItem) => {
+				const vName = datawolfDatasetConfigItem.datasets.variableName;
+				if (vName === "retrofitStrategyDetails") {
+					setRsLayerId(
+						await getOutputFileContent(
+							datawolfRsConfig,
+							executionItem,
+							datawolfDatasetConfigItem.datasetId,
+						),
+					);
+				} else if (vName === "retrofitCostSummary") {
+					setRetrofitSummary(
+						await getOutputFileContentJSON(
+							datawolfRsConfig,
+							executionItem,
+							datawolfDatasetConfigItem.datasetId,
+						),
+					);
+				}
 			});
 			setActiveStep(activeStep + 1);
 			setLoading(false);
@@ -1006,7 +1006,7 @@ export default function RetrofitStrategyBuilder(props) {
 							</Grid>
 						) : null}
 
-						{activeStep === 2 ? (
+						{activeStep === 2 && retrofitSummary && rsLayerId ? (
 							<RetrofitStrategySummary
 								name={name}
 								description={description}

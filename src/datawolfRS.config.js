@@ -167,7 +167,7 @@ const datawolfRsWorkflowConfig = {
 						datasets: {
 							step: "retrofit-strategy-builder",
 							title: "Retrofit Cost",
-							variableName: "retrofitCost",
+							variableName: "retrofitCostSummary",
 							widget: "RetrofitStrategySummary",
 						},
 					},
