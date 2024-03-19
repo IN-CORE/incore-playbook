@@ -55,7 +55,14 @@ const useStyles = makeStyles({
 export const MapContext = React.createContext({});
 
 const Map = (props) => {
-	const { children, id, className, allowBuildingSelection, fields } = props;
+	const {
+		children,
+		id,
+		className,
+		allowBuildingSelection,
+		fields,
+		activeLayerNames,
+	} = props;
 	const classes = useStyles();
 
 	const [selectedBuilding, setSelectedBuilding] = React.useState(null);
@@ -144,7 +151,7 @@ const Map = (props) => {
 
 		let damageLayerGrp = null;
 		layers.forEach((layerGrp) => {
-			if (layerGrp.getProperties().title === "Damage") {
+			if (layerGrp.getProperties().title === activeLayerNames ?? "Damage") {
 				damageLayerGrp = layerGrp;
 			}
 		});

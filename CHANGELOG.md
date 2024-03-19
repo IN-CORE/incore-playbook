@@ -20,6 +20,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Changed
 - Remove screenshot button on comparison interface [#364](https://github.com/IN-CORE/incore-playbook/issues/364)
+- Population dislocation layer [#361](https://github.com/IN-CORE/incore-playbook/issues/361)
 
 ## [0.6.0] - 2024-03-06
 
