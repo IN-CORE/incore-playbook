@@ -86,7 +86,7 @@ export const ZoneSelectionMapDialog = (props) => {
 				{basicLayers && zoneLayer ? (
 					<ZoneSelectionMap
 						className="fillContainer-ZoneSelectionMap"
-						zoom={3}
+						zoom={mapConfig.ZOOM}
 						minZoom={mapConfig.MIN_ZOOM}
 						maxZoom={mapConfig.MAX_ZOOM}
 						extent={applyTransform(
