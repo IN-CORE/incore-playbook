@@ -235,77 +235,89 @@ globals["inputDatasetTypes"].buildings = [
 ];
 globals["testbed"] = testbed;
 globals["retrofitStrategyBuilder"] = {
-	maxStrategies: 4,
-	displayValues: {
-		"1percentannualchanceflood": "1 % Annual Chance Flood Hazard",
-		"0.2percentannualchanceflood": "0.2 % Annual Chance Flood Hazard",
-		otherfloodzone: "Other Flood Zones",
-		F1: "One-story single-family residential building on crawlspace foundation",
-		F2: "One-story multiple-family residential building on slab-on-grade foundation",
-		F3: "Two-Story single-family residential building on crawlspace foundation",
-		F4: "Two-Story multi-family residential building on slab-on-grade foundation",
-		elevatedBy5Feet: "Elevated by 5 feet",
-		elevatedBy10Feet: "Elevated by 10 feet",
-	},
+	colorCodes: [
+		"#C32541",
+		"#1B3EBB",
+		"#76930F",
+		"#268FB0",
+		"#BB772B",
+		"#F54362",
+		"#456AEA",
+		"#98BB1D",
+		"#47B4D6",
+		"#E29D50",
+		"#FC7F95",
+		"#7C95EC",
+		"#C9DF7A",
+		"#83DEF2",
+		"#F4C189",
+		"#FDBBC9",
+		"#DBD2FC",
+		"#E0E9C2",
+		"#CDECF0",
+		"#FFE3C4",
+	],
+	maxStrategies: 20,
 	conditions: [
-		{
-			label: "Flood Zone",
-			type: "mapSelect",
-			key: "zone",
-			possibleOptions: [
-				{
-					label: "1 % Annual Chance Flood Hazard",
-					value: "1percentannualchanceflood",
-				},
-				{
-					label: "0.2 % Annual Chance Flood Hazard",
-					value: "0.2percentannualchanceflood",
-				},
-				{ label: "Other Flood Zones", value: "otherfloodzone" },
-			],
-		},
 		{
 			label: "Building Archetypes",
 			type: "select",
-			key: "archetype",
+			key: "strtypes",
 			possibleOptions: [
 				{
 					label:
-						"One-story single-family residential building on crawlspace foundation",
-					value: "F1",
+						"1 story residential wood building (small rectangular plan and gable roof)",
+					value: "1",
 				},
 				{
 					label:
-						"One-story multiple-family residential building on slab-on-grade foundation",
-					value: "F2",
+						"2 stories residential building (wood, small square plan, and gable roof)",
+					value: "2",
 				},
 				{
 					label:
-						"Two-Story single-family residential building on crawlspace foundation",
-					value: "F3",
+						"1 story residential building (wood, medium rectangular plan, and gable roof)",
+					value: "3",
 				},
 				{
 					label:
-						"Two-Story multi-family residential building on slab-on-grade foundation",
-					value: "F4",
+						"2 stories residential building (wood, medium rectangular plan, and hip roof)",
+					value: "4",
+				},
+				{
+					label:
+						"2 stories residential building (wood, large rectangular plan, gable roof",
+					value: "5",
 				},
 			],
 		},
 		{
 			label: "% number of Buildings",
 			type: "number",
-			key: "percent",
+			key: "pcts",
 			possibleOptions: null,
 		},
 	],
 	retrofitMethods: [
 		{
-			label: "",
+			label: "Retrofit Method",
 			type: "select",
-			key: "retrofitMethod",
+			key: "retrofits",
 			possibleOptions: [
-				{ label: "Elevated by 5 feet", value: "elevatedBy5Feet" },
-				{ label: "Elevated by 10 feet", value: "elevatedBy10Feet" },
+				{
+					label:
+						"Asphalt Shingles, Sheathing (8d C6/12), Roof-Wall (2x16d Nails) - Current Practice",
+					value: { ret_key: "retrofit_1", ret_val: "" },
+				},
+				{
+					label:
+						"Asphalt Shingles & Sheathing (8d C6/12), Roof-Wall (2x16d Nails)",
+					value: { ret_key: "retrofit_2", ret_val: "" },
+				},
+				{
+					label: "Clay Tiles & Sheathing (8d C6/6), Roof-Wall (2xH2.5 Clips)",
+					value: { ret_key: "retrofit_3", ret_val: "" },
+				},
 			],
 		},
 	],
