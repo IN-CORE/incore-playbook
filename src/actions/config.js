@@ -34,12 +34,29 @@ export const updateDatawolfConfig = (config) => ({
 	receivedAt: Date.now(),
 });
 
+// config datawolf retrofit strategy workflows
+export const UPDATE_DATAWOLF_RS_CONFIG = "UPDATE_DATAWOLF_RS_CONFIG";
+export const updateDatawolfRsConfig = (config) => ({
+	type: UPDATE_DATAWOLF_RS_CONFIG,
+	datawolfRsConfig: config,
+	receivedAt: Date.now(),
+});
+
 // config workflows
 export const UPDATE_DATAWOLF_WORKFLOW_CONFIG =
 	"UPDATE_DATAWOLF_WORKFLOW_CONFIG";
 export const updateDatawolfWorkflowConfig = (config) => ({
 	type: UPDATE_DATAWOLF_WORKFLOW_CONFIG,
 	datawolfWorkflowConfig: config,
+	receivedAt: Date.now(),
+});
+
+// config datwolf retrofit strategy workflows
+export const UPDATE_DATAWOLF_RS_WORKFLOW_CONFIG =
+	"UPDATE_DATAWOLF_RS_WORKFLOW_CONFIG";
+export const updateDatawolfRsWorkflowConfig = (config) => ({
+	type: UPDATE_DATAWOLF_RS_WORKFLOW_CONFIG,
+	datawolfRsWorkflowConfig: config,
 	receivedAt: Date.now(),
 });
 

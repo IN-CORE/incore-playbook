@@ -113,7 +113,8 @@ export default function RetrofitStrategySummary(props) {
 		return `$ ${formattedNum}`;
 	};
 
-	const { name, description, retrofitDetails, rules, rsLayerId } = props;
+	const { name, description, retrofitDetails, rules, retrofits, rsLayerId } =
+		props;
 
 	const getLabel = (value, possibleOptions) => {
 		const option = possibleOptions.find((option) => option.value === value);
@@ -132,7 +133,7 @@ export default function RetrofitStrategySummary(props) {
 	useEffect(() => {
 		const layerDef = [
 			{
-				layerId: "65f87717e42f3b0da55e47fe",
+				layerId: rsLayerId,
 				layerStyles: mapConfig.LAYER_STYLES.RetrofitStrategy,
 				title: "Retrofit Strategy Details",
 				opacity: 1,
@@ -146,16 +147,18 @@ export default function RetrofitStrategySummary(props) {
 		);
 		setRetrofitLayer(retrofitLayer);
 
-		const zoneLayerDef = [
-			{
-				layerId: globalConfig.retrofitStrategyBuilder.zoneLayerId,
-				title: "Zone",
-				opacity: 0.3,
-				zIndex: 1,
-			},
-		];
-		const zoneLayer = generateLayers(globalConfig, zoneLayerDef, "Zone");
-		setZoneLayer(zoneLayer);
+		if ("zoneLayerId" in globalConfig.retrofitStrategyBuilder) {
+			const zoneLayerDef = [
+				{
+					layerId: globalConfig.retrofitStrategyBuilder.zoneLayerId,
+					title: "Zone",
+					opacity: 0.3,
+					zIndex: 1,
+				},
+			];
+			const zoneLayer = generateLayers(globalConfig, zoneLayerDef, "Zone");
+			setZoneLayer(zoneLayer);
+		}
 	}, []);
 
 	return (
@@ -220,7 +223,9 @@ export default function RetrofitStrategySummary(props) {
 							variant="body1"
 							className={classes.summaryTableSavedText}
 						>
-							{getDollarString(retrofitDetails.total.cost)}
+							{retrofitDetails.total && "cost" in retrofitDetails.total
+								? getDollarString(retrofitDetails.total.cost)
+								: "N/A"}
 						</Typography>
 					</Grid>
 					<Grid item xs={4}>
@@ -233,7 +238,9 @@ export default function RetrofitStrategySummary(props) {
 							variant="body1"
 							className={classes.summaryTableSavedText}
 						>
-							{Object.keys(retrofitDetails.by_rule).length}
+							{retrofitDetails.by_rule
+								? Object.keys(retrofitDetails.by_rule).length
+								: "N/A"}
 						</Typography>
 					</Grid>
 					<Grid item xs={4}>
@@ -246,12 +253,17 @@ export default function RetrofitStrategySummary(props) {
 							variant="body1"
 							className={classes.summaryTableSavedText}
 						>
-							{retrofitDetails.total.num_bldg}
+							{retrofitDetails.total && "num_bldg" in retrofitDetails.total
+								? retrofitDetails.total.num_bldg
+								: "N/A"}
 						</Typography>
 						<IncoreFootNote style={{ color: "red", textAlign: "right" }}>
-							{retrofitDetails.total.num_bldg_no_cost > 0
-								? `(${retrofitDetails.total.num_bldg_no_cost} buildings with no cost)`
-								: null}
+							{retrofitDetails.total &&
+							"num_bldg_no_cost" in retrofitDetails.total
+								? retrofitDetails.total.num_bldg_no_cost > 0
+									? `(${retrofitDetails.total.num_bldg_no_cost} buildings with no cost)`
+									: null
+								: "N/A"}
 						</IncoreFootNote>
 					</Grid>
 				</Grid>
@@ -263,7 +275,7 @@ export default function RetrofitStrategySummary(props) {
 			</Grid>
 			<Grid item xs={12}>
 				{/*for map*/}
-				{basicLayers && retrofitLayer && zoneLayer ? (
+				{basicLayers && retrofitLayer ? (
 					<Container className="mapContainer" disableGutters>
 						<Map
 							className="fillContainer-retrofitStrategy"
@@ -271,11 +283,17 @@ export default function RetrofitStrategySummary(props) {
 							minZoom={mapConfig.MIN_ZOOM}
 							maxZoom={mapConfig.MAX_ZOOM}
 							extent={applyTransform(
-								mapConfig.MAP_BOUNDS,
+								"zoneMapBounds" in globalConfig.retrofitStrategyBuilder
+									? globalConfig.retrofitStrategyBuilder.zoneMapBounds
+									: mapConfig.MAP_BOUNDS,
 								getTransform("EPSG:4326", "EPSG:3857"),
 							)}
 							center={fromLonLat(mapConfig.MAP_CENTER)}
-							layers={[basicLayers, zoneLayer, retrofitLayer]}
+							layers={
+								zoneLayer
+									? [basicLayers, zoneLayer, retrofitLayer]
+									: [basicLayers, retrofitLayer]
+							}
 							layerSwitcherOptions={{}}
 							allowBuildingSelection={true}
 							activeLayerNames="Retrofit Strategy"
@@ -308,135 +326,150 @@ export default function RetrofitStrategySummary(props) {
 							</TableRow>
 						</TableHead>
 						<TableBody>
-							{Object.keys(retrofitDetails.by_rule).map((key) => {
-								return (
-									<TableRow key={key}>
-										<TableCell
-											component="th"
-											align="center"
-											scope="row"
-											className={classes.tableSavedCell}
-										>
-											<Box
-												display="flex"
-												flexDirection="row"
-												alignItems="center"
-												justifyContent="center"
-											>
-												<StopRoundedIcon
-													fontSize="large"
-													style={{
-														color:
-															globalConfig.retrofitStrategyBuilder.colorCodes[
-																key
-															],
-													}}
-												/>
-												{key + 1}
-											</Box>
-										</TableCell>
-										<TableCell className={classes.tableSavedCell}>
-											<TableContainer>
-												<Table>
-													<TableBody>
-														{globalConfig.retrofitStrategyBuilder.conditions.map(
-															(condition) => {
-																return (
-																	<TableRow key={key}>
-																		<TableCell>
-																			<Typography
-																				variant="body1"
-																				className={classes.tableSavedText}
-																			>
-																				{condition.label}
-																			</Typography>
-																		</TableCell>
-																		<TableCell align="right">
-																			<Typography
-																				variant="body1"
-																				className={classes.tableSavedValue}
-																			>
-																				{condition.type === "number"
-																					? `${rules[condition.key][key]} %`
-																					: condition.type === "select"
-																					  ? getLabel(
-																								rules[condition.key][key],
-																								condition.possibleOptions,
-																					    )
-																					  : rules[condition.key][key]}
-																			</Typography>
-																		</TableCell>
-																	</TableRow>
-																);
-															},
-														)}
-													</TableBody>
-												</Table>
-											</TableContainer>
-										</TableCell>
-										<TableCell
-											align="center"
-											className={classes.tableSavedCell}
-											style={{ padding: "16px" }}
-										>
-											{globalConfig.retrofitStrategyBuilder.retrofitMethods.map(
-												(method, idx) => {
-													return (
-														<>
-															<Typography variant="body1">
-																{getRetrofitOptionLabel(
-																	rules[method.key].ret_keys[key],
-																	rules[method.key].ret_vals[key],
-																	method.possibleOptions,
+							{retrofitDetails.by_rule
+								? Object.keys(retrofitDetails.by_rule).map((key) => {
+										return (
+											<TableRow key={key}>
+												<TableCell
+													component="th"
+													align="center"
+													scope="row"
+													className={classes.tableSavedCell}
+												>
+													<Box
+														display="flex"
+														flexDirection="row"
+														alignItems="center"
+														justifyContent="center"
+													>
+														<StopRoundedIcon
+															fontSize="large"
+															style={{
+																color:
+																	globalConfig.retrofitStrategyBuilder
+																		.colorCodes[key],
+															}}
+														/>
+														{parseInt(key) + 1}
+													</Box>
+												</TableCell>
+												<TableCell className={classes.tableSavedCell}>
+													<TableContainer>
+														<Table>
+															<TableBody>
+																{globalConfig.retrofitStrategyBuilder.conditions.map(
+																	(condition) => {
+																		return (
+																			<TableRow key={key}>
+																				<TableCell>
+																					<Typography
+																						variant="body1"
+																						className={classes.tableSavedText}
+																					>
+																						{condition.label}
+																					</Typography>
+																				</TableCell>
+																				<TableCell align="right">
+																					<Typography
+																						variant="body1"
+																						className={classes.tableSavedValue}
+																					>
+																						{condition.type === "number"
+																							? `${rules[condition.key][key]} %`
+																							: condition.type === "select"
+																							  ? getLabel(
+																										rules[condition.key][key],
+																										condition.possibleOptions,
+																							    )
+																							  : rules[condition.key][key]}
+																					</Typography>
+																				</TableCell>
+																			</TableRow>
+																		);
+																	},
 																)}
-															</Typography>
-															{idx ===
-															globalConfig.retrofitStrategyBuilder
-																.retrofitMethods.length -
-																1 ? null : (
-																<Divider />
-															)}
-														</>
-													);
-												},
-											)}
-										</TableCell>
-										<TableCell
-											align="center"
-											className={classes.tableSavedCell}
-											style={{ padding: "16px" }}
-										>
-											<Typography
-												variant="body1"
-												className={classes.tableSavedValue}
-											>
-												{getDollarString(
-													retrofitDetails.by_rule[`${key}`].cost,
-												)}
-											</Typography>
-										</TableCell>
-										<TableCell
-											align="center"
-											className={classes.tableSavedCell}
-											style={{ padding: "16px" }}
-										>
-											<Typography
-												variant="body1"
-												className={classes.tableSavedValue}
-											>
-												{retrofitDetails.by_rule[`${key}`].num_bldg}
-											</Typography>
-											<IncoreFootNote style={{ color: "red" }}>
-												{retrofitDetails.by_rule[`${key}`].num_bldg_no_cost > 0
-													? `(${
-															retrofitDetails.by_rule[`${key}`].num_bldg_no_cost
-													  } buildings with no cost)`
-													: null}
-											</IncoreFootNote>
-										</TableCell>
-									</TableRow>
-								);
-							})}
+															</TableBody>
+														</Table>
+													</TableContainer>
+												</TableCell>
+												<TableCell
+													align="center"
+													className={classes.tableSavedCell}
+													style={{ padding: "16px" }}
+												>
+													{globalConfig.retrofitStrategyBuilder.retrofitMethods.map(
+														(method, idx) => {
+															return (
+																<>
+																	<Typography variant="body1">
+																		{getRetrofitOptionLabel(
+																			retrofits.ret_keys[key],
+																			retrofits.ret_vals[key],
+																			method.possibleOptions,
+																		)}
+																	</Typography>
+																	{idx ===
+																	globalConfig.retrofitStrategyBuilder
+																		.retrofitMethods.length -
+																		1 ? null : (
+																		<Divider />
+																	)}
+																</>
+															);
+														},
+													)}
+												</TableCell>
+												<TableCell
+													align="center"
+													className={classes.tableSavedCell}
+													style={{ padding: "16px" }}
+												>
+													<Typography
+														variant="body1"
+														className={classes.tableSavedValue}
+													>
+														{retrofitDetails.by_rule &&
+														key in retrofitDetails.by_rule.length > 0 &&
+														"cost" in retrofitDetails.by_rule[key]
+															? getDollarString(
+																	retrofitDetails.by_rule[`${key}`].cost,
+															  )
+															: "N/A"}
+													</Typography>
+												</TableCell>
+												<TableCell
+													align="center"
+													className={classes.tableSavedCell}
+													style={{ padding: "16px" }}
+												>
+													<Typography
+														variant="body1"
+														className={classes.tableSavedValue}
+													>
+														{retrofitDetails.by_rule &&
+														key in retrofitDetails.by_rule.length > 0 &&
+														"num_bldg" in retrofitDetails.by_rule[key]
+															? retrofitDetails.by_rule[`${key}`].num_bldg
+															: "N/A"}
+													</Typography>
+													<IncoreFootNote style={{ color: "red" }}>
+														{retrofitDetails.by_rule &&
+														key in retrofitDetails.by_rule.length > 0 &&
+														"num_bldg_no_cost" in retrofitDetails.by_rule[key]
+															? retrofitDetails.by_rule[`${key}`]
+																	.num_bldg_no_cost > 0
+																? `(${
+																		retrofitDetails.by_rule[`${key}`]
+																			.num_bldg_no_cost
+																  } buildings with no cost)`
+																: null
+															: "N/A"}
+													</IncoreFootNote>
+												</TableCell>
+											</TableRow>
+										);
+								  })
+								: null}
 						</TableBody>
 					</Table>
 				</TableContainer>

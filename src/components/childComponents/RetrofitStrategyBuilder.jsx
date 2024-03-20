@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import {
@@ -46,6 +46,14 @@ import {
 import { fetchZoneGeoJson as fetchZoneGeoJsonAction } from "../../actions/attributes";
 import { IncoreFootNote } from "../styledComponents/IncoreFootNote";
 import SaveIcon from "@material-ui/icons/Save";
+import { fetchExecutionItem as fetchExecutionItemAction } from "../../actions/datawolf";
+import { extractStatus } from "../../utils/common";
+import {
+	getOutputFileContent,
+	getOutputFileContentJSON,
+	submitExecution,
+} from "../../utils/datawolf";
+import { AlertMessage } from "./alert/AlertMessage";
 
 const useStyles = makeStyles((theme) => ({
 	closeButton: {
@@ -173,7 +181,14 @@ export default function RetrofitStrategyBuilder(props) {
 	// Step 3
 	const [retrofitSummary, setRetrofitSummary] = React.useState({});
 	const [rules, setRules] = React.useState(null);
+	const [retrofits, setRetrofits] = React.useState(null);
 	const [rsLayerId, setRsLayerId] = React.useState(null);
+	const [executionId, setExecutionId] = React.useState();
+
+	// Error handling
+	const [errorAlertOpen, setErrorAlertOpen] = React.useState(false);
+	const [errorMessage, setErrorMessage] = React.useState("");
+	const [errorStatus, setErrorStatus] = React.useState(200);
 
 	let conditionKeys = [];
 	let conditionSelectKeys = [];
@@ -187,6 +202,17 @@ export default function RetrofitStrategyBuilder(props) {
 	globalConfig.retrofitStrategyBuilder.retrofitMethods.forEach((method) =>
 		retrofitMethodKeys.push(method.key),
 	);
+
+	// Datawolf setting
+	const datawolfRsConfig = useSelector(
+		(state) => state.config.datawolfRsConfig,
+	);
+	const datawolfRsWorkflowConfig = useSelector(
+		(state) => state.config.datawolfRsWorkflowConfig,
+	);
+	const getExecutionItem = (datawolfConfig, executionId) =>
+		dispatch(fetchExecutionItemAction(datawolfConfig, executionId));
+	const executionItem = useSelector((state) => state.execution.executionItem);
 
 	useEffect(() => {
 		// get zone name for redux
@@ -561,81 +587,164 @@ export default function RetrofitStrategyBuilder(props) {
 		}
 	};
 
-	const handleSubmit = () => {
+	const _convertToDatawolfParmas = (addedRows, testbed) => {
+		let rules = {
+			testbed: testbed,
+			rules: 0,
+			zones: [],
+			strtypes: [],
+			pcts: [],
+		};
+
+		let retrofits = {
+			ret_keys: [],
+			ret_vals: [],
+		};
+
+		addedRows.forEach((row) => {
+			// handle joplin case that doesn't have zones
+			if ("zones" in row) {
+				rules.zones.push(row.zones.value);
+			} else {
+				rules.zones.push("");
+			}
+			rules.strtypes.push(row.strtypes.value);
+			rules.pcts.push(parseFloat(row.pcts.value));
+			retrofits.ret_keys.push(`${row.retrofits.value.ret_key}`);
+			retrofits.ret_vals.push(row.retrofits.value.ret_val);
+		});
+
+		// Update 'rules' with the count of unique 'zones' as an example dynamic value
+		rules.rules = rules.zones.length;
+		rules.testbed = testbed;
+
+		setRules(rules);
+		setRetrofits(retrofits);
+		return { rules, retrofits };
+	};
+
+	const handleSubmit = async () => {
 		if (showAddRetrofitStrategyRow) {
 			setAddError("Save the current rule before submitting.");
 			return;
 		}
-		// prepare data
-		let payload = {
-			name: name,
-			description: description,
-			testbed: globalConfig.testBed,
-			rules: addedRows.length,
-		};
+		// prepare datawolf payload
+		const { rules, retrofits } = _convertToDatawolfParmas(
+			addedRows,
+			globalConfig.testbed,
+		);
+		let parameters = datawolfRsWorkflowConfig.inputs.parameters;
+		let datawolfFormState = parameters.reduce((state, parameter) => {
+			const value =
+				parameter.variableName === "name"
+					? name
+					: parameter.variableName === "retrofits"
+					  ? JSON.stringify(retrofits)
+					  : parameter.variableName === "rules"
+					    ? JSON.stringify(rules)
+					    : undefined;
 
-		conditionKeys.forEach((key) => (payload[key] = [])); // add all condition keys to payload
-		retrofitMethodKeys.forEach(
-			(key) => (payload[key] = { ret_keys: [], ret_vals: [] }),
-		); // add all retrofit method keys to payload
+			const mappedState = parameter.parametersMap.reduce(
+				(acc, pm) => ({
+					...acc,
+					[pm.paramId]: value || parameter.defaultValue,
+				}),
+				{},
+			);
 
-		// when new condition or retrofit method is added, the payload should be updated
-		addedRows.forEach((row) => {
-			conditionKeys.forEach((key) => payload[key].push(row[key].value)); // add all condition keys to payload
-			retrofitMethodKeys.forEach((key) => {
-				payload[key].ret_keys.push(row[key].value.ret_key);
-				payload[key].ret_vals.push(row[key].value.ret_val);
-			}); // add all retrofit method keys to payload
-		});
+			return { ...state, [parameter.variableName]: mappedState };
+		}, {});
 
-		console.log(payload);
+		const { datawolfExecutionStatus, datawolfExecutionId } =
+			await submitExecution(
+				datawolfRsConfig,
+				datawolfRsWorkflowConfig,
+				name,
+				description,
+				datawolfFormState,
+			);
 
-		setLoading(true);
-		// make API call to save the strategy
-		let responseJson = {
-			total: {
-				num_bldg: 3283,
-				num_bldg_no_cost: 42,
-				cost: 117260721.43,
-			},
-			by_rule: {
-				0: {
-					num_bldg: 3191,
-					num_bldg_no_cost: 40,
-					cost: 94393478.73,
-				},
-				1: {
-					num_bldg: 90,
-					num_bldg_no_cost: 0,
-					cost: 22867242.7,
-				},
-				2: {
-					num_bldg: 2,
-					num_bldg_no_cost: 2,
-					cost: 0,
-				},
-			},
-		};
-
-		let rsDetailsLayerId = "dummy_layer_id";
-
-		let samplePayload = {
-			testbed: "galveston",
-			rules: 3,
-			zones: ["1P", "1P", "0.2P"],
-			strtypes: ["1", "2", "1"],
-			pcts: [1, 1, 1],
-			retrofits: {
-				ret_keys: ["elevation", "elevation", "elevation"],
-				ret_vals: [5, 10, 5],
-			},
-		};
-		setRsLayerId(rsDetailsLayerId);
-		setRules(samplePayload);
-		setRetrofitSummary(responseJson);
-		setActiveStep(activeStep + 1);
-		setLoading(false);
+		if (datawolfExecutionStatus !== 200) {
+			setErrorAlertOpen(true);
+			setErrorMessage("Retrofit strategy building submission failed.");
+			setErrorStatus(datawolfExecutionStatus);
+		} else {
+			setLoading(true);
+			setExecutionId(datawolfExecutionId);
+		}
 	};
+
+	// listen to the executionId change and get datasets
+	const intervalRef = useRef(null);
+	useEffect(() => {
+		if (executionId) {
+			// Start a new interval timer and register that timer
+			intervalRef.current = setInterval(() => {
+				getExecutionItem(datawolfRsConfig, executionId);
+			}, datawolfRsConfig["retreiveTimeInterval"] ?? 1000);
+
+			return () => {
+				// Clear interval on component unmount or executionId change
+				if (intervalRef.current) {
+					clearInterval(intervalRef.current);
+				}
+			};
+		}
+	}, [executionId]);
+
+	useEffect(() => {
+		if (
+			Object.keys(executionItem).length > 0 &&
+			extractStatus(executionItem) === "FINISHED"
+		) {
+			// Clear the interval
+			if (intervalRef.current) {
+				clearInterval(intervalRef.current);
+			}
+
+			const datawolfDatasetConfigItems =
+				datawolfRsWorkflowConfig.outputs.datasets.flatMap(
+					(dataset) => dataset.datasetsMap,
+				);
+			datawolfDatasetConfigItems.map(async (datawolfDatasetConfigItem) => {
+				const vName = datawolfDatasetConfigItem.datasets.variableName;
+				if (vName === "retrofitStrategyDetails") {
+					setRsLayerId(
+						await getOutputFileContent(
+							datawolfRsConfig,
+							executionItem,
+							datawolfDatasetConfigItem.datasetId,
+						),
+					);
+				} else if (vName === "retrofitCostSummary") {
+					setRetrofitSummary(
+						await getOutputFileContentJSON(
+							datawolfRsConfig,
+							executionItem,
+							datawolfDatasetConfigItem.datasetId,
+						),
+					);
+				}
+			});
+			setActiveStep(activeStep + 1);
+			setLoading(false);
+		}
+		if (
+			(Object.keys(executionItem).length > 0 &&
+				extractStatus(executionItem) === "FAILED") ||
+			extractStatus(executionItem) === "ABORTED"
+		) {
+			// Clear the interval
+			if (intervalRef.current) {
+				clearInterval(intervalRef.current);
+			}
+			// Error handling
+			setLoading(false);
+			setErrorAlertOpen(true);
+			setErrorMessage("Retrofit strategy building failed.");
+			setErrorStatus(-999);
+		}
+	}, [executionItem]);
 
 	const handleCloseSummary = () => {
 		onRetrofitStrategyBuilderClose();
@@ -652,6 +761,17 @@ export default function RetrofitStrategyBuilder(props) {
 		setShowAddRetrofitStrategyRow(true);
 		// Step 3
 		setRetrofitSummary({});
+
+		// clean up rules/retrofits
+		setRules();
+		setRetrofits();
+		setRsLayerId();
+		setExecutionId();
+
+		// clean interval if applicable
+		if (intervalRef.current) {
+			clearInterval(intervalRef.current);
+		}
 	};
 
 	return (
@@ -675,7 +795,7 @@ export default function RetrofitStrategyBuilder(props) {
 					<CloseIcon />
 				</IconButton>
 			</DialogTitle>
-			<DialogContent dividers>
+			<DialogContent dividers style={{ position: "relative" }}>
 				<Stepper activeStep={activeStep}>
 					{steps.map((label) => (
 						<Step key={label}>
@@ -683,7 +803,24 @@ export default function RetrofitStrategyBuilder(props) {
 						</Step>
 					))}
 				</Stepper>
-				<LoadingOverlay active={loading} spinner text="Loading...">
+				<LoadingOverlay
+					active={loading}
+					spinner
+					styles={{
+						overlay: (base) => ({
+							...base,
+							background: "white",
+							color: "black",
+						}),
+						spinner: (base) => ({
+							...base,
+							"& svg circle": {
+								stroke: "#00619D",
+							},
+						}),
+					}}
+					text="Calculating and Generating the Retrofit Strategy..."
+				>
 					<Grid container spacing={3}>
 						{activeStep === 0 ? (
 							<Grid item xs={12}>
@@ -920,12 +1057,13 @@ export default function RetrofitStrategyBuilder(props) {
 							</Grid>
 						) : null}
 
-						{activeStep === 2 ? (
+						{activeStep === 2 && retrofitSummary && rsLayerId ? (
 							<RetrofitStrategySummary
 								name={name}
 								description={description}
 								retrofitDetails={retrofitSummary}
 								rules={rules}
+								retrofits={retrofits}
 								rsLayerId={rsLayerId}
 							/>
 						) : null}
@@ -934,11 +1072,14 @@ export default function RetrofitStrategyBuilder(props) {
 							open={mapDialogOpen}
 							handleClose={() => setMapDialogOpen(false)}
 							handleSave={(selectedZoneName) => {
+								const zoneCondition =
+									globalConfig.retrofitStrategyBuilder.conditions.find(
+										(condition) => condition.key === "zones",
+									);
 								setSelectedValues({
 									...selectedValues,
-									zone: {
-										label:
-											globalConfig.retrofitStrategyBuilder.conditions[0].label,
+									zones: {
+										label: zoneCondition.label,
 										type: "string",
 										// zone label and key are the same
 										value: selectedZoneName,
@@ -951,6 +1092,21 @@ export default function RetrofitStrategyBuilder(props) {
 						/>
 					</Grid>
 				</LoadingOverlay>
+				{/*stick to the bottom*/}
+				<div
+					style={{
+						position: "absolute",
+						bottom: "2em",
+					}}
+				>
+					<AlertMessage
+						open={errorAlertOpen}
+						setOpen={setErrorAlertOpen}
+						message={errorMessage}
+						alertSeverity={"error"}
+						status={errorStatus}
+					/>
+				</div>
 			</DialogContent>
 			<DialogActions
 				disableSpacing
