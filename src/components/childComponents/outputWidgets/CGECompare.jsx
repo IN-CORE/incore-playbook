@@ -203,6 +203,7 @@ export default function CGECompare({
 											executionTitles={selectedExecutionNames}
 											height="30em"
 											xAxisLegend="Million of $"
+											yAxisLegend="Household Groups"
 										/>
 									</Box>
 									<Box>
@@ -233,6 +234,7 @@ export default function CGECompare({
 											executionTitles={selectedExecutionNames}
 											height="35em"
 											xAxisLegend="Million of $"
+											yAxisLegend="Sectors"
 										/>
 									</Box>
 									<Box>
@@ -260,7 +262,8 @@ export default function CGECompare({
 											data={[cgeEmploymentContentA, cgeEmploymentContentB]}
 											executionTitles={selectedExecutionNames}
 											height="35em"
-											xAxisLegend="Million of $"
+											xAxisLegend="# of workers"
+											yAxisLegend="Sectors"
 										/>
 									</Box>
 									<Box>
