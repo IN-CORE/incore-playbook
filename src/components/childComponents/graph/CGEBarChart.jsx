@@ -40,12 +40,12 @@ export default function CGEBarChart(props) {
 			<Chart
 				width={width}
 				height={height}
-				chartType="Bar"
+				chartType="BarChart"
 				loader={<div>Loading Chart</div>}
 				data={ParseData(data, region)}
 				options={{
 					title: title,
-					legend: { position: "none" },
+					legend: { position: "right" },
 					colors: ["#A1BE2E", "#DB4F60"],
 					hAxis: {
 						title: xAxisLegend,
@@ -53,7 +53,6 @@ export default function CGEBarChart(props) {
 					vAxis: {
 						title: yAxisLegend,
 					},
-					bars: "horizontal",
 				}}
 				// For tests
 				rootProps={{ "data-testid": "1" }}
