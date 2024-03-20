@@ -53,6 +53,7 @@ import {
 	getOutputFileContentJSON,
 	submitExecution,
 } from "../../utils/datawolf";
+import { AlertMessage } from "./alert/AlertMessage";
 
 const useStyles = makeStyles((theme) => ({
 	closeButton: {
@@ -183,6 +184,11 @@ export default function RetrofitStrategyBuilder(props) {
 	const [retrofits, setRetrofits] = React.useState(null);
 	const [rsLayerId, setRsLayerId] = React.useState(null);
 	const [executionId, setExecutionId] = React.useState();
+
+	// Error handling
+	const [errorAlertOpen, setErrorAlertOpen] = React.useState(false);
+	const [errorMessage, setErrorMessage] = React.useState("");
+	const [errorStatus, setErrorStatus] = React.useState(200);
 
 	let conditionKeys = [];
 	let conditionSelectKeys = [];
@@ -655,11 +661,9 @@ export default function RetrofitStrategyBuilder(props) {
 			);
 
 		if (datawolfExecutionStatus !== 200) {
-			// TODO
-			// setErrorAlertOpen(true);
-			// setErrorMessage(submitExecutionErrorMessage);
-			// setErrorStatus(datawolfExecutionStatus);
-			console.log("Error in submitting the retrofit strategy");
+			setErrorAlertOpen(true);
+			setErrorMessage("Retrofit strategy building submission failed.");
+			setErrorStatus(datawolfExecutionStatus);
 		} else {
 			setLoading(true);
 			setExecutionId(datawolfExecutionId);
@@ -694,7 +698,6 @@ export default function RetrofitStrategyBuilder(props) {
 				clearInterval(intervalRef.current);
 			}
 
-			// TODO unnecessary logic need to clean up
 			const datawolfDatasetConfigItems =
 				datawolfRsWorkflowConfig.outputs.datasets.flatMap(
 					(dataset) => dataset.datasetsMap,
@@ -721,6 +724,21 @@ export default function RetrofitStrategyBuilder(props) {
 			});
 			setActiveStep(activeStep + 1);
 			setLoading(false);
+		}
+		if (
+			(Object.keys(executionItem).length > 0 &&
+				extractStatus(executionItem) === "FAILED") ||
+			extractStatus(executionItem) === "ABORTED"
+		) {
+			// Clear the interval
+			if (intervalRef.current) {
+				clearInterval(intervalRef.current);
+			}
+			// Error handling
+			setLoading(false);
+			setErrorAlertOpen(true);
+			setErrorMessage("Retrofit strategy building failed.");
+			setErrorStatus(-999);
 		}
 	}, [executionItem]);
 
@@ -781,7 +799,11 @@ export default function RetrofitStrategyBuilder(props) {
 						</Step>
 					))}
 				</Stepper>
-				<LoadingOverlay active={loading} spinner text="Loading...">
+				<LoadingOverlay
+					active={loading}
+					spinner
+					text="Calculating and Generating the Retrofit Strategy..."
+				>
 					<Grid container spacing={3}>
 						{activeStep === 0 ? (
 							<Grid item xs={12}>
@@ -1033,11 +1055,14 @@ export default function RetrofitStrategyBuilder(props) {
 							open={mapDialogOpen}
 							handleClose={() => setMapDialogOpen(false)}
 							handleSave={(selectedZoneName) => {
+								const zoneCondition =
+									globalConfig.retrofitStrategyBuilder.conditions.find(
+										(condition) => condition.key === "zone",
+									);
 								setSelectedValues({
 									...selectedValues,
 									zone: {
-										label:
-											globalConfig.retrofitStrategyBuilder.conditions[0].label,
+										label: zoneCondition.label,
 										type: "string",
 										// zone label and key are the same
 										value: selectedZoneName,
@@ -1049,6 +1074,13 @@ export default function RetrofitStrategyBuilder(props) {
 							}}
 						/>
 					</Grid>
+					<AlertMessage
+						open={errorAlertOpen}
+						setOpen={setErrorAlertOpen}
+						message={errorMessage}
+						alertSeverity={"error"}
+						status={errorStatus}
+					/>
 				</LoadingOverlay>
 			</DialogContent>
 			<DialogActions
