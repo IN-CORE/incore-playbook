@@ -304,7 +304,7 @@ globals["retrofitStrategyBuilder"] = {
 	],
 };
 
-global["comparisonKey"] = ["A", "B"];
+globals["comparisonKey"] = ["A", "B"];
 export { globals };
 
 export const testUserInfo = "commresilience";
