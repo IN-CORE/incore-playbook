@@ -174,6 +174,7 @@ export default function RetrofitStrategyBuilder(props) {
 	const [retrofitSummary, setRetrofitSummary] = React.useState({});
 	const [rules, setRules] = React.useState(null);
 	const [rsLayerId, setRsLayerId] = React.useState(null);
+	const [retrofits, setRetrofits] = React.useState(null);
 
 	let conditionKeys = [];
 	let conditionSelectKeys = [];
@@ -625,11 +626,12 @@ export default function RetrofitStrategyBuilder(props) {
 			zones: ["1P", "1P", "0.2P"],
 			strtypes: ["1", "2", "1"],
 			pcts: [1, 1, 1],
-			retrofits: {
-				ret_keys: ["elevation", "elevation", "elevation"],
-				ret_vals: [5, 10, 5],
-			},
 		};
+		let retrofits = {
+			ret_keys: ["elevation", "elevation", "elevation"],
+			ret_vals: [5, 10, 5],
+		};
+		setRetrofits(retrofits);
 		setRsLayerId(rsDetailsLayerId);
 		setRules(samplePayload);
 		setRetrofitSummary(responseJson);
@@ -926,6 +928,7 @@ export default function RetrofitStrategyBuilder(props) {
 								description={description}
 								retrofitDetails={retrofitSummary}
 								rules={rules}
+								retrofits={retrofits}
 								rsLayerId={rsLayerId}
 							/>
 						) : null}
