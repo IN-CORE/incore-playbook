@@ -9,13 +9,14 @@ import JSSoup from "jssoup";
 import { fromLonLat, toLonLat } from "ol/proj";
 
 const cookies = new Cookies();
+export const PLAYBOOK_AUTH_COOKIE = "PlaybookAuthorization";
 
 //NOTE: This is only checking if a cookie is present, but not validating the cookie.
 export const isAuthorized = (
 	hostname = "",
 	testbedGroup = defaultGlobalConfig.testbedGroup,
 ) => {
-	const authorization = cookies.get("Authorization");
+	const authorization = cookies.get(PLAYBOOK_AUTH_COOKIE);
 
 	if (hostname === "http://localhost:8080") return true;
 	else {
@@ -33,7 +34,7 @@ export const isAuthorized = (
 
 //NOTE: This is only checking if a cookie is present, but not validating the cookie.
 export const isAdmin = (hostname = "") => {
-	const authorization = cookies.get("Authorization");
+	const authorization = cookies.get(PLAYBOOK_AUTH_COOKIE);
 
 	if (hostname === "http://localhost:8080") return true;
 	else {
@@ -59,7 +60,7 @@ export function getHeader(hostname = "") {
 		return headers;
 	} else {
 		const headers = new Headers({
-			Authorization: cookies.get("Authorization"),
+			Authorization: cookies.get(PLAYBOOK_AUTH_COOKIE),
 		});
 
 		return headers;
@@ -71,7 +72,7 @@ export function getCurrUsername(hostname = "") {
 	if (hostname === "http://localhost:8080") {
 		return testUserInfo;
 	} else {
-		let cookie = cookies.get("Authorization");
+		let cookie = cookies.get(PLAYBOOK_AUTH_COOKIE);
 		if (cookie !== undefined && cookie !== "" && cookie.split(" ").length > 0) {
 			let userInfo = jwt_decode(cookie.split(" ")[1]);
 			return userInfo["preferred_username"];
@@ -84,7 +85,7 @@ export function getCurrUserFullname(hostname = "") {
 	if (hostname === "http://localhost:8080") {
 		return testUserInfo;
 	} else {
-		let cookie = cookies.get("Authorization");
+		let cookie = cookies.get(PLAYBOOK_AUTH_COOKIE);
 		if (cookie !== undefined && cookie !== "" && cookie.split(" ").length > 0) {
 			let userInfo = jwt_decode(cookie.split(" ")[1]);
 			return `${userInfo["given_name"]} ${userInfo["family_name"]}`;
@@ -128,7 +129,9 @@ export async function getCurrUserDatawolfId(
 // get incore token and write to a file
 export function getIncoreTokenFile(hostname = "") {
 	if (hostname !== "http://localhost:8080") {
-		return new Blob([cookies.get("Authorization")], { type: "text/plain" });
+		return new Blob([cookies.get(PLAYBOOK_AUTH_COOKIE)], {
+			type: "text/plain",
+		});
 	} else {
 		return null;
 	}
@@ -139,7 +142,7 @@ export function getCurrEmail(hostname = "") {
 	if (hostname === "http://localhost:8080") {
 		return testUserInfo;
 	} else {
-		let cookie = cookies.get("Authorization");
+		let cookie = cookies.get(PLAYBOOK_AUTH_COOKIE);
 		if (cookie && cookie !== "" && cookie.split(" ").length > 0) {
 			let userInfo = jwt_decode(cookie.split(" ")[1]);
 			// return userInfo["email"];
