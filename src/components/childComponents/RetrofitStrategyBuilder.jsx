@@ -1085,14 +1085,18 @@ export default function RetrofitStrategyBuilder(props) {
 									globalConfig.retrofitStrategyBuilder.conditions.find(
 										(condition) => condition.key === "zones",
 									);
+								// match label if available
+								const selectedZoneLabel =
+									zoneCondition.possibleOptions.find(
+										(option) => option.value === selectedZoneName,
+									)?.label || selectedZoneName;
 								setSelectedValues({
 									...selectedValues,
 									zones: {
 										label: zoneCondition.label,
 										type: "string",
-										// zone label and key are the same
 										value: selectedZoneName,
-										valueLabel: selectedZoneName,
+										valueLabel: selectedZoneLabel,
 									},
 								});
 								setMapDialogOpen(false);
