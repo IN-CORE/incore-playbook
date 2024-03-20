@@ -14,6 +14,7 @@ import {
 	TablePagination,
 	TableRow,
 	TableSortLabel,
+	Tooltip,
 	Typography,
 } from "@material-ui/core";
 import UnfoldMoreIcon from "@material-ui/icons/UnfoldMore";
@@ -31,6 +32,7 @@ import {
 import { checkFileDescriptors } from "../../../utils/datawolf";
 import { useLocation, useRouteMatch } from "react-router-dom";
 import { IncoreTitle } from "../../styledComponents/IncoreTitle";
+import { IncoreInputLabel } from "../../styledComponents/IncoreInputLabel";
 
 const useStyles = makeStyles({
 	table: {
@@ -353,6 +355,16 @@ export function ViewResultEntryTable(props) {
 									{Object.keys(compareItemNames).at(1) ?? "[ ]"}
 								</Typography>
 							</IncoreTitle>
+							<p
+								style={{
+									color: "#808080",
+									fontSize: "12px",
+									margin: 0,
+									padding: 0,
+								}}
+							>
+								Please select two scenarios below
+							</p>
 						</Box>
 					</Box>
 				) : (
