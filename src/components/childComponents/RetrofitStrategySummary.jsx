@@ -124,7 +124,9 @@ export default function RetrofitStrategySummary(props) {
 	} = props;
 
 	const getLabel = (value, possibleOptions) => {
-		const option = possibleOptions.find((option) => option.value === value);
+		const option = possibleOptions.find(
+			(option) => option.value.toLowerCase() === value.toLowerCase(),
+		);
 		return option ? option.label : value;
 	};
 

@@ -35,12 +35,11 @@ import {
 } from "./styledComponents/IncoreSelect";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchDatasets } from "../actions/datasets";
-import { getHeader } from "../utils/common";
+import { getHeader, move2TestbedSpace } from "../utils/common";
 
 import Pagination from "./childComponents/navigation/Pagination";
 import RetrofitStrategyBuilder from "./childComponents/RetrofitStrategyBuilder";
 import RetrofitStrategySummary from "./childComponents/RetrofitStrategySummary";
-import { move2TestbedSpace } from "../utils/common";
 import { DownloadAlert } from "./childComponents/alert/DownloadAlert";
 
 const useStyles = makeStyles((theme) => ({
@@ -879,7 +878,20 @@ export const BuiltEnvironment = ({ step, substep }) => {
 								<LoadingOverlay
 									active={strategySummaryLoading}
 									spinner
-									text="Loading..."
+									styles={{
+										overlay: (base) => ({
+											...base,
+											background: "white",
+											color: "black",
+										}),
+										spinner: (base) => ({
+											...base,
+											"& svg circle": {
+												stroke: "#00619D",
+											},
+										}),
+									}}
+									text="Loading Retrofit Strategy Summary..."
 								>
 									{strategySummaryData ? (
 										<RetrofitStrategySummary
