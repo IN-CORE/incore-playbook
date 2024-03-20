@@ -84,7 +84,7 @@ const registeredWidgets = {
 	ValueLosses: <ValueLosses />,
 };
 
-export default function ViewResult(props) {
+export default function RunAnalysis(props) {
 	const classes = useStyles();
 
 	const {

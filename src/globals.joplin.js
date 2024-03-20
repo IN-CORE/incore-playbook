@@ -1,11 +1,12 @@
 const globals = {};
 
 // ******************* COMMON GLOBAL CONFIGS *******************
-
 let hostname = process.env.INCORE_REMOTE_HOSTNAME || "";
 
 globals["baseUrlRoute"] = "playbook";
 globals["geoServerWMS"] = `${hostname}/geoserver/incore/wms`;
+globals["geoServerWFS"] =
+	`${hostname}/geoserver/incore/ows?service=WFS&version=1.0.0&request=GetFeature&outputFormat=application/json`;
 globals["client_id"] = "react-auth";
 globals["authService"] =
 	`${hostname}/auth/realms/In-core/protocol/openid-connect/token`;
@@ -19,8 +20,25 @@ globals["registerNewUserURL"] =
 	"https://identity.ncsa.illinois.edu/register/BSKC2UKQPU";
 globals["resetPasswordURL"] = "https://identity.ncsa.illinois.edu/reset";
 
+// ******************* Joplin GLOBAL CONFIGS *******************
+
+globals["maestroServiceBase"] = `${hostname}/maestro/joplin/`;
+globals["allowedRegions"] = null;
+globals["testbedSpace"] = "commresiliencejoplin";
+globals["testbedGroup"] = "incore_joplin_user"; // incore_galveston_user, incore_joplin_user, incore_slc_user
+
 // might have multiple versions in the future
 globals["inputDatasetTypes"] = {
+	buildings: [
+		{
+			// type: "ergo:buildingInventoryVer6",
+			type: "ergo:buildingInventoryVer7",
+			format: "shapefile",
+			num: 20,
+			isSocioeconomics: false,
+			dispatchKey: "RECEIVE_BLDGS",
+		},
+	],
 	retrofitStrategies: [
 		{
 			type: "incore:retrofitStrategy",
@@ -201,8 +219,8 @@ globals["inputDatasetTypes"] = {
 };
 
 // ******************* Joplin GLOBAL CONFIGS *******************
-
-globals["maestroServiceBase"] = `${hostname}/maestro/joplin/`;
+const testbed = "joplin";
+globals["maestroServiceBase"] = `${hostname}/maestro/${testbed}/`;
 globals["allowedRegions"] = null;
 globals["testbedSpace"] = "commresiliencejoplin";
 globals["testbedGroup"] = "incore_joplin_user"; // incore_galveston_user, incore_joplin_user, incore_slc_user
@@ -215,9 +233,7 @@ globals["inputDatasetTypes"].buildings = [
 		dispatchKey: "RECEIVE_BLDGS",
 	},
 ];
-
-globals["testBed"] = "jop";
-
+globals["testbed"] = testbed;
 globals["retrofitStrategyBuilder"] = {
 	maxStrategies: 4,
 	displayValues: {
@@ -294,6 +310,7 @@ globals["retrofitStrategyBuilder"] = {
 		},
 	],
 };
+globals["comparisonKey"] = ["A", "B"];
 
 export { globals };
 

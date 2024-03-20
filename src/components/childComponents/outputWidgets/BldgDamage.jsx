@@ -186,6 +186,7 @@ export default function BldgDamage(props) {
 							layers={[basicLayers, hazardLayers, damageLayers]}
 							layerSwitcherOptions={{}}
 							allowBuildingSelection={true}
+							fields={bldgDmgSummaryTableContent}
 						/>
 					</Container>
 				) : (

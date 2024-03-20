@@ -7,7 +7,6 @@ import { useSelector } from "react-redux";
 import { getHazardMetadata } from "../utils/hazard";
 import { getHazardGroupLayers } from "../utils/map";
 import { registeredCompareWidgets } from "./childComponents/outputWidgets/RegisteredCompareWidgets";
-import { comparisonKey } from "../globals";
 import {
 	IncoreMenuItem,
 	IncoreSelectBox,
@@ -73,7 +72,7 @@ export const CompareAnalyses = () => {
 					);
 					setHazardGroupLayers((prevState) => ({
 						...prevState,
-						[comparisonKey[i]]: getHazardGroupLayers(
+						[globalConfig.comparisonKey[i]]: getHazardGroupLayers(
 							globalConfig,
 							mapConfig,
 							hazardMetadata,
@@ -171,7 +170,7 @@ export const CompareAnalyses = () => {
 								Compared Executions:
 								<Box>
 									<Typography style={{ display: "inline-block" }}>
-										Execution {comparisonKey[0]}:
+										Execution {globalConfig.comparisonKey[0]}:
 									</Typography>
 									<Typography
 										style={{
@@ -185,7 +184,7 @@ export const CompareAnalyses = () => {
 								</Box>
 								<Box>
 									<Typography style={{ display: "inline-block" }}>
-										Execution {comparisonKey[1]}:
+										Execution {globalConfig.comparisonKey[1]}:
 									</Typography>
 									<Typography
 										style={{

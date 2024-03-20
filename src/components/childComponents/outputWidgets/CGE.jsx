@@ -259,6 +259,8 @@ export default function CGE(props) {
 												<CGEBarChart
 													region={region}
 													data={cgeHouseholdIncomeContent}
+													xAxisLegend="Million of $"
+													yAxisLegend="Household Groups"
 													height="25em"
 												/>
 											</Box>
@@ -280,7 +282,8 @@ export default function CGE(props) {
 												<CGEBarChart
 													region={region}
 													data={cgeDomesticSupplyContent}
-													yAxisLegend="Million of $"
+													xAxisLegend="Million of $"
+													yAxisLegend="Sectors"
 													height="25em"
 												/>
 											</Box>
@@ -302,6 +305,8 @@ export default function CGE(props) {
 													data={cgeEmploymentContent}
 													title="Employment"
 													height="25em"
+													xAxisLegend="# of workers"
+													yAxisLegend="Sectors"
 												/>
 											</Box>
 											<Box>

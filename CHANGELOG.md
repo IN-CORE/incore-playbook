@@ -8,9 +8,23 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+### Added
+- Substation damage comparison [#390](https://github.com/IN-CORE/incore-playbook/issues/390)
+
 ### Fixed
 - Remove the extra % sign from population dislocation comparison table [#362](https://github.com/IN-CORE/incore-playbook/issues/362)
+- Change default basemap and change height of the "Create Hazard" map [#359](https://github.com/IN-CORE/incore-playbook/issues/359)
+- Sorted map attributes so there are in the same order during the comparison [#348](https://github.com/IN-CORE/incore-playbook/issues/348)
+- Wrong naming of the component ViewResults [#352](https://github.com/IN-CORE/incore-playbook/issues/352)
+- Make max damage state consistent with table headers [#374](https://github.com/IN-CORE/incore-playbook/issues/374)
+- Comparison key bug [#375](https://github.com/IN-CORE/incore-playbook/issues/375)
+- Compare selection style [#357](https://github.com/IN-CORE/incore-playbook/issues/357)
+- Fix damage comparison table alignment bug [#358](https://github.com/IN-CORE/incore-playbook/issues/358)
+- Fix the yaxis label for the CGE bar chart [#384](https://github.com/IN-CORE/incore-playbook/issues/384)
+- Fix table to show null values for absent keys in JSON [#373](https://github.com/IN-CORE/incore-playbook/issues/373)
 
+### Changed
+- Remove screenshot button on comparison interface [#364](https://github.com/IN-CORE/incore-playbook/issues/364)
 
 ## [0.6.0] - 2024-03-06
 

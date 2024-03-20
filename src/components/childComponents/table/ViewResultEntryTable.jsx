@@ -574,6 +574,7 @@ export function ViewResultEntryTable(props) {
 														className={classes.subBodyRow}
 														key={`${execution["id"]}-resilience-metrics`}
 													>
+														<TableCell />
 														<TableCell
 															colSpan={7}
 															key={`${execution["id"]}-resilience-metrics-title`}
@@ -602,6 +603,7 @@ export function ViewResultEntryTable(props) {
 														className={classes.subBodyRow}
 														key={`${execution["id"]}-epf-pole`}
 													>
+														<TableCell />
 														<TableCell
 															colSpan={7}
 															key={`${execution["id"]}-epf-pole-title`}
@@ -629,6 +631,7 @@ export function ViewResultEntryTable(props) {
 														className={classes.subBodyRow}
 														key={`${execution["id"]}-epf-substation`}
 													>
+														<TableCell />
 														<TableCell
 															colSpan={7}
 															key={`${execution["id"]}-epf-substation-title`}
@@ -657,6 +660,7 @@ export function ViewResultEntryTable(props) {
 														className={classes.subBodyRow}
 														key={`${execution["id"]}-bldg-dmg`}
 													>
+														<TableCell />
 														<TableCell
 															colSpan={7}
 															key={`${execution["id"]}-bldg-dmg-title`}
@@ -686,6 +690,7 @@ export function ViewResultEntryTable(props) {
 														className={classes.subBodyRow}
 														key={`${execution["id"]}-mcs`}
 													>
+														<TableCell />
 														<TableCell
 															colSpan={7}
 															key={`${execution["id"]}-mcs-title`}
@@ -715,6 +720,7 @@ export function ViewResultEntryTable(props) {
 														className={classes.subBodyRow}
 														key={`${execution["id"]}-bldg-functionality`}
 													>
+														<TableCell />
 														<TableCell
 															colSpan={7}
 															key={`${execution["id"]}-bldg-functionality-title`}
@@ -744,6 +750,7 @@ export function ViewResultEntryTable(props) {
 														className={classes.subBodyRow}
 														key={`${execution["id"]}-sector-shocks`}
 													>
+														<TableCell />
 														<TableCell
 															colSpan={7}
 															key={`${execution["id"]}-sector-shocks-title`}
@@ -772,6 +779,7 @@ export function ViewResultEntryTable(props) {
 														className={classes.subBodyRow}
 														key={`${execution["id"]}-cge`}
 													>
+														<TableCell />
 														<TableCell
 															colSpan={7}
 															key={`${execution["id"]}-cge-title`}
@@ -801,6 +809,7 @@ export function ViewResultEntryTable(props) {
 														className={classes.subBodyRow}
 														key={`${execution["id"]}-popdislocation`}
 													>
+														<TableCell />
 														<TableCell
 															colSpan={7}
 															key={`${execution["id"]}-popdislocation-title`}
@@ -829,6 +838,7 @@ export function ViewResultEntryTable(props) {
 														className={classes.subBodyRow}
 														key={`${execution["id"]}-HHS`}
 													>
+														<TableCell />
 														<TableCell
 															colSpan={7}
 															key={`${execution["id"]}-HHS-title`}
@@ -860,6 +870,7 @@ export function ViewResultEntryTable(props) {
 														className={classes.subBodyRow}
 														key={`${execution["id"]}-Log`}
 													>
+														<TableCell />
 														<TableCell
 															colSpan={7}
 															key={`${execution["id"]}-Log-title`}

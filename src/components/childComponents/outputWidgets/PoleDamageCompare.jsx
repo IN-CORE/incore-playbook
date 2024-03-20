@@ -4,12 +4,7 @@ import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { applyTransform } from "ol/extent";
 import { getOutputFileContent } from "../../../utils/datawolf";
-import {
-	basicLayers,
-	generateLayers,
-	createBasicLayers,
-} from "../../../utils/map";
-import { comparisonKey } from "../../../globals";
+import { createBasicLayers, generateLayers } from "../../../utils/map";
 import MapCompare from "../map/MapCompare";
 
 export default function PoleDamageCompare(props) {
@@ -88,12 +83,12 @@ export default function PoleDamageCompare(props) {
 							center={fromLonLat(mapConfig.MAP_CENTER)}
 							layersA={[
 								basicLayersA,
-								hazardLayers[comparisonKey[0]],
+								hazardLayers[globalConfig.comparisonKey[0]],
 								damageLayersA,
 							]}
 							layersB={[
 								basicLayersB,
-								hazardLayers[comparisonKey[1]],
+								hazardLayers[globalConfig.comparisonKey[1]],
 								damageLayersB,
 							]}
 							layerSwitcherOptionsA={{}}

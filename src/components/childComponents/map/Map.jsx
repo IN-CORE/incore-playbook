@@ -15,6 +15,7 @@ import {
 import LoadingOverlay from "react-loading-overlay";
 
 import LayerSwitcher from "./LayerSwitcher";
+import { maxStateMapping } from "../../../utils/common";
 
 const useStyles = makeStyles({
 	table: {
@@ -54,8 +55,14 @@ const useStyles = makeStyles({
 export const MapContext = React.createContext({});
 
 const Map = (props) => {
-	const { children, id, className, allowBuildingSelection, activeLayerNames } =
-		props;
+	const {
+		children,
+		id,
+		className,
+		allowBuildingSelection,
+		fields,
+		activeLayerNames,
+	} = props;
 	const classes = useStyles();
 
 	const [selectedBuilding, setSelectedBuilding] = React.useState(null);
@@ -226,7 +233,7 @@ const Map = (props) => {
 		};
 	}, []);
 
-	return (
+	return allowBuildingSelection ? (
 		<div style={{ position: "relative" }}>
 			<div
 				id={id}
@@ -304,32 +311,54 @@ const Map = (props) => {
 								</TableRow>
 							</TableHead>
 							<TableBody>
-								{Object.keys(selectedBuilding).map((colName) => {
-									if (colName === "guid") {
-										return null;
-									}
-									return (
-										<TableRow key={colName}>
-											<TableCell
-												style={{ backgroundColor: "#EFF2FF", color: "#69707F" }}
-											>
-												{colName}
-											</TableCell>
-											<TableCell align="center">
-												{selectedBuilding[colName] === undefined ||
-												selectedBuilding[colName] === null ||
-												selectedBuilding[colName] === ""
-													? "-"
-													: selectedBuilding[colName]}
-											</TableCell>
-										</TableRow>
-									);
-								})}
+								{Object.keys(selectedBuilding)
+									.sort()
+									.map((colName) => {
+										if (colName === "csv_guid") {
+											return null;
+										}
+										return (
+											<TableRow key={colName}>
+												<TableCell
+													style={{
+														backgroundColor: "#EFF2FF",
+														color: "#69707F",
+													}}
+												>
+													{colName}
+												</TableCell>
+												<TableCell align="center">
+													{colName === "max_state"
+														? maxStateMapping(
+																fields,
+																selectedBuilding[colName],
+																selectedBuilding["sw_max_state"],
+														  )
+														: selectedBuilding[colName] === undefined ||
+														    selectedBuilding[colName] === null ||
+														    selectedBuilding[colName] === ""
+														  ? "-" // Fallback value for undefined, null, or empty strings
+														  : selectedBuilding[colName]}
+												</TableCell>
+											</TableRow>
+										);
+									})}
 							</TableBody>
 						</Table>
 					</LoadingOverlay>
 				</TableContainer>
 			) : null}
+		</div>
+	) : (
+		<div
+			id={id}
+			style={{ width: "100%", height: "100%" }}
+			className={`ol-map ${className}`}
+			ref={fallbackContainer}
+		>
+			<MapContext.Provider value={{ map: mapRef.current }}>
+				{children}
+			</MapContext.Provider>
 		</div>
 	);
 };
