@@ -437,6 +437,7 @@ const OverlayTable = (props) => {
 		<TableContainer
 			className={classes.tableContainer}
 			style={right ? { left: "50%" } : null}
+			style={{ backgroundColor: "white" }}
 		>
 			<LoadingOverlay active={loading} spinner text="Loading...">
 				<Table
@@ -447,13 +448,13 @@ const OverlayTable = (props) => {
 					<TableHead>
 						<TableRow key="hdrRow">
 							<TableCell
-								align="center"
+								align="left"
 								style={{ backgroundColor: "#EFF2FF", color: "#69707F" }}
 							>
 								Attribute
 							</TableCell>
 							<TableCell
-								align="center"
+								align="right"
 								style={{ backgroundColor: "#EFF2FF", color: "#69707F" }}
 							>
 								Value
@@ -470,11 +471,12 @@ const OverlayTable = (props) => {
 								return (
 									<TableRow key={colName}>
 										<TableCell
+											align="left"
 											style={{ backgroundColor: "#EFF2FF", color: "#69707F" }}
 										>
 											{colName}
 										</TableCell>
-										<TableCell align="center">
+										<TableCell align="right">
 											{colName === "max_state"
 												? maxStateMapping(
 														fields,
