@@ -791,7 +791,7 @@ export default function RetrofitStrategyBuilder(props) {
 					<CloseIcon />
 				</IconButton>
 			</DialogTitle>
-			<DialogContent dividers>
+			<DialogContent dividers style={{ position: "relative" }}>
 				<Stepper activeStep={activeStep}>
 					{steps.map((label) => (
 						<Step key={label}>
@@ -802,6 +802,19 @@ export default function RetrofitStrategyBuilder(props) {
 				<LoadingOverlay
 					active={loading}
 					spinner
+					styles={{
+						overlay: (base) => ({
+							...base,
+							background: "white",
+							color: "black",
+						}),
+						spinner: (base) => ({
+							...base,
+							"& svg circle": {
+								stroke: "#00619D",
+							},
+						}),
+					}}
 					text="Calculating and Generating the Retrofit Strategy..."
 				>
 					<Grid container spacing={3}>
@@ -1074,6 +1087,14 @@ export default function RetrofitStrategyBuilder(props) {
 							}}
 						/>
 					</Grid>
+				</LoadingOverlay>
+				{/*stick to the bottom*/}
+				<div
+					style={{
+						position: "absolute",
+						bottom: "2em",
+					}}
+				>
 					<AlertMessage
 						open={errorAlertOpen}
 						setOpen={setErrorAlertOpen}
@@ -1081,7 +1102,7 @@ export default function RetrofitStrategyBuilder(props) {
 						alertSeverity={"error"}
 						status={errorStatus}
 					/>
-				</LoadingOverlay>
+				</div>
 			</DialogContent>
 			<DialogActions
 				disableSpacing
