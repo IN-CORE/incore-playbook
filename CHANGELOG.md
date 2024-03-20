@@ -8,6 +8,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+### Added
+- Substation damage comparison [#390](https://github.com/IN-CORE/incore-playbook/issues/390)
+
 ### Fixed
 - Remove the extra % sign from population dislocation comparison table [#362](https://github.com/IN-CORE/incore-playbook/issues/362)
 - Change default basemap and change height of the "Create Hazard" map [#359](https://github.com/IN-CORE/incore-playbook/issues/359)
