@@ -4,8 +4,8 @@ import { csvToArray } from "../../../utils/common";
 
 const ParseData = (dataA, dataB) => {
 	const chartData = [];
-	const colorsA = ["#aededb", "#2d8686", "#00619D", "#2c698d", "#272643"];
-	const colorsB = ["#c1f0e5", "#3daaaa", "#0080bf", "#3e8caa", "#34385a"];
+	const colorsA = "#aededb";
+	const colorsB = "#2c698d";
 	chartData.push([
 		"Sector",
 		"Ratio of Capital Remaining A",
@@ -36,9 +36,9 @@ const ParseData = (dataA, dataB) => {
 				chartData.push([
 					dataArrA[i][0],
 					parseFloat(dataArrA[i][1]),
-					colorsA[i % 5],
+					colorsA,
 					dataArrB.length > i ? parseFloat(dataArrB[i][1]) : 0,
-					colorsB[i % 5],
+					colorsB,
 				]);
 			}
 			return chartData;
@@ -54,17 +54,17 @@ const ParseData = (dataA, dataB) => {
 				chartData.push([
 					`${galDataArryA[i][0]}I`,
 					galDataArryA[i][1],
-					colorsA[i % 5],
+					colorsA,
 					galDataArryB[i][1],
-					colorsB[i % 5],
+					colorsB,
 				]);
 			} else {
 				chartData.push([
 					`I${galDataArryA[i][0]}`,
 					galDataArryA[i][1],
-					colorsA[i % 5],
+					colorsA,
 					galDataArryB.length > i ? galDataArryB[i][1] : 0,
-					colorsB[i % 5],
+					colorsB,
 				]);
 			}
 		}
@@ -91,13 +91,7 @@ const ParseData = (dataA, dataB) => {
 			const objB = regionsB[i];
 			const valueB = objB.value;
 
-			chartData.push([
-				`${key}_${subKeyA}`,
-				valueA,
-				colorsA[i % 5],
-				valueB,
-				colorsB[i % 5],
-			]);
+			chartData.push([`${key}_${subKeyA}`, valueA, colorsA, valueB, colorsB]);
 		});
 	}
 
@@ -149,7 +143,11 @@ export default function SectorShocksBarChartCompare(props) {
 				data={ParseData(dataA, dataB)}
 				options={{
 					title: title,
-					legend: { position: "none" },
+					legend: { position: "top", alignment: "center" },
+					series: {
+						0: { color: "#aededb", labelInLegend: "Execution A" }, // Customize color and name for Data A
+						1: { color: "#2c698d", labelInLegend: "Execution B" }, // Customize color and name for Data B
+					},
 					height: "40em",
 					hAxis: {
 						title: xAxisLegend,
