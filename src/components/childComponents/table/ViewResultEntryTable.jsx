@@ -363,7 +363,7 @@ export function ViewResultEntryTable(props) {
 									padding: 0,
 								}}
 							>
-								Please select two scenarios below to enable compare button
+								Please select two scenarios below to enable the compare button
 							</p>
 						</Box>
 					</Box>

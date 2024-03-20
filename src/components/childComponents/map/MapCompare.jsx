@@ -13,6 +13,7 @@ import {
 import LoadingOverlay from "react-loading-overlay";
 import { makeStyles } from "@material-ui/core/styles";
 import { maxStateMapping } from "../../../utils/common";
+import { IncoreInputLabel } from "../../styledComponents/IncoreInputLabel";
 
 export const MapContext = React.createContext({});
 
@@ -361,8 +362,22 @@ const MapCompare = (props) => {
 				<div
 					className={`ol-map ${className}`}
 					ref={fallbackContainerA}
-					style={{ width: "50%", height: `${height}px`, marginRight: "5px" }}
+					style={{
+						width: "50%",
+						height: `${height - 20}px`,
+						marginRight: "5px",
+					}}
 				>
+					<p
+						style={{
+							color: "#808080",
+							fontSize: "15px",
+							margin: 0,
+							padding: 0,
+						}}
+					>
+						Map A
+					</p>
 					<MapContext.Provider value={{ map: mapRefA.current }}>
 						{children}
 					</MapContext.Provider>
@@ -370,8 +385,22 @@ const MapCompare = (props) => {
 				<div
 					className={`ol-map ${className}`}
 					ref={fallbackContainerB}
-					style={{ width: "50%", height: `${height}px`, marginLeft: "5px" }}
+					style={{
+						width: "50%",
+						height: `${height - 20}px`,
+						marginLeft: "5px",
+					}}
 				>
+					<p
+						style={{
+							color: "#808080",
+							fontSize: "15px",
+							margin: 0,
+							padding: 0,
+						}}
+					>
+						Map B
+					</p>
 					<MapContext.Provider value={{ map: mapRefB.current }}>
 						{children}
 					</MapContext.Provider>
