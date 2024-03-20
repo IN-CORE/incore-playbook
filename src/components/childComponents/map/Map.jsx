@@ -15,11 +15,8 @@ import {
 import LoadingOverlay from "react-loading-overlay";
 
 import LayerSwitcher from "./LayerSwitcher";
-import {
-	maxStateMapping,
-	fetchLegendsForLayers,
-	LegendIcon,
-} from "../../../utils/common";
+import { maxStateMapping, fetchLegendsForLayers } from "../../../utils/common";
+import LegendIcon from "./LegendIcon";
 
 const useStyles = makeStyles({
 	table: {
