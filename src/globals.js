@@ -202,26 +202,24 @@ globals["inputDatasetTypes"] = {
 	],
 };
 
-// ******************* SLC GLOBAL CONFIGS *******************
-const testbed = "slc";
+// ******************* Galveston GLOBAL CONFIGS *******************
+const testbed = "galveston";
 globals["maestroServiceBase"] = `${hostname}/maestro/${testbed}/`;
 globals["allowedRegions"] = [
 	{
-		name: "R1",
-		value: "R1",
+		name: "Island",
+		value: "I",
 	},
 	{
-		name: "R2",
-		value: "R2",
+		name: "Mainland",
+		value: "M",
 	},
 ];
-globals["testbed"] = testbed;
-globals["testbedSpace"] = "commresilienceslc";
-globals["testbedGroup"] = "incore_slc_user"; // incore_galveston_user, incore_joplin_user, incore_slc_user
-
+globals["testbedSpace"] = "commresiliencegal";
+globals["testbedGroup"] = "incore_galveston_user"; // incore_galveston_user, incore_joplin_user, incore_slc_user
 globals["inputDatasetTypes"].buildings = [
 	{
-		type: "ergo:buildingInventoryVer6",
+		type: "ergo:buildingInventoryVer7",
 		format: "shapefile",
 		num: 20,
 		isSocioeconomics: false,
@@ -229,6 +227,7 @@ globals["inputDatasetTypes"].buildings = [
 	},
 ];
 
+globals["testbed"] = testbed;
 globals["retrofitStrategyBuilder"] = {
 	colorCodes: [
 		"#C32541",
@@ -255,23 +254,44 @@ globals["retrofitStrategyBuilder"] = {
 	maxStrategies: 20,
 	conditions: [
 		{
-			label: "City Council District",
+			label: "Flood Zone",
 			type: "mapSelect",
 			key: "zones",
-			possibleOptions: [],
+			possibleOptions: [
+				{
+					label: "1% annual chance flood hazard",
+					value: "1p",
+				},
+				{
+					label: "0.2% annual chance flood hazard",
+					value: "0.2p",
+				},
+			],
 		},
 		{
-			label: "Building Structural Type",
+			label: "Building Archetypes",
 			type: "select",
 			key: "strtypes",
 			possibleOptions: [
 				{
-					label: "Mid-Rise Unreinforced Masonry Bearing Walls",
-					value: "URMM",
+					label:
+						"1 story residential wood building (small rectangular plan and gable roof)",
+					value: "1",
 				},
 				{
-					label: "Low-Rise Unreinforced Masonry Bearing Walls",
-					value: "URML",
+					label:
+						"2 stories residential wood building (small square plan and gable roof)",
+					value: "2",
+				},
+				{
+					label:
+						"1 story residential building (medium rectangular plan and gable roof)",
+					value: "3",
+				},
+				{
+					label:
+						"2 stories residential building (medium rectangular plan and hip roof)",
+					value: "4",
 				},
 			],
 		},
@@ -289,22 +309,27 @@ globals["retrofitStrategyBuilder"] = {
 			key: "retrofits",
 			possibleOptions: [
 				{
-					label: "Wood or Metal Deck Diaphragms",
-					value: { ret_key: "Wood or Metal Deck Diaphragms", ret_val: "" },
+					label: "Elevated by 5 feet",
+					value: { ret_key: "elevation", ret_val: 5 },
+				},
+				{
+					label: "Elevated by 10 feet",
+					value: { ret_key: "elevation", ret_val: 10 },
 				},
 			],
 		},
 	],
-	zoneLayerId: "65f509b6e42f3b0da55d74cf", // city council district
+	zoneLayerId: "65f50d44e42f3b0da55d74f5", // 2 labels flood zone map
 	activeLayerNames: "Zone",
-	activeLayerFieldname: "NAME",
+	activeLayerFieldname: "fld_zone",
 	zoneMapBounds: [
-		-112.10137778755622, 40.69990503292076, -111.74045871645396,
-		40.853385059088794,
+		-95.23304467554465, 29.07743684291063, -94.37074997273265,
+		29.598309974710844,
 	],
 };
 
 globals["comparisonKey"] = ["A", "B"];
+
 export { globals };
 
 export const testUserInfo = "commresilience";

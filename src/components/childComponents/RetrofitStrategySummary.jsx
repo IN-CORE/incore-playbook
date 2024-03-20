@@ -383,7 +383,8 @@ export default function RetrofitStrategySummary(props) {
 																					>
 																						{condition.type === "number"
 																							? `${rules[condition.key][key]} %`
-																							: condition.type === "select"
+																							: condition.type === "select" ||
+																							    condition.type === "mapSelect"
 																							  ? getLabel(
 																										rules[condition.key][key],
 																										condition.possibleOptions,

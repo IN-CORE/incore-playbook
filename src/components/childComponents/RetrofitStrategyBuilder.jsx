@@ -345,14 +345,20 @@ export default function RetrofitStrategyBuilder(props) {
 													variant="outlined"
 													onChange={(e) => {
 														if (e.target.value !== "") {
+															const selectedOption =
+																condition.possibleOptions.find(
+																	(option) => option.value === e.target.value,
+																);
+															const selectedOptionLabel = selectedOption
+																? selectedOption.label
+																: e.target.value;
 															setSelectedValues({
 																...selectedValues,
 																[condition.key]: {
 																	label: condition.label,
 																	type: "string",
-																	// assume zone label and name are the same
 																	value: e.target.value,
-																	valueLabel: e.target.value,
+																	valueLabel: selectedOptionLabel,
 																},
 															});
 															setAddError(null);
@@ -367,7 +373,10 @@ export default function RetrofitStrategyBuilder(props) {
 												>
 													{zoneNames.map((zoneOption) => (
 														<IncoreMenuItem value={zoneOption} key={zoneOption}>
-															{zoneOption}
+															{/*Get nice label if needed*/}
+															{condition.possibleOptions.find(
+																(option) => option.value === zoneOption,
+															)?.label || zoneOption}
 														</IncoreMenuItem>
 													))}
 												</IncoreSelectBox>
@@ -1076,14 +1085,18 @@ export default function RetrofitStrategyBuilder(props) {
 									globalConfig.retrofitStrategyBuilder.conditions.find(
 										(condition) => condition.key === "zones",
 									);
+								// match label if available
+								const selectedZoneLabel =
+									zoneCondition.possibleOptions.find(
+										(option) => option.value === selectedZoneName,
+									)?.label || selectedZoneName;
 								setSelectedValues({
 									...selectedValues,
 									zones: {
 										label: zoneCondition.label,
 										type: "string",
-										// zone label and key are the same
 										value: selectedZoneName,
-										valueLabel: selectedZoneName,
+										valueLabel: selectedZoneLabel,
 									},
 								});
 								setMapDialogOpen(false);

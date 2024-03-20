@@ -221,7 +221,14 @@ export const ZoneSelectionMap = (props) => {
 					</div>
 				</Grid>
 				{/*Selection*/}
-				<Grid item xl={3} lg={3} md={3} sm={3} xs={6}>
+				<Grid
+					item
+					xl={zoneNames.length > columnBreakpoint ? 3 : 6}
+					lg={zoneNames.length > columnBreakpoint ? 3 : 6}
+					md={zoneNames.length > columnBreakpoint ? 3 : 6}
+					sm={zoneNames.length > columnBreakpoint ? 3 : 6}
+					xs={6}
+				>
 					<FormControl component="fieldset">
 						<RadioGroup
 							aria-label="zone-left"
@@ -243,7 +250,14 @@ export const ZoneSelectionMap = (props) => {
 															: {}
 													}
 												>
-													{name}
+													{
+														// Use the label from the global config if available
+														globalConfig.retrofitStrategyBuilder.conditions
+															.find((condition) => condition.key === "zones")
+															.possibleOptions.find(
+																(option) => option.value === name,
+															)?.label || name
+													}
 												</span>
 											}
 										/>
