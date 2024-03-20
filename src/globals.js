@@ -257,7 +257,16 @@ globals["retrofitStrategyBuilder"] = {
 			label: "Flood Zone",
 			type: "mapSelect",
 			key: "zones",
-			possibleOptions: [],
+			possibleOptions: [
+				{
+					label: "1% annual chance flood hazard",
+					value: "1p",
+				},
+				{
+					label: "0.2% annual chance flood hazard",
+					value: "0.2p",
+				},
+			],
 		},
 		{
 			label: "Building Archetypes",
