@@ -6,6 +6,8 @@ let hostname = process.env.INCORE_REMOTE_HOSTNAME || "";
 
 globals["baseUrlRoute"] = "playbook";
 globals["geoServerWMS"] = `${hostname}/geoserver/incore/wms`;
+globals["geoServerWFS"] =
+	`${hostname}/geoserver/incore/ows?service=WFS&version=1.0.0&request=GetFeature&outputFormat=application/json`;
 globals["client_id"] = "react-auth";
 globals["authService"] =
 	`${hostname}/auth/realms/In-core/protocol/openid-connect/token`;
@@ -18,8 +20,6 @@ globals["allowUpload"] = true;
 globals["registerNewUserURL"] =
 	"https://identity.ncsa.illinois.edu/register/BSKC2UKQPU";
 globals["resetPasswordURL"] = "https://identity.ncsa.illinois.edu/reset";
-globals["geoServerWFS"] =
-	`${hostname}/geoserver/incore/ows?service=WFS&version=1.0.0&request=GetFeature&outputFormat=application/json`;
 
 // might have multiple versions in the future
 globals["inputDatasetTypes"] = {
@@ -203,8 +203,8 @@ globals["inputDatasetTypes"] = {
 };
 
 // ******************* SLC GLOBAL CONFIGS *******************
-
-globals["maestroServiceBase"] = `${hostname}/maestro/slc/`;
+const testbed = "slc";
+globals["maestroServiceBase"] = `${hostname}/maestro/${testbed}/`;
 globals["allowedRegions"] = [
 	{
 		name: "R1",
@@ -215,6 +215,7 @@ globals["allowedRegions"] = [
 		value: "R2",
 	},
 ];
+globals["testbed"] = testbed;
 globals["testbedSpace"] = "commresilienceslc";
 globals["testbedGroup"] = "incore_slc_user"; // incore_galveston_user, incore_joplin_user, incore_slc_user
 
@@ -227,128 +228,83 @@ globals["inputDatasetTypes"].buildings = [
 		dispatchKey: "RECEIVE_BLDGS",
 	},
 ];
-globals["testBed"] = "slc";
 
 globals["retrofitStrategyBuilder"] = {
-	maxStrategies: 4,
-	displayValues: {
-		TaylorsvilleCity: "Taylorsville City",
-		RivertonCity: "Riverton City",
-		AltaTown: "AltaTown",
-		KearnsMetroTownship: "Kearns Metro Township",
-		BluffdaleCity: "Bluffdale City",
-		HolladayCity: "Holladay City",
-		MurrayCity: "Murray City",
-		SouthJordanCity: "South Jordan City",
-		SaltLakeCity: "Salt Lake City",
-		WestValleyCity: "West Valley City",
-		CottonwoodHeightsCity: "Cottonwood Heights City",
-		HerrimanCity: "Herriman City",
-		WhiteCityMetroTownship: "White City Metro Township",
-		SouthSaltLakeCity: "South Salt Lake City",
-		DraperCity: "Draper City",
-		WestJordanCity: "West Jordan City",
-		SandyCity: "Sandy City",
-		Millcreek: "Millcreek",
-		EmigrationCanyonMetroTownship: "Emigration Canyon Metro Township",
-		MagnaMetroTownship: "Magna Metro Township",
-		CoppertonMetroTownship: "Copperton Metro Township",
-		TownofBrighton: "Town of Brighton",
-		Unincorporated: "Unincorporated",
-		URMM: "URMM",
-		URML: "URML",
-		elevatedBy5Feet: "Elevated by 5 feet",
-		elevatedBy10Feet: "Elevated by 10 feet",
-	},
-	labelToValue: {
-		taylorsvillecity: "TaylorsvilleCity",
-		rivertoncity: "RivertonCity",
-		altatown: "AltaTown",
-		kearnsmetrotownship: "KearnsMetroTownship",
-		bluffdalecity: "BluffdaleCity",
-		holladaycity: "HolladayCity",
-		murraycity: "MurrayCity",
-		southjordancity: "SouthJordanCity",
-		saltlakecity: "SaltLakeCity",
-		westvalleycity: "WestValleyCity",
-		cottonwoodheightscity: "CottonwoodHeightsCity",
-		herrimancity: "HerrimanCity",
-		whitecitymetrotownship: "WhiteCityMetroTownship",
-		southsaltlakecity: "SouthSaltLakeCity",
-		drapercity: "DraperCity",
-		westjordancity: "WestJordanCity",
-		sandycity: "SandyCity",
-		millcreek: "Millcreek",
-		emigrationcanyonmetrotownship: "EmigrationCanyonMetroTownship",
-		magnametrotownship: "MagnaMetroTownship",
-		coppertonmetrotownship: "CoppertonMetroTownship",
-		townofbrighton: "TownofBrighton",
-		unincorporated: "Unincorporated",
-	},
+	colorCodes: [
+		"#C32541",
+		"#1B3EBB",
+		"#76930F",
+		"#268FB0",
+		"#BB772B",
+		"#F54362",
+		"#456AEA",
+		"#98BB1D",
+		"#47B4D6",
+		"#E29D50",
+		"#FC7F95",
+		"#7C95EC",
+		"#C9DF7A",
+		"#83DEF2",
+		"#F4C189",
+		"#FDBBC9",
+		"#DBD2FC",
+		"#E0E9C2",
+		"#CDECF0",
+		"#FFE3C4",
+	],
+	maxStrategies: 20,
 	conditions: [
 		{
-			label: "Flood Zone",
+			label: "City Council District",
 			type: "mapSelect",
-			key: "zone",
-			possibleOptions: [
-				{
-					label: "1 % Annual Chance Flood Hazard",
-					value: "1percentannualchanceflood",
-				},
-				{
-					label: "0.2 % Annual Chance Flood Hazard",
-					value: "0.2percentannualchanceflood",
-				},
-				{ label: "Other Flood Zones", value: "otherfloodzone" },
-			],
+			key: "zones",
+			possibleOptions: [],
 		},
 		{
-			label: "Building Archetypes",
+			label: "Building Structural Type",
 			type: "select",
-			key: "archetype",
+			key: "strtypes",
 			possibleOptions: [
 				{
-					label:
-						"One-story single-family residential building on crawlspace foundation",
-					value: "F1",
+					label: "Mid-Rise Unreinforced Masonry Bearing Walls",
+					value: "URMM",
 				},
 				{
-					label:
-						"One-story multiple-family residential building on slab-on-grade foundation",
-					value: "F2",
-				},
-				{
-					label:
-						"Two-Story single-family residential building on crawlspace foundation",
-					value: "F3",
-				},
-				{
-					label:
-						"Two-Story multi-family residential building on slab-on-grade foundation",
-					value: "F4",
+					label: "Low-Rise Unreinforced Masonry Bearing Walls",
+					value: "URML",
 				},
 			],
 		},
 		{
 			label: "% number of Buildings",
 			type: "number",
-			key: "percent",
+			key: "pcts",
 			possibleOptions: null,
 		},
 	],
 	retrofitMethods: [
 		{
-			label: "",
+			label: "Retrofit Method",
 			type: "select",
-			key: "retrofitMethod",
+			key: "retrofits",
 			possibleOptions: [
-				{ label: "Elevated by 5 feet", value: "elevatedBy5Feet" },
-				{ label: "Elevated by 10 feet", value: "elevatedBy10Feet" },
+				{
+					label: "Wood or Metal Deck Diaphragms",
+					value: { ret_key: "Wood or Metal Deck Diaphragms", ret_val: "" },
+				},
 			],
 		},
 	],
+	zoneLayerId: "65f509b6e42f3b0da55d74cf", // city council district
+	activeLayerNames: "Zone",
+	activeLayerFieldname: "NAME",
+	zoneMapBounds: [
+		-112.10137778755622, 40.69990503292076, -111.74045871645396,
+		40.853385059088794,
+	],
 };
 
+globals["comparisonKey"] = ["A", "B"];
 export { globals };
 
 export const testUserInfo = "commresilience";

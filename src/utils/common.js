@@ -9,13 +9,14 @@ import JSSoup from "jssoup";
 import { fromLonLat, toLonLat } from "ol/proj";
 
 const cookies = new Cookies();
+export const PLAYBOOK_AUTH_COOKIE = "PlaybookAuthorization";
 
 //NOTE: This is only checking if a cookie is present, but not validating the cookie.
 export const isAuthorized = (
 	hostname = "",
 	testbedGroup = defaultGlobalConfig.testbedGroup,
 ) => {
-	const authorization = cookies.get("Authorization");
+	const authorization = cookies.get(PLAYBOOK_AUTH_COOKIE);
 
 	if (hostname === "http://localhost:8080") return true;
 	else {
@@ -33,7 +34,7 @@ export const isAuthorized = (
 
 //NOTE: This is only checking if a cookie is present, but not validating the cookie.
 export const isAdmin = (hostname = "") => {
-	const authorization = cookies.get("Authorization");
+	const authorization = cookies.get(PLAYBOOK_AUTH_COOKIE);
 
 	if (hostname === "http://localhost:8080") return true;
 	else {
@@ -59,7 +60,7 @@ export function getHeader(hostname = "") {
 		return headers;
 	} else {
 		const headers = new Headers({
-			Authorization: cookies.get("Authorization"),
+			Authorization: cookies.get(PLAYBOOK_AUTH_COOKIE),
 		});
 
 		return headers;
@@ -71,7 +72,7 @@ export function getCurrUsername(hostname = "") {
 	if (hostname === "http://localhost:8080") {
 		return testUserInfo;
 	} else {
-		let cookie = cookies.get("Authorization");
+		let cookie = cookies.get(PLAYBOOK_AUTH_COOKIE);
 		if (cookie !== undefined && cookie !== "" && cookie.split(" ").length > 0) {
 			let userInfo = jwt_decode(cookie.split(" ")[1]);
 			return userInfo["preferred_username"];
@@ -84,7 +85,7 @@ export function getCurrUserFullname(hostname = "") {
 	if (hostname === "http://localhost:8080") {
 		return testUserInfo;
 	} else {
-		let cookie = cookies.get("Authorization");
+		let cookie = cookies.get(PLAYBOOK_AUTH_COOKIE);
 		if (cookie !== undefined && cookie !== "" && cookie.split(" ").length > 0) {
 			let userInfo = jwt_decode(cookie.split(" ")[1]);
 			return `${userInfo["given_name"]} ${userInfo["family_name"]}`;
@@ -128,7 +129,9 @@ export async function getCurrUserDatawolfId(
 // get incore token and write to a file
 export function getIncoreTokenFile(hostname = "") {
 	if (hostname !== "http://localhost:8080") {
-		return new Blob([cookies.get("Authorization")], { type: "text/plain" });
+		return new Blob([cookies.get(PLAYBOOK_AUTH_COOKIE)], {
+			type: "text/plain",
+		});
 	} else {
 		return null;
 	}
@@ -139,7 +142,7 @@ export function getCurrEmail(hostname = "") {
 	if (hostname === "http://localhost:8080") {
 		return testUserInfo;
 	} else {
-		let cookie = cookies.get("Authorization");
+		let cookie = cookies.get(PLAYBOOK_AUTH_COOKIE);
 		if (cookie && cookie !== "" && cookie.split(" ").length > 0) {
 			let userInfo = jwt_decode(cookie.split(" ")[1]);
 			// return userInfo["email"];
@@ -397,3 +400,41 @@ function ObjectByString(o, s) {
 	}
 	return o;
 }
+
+export const extractStatus = (executionItem) => {
+	if (executionItem !== undefined && executionItem["stepState"] !== undefined) {
+		let statusArr = Object.values(executionItem["stepState"]);
+		// WAITING, QUEUED, RUNNING, FINISHED, ABORTED, FAILED, UNKNOWN
+		// if failed or aborted, return failed | aborted
+		// else if atleast one running, return running
+		// else if atleast one queued, return queued
+		// else if atleast one waiting, return waiting
+		// else if any unknown, return unknown
+		// last case where we need to check all values are finished then return finished
+		// else return undefined
+		if (statusArr.indexOf("FAILED") >= 0) return "FAILED";
+		if (statusArr.indexOf("ABORTED") >= 0) return "ABORTED";
+		else if (statusArr.indexOf("RUNNING") >= 0) return "RUNNING";
+		else if (statusArr.indexOf("QUEUED") >= 0) return "QUEUED";
+		else if (statusArr.indexOf("WAITING") >= 0) return "WAITING";
+		else if (statusArr.indexOf("UNKNOWN") >= 0) return "UNKNOWN";
+		else if (statusArr.every((status) => status === "FINISHED"))
+			return "FINISHED";
+	}
+	return "UNDEFINED";
+};
+
+export const maxStateMapping = (fields, max_state, sw_max_state) => {
+	if (fields && "Insignificant" in fields["by_category"][0]) {
+		if (max_state === "DS_0") return "Insignificant";
+		if (max_state === "DS_1") return "Moderate";
+		if (max_state === "DS_2") return "Extensive";
+		if (max_state === "DS_3") return "Complete";
+	} else if (fields && "Affected" in fields["by_category"][0]) {
+		if (max_state === "DS_0" || max_state === "DS_1") return "Affected";
+		if (max_state === "DS_2") return "Minor";
+		if (max_state === "DS_3") return "Major";
+		if (sw_max_state === "DS_3") return "Destroyed";
+	}
+	return max_state;
+};

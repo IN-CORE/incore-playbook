@@ -5,14 +5,9 @@ import {
 	getOutputFileContent,
 	getOutputFileContentJSON,
 } from "../../../utils/datawolf";
-import {
-	basicLayers,
-	createBasicLayers,
-	generateLayers,
-} from "../../../utils/map";
+import { createBasicLayers, generateLayers } from "../../../utils/map";
 import { DislocationResultsTableCompare } from "../table/DislocationResultsTableCompare";
 import { HuaResultsTableCompare } from "../table/HuaResultsTableCompare";
-import { comparisonKey } from "../../../globals";
 import MapCompare from "../map/MapCompare";
 import { applyTransform } from "ol/extent";
 import { fromLonLat, getTransform } from "ol/proj";
@@ -126,7 +121,7 @@ export default function PopDislocationCompare(props) {
 						);
 						setDislocationByRaceContent((prevState) => ({
 							...prevState,
-							[comparisonKey[i]]: content,
+							[globalConfig.comparisonKey[i]]: content,
 						}));
 					} else if (vName === "dislocationByTenureContent") {
 						const content = await getOutputFileContentJSON(
@@ -136,7 +131,7 @@ export default function PopDislocationCompare(props) {
 						);
 						setDislocationByTenureContent((prevState) => ({
 							...prevState,
-							[comparisonKey[i]]: content,
+							[globalConfig.comparisonKey[i]]: content,
 						}));
 					} else if (vName === "dislocationByIncomeContent") {
 						const content = await getOutputFileContentJSON(
@@ -146,7 +141,7 @@ export default function PopDislocationCompare(props) {
 						);
 						setDislocationByIncomeContent((prevState) => ({
 							...prevState,
-							[comparisonKey[i]]: content,
+							[globalConfig.comparisonKey[i]]: content,
 						}));
 					} else if (vName === "dislocationByHousingTypeContent") {
 						const content = await getOutputFileContentJSON(
@@ -156,7 +151,7 @@ export default function PopDislocationCompare(props) {
 						);
 						setDislocationByHousingTypeContent((prevState) => ({
 							...prevState,
-							[comparisonKey[i]]: content,
+							[globalConfig.comparisonKey[i]]: content,
 						}));
 					}
 				}
@@ -193,13 +188,13 @@ export default function PopDislocationCompare(props) {
 						center={fromLonLat(mapConfig.MAP_CENTER)}
 						layersA={[
 							basicLayersA,
-							hazardLayers[comparisonKey[0]],
+							hazardLayers[globalConfig.comparisonKey[0]],
 							damageLayersA1,
 							damageLayersA2,
 						]}
 						layersB={[
 							basicLayersB,
-							hazardLayers[comparisonKey[1]],
+							hazardLayers[globalConfig.comparisonKey[1]],
 							damageLayersB1,
 							damageLayersB2,
 						]}
@@ -257,16 +252,26 @@ export default function PopDislocationCompare(props) {
 					dislocationByHousingTypeContent ? (
 						<HuaResultsTableCompare
 							resultsJsonA={{
-								income: dislocationByIncomeContent[comparisonKey[0]],
-								race: dislocationByRaceContent[comparisonKey[0]],
-								tenure: dislocationByTenureContent[comparisonKey[0]],
-								housingType: dislocationByHousingTypeContent[comparisonKey[0]],
+								income:
+									dislocationByIncomeContent[globalConfig.comparisonKey[0]],
+								race: dislocationByRaceContent[globalConfig.comparisonKey[0]],
+								tenure:
+									dislocationByTenureContent[globalConfig.comparisonKey[0]],
+								housingType:
+									dislocationByHousingTypeContent[
+										globalConfig.comparisonKey[0]
+									],
 							}}
 							resultsJsonB={{
-								income: dislocationByIncomeContent[comparisonKey[1]],
-								race: dislocationByRaceContent[comparisonKey[1]],
-								tenure: dislocationByTenureContent[comparisonKey[1]],
-								housingType: dislocationByHousingTypeContent[comparisonKey[1]],
+								income:
+									dislocationByIncomeContent[globalConfig.comparisonKey[1]],
+								race: dislocationByRaceContent[globalConfig.comparisonKey[1]],
+								tenure:
+									dislocationByTenureContent[globalConfig.comparisonKey[1]],
+								housingType:
+									dislocationByHousingTypeContent[
+										globalConfig.comparisonKey[1]
+									],
 							}}
 						/>
 					) : (

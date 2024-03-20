@@ -203,7 +203,8 @@ globals["inputDatasetTypes"] = {
 };
 
 // ******************* SLC GLOBAL CONFIGS *******************
-globals["maestroServiceBase"] = `${hostname}/maestro/slc/`;
+const testbed = "slc";
+globals["maestroServiceBase"] = `${hostname}/maestro/${testbed}/`;
 globals["allowedRegions"] = [
 	{
 		name: "R1",
@@ -214,6 +215,7 @@ globals["allowedRegions"] = [
 		value: "R2",
 	},
 ];
+globals["testbed"] = testbed;
 globals["testbedSpace"] = "commresilienceslc";
 globals["testbedGroup"] = "incore_slc_user"; // incore_galveston_user, incore_joplin_user, incore_slc_user
 
@@ -226,8 +228,6 @@ globals["inputDatasetTypes"].buildings = [
 		dispatchKey: "RECEIVE_BLDGS",
 	},
 ];
-
-globals["testBed"] = "slc";
 
 globals["retrofitStrategyBuilder"] = {
 	colorCodes: [
@@ -298,8 +298,13 @@ globals["retrofitStrategyBuilder"] = {
 	zoneLayerId: "65f509b6e42f3b0da55d74cf", // city council district
 	activeLayerNames: "Zone",
 	activeLayerFieldname: "NAME",
+	zoneMapBounds: [
+		-112.10137778755622, 40.69990503292076, -111.74045871645396,
+		40.853385059088794,
+	],
 };
 
+globals["comparisonKey"] = ["A", "B"];
 export { globals };
 
 export const testUserInfo = "commresilience";

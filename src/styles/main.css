@@ -332,3 +332,8 @@ body {
 	width: 30000px !important;
 	height: 30000px !important;
 }
+
+/*Set color of checkbox when selected*/
+.MuiCheckbox-colorSecondary.Mui-checked {
+	color: #00619d !important;
+}

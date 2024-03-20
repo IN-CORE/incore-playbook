@@ -158,8 +158,8 @@ export const validateCoord = (lon, lat, boundingBox) => {
 		!isNaN(parseFloat(lat)) &&
 		parseFloat(lon) > boundingBox[0] &&
 		parseFloat(lon) < boundingBox[2] &&
-		parseFloat(lat) < boundingBox[1] &&
-		parseFloat(lat) > boundingBox[3]
+		parseFloat(lat) > boundingBox[1] &&
+		parseFloat(lat) < boundingBox[3]
 	);
 };
 

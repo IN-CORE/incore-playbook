@@ -6,6 +6,8 @@ let hostname = process.env.INCORE_REMOTE_HOSTNAME || "";
 
 globals["baseUrlRoute"] = "playbook";
 globals["geoServerWMS"] = `${hostname}/geoserver/incore/wms`;
+globals["geoServerWFS"] =
+	`${hostname}/geoserver/incore/ows?service=WFS&version=1.0.0&request=GetFeature&outputFormat=application/json`;
 globals["client_id"] = "react-auth";
 globals["authService"] =
 	`${hostname}/auth/realms/In-core/protocol/openid-connect/token`;
@@ -201,11 +203,8 @@ globals["inputDatasetTypes"] = {
 };
 
 // ******************* Galveston GLOBAL CONFIGS *******************
-
-globals["geoServerWFS"] =
-	`${hostname}/geoserver/incore/ows?service=WFS&version=1.0.0&request=GetFeature&outputFormat=application/json`;
-globals["zoneLayer"] = "";
-globals["maestroServiceBase"] = `${hostname}/maestro/galveston/`;
+const testbed = "galveston";
+globals["maestroServiceBase"] = `${hostname}/maestro/${testbed}/`;
 globals["allowedRegions"] = [
 	{
 		name: "Island",
@@ -228,8 +227,7 @@ globals["inputDatasetTypes"].buildings = [
 	},
 ];
 
-globals["testBed"] = "gal";
-
+globals["testbed"] = testbed;
 globals["retrofitStrategyBuilder"] = {
 	maxStrategies: 4,
 	displayValues: {
@@ -251,7 +249,7 @@ globals["retrofitStrategyBuilder"] = {
 		{
 			label: "Flood Zone",
 			type: "mapSelect",
-			key: "zone",
+			key: "zones",
 			possibleOptions: [
 				{
 					label: "1 % Annual Chance Flood Hazard",
@@ -310,6 +308,7 @@ globals["retrofitStrategyBuilder"] = {
 		},
 	],
 };
+globals["comparisonKey"] = ["A", "B"];
 
 export { globals };
 

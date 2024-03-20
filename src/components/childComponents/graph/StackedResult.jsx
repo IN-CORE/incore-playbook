@@ -63,22 +63,42 @@ export function StackedResult(props) {
 		labels: categories,
 		datasets: [
 			{
-				label: "DS_0",
+				label:
+					"Insignificant" in categorySummary[0]
+						? "Insignificant"
+						: "Affected" in categorySummary[0]
+						  ? "Affected"
+						  : "DS_0",
 				backgroundColor: "#96B712",
 				data: DS_0,
 			},
 			{
-				label: "DS_1",
+				label:
+					"Moderate" in categorySummary[0]
+						? "Moderate"
+						: "Minor" in categorySummary[0]
+						  ? "Minor"
+						  : "DS_1",
 				backgroundColor: "#F7C137",
 				data: DS_1,
 			},
 			{
-				label: "DS_2",
+				label:
+					"Extensive" in categorySummary[0]
+						? "Extensive"
+						: "Major" in categorySummary[0]
+						  ? "Major"
+						  : "DS_2",
 				backgroundColor: "#ED8036",
 				data: DS_2,
 			},
 			{
-				label: "DS_3",
+				label:
+					"Complete" in categorySummary[0]
+						? "Complete"
+						: "Destroyed" in categorySummary[0]
+						  ? "Destroyed"
+						  : "DS_3",
 				backgroundColor: "#D63649",
 				data: DS_3,
 			},

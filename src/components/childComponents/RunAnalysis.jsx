@@ -84,7 +84,7 @@ const registeredWidgets = {
 	ValueLosses: <ValueLosses />,
 };
 
-export default function ViewResult(props) {
+export default function RunAnalysis(props) {
 	const classes = useStyles();
 
 	const {
@@ -138,7 +138,7 @@ export default function ViewResult(props) {
 	}, [datawolfFormState, title, description]);
 
 	const handleRunButtonClick = async () => {
-		const datawolfExecutionStatus = await submitExecution(
+		const { datawolfExecutionStatus, _ } = await submitExecution(
 			datawolfConfig,
 			datawolfWorkflowConfig,
 			title,
