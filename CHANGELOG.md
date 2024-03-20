@@ -8,6 +8,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+### Added
+- Add retrofit condition summary button next to the retrofit strategy file in step 2-4[#386](https://github.com/IN-CORE/incore-playbook/issues/386)
+
 ### Fixed
 - Remove the extra % sign from population dislocation comparison table [#362](https://github.com/IN-CORE/incore-playbook/issues/362)
 
