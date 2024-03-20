@@ -14,7 +14,6 @@ import {
 	TablePagination,
 	TableRow,
 	TableSortLabel,
-	Tooltip,
 	Typography,
 } from "@material-ui/core";
 import UnfoldMoreIcon from "@material-ui/icons/UnfoldMore";
