@@ -3,10 +3,11 @@ import { Map as OLMap, View } from "ol";
 import Overlay from "ol/Overlay";
 import LayerSwitcher from "./LayerSwitcher";
 import {
-	Grid,
 	Accordion,
-	AccordionSummary,
 	AccordionDetails,
+	AccordionSummary,
+	Box,
+	Grid,
 	Table,
 	TableBody,
 	TableCell,
@@ -16,8 +17,10 @@ import {
 } from "@material-ui/core";
 import LoadingOverlay from "react-loading-overlay";
 import { makeStyles } from "@material-ui/core/styles";
-import { maxStateMapping, fetchLegendsForLayers } from "../../../utils/common";
+import { fetchLegendsForLayers, maxStateMapping } from "../../../utils/common";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
+import { IncoreTitle } from "../../styledComponents/IncoreTitle";
+import { IncoreFootNote } from "../../styledComponents/IncoreFootNote";
 
 export const MapContext = React.createContext({});
 
@@ -80,11 +83,6 @@ const useStyles = makeStyles({
 		flexDirection: "row",
 		padding: "10px",
 		gap: "20px",
-	},
-	legendTitle: {
-		fontWeight: "bold",
-		fontSize: "1.25em",
-		color: "#154D8B",
 	},
 	legendGroup: {
 		minWidth: "200px",
@@ -463,13 +461,21 @@ const MapCompare = (props) => {
 				</div>
 			</Grid>
 			<Grid item xs={12}>
-				<Accordion>
+				<Accordion style={{ boxShadow: "none" }}>
 					<AccordionSummary
 						expandIcon={<ExpandMoreIcon />}
 						aria-controls="panel1a-content"
 						id="panel1a-header"
+						style={{ padding: "0" }}
 					>
-						<p className={classes.legendTitle}>Legends</p>
+						<Box display="flex" flexDirection="column" alignItems="flex-start">
+							<IncoreTitle style={{ color: "#00619D", marginBottom: "auto" }}>
+								Legends
+							</IncoreTitle>
+							<IncoreFootNote>
+								Click to expand and view the legends
+							</IncoreFootNote>
+						</Box>
 					</AccordionSummary>
 					<AccordionDetails>
 						<div className={classes.innerLegendDiv}>
