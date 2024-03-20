@@ -266,12 +266,13 @@ export const BuiltEnvironment = ({ step, substep }) => {
 					setStrategySummaryLoading(false);
 				});
 			} else if (response.status === 401) {
+				setStrategySummaryLoading(false);
 				dispatch({
 					type: "LOGIN_ERROR",
 				});
 			} else {
+				setStrategySummaryLoading(false);
 				console.log(response.status, response);
-				setStrategySummaryModalStatus(false);
 			}
 		});
 	};
@@ -855,7 +856,11 @@ export const BuiltEnvironment = ({ step, substep }) => {
 					{/* For Retrofit Strategy Summary */}
 					<Dialog
 						open={strategySummaryModalStatus}
-						onClose={() => setStrategySummaryModalStatus(false)}
+						onClose={() => {
+							// reset data
+							setStrategySummaryModalStatus(false);
+							setStrategySummaryData(null);
+						}}
 						PaperProps={{
 							style: { minHeight: "800px" }, // Set your desired minimum height here
 						}}
@@ -868,7 +873,10 @@ export const BuiltEnvironment = ({ step, substep }) => {
 							<IconButton
 								aria-label="close"
 								className={classes.closeButton}
-								onClick={() => setStrategySummaryModalStatus(false)}
+								onClick={() => {
+									setStrategySummaryModalStatus(false);
+									setStrategySummaryData(null);
+								}}
 							>
 								<CloseIcon />
 							</IconButton>
@@ -907,8 +915,12 @@ export const BuiltEnvironment = ({ step, substep }) => {
 											summary
 										/>
 									) : (
-										<Typography variant="h6" color="error">
-											No data available
+										<Typography
+											color="error"
+											style={{ textAlign: "center", marginTop: "20%" }}
+										>
+											This retrofit strategy has been directly uploaded by the
+											end user. No summary is available.
 										</Typography>
 									)}
 								</LoadingOverlay>

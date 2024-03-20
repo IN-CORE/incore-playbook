@@ -80,7 +80,7 @@ const datawolfRsWorkflowConfig = {
 				variableName: "spaces",
 				widget: null,
 				hidden: true,
-				defaultValue: "commresilienceslc",
+				defaultValue: "commresiliencegal",
 				parametersMap: [
 					{
 						paramId: "bb8ebbaf-3c76-417c-8ffe-fad2d574ec48",
