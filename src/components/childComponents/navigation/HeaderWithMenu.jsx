@@ -39,7 +39,7 @@ import Grid from "@material-ui/core/Grid";
 import Gravatar from "react-gravatar";
 
 import "../../../styles/main.css";
-import { getCurrEmail } from "../../../utils/common";
+import { getCurrEmail, PLAYBOOK_AUTH_COOKIE } from "../../../utils/common";
 import { Welcome } from "../user/Welcome";
 
 const cookies = new Cookies();
@@ -170,7 +170,7 @@ const HeaderWithMenu = ({
 
 	// //TODO: move this to utils if needed
 	const handleLogout = () => {
-		cookies.remove("Authorization", { path: "/" });
+		cookies.remove(PLAYBOOK_AUTH_COOKIE, { path: "/" });
 		cookies.remove("DatawolfUserDetails", { path: "/" });
 		history.push("/login");
 	};

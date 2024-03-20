@@ -241,6 +241,8 @@ globals["inputDatasetTypes"] = {
 	],
 };
 
+globals["comparisonKey"] = ["A", "B"];
+
 export { globals };
 
 export const testUserInfo = "commresilience";
