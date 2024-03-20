@@ -795,7 +795,7 @@ export default function RetrofitStrategyBuilder(props) {
 					<CloseIcon />
 				</IconButton>
 			</DialogTitle>
-			<DialogContent dividers style={{ position: "relative" }}>
+			<DialogContent dividers>
 				<Stepper activeStep={activeStep}>
 					{steps.map((label) => (
 						<Step key={label}>
@@ -1092,21 +1092,13 @@ export default function RetrofitStrategyBuilder(props) {
 						/>
 					</Grid>
 				</LoadingOverlay>
-				{/*stick to the bottom*/}
-				<div
-					style={{
-						position: "absolute",
-						bottom: "2em",
-					}}
-				>
-					<AlertMessage
-						open={errorAlertOpen}
-						setOpen={setErrorAlertOpen}
-						message={errorMessage}
-						alertSeverity={"error"}
-						status={errorStatus}
-					/>
-				</div>
+				<AlertMessage
+					open={errorAlertOpen}
+					setOpen={setErrorAlertOpen}
+					message={errorMessage}
+					alertSeverity={"error"}
+					status={errorStatus}
+				/>
 			</DialogContent>
 			<DialogActions
 				disableSpacing

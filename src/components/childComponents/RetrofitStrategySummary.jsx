@@ -429,8 +429,8 @@ export default function RetrofitStrategySummary(props) {
 														className={classes.tableSavedValue}
 													>
 														{retrofitDetails.by_rule &&
-														retrofitDetails.by_rule.length > 0 &&
-														"cost" in retrofitDetails.by_rule[key]
+														`${key}` in retrofitDetails.by_rule &&
+														"cost" in retrofitDetails.by_rule[`${key}`]
 															? getDollarString(
 																	retrofitDetails.by_rule[`${key}`].cost,
 															  )
@@ -447,15 +447,16 @@ export default function RetrofitStrategySummary(props) {
 														className={classes.tableSavedValue}
 													>
 														{retrofitDetails.by_rule &&
-														retrofitDetails.by_rule.length > 0 &&
-														"num_bldg" in retrofitDetails.by_rule[key]
+														`${key}` in retrofitDetails.by_rule &&
+														"num_bldg" in retrofitDetails.by_rule[`${key}`]
 															? retrofitDetails.by_rule[`${key}`].num_bldg
 															: "N/A"}
 													</Typography>
 													<IncoreFootNote style={{ color: "red" }}>
 														{retrofitDetails.by_rule &&
-														retrofitDetails.by_rule.length > 0 &&
-														"num_bldg_no_cost" in retrofitDetails.by_rule[key]
+														`${key}` in retrofitDetails.by_rule &&
+														"num_bldg_no_cost" in
+															retrofitDetails.by_rule[`${key}`]
 															? retrofitDetails.by_rule[`${key}`]
 																	.num_bldg_no_cost > 0
 																? `(${
