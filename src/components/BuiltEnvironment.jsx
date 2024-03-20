@@ -4,9 +4,11 @@ import {
 	Box,
 	Dialog,
 	DialogContent,
+	DialogTitle,
 	Divider,
 	Grid,
 	IconButton,
+	Typography,
 } from "@material-ui/core";
 
 import { Layout } from "./Layout";
@@ -33,13 +35,14 @@ import {
 } from "./styledComponents/IncoreSelect";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchDatasets } from "../actions/datasets";
+import { getHeader, move2TestbedSpace } from "../utils/common";
 
 import Pagination from "./childComponents/navigation/Pagination";
 import RetrofitStrategyBuilder from "./childComponents/RetrofitStrategyBuilder";
-import { move2TestbedSpace } from "../utils/common";
+import RetrofitStrategySummary from "./childComponents/RetrofitStrategySummary";
 import { DownloadAlert } from "./childComponents/alert/DownloadAlert";
 
-const useStyles = makeStyles({
+const useStyles = makeStyles((theme) => ({
 	title: {
 		fontSize: "20px",
 	},
@@ -47,6 +50,12 @@ const useStyles = makeStyles({
 		color: "red",
 		border: "solid 1px",
 		width: "100%",
+	},
+	closeButton: {
+		position: "absolute",
+		right: theme.spacing(1),
+		top: theme.spacing(1),
+		color: theme.palette.grey[500],
 	},
 	uploadSection: {
 		padding: "20px 0px 20px 0px",
@@ -83,7 +92,7 @@ const useStyles = makeStyles({
 		border: "solid 1px",
 		width: "100%",
 	},
-});
+}));
 
 export const BuiltEnvironment = ({ step, substep }) => {
 	const classes = useStyles();
@@ -152,6 +161,11 @@ export const BuiltEnvironment = ({ step, substep }) => {
 	const [downloadDialogOpen, setDownloadDialogOpen] = React.useState(false);
 	const [strategyBuilderModalStatus, setStrategyBuilderModalStatus] =
 		React.useState(false);
+	const [strategySummaryModalStatus, setStrategySummaryModalStatus] =
+		React.useState(false);
+	const [strategySummaryLoading, setStrategySummaryLoading] =
+		React.useState(false);
+	const [strategySummaryData, setStrategySummaryData] = React.useState(null);
 
 	// load uploaded dataset
 	useEffect(() => {
@@ -231,6 +245,35 @@ export const BuiltEnvironment = ({ step, substep }) => {
 		setDescription("");
 		setLoading(false);
 		setDatasetType("");
+	};
+
+	const actionClick = (id, name, description) => {
+		// show the retrofit strategy summary modal
+		setStrategySummaryModalStatus(true);
+		const url = `${globalConfig.maestroServiceBase}datasets/${id}/rsdetails`;
+		setStrategySummaryLoading(true);
+		fetch(url, {
+			mode: "cors",
+			headers: getHeader(globalConfig.hostname),
+		}).then((response) => {
+			if (response.status === 200) {
+				response.json().then((json) => {
+					// set name and description
+					json.name = name;
+					json.description = description;
+
+					setStrategySummaryData(json);
+					setStrategySummaryLoading(false);
+				});
+			} else if (response.status === 401) {
+				dispatch({
+					type: "LOGIN_ERROR",
+				});
+			} else {
+				console.log(response.status, response);
+				setStrategySummaryModalStatus(false);
+			}
+		});
 	};
 
 	const _pageChangeHelper = (
@@ -567,6 +610,9 @@ export const BuiltEnvironment = ({ step, substep }) => {
 													<EntryTable
 														fieldNames={fieldNames}
 														fields={getRow(retrofitStrategies)}
+														enableAction={true}
+														actionBtnText="View the Summary"
+														actionClick={actionClick}
 													/>
 												</Box>
 												<Pagination
@@ -806,6 +852,69 @@ export const BuiltEnvironment = ({ step, substep }) => {
 						strategyBuilderModalStatus={strategyBuilderModalStatus}
 						onRetrofitStrategyBuilderClose={onRetrofitStrategyBuilderClose}
 					/>
+					{/* For Retrofit Strategy Summary */}
+					<Dialog
+						open={strategySummaryModalStatus}
+						onClose={() => setStrategySummaryModalStatus(false)}
+						PaperProps={{
+							style: { minHeight: "800px" }, // Set your desired minimum height here
+						}}
+						maxWidth="lg"
+						fullWidth
+						scroll="paper"
+					>
+						<DialogTitle>
+							<Typography variant="h6">Retrofit Strategy Summary</Typography>
+							<IconButton
+								aria-label="close"
+								className={classes.closeButton}
+								onClick={() => setStrategySummaryModalStatus(false)}
+							>
+								<CloseIcon />
+							</IconButton>
+						</DialogTitle>
+						<DialogContent>
+							<Box>
+								<LoadingOverlay
+									active={strategySummaryLoading}
+									spinner
+									styles={{
+										overlay: (base) => ({
+											...base,
+											background: "white",
+											color: "black",
+										}),
+										spinner: (base) => ({
+											...base,
+											"& svg circle": {
+												stroke: "#00619D",
+											},
+										}),
+									}}
+									text="Loading Retrofit Strategy Summary..."
+								>
+									{strategySummaryData ? (
+										<RetrofitStrategySummary
+											name={strategySummaryData.name}
+											description={strategySummaryData.description}
+											retrofitDetails={{
+												total: strategySummaryData.total,
+												by_rule: strategySummaryData.by_rule,
+											}}
+											rules={strategySummaryData.rules}
+											retrofits={strategySummaryData.retrofits}
+											rsLayerId={strategySummaryData.rsDetailsLayerId}
+											summary
+										/>
+									) : (
+										<Typography variant="h6" color="error">
+											No data available
+										</Typography>
+									)}
+								</LoadingOverlay>
+							</Box>
+						</DialogContent>
+					</Dialog>
 					{/*for individual analysis result preview*/}
 					<Dialog
 						open={uploadModalStatus}

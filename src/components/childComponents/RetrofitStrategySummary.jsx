@@ -113,11 +113,20 @@ export default function RetrofitStrategySummary(props) {
 		return `$ ${formattedNum}`;
 	};
 
-	const { name, description, retrofitDetails, rules, retrofits, rsLayerId } =
-		props;
+	const {
+		name,
+		description,
+		retrofitDetails,
+		rules,
+		retrofits,
+		rsLayerId,
+		summary,
+	} = props;
 
 	const getLabel = (value, possibleOptions) => {
-		const option = possibleOptions.find((option) => option.value === value);
+		const option = possibleOptions.find(
+			(option) => option.value.toLowerCase() === value.toLowerCase(),
+		);
 		return option ? option.label : value;
 	};
 
@@ -166,7 +175,7 @@ export default function RetrofitStrategySummary(props) {
 			container
 			alignItems="flex-start"
 			spacing={3}
-			style={{ marginLeft: "25px", marginRight: "25px" }}
+			style={summary ? null : { marginLeft: "25px", marginRight: "25px" }}
 		>
 			<Grid gutterTop item xs={12}>
 				<Typography variant="h6" className={classes.mapHeaderText}>
