@@ -59,14 +59,21 @@ const useStyles = makeStyles({
 	tableColumnHeadGreen: {
 		...tableColumnHead,
 		backgroundColor: "#A1BE2E",
+		textAlign: "left",
 	},
 	tableColumnHeadRed: {
 		...tableColumnHead,
 		backgroundColor: "#CB5963",
+		textAlign: "left",
 	},
 	tableColumnHeadDarkRed: {
 		...tableColumnHead,
 		backgroundColor: "#833841",
+		textAlign: "left",
+	},
+	tableColumnHeadPurple: {
+		...tableRowHead,
+		textAlign: "left",
 	},
 	tableDataCell: {
 		width: "100px",
@@ -197,10 +204,7 @@ export function CGEResultsTableCompare(props) {
 						</TableRow>
 
 						<TableRow>
-							<TableCell
-								className={classes.tableColumnHeadRed}
-								style={{ textAlign: "right" }}
-							>
+							<TableCell className={classes.tableColumnHeadRed}>
 								% of Change
 							</TableCell>
 							{headers.slice(1).map((header, idx) => {
@@ -215,10 +219,7 @@ export function CGEResultsTableCompare(props) {
 						</TableRow>
 
 						<TableRow>
-							<TableCell
-								className={classes.tableColumnHeadDarkRed}
-								sx={{ textAlign: "left", paddingLeft: 0 }}
-							>
+							<TableCell className={classes.tableColumnHeadDarkRed}>
 								B
 							</TableCell>
 							{headers.slice(1).map((header, idx) => {
@@ -233,10 +234,7 @@ export function CGEResultsTableCompare(props) {
 						</TableRow>
 
 						<TableRow>
-							<TableCell
-								className={classes.tableColumnHeadDarkRed}
-								style={{ textAlign: "right" }}
-							>
+							<TableCell className={classes.tableColumnHeadDarkRed}>
 								% of Change
 							</TableCell>
 							{headers.slice(1).map((header, idx) => {
@@ -251,9 +249,8 @@ export function CGEResultsTableCompare(props) {
 						</TableRow>
 
 						<TableRow>
-							<TableCell className={classes.tableRowHead}>
-								{" "}
-								Difference between A and B{" "}
+							<TableCell className={classes.tableColumnHeadPurple}>
+								Difference between A and B
 							</TableCell>
 							{headers.slice(1).map((header, idx) => {
 								return (

@@ -23,7 +23,7 @@ const ParseData = (data, executionTitles, region = null) => {
 	}
 
 	const chartData = [];
-	let chartFirstRow = ["Million of $", "Before Event"];
+	let chartFirstRow = ["Sectors", "Before Event"];
 	executionTitles.forEach((title) =>
 		chartFirstRow.push(`After Event ${title}`),
 	);
@@ -61,13 +61,10 @@ export default function CGEBarChartCompare(props) {
 					title: title,
 					legend: { position: "none" },
 					colors: ["#A1BE2E", "#CB5963", "#833841"],
-					hAxis: {
-						title: xAxisLegend,
-					},
-					vAxis: {
-						title: yAxisLegend,
-					},
 					bars: "horizontal",
+					hAxis: {
+						title: "X-Axis Label", // Replace 'X-Axis Label' with your desired label
+					},
 				}}
 				// For tests
 				rootProps={{ "data-testid": "1" }}

@@ -230,7 +230,7 @@ export default function CGECompare({
 												cgeDomesticSupplyContentB,
 											]}
 											executionTitles={selectedExecutionNames}
-											yAxisLegend="Million of $"
+											xAxisLegend="Million of $"
 											height="30em"
 										/>
 									</Box>
