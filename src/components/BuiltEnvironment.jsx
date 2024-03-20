@@ -190,6 +190,20 @@ export const BuiltEnvironment = ({ step, substep }) => {
 
 	const onRetrofitStrategyBuilderClose = () => {
 		setStrategyBuilderModalStatus(false);
+		// refetch retrofit strategy file list
+		globalConfig.inputDatasetTypes["retrofitStrategies"].map(
+			(inputDatasetType) => {
+				listDatasets(
+					globalConfig,
+					dataPerPage,
+					offsetRetrofitStrategies,
+					inputDatasetType["type"],
+				);
+			},
+		);
+		// flip to the first page
+		setOffsetRetrofitStrategies(0);
+		setPageNumberRetrofitStrategies(1);
 	};
 
 	const onFileInputChange = (event) => {
