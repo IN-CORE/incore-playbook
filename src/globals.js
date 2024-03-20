@@ -298,6 +298,10 @@ globals["retrofitStrategyBuilder"] = {
 	zoneLayerId: "65f509b6e42f3b0da55d74cf", // city council district
 	activeLayerNames: "Zone",
 	activeLayerFieldname: "NAME",
+	zoneMapBounds: [
+		-112.10137778755622, 40.69990503292076, -111.74045871645396,
+		40.853385059088794,
+	],
 };
 
 global["comparisonKey"] = ["A", "B"];

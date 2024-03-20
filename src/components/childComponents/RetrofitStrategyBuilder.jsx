@@ -602,7 +602,12 @@ export default function RetrofitStrategyBuilder(props) {
 		};
 
 		addedRows.forEach((row) => {
-			rules.zones.push(row.zones.value);
+			// handle joplin case that doesn't have zones
+			if ("zones" in row) {
+				rules.zones.push(row.zones.value);
+			} else {
+				rules.zones.push("");
+			}
 			rules.strtypes.push(row.strtypes.value);
 			rules.pcts.push(parseFloat(row.pcts.value));
 			retrofits.ret_keys.push(`${row.retrofits.value.ret_key}`);
@@ -629,26 +634,25 @@ export default function RetrofitStrategyBuilder(props) {
 			globalConfig.testbed,
 		);
 		let parameters = datawolfRsWorkflowConfig.inputs.parameters;
-		let datawolfFormState = parameters.reduce((state, p) => {
-			let mapState = {};
-			let value;
+		let datawolfFormState = parameters.reduce((state, parameter) => {
+			const value =
+				parameter.variableName === "name"
+					? name
+					: parameter.variableName === "retrofits"
+					  ? JSON.stringify(retrofits)
+					  : parameter.variableName === "rules"
+					    ? JSON.stringify(rules)
+					    : undefined;
 
-			// TODO: I don't like this hard-coding at all
-			if (p.variableName === "name") {
-				value = name;
-			} else if (p.variableName === "retrofits") {
-				value = JSON.stringify(retrofits);
-			} else if (p.variableName === "rules") {
-				value = JSON.stringify(rules);
-			}
+			const mappedState = parameter.parametersMap.reduce(
+				(acc, pm) => ({
+					...acc,
+					[pm.paramId]: value || parameter.defaultValue,
+				}),
+				{},
+			);
 
-			// pre-populate the default fields
-			p.parametersMap.map((pm) => {
-				mapState[pm.paramId] = p.defaultValue;
-				if (value) mapState[pm.paramId] = value;
-			}, {});
-
-			return { ...state, [p.variableName]: mapState };
+			return { ...state, [parameter.variableName]: mappedState };
 		}, {});
 
 		const { datawolfExecutionStatus, datawolfExecutionId } =

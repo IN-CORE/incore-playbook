@@ -86,11 +86,11 @@ export const ZoneSelectionMapDialog = (props) => {
 				{basicLayers && zoneLayer ? (
 					<ZoneSelectionMap
 						className="fillContainer-ZoneSelectionMap"
-						zoom={mapConfig.ZOOM}
+						zoom={3}
 						minZoom={mapConfig.MIN_ZOOM}
 						maxZoom={mapConfig.MAX_ZOOM}
 						extent={applyTransform(
-							mapConfig.MAP_BOUNDS,
+							globalConfig.retrofitStrategyBuilder.zoneMapBounds,
 							getTransform("EPSG:4326", "EPSG:3857"),
 						)}
 						center={fromLonLat(mapConfig.MAP_CENTER)}

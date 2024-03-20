@@ -147,16 +147,18 @@ export default function RetrofitStrategySummary(props) {
 		);
 		setRetrofitLayer(retrofitLayer);
 
-		const zoneLayerDef = [
-			{
-				layerId: globalConfig.retrofitStrategyBuilder.zoneLayerId,
-				title: "Zone",
-				opacity: 0.3,
-				zIndex: 1,
-			},
-		];
-		const zoneLayer = generateLayers(globalConfig, zoneLayerDef, "Zone");
-		setZoneLayer(zoneLayer);
+		if ("zoneLayerId" in globalConfig.retrofitStrategyBuilder) {
+			const zoneLayerDef = [
+				{
+					layerId: globalConfig.retrofitStrategyBuilder.zoneLayerId,
+					title: "Zone",
+					opacity: 0.3,
+					zIndex: 1,
+				},
+			];
+			const zoneLayer = generateLayers(globalConfig, zoneLayerDef, "Zone");
+			setZoneLayer(zoneLayer);
+		}
 	}, []);
 
 	return (
@@ -264,7 +266,7 @@ export default function RetrofitStrategySummary(props) {
 			</Grid>
 			<Grid item xs={12}>
 				{/*for map*/}
-				{basicLayers && retrofitLayer && zoneLayer ? (
+				{basicLayers && retrofitLayer ? (
 					<Container className="mapContainer" disableGutters>
 						<Map
 							className="fillContainer-retrofitStrategy"
@@ -272,11 +274,15 @@ export default function RetrofitStrategySummary(props) {
 							minZoom={mapConfig.MIN_ZOOM}
 							maxZoom={mapConfig.MAX_ZOOM}
 							extent={applyTransform(
-								mapConfig.MAP_BOUNDS,
+								globalConfig.retrofitStrategyBuilder.zoneMapBounds,
 								getTransform("EPSG:4326", "EPSG:3857"),
 							)}
 							center={fromLonLat(mapConfig.MAP_CENTER)}
-							layers={[basicLayers, zoneLayer, retrofitLayer]}
+							layers={
+								zoneLayer
+									? [basicLayers, zoneLayer, retrofitLayer]
+									: [basicLayers, retrofitLayer]
+							}
 							layerSwitcherOptions={{}}
 							allowBuildingSelection={true}
 							activeLayerNames="Retrofit Strategy"
