@@ -257,7 +257,7 @@ globals["retrofitStrategyBuilder"] = {
 		{
 			label: "City Council District",
 			type: "mapSelect",
-			key: "zone",
+			key: "zones",
 			possibleOptions: [],
 		},
 		{
