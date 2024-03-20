@@ -54,16 +54,18 @@ export default function CGEBarChartCompare(props) {
 			<Chart
 				width={width}
 				height={height}
-				chartType="Bar"
+				chartType="BarChart"
 				loader={<div>Loading Chart</div>}
 				data={ParseData(data, executionTitles, region)}
 				options={{
 					title: title,
-					legend: { position: "none" },
+					legend: { position: "right" },
 					colors: ["#A1BE2E", "#CB5963", "#833841"],
-					bars: "horizontal",
 					hAxis: {
-						title: "X-Axis Label", // Replace 'X-Axis Label' with your desired label
+						title: xAxisLegend,
+					},
+					vAxis: {
+						title: yAxisLegend,
 					},
 				}}
 				// For tests
