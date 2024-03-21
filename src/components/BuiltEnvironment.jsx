@@ -4,9 +4,11 @@ import {
 	Box,
 	Dialog,
 	DialogContent,
+	DialogTitle,
 	Divider,
 	Grid,
 	IconButton,
+	Typography,
 } from "@material-ui/core";
 
 import { Layout } from "./Layout";
@@ -24,6 +26,7 @@ import AddCircleOutlineIcon from "@material-ui/icons/AddCircleOutline";
 import LoadingOverlay from "react-loading-overlay";
 import fullHtml from "../public/steps/2-4.html";
 import CloseIcon from "@material-ui/icons/Close";
+import EditOutlinedIcon from "@material-ui/icons/EditOutlined";
 import FileUploadDrop from "./childComponents/form/FileUploadDrop";
 import { makeStyles } from "@material-ui/core/styles";
 import {
@@ -32,12 +35,14 @@ import {
 } from "./styledComponents/IncoreSelect";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchDatasets } from "../actions/datasets";
+import { getHeader, move2TestbedSpace } from "../utils/common";
 
 import Pagination from "./childComponents/navigation/Pagination";
-import { move2TestbedSpace } from "../utils/common";
+import RetrofitStrategyBuilder from "./childComponents/RetrofitStrategyBuilder";
+import RetrofitStrategySummary from "./childComponents/RetrofitStrategySummary";
 import { DownloadAlert } from "./childComponents/alert/DownloadAlert";
 
-const useStyles = makeStyles({
+const useStyles = makeStyles((theme) => ({
 	title: {
 		fontSize: "20px",
 	},
@@ -45,6 +50,12 @@ const useStyles = makeStyles({
 		color: "red",
 		border: "solid 1px",
 		width: "100%",
+	},
+	closeButton: {
+		position: "absolute",
+		right: theme.spacing(1),
+		top: theme.spacing(1),
+		color: theme.palette.grey[500],
 	},
 	uploadSection: {
 		padding: "20px 0px 20px 0px",
@@ -56,8 +67,14 @@ const useStyles = makeStyles({
 	subTitleRow: {
 		height: "50px",
 	},
+	subTitleBox: {
+		display: "flex",
+		height: "30px",
+		alignItems: "center",
+	},
 	subTitle: {
 		display: "inline",
+		marginBottom: "0px",
 	},
 	socioeconomicsSubBox: {
 		padding: "1em",
@@ -68,14 +85,14 @@ const useStyles = makeStyles({
 	plusButton: {
 		display: "inline",
 		float: "right",
-		padding: 0,
+		padding: 5,
 	},
 	subDivider: {
 		color: "#00619d",
 		border: "solid 1px",
 		width: "100%",
 	},
-});
+}));
 
 export const BuiltEnvironment = ({ step, substep }) => {
 	const classes = useStyles();
@@ -121,7 +138,7 @@ export const BuiltEnvironment = ({ step, substep }) => {
 	const huas = useSelector((state) => state.dataset.huas);
 	const blockGroups = useSelector((state) => state.dataset.blockGroups);
 	const valueLosses = useSelector((state) => state.dataset.valueLosses);
-	const [dataPerPage, setDataPerPage] = React.useState(2);
+	const [dataPerPage, setDataPerPage] = React.useState(5);
 	const [offsetBuilding, setOffsetBuilding] = React.useState(0);
 	const [pageNumberBuilding, setPageNumberBuilding] = React.useState(1);
 	const [offsetRetrofitStrategies, setOffsetRetrofitStrategies] =
@@ -142,6 +159,13 @@ export const BuiltEnvironment = ({ step, substep }) => {
 	const [pageNumberBlockGroups, setPageNumberBlockGroups] = React.useState(1);
 	const [pageNumberValueLosses, setPageNumberValueLosses] = React.useState(1);
 	const [downloadDialogOpen, setDownloadDialogOpen] = React.useState(false);
+	const [strategyBuilderModalStatus, setStrategyBuilderModalStatus] =
+		React.useState(false);
+	const [strategySummaryModalStatus, setStrategySummaryModalStatus] =
+		React.useState(false);
+	const [strategySummaryLoading, setStrategySummaryLoading] =
+		React.useState(false);
+	const [strategySummaryData, setStrategySummaryData] = React.useState(null);
 
 	// load uploaded dataset
 	useEffect(() => {
@@ -163,6 +187,24 @@ export const BuiltEnvironment = ({ step, substep }) => {
 			setDisabled(false);
 		else setDisabled(true);
 	}, [title, description, datasetType, files]);
+
+	const onRetrofitStrategyBuilderClose = () => {
+		setStrategyBuilderModalStatus(false);
+		// refetch retrofit strategy file list
+		globalConfig.inputDatasetTypes["retrofitStrategies"].map(
+			(inputDatasetType) => {
+				listDatasets(
+					globalConfig,
+					dataPerPage,
+					offsetRetrofitStrategies,
+					inputDatasetType["type"],
+				);
+			},
+		);
+		// flip to the first page
+		setOffsetRetrofitStrategies(0);
+		setPageNumberRetrofitStrategies(1);
+	};
 
 	const onFileInputChange = (event) => {
 		const fileList = Array.from(event.target.files);
@@ -217,6 +259,36 @@ export const BuiltEnvironment = ({ step, substep }) => {
 		setDescription("");
 		setLoading(false);
 		setDatasetType("");
+	};
+
+	const actionClick = (id, name, description) => {
+		// show the retrofit strategy summary modal
+		setStrategySummaryModalStatus(true);
+		const url = `${globalConfig.maestroServiceBase}datasets/${id}/rsdetails`;
+		setStrategySummaryLoading(true);
+		fetch(url, {
+			mode: "cors",
+			headers: getHeader(globalConfig.hostname),
+		}).then((response) => {
+			if (response.status === 200) {
+				response.json().then((json) => {
+					// set name and description
+					json.name = name;
+					json.description = description;
+
+					setStrategySummaryData(json);
+					setStrategySummaryLoading(false);
+				});
+			} else if (response.status === 401) {
+				setStrategySummaryLoading(false);
+				dispatch({
+					type: "LOGIN_ERROR",
+				});
+			} else {
+				setStrategySummaryLoading(false);
+				console.log(response.status, response);
+			}
+		});
 	};
 
 	const _pageChangeHelper = (
@@ -524,18 +596,25 @@ export const BuiltEnvironment = ({ step, substep }) => {
 													<IncoreInputLabel className={classes.subTitle}>
 														Building Retrofit Plans
 													</IncoreInputLabel>
-													{globalConfig.allowUpload ? (
-														<IconButton
-															className={classes.plusButton}
-															onClick={() => {
-																setUploadModalStatus(true);
-																setDatasetType("incore:retrofitStrategy");
-																setCategory("retrofitStrategies");
-															}}
-														>
-															<AddCircleOutlineIcon />
-														</IconButton>
-													) : null}
+													{/*Always allow upload of retrofit strategies*/}
+													<IconButton
+														className={classes.plusButton}
+														onClick={() => {
+															setUploadModalStatus(true);
+															setDatasetType("incore:retrofitStrategy");
+															setCategory("retrofitStrategies");
+														}}
+													>
+														<AddCircleOutlineIcon />
+													</IconButton>
+													<IconButton
+														className={classes.plusButton}
+														onClick={() => {
+															setStrategyBuilderModalStatus(true);
+														}}
+													>
+														<EditOutlinedIcon style={{ color: "#2E384D" }} />
+													</IconButton>
 													<Divider
 														orientation="horizontal"
 														className={classes.subDivider}
@@ -546,6 +625,9 @@ export const BuiltEnvironment = ({ step, substep }) => {
 													<EntryTable
 														fieldNames={fieldNames}
 														fields={getRow(retrofitStrategies)}
+														enableAction={true}
+														actionBtnText="Summary"
+														actionClick={actionClick}
 													/>
 												</Box>
 												<Pagination
@@ -780,6 +862,85 @@ export const BuiltEnvironment = ({ step, substep }) => {
 							<StepInfo fullHtml={fullHtml} />
 						</Grid>
 					</Grid>
+					{/* For Retrofit Strategy Builder */}
+					<RetrofitStrategyBuilder
+						strategyBuilderModalStatus={strategyBuilderModalStatus}
+						onRetrofitStrategyBuilderClose={onRetrofitStrategyBuilderClose}
+					/>
+					{/* For Retrofit Strategy Summary */}
+					<Dialog
+						open={strategySummaryModalStatus}
+						onClose={() => {
+							// reset data
+							setStrategySummaryModalStatus(false);
+							setStrategySummaryData(null);
+						}}
+						PaperProps={{
+							style: { minHeight: "800px" }, // Set your desired minimum height here
+						}}
+						maxWidth="lg"
+						fullWidth
+						scroll="paper"
+					>
+						<DialogTitle>
+							<Typography variant="h6">Retrofit Strategy Summary</Typography>
+							<IconButton
+								aria-label="close"
+								className={classes.closeButton}
+								onClick={() => {
+									setStrategySummaryModalStatus(false);
+									setStrategySummaryData(null);
+								}}
+							>
+								<CloseIcon />
+							</IconButton>
+						</DialogTitle>
+						<DialogContent>
+							<Box>
+								<LoadingOverlay
+									active={strategySummaryLoading}
+									spinner
+									styles={{
+										overlay: (base) => ({
+											...base,
+											background: "white",
+											color: "black",
+										}),
+										spinner: (base) => ({
+											...base,
+											"& svg circle": {
+												stroke: "#00619D",
+											},
+										}),
+									}}
+									text="Loading Retrofit Strategy Summary..."
+								>
+									{strategySummaryData ? (
+										<RetrofitStrategySummary
+											name={strategySummaryData.name}
+											description={strategySummaryData.description}
+											retrofitDetails={{
+												total: strategySummaryData.total,
+												by_rule: strategySummaryData.by_rule,
+											}}
+											rules={strategySummaryData.rules}
+											retrofits={strategySummaryData.retrofits}
+											rsLayerId={strategySummaryData.rsDetailsLayerId}
+											summary
+										/>
+									) : (
+										<Typography
+											color="error"
+											style={{ textAlign: "center", marginTop: "20%" }}
+										>
+											This retrofit strategy has been directly uploaded by the
+											end user. No summary is available.
+										</Typography>
+									)}
+								</LoadingOverlay>
+							</Box>
+						</DialogContent>
+					</Dialog>
 					{/*for individual analysis result preview*/}
 					<Dialog
 						open={uploadModalStatus}

@@ -1,14 +1,13 @@
 const layerStyles = {
+	RetrofitStrategy: "incore:retrofit-rules",
 	BldgDamage: "incore:galveston-bldg-dmg-fema",
 	BldgFunctionality: "incore:bldg-func",
 	BldgMCS: "incore:bldg-mcs",
 	Interdependency: "incore:substations-label",
 	PoleDamage: "incore:epf-dmg-summary",
-	PopulationDislocation: {
-		bldgMaxDamageStateINCOREId: "incore:bldg-dmg-summary",
-		popdislHeatmapINCOREId: "incore:heatmap",
-	},
+	PopulationDislocation: "incore:galveston-pop-dis",
 	SubstationDamage: "incore:epf-dmg-summary",
+	Zone: "incore:polygon",
 	MapUtil: {
 		earthquake: "incore:earthquake-pga-g",
 		tornado: "incore:tornado",

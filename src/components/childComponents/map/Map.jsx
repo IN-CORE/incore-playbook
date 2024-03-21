@@ -15,7 +15,7 @@ import {
 import LoadingOverlay from "react-loading-overlay";
 
 import LayerSwitcher from "./LayerSwitcher";
-import { maxStateMapping, fetchLegendsForLayers } from "../../../utils/common";
+import { fetchLegendsForLayers, maxStateMapping } from "../../../utils/common";
 import LegendIcon from "./LegendIcon";
 
 const useStyles = makeStyles({
@@ -50,6 +50,24 @@ const useStyles = makeStyles({
 		letterSpacing: 0,
 		lineHeight: "18px",
 		border: "1px solid rgba(46,91,255,0.08)",
+	},
+	tableContainer: {
+		position: "absolute",
+		width: "300px",
+		maxHeight: "356px",
+		top: "5px",
+		left: "30px",
+		Zindex: 5000,
+		padding: "5px",
+		overflow: "scroll",
+		scrollBehavior: "smooth",
+		"&::WebkitScrollbar": {
+			display: "none", // Hide the scrollbar for WebKit browsers (Chrome, Safari, Edge, etc.)
+		},
+		"&MsOverflowStyle:": {
+			display: "none", // Hide the scrollbar for IE
+		},
+		backgroundColor: "white",
 	},
 	legend: {
 		position: "absolute",
@@ -87,7 +105,14 @@ const useStyles = makeStyles({
 export const MapContext = React.createContext({});
 
 const Map = (props) => {
-	const { children, id, className, allowBuildingSelection, fields } = props;
+	const {
+		children,
+		id,
+		className,
+		allowBuildingSelection,
+		fields,
+		activeLayerNames,
+	} = props;
 	const hasLegend = props.hasLegend !== undefined ? props.hasLegend : true;
 	const classes = useStyles();
 
@@ -154,6 +179,8 @@ const Map = (props) => {
 				minZoom,
 				maxZoom,
 				extent,
+				showFullExtent: true,
+				smoothExtentConstraint: true,
 			}),
 			layers,
 			overlays: [
@@ -182,7 +209,11 @@ const Map = (props) => {
 
 		let damageLayerGrp = null;
 		layers.forEach((layerGrp) => {
-			if (layerGrp.getProperties().title === "Damage") {
+			if (
+				layerGrp.getProperties().title === activeLayerNames
+					? activeLayerNames
+					: "Damage"
+			) {
 				damageLayerGrp = layerGrp;
 			}
 		});
@@ -314,25 +345,7 @@ const Map = (props) => {
 				</MapContext.Provider>
 			</div>
 			{allowBuildingSelection && selectedBuilding ? (
-				<TableContainer
-					style={{
-						position: "absolute",
-						width: "300px",
-						maxHeight: "356px",
-						top: "5px",
-						left: "30px",
-						Zindex: 5000,
-						padding: "5px",
-						overflow: "scroll",
-						scrollBehavior: "smooth",
-						"&::WebkitScrollbar": {
-							display: "none", // Hide the scrollbar for WebKit browsers (Chrome, Safari, Edge, etc.)
-						},
-						"&MsOverflowStyle:": {
-							display: "none", // Hide the scrollbar for IE
-						},
-					}}
-				>
+				<TableContainer className={classes.tableContainer}>
 					<LoadingOverlay active={loading} spinner text="Loading...">
 						<Table
 							className={classes.table}
@@ -365,13 +378,13 @@ const Map = (props) => {
 								</TableRow> */}
 								<TableRow key="hdrRow">
 									<TableCell
-										align="center"
+										align="left"
 										style={{ backgroundColor: "#EFF2FF", color: "#69707F" }}
 									>
 										Attribute
 									</TableCell>
 									<TableCell
-										align="center"
+										align="right"
 										style={{ backgroundColor: "#EFF2FF", color: "#69707F" }}
 									>
 										Value
@@ -392,10 +405,11 @@ const Map = (props) => {
 														backgroundColor: "#EFF2FF",
 														color: "#69707F",
 													}}
+													align="left"
 												>
 													{colName}
 												</TableCell>
-												<TableCell align="center">
+												<TableCell align="right">
 													{colName === "max_state"
 														? maxStateMapping(
 																fields,

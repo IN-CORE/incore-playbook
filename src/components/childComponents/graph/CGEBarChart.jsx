@@ -45,7 +45,7 @@ export default function CGEBarChart(props) {
 				data={ParseData(data, region, yAxisLegend)}
 				options={{
 					title: title,
-					legend: { position: "none" },
+					legend: { position: "right" },
 					colors: ["#A1BE2E", "#DB4F60"],
 					hAxis: {
 						title: xAxisLegend,
@@ -53,7 +53,6 @@ export default function CGEBarChart(props) {
 					vAxis: {
 						title: yAxisLegend,
 					},
-					bars: "horizontal",
 				}}
 				// For tests
 				rootProps={{ "data-testid": "1" }}

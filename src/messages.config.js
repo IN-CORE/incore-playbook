@@ -142,7 +142,7 @@ export const hhsInfo = {
 // 	}
 // };
 
-// SLC & Galveston
+// SLC
 export const cgeInfo = {
 	totalHouseholdIncome: {
 		textTitle: 'What do we mean by "Total Household Income"?',
