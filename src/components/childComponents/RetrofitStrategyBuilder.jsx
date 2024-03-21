@@ -187,7 +187,8 @@ export default function RetrofitStrategyBuilder(props) {
 	// Error handling
 	const [errorAlertOpen, setErrorAlertOpen] = React.useState(false);
 	const [errorMessage, setErrorMessage] = React.useState("");
-	const [errorStatus, setErrorStatus] = React.useState(200);
+	const [errorStatus, setErrorStatus] = React.useState(-999);
+	const [alertSeverity, setAlertSeverity] = React.useState("error");
 
 	let conditionKeys = [];
 	let conditionSelectKeys = [];
@@ -553,7 +554,7 @@ export default function RetrofitStrategyBuilder(props) {
 						disabled={
 							currentlyEditing !== null
 								? false
-								: numRow === globalConfig.retrofitStrategyBuilder.maxStrategies
+								: numRow > globalConfig.retrofitStrategyBuilder.maxStrategies
 						}
 						variant="outlined"
 						color="primary"
@@ -786,10 +787,25 @@ export default function RetrofitStrategyBuilder(props) {
 		}
 	};
 
+	// listen to maximum rules reaches or not
+	useEffect(() => {
+		if (numRow > globalConfig.retrofitStrategyBuilder.maxStrategies) {
+			setErrorAlertOpen(true);
+			setErrorMessage(
+				`Maximum number of rules reached. You can only set up to ${globalConfig.retrofitStrategyBuilder.maxStrategies} rules.`,
+			);
+			setErrorStatus(-999);
+			setAlertSeverity("warning");
+		}
+	}, [numRow]);
+
 	return (
 		<Dialog
 			open={strategyBuilderModalStatus}
-			onClose={onRetrofitStrategyBuilderClose}
+			onClose={
+				// once summary is closed, reset the state
+				activeStep === 1 ? onRetrofitStrategyBuilderClose : handleCloseSummary
+			}
 			PaperProps={{
 				style: { minHeight: "800px" }, // Set your desired minimum height here
 			}}
@@ -802,7 +818,12 @@ export default function RetrofitStrategyBuilder(props) {
 				<IconButton
 					aria-label="close"
 					className={classes.closeButton}
-					onClick={onRetrofitStrategyBuilderClose}
+					onClick={
+						// once summary is closed, reset the state
+						activeStep === 1
+							? onRetrofitStrategyBuilderClose
+							: handleCloseSummary
+					}
 				>
 					<CloseIcon />
 				</IconButton>
@@ -1043,7 +1064,7 @@ export default function RetrofitStrategyBuilder(props) {
 								<Grid item xs={4}>
 									<Button
 										disabled={
-											numRow ===
+											numRow >
 											globalConfig.retrofitStrategyBuilder.maxStrategies
 										}
 										variant="text"
@@ -1116,7 +1137,7 @@ export default function RetrofitStrategyBuilder(props) {
 					open={errorAlertOpen}
 					setOpen={setErrorAlertOpen}
 					message={errorMessage}
-					alertSeverity={"error"}
+					alertSeverity={alertSeverity}
 					status={errorStatus}
 				/>
 			</DialogContent>
