@@ -101,18 +101,11 @@ export const CommunityHazards = (props) => {
 		hazardType,
 		limit,
 		offset,
-		orderDesc,
+		order,
 		orderBy,
 	) =>
 		dispatch(
-			fetchHazards(
-				globalConfig,
-				hazardType,
-				limit,
-				offset,
-				orderDesc ? "desc" : "asc",
-				orderBy,
-			),
+			fetchHazards(globalConfig, hazardType, limit, offset, order, orderBy),
 		);
 	const globalConfig = useSelector((state) => state.config.globalConfig);
 	const earthquakes = useSelector((state) => state.hazard.earthquakes);
@@ -135,8 +128,8 @@ export const CommunityHazards = (props) => {
 	const [offset, setOffset] = React.useState(0);
 	const [pageNumber, setPageNumber] = React.useState(1);
 	// use state to control order of the data and constant to choose the variable to be ordered
-	const [orderDesc, setOrderDesc] = React.useState(false);
-	const orderBy = "date";
+	const [order, setOrder] = React.useState("desc");
+	const [orderBy, setOrderBy] = React.useState("date");
 
 	const [olIdLayerMap, setOlIdLayerMap] = React.useState(new Set());
 	const [enableSrcEdit, setEnableSrcEdit] = React.useState(false); // directly edit in the child component geolocation
@@ -245,7 +238,8 @@ export const CommunityHazards = (props) => {
 			selectedHazardType,
 			dataPerPage,
 			offset,
-			orderDesc,
+			order,
+			orderBy,
 		);
 		// reset to the first tab
 		setCurrTabIndex(0);
@@ -270,16 +264,16 @@ export const CommunityHazards = (props) => {
 		setFields(getRow(selectedHazardType));
 	}, [earthquakes, tornadoes, hurricanes, tsunamis, floods]);
 
-	// When offset changes
 	useEffect(() => {
 		listHazards(
 			globalConfig,
 			selectedHazardType,
 			dataPerPage,
 			offset,
-			orderDesc,
+			order,
+			orderBy,
 		);
-	}, [offset, dataPerPage]);
+	}, [offset, dataPerPage, order, orderBy]);
 
 	useEffect(() => {
 		// Important: need to clear previous draw interaction first
@@ -632,10 +626,12 @@ export const CommunityHazards = (props) => {
 														<SortedEntryTable
 															fieldNames={fieldNames}
 															fields={fields}
-															setPageNum={setPageNumber}
-															orderDesc={orderDesc}
-															setOrderDesc={setOrderDesc}
+															setOffset={setOffset}
+															setPageNumber={setPageNumber}
+															order={order}
+															setOrder={setOrder}
 															orderBy={orderBy}
+															setOrderBy={setOrderBy}
 														/>
 														<Pagination
 															pageNumber={pageNumber}

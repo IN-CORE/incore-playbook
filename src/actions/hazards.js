@@ -18,15 +18,13 @@ export function fetchHazards(
 	hazardType = "tornadoes",
 	limit = 20,
 	offset = 0,
-	sort = "desc",
+	order = "desc",
 	orderBy = "date",
 ) {
 	hazardType = getHazardTypePlural(hazardType);
-	let endpoint = `${globalConfig.hazardServiceBase}${hazardType}?limit=${limit}&skip=${offset}&sort=${sort}&sortBy=${orderBy}`;
-
+	let endpoint = `${globalConfig.hazardServiceBase}${hazardType}?limit=${limit}&skip=${offset}&order=${order}&sortBy=${orderBy}`;
 	let space = globalConfig.testbedSpace;
 	if (space !== undefined) endpoint = `${endpoint}&space=${space}`;
-
 	return (dispatch) => {
 		return fetch(endpoint, {
 			mode: "cors",
