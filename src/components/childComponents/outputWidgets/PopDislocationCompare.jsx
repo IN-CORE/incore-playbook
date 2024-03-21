@@ -44,12 +44,12 @@ export default function PopDislocationCompare(props) {
 				const vName = datawolfDatasetConfigItem.datasets.variableName;
 				for (let i = 0; i < executionItems.length; i++) {
 					if (vName === "popdislHeatmapINCOREId") {
-						const popdislINCOREId = await getOutputFileContent(
+						let popdislINCOREId = await getOutputFileContent(
 							datawolfConfig,
 							executionItems[i],
 							datawolfDatasetConfigItem.datasetId,
 						);
-						const tmpLayerDef = [
+						let tmpLayerDef = [
 							{
 								layerId: popdislINCOREId,
 								layerStyles: mapConfig.LAYER_STYLES.PopulationDislocation,
@@ -58,7 +58,7 @@ export default function PopDislocationCompare(props) {
 								zIndex: i + 1,
 							},
 						];
-						const previewLayers = generateLayers(
+						let previewLayers = generateLayers(
 							globalConfig,
 							tmpLayerDef,
 							"Population Dislocation",
