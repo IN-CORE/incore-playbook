@@ -15,7 +15,8 @@ import {
 import LoadingOverlay from "react-loading-overlay";
 
 import LayerSwitcher from "./LayerSwitcher";
-import { maxStateMapping } from "../../../utils/common";
+import { fetchLegendsForLayers, maxStateMapping } from "../../../utils/common";
+import LegendIcon from "./LegendIcon";
 
 const useStyles = makeStyles({
 	table: {
@@ -50,6 +51,55 @@ const useStyles = makeStyles({
 		lineHeight: "18px",
 		border: "1px solid rgba(46,91,255,0.08)",
 	},
+	tableContainer: {
+		position: "absolute",
+		width: "300px",
+		maxHeight: "356px",
+		top: "5px",
+		left: "30px",
+		Zindex: 5000,
+		padding: "5px",
+		overflow: "scroll",
+		scrollBehavior: "smooth",
+		"&::WebkitScrollbar": {
+			display: "none", // Hide the scrollbar for WebKit browsers (Chrome, Safari, Edge, etc.)
+		},
+		"&MsOverflowStyle:": {
+			display: "none", // Hide the scrollbar for IE
+		},
+		backgroundColor: "white",
+	},
+	legend: {
+		position: "absolute",
+		top: "27%",
+		left: "0.5%",
+		backgroundColor: "white",
+		padding: "1%",
+		borderRadius: "5%",
+		boxShadow: "0 2px 10px rgba(0,0,0,0.3)",
+		maxHeight: "70%",
+		overflowY: "auto",
+		zIndex: 1000, // Added z-index here
+	},
+	legendButton: {
+		position: "absolute",
+		top: "17%",
+		left: "0.5%",
+		width: "2.25em",
+		height: "2.25em",
+		backgroundColor: "#FFFFFF",
+		borderRadius: "10%",
+		boxShadow: "0 2px 10px rgba(0,0,0,0.3)",
+		opacity: 0.9,
+		zIndex: 1000,
+		border: "none",
+		padding: 0,
+		outline: "none",
+		cursor: "pointer",
+		display: "flex",
+		justifyContent: "center",
+		alignItems: "center",
+	},
 });
 
 export const MapContext = React.createContext({});
@@ -63,6 +113,7 @@ const Map = (props) => {
 		fields,
 		activeLayerNames,
 	} = props;
+	const hasLegend = props.hasLegend !== undefined ? props.hasLegend : true;
 	const classes = useStyles();
 
 	const [selectedBuilding, setSelectedBuilding] = React.useState(null);
@@ -71,6 +122,11 @@ const Map = (props) => {
 	const fallbackContainer = React.useRef();
 
 	const mapRef = React.useRef();
+
+	// State variable to make legend collapsible
+	const [legendOpen, setLegendOpen] = React.useState(false);
+	// State variable to store legends
+	const [legends, setLegends] = React.useState([]);
 
 	// var markerStyle = new Style({
 	// 	image: new CircleStyle({
@@ -153,7 +209,11 @@ const Map = (props) => {
 
 		let damageLayerGrp = null;
 		layers.forEach((layerGrp) => {
-			if (layerGrp.getProperties().title === activeLayerNames ?? "Damage") {
+			if (
+				layerGrp.getProperties().title === activeLayerNames
+					? activeLayerNames
+					: "Damage"
+			) {
 				damageLayerGrp = layerGrp;
 			}
 		});
@@ -224,6 +284,8 @@ const Map = (props) => {
 
 		mapRef.current = map;
 
+		setLegends(fetchLegendsForLayers(layers));
+
 		return () => {
 			if (events) {
 				Object.entries(events).forEach(([event, handler]) => {
@@ -237,6 +299,41 @@ const Map = (props) => {
 
 	return allowBuildingSelection ? (
 		<div style={{ position: "relative" }}>
+			{hasLegend && (
+				<>
+					<button
+						onClick={() => setLegendOpen(!legendOpen)}
+						className={classes.legendButton}
+					>
+						<LegendIcon />
+					</button>
+					{legendOpen && (
+						<div className={classes.legend}>
+							{Object.entries(legends).map(([layerGroupName, layers]) => (
+								<div key={layerGroupName} style={{ marginBottom: "20px" }}>
+									<h3>{layerGroupName}</h3>
+									<ul style={{ listStyleType: "none" }}>
+										{Object.entries(layers).map(([layerName, { url }]) => (
+											<li key={layerName} style={{ marginBottom: "10px" }}>
+												<div>{layerName}</div>
+												<img
+													src={url}
+													alt={`Legend for ${layerName}`}
+													style={{
+														maxWidth: "70%",
+														height: "auto",
+														marginTop: "5px",
+													}}
+												/>
+											</li>
+										))}
+									</ul>
+								</div>
+							))}
+						</div>
+					)}
+				</>
+			)}
 			<div
 				id={id}
 				style={{ width: "100%", height: "366px" }}
@@ -248,25 +345,7 @@ const Map = (props) => {
 				</MapContext.Provider>
 			</div>
 			{allowBuildingSelection && selectedBuilding ? (
-				<TableContainer
-					style={{
-						position: "absolute",
-						width: "300px",
-						maxHeight: "356px",
-						top: "5px",
-						left: "30px",
-						Zindex: 5000,
-						padding: "5px",
-						overflow: "scroll",
-						scrollBehavior: "smooth",
-						"&::WebkitScrollbar": {
-							display: "none", // Hide the scrollbar for WebKit browsers (Chrome, Safari, Edge, etc.)
-						},
-						"&MsOverflowStyle:": {
-							display: "none", // Hide the scrollbar for IE
-						},
-					}}
-				>
+				<TableContainer className={classes.tableContainer}>
 					<LoadingOverlay active={loading} spinner text="Loading...">
 						<Table
 							className={classes.table}
@@ -299,13 +378,13 @@ const Map = (props) => {
 								</TableRow> */}
 								<TableRow key="hdrRow">
 									<TableCell
-										align="center"
+										align="left"
 										style={{ backgroundColor: "#EFF2FF", color: "#69707F" }}
 									>
 										Attribute
 									</TableCell>
 									<TableCell
-										align="center"
+										align="right"
 										style={{ backgroundColor: "#EFF2FF", color: "#69707F" }}
 									>
 										Value
@@ -326,10 +405,11 @@ const Map = (props) => {
 														backgroundColor: "#EFF2FF",
 														color: "#69707F",
 													}}
+													align="left"
 												>
 													{colName}
 												</TableCell>
-												<TableCell align="center">
+												<TableCell align="right">
 													{colName === "max_state"
 														? maxStateMapping(
 																fields,

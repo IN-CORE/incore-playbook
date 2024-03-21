@@ -1,4 +1,4 @@
-import { Box, Container, Grid } from "@material-ui/core";
+import { Box, Grid } from "@material-ui/core";
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import {
@@ -29,10 +29,8 @@ export default function PopDislocationCompare(props) {
 		useState(null);
 	const [dislocationByHousingTypeContent, setDislocationByHousingTypeContent] =
 		useState(null);
-	const [damageLayersA1, setDamageLayersA1] = useState(null);
-	const [damageLayersA2, setDamageLayersA2] = useState(null);
-	const [damageLayersB1, setDamageLayersB1] = useState(null);
-	const [damageLayersB2, setDamageLayersB2] = useState(null);
+	const [popDislocationLayerA, setPopDislocationLayerA] = useState(null);
+	const [popDislocationLayerB, setPopDislocationLayerB] = useState(null);
 
 	// one layer can only be added to one map, so creating multiple objects is necessary
 	const basicLayersA = createBasicLayers("Base Maps");
@@ -45,55 +43,30 @@ export default function PopDislocationCompare(props) {
 			for (const datawolfDatasetConfigItem of datawolfDatasetConfigItems) {
 				const vName = datawolfDatasetConfigItem.datasets.variableName;
 				for (let i = 0; i < executionItems.length; i++) {
-					if (vName === "bldgMaxDamageStateINCOREId") {
-						const bldgMaxDamageStateINCOREId = await getOutputFileContent(
+					if (vName === "popdislHeatmapINCOREId") {
+						let popdislINCOREId = await getOutputFileContent(
 							datawolfConfig,
 							executionItems[i],
 							datawolfDatasetConfigItem.datasetId,
 						);
-						const tmpLayerDef = [
+						let tmpLayerDef = [
 							{
-								layerId: bldgMaxDamageStateINCOREId,
-								layerStyles:
-									mapConfig.LAYER_STYLES.PopulationDislocation
-										.bldgMaxDamageStateINCOREId,
-								title: "Building Damage",
+								layerId: popdislINCOREId,
+								layerStyles: mapConfig.LAYER_STYLES.PopulationDislocation,
+								title: "Population Dislocation",
 								opacity: 1,
-								zIndex: 1,
+								zIndex: i + 1,
 							},
 						];
-						const previewLayers = generateLayers(globalConfig, tmpLayerDef);
-						if (i === 0) {
-							setDamageLayersA1(previewLayers);
-						} else {
-							setDamageLayersB1(previewLayers);
-						}
-					} else if (vName === "popdislHeatmapINCOREId") {
-						const popdislHeatmapINCOREId = await getOutputFileContent(
-							datawolfConfig,
-							executionItems[i],
-							datawolfDatasetConfigItem.datasetId,
-						);
-						const tmpLayerDef = [
-							{
-								layerId: popdislHeatmapINCOREId,
-								layerStyles:
-									mapConfig.LAYER_STYLES.PopulationDislocation
-										.popdislHeatmapINCOREId,
-								title: "Population Dislocation Heatmap",
-								opacity: 0.8,
-								zIndex: 2,
-							},
-						];
-						const previewLayers = generateLayers(
+						let previewLayers = generateLayers(
 							globalConfig,
 							tmpLayerDef,
 							"Population Dislocation",
 						);
 						if (i === 0) {
-							setDamageLayersA2(previewLayers);
+							setPopDislocationLayerA(previewLayers);
 						} else {
-							setDamageLayersB2(previewLayers);
+							setPopDislocationLayerB(previewLayers);
 						}
 					} else if (vName === "totalDislTableContent") {
 						if (i === 0) {
@@ -167,47 +140,37 @@ export default function PopDislocationCompare(props) {
 			{basicLayersA &&
 			basicLayersB &&
 			hazardLayers &&
-			damageLayersA1 &&
-			damageLayersB1 &&
-			damageLayersA2 &&
-			damageLayersB2 ? (
-				<Container
-					className="mapContainer"
-					disableGutters
-					style={{ height: `${mapHeight}px` }}
-				>
-					<MapCompare
-						className="fillContainer"
-						zoom={mapConfig.ZOOM}
-						minZoom={mapConfig.MIN_ZOOM}
-						maxZoom={mapConfig.MAX_ZOOM}
-						extent={applyTransform(
-							mapConfig.MAP_BOUNDS,
-							getTransform("EPSG:4326", "EPSG:3857"),
-						)}
-						center={fromLonLat(mapConfig.MAP_CENTER)}
-						layersA={[
-							basicLayersA,
-							hazardLayers[globalConfig.comparisonKey[0]],
-							damageLayersA1,
-							damageLayersA2,
-						]}
-						layersB={[
-							basicLayersB,
-							hazardLayers[globalConfig.comparisonKey[1]],
-							damageLayersB1,
-							damageLayersB2,
-						]}
-						layerSwitcherOptionsA={{}}
-						layerSwitcherOptionsB={{}}
-						height={mapHeight}
-						allowBuildingSelection={true}
-					/>
-				</Container>
+			popDislocationLayerA &&
+			popDislocationLayerB ? (
+				<MapCompare
+					className="fillContainer"
+					zoom={mapConfig.ZOOM}
+					minZoom={mapConfig.MIN_ZOOM}
+					maxZoom={mapConfig.MAX_ZOOM}
+					extent={applyTransform(
+						mapConfig.MAP_BOUNDS,
+						getTransform("EPSG:4326", "EPSG:3857"),
+					)}
+					center={fromLonLat(mapConfig.MAP_CENTER)}
+					layersA={[
+						basicLayersA,
+						hazardLayers[globalConfig.comparisonKey[0]],
+						popDislocationLayerA,
+					]}
+					layersB={[
+						basicLayersB,
+						hazardLayers[globalConfig.comparisonKey[1]],
+						popDislocationLayerB,
+					]}
+					layerSwitcherOptionsA={{}}
+					layerSwitcherOptionsB={{}}
+					height={mapHeight}
+					allowBuildingSelection={true}
+					activeLayerNames={"Population Dislocation"}
+				/>
 			) : (
 				<></>
 			)}
-
 			<Grid container spacing={2} justify="center">
 				<Grid item xs={12} sm={12} md={5} lg={5} xl={5}>
 					{totalDislTableContentA &&

@@ -97,7 +97,19 @@ export function FunctionalityTableCompare(props) {
 			<Table className={classes.table} size="small" aria-label="a dense table">
 				<TableHead>
 					<TableRow>
-						<TableCell colSpan={3}> </TableCell>
+						<TableCell
+							style={{
+								width: "647px",
+								backgroundColor: "#EFF2FF",
+								color: "#69707F",
+							}}
+							colSpan={3}
+							rowSpan={2}
+							className={classes.tableHeaderCell}
+							key="playbook-building-clusters"
+						>
+							playbook building clusters
+						</TableCell>
 						<TableCell colSpan={2} className={classes.tableTopHeaderRow}>
 							{" "}
 							Percent (%){" "}
@@ -109,18 +121,6 @@ export function FunctionalityTableCompare(props) {
 					</TableRow>
 
 					<TableRow className={classes.tableHeaderRow} key="hdrRow">
-						<TableCell
-							style={{
-								width: "647px",
-								backgroundColor: "#EFF2FF",
-								color: "#69707F",
-							}}
-							colSpan={3}
-							className={classes.tableHeaderCell}
-							key="playbook-building-clusters"
-						>
-							playbook builidng clusters
-						</TableCell>
 						<TableCell
 							style={{ width: "121px", backgroundColor: "#96B712" }}
 							className={classes.tableHeaderCell}

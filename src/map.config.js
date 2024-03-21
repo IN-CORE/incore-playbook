@@ -5,10 +5,7 @@ const layerStyles = {
 	BldgMCS: "incore:bldg-mcs",
 	Interdependency: "incore:substations-label",
 	PoleDamage: "incore:epf-dmg-summary",
-	PopulationDislocation: {
-		bldgMaxDamageStateINCOREId: "incore:bldg-dmg-summary",
-		popdislHeatmapINCOREId: "incore:heatmap",
-	},
+	PopulationDislocation: "incore:galveston-pop-dis",
 	SubstationDamage: "incore:epf-dmg-summary",
 	Zone: "incore:polygon",
 	MapUtil: {

@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 
 ## [Unreleased]
+### Added
+- Added legend option for maps in the playbook [#259](https://github.com/IN-CORE/incore-playbook/issues/259)
 
 ### Added
 - Add retrofit condition summary button next to the retrofit strategy file in step 2-4[#386](https://github.com/IN-CORE/incore-playbook/issues/386)
@@ -26,6 +28,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Changed
 - Remove screenshot button on comparison interface [#364](https://github.com/IN-CORE/incore-playbook/issues/364)
+- Population dislocation layer [#361](https://github.com/IN-CORE/incore-playbook/issues/361)
+- Compare interface clean up [#310](https://github.com/IN-CORE/incore-playbook/issues/310)
 
 ## [0.6.0] - 2024-03-06
 
