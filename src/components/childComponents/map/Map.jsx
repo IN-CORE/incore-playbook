@@ -207,7 +207,11 @@ const Map = (props) => {
 
 		let damageLayerGrp = null;
 		layers.forEach((layerGrp) => {
-			if (layerGrp.getProperties().title === activeLayerNames ?? "Damage") {
+			if (
+				layerGrp.getProperties().title === activeLayerNames
+					? activeLayerNames
+					: "Damage"
+			) {
 				damageLayerGrp = layerGrp;
 			}
 		});
