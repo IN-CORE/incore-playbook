@@ -330,7 +330,9 @@ export function ViewResultEntryTable(props) {
 		<>
 			<Box display="flex" justifyContent="space-between">
 				{compareItemNames ? (
-					<IncoreTitle style={{ marin: 0, display: "inline" }}>
+					<IncoreTitle
+						style={{ marin: 0, display: "inline", textTransform: "none" }}
+					>
 						Compare Analyses A:&nbsp;
 						<Typography
 							style={{
@@ -339,7 +341,9 @@ export function ViewResultEntryTable(props) {
 								fontWeight: 500,
 							}}
 						>
-							{Object.keys(compareItemNames).at(0) ?? "[ ]"}
+							{Object.keys(compareItemNames).at(0)
+								? `[${Object.keys(compareItemNames).at(0)}]`
+								: "[ ]"}
 						</Typography>{" "}
 						and B:&nbsp;
 						<Typography
@@ -349,12 +353,14 @@ export function ViewResultEntryTable(props) {
 								fontWeight: 500,
 							}}
 						>
-							{Object.keys(compareItemNames).at(1) ?? "[ ]"}
+							{Object.keys(compareItemNames).at(1)
+								? `[${Object.keys(compareItemNames).at(0)}]`
+								: "[ ]"}
 						</Typography>
 						<IncoreFootNote
 							style={{ fontStyle: "inherit", textTransform: "none" }}
 						>
-							Please select two scenarios below to enable the compare button
+							Please select two scenarios below to enable the compare button.
 						</IncoreFootNote>
 					</IncoreTitle>
 				) : (
@@ -368,7 +374,7 @@ export function ViewResultEntryTable(props) {
 					classes={{ root: classes.compareButton }}
 					style={{ margin: 0, float: "left", width: "300px", height: "45px" }}
 				>
-					COMPARE TWO SCENARIOS
+					COMPARE 2 SCENARIOS
 				</Button>
 			</Box>
 			<TableContainer>
