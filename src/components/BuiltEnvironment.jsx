@@ -138,7 +138,7 @@ export const BuiltEnvironment = ({ step, substep }) => {
 	const huas = useSelector((state) => state.dataset.huas);
 	const blockGroups = useSelector((state) => state.dataset.blockGroups);
 	const valueLosses = useSelector((state) => state.dataset.valueLosses);
-	const [dataPerPage, setDataPerPage] = React.useState(2);
+	const [dataPerPage, setDataPerPage] = React.useState(5);
 	const [offsetBuilding, setOffsetBuilding] = React.useState(0);
 	const [pageNumberBuilding, setPageNumberBuilding] = React.useState(1);
 	const [offsetRetrofitStrategies, setOffsetRetrofitStrategies] =

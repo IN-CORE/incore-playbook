@@ -160,8 +160,10 @@ export default function RetrofitStrategySummary(props) {
 			const zoneLayerDef = [
 				{
 					layerId: globalConfig.retrofitStrategyBuilder.zoneLayerId,
+					layerStyles:
+						globalConfig.retrofitStrategyBuilder.zoneMapStyle ?? null,
 					title: "Zone",
-					opacity: 0.3,
+					opacity: 1,
 					zIndex: 1,
 				},
 			];

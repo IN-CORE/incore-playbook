@@ -326,6 +326,7 @@ globals["retrofitStrategyBuilder"] = {
 		-95.23304467554465, 29.07743684291063, -94.37074997273265,
 		29.598309974710844,
 	],
+	zoneMapStyle: "incore:zone",
 };
 
 globals["comparisonKey"] = ["A", "B"];
