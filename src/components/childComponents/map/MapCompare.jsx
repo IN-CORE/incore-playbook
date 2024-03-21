@@ -257,12 +257,20 @@ const MapCompare = (props) => {
 		let damageLayerGrpB = null;
 
 		layersA.forEach((layerGrp) => {
-			if (layerGrp.getProperties().title === activeLayerNames ?? "Damage") {
+			if (
+				layerGrp.getProperties().title === activeLayerNames
+					? activeLayerNames
+					: "Damage"
+			) {
 				damageLayerGrpA = layerGrp;
 			}
 		});
 		layersB.forEach((layerGrp) => {
-			if (layerGrp.getProperties().title === activeLayerNames ?? "Damage") {
+			if (
+				layerGrp.getProperties().title === activeLayerNames
+					? activeLayerNames
+					: "Damage"
+			) {
 				damageLayerGrpB = layerGrp;
 			}
 		});
