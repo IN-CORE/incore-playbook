@@ -53,7 +53,6 @@ import {
 	submitExecution,
 } from "../../utils/datawolf";
 import { AlertMessage } from "./alert/AlertMessage";
-import { fetchDatasets } from "../../actions/datasets";
 
 const useStyles = makeStyles((theme) => ({
 	closeButton: {
@@ -213,10 +212,6 @@ export default function RetrofitStrategyBuilder(props) {
 	const getExecutionItem = (datawolfConfig, executionId) =>
 		dispatch(fetchExecutionItemAction(datawolfConfig, executionId));
 	const executionItem = useSelector((state) => state.execution.executionItem);
-
-	// Fetch datasets
-	const listDatasets = (config, limit, offset, type) =>
-		dispatch(fetchDatasets(config, limit, offset, type));
 
 	useEffect(() => {
 		// get zone name for redux
