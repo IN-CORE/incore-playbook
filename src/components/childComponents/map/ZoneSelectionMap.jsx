@@ -68,6 +68,7 @@ export const ZoneSelectionMap = (props) => {
 				maxZoom,
 				extent,
 				showFullExtent: true,
+				smoothExtentConstraint: true,
 			}),
 			layers,
 			overlays: [
@@ -212,7 +213,7 @@ export const ZoneSelectionMap = (props) => {
 				<Grid item xl={6} lg={6} md={6} sm={6} xs={12}>
 					<div
 						id={id}
-						style={{ width: "100%", height: "600px" }}
+						style={{ width: "100%", height: "400px" }}
 						className={`ol-map ${className}`}
 						ref={fallbackContainer}
 					>

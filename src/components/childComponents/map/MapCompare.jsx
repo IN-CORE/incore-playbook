@@ -112,6 +112,8 @@ const MapCompare = (props) => {
 			minZoom,
 			maxZoom,
 			extent,
+			showFullExtent: true,
+			smoothExtentConstraint: true,
 		});
 
 		const mapA = new OLMap({
