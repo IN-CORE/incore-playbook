@@ -67,6 +67,7 @@ export const ZoneSelectionMap = (props) => {
 				minZoom,
 				maxZoom,
 				extent,
+				showFullExtent: true,
 			}),
 			layers,
 			overlays: [

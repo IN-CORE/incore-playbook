@@ -21,7 +21,6 @@ import {
 	TableContainer,
 	TableHead,
 	TableRow,
-	TextField,
 	Typography,
 } from "@material-ui/core";
 
@@ -296,6 +295,10 @@ export default function RetrofitStrategyBuilder(props) {
 			setShowAddRetrofitStrategyRow(false);
 		}
 	};
+	const handleOpenEditRowDelete = () => {
+		setSelectedValues({});
+		setShowAddRetrofitStrategyRow(false);
+	};
 
 	const steps = [
 		"Start to build a Retrofit Strategy",
@@ -545,31 +548,31 @@ export default function RetrofitStrategyBuilder(props) {
 					</Grid>
 				</TableCell>
 				<TableCell className={classes.tableUnSavedCell} align="left">
-					<Grid container spacing={0}>
-						<Grid item xs={12}>
-							<Button
-								disabled={
-									currentlyEditing !== null
-										? false
-										: numRow ===
-										  globalConfig.retrofitStrategyBuilder.maxStrategies
-								}
-								variant="outlined"
-								color="primary"
-								onClick={handleAddRow}
-								startIcon={
-									currentlyEditing !== null ? <SaveIcon /> : <AddIcon />
-								}
-							>
-								{currentlyEditing !== null ? "Save" : "Add"}
-							</Button>
-						</Grid>
-						<Grid item xs={12}>
-							<IncoreFootNote style={{ color: "red" }}>
-								{addError}
-							</IncoreFootNote>
-						</Grid>
-					</Grid>
+					<Button
+						className={classes.button}
+						disabled={
+							currentlyEditing !== null
+								? false
+								: numRow === globalConfig.retrofitStrategyBuilder.maxStrategies
+						}
+						variant="outlined"
+						color="primary"
+						onClick={handleAddRow}
+						startIcon={currentlyEditing !== null ? <SaveIcon /> : <AddIcon />}
+					>
+						{currentlyEditing !== null ? "Save" : "Add"}
+					</Button>
+					<Button
+						className={classes.button}
+						disabled={currentlyEditing !== null}
+						variant="outlined"
+						color="primary"
+						onClick={handleOpenEditRowDelete}
+						startIcon={<DeleteIcon />}
+					>
+						Delete
+					</Button>
+					<IncoreFootNote style={{ color: "red" }}>{addError}</IncoreFootNote>
 				</TableCell>
 			</TableRow>
 		);
@@ -579,7 +582,7 @@ export default function RetrofitStrategyBuilder(props) {
 		switch (activeStep) {
 			case 0:
 				// name should not have special characters
-				if (name.match(/^[0-9a-zA-Z\-\_ ]+$/) === null) {
+				if (name.match(/^[0-9a-zA-Z\-\_ ]+$/) === null || name.length > 250) {
 					setNameError(true);
 				} else {
 					setActiveStep(activeStep + 1);
@@ -837,13 +840,21 @@ export default function RetrofitStrategyBuilder(props) {
 									<IncoreInputLabel className="required-field">
 										Name
 									</IncoreInputLabel>
+									<IncoreFootNote style={{ textTransform: "none" }}>
+										Please choose a memorable name for your retrofit strategy.
+										This name will help you easily identify and refer to your
+										strategy in future analyses.
+									</IncoreFootNote>
 									<IncoreTextField
 										variant="outlined"
 										value={name}
 										error={nameError}
 										helperText={
 											nameError
-												? "Name should not have special characters other than '-' and '_'. Please check."
+												? "Please ensure the name only includes letters, numbers, hyphens (-), " +
+												  "underscores (_), and spaces. Additionally, the name should not exceed " +
+												  "250 characters in length. If these conditions are not met, an error " +
+												  "will be triggered."
 												: ""
 										}
 										placeholder="Name"
@@ -853,20 +864,20 @@ export default function RetrofitStrategyBuilder(props) {
 										}}
 									/>
 								</Box>
-								<Box className="inputGroup" style={{ height: "auto" }}>
-									<IncoreInputLabel>Description</IncoreInputLabel>
-									<TextField
-										variant="outlined"
-										value={description}
-										placeholder="Description"
-										multiline
-										rows={6}
-										fullWidth
-										onChange={(e) => {
-											setDescription(e.target.value);
-										}}
-									/>
-								</Box>
+								{/*<Box className="inputGroup" style={{ height: "auto" }}>*/}
+								{/*    <IncoreInputLabel>Description</IncoreInputLabel>*/}
+								{/*    <TextField*/}
+								{/*        variant="outlined"*/}
+								{/*        value={description}*/}
+								{/*        placeholder="Description"*/}
+								{/*        multiline*/}
+								{/*        rows={6}*/}
+								{/*        fullWidth*/}
+								{/*        onChange={(e) => {*/}
+								{/*            setDescription(e.target.value);*/}
+								{/*        }}*/}
+								{/*    />*/}
+								{/*</Box>*/}
 							</Grid>
 						) : null}
 
@@ -996,9 +1007,7 @@ export default function RetrofitStrategyBuilder(props) {
 																	}
 																}}
 															>
-																<Typography className={classes.actionButtons}>
-																	Edit
-																</Typography>
+																Edit
 															</Button>
 															<Button
 																className={classes.button}
@@ -1018,9 +1027,7 @@ export default function RetrofitStrategyBuilder(props) {
 																	}
 																}}
 															>
-																<Typography className={classes.actionButtons}>
-																	Delete
-																</Typography>
+																Delete
 															</Button>
 														</TableCell>
 													</TableRow>
