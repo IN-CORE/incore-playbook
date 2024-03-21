@@ -21,6 +21,7 @@ import { fetchLegendsForLayers, maxStateMapping } from "../../../utils/common";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import { IncoreTitle } from "../../styledComponents/IncoreTitle";
 import { IncoreFootNote } from "../../styledComponents/IncoreFootNote";
+import { useSelector } from "react-redux";
 
 export const MapContext = React.createContext({});
 
@@ -73,6 +74,7 @@ const useStyles = makeStyles({
 		"&MsOverflowStyle:": {
 			display: "none", // Hide the scrollbar for IE
 		},
+		backgroundColor: "white",
 	},
 	legendDiv: {
 		backgroundColor: "#ffffff",
@@ -134,6 +136,7 @@ const MapCompare = (props) => {
 	const mapRefA = React.useRef();
 	const mapRefB = React.useRef();
 
+	const globalConfig = useSelector((state) => state.config.globalConfig);
 	// State variable to store legends
 	const [legends, setLegends] = React.useState([]);
 
@@ -418,10 +421,20 @@ const MapCompare = (props) => {
 							ref={fallbackContainerA}
 							style={{
 								width: "100%",
-								height: `${height}px`,
+								height: `${height}-17px`,
 								marginRight: "5px",
 							}}
 						>
+							<p
+								style={{
+									color: "#808080",
+									fontSize: "15px",
+									margin: 0,
+									padding: 0,
+								}}
+							>
+								Map {globalConfig.comparisonKey[0]}
+							</p>
 							<MapContext.Provider value={{ map: mapRefA.current }}>
 								{children}
 							</MapContext.Provider>
@@ -431,10 +444,20 @@ const MapCompare = (props) => {
 							ref={fallbackContainerB}
 							style={{
 								width: "100%",
-								height: `${height}px`,
+								height: `${height}-17px`,
 								marginLeft: "5px",
 							}}
 						>
+							<p
+								style={{
+									color: "#808080",
+									fontSize: "15px",
+									margin: 0,
+									padding: 0,
+								}}
+							>
+								Map {globalConfig.comparisonKey[1]}
+							</p>
 							<MapContext.Provider value={{ map: mapRefB.current }}>
 								{children}
 							</MapContext.Provider>
@@ -524,13 +547,13 @@ const OverlayTable = (props) => {
 					<TableHead>
 						<TableRow key="hdrRow">
 							<TableCell
-								align="center"
+								align="left"
 								style={{ backgroundColor: "#EFF2FF", color: "#69707F" }}
 							>
 								Attribute
 							</TableCell>
 							<TableCell
-								align="center"
+								align="right"
 								style={{ backgroundColor: "#EFF2FF", color: "#69707F" }}
 							>
 								Value
@@ -547,11 +570,12 @@ const OverlayTable = (props) => {
 								return (
 									<TableRow key={colName}>
 										<TableCell
+											align="left"
 											style={{ backgroundColor: "#EFF2FF", color: "#69707F" }}
 										>
 											{colName}
 										</TableCell>
-										<TableCell align="center">
+										<TableCell align="right">
 											{colName === "max_state"
 												? maxStateMapping(
 														fields,

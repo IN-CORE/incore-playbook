@@ -12,6 +12,7 @@ import {
 	IncoreSelectBox,
 } from "./styledComponents/IncoreSelect";
 import { IncoreInputLabel } from "./styledComponents/IncoreInputLabel";
+import { Label } from "@material-ui/icons";
 
 export const CompareAnalyses = () => {
 	const [executionsCompared, setExecutionsCompared] = useState([]);
@@ -166,37 +167,47 @@ export const CompareAnalyses = () => {
 							xs={12}
 							className="gridItem"
 						>
-							<IncoreTitle>
-								Compared Executions:
-								<Box>
-									<Typography style={{ display: "inline-block" }}>
+							<IncoreTitle>Compared Executions:</IncoreTitle>
+							<Box>
+								<Typography style={{ display: "inline-block" }}>
+									<IncoreInputLabel
+										style={{
+											paddingRight: "5px",
+										}}
+									>
 										Execution {globalConfig.comparisonKey[0]}:
-									</Typography>
-									<Typography
+									</IncoreInputLabel>
+								</Typography>
+								<Typography
+									style={{
+										display: "inline-block",
+										color: "#00619D",
+										fontWeight: 500,
+									}}
+								>
+									[{executionsCompared[0]["title"] ?? ""}]
+								</Typography>
+							</Box>
+							<Box>
+								<Typography style={{ display: "inline-block" }}>
+									<IncoreInputLabel
 										style={{
-											display: "inline-block",
-											color: "#00619D",
-											fontWeight: 500,
+											paddingRight: "5px",
 										}}
 									>
-										{executionsCompared[0]["title"] ?? ""}
-									</Typography>
-								</Box>
-								<Box>
-									<Typography style={{ display: "inline-block" }}>
 										Execution {globalConfig.comparisonKey[1]}:
-									</Typography>
-									<Typography
-										style={{
-											display: "inline-block",
-											color: "#00619D",
-											fontWeight: 500,
-										}}
-									>
-										{executionsCompared[1]["title"] ?? ""}
-									</Typography>
-								</Box>
-							</IncoreTitle>
+									</IncoreInputLabel>
+								</Typography>
+								<Typography
+									style={{
+										display: "inline-block",
+										color: "#00619D",
+										fontWeight: 500,
+									}}
+								>
+									[{executionsCompared[1]["title"] ?? ""}]
+								</Typography>
+							</Box>
 						</Grid>
 						{/*select compare analysis result*/}
 						<Grid
