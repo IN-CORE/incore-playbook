@@ -1,9 +1,13 @@
 const globals = {};
 
+// ******************* COMMON GLOBAL CONFIGS *******************
+
 let hostname = process.env.INCORE_REMOTE_HOSTNAME || "";
 
 globals["baseUrlRoute"] = "playbook";
 globals["geoServerWMS"] = `${hostname}/geoserver/incore/wms`;
+globals["geoServerWFS"] =
+	`${hostname}/geoserver/incore/ows?service=WFS&version=1.0.0&request=GetFeature&outputFormat=application/json`;
 globals["client_id"] = "react-auth";
 globals["authService"] =
 	`${hostname}/auth/realms/In-core/protocol/openid-connect/token`;
@@ -13,56 +17,12 @@ globals["spaceServiceBase"] = `${hostname}/space/api/`;
 globals["setGravatarURL"] =
 	"https://en.gravatar.com/support/activating-your-account/";
 globals["allowUpload"] = true;
-
-// globals["maestroServiceBase"] = `${hostname}/maestro/joplin/`;
-// globals["allowedRegions"] = null;
-// globals["testbedSpace"] = "commresiliencejoplin";
-// globals["testbedGroup"] = "incore_joplin_user"; // incore_galveston_user, incore_joplin_user, incore_slc_user
-
-globals["maestroServiceBase"] = `${hostname}/maestro/slc/`;
-globals["allowedRegions"] = [
-	{
-		name: "R1",
-		value: "R1",
-	},
-	{
-		name: "R2",
-		value: "R2",
-	},
-];
-globals["testbedSpace"] = "commresilienceslc";
-globals["testbedGroup"] = "incore_slc_user"; // incore_galveston_user, incore_joplin_user, incore_slc_user
-
-// globals["maestroServiceBase"] = `${hostname}/maestro/galveston/`;
-// globals["allowedRegions"] = [
-// 	{
-// 		name: "Island",
-// 		value: "I"
-// 	},
-// 	{
-// 		name: "Mainland",
-// 		value: "M"
-// 	}
-// ];
-// globals["testbedSpace"] = "commresiliencegal";
-// globals["testbedGroup"] = "incore_galveston_user"; // incore_galveston_user, incore_joplin_user, incore_slc_user
-
 globals["registerNewUserURL"] =
 	"https://identity.ncsa.illinois.edu/register/BSKC2UKQPU";
 globals["resetPasswordURL"] = "https://identity.ncsa.illinois.edu/reset";
 
 // might have multiple versions in the future
 globals["inputDatasetTypes"] = {
-	buildings: [
-		{
-			type: "ergo:buildingInventoryVer6",
-			// type: "ergo:buildingInventoryVer7",
-			format: "shapefile",
-			num: 20,
-			isSocioeconomics: false,
-			dispatchKey: "RECEIVE_BLDGS",
-		},
-	],
 	retrofitStrategies: [
 		{
 			type: "incore:retrofitStrategy",
@@ -242,8 +202,110 @@ globals["inputDatasetTypes"] = {
 	],
 };
 
-globals["comparisonKey"] = ["A", "B"];
+// ******************* SLC GLOBAL CONFIGS *******************
+const testbed = "slc";
+globals["maestroServiceBase"] = `${hostname}/maestro/${testbed}/`;
+globals["allowedRegions"] = [
+	{
+		name: "R1",
+		value: "R1",
+	},
+	{
+		name: "R2",
+		value: "R2",
+	},
+];
+globals["testbed"] = testbed;
+globals["testbedSpace"] = "commresilienceslc";
+globals["testbedGroup"] = "incore_slc_user"; // incore_galveston_user, incore_joplin_user, incore_slc_user
 
+globals["inputDatasetTypes"].buildings = [
+	{
+		type: "ergo:buildingInventoryVer6",
+		format: "shapefile",
+		num: 20,
+		isSocioeconomics: false,
+		dispatchKey: "RECEIVE_BLDGS",
+	},
+];
+
+globals["retrofitStrategyBuilder"] = {
+	colorCodes: [
+		"#C32541",
+		"#1B3EBB",
+		"#76930F",
+		"#268FB0",
+		"#BB772B",
+		"#F54362",
+		"#456AEA",
+		"#98BB1D",
+		"#47B4D6",
+		"#E29D50",
+		"#FC7F95",
+		"#7C95EC",
+		"#C9DF7A",
+		"#83DEF2",
+		"#F4C189",
+		"#FDBBC9",
+		"#DBD2FC",
+		"#E0E9C2",
+		"#CDECF0",
+		"#FFE3C4",
+	],
+	maxStrategies: 20,
+	conditions: [
+		{
+			label: "City Council District",
+			type: "mapSelect",
+			key: "zones",
+			possibleOptions: [],
+		},
+		{
+			label: "Building Structural Type",
+			type: "select",
+			key: "strtypes",
+			possibleOptions: [
+				{
+					label: "Mid-Rise Unreinforced Masonry Bearing Walls",
+					value: "URMM",
+				},
+				{
+					label: "Low-Rise Unreinforced Masonry Bearing Walls",
+					value: "URML",
+				},
+			],
+		},
+		{
+			label: "% number of Buildings",
+			type: "number",
+			key: "pcts",
+			possibleOptions: null,
+		},
+	],
+	retrofitMethods: [
+		{
+			label: "Retrofit Method",
+			type: "select",
+			key: "retrofits",
+			possibleOptions: [
+				{
+					label: "Wood or Metal Deck Diaphragms",
+					value: { ret_key: "Wood or Metal Deck Diaphragms", ret_val: "" },
+				},
+			],
+		},
+	],
+	zoneLayerId: "65f509b6e42f3b0da55d74cf", // city council district
+	activeLayerNames: "Zone",
+	activeLayerFieldname: "NAME",
+	zoneMapBounds: [
+		-112.10137778755622, 40.69990503292076, -111.74045871645396,
+		40.853385059088794,
+	],
+	zoneMapStyle: "incore:zone",
+};
+
+globals["comparisonKey"] = ["A", "B"];
 export { globals };
 
 export const testUserInfo = "commresilience";

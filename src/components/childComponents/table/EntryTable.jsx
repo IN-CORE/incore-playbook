@@ -68,7 +68,12 @@ export const useStyles = makeStyles({
 });
 
 export function EntryTable(props) {
-	const { fieldNames, fields } = props;
+	const { fieldNames, fields, enableAction, actionBtnText, actionClick } =
+		props;
+
+	// if (enableAction === undefined || enableAction === null) {
+	// 	enableAction = false;
+	// }
 
 	const [order, setOrder] = useState("desc");
 	const [orderBy, setOrderBy] = React.useState("date");
@@ -111,6 +116,9 @@ export function EntryTable(props) {
 								</TableCell>
 							);
 						})}
+						{enableAction ? (
+							<TableCell className={classes.tableHeaderCell}>Action</TableCell>
+						) : null}
 						{/*/!*TODO implement expending*!/*/}
 						{/*<TableCell className={classes.tableHeaderCell} key="dot" />*/}
 					</TableRow>
@@ -149,6 +157,32 @@ export function EntryTable(props) {
 										</TableCell>
 									);
 								})}
+								{enableAction ? (
+									<TableCell
+										key={field["id"]}
+										className={classes.tableBodyCell}
+									>
+										<IncoreLinkSmall
+											color="primary"
+											onClick={() => {
+												actionClick(
+													field["id"],
+													field["title"],
+													field["description"],
+												);
+											}}
+											className={
+												field["finalStatus"] === undefined ||
+												field["finalStatus"] === "FINISHED"
+													? classes.clickableLink
+													: classes.clickableLinkDisabled
+											}
+										>
+											{actionBtnText}
+										</IncoreLinkSmall>
+									</TableCell>
+								) : null}
+
 								{/*/!*TODO implement expending*!/*/}
 								{/*<TableCell className={classes.tableBodyCell} key="dot">*/}
 								{/*	<MoreHorizIcon />*/}

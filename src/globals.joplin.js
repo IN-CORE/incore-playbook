@@ -1,9 +1,12 @@
 const globals = {};
 
+// ******************* COMMON GLOBAL CONFIGS *******************
 let hostname = process.env.INCORE_REMOTE_HOSTNAME || "";
 
 globals["baseUrlRoute"] = "playbook";
 globals["geoServerWMS"] = `${hostname}/geoserver/incore/wms`;
+globals["geoServerWFS"] =
+	`${hostname}/geoserver/incore/ows?service=WFS&version=1.0.0&request=GetFeature&outputFormat=application/json`;
 globals["client_id"] = "react-auth";
 globals["authService"] =
 	`${hostname}/auth/realms/In-core/protocol/openid-connect/token`;
@@ -13,15 +16,16 @@ globals["spaceServiceBase"] = `${hostname}/space/api/`;
 globals["setGravatarURL"] =
 	"https://en.gravatar.com/support/activating-your-account/";
 globals["allowUpload"] = true;
+globals["registerNewUserURL"] =
+	"https://identity.ncsa.illinois.edu/register/BSKC2UKQPU";
+globals["resetPasswordURL"] = "https://identity.ncsa.illinois.edu/reset";
+
+// ******************* Joplin GLOBAL CONFIGS *******************
 
 globals["maestroServiceBase"] = `${hostname}/maestro/joplin/`;
 globals["allowedRegions"] = null;
 globals["testbedSpace"] = "commresiliencejoplin";
 globals["testbedGroup"] = "incore_joplin_user"; // incore_galveston_user, incore_joplin_user, incore_slc_user
-
-globals["registerNewUserURL"] =
-	"https://identity.ncsa.illinois.edu/register/BSKC2UKQPU";
-globals["resetPasswordURL"] = "https://identity.ncsa.illinois.edu/reset";
 
 // might have multiple versions in the future
 globals["inputDatasetTypes"] = {
@@ -214,6 +218,110 @@ globals["inputDatasetTypes"] = {
 	],
 };
 
+// ******************* Joplin GLOBAL CONFIGS *******************
+const testbed = "joplin";
+globals["maestroServiceBase"] = `${hostname}/maestro/${testbed}/`;
+globals["allowedRegions"] = null;
+globals["testbedSpace"] = "commresiliencejoplin";
+globals["testbedGroup"] = "incore_joplin_user"; // incore_galveston_user, incore_joplin_user, incore_slc_user
+globals["inputDatasetTypes"].buildings = [
+	{
+		type: "ergo:buildingInventoryVer6",
+		format: "shapefile",
+		num: 20,
+		isSocioeconomics: false,
+		dispatchKey: "RECEIVE_BLDGS",
+	},
+];
+globals["testbed"] = testbed;
+globals["retrofitStrategyBuilder"] = {
+	colorCodes: [
+		"#C32541",
+		"#1B3EBB",
+		"#76930F",
+		"#268FB0",
+		"#BB772B",
+		"#F54362",
+		"#456AEA",
+		"#98BB1D",
+		"#47B4D6",
+		"#E29D50",
+		"#FC7F95",
+		"#7C95EC",
+		"#C9DF7A",
+		"#83DEF2",
+		"#F4C189",
+		"#FDBBC9",
+		"#DBD2FC",
+		"#E0E9C2",
+		"#CDECF0",
+		"#FFE3C4",
+	],
+	maxStrategies: 20,
+	conditions: [
+		{
+			label: "Building Archetypes",
+			type: "select",
+			key: "strtypes",
+			possibleOptions: [
+				{
+					label:
+						"1 story residential wood building (small rectangular plan and gable roof)",
+					value: "1",
+				},
+				{
+					label:
+						"2 stories residential building (wood, small square plan, and gable roof)",
+					value: "2",
+				},
+				{
+					label:
+						"1 story residential building (wood, medium rectangular plan, and gable roof)",
+					value: "3",
+				},
+				{
+					label:
+						"2 stories residential building (wood, medium rectangular plan, and hip roof)",
+					value: "4",
+				},
+				{
+					label:
+						"2 stories residential building (wood, large rectangular plan, gable roof",
+					value: "5",
+				},
+			],
+		},
+		{
+			label: "% number of Buildings",
+			type: "number",
+			key: "pcts",
+			possibleOptions: null,
+		},
+	],
+	retrofitMethods: [
+		{
+			label: "Retrofit Method",
+			type: "select",
+			key: "retrofits",
+			possibleOptions: [
+				{
+					label:
+						"Asphalt Shingles, Sheathing (8d C6/12), Roof-Wall (2x16d Nails) - Current Practice",
+					value: { ret_key: "retrofit_1", ret_val: "" },
+				},
+				{
+					label:
+						"Asphalt Shingles & Sheathing (8d C6/12), Roof-Wall (2x16d Nails)",
+					value: { ret_key: "retrofit_2", ret_val: "" },
+				},
+				{
+					label: "Clay Tiles & Sheathing (8d C6/6), Roof-Wall (2xH2.5 Clips)",
+					value: { ret_key: "retrofit_3", ret_val: "" },
+				},
+			],
+		},
+	],
+};
 globals["comparisonKey"] = ["A", "B"];
 
 export { globals };

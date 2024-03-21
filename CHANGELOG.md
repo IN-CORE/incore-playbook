@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Added legend option for maps in the playbook [#259](https://github.com/IN-CORE/incore-playbook/issues/259)
 
 ### Added
+- Add retrofit condition summary button next to the retrofit strategy file in step 2-4[#386](https://github.com/IN-CORE/incore-playbook/issues/386)
 - Substation damage comparison [#390](https://github.com/IN-CORE/incore-playbook/issues/390)
 
 ### Fixed
@@ -50,6 +51,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Add map component to all the compare widgets that have maps [#317](https://github.com/IN-CORE/incore-playbook/issues/317)
 - Integrate click feature into map compare component [#320](https://github.com/IN-CORE/incore-playbook/issues/320)
 - Added pre-commit for linting and formatting [#302](https://github.com/IN-CORE/incore-playbook/issues/302)
+- Added Retrofit Strategy Builder [#276](https://github.com/IN-CORE/incore-playbook/issues/276)
 
 ### Fixed
 - Typos in hurricane creation form [#248](https://github.com/IN-CORE/incore-playbook/issues/248)

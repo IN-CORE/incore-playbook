@@ -143,7 +143,13 @@ export async function submitExecution(
 		mode: "cors",
 	});
 
-	return datawolfResponse.status;
+	const status = datawolfResponse.status;
+	const responseBody = await datawolfResponse.text();
+
+	return {
+		datawolfExecutionStatus: status,
+		datawolfExecutionId: responseBody,
+	};
 }
 
 // TODO move this to redux

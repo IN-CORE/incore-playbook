@@ -1,4 +1,5 @@
 const layerStyles = {
+	RetrofitStrategy: "incore:retrofit-rules",
 	BldgDamage: "incore:bldg-dmg-summary",
 	BldgFunctionality: "incore:bldg-func",
 	BldgMCS: "incore:bldg-mcs",
@@ -6,6 +7,7 @@ const layerStyles = {
 	PoleDamage: "incore:epf-dmg-summary",
 	PopulationDislocation: "incore:slc-pop-dis",
 	SubstationDamage: "incore:epf-dmg-summary",
+	Zone: "incore:polygon",
 	MapUtil: {
 		earthquake: "incore:earthquake-pga-g",
 		tornado: "incore:tornado",

@@ -179,6 +179,8 @@ const Map = (props) => {
 				minZoom,
 				maxZoom,
 				extent,
+				showFullExtent: true,
+				smoothExtentConstraint: true,
 			}),
 			layers,
 			overlays: [
