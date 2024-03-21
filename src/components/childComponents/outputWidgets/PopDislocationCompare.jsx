@@ -1,4 +1,4 @@
-import { Box, Container, Grid } from "@material-ui/core";
+import { Box, Grid } from "@material-ui/core";
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import {
@@ -142,42 +142,35 @@ export default function PopDislocationCompare(props) {
 			hazardLayers &&
 			popDislocationLayerA &&
 			popDislocationLayerB ? (
-				<Container
-					className="mapContainer"
-					disableGutters
-					style={{ height: `${mapHeight}px` }}
-				>
-					<MapCompare
-						className="fillContainer"
-						zoom={mapConfig.ZOOM}
-						minZoom={mapConfig.MIN_ZOOM}
-						maxZoom={mapConfig.MAX_ZOOM}
-						extent={applyTransform(
-							mapConfig.MAP_BOUNDS,
-							getTransform("EPSG:4326", "EPSG:3857"),
-						)}
-						center={fromLonLat(mapConfig.MAP_CENTER)}
-						layersA={[
-							basicLayersA,
-							hazardLayers[globalConfig.comparisonKey[0]],
-							popDislocationLayerA,
-						]}
-						layersB={[
-							basicLayersB,
-							hazardLayers[globalConfig.comparisonKey[1]],
-							popDislocationLayerB,
-						]}
-						layerSwitcherOptionsA={{}}
-						layerSwitcherOptionsB={{}}
-						height={mapHeight}
-						allowBuildingSelection={true}
-						activeLayerNames={"Population Dislocation"}
-					/>
-				</Container>
+				<MapCompare
+					className="fillContainer"
+					zoom={mapConfig.ZOOM}
+					minZoom={mapConfig.MIN_ZOOM}
+					maxZoom={mapConfig.MAX_ZOOM}
+					extent={applyTransform(
+						mapConfig.MAP_BOUNDS,
+						getTransform("EPSG:4326", "EPSG:3857"),
+					)}
+					center={fromLonLat(mapConfig.MAP_CENTER)}
+					layersA={[
+						basicLayersA,
+						hazardLayers[globalConfig.comparisonKey[0]],
+						popDislocationLayerA,
+					]}
+					layersB={[
+						basicLayersB,
+						hazardLayers[globalConfig.comparisonKey[1]],
+						popDislocationLayerB,
+					]}
+					layerSwitcherOptionsA={{}}
+					layerSwitcherOptionsB={{}}
+					height={mapHeight}
+					allowBuildingSelection={true}
+					activeLayerNames={"Population Dislocation"}
+				/>
 			) : (
 				<></>
 			)}
-
 			<Grid container spacing={2} justify="center">
 				<Grid item xs={12} sm={12} md={5} lg={5} xl={5}>
 					{totalDislTableContentA &&
