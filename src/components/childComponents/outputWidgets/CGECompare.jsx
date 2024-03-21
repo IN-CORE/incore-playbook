@@ -193,7 +193,7 @@ export default function CGECompare({
 						) {
 							return (
 								<>
-									<Box style={{ maxWidth: "700px" }}>
+									<Box>
 										<CGEBarChartCompare
 											region={region}
 											data={[
@@ -224,7 +224,7 @@ export default function CGECompare({
 						) {
 							return (
 								<>
-									<Box style={{ maxWidth: "700px" }}>
+									<Box>
 										<CGEBarChartCompare
 											region={region}
 											data={[
@@ -256,7 +256,7 @@ export default function CGECompare({
 						) {
 							return (
 								<>
-									<Box style={{ maxWidth: "700px" }}>
+									<Box>
 										<CGEBarChartCompare
 											region={region}
 											data={[cgeEmploymentContentA, cgeEmploymentContentB]}

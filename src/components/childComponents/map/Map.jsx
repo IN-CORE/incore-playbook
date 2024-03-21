@@ -50,6 +50,24 @@ const useStyles = makeStyles({
 		lineHeight: "18px",
 		border: "1px solid rgba(46,91,255,0.08)",
 	},
+	tableContainer: {
+		position: "absolute",
+		width: "300px",
+		maxHeight: "356px",
+		top: "5px",
+		left: "30px",
+		Zindex: 5000,
+		padding: "5px",
+		overflow: "scroll",
+		scrollBehavior: "smooth",
+		"&::WebkitScrollbar": {
+			display: "none", // Hide the scrollbar for WebKit browsers (Chrome, Safari, Edge, etc.)
+		},
+		"&MsOverflowStyle:": {
+			display: "none", // Hide the scrollbar for IE
+		},
+		backgroundColor: "white",
+	},
 });
 
 export const MapContext = React.createContext({});
@@ -239,25 +257,7 @@ const Map = (props) => {
 				</MapContext.Provider>
 			</div>
 			{allowBuildingSelection && selectedBuilding ? (
-				<TableContainer
-					style={{
-						position: "absolute",
-						width: "300px",
-						maxHeight: "356px",
-						top: "5px",
-						left: "30px",
-						Zindex: 5000,
-						padding: "5px",
-						overflow: "scroll",
-						scrollBehavior: "smooth",
-						"&::WebkitScrollbar": {
-							display: "none", // Hide the scrollbar for WebKit browsers (Chrome, Safari, Edge, etc.)
-						},
-						"&MsOverflowStyle:": {
-							display: "none", // Hide the scrollbar for IE
-						},
-					}}
-				>
+				<TableContainer className={classes.tableContainer}>
 					<LoadingOverlay active={loading} spinner text="Loading...">
 						<Table
 							className={classes.table}
@@ -290,13 +290,13 @@ const Map = (props) => {
 								</TableRow> */}
 								<TableRow key="hdrRow">
 									<TableCell
-										align="center"
+										align="left"
 										style={{ backgroundColor: "#EFF2FF", color: "#69707F" }}
 									>
 										Attribute
 									</TableCell>
 									<TableCell
-										align="center"
+										align="right"
 										style={{ backgroundColor: "#EFF2FF", color: "#69707F" }}
 									>
 										Value
@@ -317,10 +317,11 @@ const Map = (props) => {
 														backgroundColor: "#EFF2FF",
 														color: "#69707F",
 													}}
+													align="left"
 												>
 													{colName}
 												</TableCell>
-												<TableCell align="center">
+												<TableCell align="right">
 													{colName === "max_state"
 														? maxStateMapping(
 																fields,

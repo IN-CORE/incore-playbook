@@ -1,6 +1,7 @@
 import React from "react";
 import Chart from "react-google-charts";
 import { csvToArray } from "../../../utils/common";
+import { useSelector } from "react-redux";
 
 const ParseData = (dataA, dataB) => {
 	const chartData = [];
@@ -132,6 +133,7 @@ function generateGalDataArry(dataArr) {
 export default function SectorShocksBarChartCompare(props) {
 	const { height, width, dataA, dataB, title, xAxisLegend, yAxisLegend } =
 		props;
+	const globalConfig = useSelector((state) => state.config.globalConfig);
 
 	return (
 		<div className="barChart">
@@ -145,8 +147,14 @@ export default function SectorShocksBarChartCompare(props) {
 					title: title,
 					legend: { position: "top", alignment: "center" },
 					series: {
-						0: { color: "#aededb", labelInLegend: "Execution A" }, // Customize color and name for Data A
-						1: { color: "#2c698d", labelInLegend: "Execution B" }, // Customize color and name for Data B
+						0: {
+							color: "#aededb",
+							labelInLegend: `Execution ${globalConfig.comparisonKey[0]}`,
+						},
+						1: {
+							color: "#2c698d",
+							labelInLegend: `Execution ${globalConfig.comparisonKey[1]}`,
+						},
 					},
 					height: "40em",
 					hAxis: {

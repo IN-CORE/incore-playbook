@@ -25,7 +25,7 @@ const ParseData = (data, executionTitles, region = null) => {
 	const chartData = [];
 	let chartFirstRow = ["Sectors", "Before Event"];
 	executionTitles.forEach((title) =>
-		chartFirstRow.push(`After Event ${title}`),
+		chartFirstRow.push(`After Event [${title}]`),
 	);
 	chartData.push(chartFirstRow);
 

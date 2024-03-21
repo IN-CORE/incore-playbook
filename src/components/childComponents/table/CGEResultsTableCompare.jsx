@@ -11,6 +11,7 @@ import {
 
 import { makeStyles } from "@material-ui/core/styles";
 import { round } from "../../../utils/common";
+import { useSelector } from "react-redux";
 
 const tableColumnHead = {
 	color: "#FFFFFF",
@@ -84,6 +85,7 @@ const useStyles = makeStyles({
 
 export function CGEResultsTableCompare(props) {
 	let { resultsJsonArr, isMetrics, region, ...others } = props;
+	const globalConfig = useSelector((state) => state.config.globalConfig);
 
 	if (
 		resultsJsonArr === null ||
@@ -190,7 +192,7 @@ export function CGEResultsTableCompare(props) {
 								className={classes.tableColumnHeadRed}
 								sx={{ textAlign: "left", paddingLeft: 0 }}
 							>
-								A
+								{globalConfig.comparisonKey[0]}
 							</TableCell>
 							{headers.slice(1).map((header, idx) => {
 								return (
@@ -220,7 +222,7 @@ export function CGEResultsTableCompare(props) {
 
 						<TableRow>
 							<TableCell className={classes.tableColumnHeadDarkRed}>
-								B
+								{globalConfig.comparisonKey[1]}
 							</TableCell>
 							{headers.slice(1).map((header, idx) => {
 								return (
@@ -250,7 +252,8 @@ export function CGEResultsTableCompare(props) {
 
 						<TableRow>
 							<TableCell className={classes.tableColumnHeadPurple}>
-								Difference between A and B
+								Difference between {globalConfig.comparisonKey[0]} and{" "}
+								{globalConfig.comparisonKey[1]}
 							</TableCell>
 							{headers.slice(1).map((header, idx) => {
 								return (

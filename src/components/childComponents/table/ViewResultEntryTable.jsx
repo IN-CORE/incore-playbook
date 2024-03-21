@@ -31,7 +31,7 @@ import {
 import { checkFileDescriptors } from "../../../utils/datawolf";
 import { useLocation, useRouteMatch } from "react-router-dom";
 import { IncoreTitle } from "../../styledComponents/IncoreTitle";
-import { IncoreInputLabel } from "../../styledComponents/IncoreInputLabel";
+import { IncoreFootNote } from "../../styledComponents/IncoreFootNote";
 
 const useStyles = makeStyles({
 	table: {
@@ -330,42 +330,33 @@ export function ViewResultEntryTable(props) {
 		<>
 			<Box display="flex" justifyContent="space-between">
 				{compareItemNames ? (
-					<Box display="flex" style={{ float: "right" }}>
-						<Box>
-							<IncoreTitle style={{ display: "inline" }}>
-								Compare Analyses A:&nbsp;
-								<Typography
-									style={{
-										display: "inline",
-										color: "#00619D",
-										fontWeight: 500,
-									}}
-								>
-									{Object.keys(compareItemNames).at(0) ?? "[ ]"}
-								</Typography>{" "}
-								and B:&nbsp;
-								<Typography
-									style={{
-										display: "inline",
-										color: "#00619D",
-										fontWeight: 500,
-									}}
-								>
-									{Object.keys(compareItemNames).at(1) ?? "[ ]"}
-								</Typography>
-							</IncoreTitle>
-							<p
-								style={{
-									color: "#808080",
-									fontSize: "12px",
-									margin: 0,
-									padding: 0,
-								}}
-							>
-								Please select two scenarios below to enable the compare button
-							</p>
-						</Box>
-					</Box>
+					<IncoreTitle style={{ marin: 0, display: "inline" }}>
+						Compare Analyses A:&nbsp;
+						<Typography
+							style={{
+								display: "inline",
+								color: "#00619D",
+								fontWeight: 500,
+							}}
+						>
+							{Object.keys(compareItemNames).at(0) ?? "[ ]"}
+						</Typography>{" "}
+						and B:&nbsp;
+						<Typography
+							style={{
+								display: "inline",
+								color: "#00619D",
+								fontWeight: 500,
+							}}
+						>
+							{Object.keys(compareItemNames).at(1) ?? "[ ]"}
+						</Typography>
+						<IncoreFootNote
+							style={{ fontStyle: "inherit", textTransform: "none" }}
+						>
+							Please select two scenarios below to enable the compare button
+						</IncoreFootNote>
+					</IncoreTitle>
 				) : (
 					<></>
 				)}
@@ -375,7 +366,7 @@ export function ViewResultEntryTable(props) {
 					onClick={handleCompareButtonClick}
 					disabled={compareDisabled}
 					classes={{ root: classes.compareButton }}
-					style={{ float: "left" }}
+					style={{ margin: 0, float: "left", width: "300px", height: "45px" }}
 				>
 					COMPARE TWO SCENARIOS
 				</Button>

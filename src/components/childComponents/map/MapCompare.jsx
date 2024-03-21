@@ -14,6 +14,7 @@ import LoadingOverlay from "react-loading-overlay";
 import { makeStyles } from "@material-ui/core/styles";
 import { maxStateMapping } from "../../../utils/common";
 import { IncoreInputLabel } from "../../styledComponents/IncoreInputLabel";
+import { useSelector } from "react-redux";
 
 export const MapContext = React.createContext({});
 
@@ -66,6 +67,7 @@ const useStyles = makeStyles({
 		"&MsOverflowStyle:": {
 			display: "none", // Hide the scrollbar for IE
 		},
+		backgroundColor: "white",
 	},
 });
 
@@ -89,6 +91,8 @@ const MapCompare = (props) => {
 
 	const mapRefA = React.useRef();
 	const mapRefB = React.useRef();
+
+	const globalConfig = useSelector((state) => state.config.globalConfig);
 
 	React.useEffect(() => {
 		const {
@@ -364,7 +368,7 @@ const MapCompare = (props) => {
 					ref={fallbackContainerA}
 					style={{
 						width: "50%",
-						height: `${height - 20}px`,
+						height: `${height - 17}px`,
 						marginRight: "5px",
 					}}
 				>
@@ -376,7 +380,7 @@ const MapCompare = (props) => {
 							padding: 0,
 						}}
 					>
-						Map A
+						Map {globalConfig.comparisonKey[0]}
 					</p>
 					<MapContext.Provider value={{ map: mapRefA.current }}>
 						{children}
@@ -387,7 +391,7 @@ const MapCompare = (props) => {
 					ref={fallbackContainerB}
 					style={{
 						width: "50%",
-						height: `${height - 20}px`,
+						height: `${height - 17}px`,
 						marginLeft: "5px",
 					}}
 				>
@@ -399,7 +403,7 @@ const MapCompare = (props) => {
 							padding: 0,
 						}}
 					>
-						Map B
+						Map {globalConfig.comparisonKey[1]}
 					</p>
 					<MapContext.Provider value={{ map: mapRefB.current }}>
 						{children}
@@ -437,7 +441,6 @@ const OverlayTable = (props) => {
 		<TableContainer
 			className={classes.tableContainer}
 			style={right ? { left: "50%" } : null}
-			style={{ backgroundColor: "white" }}
 		>
 			<LoadingOverlay active={loading} spinner text="Loading...">
 				<Table

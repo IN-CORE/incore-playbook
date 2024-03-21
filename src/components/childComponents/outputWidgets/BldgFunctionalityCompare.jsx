@@ -6,7 +6,6 @@ import {
 	getOutputFileContentJSON,
 } from "../../../utils/datawolf";
 import { createBasicLayers, generateLayers } from "../../../utils/map";
-import { comparisonKey } from "../../../globals";
 import { FunctionalityTableCompare } from "../table/FunctionalityTableCompare";
 import { FunctionalityGraphCompare } from "../graph/FunctionalityGraphCompare";
 import MapCompare from "../map/MapCompare";
