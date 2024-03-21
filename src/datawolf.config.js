@@ -1902,15 +1902,6 @@ const datawolfWorkflowConfig = {
 						},
 					},
 					{
-						datasetId: "0a5c4805-828d-43e5-f3a6-707d6400d6e9",
-						datasets: {
-							step: "Disl-Post-Process",
-							title: "Dislocation Heatmap",
-							variableName: "popdislHeatmapINCOREId",
-							widget: "PopDislocation",
-						},
-					},
-					{
 						datasetId: "622be383-df51-42a4-f4bf-84e8d24f11f2",
 						datasets: {
 							step: "Bldg-Max-Dmg-State",

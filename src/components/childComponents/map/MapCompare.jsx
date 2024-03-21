@@ -122,6 +122,7 @@ const MapCompare = (props) => {
 		allowBuildingSelection,
 		fieldsA,
 		fieldsB,
+		activeLayerNames,
 	} = props;
 	const classes = useStyles();
 
@@ -256,12 +257,12 @@ const MapCompare = (props) => {
 		let damageLayerGrpB = null;
 
 		layersA.forEach((layerGrp) => {
-			if (layerGrp.getProperties().title === "Damage") {
+			if (layerGrp.getProperties().title === activeLayerNames ?? "Damage") {
 				damageLayerGrpA = layerGrp;
 			}
 		});
 		layersB.forEach((layerGrp) => {
-			if (layerGrp.getProperties().title === "Damage") {
+			if (layerGrp.getProperties().title === activeLayerNames ?? "Damage") {
 				damageLayerGrpB = layerGrp;
 			}
 		});

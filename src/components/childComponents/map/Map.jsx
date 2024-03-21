@@ -15,7 +15,7 @@ import {
 import LoadingOverlay from "react-loading-overlay";
 
 import LayerSwitcher from "./LayerSwitcher";
-import { maxStateMapping, fetchLegendsForLayers } from "../../../utils/common";
+import { fetchLegendsForLayers, maxStateMapping } from "../../../utils/common";
 import LegendIcon from "./LegendIcon";
 
 const useStyles = makeStyles({
@@ -105,7 +105,14 @@ const useStyles = makeStyles({
 export const MapContext = React.createContext({});
 
 const Map = (props) => {
-	const { children, id, className, allowBuildingSelection, fields } = props;
+	const {
+		children,
+		id,
+		className,
+		allowBuildingSelection,
+		fields,
+		activeLayerNames,
+	} = props;
 	const hasLegend = props.hasLegend !== undefined ? props.hasLegend : true;
 	const classes = useStyles();
 
@@ -200,7 +207,7 @@ const Map = (props) => {
 
 		let damageLayerGrp = null;
 		layers.forEach((layerGrp) => {
-			if (layerGrp.getProperties().title === "Damage") {
+			if (layerGrp.getProperties().title === activeLayerNames ?? "Damage") {
 				damageLayerGrp = layerGrp;
 			}
 		});
