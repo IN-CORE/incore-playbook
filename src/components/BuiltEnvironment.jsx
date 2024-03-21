@@ -626,7 +626,7 @@ export const BuiltEnvironment = ({ step, substep }) => {
 														fieldNames={fieldNames}
 														fields={getRow(retrofitStrategies)}
 														enableAction={true}
-														actionBtnText="View the Summary"
+														actionBtnText="Summary"
 														actionClick={actionClick}
 													/>
 												</Box>
