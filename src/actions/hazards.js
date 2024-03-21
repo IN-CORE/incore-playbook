@@ -18,9 +18,11 @@ export function fetchHazards(
 	hazardType = "tornadoes",
 	limit = 20,
 	offset = 0,
+	sort = "desc",
+	orderBy = "date",
 ) {
 	hazardType = getHazardTypePlural(hazardType);
-	let endpoint = `${globalConfig.hazardServiceBase}${hazardType}?limit=${limit}&skip=${offset}`;
+	let endpoint = `${globalConfig.hazardServiceBase}${hazardType}?limit=${limit}&skip=${offset}&sort=${sort}&sortBy=${orderBy}`;
 
 	let space = globalConfig.testbedSpace;
 	if (space !== undefined) endpoint = `${endpoint}&space=${space}`;
