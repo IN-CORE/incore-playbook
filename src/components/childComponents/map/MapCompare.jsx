@@ -3,6 +3,11 @@ import { Map as OLMap, View } from "ol";
 import Overlay from "ol/Overlay";
 import LayerSwitcher from "./LayerSwitcher";
 import {
+	Accordion,
+	AccordionDetails,
+	AccordionSummary,
+	Box,
+	Grid,
 	Table,
 	TableBody,
 	TableCell,
@@ -12,7 +17,10 @@ import {
 } from "@material-ui/core";
 import LoadingOverlay from "react-loading-overlay";
 import { makeStyles } from "@material-ui/core/styles";
-import { maxStateMapping } from "../../../utils/common";
+import { fetchLegendsForLayers, maxStateMapping } from "../../../utils/common";
+import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
+import { IncoreTitle } from "../../styledComponents/IncoreTitle";
+import { IncoreFootNote } from "../../styledComponents/IncoreFootNote";
 
 export const MapContext = React.createContext({});
 
@@ -66,6 +74,42 @@ const useStyles = makeStyles({
 			display: "none", // Hide the scrollbar for IE
 		},
 	},
+	legendDiv: {
+		backgroundColor: "#ffffff",
+		border: "1px solid #e0e0e0",
+	},
+	innerLegendDiv: {
+		display: "flex",
+		flexDirection: "row",
+		padding: "10px",
+		gap: "20px",
+	},
+	legendGroup: {
+		minWidth: "200px",
+		backgroundColor: "#ffffff",
+		borderRadius: "4%",
+		padding: "1em",
+		boxShadow: "0 0 10px 0 rgba(0, 0, 0, 0.1)",
+	},
+	legendsContainer: {
+		maxHeight: "200px",
+		overflowY: "auto",
+		marginTop: "10px",
+	},
+	groupTitle: {
+		fontWeight: "bold",
+		fontSize: "1.2em",
+	},
+	layer: {
+		marginBottom: "10px",
+	},
+	layerName: {
+		fontSize: "0.5 em",
+	},
+	legendImage: {
+		maxWidth: "100%",
+		height: "auto",
+	},
 });
 
 const MapCompare = (props) => {
@@ -88,6 +132,9 @@ const MapCompare = (props) => {
 
 	const mapRefA = React.useRef();
 	const mapRefB = React.useRef();
+
+	// State variable to store legends
+	const [legends, setLegends] = React.useState([]);
 
 	React.useEffect(() => {
 		const {
@@ -178,6 +225,9 @@ const MapCompare = (props) => {
 
 		mapRefA.current = mapA;
 		mapRefB.current = mapB;
+
+		// Fetch legends for layers
+		setLegends(fetchLegendsForLayers(layersA));
 
 		return () => {
 			if (events) {
@@ -356,47 +406,102 @@ const MapCompare = (props) => {
 	}
 
 	return (
-		<div style={{ position: "relative" }}>
-			<div style={{ width: "100%", height: `${height}px`, display: "flex" }}>
-				<div
-					className={`ol-map ${className}`}
-					ref={fallbackContainerA}
-					style={{ width: "50%", height: `${height}px`, marginRight: "5px" }}
-				>
-					<MapContext.Provider value={{ map: mapRefA.current }}>
-						{children}
-					</MapContext.Provider>
+		<Grid container styles={{ marginBottom: "2em" }}>
+			<Grid item xs={12}>
+				<div style={{ position: "relative" }}>
+					<div
+						style={{ width: "100%", height: `${height}px`, display: "flex" }}
+					>
+						<div
+							className={`ol-map ${className}`}
+							ref={fallbackContainerA}
+							style={{
+								width: "100%",
+								height: `${height}px`,
+								marginRight: "5px",
+							}}
+						>
+							<MapContext.Provider value={{ map: mapRefA.current }}>
+								{children}
+							</MapContext.Provider>
+						</div>
+						<div
+							className={`ol-map ${className}`}
+							ref={fallbackContainerB}
+							style={{
+								width: "100%",
+								height: `${height}px`,
+								marginLeft: "5px",
+							}}
+						>
+							<MapContext.Provider value={{ map: mapRefB.current }}>
+								{children}
+							</MapContext.Provider>
+						</div>
+					</div>
+					{allowBuildingSelection && selectedBuildingA ? (
+						<OverlayTable
+							selectedBuilding={selectedBuildingA}
+							loading={loading}
+							fields={fieldsA}
+						/>
+					) : (
+						<></>
+					)}
+					{allowBuildingSelection && selectedBuildingB ? (
+						<OverlayTable
+							selectedBuilding={selectedBuildingB}
+							loading={loading}
+							right={true}
+							fields={fieldsB}
+						/>
+					) : (
+						<></>
+					)}
 				</div>
-				<div
-					className={`ol-map ${className}`}
-					ref={fallbackContainerB}
-					style={{ width: "50%", height: `${height}px`, marginLeft: "5px" }}
-				>
-					<MapContext.Provider value={{ map: mapRefB.current }}>
-						{children}
-					</MapContext.Provider>
-				</div>
-			</div>
-			{allowBuildingSelection && selectedBuildingA ? (
-				<OverlayTable
-					selectedBuilding={selectedBuildingA}
-					loading={loading}
-					fields={fieldsA}
-				/>
-			) : (
-				<></>
-			)}
-			{allowBuildingSelection && selectedBuildingB ? (
-				<OverlayTable
-					selectedBuilding={selectedBuildingB}
-					loading={loading}
-					right={true}
-					fields={fieldsB}
-				/>
-			) : (
-				<></>
-			)}
-		</div>
+			</Grid>
+			<Grid item xs={12}>
+				<Accordion style={{ boxShadow: "none" }}>
+					<AccordionSummary
+						expandIcon={<ExpandMoreIcon />}
+						aria-controls="panel1a-content"
+						id="panel1a-header"
+						style={{ padding: "0" }}
+					>
+						<Box display="flex" flexDirection="column" alignItems="flex-start">
+							<IncoreTitle style={{ color: "#00619D", marginBottom: "auto" }}>
+								Legends
+							</IncoreTitle>
+							<IncoreFootNote>
+								Click to expand and view the legends
+							</IncoreFootNote>
+						</Box>
+					</AccordionSummary>
+					<AccordionDetails>
+						<div className={classes.innerLegendDiv}>
+							<br />
+							{Object.entries(legends).map(([layerGroupName, layers]) => (
+								<div key={layerGroupName} className={classes.legendGroup}>
+									<div className={classes.groupTitle}>{layerGroupName}</div>
+									<div className={classes.legendsContainer}>
+										{Object.entries(layers).map(([layerName, { url }]) => (
+											<div key={layerName} className={classes.layer}>
+												<div className={classes.layerName}>{layerName}</div>
+												<img
+													src={url}
+													alt={`Legend for ${layerName}`}
+													className={classes.legendImage}
+												/>
+											</div>
+										))}
+									</div>
+								</div>
+							))}
+						</div>
+					</AccordionDetails>
+				</Accordion>
+			</Grid>
+		</Grid>
 	);
 };
 

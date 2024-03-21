@@ -653,6 +653,7 @@ export const CommunityHazards = (props) => {
 								)}
 								<Map
 									className="fillContainer"
+									hasLegend={false}
 									zoom={mapConfig.ZOOM}
 									minZoom={mapConfig.MIN_ZOOM}
 									maxZoom={mapConfig.MAX_ZOOM}
