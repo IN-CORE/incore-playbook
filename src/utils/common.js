@@ -415,3 +415,25 @@ export const maxStateMapping = (fields, max_state, sw_max_state) => {
 	}
 	return max_state;
 };
+
+export const fetchLegendsForLayers = (layers) => {
+	const legends = {};
+
+	layers.forEach((layerGrp) => {
+		const layersArray = layerGrp.getLayers().getArray();
+		const layerGrpTitle = layerGrp.getProperties().title;
+
+		// Check if there are valid layers in group, for example no need for Basemap group
+		if (layersArray.length !== 0 && layersArray[0].getSource().params_) {
+			legends[layerGrpTitle] = layersArray.reduce((acc, layer) => {
+				const layerJSON = layer.getSource().params_;
+				if (layerJSON) {
+					const legendUrl = `${defaultGlobalConfig.geoServerWMS}?REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=20&HEIGHT=20&LAYER=${layerJSON.LAYERS}&STYLE=${layerJSON.STYLES}`;
+					acc[layer.get("title")] = { url: legendUrl };
+				}
+				return acc;
+			}, {});
+		}
+	});
+	return legends;
+};

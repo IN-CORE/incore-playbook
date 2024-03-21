@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 
 ## [Unreleased]
+### Added
+- Added legend option for maps in the playbook [#259](https://github.com/IN-CORE/incore-playbook/issues/259)
 
 ### Added
 - Substation damage comparison [#390](https://github.com/IN-CORE/incore-playbook/issues/390)
