@@ -387,6 +387,7 @@ export function ViewResultEntryTable(props) {
 						setCompareItems({});
 						setCompareItemNames([]);
 					}}
+					style={{ color: "#00619D" }}
 				>
 					Clear
 				</Button>

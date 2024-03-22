@@ -551,6 +551,7 @@ export default function RetrofitStrategyBuilder(props) {
 				<TableCell className={classes.tableUnSavedCell} align="left">
 					<Button
 						className={classes.button}
+						style={{ color: "#00619D" }}
 						disabled={
 							currentlyEditing !== null
 								? false
@@ -565,6 +566,7 @@ export default function RetrofitStrategyBuilder(props) {
 					</Button>
 					<Button
 						className={classes.button}
+						style={{ color: "#00619D" }}
 						disabled={currentlyEditing !== null}
 						variant="outlined"
 						color="primary"
