@@ -139,7 +139,7 @@ export default function RunAnalysis(props) {
 	}, [datawolfFormState, title, description]);
 
 	const handleRunButtonClick = async () => {
-		const datawolfExecutionStatus = await submitExecution(
+		const { datawolfExecutionStatus, _ } = await submitExecution(
 			datawolfConfig,
 			datawolfWorkflowConfig,
 			title,

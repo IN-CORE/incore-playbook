@@ -69,10 +69,16 @@ const useStyles = makeStyles({
 });
 
 export function SortedEntryTable(props) {
-	const { fieldNames, fields, pageNum, dataPerPage, setPageNum } = props;
-
-	const [order, setOrder] = useState("desc");
-	const [orderBy, setOrderBy] = React.useState("date");
+	const {
+		fieldNames,
+		fields,
+		setOffset,
+		setPageNumber,
+		order,
+		setOrder,
+		orderBy,
+		setOrderBy,
+	} = props;
 
 	const handleRequestSort = (event, property) => {
 		const isAsc = orderBy === property && order === "asc";
@@ -81,14 +87,10 @@ export function SortedEntryTable(props) {
 	};
 
 	const createSortHandler = (property) => (event) => {
-		setPageNum(1);
+		setPageNumber(1);
+		setOffset(0);
 		handleRequestSort(event, property);
 	};
-
-	const sortedFields = stableSort(fields, getComparator(order, orderBy)).slice(
-		(pageNum - 1) * dataPerPage,
-		(pageNum - 1) * dataPerPage + dataPerPage,
-	);
 
 	const classes = useStyles();
 
@@ -123,7 +125,7 @@ export function SortedEntryTable(props) {
 					</TableRow>
 				</TableHead>
 				<TableBody>
-					{sortedFields.map((field) => {
+					{fields.map((field) => {
 						return (
 							<TableRow className={classes.tableBodyRow} key={field["id"]}>
 								{fieldNames.map((fieldName, idx) => {

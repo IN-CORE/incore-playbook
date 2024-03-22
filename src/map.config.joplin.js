@@ -1,13 +1,11 @@
 const layerStyles = {
+	RetrofitStrategy: "incore:retrofit-rules",
 	BldgDamage: "incore:bldg-dmg-summary",
 	BldgFunctionality: "incore:bldg-func",
 	BldgMCS: "incore:bldg-mcs",
 	Interdependency: "incore:substations-label",
 	PoleDamage: "incore:epf-dmg-summary",
-	PopulationDislocation: {
-		bldgMaxDamageStateINCOREId: "incore:bldg-dmg-summary",
-		popdislHeatmapINCOREId: "incore:heatmap",
-	},
+	PopulationDislocation: "incore:joplin-pop-dis",
 	SubstationDamage: "incore:epf-dmg-summary",
 	MapUtil: {
 		earthquake: "incore:earthquake-pga-g",

@@ -96,8 +96,17 @@ export const CommunityHazards = (props) => {
 	const [srcCoord, setSrcCoord] = useState([]);
 
 	const dispatch = useDispatch();
-	const listHazards = (globalConfig, hazardType, limit, offset) =>
-		dispatch(fetchHazards(globalConfig, hazardType, limit, offset));
+	const listHazards = (
+		globalConfig,
+		hazardType,
+		limit,
+		offset,
+		order,
+		orderBy,
+	) =>
+		dispatch(
+			fetchHazards(globalConfig, hazardType, limit, offset, order, orderBy),
+		);
 	const globalConfig = useSelector((state) => state.config.globalConfig);
 	const earthquakes = useSelector((state) => state.hazard.earthquakes);
 	const tornadoes = useSelector((state) => state.hazard.tornadoes);
@@ -115,9 +124,13 @@ export const CommunityHazards = (props) => {
 
 	const [fields, setFields] = React.useState([]);
 	const [dataPerPage, setDataPerPage] = React.useState(5);
-	// use limit for getting data and data to be displayed per page separately
-	const [limit, setDataLimit] = React.useState(200);
+	// use limit and offset for getting data to be displayed per page separately
+	const [offset, setOffset] = React.useState(0);
 	const [pageNumber, setPageNumber] = React.useState(1);
+	// use state to control order of the data and constant to choose the variable to be ordered
+	const [order, setOrder] = React.useState("desc");
+	const [orderBy, setOrderBy] = React.useState("date");
+
 	const [olIdLayerMap, setOlIdLayerMap] = React.useState(new Set());
 	const [enableSrcEdit, setEnableSrcEdit] = React.useState(false); // directly edit in the child component geolocation
 	const [mapDialogOpen, setMapDialogOpen] = React.useState(false); // map prompt
@@ -220,7 +233,14 @@ export const CommunityHazards = (props) => {
 	useEffect(() => {
 		setPageNumber(1);
 		// start from page 1 again
-		listHazards(globalConfig, selectedHazardType, limit, 0);
+		listHazards(
+			globalConfig,
+			selectedHazardType,
+			dataPerPage,
+			offset,
+			order,
+			orderBy,
+		);
 		// reset to the first tab
 		setCurrTabIndex(0);
 	}, [selectedHazardType]);
@@ -242,7 +262,18 @@ export const CommunityHazards = (props) => {
 	// page changes
 	useEffect(() => {
 		setFields(getRow(selectedHazardType));
-	}, [pageNumber, earthquakes, tornadoes, hurricanes, tsunamis, floods]);
+	}, [earthquakes, tornadoes, hurricanes, tsunamis, floods]);
+
+	useEffect(() => {
+		listHazards(
+			globalConfig,
+			selectedHazardType,
+			dataPerPage,
+			offset,
+			order,
+			orderBy,
+		);
+	}, [offset, dataPerPage, order, orderBy]);
 
 	useEffect(() => {
 		// Important: need to clear previous draw interaction first
@@ -405,8 +436,10 @@ export const CommunityHazards = (props) => {
 	const pageChange = (direction) => {
 		if (direction === "previous") {
 			setPageNumber(pageNumber - 1);
+			setOffset((pageNumber - 2) * dataPerPage);
 		} else if (direction === "next") {
 			setPageNumber(pageNumber + 1);
+			setOffset(pageNumber * dataPerPage);
 		}
 	};
 
@@ -593,9 +626,12 @@ export const CommunityHazards = (props) => {
 														<SortedEntryTable
 															fieldNames={fieldNames}
 															fields={fields}
-															pageNum={pageNumber}
-															dataPerPage={dataPerPage}
-															setPageNum={setPageNumber}
+															setOffset={setOffset}
+															setPageNumber={setPageNumber}
+															order={order}
+															setOrder={setOrder}
+															orderBy={orderBy}
+															setOrderBy={setOrderBy}
 														/>
 														<Pagination
 															pageNumber={pageNumber}

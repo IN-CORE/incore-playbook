@@ -51,8 +51,7 @@ export default function PopDislocation(props) {
 		useState(null);
 	const [dislocationByHousingTypeContent, setDislocationByHousingTypeContent] =
 		useState(null);
-	const [damageLayers1, setDamageLayers1] = useState(null);
-	const [damageLayers2, setDamageLayers2] = useState(null);
+	const [popDislocationLayer, setPopDislocationLayer] = useState(null);
 	const [populationDislocationDownload, setPopulationDislocationDownload] =
 		useState();
 
@@ -64,40 +63,19 @@ export default function PopDislocation(props) {
 
 		datawolfDatasetConfigItems.map(async (datawolfDatasetConfigItem) => {
 			const vName = datawolfDatasetConfigItem.datasets.variableName;
-			if (vName === "bldgMaxDamageStateINCOREId") {
-				const bldgMaxDamageStateINCOREId = await getOutputFileContent(
+			if (vName === "popdislHeatmapINCOREId") {
+				const popdislINCOREId = await getOutputFileContent(
 					datawolfConfig,
 					executionItem,
 					datawolfDatasetConfigItem.datasetId,
 				);
 				const tmpLayerDef = [
 					{
-						layerId: bldgMaxDamageStateINCOREId,
-						layerStyles:
-							mapConfig.LAYER_STYLES.PopulationDislocation
-								.bldgMaxDamageStateINCOREId,
-						title: "Building Damage",
+						layerId: popdislINCOREId,
+						layerStyles: mapConfig.LAYER_STYLES.PopulationDislocation,
+						title: "Population Dislocation",
 						opacity: 1,
 						zIndex: 1,
-					},
-				];
-				const previewLayers = generateLayers(globalConfig, tmpLayerDef);
-				setDamageLayers1(previewLayers);
-			} else if (vName === "popdislHeatmapINCOREId") {
-				const popdislHeatmapINCOREId = await getOutputFileContent(
-					datawolfConfig,
-					executionItem,
-					datawolfDatasetConfigItem.datasetId,
-				);
-				const tmpLayerDef = [
-					{
-						layerId: popdislHeatmapINCOREId,
-						layerStyles:
-							mapConfig.LAYER_STYLES.PopulationDislocation
-								.popdislHeatmapINCOREId,
-						title: "Population Dislocation Heatmap",
-						opacity: 0.8,
-						zIndex: 2,
 					},
 				];
 				const previewLayers = generateLayers(
@@ -105,7 +83,7 @@ export default function PopDislocation(props) {
 					tmpLayerDef,
 					"Population Dislocation",
 				);
-				setDamageLayers2(previewLayers);
+				setPopDislocationLayer(previewLayers);
 			} else if (vName === "totalDislTableContent") {
 				setTotalDislTableContent(
 					await getOutputFileContentJSON(
@@ -190,12 +168,12 @@ export default function PopDislocation(props) {
 						{selectedExecutionName}
 					</Typography>
 					<Typography className="previewTitle">
-						Select Data: Popluation Dislocation
+						Select Data: Population Dislocation
 					</Typography>
 				</Box>
 
 				{/*for map*/}
-				{basicLayers && hazardLayers && damageLayers1 && damageLayers2 ? (
+				{basicLayers && hazardLayers && popDislocationLayer ? (
 					<Container className="mapContainer" disableGutters>
 						<Map
 							className="fillContainer"
@@ -207,9 +185,10 @@ export default function PopDislocation(props) {
 								getTransform("EPSG:4326", "EPSG:3857"),
 							)}
 							center={fromLonLat(mapConfig.MAP_CENTER)}
-							layers={[basicLayers, hazardLayers, damageLayers1, damageLayers2]}
+							layers={[basicLayers, hazardLayers, popDislocationLayer]}
 							layerSwitcherOptions={{}}
 							allowBuildingSelection={true}
+							activeLayerNames="Population Dislocation"
 						/>
 					</Container>
 				) : (

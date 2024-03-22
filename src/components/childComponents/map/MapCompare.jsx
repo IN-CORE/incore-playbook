@@ -122,6 +122,7 @@ const MapCompare = (props) => {
 		allowBuildingSelection,
 		fieldsA,
 		fieldsB,
+		activeLayerNames,
 	} = props;
 	const classes = useStyles();
 
@@ -162,6 +163,8 @@ const MapCompare = (props) => {
 			minZoom,
 			maxZoom,
 			extent,
+			showFullExtent: true,
+			smoothExtentConstraint: true,
 		});
 
 		const mapA = new OLMap({
@@ -256,12 +259,20 @@ const MapCompare = (props) => {
 		let damageLayerGrpB = null;
 
 		layersA.forEach((layerGrp) => {
-			if (layerGrp.getProperties().title === "Damage") {
+			if (
+				layerGrp.getProperties().title === activeLayerNames
+					? activeLayerNames
+					: "Damage"
+			) {
 				damageLayerGrpA = layerGrp;
 			}
 		});
 		layersB.forEach((layerGrp) => {
-			if (layerGrp.getProperties().title === "Damage") {
+			if (
+				layerGrp.getProperties().title === activeLayerNames
+					? activeLayerNames
+					: "Damage"
+			) {
 				damageLayerGrpB = layerGrp;
 			}
 		});
