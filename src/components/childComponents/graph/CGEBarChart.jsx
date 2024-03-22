@@ -1,7 +1,7 @@
 import React from "react";
 import Chart from "react-google-charts";
 
-const ParseData = (data, region = null) => {
+const ParseData = (data, region = null, yAxisLegend = "") => {
 	let beforeEvent = data["beforeEvent"];
 	let afterEvent = data["afterEvent"];
 
@@ -23,7 +23,7 @@ const ParseData = (data, region = null) => {
 	}
 
 	const chartData = [];
-	chartData.push(["Million of $", "Before Event", "After Event"]);
+	chartData.push([yAxisLegend, "Before Event", "After Event"]);
 
 	for (const key in beforeEvent) {
 		chartData.push([key, beforeEvent[key], afterEvent[key]]);
@@ -40,12 +40,12 @@ export default function CGEBarChart(props) {
 			<Chart
 				width={width}
 				height={height}
-				chartType="Bar"
+				chartType="BarChart"
 				loader={<div>Loading Chart</div>}
-				data={ParseData(data, region)}
+				data={ParseData(data, region, yAxisLegend)}
 				options={{
 					title: title,
-					legend: { position: "none" },
+					legend: { position: "right" },
 					colors: ["#A1BE2E", "#DB4F60"],
 					hAxis: {
 						title: xAxisLegend,
@@ -53,7 +53,6 @@ export default function CGEBarChart(props) {
 					vAxis: {
 						title: yAxisLegend,
 					},
-					bars: "horizontal",
 				}}
 				// For tests
 				rootProps={{ "data-testid": "1" }}

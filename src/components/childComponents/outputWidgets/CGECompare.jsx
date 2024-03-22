@@ -193,7 +193,7 @@ export default function CGECompare({
 						) {
 							return (
 								<>
-									<Box style={{ margin: "50px 0", maxWidth: "700px" }}>
+									<Box>
 										<CGEBarChartCompare
 											region={region}
 											data={[
@@ -202,6 +202,8 @@ export default function CGECompare({
 											]}
 											executionTitles={selectedExecutionNames}
 											height="30em"
+											xAxisLegend="Million of $"
+											yAxisLegend="Household Groups"
 										/>
 									</Box>
 									<Box>
@@ -222,7 +224,7 @@ export default function CGECompare({
 						) {
 							return (
 								<>
-									<Box style={{ margin: "50px 0", maxWidth: "700px" }}>
+									<Box>
 										<CGEBarChartCompare
 											region={region}
 											data={[
@@ -230,8 +232,9 @@ export default function CGECompare({
 												cgeDomesticSupplyContentB,
 											]}
 											executionTitles={selectedExecutionNames}
-											yAxisLegend="Million of $"
-											height="30em"
+											height="35em"
+											xAxisLegend="Million of $"
+											yAxisLegend="Sectors"
 										/>
 									</Box>
 									<Box>
@@ -253,13 +256,14 @@ export default function CGECompare({
 						) {
 							return (
 								<>
-									<Box style={{ margin: "50px 0", maxWidth: "700px" }}>
+									<Box>
 										<CGEBarChartCompare
 											region={region}
 											data={[cgeEmploymentContentA, cgeEmploymentContentB]}
 											executionTitles={selectedExecutionNames}
-											title="Employment"
-											height="30em"
+											height="35em"
+											xAxisLegend="# of workers"
+											yAxisLegend="Sectors"
 										/>
 									</Box>
 									<Box>

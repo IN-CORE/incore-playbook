@@ -237,6 +237,7 @@ body {
 .usefulResourcesTitle {
 	margin: 50px 0;
 }
+
 .usefulResourcesTitle img {
 	display: inline;
 	text-align: left;
@@ -318,6 +319,7 @@ body {
 .MuiButton-textSecondary {
 	color: #00619d !important;
 }
+
 .MuiButton-textSecondary:hover,
 .MuiButton-textSecondary:focus,
 .MuiButton-textSecondary:active {
@@ -331,4 +333,15 @@ body {
 .html2canvas-container {
 	width: 30000px !important;
 	height: 30000px !important;
+}
+
+/*Set color of checkbox when selected*/
+.MuiCheckbox-colorSecondary.Mui-checked {
+	color: #00619d !important;
+}
+
+/*Steppers in the RS builder*/
+.MuiStepIcon-root.MuiStepIcon-active,
+.MuiStepIcon-root.MuiStepIcon-completed {
+	color: #00619d;
 }

@@ -859,7 +859,7 @@ const datawolfWorkflowConfig = {
 				],
 			},
 			{
-				title: "retrofit strategy",
+				title: "Retrofit Strategy",
 				description: "retrofit_strategy",
 				variableName: "selectedRetrofitStrategyId",
 				widget: "RetrofitStrategies",
@@ -900,7 +900,7 @@ const datawolfWorkflowConfig = {
 				],
 			},
 			{
-				title: "epfs pole",
+				title: "Epfs Pole",
 				description: "epfs pole",
 				variableName: "selectedPoleId",
 				widget: "Epfs",
@@ -1898,15 +1898,6 @@ const datawolfWorkflowConfig = {
 							step: "Disl-Post-Process",
 							title: "Dislocation by Disability",
 							variableName: "dislocationByDisabilityContent",
-							widget: "PopDislocation",
-						},
-					},
-					{
-						datasetId: "0a5c4805-828d-43e5-f3a6-707d6400d6e9",
-						datasets: {
-							step: "Disl-Post-Process",
-							title: "Dislocation Heatmap",
-							variableName: "popdislHeatmapINCOREId",
 							widget: "PopDislocation",
 						},
 					},

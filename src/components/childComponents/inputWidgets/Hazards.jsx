@@ -6,8 +6,12 @@ import { fetchHazards } from "../../../actions/hazards";
 import { getHazardTypePlural } from "../../../utils/common";
 
 export default function Hazards(props) {
-	const { setDatawolfFormState, datawolfFormState, datawolfParamConfigItem } =
-		props;
+	const {
+		setDatawolfFormState,
+		datawolfFormState,
+		datawolfParamConfigItem,
+		clearWidget,
+	} = props;
 	const alllowedHazardTypes = useSelector(
 		(state) => state.config.allowedHazardTypes,
 	);
@@ -25,6 +29,7 @@ export default function Hazards(props) {
 		dispatch(fetchHazards(hazardType, limit, offset));
 
 	const [hazards, setHazards] = useState([]);
+	const [selectedHazard, setSelectedHazard] = useState(null);
 
 	useEffect(() => {
 		alllowedHazardTypes.map((hazardType) => {
@@ -43,14 +48,21 @@ export default function Hazards(props) {
 		}
 	}, [datawolfFormState.selectedHazardType]);
 
+	// clear IncoreAutoComplete
+	useEffect(() => {
+		if (clearWidget) setSelectedHazard(null);
+	}, [clearWidget]);
+
 	return (
 		<IncoreAutocomplete
 			disablePortal
 			labelId="label"
 			id="select"
 			variant="outlined"
+			value={selectedHazard}
 			onChange={(event, newValue) => {
 				let currentVal = newValue.id;
+				setSelectedHazard(newValue);
 				setDatawolfFormState((prevState) => {
 					let mapState = {};
 					datawolfParamConfigItem.parametersMap.map((pm) => {

@@ -84,7 +84,7 @@ const registeredWidgets = {
 	ValueLosses: <ValueLosses />,
 };
 
-export default function ViewResult(props) {
+export default function RunAnalysis(props) {
 	const classes = useStyles();
 
 	const {
@@ -100,6 +100,7 @@ export default function ViewResult(props) {
 	// for execution
 	const [title, setTitle] = useState("");
 	const [description, setDescription] = useState("");
+	const [clearWidget, setClearWidget] = useState(false);
 
 	let submitExecutionErrorMessage = "Couldn't submit the Execution.";
 
@@ -138,7 +139,7 @@ export default function ViewResult(props) {
 	}, [datawolfFormState, title, description]);
 
 	const handleRunButtonClick = async () => {
-		const datawolfExecutionStatus = await submitExecution(
+		const { datawolfExecutionStatus, _ } = await submitExecution(
 			datawolfConfig,
 			datawolfWorkflowConfig,
 			title,
@@ -167,8 +168,14 @@ export default function ViewResult(props) {
 				}, {}),
 			);
 
+			// clear Hazards and RetrofitStrategies
+			setClearWidget(true);
+
 			// jump to view result tab
 			gotoViewResultTab();
+
+			// change back to default
+			setClearWidget(false);
 		}
 	};
 
@@ -219,6 +226,7 @@ export default function ViewResult(props) {
 											setDatawolfFormState: setDatawolfFormState,
 											datawolfFormState: datawolfFormState,
 											datawolfParamConfigItem: item,
+											clearWidget: clearWidget,
 										});
 									})()}
 								</Box>

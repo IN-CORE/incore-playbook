@@ -1,18 +1,10 @@
 import * as React from "react";
-import { Map as OLMap, View, Feature } from "ol";
+import { Map as OLMap, View } from "ol";
 // import {defaults as defaultControls} from "ol/control";
 import Overlay from "ol/Overlay";
-import { Point } from "ol/geom";
-import Style from "ol/style/Style";
-import CircleStyle from "ol/style/Circle";
-import Fill from "ol/style/Fill";
-import Stroke from "ol/style/Stroke";
-import VectorLayer from "ol/layer/Vector";
-import VectorSource from "ol/source/Vector";
 
 import { makeStyles } from "@material-ui/core/styles";
 import {
-	IconButton,
 	Table,
 	TableBody,
 	TableCell,
@@ -21,9 +13,10 @@ import {
 	TableRow,
 } from "@material-ui/core";
 import LoadingOverlay from "react-loading-overlay";
-import CloseIcon from "@material-ui/icons/Close";
 
 import LayerSwitcher from "./LayerSwitcher";
+import { fetchLegendsForLayers, maxStateMapping } from "../../../utils/common";
+import LegendIcon from "./LegendIcon";
 
 const useStyles = makeStyles({
 	table: {
@@ -58,12 +51,69 @@ const useStyles = makeStyles({
 		lineHeight: "18px",
 		border: "1px solid rgba(46,91,255,0.08)",
 	},
+	tableContainer: {
+		position: "absolute",
+		width: "300px",
+		maxHeight: "356px",
+		top: "5px",
+		left: "30px",
+		Zindex: 5000,
+		padding: "5px",
+		overflow: "scroll",
+		scrollBehavior: "smooth",
+		"&::WebkitScrollbar": {
+			display: "none", // Hide the scrollbar for WebKit browsers (Chrome, Safari, Edge, etc.)
+		},
+		"&MsOverflowStyle:": {
+			display: "none", // Hide the scrollbar for IE
+		},
+		backgroundColor: "white",
+	},
+	legend: {
+		position: "absolute",
+		top: "27%",
+		left: "0.5%",
+		backgroundColor: "white",
+		padding: "1%",
+		borderRadius: "5%",
+		boxShadow: "0 2px 10px rgba(0,0,0,0.3)",
+		maxHeight: "70%",
+		overflowY: "auto",
+		zIndex: 1000, // Added z-index here
+	},
+	legendButton: {
+		position: "absolute",
+		top: "17%",
+		left: "0.5%",
+		width: "2.25em",
+		height: "2.25em",
+		backgroundColor: "#FFFFFF",
+		borderRadius: "10%",
+		boxShadow: "0 2px 10px rgba(0,0,0,0.3)",
+		opacity: 0.9,
+		zIndex: 1000,
+		border: "none",
+		padding: 0,
+		outline: "none",
+		cursor: "pointer",
+		display: "flex",
+		justifyContent: "center",
+		alignItems: "center",
+	},
 });
 
 export const MapContext = React.createContext({});
 
 const Map = (props) => {
-	const { children, id, className, allowBuildingSelection } = props;
+	const {
+		children,
+		id,
+		className,
+		allowBuildingSelection,
+		fields,
+		activeLayerNames,
+	} = props;
+	const hasLegend = props.hasLegend !== undefined ? props.hasLegend : true;
 	const classes = useStyles();
 
 	const [selectedBuilding, setSelectedBuilding] = React.useState(null);
@@ -72,6 +122,11 @@ const Map = (props) => {
 	const fallbackContainer = React.useRef();
 
 	const mapRef = React.useRef();
+
+	// State variable to make legend collapsible
+	const [legendOpen, setLegendOpen] = React.useState(false);
+	// State variable to store legends
+	const [legends, setLegends] = React.useState([]);
 
 	// var markerStyle = new Style({
 	// 	image: new CircleStyle({
@@ -124,6 +179,8 @@ const Map = (props) => {
 				minZoom,
 				maxZoom,
 				extent,
+				showFullExtent: true,
+				smoothExtentConstraint: true,
 			}),
 			layers,
 			overlays: [
@@ -152,7 +209,11 @@ const Map = (props) => {
 
 		let damageLayerGrp = null;
 		layers.forEach((layerGrp) => {
-			if (layerGrp.getProperties().title === "Damage") {
+			if (
+				layerGrp.getProperties().title === activeLayerNames
+					? activeLayerNames
+					: "Damage"
+			) {
 				damageLayerGrp = layerGrp;
 			}
 		});
@@ -223,6 +284,8 @@ const Map = (props) => {
 
 		mapRef.current = map;
 
+		setLegends(fetchLegendsForLayers(layers));
+
 		return () => {
 			if (events) {
 				Object.entries(events).forEach(([event, handler]) => {
@@ -234,8 +297,43 @@ const Map = (props) => {
 		};
 	}, []);
 
-	return (
+	return allowBuildingSelection ? (
 		<div style={{ position: "relative" }}>
+			{hasLegend && (
+				<>
+					<button
+						onClick={() => setLegendOpen(!legendOpen)}
+						className={classes.legendButton}
+					>
+						<LegendIcon />
+					</button>
+					{legendOpen && (
+						<div className={classes.legend}>
+							{Object.entries(legends).map(([layerGroupName, layers]) => (
+								<div key={layerGroupName} style={{ marginBottom: "20px" }}>
+									<h3>{layerGroupName}</h3>
+									<ul style={{ listStyleType: "none" }}>
+										{Object.entries(layers).map(([layerName, { url }]) => (
+											<li key={layerName} style={{ marginBottom: "10px" }}>
+												<div>{layerName}</div>
+												<img
+													src={url}
+													alt={`Legend for ${layerName}`}
+													style={{
+														maxWidth: "70%",
+														height: "auto",
+														marginTop: "5px",
+													}}
+												/>
+											</li>
+										))}
+									</ul>
+								</div>
+							))}
+						</div>
+					)}
+				</>
+			)}
 			<div
 				id={id}
 				style={{ width: "100%", height: "366px" }}
@@ -247,25 +345,7 @@ const Map = (props) => {
 				</MapContext.Provider>
 			</div>
 			{allowBuildingSelection && selectedBuilding ? (
-				<TableContainer
-					style={{
-						position: "absolute",
-						width: "300px",
-						maxHeight: "356px",
-						top: "5px",
-						left: "30px",
-						Zindex: 5000,
-						padding: "5px",
-						overflow: "scroll",
-						scrollBehavior: "smooth",
-						"&::WebkitScrollbar": {
-							display: "none", // Hide the scrollbar for WebKit browsers (Chrome, Safari, Edge, etc.)
-						},
-						"&MsOverflowStyle:": {
-							display: "none", // Hide the scrollbar for IE
-						},
-					}}
-				>
+				<TableContainer className={classes.tableContainer}>
 					<LoadingOverlay active={loading} spinner text="Loading...">
 						<Table
 							className={classes.table}
@@ -298,13 +378,13 @@ const Map = (props) => {
 								</TableRow> */}
 								<TableRow key="hdrRow">
 									<TableCell
-										align="center"
+										align="left"
 										style={{ backgroundColor: "#EFF2FF", color: "#69707F" }}
 									>
 										Attribute
 									</TableCell>
 									<TableCell
-										align="center"
+										align="right"
 										style={{ backgroundColor: "#EFF2FF", color: "#69707F" }}
 									>
 										Value
@@ -312,32 +392,55 @@ const Map = (props) => {
 								</TableRow>
 							</TableHead>
 							<TableBody>
-								{Object.keys(selectedBuilding).map((colName) => {
-									if (colName === "guid") {
-										return null;
-									}
-									return (
-										<TableRow key={colName}>
-											<TableCell
-												style={{ backgroundColor: "#EFF2FF", color: "#69707F" }}
-											>
-												{colName}
-											</TableCell>
-											<TableCell align="center">
-												{selectedBuilding[colName] === undefined ||
-												selectedBuilding[colName] === null ||
-												selectedBuilding[colName] === ""
-													? "-"
-													: selectedBuilding[colName]}
-											</TableCell>
-										</TableRow>
-									);
-								})}
+								{Object.keys(selectedBuilding)
+									.sort()
+									.map((colName) => {
+										if (colName === "csv_guid") {
+											return null;
+										}
+										return (
+											<TableRow key={colName}>
+												<TableCell
+													style={{
+														backgroundColor: "#EFF2FF",
+														color: "#69707F",
+													}}
+													align="left"
+												>
+													{colName}
+												</TableCell>
+												<TableCell align="right">
+													{colName === "max_state"
+														? maxStateMapping(
+																fields,
+																selectedBuilding[colName],
+																selectedBuilding["sw_max_state"],
+														  )
+														: selectedBuilding[colName] === undefined ||
+														    selectedBuilding[colName] === null ||
+														    selectedBuilding[colName] === ""
+														  ? "-" // Fallback value for undefined, null, or empty strings
+														  : selectedBuilding[colName]}
+												</TableCell>
+											</TableRow>
+										);
+									})}
 							</TableBody>
 						</Table>
 					</LoadingOverlay>
 				</TableContainer>
 			) : null}
+		</div>
+	) : (
+		<div
+			id={id}
+			style={{ width: "100%", height: "100%" }}
+			className={`ol-map ${className}`}
+			ref={fallbackContainer}
+		>
+			<MapContext.Provider value={{ map: mapRef.current }}>
+				{children}
+			</MapContext.Provider>
 		</div>
 	);
 };

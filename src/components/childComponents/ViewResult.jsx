@@ -13,6 +13,7 @@ import Switch from "@material-ui/core/Switch";
 import { getHazardGroupLayers } from "../../utils/map";
 import { DownloadAlert } from "./alert/DownloadAlert";
 import { registeredWidgets } from "./outputWidgets/RegisteredWidgets";
+import { extractStatus } from "../../utils/common";
 
 const useStyles = makeStyles({
 	statTitle: {
@@ -85,33 +86,6 @@ export default function ViewResult(props) {
 	useEffect(() => {
 		createAnalysisEntryTable();
 	}, [executions]);
-
-	// extract a single status from mutliple step status`
-	const extractStatus = (executionItem) => {
-		if (
-			executionItem !== undefined &&
-			executionItem["stepState"] !== undefined
-		) {
-			let statusArr = Object.values(executionItem["stepState"]);
-			// WAITING, QUEUED, RUNNING, FINISHED, ABORTED, FAILED, UNKNOWN
-			// if failed or aborted, return failed | aborted
-			// else if atleast one running, return running
-			// else if atleast one queued, return queued
-			// else if atleast one waiting, return waiting
-			// else if any unknown, return unknown
-			// last case where we need to check all values are finished then return finished
-			// else return undefined
-			if (statusArr.indexOf("FAILED") >= 0) return "FAILED";
-			if (statusArr.indexOf("ABORTED") >= 0) return "ABORTED";
-			else if (statusArr.indexOf("RUNNING") >= 0) return "RUNNING";
-			else if (statusArr.indexOf("QUEUED") >= 0) return "QUEUED";
-			else if (statusArr.indexOf("WAITING") >= 0) return "WAITING";
-			else if (statusArr.indexOf("UNKNOWN") >= 0) return "UNKNOWN";
-			else if (statusArr.every((status) => status === "FINISHED"))
-				return "FINISHED";
-		}
-		return "UNDEFINED";
-	};
 
 	// createAnalysisEntryTable
 	const createAnalysisEntryTable = () => {
@@ -279,28 +253,48 @@ export default function ViewResult(props) {
 			/>
 			{/*for analysis list*/}
 			<Box>
-				<Box className={classes.statTitle}>
-					<IncoreInputLabel>{`Completed Analysis (${numCompleted})`}</IncoreInputLabel>
-					<Box style={{ float: "right" }}>
-						<FormControlLabel
-							control={
-								<Switch
-									checked={datawolfViewAllOn}
-									onChange={handleViewAllDatawolf}
-									name="datawolfViewAllSwitch"
-									color="default"
-									classes={{
-										switchBase: classes.switchBase,
-										checked: classes.checked,
-										track: classes.track,
-									}}
-								/>
-							}
-							label="View All"
-						/>
-						{/*TODO in the future this could be used to add filters to narrow down exectusions (e.g. only show completed...)*/}
-						{/*<IconButton aria-label="filter"><FilterListIcon /></IconButton>*/}
-					</Box>
+				<Box
+					className={classes.statTitle}
+					style={{
+						display: "flex",
+						justifyContent: "space-between",
+						alignItems: "center",
+						marginBottom: "30px",
+						marginTop: "30px",
+					}}
+				>
+					<IncoreInputLabel
+						style={{
+							display: "flex",
+							justifyContent: "flex-top",
+							width: "250px",
+							margin: 0,
+						}}
+					>
+						{`Completed Analysis (${numCompleted})`}
+					</IncoreInputLabel>
+					<FormControlLabel
+						control={
+							<Switch
+								checked={datawolfViewAllOn}
+								onChange={handleViewAllDatawolf}
+								name="datawolfViewAllSwitch"
+								color="default"
+								classes={{
+									switchBase: classes.switchBase,
+									checked: classes.checked,
+									track: classes.track,
+								}}
+							/>
+						}
+						style={{
+							display: "flex",
+							justifyContent: "flex-end",
+							width: "140px",
+							margin: 0,
+						}}
+						label="View All"
+					/>
 				</Box>
 				<Box>
 					<ViewResultEntryTable

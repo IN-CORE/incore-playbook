@@ -1,5 +1,5 @@
 import { styled } from "@material-ui/core/styles";
-import { Autocomplete } from "@material-ui/lab";
+import Autocomplete from "@material-ui/lab/Autocomplete";
 
 export const IncoreAutocomplete = styled(Autocomplete)({
 	height: "41px",

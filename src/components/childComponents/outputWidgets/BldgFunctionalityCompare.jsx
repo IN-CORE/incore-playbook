@@ -6,10 +6,6 @@ import {
 	getOutputFileContentJSON,
 } from "../../../utils/datawolf";
 import { createBasicLayers, generateLayers } from "../../../utils/map";
-import { comparisonKey } from "../../../globals";
-import { IncoreButtonText } from "../../styledComponents/IncoreButtonText";
-import { downloadImg } from "../../../utils/image";
-import CameraAltIcon from "@material-ui/icons/CameraAlt";
 import { FunctionalityTableCompare } from "../table/FunctionalityTableCompare";
 import { FunctionalityGraphCompare } from "../graph/FunctionalityGraphCompare";
 import MapCompare from "../map/MapCompare";
@@ -33,9 +29,6 @@ export default function BldgFunctionality(props) {
 	const basicLayersB = createBasicLayers("Base Maps");
 
 	const mapHeight = 300; // px
-
-	// print container
-	const printRef = useRef();
 
 	useEffect(() => {
 		const fetchData = async () => {
@@ -71,7 +64,7 @@ export default function BldgFunctionality(props) {
 						);
 						setBldgFuncSummaryTableContents((prevState) => ({
 							...prevState,
-							[comparisonKey[i]]: content,
+							[globalConfig.comparisonKey[i]]: content,
 						}));
 					}
 				}
@@ -82,20 +75,28 @@ export default function BldgFunctionality(props) {
 	}, [executionItems, datawolfDatasetConfigItems]);
 
 	return (
-		<Box ref={printRef}>
+		<Box>
 			{/*for chart*/}
 			<Box className="chartContainer">
 				<Grid container spacing={3} justify="center">
 					{Object.keys(bldgFuncSummaryTableContents).length >= 2 &&
-					bldgFuncSummaryTableContents[comparisonKey[0]]["by_category"] &&
-					bldgFuncSummaryTableContents[comparisonKey[1]]["by_category"] ? (
+					bldgFuncSummaryTableContents[globalConfig.comparisonKey[0]][
+						"by_category"
+					] &&
+					bldgFuncSummaryTableContents[globalConfig.comparisonKey[1]][
+						"by_category"
+					] ? (
 						<Grid item style={{ minWidth: "90%" }}>
 							<FunctionalityGraphCompare
 								categorySummaryA={
-									bldgFuncSummaryTableContents[comparisonKey[0]]["by_category"]
+									bldgFuncSummaryTableContents[globalConfig.comparisonKey[0]][
+										"by_category"
+									]
 								}
 								categorySummaryB={
-									bldgFuncSummaryTableContents[comparisonKey[1]]["by_category"]
+									bldgFuncSummaryTableContents[globalConfig.comparisonKey[1]][
+										"by_category"
+									]
 								}
 							/>
 						</Grid>
@@ -111,37 +112,31 @@ export default function BldgFunctionality(props) {
 			hazardLayers &&
 			damageLayersA &&
 			damageLayersB ? (
-				<Container
-					className="mapContainer"
-					disableGutters
-					style={{ height: `${mapHeight}px` }}
-				>
-					<MapCompare
-						className="fillContainer"
-						zoom={mapConfig.ZOOM}
-						minZoom={mapConfig.MIN_ZOOM}
-						maxZoom={mapConfig.MAX_ZOOM}
-						extent={applyTransform(
-							mapConfig.MAP_BOUNDS,
-							getTransform("EPSG:4326", "EPSG:3857"),
-						)}
-						center={fromLonLat(mapConfig.MAP_CENTER)}
-						layersA={[
-							basicLayersA,
-							hazardLayers[comparisonKey[0]],
-							damageLayersA,
-						]}
-						layersB={[
-							basicLayersB,
-							hazardLayers[comparisonKey[1]],
-							damageLayersB,
-						]}
-						layerSwitcherOptionsA={{}}
-						layerSwitcherOptionsB={{}}
-						height={mapHeight}
-						allowBuildingSelection={true}
-					/>
-				</Container>
+				<MapCompare
+					className="fillContainer"
+					zoom={mapConfig.ZOOM}
+					minZoom={mapConfig.MIN_ZOOM}
+					maxZoom={mapConfig.MAX_ZOOM}
+					extent={applyTransform(
+						mapConfig.MAP_BOUNDS,
+						getTransform("EPSG:4326", "EPSG:3857"),
+					)}
+					center={fromLonLat(mapConfig.MAP_CENTER)}
+					layersA={[
+						basicLayersA,
+						hazardLayers[globalConfig.comparisonKey[0]],
+						damageLayersA,
+					]}
+					layersB={[
+						basicLayersB,
+						hazardLayers[globalConfig.comparisonKey[1]],
+						damageLayersB,
+					]}
+					layerSwitcherOptionsA={{}}
+					layerSwitcherOptionsB={{}}
+					height={mapHeight}
+					allowBuildingSelection={true}
+				/>
 			) : (
 				<></>
 			)}
@@ -150,23 +145,17 @@ export default function BldgFunctionality(props) {
 			{Object.keys(bldgFuncSummaryTableContents).length >= 2 ? (
 				<Box>
 					<FunctionalityTableCompare
-						funcResultsA={bldgFuncSummaryTableContents[comparisonKey[0]]}
-						funcResultsB={bldgFuncSummaryTableContents[comparisonKey[1]]}
+						funcResultsA={
+							bldgFuncSummaryTableContents[globalConfig.comparisonKey[0]]
+						}
+						funcResultsB={
+							bldgFuncSummaryTableContents[globalConfig.comparisonKey[1]]
+						}
 					/>
 				</Box>
 			) : (
 				<></>
 			)}
-
-			{/*Print*/}
-			<IncoreButtonText
-				onClick={() => {
-					downloadImg(printRef.current, "Building_Functionality");
-				}}
-				startIcon={<CameraAltIcon />}
-			>
-				Image
-			</IncoreButtonText>
 		</Box>
 	);
 }

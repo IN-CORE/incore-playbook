@@ -7,12 +7,12 @@ import { useSelector } from "react-redux";
 import { getHazardMetadata } from "../utils/hazard";
 import { getHazardGroupLayers } from "../utils/map";
 import { registeredCompareWidgets } from "./childComponents/outputWidgets/RegisteredCompareWidgets";
-import { comparisonKey } from "../globals";
 import {
 	IncoreMenuItem,
 	IncoreSelectBox,
 } from "./styledComponents/IncoreSelect";
 import { IncoreInputLabel } from "./styledComponents/IncoreInputLabel";
+import { Label } from "@material-ui/icons";
 
 export const CompareAnalyses = () => {
 	const [executionsCompared, setExecutionsCompared] = useState([]);
@@ -73,7 +73,7 @@ export const CompareAnalyses = () => {
 					);
 					setHazardGroupLayers((prevState) => ({
 						...prevState,
-						[comparisonKey[i]]: getHazardGroupLayers(
+						[globalConfig.comparisonKey[i]]: getHazardGroupLayers(
 							globalConfig,
 							mapConfig,
 							hazardMetadata,
@@ -167,37 +167,47 @@ export const CompareAnalyses = () => {
 							xs={12}
 							className="gridItem"
 						>
-							<IncoreTitle>
-								Compared Executions:
-								<Box>
-									<Typography style={{ display: "inline-block" }}>
-										Execution {comparisonKey[0]}:
-									</Typography>
-									<Typography
+							<IncoreTitle>Compared Executions:</IncoreTitle>
+							<Box>
+								<Typography style={{ display: "inline-block" }}>
+									<IncoreInputLabel
 										style={{
-											display: "inline-block",
-											color: "#00619D",
-											fontWeight: 500,
+											paddingRight: "5px",
 										}}
 									>
-										{executionsCompared[0]["title"] ?? ""}
-									</Typography>
-								</Box>
-								<Box>
-									<Typography style={{ display: "inline-block" }}>
-										Execution {comparisonKey[1]}:
-									</Typography>
-									<Typography
+										Execution {globalConfig.comparisonKey[0]}:
+									</IncoreInputLabel>
+								</Typography>
+								<Typography
+									style={{
+										display: "inline-block",
+										color: "#00619D",
+										fontWeight: 500,
+									}}
+								>
+									[{executionsCompared[0]["title"] ?? ""}]
+								</Typography>
+							</Box>
+							<Box>
+								<Typography style={{ display: "inline-block" }}>
+									<IncoreInputLabel
 										style={{
-											display: "inline-block",
-											color: "#00619D",
-											fontWeight: 500,
+											paddingRight: "5px",
 										}}
 									>
-										{executionsCompared[1]["title"] ?? ""}
-									</Typography>
-								</Box>
-							</IncoreTitle>
+										Execution {globalConfig.comparisonKey[1]}:
+									</IncoreInputLabel>
+								</Typography>
+								<Typography
+									style={{
+										display: "inline-block",
+										color: "#00619D",
+										fontWeight: 500,
+									}}
+								>
+									[{executionsCompared[1]["title"] ?? ""}]
+								</Typography>
+							</Box>
 						</Grid>
 						{/*select compare analysis result*/}
 						<Grid

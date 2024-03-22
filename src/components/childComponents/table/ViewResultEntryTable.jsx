@@ -31,6 +31,7 @@ import {
 import { checkFileDescriptors } from "../../../utils/datawolf";
 import { useLocation, useRouteMatch } from "react-router-dom";
 import { IncoreTitle } from "../../styledComponents/IncoreTitle";
+import { IncoreFootNote } from "../../styledComponents/IncoreFootNote";
 
 const useStyles = makeStyles({
 	table: {
@@ -126,14 +127,15 @@ const useStyles = makeStyles({
 		margin: "auto 2em",
 	},
 	compareButton: {
-		fontSize: "16px",
-		fontWeight: 500,
 		backgroundColor: "#00619D",
 		"&:hover": {
 			backgroundColor: "#2C4170",
 		},
 		color: "#ffffff",
-		textTransform: "capitalize",
+		textTransform: "uppercase",
+		margin: "0 1em",
+		float: "left",
+		width: "20em",
 	},
 });
 
@@ -327,34 +329,45 @@ export function ViewResultEntryTable(props) {
 
 	return (
 		<>
-			<Box display="flex" justifyContent="space-between">
+			<Box
+				display="flex"
+				justifyContent="space-between"
+				alignItems="flex-start"
+			>
 				{compareItemNames ? (
-					<Box display="flex" style={{ float: "right" }}>
-						<Box>
-							<IncoreTitle style={{ display: "inline" }}>
-								Compare Analyses A:&nbsp;
-								<Typography
-									style={{
-										display: "inline",
-										color: "#00619D",
-										fontWeight: 500,
-									}}
-								>
-									{Object.keys(compareItemNames).at(0) ?? "[ ]"}
-								</Typography>{" "}
-								and B:&nbsp;
-								<Typography
-									style={{
-										display: "inline",
-										color: "#00619D",
-										fontWeight: 500,
-									}}
-								>
-									{Object.keys(compareItemNames).at(1) ?? "[ ]"}
-								</Typography>
-							</IncoreTitle>
-						</Box>
-					</Box>
+					<IncoreTitle
+						style={{ marin: 0, display: "inline", textTransform: "none" }}
+					>
+						Compare Analyses A:&nbsp;
+						<Typography
+							style={{
+								display: "inline",
+								color: "#00619D",
+								fontWeight: 500,
+							}}
+						>
+							{Object.keys(compareItemNames).at(0)
+								? `[${Object.keys(compareItemNames).at(0)}]`
+								: "[ ]"}
+						</Typography>{" "}
+						and B:&nbsp;
+						<Typography
+							style={{
+								display: "inline",
+								color: "#00619D",
+								fontWeight: 500,
+							}}
+						>
+							{Object.keys(compareItemNames).at(1)
+								? `[${Object.keys(compareItemNames).at(0)}]`
+								: "[ ]"}
+						</Typography>
+						<IncoreFootNote
+							style={{ fontStyle: "inherit", textTransform: "none" }}
+						>
+							Please select two scenarios below to enable the compare button.
+						</IncoreFootNote>
+					</IncoreTitle>
 				) : (
 					<></>
 				)}
@@ -364,9 +377,19 @@ export function ViewResultEntryTable(props) {
 					onClick={handleCompareButtonClick}
 					disabled={compareDisabled}
 					classes={{ root: classes.compareButton }}
-					style={{ float: "left" }}
 				>
-					COMPARE TWO SCENARIOS
+					Compare 2 Scenarios
+				</Button>
+				<Button
+					variant="outlined"
+					color="primary"
+					onClick={() => {
+						setCompareItems({});
+						setCompareItemNames([]);
+					}}
+					style={{ color: "#00619D" }}
+				>
+					Clear
 				</Button>
 			</Box>
 			<TableContainer>
@@ -574,6 +597,7 @@ export function ViewResultEntryTable(props) {
 														className={classes.subBodyRow}
 														key={`${execution["id"]}-resilience-metrics`}
 													>
+														<TableCell />
 														<TableCell
 															colSpan={7}
 															key={`${execution["id"]}-resilience-metrics-title`}
@@ -602,6 +626,7 @@ export function ViewResultEntryTable(props) {
 														className={classes.subBodyRow}
 														key={`${execution["id"]}-epf-pole`}
 													>
+														<TableCell />
 														<TableCell
 															colSpan={7}
 															key={`${execution["id"]}-epf-pole-title`}
@@ -629,6 +654,7 @@ export function ViewResultEntryTable(props) {
 														className={classes.subBodyRow}
 														key={`${execution["id"]}-epf-substation`}
 													>
+														<TableCell />
 														<TableCell
 															colSpan={7}
 															key={`${execution["id"]}-epf-substation-title`}
@@ -657,6 +683,7 @@ export function ViewResultEntryTable(props) {
 														className={classes.subBodyRow}
 														key={`${execution["id"]}-bldg-dmg`}
 													>
+														<TableCell />
 														<TableCell
 															colSpan={7}
 															key={`${execution["id"]}-bldg-dmg-title`}
@@ -686,6 +713,7 @@ export function ViewResultEntryTable(props) {
 														className={classes.subBodyRow}
 														key={`${execution["id"]}-mcs`}
 													>
+														<TableCell />
 														<TableCell
 															colSpan={7}
 															key={`${execution["id"]}-mcs-title`}
@@ -715,6 +743,7 @@ export function ViewResultEntryTable(props) {
 														className={classes.subBodyRow}
 														key={`${execution["id"]}-bldg-functionality`}
 													>
+														<TableCell />
 														<TableCell
 															colSpan={7}
 															key={`${execution["id"]}-bldg-functionality-title`}
@@ -744,6 +773,7 @@ export function ViewResultEntryTable(props) {
 														className={classes.subBodyRow}
 														key={`${execution["id"]}-sector-shocks`}
 													>
+														<TableCell />
 														<TableCell
 															colSpan={7}
 															key={`${execution["id"]}-sector-shocks-title`}
@@ -772,6 +802,7 @@ export function ViewResultEntryTable(props) {
 														className={classes.subBodyRow}
 														key={`${execution["id"]}-cge`}
 													>
+														<TableCell />
 														<TableCell
 															colSpan={7}
 															key={`${execution["id"]}-cge-title`}
@@ -801,6 +832,7 @@ export function ViewResultEntryTable(props) {
 														className={classes.subBodyRow}
 														key={`${execution["id"]}-popdislocation`}
 													>
+														<TableCell />
 														<TableCell
 															colSpan={7}
 															key={`${execution["id"]}-popdislocation-title`}
@@ -829,6 +861,7 @@ export function ViewResultEntryTable(props) {
 														className={classes.subBodyRow}
 														key={`${execution["id"]}-HHS`}
 													>
+														<TableCell />
 														<TableCell
 															colSpan={7}
 															key={`${execution["id"]}-HHS-title`}
@@ -860,6 +893,7 @@ export function ViewResultEntryTable(props) {
 														className={classes.subBodyRow}
 														key={`${execution["id"]}-Log`}
 													>
+														<TableCell />
 														<TableCell
 															colSpan={7}
 															key={`${execution["id"]}-Log-title`}

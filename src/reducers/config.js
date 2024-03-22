@@ -4,6 +4,8 @@ import {
 	UPDATE_ASSET_CONFIG,
 	UPDATE_CGE_INFO,
 	UPDATE_DATAWOLF_CONFIG,
+	UPDATE_DATAWOLF_RS_CONFIG,
+	UPDATE_DATAWOLF_RS_WORKFLOW_CONFIG,
 	UPDATE_DATAWOLF_WORKFLOW_CONFIG,
 	UPDATE_GLOBAL_CONFIG,
 	UPDATE_HHS_INFO,
@@ -15,6 +17,12 @@ import {
 	datawolfConfig as defaultDatawolfConfig,
 	datawolfWorkflowConfig as defaultDatawolfWorkflowConfig,
 } from "../datawolf.config.js";
+
+import {
+	datawolfRsConfig as defaultDatawolfRsConfig,
+	datawolfRsWorkflowConfig as defaultDatawolfRsWorkflowConfig,
+} from "../datawolfRS.config.js";
+
 import { globals as defaultGlobalConfig } from "../globals";
 import {
 	cgeInfo as defaultCgeConfig,
@@ -25,7 +33,9 @@ const defaultConfig = {
 	mapConfig: defaultMapConfig,
 	assetConfig: defaultAssetConfig,
 	datawolfConfig: defaultDatawolfConfig,
+	datawolfRsConfig: defaultDatawolfRsConfig,
 	datawolfWorkflowConfig: defaultDatawolfWorkflowConfig,
+	datawolfRsWorkflowConfig: defaultDatawolfRsWorkflowConfig,
 	globalConfig: defaultGlobalConfig,
 	allowedHazardTypes: [
 		"earthquake",
@@ -58,6 +68,15 @@ const config = (state = defaultConfig, action) => {
 		case UPDATE_DATAWOLF_WORKFLOW_CONFIG:
 			return Object.assign({}, state, {
 				datawolfWorkflowConfig: action.datawolfWorkflowConfig,
+			});
+		// Retrofit strategy flow
+		case UPDATE_DATAWOLF_RS_CONFIG:
+			return Object.assign({}, state, {
+				datawolfRsConfig: action.datawolfRsConfig,
+			});
+		case UPDATE_DATAWOLF_RS_WORKFLOW_CONFIG:
+			return Object.assign({}, state, {
+				datawolfRsWorkflowConfig: action.datawolfRsWorkflowConfig,
 			});
 		case UPDATE_GLOBAL_CONFIG:
 			return Object.assign({}, state, { globalConfig: action.globalConfig });

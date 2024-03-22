@@ -23,9 +23,9 @@ const ParseData = (data, executionTitles, region = null) => {
 	}
 
 	const chartData = [];
-	let chartFirstRow = ["Million of $", "Before Event"];
+	let chartFirstRow = ["Sectors", "Before Event"];
 	executionTitles.forEach((title) =>
-		chartFirstRow.push(`After Event ${title}`),
+		chartFirstRow.push(`After Event [${title}]`),
 	);
 	chartData.push(chartFirstRow);
 
@@ -54,12 +54,12 @@ export default function CGEBarChartCompare(props) {
 			<Chart
 				width={width}
 				height={height}
-				chartType="Bar"
+				chartType="BarChart"
 				loader={<div>Loading Chart</div>}
 				data={ParseData(data, executionTitles, region)}
 				options={{
 					title: title,
-					legend: { position: "none" },
+					legend: { position: "right" },
 					colors: ["#A1BE2E", "#CB5963", "#833841"],
 					hAxis: {
 						title: xAxisLegend,
@@ -67,7 +67,6 @@ export default function CGEBarChartCompare(props) {
 					vAxis: {
 						title: yAxisLegend,
 					},
-					bars: "horizontal",
 				}}
 				// For tests
 				rootProps={{ "data-testid": "1" }}
