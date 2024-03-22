@@ -6,11 +6,10 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 
-## [Unreleased]
-### Added
-- Added legend option for maps in the playbook [#259](https://github.com/IN-CORE/incore-playbook/issues/259)
+## [0.6.1] - 2024-03-22
 
 ### Added
+- Added legend option for maps in the playbook [#259](https://github.com/IN-CORE/incore-playbook/issues/259)
 - Add retrofit condition summary button next to the retrofit strategy file in step 2-4[#386](https://github.com/IN-CORE/incore-playbook/issues/386)
 - Substation damage comparison [#390](https://github.com/IN-CORE/incore-playbook/issues/390)
 - Clear button to clear comparison selection [#393](https://github.com/IN-CORE/incore-playbook/issues/393)
