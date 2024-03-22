@@ -127,14 +127,15 @@ const useStyles = makeStyles({
 		margin: "auto 2em",
 	},
 	compareButton: {
-		fontSize: "16px",
-		fontWeight: 500,
 		backgroundColor: "#00619D",
 		"&:hover": {
 			backgroundColor: "#2C4170",
 		},
 		color: "#ffffff",
-		textTransform: "capitalize",
+		textTransform: "uppercase",
+		margin: "0 1em",
+		float: "left",
+		width: "20em",
 	},
 });
 
@@ -328,7 +329,11 @@ export function ViewResultEntryTable(props) {
 
 	return (
 		<>
-			<Box display="flex" justifyContent="space-between">
+			<Box
+				display="flex"
+				justifyContent="space-between"
+				alignItems="flex-start"
+			>
 				{compareItemNames ? (
 					<IncoreTitle
 						style={{ marin: 0, display: "inline", textTransform: "none" }}
@@ -372,9 +377,18 @@ export function ViewResultEntryTable(props) {
 					onClick={handleCompareButtonClick}
 					disabled={compareDisabled}
 					classes={{ root: classes.compareButton }}
-					style={{ margin: 0, float: "left", width: "300px", height: "45px" }}
 				>
-					COMPARE 2 SCENARIOS
+					Compare 2 Scenarios
+				</Button>
+				<Button
+					variant="outlined"
+					color="primary"
+					onClick={() => {
+						setCompareItems({});
+						setCompareItemNames([]);
+					}}
+				>
+					Clear
 				</Button>
 			</Box>
 			<TableContainer>
