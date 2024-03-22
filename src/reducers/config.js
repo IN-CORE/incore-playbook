@@ -21,7 +21,7 @@ import {
 import {
 	datawolfRsConfig as defaultDatawolfRsConfig,
 	datawolfRsWorkflowConfig as defaultDatawolfRsWorkflowConfig,
-} from "../datawolfRs.config.js";
+} from "../datawolfRS.config.js";
 
 import { globals as defaultGlobalConfig } from "../globals";
 import {
