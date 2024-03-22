@@ -173,6 +173,9 @@ export default function RunAnalysis(props) {
 
 			// jump to view result tab
 			gotoViewResultTab();
+
+			// change back to default
+			setClearWidget(false);
 		}
 	};
 
