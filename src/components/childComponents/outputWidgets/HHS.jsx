@@ -112,7 +112,8 @@ export default function HHS(props) {
 				<Box style={{ padding: "5px 25px 25px 25px" }}>
 					<Grid container spacing={3} justify="center">
 						<Grid item xs={12} sm={12} md={8} lg={8} xl={8}>
-							{HHSBarChartContent && marks ? (
+							{Object.keys(HHSBarChartContent).length > 0 &&
+							marks.length > 0 ? (
 								<>
 									{/*Sliders*/}
 									<Container style={{ width: "80%", margin: 0 }}>
