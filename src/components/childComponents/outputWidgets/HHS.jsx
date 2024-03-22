@@ -37,36 +37,9 @@ export default function HHS(props) {
 	const datawolfConfig = useSelector((state) => state.config.datawolfConfig);
 
 	const [selectedExecutionName, setSelectedExecutionName] = useState("");
-	const [marks, setMarks] = useState([
-		{
-			value: 1,
-			label: "0",
-		},
-		{
-			value: 7,
-			label: "6",
-		},
-		{
-			value: 13,
-			label: "12",
-		},
-		{
-			value: 25,
-			label: "24",
-		},
-		{
-			value: 49,
-			label: "48",
-		},
-	]);
+	const [marks, setMarks] = useState([]);
 
-	const [HHSBarChartContent, setHHSBarChartContent] = useState({
-		1: [],
-		7: [],
-		13: [],
-		25: [],
-		49: [],
-	});
+	const [HHSBarChartContent, setHHSBarChartContent] = useState({});
 	const [HhsDownload, setHhsDownload] = useState();
 	const [t, setT] = useState("1");
 
@@ -77,13 +50,17 @@ export default function HHS(props) {
 		datawolfDatasetConfigItems.map(async (datawolfDatasetConfigItem) => {
 			const vName = datawolfDatasetConfigItem.datasets.variableName;
 			if (vName === "HHSBarChartContent") {
-				setHHSBarChartContent(
-					await getOutputFileContentJSON(
-						datawolfConfig,
-						executionItem,
-						datawolfDatasetConfigItem.datasetId,
-					),
+				const content = await getOutputFileContentJSON(
+					datawolfConfig,
+					executionItem,
+					datawolfDatasetConfigItem.datasetId,
 				);
+				const marks = Object.keys(content).map((key) => ({
+					value: parseInt(key),
+					label: `${parseInt(key) - 1}`,
+				}));
+				setMarks(marks);
+				setHHSBarChartContent(content);
 			} else if (vName === "HhsDownload") {
 				setHhsDownload(
 					executionItem["datasets"][datawolfDatasetConfigItem.datasetId],
@@ -135,26 +112,31 @@ export default function HHS(props) {
 				<Box style={{ padding: "5px 25px 25px 25px" }}>
 					<Grid container spacing={3} justify="center">
 						<Grid item xs={12} sm={12} md={8} lg={8} xl={8}>
-							{/*Sliders*/}
-							<Container style={{ width: "80%", margin: 0 }}>
-								<IncoreInputLabel id="discrete-slider-restrict" gutterBottom>
-									Months after the disaster
-								</IncoreInputLabel>
-								<HhsSlider
-									marks={marks}
-									value={t}
-									handleChange={(e, newValue) => {
-										setT(newValue);
-									}}
-								/>
-							</Container>
-							{HHSBarChartContent ? (
-								<HHSBarChart
-									data={HHSBarChartContent[t]}
-									height={"25em"}
-									xAxisLegend="Housing Recovery Stage"
-									yAxisLegend="Frequency"
-								/>
+							{HHSBarChartContent && marks ? (
+								<>
+									{/*Sliders*/}
+									<Container style={{ width: "80%", margin: 0 }}>
+										<IncoreInputLabel
+											id="discrete-slider-restrict"
+											gutterBottom
+										>
+											Months after the disaster
+										</IncoreInputLabel>
+										<HhsSlider
+											marks={marks}
+											value={t}
+											handleChange={(e, newValue) => {
+												setT(newValue);
+											}}
+										/>
+									</Container>
+									<HHSBarChart
+										data={HHSBarChartContent[t]}
+										height={"25em"}
+										xAxisLegend="Housing Recovery Stage"
+										yAxisLegend="Frequency"
+									/>
+								</>
 							) : null}
 						</Grid>
 						{/*description*/}
