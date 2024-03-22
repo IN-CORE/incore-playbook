@@ -26,6 +26,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Fix damage comparison table alignment bug [#358](https://github.com/IN-CORE/incore-playbook/issues/358)
 - Fix the yaxis label for the CGE bar chart [#384](https://github.com/IN-CORE/incore-playbook/issues/384)
 - Fix table to show null values for absent keys in JSON [#373](https://github.com/IN-CORE/incore-playbook/issues/373)
+- Fix some fields are not cleared after submission [#377](https://github.com/IN-CORE/incore-playbook/issues/377)
 - Fix the pagination and sorting for View Hazard table [#213](https://github.com/IN-CORE/incore-playbook/issues/213)
 
 ### Changed

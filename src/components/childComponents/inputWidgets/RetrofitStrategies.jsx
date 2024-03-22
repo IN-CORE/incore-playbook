@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import {
 	IncoreMenuItem,
 	IncoreSelectBox,
@@ -7,8 +7,12 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchDatasets } from "../../../actions/datasets";
 
 export default function RetrofitStrategies(props) {
-	const { setDatawolfFormState, datawolfFormState, datawolfParamConfigItem } =
-		props;
+	const {
+		setDatawolfFormState,
+		datawolfFormState,
+		datawolfParamConfigItem,
+		clearWidget,
+	} = props;
 
 	const dispatch = useDispatch();
 	const listDatasets = (config, limit, offset, type) =>
@@ -17,6 +21,9 @@ export default function RetrofitStrategies(props) {
 	const retrofitStrategies = useSelector(
 		(state) => state.dataset.retrofitStrategies,
 	);
+
+	const [selectedRetrofitStrategy, setSelectedRetrofitStrategy] =
+		useState(null);
 
 	useEffect(() => {
 		globalConfig.inputDatasetTypes.retrofitStrategies.map(
@@ -31,13 +38,20 @@ export default function RetrofitStrategies(props) {
 		);
 	}, []);
 
+	// clear IncoreSelectBox
+	useEffect(() => {
+		if (clearWidget) setSelectedRetrofitStrategy(null);
+	}, [clearWidget]);
+
 	return (
 		<IncoreSelectBox
 			labelId="label"
 			id="select"
 			variant="outlined"
+			value={selectedRetrofitStrategy}
 			onChange={(e) => {
 				let currentVal = e.target.value;
+				setSelectedRetrofitStrategy(currentVal);
 				if (currentVal === "not_retrofitted") currentVal = "";
 				setDatawolfFormState((prevState) => {
 					let mapState = {};
