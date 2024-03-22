@@ -716,7 +716,7 @@ const datawolfWorkflowConfig = {
 				],
 			},
 			{
-				title: "retrofit strategies",
+				title: "Retrofit Strategies",
 				description: "retrofit_strategy",
 				variableName: "selectedRetrofitStrategyId",
 				widget: "RetrofitStrategies",

@@ -859,7 +859,7 @@ const datawolfWorkflowConfig = {
 				],
 			},
 			{
-				title: "retrofit strategy",
+				title: "Retrofit Strategy",
 				description: "retrofit_strategy",
 				variableName: "selectedRetrofitStrategyId",
 				widget: "RetrofitStrategies",
@@ -900,7 +900,7 @@ const datawolfWorkflowConfig = {
 				],
 			},
 			{
-				title: "epfs pole",
+				title: "Epfs Pole",
 				description: "epfs pole",
 				variableName: "selectedPoleId",
 				widget: "Epfs",
