@@ -252,7 +252,7 @@ globals["retrofitStrategyBuilder"] = {
 		"#CDECF0",
 		"#FFE3C4",
 	],
-	maxStrategies: 20,
+	maxStrategies: 5,
 	conditions: [
 		{
 			label: "City Council District",

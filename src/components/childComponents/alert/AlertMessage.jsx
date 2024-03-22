@@ -1,5 +1,5 @@
 import React from "react";
-import { Box, IconButton, Collapse } from "@material-ui/core";
+import { Box, Collapse, IconButton } from "@material-ui/core";
 import Alert from "@material-ui/lab/Alert";
 import CloseIcon from "@material-ui/icons/Close";
 
@@ -16,6 +16,8 @@ export const AlertMessage = ({
 		subMessage = " Error: Unauthorized request. Please log in and try again.";
 	} else if (status !== null && status === 403) {
 		subMessage = " Error: Forbidden, you don't have enough privileges.";
+	} else if (status !== null && status === -999) {
+		subMessage = "";
 	} else {
 		subMessage = ` Error: Unknown error, response status code: ${status}`;
 	}

@@ -271,21 +271,6 @@ globals["retrofitStrategyBuilder"] = {
 				},
 				{
 					label:
-						"2 stories residential building (wood, small square plan, and gable roof)",
-					value: "2",
-				},
-				{
-					label:
-						"1 story residential building (wood, medium rectangular plan, and gable roof)",
-					value: "3",
-				},
-				{
-					label:
-						"2 stories residential building (wood, medium rectangular plan, and hip roof)",
-					value: "4",
-				},
-				{
-					label:
 						"2 stories residential building (wood, large rectangular plan, gable roof",
 					value: "5",
 				},
@@ -305,17 +290,15 @@ globals["retrofitStrategyBuilder"] = {
 			key: "retrofits",
 			possibleOptions: [
 				{
-					label:
-						"Asphalt Shingles, Sheathing (8d C6/12), Roof-Wall (2x16d Nails) - Current Practice",
+					label: "Current Practice - Asphalt Shingles, 8d Sheath, 2x16d R-W",
 					value: { ret_key: "retrofit_1", ret_val: "" },
 				},
 				{
-					label:
-						"Asphalt Shingles & Sheathing (8d C6/12), Roof-Wall (2x16d Nails)",
+					label: "Asphalt Shingles, 8d Sheath C6/6, 2xH2.5 R-W Clips",
 					value: { ret_key: "retrofit_2", ret_val: "" },
 				},
 				{
-					label: "Clay Tiles & Sheathing (8d C6/6), Roof-Wall (2xH2.5 Clips)",
+					label: "Clay Tiles, 8d Sheath C6/6, 2xH2.5 R-W Clips",
 					value: { ret_key: "retrofit_3", ret_val: "" },
 				},
 			],
