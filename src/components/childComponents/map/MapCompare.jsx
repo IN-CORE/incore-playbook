@@ -64,7 +64,7 @@ const useStyles = makeStyles({
 		maxHeight: "250px",
 		top: "50px",
 		left: "0px",
-		zIndex: 5000,
+		zIndex: 10,
 		padding: "5px",
 		overflow: "scroll",
 		scrollBehavior: "smooth",
@@ -420,7 +420,7 @@ const MapCompare = (props) => {
 	}
 
 	return (
-		<Grid container styles={{ marginBottom: "2em" }}>
+		<Grid container styles={{ marginBottom: "2em", zIndex: 50 }}>
 			<Grid item xs={12}>
 				<div style={{ position: "relative" }}>
 					<div
