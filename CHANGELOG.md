@@ -27,6 +27,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Fix table to show null values for absent keys in JSON [#373](https://github.com/IN-CORE/incore-playbook/issues/373)
 - Fix some fields are not cleared after submission [#377](https://github.com/IN-CORE/incore-playbook/issues/377)
 - Fix the pagination and sorting for View Hazard table [#213](https://github.com/IN-CORE/incore-playbook/issues/213)
+- Fix Retrofit Strategy Selection to be required [#416](https://github.com/IN-CORE/incore-playbook/issues/416)
 
 ### Changed
 - Remove screenshot button on comparison interface [#364](https://github.com/IN-CORE/incore-playbook/issues/364)
