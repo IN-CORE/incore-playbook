@@ -859,7 +859,7 @@ const datawolfWorkflowConfig = {
 				],
 			},
 			{
-				title: "retrofit strategy",
+				title: "Retrofit Strategy",
 				description: "retrofit_strategy",
 				variableName: "selectedRetrofitStrategyId",
 				widget: "RetrofitStrategies",
@@ -888,7 +888,7 @@ const datawolfWorkflowConfig = {
 				variableName: "retrofitStrategyNotNeededId",
 				widget: null,
 				hidden: true,
-				defaultValue: null,
+				defaultValue: "",
 				parametersMap: [
 					{
 						paramId: "1ebbf186-ddba-45b4-c570-0406915a37ab",
@@ -900,7 +900,7 @@ const datawolfWorkflowConfig = {
 				],
 			},
 			{
-				title: "epfs pole",
+				title: "Epfs Pole",
 				description: "epfs pole",
 				variableName: "selectedPoleId",
 				widget: "Epfs",
