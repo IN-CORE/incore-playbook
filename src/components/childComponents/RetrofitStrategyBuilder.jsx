@@ -240,12 +240,13 @@ export default function RetrofitStrategyBuilder(props) {
 		});
 		if (disabled) {
 			setAddError("Please fill all the fields");
+			return !disabled;
 		}
 
 		// for any duplicates
 		let totalPercentage = 0;
 		let foundDuplicate = false;
-		let retrofitMethodsDiffer = false;
+		let retrofitMethodsDuplicate = false;
 		addedRows.forEach((row, i) => {
 			if (currentlyEditing === i) return;
 
@@ -257,18 +258,18 @@ export default function RetrofitStrategyBuilder(props) {
 			);
 
 			if (conditionMatches) {
-				// Check if any of the retrofitMethodKeys are different
-				retrofitMethodsDiffer = retrofitMethodKeys.some(
+				// Check if retrofitMethodKeys are same
+				retrofitMethodsDuplicate = retrofitMethodKeys.every(
 					(key) =>
 						row[key] !== undefined &&
 						selectedValues[key] !== undefined &&
-						row[key].value !== selectedValues[key].value,
+						row[key].value === selectedValues[key].value,
 				);
 
 				// If retrofit methods are not different, check for percentage sum
-				if (!retrofitMethodsDiffer) {
+				if (!retrofitMethodsDuplicate) {
 					// Assume pcts is the key for percentage
-					totalPercentage += parseFloat(selectedValues["pcts"].value || 0);
+					totalPercentage += parseFloat(selectedValues["pcts"]?.value || 0);
 					totalPercentage += parseFloat(row.pct.value || 0);
 					if (totalPercentage > 1) {
 						foundDuplicate = true;
@@ -283,7 +284,7 @@ export default function RetrofitStrategyBuilder(props) {
 		if (foundDuplicate) {
 			setAddError("Duplicate entry, please choose unique conditions.");
 			disabled = true;
-		} else if (!retrofitMethodsDiffer && totalPercentage > 1) {
+		} else if (!retrofitMethodsDuplicate && totalPercentage > 1) {
 			setAddError("Total percentage exceeds 100%, please adjust.");
 			disabled = true;
 		}
