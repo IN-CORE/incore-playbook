@@ -721,7 +721,7 @@ const datawolfWorkflowConfig = {
 				variableName: "selectedRetrofitStrategyId",
 				widget: "RetrofitStrategies",
 				hidden: false,
-				defaultValue: "",
+				defaultValue: null,
 				parametersMap: [
 					{
 						paramId: "3091cc60-86cf-44ce-9dcf-2ef2b227aab4",
