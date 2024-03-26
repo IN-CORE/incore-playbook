@@ -247,8 +247,13 @@ export default function RetrofitStrategyBuilder(props) {
 		let totalPercentage = 0;
 		let foundDuplicate = false;
 		let retrofitMethodsDuplicate = false;
+		let lookUp = {};
+		let message = "Duplicate entry, please choose unique conditions.";
+
 		addedRows.forEach((row, i) => {
 			if (currentlyEditing === i) return;
+
+			if (foundDuplicate) return;
 
 			let conditionMatches = conditionSelectKeys.every(
 				(key) =>
@@ -256,6 +261,14 @@ export default function RetrofitStrategyBuilder(props) {
 					selectedValues[key] !== undefined &&
 					row[key].value === selectedValues[key].value,
 			);
+			// Generate Lookup Key
+			let lookUpKey = "";
+			conditionSelectKeys.forEach((key, i) => {
+				lookUpKey += `${row[key].value}`;
+				if (i < conditionSelectKeys.length - 1) {
+					lookUpKey += "-";
+				}
+			});
 
 			if (conditionMatches) {
 				// Check if retrofitMethodKeys are same
@@ -263,26 +276,36 @@ export default function RetrofitStrategyBuilder(props) {
 					(key) =>
 						row[key] !== undefined &&
 						selectedValues[key] !== undefined &&
-						row[key].value === selectedValues[key].value,
+						row[key].value.ret_val === selectedValues[key].value.ret_val &&
+						row[key].value.ret_key === selectedValues[key].value.ret_key,
 				);
 
-				// If retrofit methods are not different, check for percentage sum
-				if (!retrofitMethodsDuplicate) {
-					// Assume pcts is the key for percentage
-					totalPercentage += parseFloat(selectedValues["pcts"]?.value || 0);
-					totalPercentage += parseFloat(row.pct.value || 0);
-					if (totalPercentage > 1) {
-						foundDuplicate = true;
-					}
+				// If retrofit methods are same consider it as duplicate
+				if (retrofitMethodsDuplicate) {
+					foundDuplicate = true;
+					message =
+						"Duplicate retrofit entry, please choose unique conditions and retrofit method.";
 				} else {
-					// If retrofit methods differ, consider it not a duplicate for this check
-					foundDuplicate = false;
+					// If retrofit methods differ, check for percentage sum, if > 100 consider it a duplicate
+					if (lookUp[lookUpKey] === undefined) {
+						lookUp[lookUpKey] =
+							parseFloat(row.pcts.value || 0) +
+							parseFloat(selectedValues.pcts.value || 0);
+					} else {
+						lookUp[lookUpKey] += parseFloat(row.pcts.value || 0);
+					}
+
+					if (lookUp[lookUpKey] > 100) {
+						foundDuplicate = true;
+						message =
+							"Total percentage exceeds 100% for same conditions with different retrofit methods, please adjust.";
+					}
 				}
 			}
 		});
 
 		if (foundDuplicate) {
-			setAddError("Duplicate entry, please choose unique conditions.");
+			setAddError(message);
 			disabled = true;
 		} else if (!retrofitMethodsDuplicate && totalPercentage > 1) {
 			setAddError("Total percentage exceeds 100%, please adjust.");
