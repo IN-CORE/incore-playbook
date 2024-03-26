@@ -18,8 +18,7 @@ import LayerSwitcher from "./LayerSwitcher";
 import { fetchLegendsForLayers, maxStateMapping } from "../../../utils/common";
 import LegendIcon from "./LegendIcon";
 import Point from "ol/geom/Point";
-import { Fill, Stroke, Style } from "ol/style";
-import CircleStyle from "ol/style/Circle";
+import { Icon, Style } from "ol/style";
 import Feature from "ol/Feature";
 import VectorSource from "ol/source/Vector";
 import VectorLayer from "ol/layer/Vector";
@@ -135,13 +134,12 @@ const Map = (props) => {
 	const [legends, setLegends] = React.useState([]);
 
 	let markerStyle = new Style({
-		image: new CircleStyle({
-			radius: 7,
-			fill: new Fill({ color: "black" }),
-			stroke: new Stroke({
-				color: "white",
-				width: 2,
-			}),
+		image: new Icon({
+			src: "public/map-pin.png",
+			scale: 0.08, // Adjust as necessary to fit your map's scale
+			anchor: [0.5, 1.1],
+			anchorXUnits: "fraction",
+			anchorYUnits: "fraction",
 		}),
 	});
 
@@ -155,7 +153,7 @@ const Map = (props) => {
 	});
 
 	let markerLayer = new VectorLayer({
-		title: "BuildingPointMarker",
+		title: "Map Pin",
 		source: vectorSource,
 	});
 
@@ -228,6 +226,7 @@ const Map = (props) => {
 			const damageLayer = damageLayerGrp.getLayers().getArray()[0];
 			const damageLayerSource = damageLayer.getSource();
 
+			markerLayer.setZIndex(5);
 			map.addLayer(markerLayer);
 
 			map.on("singleclick", (evt) => {
@@ -253,15 +252,14 @@ const Map = (props) => {
 						.then((response) => response.json())
 						.then((json) => {
 							let bldg = json.features;
-							const returnCoordinates = json.features["0"].geometry.coordinates;
+							const returnCoordinates =
+								json.features?.[0]?.geometry?.coordinates;
 							let markerGeometry = new Point(returnCoordinates);
 							if (bldg.length > 0) {
-								// TODO: add a marker to the building
 								markerFeature.setGeometry(markerGeometry);
 								markerFeature.setStyle(markerStyle);
-
-								setSelectedBuilding(bldg[0].properties);
-							} else if (bldg.length === 0) {
+								setSelectedBuilding(bldg[0]?.properties);
+							} else {
 								markerFeature.setGeometry(undefined);
 								markerFeature.setStyle(undefined);
 								setSelectedBuilding(null);
