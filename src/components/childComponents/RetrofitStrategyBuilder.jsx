@@ -243,28 +243,48 @@ export default function RetrofitStrategyBuilder(props) {
 		}
 
 		// for any duplicates
-		let matches = addedRows.filter((row, i) => {
-			if (currentlyEditing === i) {
-				return false;
-			}
-			let matches = [];
-			conditionSelectKeys.forEach((key) => {
-				if (
+		let totalPercentage = 0;
+		let foundDuplicate = false;
+		let retrofitMethodsDiffer = false;
+		addedRows.forEach((row, i) => {
+			if (currentlyEditing === i) return;
+
+			let conditionMatches = conditionSelectKeys.every(
+				(key) =>
 					row[key] !== undefined &&
 					selectedValues[key] !== undefined &&
-					row[key].value === selectedValues[key].value
-				) {
-					matches.push(true);
-				} else {
-					matches.push(false);
-				}
-			});
+					row[key].value === selectedValues[key].value,
+			);
 
-			return matches.every((v) => v === true);
+			if (conditionMatches) {
+				// Check if any of the retrofitMethodKeys are different
+				retrofitMethodsDiffer = retrofitMethodKeys.some(
+					(key) =>
+						row[key] !== undefined &&
+						selectedValues[key] !== undefined &&
+						row[key].value !== selectedValues[key].value,
+				);
+
+				// If retrofit methods are not different, check for percentage sum
+				if (!retrofitMethodsDiffer) {
+					// Assume pcts is the key for percentage
+					totalPercentage += parseFloat(selectedValues["pcts"].value || 0);
+					totalPercentage += parseFloat(row.pct.value || 0);
+					if (totalPercentage > 1) {
+						foundDuplicate = true;
+					}
+				} else {
+					// If retrofit methods differ, consider it not a duplicate for this check
+					foundDuplicate = false;
+				}
+			}
 		});
 
-		if (matches.length > 0) {
-			setAddError("Duplicate entry, please choose unique conditions");
+		if (foundDuplicate) {
+			setAddError("Duplicate entry, please choose unique conditions.");
+			disabled = true;
+		} else if (!retrofitMethodsDiffer && totalPercentage > 1) {
+			setAddError("Total percentage exceeds 100%, please adjust.");
 			disabled = true;
 		}
 
