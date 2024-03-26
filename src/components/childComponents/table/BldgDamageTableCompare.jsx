@@ -33,6 +33,10 @@ const useStyles = makeStyles({
 	tableBodyRow: {
 		height: "28px",
 	},
+	tableBodyDiffRow: {
+		height: "28px",
+		backgroundColor: "#F3F3F3",
+	},
 	tableBodyCell: {
 		height: "21px",
 		color: "#2E384D",
@@ -380,7 +384,7 @@ export function BldgDamageTableCompare(props) {
 												</TableRow>
 												{/*Diff:*/}
 												<TableRow
-													className={classes.tableBodyRow}
+													className={classes.tableBodyDiffRow}
 													key={`${clusterItemB["cluster"]}-diff`}
 												>
 													<TableCell
@@ -598,14 +602,14 @@ export function BldgDamageTableCompare(props) {
 									<TableCell
 										key="total-diff"
 										className={classes.tableBodyCell}
-										style={{ fontWeight: 500, backgroundColor: "#EEF3F5" }}
+										style={{ fontWeight: 500, backgroundColor: "#DCE0E2" }}
 									>
 										<CompareArrowsIcon style={{ transform: "rotate(90deg)" }} />
 									</TableCell>
 									<TableCell
 										key="total-insig"
 										className={classes.tableBodyCell}
-										style={{ fontWeight: 500, backgroundColor: "#EEF3F5" }}
+										style={{ fontWeight: 500, backgroundColor: "#DCE0E2" }}
 									>
 										{fillNADiff(
 											fillNA(categoryItemA, tableHeadersA[0], tableHeadersA),
@@ -615,7 +619,7 @@ export function BldgDamageTableCompare(props) {
 									<TableCell
 										key="total-mod"
 										className={classes.tableBodyCell}
-										style={{ fontWeight: 500, backgroundColor: "#EEF3F5" }}
+										style={{ fontWeight: 500, backgroundColor: "#DCE0E2" }}
 									>
 										{fillNADiff(
 											fillNA(categoryItemA, tableHeadersA[1], tableHeadersA),
@@ -625,7 +629,7 @@ export function BldgDamageTableCompare(props) {
 									<TableCell
 										key="total-extensi"
 										className={classes.tableBodyCell}
-										style={{ fontWeight: 500, backgroundColor: "#EEF3F5" }}
+										style={{ fontWeight: 500, backgroundColor: "#DCE0E2" }}
 									>
 										{fillNADiff(
 											fillNA(categoryItemA, tableHeadersA[2], tableHeadersA),
@@ -635,7 +639,7 @@ export function BldgDamageTableCompare(props) {
 									<TableCell
 										key="total-comp"
 										className={classes.tableBodyCell}
-										style={{ fontWeight: 500, backgroundColor: "#EEF3F5" }}
+										style={{ fontWeight: 500, backgroundColor: "#DCE0E2" }}
 									>
 										{fillNADiff(
 											fillNA(categoryItemA, tableHeadersA[3], tableHeadersA),
