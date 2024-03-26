@@ -148,7 +148,7 @@ const MapCompare = (props) => {
 	let markerStyle = new Style({
 		image: new Icon({
 			src: "public/map-pin.svg",
-			scale: 1, // Adjust as necessary to fit your map's scale
+			scale: 0.3, // Adjust as necessary to fit your map's scale
 			anchor: [0.5, 1.1],
 			anchorXUnits: "fraction",
 			anchorYUnits: "fraction",
