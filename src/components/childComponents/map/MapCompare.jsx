@@ -22,6 +22,11 @@ import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import { IncoreTitle } from "../../styledComponents/IncoreTitle";
 import { IncoreFootNote } from "../../styledComponents/IncoreFootNote";
 import { useSelector } from "react-redux";
+import { Icon, Style } from "ol/style";
+import Feature from "ol/Feature";
+import VectorSource from "ol/source/Vector";
+import VectorLayer from "ol/layer/Vector";
+import Point from "ol/geom/Point";
 
 export const MapContext = React.createContext({});
 
@@ -139,6 +144,30 @@ const MapCompare = (props) => {
 	const globalConfig = useSelector((state) => state.config.globalConfig);
 	// State variable to store legends
 	const [legends, setLegends] = React.useState([]);
+
+	let markerStyle = new Style({
+		image: new Icon({
+			src: "public/map-pin.png",
+			scale: 0.05, // Adjust as necessary to fit your map's scale
+			anchor: [0.5, 1.1],
+			anchorXUnits: "fraction",
+			anchorYUnits: "fraction",
+		}),
+	});
+
+	let markerFeature = new Feature({
+		id: "marker",
+		visible: true,
+	});
+
+	let vectorSource = new VectorSource({
+		features: [markerFeature],
+	});
+
+	let markerLayer = new VectorLayer({
+		title: "Map Pin",
+		source: vectorSource,
+	});
 
 	React.useEffect(() => {
 		const {
@@ -287,6 +316,10 @@ const MapCompare = (props) => {
 			const damageLayerSourceA = damageLayerA.getSource();
 			const damageLayerSourceB = damageLayerB.getSource();
 
+			markerLayer.setZIndex(5);
+			mapA.addLayer(markerLayer);
+			mapB.addLayer(markerLayer);
+
 			mapA.on("singleclick", (evt) => {
 				let coordinate = mapA.getCoordinateFromPixel(evt.pixel);
 				const view = mapA.getView();
@@ -319,9 +352,16 @@ const MapCompare = (props) => {
 						.then((response) => response.json())
 						.then((json) => {
 							let bldg = json.features;
+							const returnCoordinates =
+								json.features?.[0]?.geometry?.coordinates;
+							let markerGeometry = new Point(returnCoordinates);
 							if (bldg.length > 0) {
+								markerFeature.setGeometry(markerGeometry);
+								markerFeature.setStyle(markerStyle);
 								setSelectedBuildingA(bldg[0].properties);
 							} else if (bldg.length === 0) {
+								markerFeature.setGeometry(undefined);
+								markerFeature.setStyle(undefined);
 								setSelectedBuildingA(null);
 							}
 							setLoading(false);
@@ -330,14 +370,23 @@ const MapCompare = (props) => {
 						.then((response) => response.json())
 						.then((json) => {
 							let bldg = json.features;
+							const returnCoordinates =
+								json.features?.[0]?.geometry?.coordinates;
+							let markerGeometry = new Point(returnCoordinates);
 							if (bldg.length > 0) {
+								markerFeature.setGeometry(markerGeometry);
+								markerFeature.setStyle(markerStyle);
 								setSelectedBuildingB(bldg[0].properties);
 							} else if (bldg.length === 0) {
+								markerFeature.setGeometry(undefined);
+								markerFeature.setStyle(undefined);
 								setSelectedBuildingB(null);
 							}
 							setLoading(false);
 						});
 				} else {
+					markerFeature.setStyle(null);
+					markerFeature.setGeometry(undefined);
 					setSelectedBuildingA(null);
 					setSelectedBuildingB(null);
 				}
@@ -375,9 +424,16 @@ const MapCompare = (props) => {
 						.then((response) => response.json())
 						.then((json) => {
 							let bldg = json.features;
+							const returnCoordinates =
+								json.features?.[0]?.geometry?.coordinates;
+							let markerGeometry = new Point(returnCoordinates);
 							if (bldg.length > 0) {
+								markerFeature.setGeometry(markerGeometry);
+								markerFeature.setStyle(markerStyle);
 								setSelectedBuildingA(bldg[0].properties);
 							} else if (bldg.length === 0) {
+								markerFeature.setStyle(null);
+								markerFeature.setGeometry(undefined);
 								setSelectedBuildingA(null);
 							}
 							setLoading(false);
@@ -386,14 +442,23 @@ const MapCompare = (props) => {
 						.then((response) => response.json())
 						.then((json) => {
 							let bldg = json.features;
+							const returnCoordinates =
+								json.features?.[0]?.geometry?.coordinates;
+							let markerGeometry = new Point(returnCoordinates);
 							if (bldg.length > 0) {
+								markerFeature.setGeometry(markerGeometry);
+								markerFeature.setStyle(markerStyle);
 								setSelectedBuildingB(bldg[0].properties);
 							} else if (bldg.length === 0) {
+								markerFeature.setStyle(null);
+								markerFeature.setGeometry(undefined);
 								setSelectedBuildingB(null);
 							}
 							setLoading(false);
 						});
 				} else {
+					markerFeature.setStyle(null);
+					markerFeature.setGeometry(undefined);
 					setSelectedBuildingA(null);
 					setSelectedBuildingB(null);
 				}
