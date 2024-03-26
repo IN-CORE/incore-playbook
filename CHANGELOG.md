@@ -5,6 +5,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [Unreleased]
+
+### Fixed
+- Fix Retrofit Strategy Selection to be required [#416](https://github.com/IN-CORE/incore-playbook/issues/416)
 
 ## [0.6.1] - 2024-03-22
 
