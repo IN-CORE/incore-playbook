@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## [Unreleased]
 
 ### Fixed
+- Adjust the z-index of the attribute table [#410](https://github.com/IN-CORE/incore-playbook/issues/410)
 - Fix Retrofit Strategy Selection to be required [#416](https://github.com/IN-CORE/incore-playbook/issues/416)
 
 ## [0.6.1] - 2024-03-22
