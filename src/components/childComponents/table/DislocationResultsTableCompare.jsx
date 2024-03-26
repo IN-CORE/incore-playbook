@@ -73,10 +73,20 @@ const useStyles = makeStyles({
 		textAlign: "center",
 		border: "solid 1px rgba(46,91,255,0.08)",
 	},
+	tableDataDiffCell: {
+		textAlign: "center",
+		border: "solid 1px rgba(46,91,255,0.08)",
+		background: "#F3F3F3",
+	},
 	tableDataCellDislocated: {
 		textAlign: "center",
 		border: "solid 1px rgba(46,91,255,0.08)",
 		backgroundColor: "#FEEFF1",
+	},
+	tableDataCellDiffDislocated: {
+		textAlign: "center",
+		border: "solid 1px rgba(46,91,255,0.08)",
+		backgroundColor: "#FACFD5",
 	},
 	title: {
 		height: "19px",
@@ -186,10 +196,10 @@ export function DislocationResultsTableCompare(props) {
 							</TableCell>
 						</TableRow>
 						<TableRow>
-							<TableCell className={classes.tableDataCellDislocated}>
+							<TableCell className={classes.tableDataCellDiffDislocated}>
 								<CompareArrowsIcon style={{ transform: "rotate(90deg)" }} />
 							</TableCell>
-							<TableCell className={classes.tableDataCellDislocated}>
+							<TableCell className={classes.tableDataCellDiffDislocated}>
 								{"households" in resultsJsonA["dislocated"] &&
 								"households" in resultsJsonB["dislocated"]
 									? diff(
@@ -201,7 +211,7 @@ export function DislocationResultsTableCompare(props) {
 											resultsJsonA["dislocated"]["population"],
 									  )}
 							</TableCell>
-							<TableCell className={classes.tableDataCellDislocated}>
+							<TableCell className={classes.tableDataCellDiffDislocated}>
 								{"percent_of_households" in resultsJsonA["dislocated"]
 									? percentDiff(
 											resultsJsonB["dislocated"]["percent_of_households"],
@@ -268,10 +278,10 @@ export function DislocationResultsTableCompare(props) {
 							</TableCell>
 						</TableRow>
 						<TableRow>
-							<TableCell className={classes.tableDataCell}>
+							<TableCell className={classes.tableDataDiffCell}>
 								<CompareArrowsIcon style={{ transform: "rotate(90deg)" }} />
 							</TableCell>
-							<TableCell className={classes.tableDataCell}>
+							<TableCell className={classes.tableDataDiffCell}>
 								{"households" in resultsJsonA["not_dislocated"] &&
 								"households" in resultsJsonB["not_dislocated"]
 									? diff(
@@ -283,7 +293,7 @@ export function DislocationResultsTableCompare(props) {
 											resultsJsonA["not_dislocated"]["population"],
 									  )}
 							</TableCell>
-							<TableCell className={classes.tableDataCell}>
+							<TableCell className={classes.tableDataDiffCell}>
 								{"percent_of_households" in resultsJsonA["not_dislocated"] &&
 								"percent_of_households" in resultsJsonB["not_dislocated"]
 									? percentDiff(
@@ -321,10 +331,10 @@ export function DislocationResultsTableCompare(props) {
 							<TableCell className={classes.tableDataCell} />
 						</TableRow>
 						<TableRow>
-							<TableCell className={classes.tableDataCell}>
+							<TableCell className={classes.tableDataDiffCell}>
 								<CompareArrowsIcon style={{ transform: "rotate(90deg)" }} />
 							</TableCell>
-							<TableCell className={classes.tableDataCell}>
+							<TableCell className={classes.tableDataDiffCell}>
 								{"households" in resultsJsonA["total"] &&
 								"households" in resultsJsonB["total"]
 									? diff(
@@ -336,7 +346,7 @@ export function DislocationResultsTableCompare(props) {
 											resultsJsonA["total"]["population"],
 									  )}
 							</TableCell>
-							<TableCell className={classes.tableDataCell} />
+							<TableCell className={classes.tableDataDiffCell} />
 						</TableRow>
 					</TableBody>
 				</Table>

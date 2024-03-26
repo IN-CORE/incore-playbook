@@ -40,6 +40,10 @@ const useStyles = makeStyles({
 	tableBodyRow: {
 		height: "28px",
 	},
+	tableBodyDiffRow: {
+		height: "28px",
+		backgroundColor: "#F3F3F3",
+	},
 	tableBodyCell: {
 		height: "21px",
 		color: "#2E384D",
@@ -291,7 +295,7 @@ export function FunctionalityTableCompare(props) {
 												</TableRow>
 												{/*Diff:*/}
 												<TableRow
-													className={classes.tableBodyRow}
+													className={classes.tableBodyDiffRow}
 													key={clusterItemA["cluster"]}
 												>
 													<TableCell
@@ -542,14 +546,14 @@ export function FunctionalityTableCompare(props) {
 									<TableCell
 										key="percent-func-diff"
 										className={classes.tableBodyCell}
-										style={{ fontWeight: 500, backgroundColor: "#EEF3F5" }}
+										style={{ fontWeight: 500, backgroundColor: "#DCE0E2" }}
 									>
 										<CompareArrowsIcon style={{ transform: "rotate(90deg)" }} />
 									</TableCell>
 									<TableCell
 										key="percent-func"
 										className={classes.tableBodyCell}
-										style={{ fontWeight: 500, backgroundColor: "#EEF3F5" }}
+										style={{ fontWeight: 500, backgroundColor: "#DCE0E2" }}
 									>
 										{categoryItemA["percent_functional"] === NA_value ||
 										categoryItemB["percent_functional"] === NA_value
@@ -571,7 +575,7 @@ export function FunctionalityTableCompare(props) {
 									<TableCell
 										key="percent-nonfunc"
 										className={classes.tableBodyCell}
-										style={{ fontWeight: 500, backgroundColor: "#EEF3F5" }}
+										style={{ fontWeight: 500, backgroundColor: "#DCE0E2" }}
 									>
 										{categoryItemA["percent_non_functional"] === NA_value ||
 										categoryItemB["percent_non_functional"] === NA_value
@@ -603,7 +607,7 @@ export function FunctionalityTableCompare(props) {
 									<TableCell
 										key="num-func"
 										className={classes.tableBodyCell}
-										style={{ fontWeight: 500, backgroundColor: "#EEF3F5" }}
+										style={{ fontWeight: 500, backgroundColor: "#DCE0E2" }}
 									>
 										{categoryItemA["num_functional"] === NA_value ||
 										categoryItemB["num_functional"] === NA_value
@@ -621,7 +625,7 @@ export function FunctionalityTableCompare(props) {
 									<TableCell
 										key="num-nonfunc"
 										className={classes.tableBodyCell}
-										style={{ fontWeight: 500, backgroundColor: "#EEF3F5" }}
+										style={{ fontWeight: 500, backgroundColor: "#DCE0E2" }}
 									>
 										{categoryItemA["num_non_functional"] === NA_value ||
 										categoryItemB["num_non_functional"] === NA_value

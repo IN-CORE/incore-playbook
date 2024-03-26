@@ -78,10 +78,20 @@ const useStyles = makeStyles({
 		textAlign: "center",
 		border: "solid 1px rgba(46,91,255,0.08)",
 	},
+	tableDiffCell: {
+		textAlign: "center",
+		border: "solid 1px rgba(46,91,255,0.08)",
+		backgroundColor: "#F3F3F3",
+	},
 	tableDataCellRed: {
 		textAlign: "center",
 		border: "solid 1px rgba(46,91,255,0.08)",
 		backgroundColor: "#FEEFF1",
+	},
+	tableDataCellDarkRed: {
+		textAlign: "center",
+		border: "solid 1px rgba(46,91,255,0.08)",
+		backgroundColor: "#FACFD5",
 	},
 	title: {
 		height: "19px",
@@ -285,7 +295,7 @@ export function HuaResultsTableCompare(props) {
 												/>
 											</TableCell>
 											<TableCell
-												className={classes.tableDataCellRed}
+												className={classes.tableDataCellDarkRed}
 												key={`2_${idx.toString()}`}
 											>
 												{diff(
@@ -294,7 +304,7 @@ export function HuaResultsTableCompare(props) {
 												)}
 											</TableCell>
 											<TableCell
-												className={classes.tableDataCell}
+												className={classes.tableDiffCell}
 												key={`3_${idx.toString()}`}
 											>
 												{diff(
@@ -303,7 +313,7 @@ export function HuaResultsTableCompare(props) {
 												)}
 											</TableCell>
 											<TableCell
-												className={classes.tableDataCell}
+												className={classes.tableDiffCell}
 												key={`4_${idx.toString()}`}
 											>
 												{percentDiff(
