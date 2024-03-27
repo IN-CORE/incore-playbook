@@ -108,7 +108,10 @@ export const CompareAnalyses = () => {
 							),
 						}));
 					} else {
-						setRetrofitLayers({});
+						setRetrofitLayers((prevState) => ({
+							...prevState,
+							[globalConfig.comparisonKey[i]]: null,
+						}));
 					}
 				}
 			}

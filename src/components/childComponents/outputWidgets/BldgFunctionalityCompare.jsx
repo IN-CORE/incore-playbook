@@ -130,7 +130,8 @@ export default function BldgFunctionality(props) {
 					layersA={[
 						basicLayersA,
 						hazardLayers[globalConfig.comparisonKey[0]],
-						...(Object.keys(retrofitLayers).length > 0
+						...(Object.keys(retrofitLayers).length > 0 &&
+						retrofitLayers[globalConfig.comparisonKey[0]]
 							? [retrofitLayers[globalConfig.comparisonKey[0]]]
 							: []), // Include retrofitLayer if it's not null
 						damageLayersA,
@@ -138,7 +139,8 @@ export default function BldgFunctionality(props) {
 					layersB={[
 						basicLayersB,
 						hazardLayers[globalConfig.comparisonKey[1]],
-						...(Object.keys(retrofitLayers).length > 0
+						...(Object.keys(retrofitLayers).length > 0 &&
+						retrofitLayers[globalConfig.comparisonKey[1]]
 							? [retrofitLayers[globalConfig.comparisonKey[1]]]
 							: []), // Include retrofitLayer if it's not null
 						damageLayersB,
