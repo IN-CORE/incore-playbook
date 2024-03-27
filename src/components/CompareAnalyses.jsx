@@ -88,23 +88,28 @@ export const CompareAnalyses = () => {
 					const rsLayerId = retrofitInfo.rsDetailsLayerId
 						? retrofitInfo.rsDetailsLayerId
 						: "";
-					const retrofitLayerDef = [
-						{
-							layerId: rsLayerId,
-							layerStyles: mapConfig.LAYER_STYLES.RetrofitStrategyHighlight,
-							title: "Retrofit Strategy Details",
-							opacity: 1,
-							zIndex: 1,
-						},
-					];
-					setRetrofitLayers((prevState) => ({
-						...prevState,
-						[globalConfig.comparisonKey[i]]: generateLayers(
-							globalConfig,
-							retrofitLayerDef,
-							"Retrofit Strategy",
-						),
-					}));
+					if (rsLayerId) {
+						const retrofitLayerDef = [
+							{
+								layerId: rsLayerId,
+								layerStyles: mapConfig.LAYER_STYLES.RetrofitStrategyHighlight,
+								title: "Retrofit Strategy Details",
+								opacity: 1,
+								zIndex: 1,
+								// visible: false,
+							},
+						];
+						setRetrofitLayers((prevState) => ({
+							...prevState,
+							[globalConfig.comparisonKey[i]]: generateLayers(
+								globalConfig,
+								retrofitLayerDef,
+								"Retrofit Strategy",
+							),
+						}));
+					} else {
+						setRetrofitLayers({});
+					}
 				}
 			}
 		};
@@ -362,8 +367,7 @@ export const CompareAnalyses = () => {
 			executionsCompared &&
 			executionsCompared.length >= 2 &&
 			datawolfDatasetConfigItems.length > 0 &&
-			Object.keys(hazardGroupLayers).length > 0 &&
-			Object.keys(retrofitLayers).length > 0 ? (
+			Object.keys(hazardGroupLayers).length >= 2 ? (
 				<Box style={{ margin: "2em" }}>
 					{(() => {
 						return React.cloneElement(

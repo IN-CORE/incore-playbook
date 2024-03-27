@@ -114,8 +114,7 @@ export default function BldgFunctionality(props) {
 			{/*for map*/}
 			{basicLayersA &&
 			basicLayersB &&
-			hazardLayers &&
-			retrofitLayers &&
+			Object.keys(hazardLayers).length >= 2 &&
 			damageLayersA &&
 			damageLayersB ? (
 				<MapCompare
@@ -131,13 +130,17 @@ export default function BldgFunctionality(props) {
 					layersA={[
 						basicLayersA,
 						hazardLayers[globalConfig.comparisonKey[0]],
-						retrofitLayers[globalConfig.comparisonKey[0]],
+						...(Object.keys(retrofitLayers).length > 0
+							? [retrofitLayers[globalConfig.comparisonKey[0]]]
+							: []), // Include retrofitLayer if it's not null
 						damageLayersA,
 					]}
 					layersB={[
 						basicLayersB,
 						hazardLayers[globalConfig.comparisonKey[1]],
-						retrofitLayers[globalConfig.comparisonKey[1]],
+						...(Object.keys(retrofitLayers).length > 0
+							? [retrofitLayers[globalConfig.comparisonKey[1]]]
+							: []), // Include retrofitLayer if it's not null
 						damageLayersB,
 					]}
 					layerSwitcherOptionsA={{}}

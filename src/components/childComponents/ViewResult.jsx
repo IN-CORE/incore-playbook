@@ -173,7 +173,7 @@ export default function ViewResult(props) {
 		const parameter = datawolfWorkflowConfig.inputs.parameters.find(
 			(p) => p.variableName === "selectedRetrofitStrategyId",
 		);
-		if (parameter) {
+		if (parameter && parameter.parametersMap[0].paramId) {
 			const retrofitStrategyId =
 				executionItem["parameters"][parameter.parametersMap[0].paramId];
 			// fetch retrofit strategy details
@@ -250,18 +250,23 @@ export default function ViewResult(props) {
 		const rsLayerId = retrofitInfo.rsDetailsLayerId
 			? retrofitInfo.rsDetailsLayerId
 			: "";
-		const layerDef = [
-			{
-				layerId: rsLayerId,
-				layerStyles: mapConfig.LAYER_STYLES.RetrofitStrategyHighlight,
-				title: "Retrofit Strategy Details",
-				opacity: 1,
-				zIndex: 1,
-			},
-		];
-		setRetrofitLayer(
-			generateLayers(globalConfig, layerDef, "Retrofit Strategy"),
-		);
+		if (rsLayerId) {
+			const layerDef = [
+				{
+					layerId: rsLayerId,
+					layerStyles: mapConfig.LAYER_STYLES.RetrofitStrategyHighlight,
+					title: "Retrofit Strategy Details",
+					opacity: 1,
+					zIndex: 1,
+					// visible: false,
+				},
+			];
+			setRetrofitLayer(
+				generateLayers(globalConfig, layerDef, "Retrofit Strategy"),
+			);
+		} else {
+			setRetrofitLayer(null);
+		}
 
 		// dialog on
 		setPreviewOn(true);
@@ -346,8 +351,7 @@ export default function ViewResult(props) {
 			previewOn &&
 			datawolfDatasetConfigItems.length > 0 &&
 			hazardType &&
-			hazardGroupLayer &&
-			retrofitLayer ? (
+			hazardGroupLayer ? (
 				(() => {
 					return React.cloneElement(registeredWidgets[widgetName], {
 						executionItem: selectedExecutionItem,

@@ -172,7 +172,7 @@ export default function BldgDamage(props) {
 				</Box>
 
 				{/*for map*/}
-				{basicLayers && hazardLayers && retrofitLayer && damageLayers ? (
+				{basicLayers && hazardLayers && damageLayers ? ( // Check only for required layers
 					<Container className="mapContainer" disableGutters>
 						<Map
 							className="fillContainer-BldgDamage"
@@ -184,7 +184,12 @@ export default function BldgDamage(props) {
 								getTransform("EPSG:4326", "EPSG:3857"),
 							)}
 							center={fromLonLat(mapConfig.MAP_CENTER)}
-							layers={[basicLayers, hazardLayers, retrofitLayer, damageLayers]}
+							layers={[
+								basicLayers,
+								hazardLayers,
+								...(retrofitLayer ? [retrofitLayer] : []), // Include retrofitLayer if it's not null
+								damageLayers,
+							]}
 							layerSwitcherOptions={{}}
 							allowBuildingSelection={true}
 							fields={bldgDmgSummaryTableContent}
