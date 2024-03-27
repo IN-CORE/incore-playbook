@@ -7,6 +7,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+### Added
+- Highlight selected building on the map [#304](https://github.com/IN-CORE/incore-playbook/issues/304)
+
 ### Fixed
 - Adjust the z-index of the attribute table [#410](https://github.com/IN-CORE/incore-playbook/issues/410)
 - Fix Retrofit Strategy Selection to be required [#416](https://github.com/IN-CORE/incore-playbook/issues/416)
