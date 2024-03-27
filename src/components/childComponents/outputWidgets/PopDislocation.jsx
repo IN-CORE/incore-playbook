@@ -75,7 +75,7 @@ export default function PopDislocation(props) {
 						layerStyles: mapConfig.LAYER_STYLES.PopulationDislocation,
 						title: "Population Dislocation",
 						opacity: 1,
-						zIndex: 1,
+						zIndex: 2,
 					},
 				];
 				const previewLayers = generateLayers(

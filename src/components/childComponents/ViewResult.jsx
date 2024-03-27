@@ -256,7 +256,7 @@ export default function ViewResult(props) {
 				layerStyles: mapConfig.LAYER_STYLES.RetrofitStrategyHighlight,
 				title: "Retrofit Strategy Details",
 				opacity: 1,
-				zIndex: 2,
+				zIndex: 1,
 			},
 		];
 		setRetrofitLayer(

@@ -52,7 +52,7 @@ export default function BldgDamageCompare(props) {
 								layerStyles: mapConfig.LAYER_STYLES.BldgDamage,
 								title: "Building Damage",
 								opacity: 1,
-								zIndex: 1,
+								zIndex: 2,
 							},
 						];
 						const previewLayers = generateLayers(globalConfig, layerDef);

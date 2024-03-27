@@ -40,7 +40,7 @@ export default function SubstationDamageCompare(props) {
 								layerStyles: mapConfig.LAYER_STYLES.SubstationDamage,
 								title: "EPF Damage (Substation)",
 								opacity: 1,
-								zIndex: 1,
+								zIndex: 2,
 							},
 						];
 						const previewLayers = await generateLayers(globalConfig, layerDef);

@@ -76,7 +76,7 @@ export default function BldgMCS(props) {
 						layerStyles: mapConfig.LAYER_STYLES.BldgMCS,
 						title: "Building Functionality Probability without Interdependency",
 						opacity: 1,
-						zIndex: 1,
+						zIndex: 2,
 					},
 				];
 				const previewLayers = generateLayers(globalConfig, layerDef);

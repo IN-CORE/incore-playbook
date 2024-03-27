@@ -52,7 +52,7 @@ export default function BldgMCSCompare(props) {
 								title:
 									"Building Functionality Probability without Interdependency",
 								opacity: 1,
-								zIndex: 1,
+								zIndex: 2,
 							},
 						];
 						const previewLayers = generateLayers(globalConfig, layerDef);

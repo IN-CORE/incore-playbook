@@ -94,7 +94,7 @@ export const CompareAnalyses = () => {
 							layerStyles: mapConfig.LAYER_STYLES.RetrofitStrategyHighlight,
 							title: "Retrofit Strategy Details",
 							opacity: 1,
-							zIndex: 2,
+							zIndex: 1,
 						},
 					];
 					setRetrofitLayers((prevState) => ({
