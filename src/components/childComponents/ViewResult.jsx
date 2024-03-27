@@ -253,7 +253,7 @@ export default function ViewResult(props) {
 		const layerDef = [
 			{
 				layerId: rsLayerId,
-				layerStyles: mapConfig.LAYER_STYLES.RetrofitStrategy,
+				layerStyles: mapConfig.LAYER_STYLES.RetrofitStrategyHighlight,
 				title: "Retrofit Strategy Details",
 				opacity: 1,
 				zIndex: 2,
