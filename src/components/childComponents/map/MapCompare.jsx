@@ -458,7 +458,7 @@ const MapCompare = (props) => {
 								markerFeature.setGeometry(markerGeometry);
 								markerFeature.setStyle(markerStyle);
 								setSelectedBuildingB(bldg[0].properties);
-							} else if (bldg.length === 0) {
+							} else {
 								clearBuildingAndMarker();
 							}
 						})
