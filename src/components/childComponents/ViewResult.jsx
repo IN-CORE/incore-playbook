@@ -169,7 +169,7 @@ export default function ViewResult(props) {
 	};
 
 	const _getRetrofitInfo = async (executionItem) => {
-		let retrofitStrategyDetails = "";
+		let retrofitStrategyDetails = {};
 		const parameter = datawolfWorkflowConfig.inputs.parameters.find(
 			(p) => p.variableName === "selectedRetrofitStrategyId",
 		);
@@ -179,9 +179,7 @@ export default function ViewResult(props) {
 			// fetch retrofit strategy details
 			const response = await fetchRsDetails(retrofitStrategyId, globalConfig);
 			if (response.status === 200) {
-				response.json().then((json) => {
-					retrofitStrategyDetails = json;
-				});
+				retrofitStrategyDetails = response.json();
 			}
 		}
 		return retrofitStrategyDetails;

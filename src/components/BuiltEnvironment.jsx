@@ -269,14 +269,13 @@ export const BuiltEnvironment = ({ step, substep }) => {
 		// fetch retrofit strategy details
 		const response = await fetchRsDetails(id, globalConfig);
 		if (response.status === 200) {
-			response.json().then((json) => {
-				// set name and description
-				json.name = name;
-				json.description = description;
-
-				setStrategySummaryData(json);
-				setStrategySummaryLoading(false);
+			const retrofitStrategyDetails = await response.json();
+			setStrategySummaryData({
+				...retrofitStrategyDetails,
+				name: name,
+				description: description,
 			});
+			setStrategySummaryLoading(false);
 		} else if (response.status === 401) {
 			setStrategySummaryLoading(false);
 			dispatch({
