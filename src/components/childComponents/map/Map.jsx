@@ -17,6 +17,11 @@ import LoadingOverlay from "react-loading-overlay";
 import LayerSwitcher from "./LayerSwitcher";
 import { fetchLegendsForLayers, maxStateMapping } from "../../../utils/common";
 import LegendIcon from "./LegendIcon";
+import Point from "ol/geom/Point";
+import { Icon, Style } from "ol/style";
+import Feature from "ol/Feature";
+import VectorSource from "ol/source/Vector";
+import VectorLayer from "ol/layer/Vector";
 
 const useStyles = makeStyles({
 	table: {
@@ -128,30 +133,29 @@ const Map = (props) => {
 	// State variable to store legends
 	const [legends, setLegends] = React.useState([]);
 
-	// var markerStyle = new Style({
-	// 	image: new CircleStyle({
-	// 		radius: 7,
-	// 		fill: new Fill({ color: "black" }),
-	// 		stroke: new Stroke({
-	// 			color: "white",
-	// 			width: 2
-	// 		})
-	// 	})
-	// });
+	let markerStyle = new Style({
+		image: new Icon({
+			src: "public/map-pin.svg",
+			scale: 0.3, // Adjust as necessary to fit your map's scale
+			anchor: [0.5, 1.1],
+			anchorXUnits: "fraction",
+			anchorYUnits: "fraction",
+		}),
+	});
 
-	// var markerFeature = new Feature({
-	// 	id: "marker",
-	// 	visible: true
-	// });
+	let markerFeature = new Feature({
+		id: "marker",
+		visible: true,
+	});
 
-	// var vectorSource = new VectorSource({
-	// 	features: [markerFeature]
-	// });
+	let vectorSource = new VectorSource({
+		features: [markerFeature],
+	});
 
-	// var markerLayer = new VectorLayer({
-	// 	title: "BuildingPointMarker",
-	// 	source: vectorSource
-	// });
+	let markerLayer = new VectorLayer({
+		title: "Map Pin",
+		source: vectorSource,
+	});
 
 	React.useEffect(() => {
 		const {
@@ -222,7 +226,8 @@ const Map = (props) => {
 			const damageLayer = damageLayerGrp.getLayers().getArray()[0];
 			const damageLayerSource = damageLayer.getSource();
 
-			// map.addLayer(markerLayer);
+			markerLayer.setZIndex(5);
+			map.addLayer(markerLayer);
 
 			map.on("singleclick", (evt) => {
 				// clear out the previous marker if any
@@ -247,24 +252,25 @@ const Map = (props) => {
 						.then((response) => response.json())
 						.then((json) => {
 							let bldg = json.features;
-							// var markerGeometry = new Point(coordinate);
 							if (bldg.length > 0) {
-								// TODO: add a marker to the building
-								// markerFeature.setGeometry(markerGeometry);
-								// markerFeature.setStyle(markerStyle);
-
-								setSelectedBuilding(bldg[0].properties);
-							} else if (bldg.length === 0) {
-								// markerFeature.setGeometry(undefined);
-								// markerFeature.setStyle(undefined);
-								setSelectedBuilding(null);
+								const returnCoordinates = bldg[0]?.geometry?.coordinates;
+								let markerGeometry = new Point(returnCoordinates);
+								markerFeature.setGeometry(markerGeometry);
+								markerFeature.setStyle(markerStyle);
+								setSelectedBuilding(bldg[0]?.properties);
+							} else {
+								clearBuildingAndMarker();
 							}
-							setLoading(false);
+						})
+						.catch((error) => {
+							console.error("Error fetching building data:", error);
+							clearBuildingAndMarker();
+						})
+						.finally(() => {
+							setLoading(false); // Ensure loading state is turned off
 						});
 				} else {
-					setSelectedBuilding(null);
-					// markerFeature.setStyle(null);
-					// markerFeature.setGeometry(undefined);
+					clearBuildingAndMarker();
 				}
 			});
 
@@ -296,6 +302,13 @@ const Map = (props) => {
 			map.setTarget(undefined);
 		};
 	}, []);
+
+	function clearBuildingAndMarker() {
+		setSelectedBuilding(null);
+		markerFeature.setStyle(null);
+		markerFeature.setGeometry(undefined);
+		setLoading(false);
+	}
 
 	return allowBuildingSelection ? (
 		<div style={{ position: "relative" }}>

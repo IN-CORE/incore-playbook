@@ -5,6 +5,16 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [0.6.2] - 2024-03-27
+
+### Added
+- Highlight selected building on the map [#304](https://github.com/IN-CORE/incore-playbook/issues/304)
+
+### Fixed
+- Adjust the z-index of the attribute table [#410](https://github.com/IN-CORE/incore-playbook/issues/410)
+- Fix Retrofit Strategy Selection to be required [#416](https://github.com/IN-CORE/incore-playbook/issues/416)
+- Refactor check on duplicate conditions [#421](https://github.com/IN-CORE/incore-playbook/issues/421)
+- Highlight the difference row in tables [#422](https://github.com/IN-CORE/incore-playbook/issues/422)
 
 ## [0.6.1] - 2024-03-22
 

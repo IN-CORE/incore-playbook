@@ -22,6 +22,11 @@ import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import { IncoreTitle } from "../../styledComponents/IncoreTitle";
 import { IncoreFootNote } from "../../styledComponents/IncoreFootNote";
 import { useSelector } from "react-redux";
+import { Icon, Style } from "ol/style";
+import Feature from "ol/Feature";
+import VectorSource from "ol/source/Vector";
+import VectorLayer from "ol/layer/Vector";
+import Point from "ol/geom/Point";
 
 export const MapContext = React.createContext({});
 
@@ -64,7 +69,7 @@ const useStyles = makeStyles({
 		maxHeight: "250px",
 		top: "50px",
 		left: "0px",
-		zIndex: 5000,
+		zIndex: 10,
 		padding: "5px",
 		overflow: "scroll",
 		scrollBehavior: "smooth",
@@ -139,6 +144,30 @@ const MapCompare = (props) => {
 	const globalConfig = useSelector((state) => state.config.globalConfig);
 	// State variable to store legends
 	const [legends, setLegends] = React.useState([]);
+
+	let markerStyle = new Style({
+		image: new Icon({
+			src: "public/map-pin.svg",
+			scale: 0.3, // Adjust as necessary to fit your map's scale
+			anchor: [0.5, 1.1],
+			anchorXUnits: "fraction",
+			anchorYUnits: "fraction",
+		}),
+	});
+
+	let markerFeature = new Feature({
+		id: "marker",
+		visible: true,
+	});
+
+	let vectorSource = new VectorSource({
+		features: [markerFeature],
+	});
+
+	let markerLayer = new VectorLayer({
+		title: "Map Pin",
+		source: vectorSource,
+	});
 
 	React.useEffect(() => {
 		const {
@@ -287,6 +316,10 @@ const MapCompare = (props) => {
 			const damageLayerSourceA = damageLayerA.getSource();
 			const damageLayerSourceB = damageLayerB.getSource();
 
+			markerLayer.setZIndex(5);
+			mapA.addLayer(markerLayer);
+			mapB.addLayer(markerLayer);
+
 			mapA.on("singleclick", (evt) => {
 				let coordinate = mapA.getCoordinateFromPixel(evt.pixel);
 				const view = mapA.getView();
@@ -320,26 +353,47 @@ const MapCompare = (props) => {
 						.then((json) => {
 							let bldg = json.features;
 							if (bldg.length > 0) {
+								const returnCoordinates = bldg[0]?.geometry?.coordinates;
+								let markerGeometry = new Point(returnCoordinates);
+								markerFeature.setGeometry(markerGeometry);
+								markerFeature.setStyle(markerStyle);
 								setSelectedBuildingA(bldg[0].properties);
-							} else if (bldg.length === 0) {
-								setSelectedBuildingA(null);
+							} else {
+								clearBuildingAndMarker();
 							}
-							setLoading(false);
+						})
+						.catch((error) => {
+							console.error("Error fetching building data:", error);
+							clearBuildingAndMarker();
+						})
+						.finally(() => {
+							setLoading(false); // Ensure loading state is turned off
 						});
+
 					fetch(urlB)
 						.then((response) => response.json())
 						.then((json) => {
 							let bldg = json.features;
+							let markerGeometry = new Point(returnCoordinates);
 							if (bldg.length > 0) {
+								const returnCoordinates = bldg[0]?.geometry?.coordinates;
+								let markerGeometry = new Point(returnCoordinates);
+								markerFeature.setGeometry(markerGeometry);
+								markerFeature.setStyle(markerStyle);
 								setSelectedBuildingB(bldg[0].properties);
-							} else if (bldg.length === 0) {
-								setSelectedBuildingB(null);
+							} else {
+								clearBuildingAndMarker();
 							}
-							setLoading(false);
+						})
+						.catch((error) => {
+							console.error("Error fetching building data:", error);
+							clearBuildingAndMarker();
+						})
+						.finally(() => {
+							setLoading(false); // Ensure loading state is turned off
 						});
 				} else {
-					setSelectedBuildingA(null);
-					setSelectedBuildingB(null);
+					clearBuildingAndMarker();
 				}
 			});
 
@@ -376,26 +430,47 @@ const MapCompare = (props) => {
 						.then((json) => {
 							let bldg = json.features;
 							if (bldg.length > 0) {
+								const returnCoordinates = bldg[0]?.geometry?.coordinates;
+								let markerGeometry = new Point(returnCoordinates);
+								markerFeature.setGeometry(markerGeometry);
+								markerFeature.setStyle(markerStyle);
 								setSelectedBuildingA(bldg[0].properties);
-							} else if (bldg.length === 0) {
-								setSelectedBuildingA(null);
+							} else {
+								clearBuildingAndMarker();
 							}
-							setLoading(false);
+						})
+						.catch((error) => {
+							console.error("Error fetching building data:", error);
+							clearBuildingAndMarker();
+						})
+						.finally(() => {
+							setLoading(false); // Ensure loading state is turned off
 						});
+
 					fetch(urlB)
 						.then((response) => response.json())
 						.then((json) => {
 							let bldg = json.features;
 							if (bldg.length > 0) {
+								const returnCoordinates =
+									json.features?.[0]?.geometry?.coordinates;
+								let markerGeometry = new Point(returnCoordinates);
+								markerFeature.setGeometry(markerGeometry);
+								markerFeature.setStyle(markerStyle);
 								setSelectedBuildingB(bldg[0].properties);
-							} else if (bldg.length === 0) {
-								setSelectedBuildingB(null);
+							} else {
+								clearBuildingAndMarker();
 							}
-							setLoading(false);
+						})
+						.catch((error) => {
+							console.error("Error fetching building data:", error);
+							clearBuildingAndMarker();
+						})
+						.finally(() => {
+							setLoading(false); // Ensure loading state is turned off
 						});
 				} else {
-					setSelectedBuildingA(null);
-					setSelectedBuildingB(null);
+					clearBuildingAndMarker();
 				}
 			});
 
@@ -419,8 +494,16 @@ const MapCompare = (props) => {
 		}
 	}
 
+	function clearBuildingAndMarker() {
+		setSelectedBuildingA(null);
+		setSelectedBuildingB(null);
+		markerFeature.setStyle(null);
+		markerFeature.setGeometry(undefined);
+		setLoading(false);
+	}
+
 	return (
-		<Grid container styles={{ marginBottom: "2em" }}>
+		<Grid container styles={{ marginBottom: "2em", zIndex: 50 }}>
 			<Grid item xs={12}>
 				<div style={{ position: "relative" }}>
 					<div

@@ -240,31 +240,75 @@ export default function RetrofitStrategyBuilder(props) {
 		});
 		if (disabled) {
 			setAddError("Please fill all the fields");
+			return !disabled;
 		}
 
 		// for any duplicates
-		let matches = addedRows.filter((row, i) => {
-			if (currentlyEditing === i) {
-				return false;
-			}
-			let matches = [];
-			conditionSelectKeys.forEach((key) => {
-				if (
+		let totalPercentage = 0;
+		let foundDuplicate = false;
+		let retrofitMethodsDuplicate = false;
+		let lookUp = {};
+		let message = "Duplicate entry, please choose unique conditions.";
+
+		addedRows.forEach((row, i) => {
+			if (currentlyEditing === i) return;
+
+			if (foundDuplicate) return;
+
+			let conditionMatches = conditionSelectKeys.every(
+				(key) =>
 					row[key] !== undefined &&
 					selectedValues[key] !== undefined &&
-					row[key].value === selectedValues[key].value
-				) {
-					matches.push(true);
-				} else {
-					matches.push(false);
+					row[key].value === selectedValues[key].value,
+			);
+			// Generate Lookup Key
+			let lookUpKey = "";
+			conditionSelectKeys.forEach((key, i) => {
+				lookUpKey += `${row[key].value}`;
+				if (i < conditionSelectKeys.length - 1) {
+					lookUpKey += "-";
 				}
 			});
 
-			return matches.every((v) => v === true);
+			if (conditionMatches) {
+				// Check if retrofitMethodKeys are same
+				retrofitMethodsDuplicate = retrofitMethodKeys.every(
+					(key) =>
+						row[key] !== undefined &&
+						selectedValues[key] !== undefined &&
+						row[key].value.ret_val === selectedValues[key].value.ret_val &&
+						row[key].value.ret_key === selectedValues[key].value.ret_key,
+				);
+
+				// If retrofit methods are same consider it as duplicate
+				if (retrofitMethodsDuplicate) {
+					foundDuplicate = true;
+					message =
+						"Duplicate retrofit entry, please choose unique conditions and retrofit method.";
+				} else {
+					// If retrofit methods differ, check for percentage sum, if > 100 consider it a duplicate
+					if (lookUp[lookUpKey] === undefined) {
+						lookUp[lookUpKey] =
+							parseFloat(row.pcts.value || 0) +
+							parseFloat(selectedValues.pcts.value || 0);
+					} else {
+						lookUp[lookUpKey] += parseFloat(row.pcts.value || 0);
+					}
+
+					if (lookUp[lookUpKey] > 100) {
+						foundDuplicate = true;
+						message =
+							"Total percentage exceeds 100% for same conditions with different retrofit methods, please adjust.";
+					}
+				}
+			}
 		});
 
-		if (matches.length > 0) {
-			setAddError("Duplicate entry, please choose unique conditions");
+		if (foundDuplicate) {
+			setAddError(message);
+			disabled = true;
+		} else if (!retrofitMethodsDuplicate && totalPercentage > 1) {
+			setAddError("Total percentage exceeds 100%, please adjust.");
 			disabled = true;
 		}
 
