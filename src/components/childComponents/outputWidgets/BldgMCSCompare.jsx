@@ -1,5 +1,5 @@
-import { Box, Container, Grid } from "@material-ui/core";
-import React, { useEffect, useRef, useState } from "react";
+import { Box, Grid } from "@material-ui/core";
+import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import {
 	getOutputFileContent,
@@ -13,7 +13,12 @@ import { applyTransform } from "ol/extent";
 import { fromLonLat, getTransform } from "ol/proj";
 
 export default function BldgMCSCompare(props) {
-	let { executionItems, datawolfDatasetConfigItems, hazardLayers } = props;
+	let {
+		executionItems,
+		datawolfDatasetConfigItems,
+		hazardLayers,
+		retrofitLayers,
+	} = props;
 
 	const mapConfig = useSelector((state) => state.config.mapConfig);
 	const datawolfConfig = useSelector((state) => state.config.datawolfConfig);
@@ -110,6 +115,7 @@ export default function BldgMCSCompare(props) {
 			{basicLayersA &&
 			basicLayersB &&
 			hazardLayers &&
+			retrofitLayers &&
 			damageLayersA &&
 			damageLayersB ? (
 				<MapCompare
@@ -125,11 +131,13 @@ export default function BldgMCSCompare(props) {
 					layersA={[
 						basicLayersA,
 						hazardLayers[globalConfig.comparisonKey[0]],
+						retrofitLayers[globalConfig.comparisonKey[0]],
 						damageLayersA,
 					]}
 					layersB={[
 						basicLayersB,
 						hazardLayers[globalConfig.comparisonKey[1]],
+						retrofitLayers[globalConfig.comparisonKey[1]],
 						damageLayersB,
 					]}
 					layerSwitcherOptionsA={{}}

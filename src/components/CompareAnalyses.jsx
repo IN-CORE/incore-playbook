@@ -5,18 +5,19 @@ import { getExecution } from "../utils/datawolf";
 import { useQuery } from "./customHooks/useQuery";
 import { useSelector } from "react-redux";
 import { getHazardMetadata } from "../utils/hazard";
-import { getHazardGroupLayers } from "../utils/map";
+import { generateLayers, getHazardGroupLayers } from "../utils/map";
 import { registeredCompareWidgets } from "./childComponents/outputWidgets/RegisteredCompareWidgets";
 import {
 	IncoreMenuItem,
 	IncoreSelectBox,
 } from "./styledComponents/IncoreSelect";
 import { IncoreInputLabel } from "./styledComponents/IncoreInputLabel";
-import { Label } from "@material-ui/icons";
+import { fetchRsDetails } from "../utils/common";
 
 export const CompareAnalyses = () => {
 	const [executionsCompared, setExecutionsCompared] = useState([]);
 	const [hazardGroupLayers, setHazardGroupLayers] = useState({}); // group layers of hazard to overlay on the map
+	const [retrofitLayers, setRetrofitLayers] = useState({}); // group layers of hazard to overlay on the map
 	const [selectedWidgetName, setSelectedWidgetName] =
 		useState("ResilienceMetrics"); // outputWidgets name
 	const [datawolfDatasetConfigItems, setDatawolfDatasetConfigItems] = useState(
@@ -62,7 +63,7 @@ export const CompareAnalyses = () => {
 	}, []);
 
 	useEffect(() => {
-		const gatherHazardInfo = async () => {
+		const gatherInfo = async () => {
 			if (executionsCompared && executionsCompared.length >= 2) {
 				for (let i = 0; i < executionsCompared.length; i++) {
 					const hazardInfo = _getHazardInfo(executionsCompared[i]);
@@ -82,11 +83,33 @@ export const CompareAnalyses = () => {
 							0.5,
 						),
 					}));
+
+					const retrofitInfo = await _getRetrofitInfo(executionsCompared[i]);
+					const rsLayerId = retrofitInfo.rsDetailsLayerId
+						? retrofitInfo.rsDetailsLayerId
+						: "";
+					const retrofitLayerDef = [
+						{
+							layerId: rsLayerId,
+							layerStyles: mapConfig.LAYER_STYLES.RetrofitStrategy,
+							title: "Retrofit Strategy Details",
+							opacity: 1,
+							zIndex: 2,
+						},
+					];
+					setRetrofitLayers((prevState) => ({
+						...prevState,
+						[globalConfig.comparisonKey[i]]: generateLayers(
+							globalConfig,
+							retrofitLayerDef,
+							"Retrofit Strategy",
+						),
+					}));
 				}
 			}
 		};
 
-		gatherHazardInfo();
+		gatherInfo();
 	}, [executionsCompared]);
 
 	useEffect(() => {
@@ -143,6 +166,23 @@ export const CompareAnalyses = () => {
 				return hazardInfo;
 			}
 		}, {});
+	};
+
+	const _getRetrofitInfo = async (executionItem) => {
+		let retrofitStrategyDetails = {};
+		const parameter = datawolfWorkflowConfig.inputs.parameters.find(
+			(p) => p.variableName === "selectedRetrofitStrategyId",
+		);
+		if (parameter) {
+			const retrofitStrategyId =
+				executionItem["parameters"][parameter.parametersMap[0].paramId];
+			// fetch retrofit strategy details
+			const response = await fetchRsDetails(retrofitStrategyId, globalConfig);
+			if (response.status === 200) {
+				retrofitStrategyDetails = response.json();
+			}
+		}
+		return retrofitStrategyDetails;
 	};
 
 	return (
@@ -322,7 +362,8 @@ export const CompareAnalyses = () => {
 			executionsCompared &&
 			executionsCompared.length >= 2 &&
 			datawolfDatasetConfigItems.length > 0 &&
-			Object.keys(hazardGroupLayers).length > 0 ? (
+			Object.keys(hazardGroupLayers).length > 0 &&
+			Object.keys(retrofitLayers).length > 0 ? (
 				<Box style={{ margin: "2em" }}>
 					{(() => {
 						return React.cloneElement(
@@ -331,6 +372,7 @@ export const CompareAnalyses = () => {
 								executionItems: executionsCompared,
 								datawolfDatasetConfigItems: datawolfDatasetConfigItems,
 								hazardLayers: hazardGroupLayers,
+								retrofitLayers: retrofitLayers,
 							},
 						);
 					})()}

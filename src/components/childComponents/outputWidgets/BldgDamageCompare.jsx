@@ -1,4 +1,4 @@
-import { Box, Container } from "@material-ui/core";
+import { Box } from "@material-ui/core";
 import React, { useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
 import {
@@ -6,14 +6,18 @@ import {
 	getOutputFileContentJSON,
 } from "../../../utils/datawolf";
 import { createBasicLayers, generateLayers } from "../../../utils/map";
-import { comparisonKey } from "../../../globals";
 import { BldgDamageTableCompare } from "../table/BldgDamageTableCompare";
 import MapCompare from "../map/MapCompare";
 import { applyTransform } from "ol/extent";
 import { fromLonLat, getTransform } from "ol/proj";
 
 export default function BldgDamageCompare(props) {
-	let { executionItems, datawolfDatasetConfigItems, hazardLayers } = props;
+	let {
+		executionItems,
+		datawolfDatasetConfigItems,
+		hazardLayers,
+		retrofitLayers,
+	} = props;
 
 	const mapConfig = useSelector((state) => state.config.mapConfig);
 	const datawolfConfig = useSelector((state) => state.config.datawolfConfig);
@@ -77,31 +81,11 @@ export default function BldgDamageCompare(props) {
 
 	return (
 		<Box ref={printRef}>
-			{/*for chart*/}
-			{/*<Box className="chartContainer">*/}
-			{/*	<Grid container spacing={3} justify="center">*/}
-			{/*		<Divider orientation="vertical" flexItem />*/}
-			{/*		/!*barchart*!/*/}
-			{/*		{Object.keys(bldgDmgSummaryTableContents).length >= 2 ? (*/}
-			{/*			<Grid item style={{ minWidth: "804px" }}>*/}
-			{/*				<Typography className="previewSubTitle">*/}
-			{/*					Anticipated Performance - Building Clusters*/}
-			{/*				</Typography>*/}
-			{/*				<Box style={{ marginTop: "38px" }}>*/}
-			{/*					<StackedResult categorySummary={bldgDmgSummaryTableContents["A"]["by_category"]} />*/}
-			{/*				</Box>*/}
-			{/*			</Grid>*/}
-			{/*		) : (*/}
-			{/*			<></>*/}
-			{/*		)}*/}
-			{/*	</Grid>*/}
-			{/*	<Divider orientation="horizontal" />*/}
-			{/*</Box>*/}
-
 			{/*for map*/}
 			{basicLayersA &&
 			basicLayersB &&
 			hazardLayers &&
+			retrofitLayers &&
 			damageLayersA &&
 			damageLayersB ? (
 				<MapCompare
@@ -117,11 +101,13 @@ export default function BldgDamageCompare(props) {
 					layersA={[
 						basicLayersA,
 						hazardLayers[globalConfig.comparisonKey[0]],
+						retrofitLayers[globalConfig.comparisonKey[0]],
 						damageLayersA,
 					]}
 					layersB={[
 						basicLayersB,
 						hazardLayers[globalConfig.comparisonKey[1]],
+						retrofitLayers[globalConfig.comparisonKey[1]],
 						damageLayersB,
 					]}
 					layerSwitcherOptionsA={{}}

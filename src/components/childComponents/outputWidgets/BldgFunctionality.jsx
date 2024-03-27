@@ -37,6 +37,7 @@ export default function BldgFunctionality(props) {
 		datawolfDatasetConfigItems,
 		hazardType,
 		hazardLayers,
+		retrofitLayer,
 		setDownloadDialogOpen,
 	} = props;
 
@@ -173,7 +174,7 @@ export default function BldgFunctionality(props) {
 				</Box>
 
 				{/*for map*/}
-				{basicLayers && hazardLayers && damageLayers ? (
+				{basicLayers && hazardLayers && retrofitLayer && damageLayers ? (
 					<Container className="mapContainer" disableGutters>
 						<Map
 							className="fillContainer"
@@ -185,7 +186,7 @@ export default function BldgFunctionality(props) {
 								getTransform("EPSG:4326", "EPSG:3857"),
 							)}
 							center={fromLonLat(mapConfig.MAP_CENTER)}
-							layers={[basicLayers, hazardLayers, damageLayers]}
+							layers={[basicLayers, hazardLayers, retrofitLayer, damageLayers]}
 							layerSwitcherOptions={{}}
 							allowBuildingSelection={true}
 						/>
