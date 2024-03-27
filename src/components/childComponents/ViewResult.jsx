@@ -10,10 +10,10 @@ import { ViewResultEntryTable } from "./table/ViewResultEntryTable";
 
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Switch from "@material-ui/core/Switch";
-import { getHazardGroupLayers } from "../../utils/map";
+import { generateLayers, getHazardGroupLayers } from "../../utils/map";
 import { DownloadAlert } from "./alert/DownloadAlert";
 import { registeredWidgets } from "./outputWidgets/RegisteredWidgets";
-import { extractStatus } from "../../utils/common";
+import { extractStatus, fetchRsDetails } from "../../utils/common";
 
 const useStyles = makeStyles({
 	statTitle: {
@@ -52,6 +52,7 @@ export default function ViewResult(props) {
 	);
 	const [hazardGroupLayer, setHazardGroupLayer] = useState(); // group layer of hazard to overlay on the map
 	const [hazardType, setHazardType] = useState(""); // used in runtime table
+	const [retrofitLayer, setRetrofitLayer] = useState(); // retrofit strategy
 	const [previewOn, setPreviewOn] = useState(false); // list vs preview
 	const [datawolfViewAllOn, setDatawolfViewAllOn] = useState(false); // datawolf view
 	const [downloadDialogOpen, setDownloadDialogOpen] = React.useState(false);
@@ -167,6 +168,25 @@ export default function ViewResult(props) {
 		}, {});
 	};
 
+	const _getRetrofitInfo = async (executionItem) => {
+		let retrofitStrategyDetails = "";
+		const parameter = datawolfWorkflowConfig.inputs.parameters.find(
+			(p) => p.variableName === "selectedRetrofitStrategyId",
+		);
+		if (parameter) {
+			const retrofitStrategyId =
+				executionItem["parameters"][parameter.parametersMap[0].paramId];
+			// fetch retrofit strategy details
+			const response = await fetchRsDetails(retrofitStrategyId, globalConfig);
+			if (response.status === 200) {
+				response.json().then((json) => {
+					retrofitStrategyDetails = json;
+				});
+			}
+		}
+		return retrofitStrategyDetails;
+	};
+
 	const preview = async (executionId, widgetName) => {
 		const selectedExecutionItem = getExecution(executionId);
 		setSelectedExecutionItem(selectedExecutionItem);
@@ -227,6 +247,23 @@ export default function ViewResult(props) {
 			),
 		);
 		setHazardType(hazardInfo["hazardType"]);
+
+		const retrofitInfo = await _getRetrofitInfo(selectedExecutionItem);
+		const rsLayerId = retrofitInfo.rsDetailsLayerId
+			? retrofitInfo.rsDetailsLayerId
+			: "";
+		const layerDef = [
+			{
+				layerId: rsLayerId,
+				layerStyles: mapConfig.LAYER_STYLES.RetrofitStrategy,
+				title: "Retrofit Strategy Details",
+				opacity: 1,
+				zIndex: 2,
+			},
+		];
+		setRetrofitLayer(
+			generateLayers(globalConfig, layerDef, "Retrofit Strategy"),
+		);
 
 		// dialog on
 		setPreviewOn(true);
@@ -311,7 +348,8 @@ export default function ViewResult(props) {
 			previewOn &&
 			datawolfDatasetConfigItems.length > 0 &&
 			hazardType &&
-			hazardGroupLayer ? (
+			hazardGroupLayer &&
+			retrofitLayer ? (
 				(() => {
 					return React.cloneElement(registeredWidgets[widgetName], {
 						executionItem: selectedExecutionItem,
@@ -321,6 +359,7 @@ export default function ViewResult(props) {
 						datawolfDatasetConfigItems: datawolfDatasetConfigItems,
 						hazardType: hazardType,
 						hazardLayers: hazardGroupLayer,
+						retrofitLayer: retrofitLayer,
 						setDownloadDialogOpen: setDownloadDialogOpen,
 					});
 				})()
