@@ -10,7 +10,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 - Bugfix on comparison map highlight
--
+
+### Added
+- Add retrofit layer in result widgets [#431](https://github.com/IN-CORE/incore-playbook/issues/431)
+
 ## [0.6.2] - 2024-03-27
 
 ### Added

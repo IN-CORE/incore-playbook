@@ -35,7 +35,7 @@ import {
 } from "./styledComponents/IncoreSelect";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchDatasets } from "../actions/datasets";
-import { getHeader, move2TestbedSpace } from "../utils/common";
+import { fetchRsDetails, move2TestbedSpace } from "../utils/common";
 
 import Pagination from "./childComponents/navigation/Pagination";
 import RetrofitStrategyBuilder from "./childComponents/RetrofitStrategyBuilder";
@@ -261,34 +261,30 @@ export const BuiltEnvironment = ({ step, substep }) => {
 		setDatasetType("");
 	};
 
-	const actionClick = (id, name, description) => {
+	const actionClick = async (id, name, description) => {
 		// show the retrofit strategy summary modal
 		setStrategySummaryModalStatus(true);
-		const url = `${globalConfig.maestroServiceBase}datasets/${id}/rsdetails`;
 		setStrategySummaryLoading(true);
-		fetch(url, {
-			mode: "cors",
-			headers: getHeader(globalConfig.hostname),
-		}).then((response) => {
-			if (response.status === 200) {
-				response.json().then((json) => {
-					// set name and description
-					json.name = name;
-					json.description = description;
 
-					setStrategySummaryData(json);
-					setStrategySummaryLoading(false);
-				});
-			} else if (response.status === 401) {
-				setStrategySummaryLoading(false);
-				dispatch({
-					type: "LOGIN_ERROR",
-				});
-			} else {
-				setStrategySummaryLoading(false);
-				console.log(response.status, response);
-			}
-		});
+		// fetch retrofit strategy details
+		const response = await fetchRsDetails(id, globalConfig);
+		if (response.status === 200) {
+			const retrofitStrategyDetails = await response.json();
+			setStrategySummaryData({
+				...retrofitStrategyDetails,
+				name: name,
+				description: description,
+			});
+			setStrategySummaryLoading(false);
+		} else if (response.status === 401) {
+			setStrategySummaryLoading(false);
+			dispatch({
+				type: "LOGIN_ERROR",
+			});
+		} else {
+			setStrategySummaryLoading(false);
+			console.log(response.status, response);
+		}
 	};
 
 	const _pageChangeHelper = (

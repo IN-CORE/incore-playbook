@@ -10,7 +10,7 @@ import {
 import CloseIcon from "@material-ui/icons/Close";
 import Map from "../map/Map";
 import { fromLonLat, getTransform } from "ol/proj";
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
 import { applyTransform } from "ol/extent";
 import { basicLayers, generateLayers } from "../../../utils/map";
@@ -18,7 +18,6 @@ import { getOutputFileContent } from "../../../utils/datawolf";
 import { IncoreButtonText } from "../../styledComponents/IncoreButtonText";
 import { downloadImg } from "../../../utils/image";
 import CameraAltIcon from "@material-ui/icons/CameraAlt";
-import { Collection } from "ol";
 
 export default function Interdependency(props) {
 	let {
@@ -55,7 +54,7 @@ export default function Interdependency(props) {
 						layerStyles: null,
 						title: "Interdependency Network",
 						opacity: 0.7,
-						zIndex: 1,
+						zIndex: 2,
 					},
 					{
 						layerId: substationMaxDmgStateINCOREId,

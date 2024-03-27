@@ -1,5 +1,5 @@
-import { Box, Container, Grid } from "@material-ui/core";
-import React, { useEffect, useRef, useState } from "react";
+import { Box, Grid } from "@material-ui/core";
+import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import {
 	getOutputFileContent,
@@ -13,7 +13,12 @@ import { applyTransform } from "ol/extent";
 import { fromLonLat, getTransform } from "ol/proj";
 
 export default function BldgFunctionality(props) {
-	let { executionItems, datawolfDatasetConfigItems, hazardLayers } = props;
+	let {
+		executionItems,
+		datawolfDatasetConfigItems,
+		hazardLayers,
+		retrofitLayers,
+	} = props;
 
 	const mapConfig = useSelector((state) => state.config.mapConfig);
 	const datawolfConfig = useSelector((state) => state.config.datawolfConfig);
@@ -47,7 +52,7 @@ export default function BldgFunctionality(props) {
 								layerStyles: mapConfig.LAYER_STYLES.BldgFunctionality,
 								title: "Building Functionality Probability",
 								opacity: 1,
-								zIndex: 1,
+								zIndex: 2,
 							},
 						];
 						const previewLayers = generateLayers(globalConfig, layerDef);
@@ -109,7 +114,7 @@ export default function BldgFunctionality(props) {
 			{/*for map*/}
 			{basicLayersA &&
 			basicLayersB &&
-			hazardLayers &&
+			Object.keys(hazardLayers).length >= 2 &&
 			damageLayersA &&
 			damageLayersB ? (
 				<MapCompare
@@ -125,11 +130,19 @@ export default function BldgFunctionality(props) {
 					layersA={[
 						basicLayersA,
 						hazardLayers[globalConfig.comparisonKey[0]],
+						...(Object.keys(retrofitLayers).length > 0 &&
+						retrofitLayers[globalConfig.comparisonKey[0]]
+							? [retrofitLayers[globalConfig.comparisonKey[0]]]
+							: []), // Include retrofitLayer if it's not null
 						damageLayersA,
 					]}
 					layersB={[
 						basicLayersB,
 						hazardLayers[globalConfig.comparisonKey[1]],
+						...(Object.keys(retrofitLayers).length > 0 &&
+						retrofitLayers[globalConfig.comparisonKey[1]]
+							? [retrofitLayers[globalConfig.comparisonKey[1]]]
+							: []), // Include retrofitLayer if it's not null
 						damageLayersB,
 					]}
 					layerSwitcherOptionsA={{}}
