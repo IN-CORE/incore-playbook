@@ -352,43 +352,48 @@ const MapCompare = (props) => {
 						.then((response) => response.json())
 						.then((json) => {
 							let bldg = json.features;
-							const returnCoordinates =
-								json.features?.[0]?.geometry?.coordinates;
-							let markerGeometry = new Point(returnCoordinates);
 							if (bldg.length > 0) {
+								const returnCoordinates = bldg[0]?.geometry?.coordinates;
+								let markerGeometry = new Point(returnCoordinates);
 								markerFeature.setGeometry(markerGeometry);
 								markerFeature.setStyle(markerStyle);
 								setSelectedBuildingA(bldg[0].properties);
-							} else if (bldg.length === 0) {
-								markerFeature.setGeometry(undefined);
-								markerFeature.setStyle(undefined);
-								setSelectedBuildingA(null);
+							} else {
+								clearBuildingAndMarker();
 							}
-							setLoading(false);
+						})
+						.catch((error) => {
+							console.error("Error fetching building data:", error);
+							clearBuildingAndMarker();
+						})
+						.finally(() => {
+							setLoading(false); // Ensure loading state is turned off
 						});
+
 					fetch(urlB)
 						.then((response) => response.json())
 						.then((json) => {
 							let bldg = json.features;
-							const returnCoordinates =
-								json.features?.[0]?.geometry?.coordinates;
 							let markerGeometry = new Point(returnCoordinates);
 							if (bldg.length > 0) {
+								const returnCoordinates = bldg[0]?.geometry?.coordinates;
+								let markerGeometry = new Point(returnCoordinates);
 								markerFeature.setGeometry(markerGeometry);
 								markerFeature.setStyle(markerStyle);
 								setSelectedBuildingB(bldg[0].properties);
-							} else if (bldg.length === 0) {
-								markerFeature.setGeometry(undefined);
-								markerFeature.setStyle(undefined);
-								setSelectedBuildingB(null);
+							} else {
+								clearBuildingAndMarker();
 							}
-							setLoading(false);
+						})
+						.catch((error) => {
+							console.error("Error fetching building data:", error);
+							clearBuildingAndMarker();
+						})
+						.finally(() => {
+							setLoading(false); // Ensure loading state is turned off
 						});
 				} else {
-					markerFeature.setStyle(null);
-					markerFeature.setGeometry(undefined);
-					setSelectedBuildingA(null);
-					setSelectedBuildingB(null);
+					clearBuildingAndMarker();
 				}
 			});
 
@@ -424,43 +429,48 @@ const MapCompare = (props) => {
 						.then((response) => response.json())
 						.then((json) => {
 							let bldg = json.features;
-							const returnCoordinates =
-								json.features?.[0]?.geometry?.coordinates;
-							let markerGeometry = new Point(returnCoordinates);
 							if (bldg.length > 0) {
+								const returnCoordinates = bldg[0]?.geometry?.coordinates;
+								let markerGeometry = new Point(returnCoordinates);
 								markerFeature.setGeometry(markerGeometry);
 								markerFeature.setStyle(markerStyle);
 								setSelectedBuildingA(bldg[0].properties);
-							} else if (bldg.length === 0) {
-								markerFeature.setStyle(null);
-								markerFeature.setGeometry(undefined);
-								setSelectedBuildingA(null);
+							} else {
+								clearBuildingAndMarker();
 							}
-							setLoading(false);
+						})
+						.catch((error) => {
+							console.error("Error fetching building data:", error);
+							clearBuildingAndMarker();
+						})
+						.finally(() => {
+							setLoading(false); // Ensure loading state is turned off
 						});
+
 					fetch(urlB)
 						.then((response) => response.json())
 						.then((json) => {
 							let bldg = json.features;
-							const returnCoordinates =
-								json.features?.[0]?.geometry?.coordinates;
-							let markerGeometry = new Point(returnCoordinates);
 							if (bldg.length > 0) {
+								const returnCoordinates =
+									json.features?.[0]?.geometry?.coordinates;
+								let markerGeometry = new Point(returnCoordinates);
 								markerFeature.setGeometry(markerGeometry);
 								markerFeature.setStyle(markerStyle);
 								setSelectedBuildingB(bldg[0].properties);
 							} else if (bldg.length === 0) {
-								markerFeature.setStyle(null);
-								markerFeature.setGeometry(undefined);
-								setSelectedBuildingB(null);
+								clearBuildingAndMarker();
 							}
-							setLoading(false);
+						})
+						.catch((error) => {
+							console.error("Error fetching building data:", error);
+							clearBuildingAndMarker();
+						})
+						.finally(() => {
+							setLoading(false); // Ensure loading state is turned off
 						});
 				} else {
-					markerFeature.setStyle(null);
-					markerFeature.setGeometry(undefined);
-					setSelectedBuildingA(null);
-					setSelectedBuildingB(null);
+					clearBuildingAndMarker();
 				}
 			});
 
@@ -482,6 +492,14 @@ const MapCompare = (props) => {
 				mapB.getTargetElement().style.cursor = hit ? "pointer" : "";
 			});
 		}
+	}
+
+	function clearBuildingAndMarker() {
+		setSelectedBuildingA(null);
+		setSelectedBuildingB(null);
+		markerFeature.setStyle(null);
+		markerFeature.setGeometry(undefined);
+		setLoading(false);
 	}
 
 	return (

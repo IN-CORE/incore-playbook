@@ -252,24 +252,25 @@ const Map = (props) => {
 						.then((response) => response.json())
 						.then((json) => {
 							let bldg = json.features;
-							const returnCoordinates =
-								json.features?.[0]?.geometry?.coordinates;
-							let markerGeometry = new Point(returnCoordinates);
 							if (bldg.length > 0) {
+								const returnCoordinates = bldg[0]?.geometry?.coordinates;
+								let markerGeometry = new Point(returnCoordinates);
 								markerFeature.setGeometry(markerGeometry);
 								markerFeature.setStyle(markerStyle);
 								setSelectedBuilding(bldg[0]?.properties);
 							} else {
-								markerFeature.setGeometry(undefined);
-								markerFeature.setStyle(undefined);
-								setSelectedBuilding(null);
+								clearBuildingAndMarker();
 							}
-							setLoading(false);
+						})
+						.catch((error) => {
+							console.error("Error fetching building data:", error);
+							clearBuildingAndMarker();
+						})
+						.finally(() => {
+							setLoading(false); // Ensure loading state is turned off
 						});
 				} else {
-					setSelectedBuilding(null);
-					markerFeature.setStyle(null);
-					markerFeature.setGeometry(undefined);
+					clearBuildingAndMarker();
 				}
 			});
 
@@ -301,6 +302,13 @@ const Map = (props) => {
 			map.setTarget(undefined);
 		};
 	}, []);
+
+	function clearBuildingAndMarker() {
+		setSelectedBuilding(null);
+		markerFeature.setStyle(null);
+		markerFeature.setGeometry(undefined);
+		setLoading(false);
+	}
 
 	return allowBuildingSelection ? (
 		<div style={{ position: "relative" }}>
