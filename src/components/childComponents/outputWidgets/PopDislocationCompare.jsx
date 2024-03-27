@@ -13,12 +13,7 @@ import { applyTransform } from "ol/extent";
 import { fromLonLat, getTransform } from "ol/proj";
 
 export default function PopDislocationCompare(props) {
-	let {
-		executionItems,
-		datawolfDatasetConfigItems,
-		hazardLayers,
-		retrofitLayers,
-	} = props;
+	let { executionItems, datawolfDatasetConfigItems, hazardLayers } = props;
 
 	const mapConfig = useSelector((state) => state.config.mapConfig);
 	const datawolfConfig = useSelector((state) => state.config.datawolfConfig);
@@ -137,7 +132,7 @@ export default function PopDislocationCompare(props) {
 		};
 
 		fetchData();
-	}, [executionItems, datawolfDatasetConfigItems]);
+	}, [executionItems, datawolfDatasetConfigItems, hazardLayers]);
 
 	return (
 		<Box>
@@ -145,7 +140,6 @@ export default function PopDislocationCompare(props) {
 			{basicLayersA &&
 			basicLayersB &&
 			hazardLayers &&
-			retrofitLayers &&
 			popDislocationLayerA &&
 			popDislocationLayerB ? (
 				<MapCompare
@@ -161,13 +155,11 @@ export default function PopDislocationCompare(props) {
 					layersA={[
 						basicLayersA,
 						hazardLayers[globalConfig.comparisonKey[0]],
-						retrofitLayers[globalConfig.comparisonKey[0]],
 						popDislocationLayerA,
 					]}
 					layersB={[
 						basicLayersB,
 						hazardLayers[globalConfig.comparisonKey[1]],
-						retrofitLayers[globalConfig.comparisonKey[1]],
 						popDislocationLayerB,
 					]}
 					layerSwitcherOptionsA={{}}

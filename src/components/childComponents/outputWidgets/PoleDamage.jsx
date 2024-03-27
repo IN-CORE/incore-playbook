@@ -30,7 +30,6 @@ export default function PoleDamage(props) {
 		handlePreviewClose,
 		datawolfDatasetConfigItems,
 		hazardLayers,
-		retrofitLayer,
 		setDownloadDialogOpen,
 	} = props;
 
@@ -116,7 +115,7 @@ export default function PoleDamage(props) {
 				</Box>
 
 				{/*for map*/}
-				{basicLayers && hazardLayers && retrofitLayer && damageLayers ? (
+				{basicLayers && hazardLayers && damageLayers ? (
 					<Container className="mapContainer" disableGutters>
 						<Map
 							className="fillContainer"
@@ -128,7 +127,7 @@ export default function PoleDamage(props) {
 								getTransform("EPSG:4326", "EPSG:3857"),
 							)}
 							center={fromLonLat(mapConfig.MAP_CENTER)}
-							layers={[basicLayers, hazardLayers, retrofitLayer, damageLayers]}
+							layers={[basicLayers, hazardLayers, damageLayers]}
 							layerSwitcherOptions={{}}
 							allowBuildingSelection={true}
 						/>

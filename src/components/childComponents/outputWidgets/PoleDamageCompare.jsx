@@ -8,12 +8,7 @@ import { createBasicLayers, generateLayers } from "../../../utils/map";
 import MapCompare from "../map/MapCompare";
 
 export default function PoleDamageCompare(props) {
-	let {
-		executionItems,
-		datawolfDatasetConfigItems,
-		hazardLayers,
-		retrofitLayers,
-	} = props;
+	let { executionItems, datawolfDatasetConfigItems, hazardLayers } = props;
 
 	const mapConfig = useSelector((state) => state.config.mapConfig);
 	const datawolfConfig = useSelector((state) => state.config.datawolfConfig);
@@ -60,7 +55,7 @@ export default function PoleDamageCompare(props) {
 		};
 
 		fetchData();
-	}, [executionItems, datawolfDatasetConfigItems]);
+	}, [executionItems, datawolfDatasetConfigItems, hazardLayers]);
 
 	return (
 		<Box style={{ padding: "5px 25px 25px 25px" }}>
@@ -69,7 +64,6 @@ export default function PoleDamageCompare(props) {
 				{basicLayersA &&
 				basicLayersB &&
 				hazardLayers &&
-				retrofitLayers &&
 				damageLayersA &&
 				damageLayersB ? (
 					<MapCompare
@@ -85,13 +79,11 @@ export default function PoleDamageCompare(props) {
 						layersA={[
 							basicLayersA,
 							hazardLayers[globalConfig.comparisonKey[0]],
-							retrofitLayers[globalConfig.comparisonKey[0]],
 							damageLayersA,
 						]}
 						layersB={[
 							basicLayersB,
 							hazardLayers[globalConfig.comparisonKey[1]],
-							retrofitLayers[globalConfig.comparisonKey[1]],
 							damageLayersB,
 						]}
 						layerSwitcherOptionsA={{}}
