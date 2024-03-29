@@ -1,4 +1,4 @@
-import { Box, Container, Grid } from "@material-ui/core";
+import { Box, Grid } from "@material-ui/core";
 import { fromLonLat, getTransform } from "ol/proj";
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
@@ -40,7 +40,7 @@ export default function PoleDamageCompare(props) {
 								layerStyles: mapConfig.LAYER_STYLES.PoleDamage,
 								title: "EPF Damage (Pole)",
 								opacity: 1,
-								zIndex: 1,
+								zIndex: 2,
 							},
 						];
 						const previewLayers = await generateLayers(globalConfig, layerDef);

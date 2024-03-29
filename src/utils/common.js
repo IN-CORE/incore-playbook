@@ -460,3 +460,15 @@ export const fetchLegendsForLayers = (layers) => {
 	});
 	return legends;
 };
+
+// fetch retrofit strategy details
+export const fetchRsDetails = async (
+	id,
+	globalConfig = defaultGlobalConfig,
+) => {
+	const url = `${globalConfig.maestroServiceBase}datasets/${id}/rsdetails`;
+	return await fetch(url, {
+		mode: "cors",
+		headers: getHeader(globalConfig.hostname),
+	});
+};

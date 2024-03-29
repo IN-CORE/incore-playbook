@@ -4,7 +4,7 @@ import GroupLayer from "ol/layer/Group";
 import { globals as defaultGlobalConfig } from "../globals";
 import { mapConfig as defaultMapConfig } from "../map.config";
 import XYZ from "ol/source/XYZ";
-import OSM, { ATTRIBUTION as OSM_ATTRIBUTION } from "ol/source/OSM";
+import { ATTRIBUTION as OSM_ATTRIBUTION } from "ol/source/OSM";
 
 export const generateLayers = (
 	globalConfig = defaultGlobalConfig,
@@ -28,6 +28,7 @@ export const generateLayers = (
 			source: source,
 			zIndex: layerDefinition["zIndex"],
 			opacity: layerDefinition["opacity"],
+			visible: layerDefinition["visible"] ?? true, // This layer will be ON by default
 		});
 		return new GroupLayer({
 			title: layerGroupTitle,

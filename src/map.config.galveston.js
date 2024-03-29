@@ -1,5 +1,6 @@
 const layerStyles = {
 	RetrofitStrategy: "incore:retrofit-rules",
+	RetrofitStrategyHighlight: "incore:retrofit-rules-highlight",
 	BldgDamage: "incore:galveston-bldg-dmg-fema",
 	BldgFunctionality: "incore:bldg-func",
 	BldgMCS: "incore:bldg-mcs",

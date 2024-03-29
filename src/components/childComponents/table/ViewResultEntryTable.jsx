@@ -359,7 +359,7 @@ export function ViewResultEntryTable(props) {
 							}}
 						>
 							{Object.keys(compareItemNames).at(1)
-								? `[${Object.keys(compareItemNames).at(0)}]`
+								? `[${Object.keys(compareItemNames).at(1)}]`
 								: "[ ]"}
 						</Typography>
 						<IncoreFootNote

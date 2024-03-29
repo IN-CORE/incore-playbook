@@ -61,7 +61,7 @@ export default function PoleDamage(props) {
 						layerStyles: mapConfig.LAYER_STYLES.PoleDamage,
 						title: "EPF Damage (Pole)",
 						opacity: 1,
-						zIndex: 1,
+						zIndex: 2,
 					},
 				];
 				const previewLayers = generateLayers(globalConfig, layerDef);
