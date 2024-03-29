@@ -37,6 +37,7 @@ export default function BldgMCS(props) {
 		datawolfDatasetConfigItems,
 		hazardType,
 		hazardLayers,
+		retrofitLayer,
 		setDownloadDialogOpen,
 	} = props;
 
@@ -75,7 +76,7 @@ export default function BldgMCS(props) {
 						layerStyles: mapConfig.LAYER_STYLES.BldgMCS,
 						title: "Building Functionality Probability without Interdependency",
 						opacity: 1,
-						zIndex: 1,
+						zIndex: 2,
 					},
 				];
 				const previewLayers = generateLayers(globalConfig, layerDef);
@@ -186,7 +187,12 @@ export default function BldgMCS(props) {
 								getTransform("EPSG:4326", "EPSG:3857"),
 							)}
 							center={fromLonLat(mapConfig.MAP_CENTER)}
-							layers={[basicLayers, hazardLayers, damageLayers]}
+							layers={[
+								basicLayers,
+								hazardLayers,
+								...(retrofitLayer ? [retrofitLayer] : []), // Include retrofitLayer if it's not null,
+								damageLayers,
+							]}
 							layerSwitcherOptions={{}}
 							allowBuildingSelection={true}
 						/>

@@ -37,6 +37,7 @@ export default function BldgFunctionality(props) {
 		datawolfDatasetConfigItems,
 		hazardType,
 		hazardLayers,
+		retrofitLayer,
 		setDownloadDialogOpen,
 	} = props;
 
@@ -74,7 +75,7 @@ export default function BldgFunctionality(props) {
 						layerStyles: mapConfig.LAYER_STYLES.BldgFunctionality,
 						title: "Building Functionality Probability",
 						opacity: 1,
-						zIndex: 1,
+						zIndex: 2,
 					},
 				];
 				const previewLayers = generateLayers(globalConfig, layerDef);
@@ -185,7 +186,12 @@ export default function BldgFunctionality(props) {
 								getTransform("EPSG:4326", "EPSG:3857"),
 							)}
 							center={fromLonLat(mapConfig.MAP_CENTER)}
-							layers={[basicLayers, hazardLayers, damageLayers]}
+							layers={[
+								basicLayers,
+								hazardLayers,
+								...(retrofitLayer ? [retrofitLayer] : []), // Include retrofitLayer if it's not null,
+								damageLayers,
+							]}
 							layerSwitcherOptions={{}}
 							allowBuildingSelection={true}
 						/>

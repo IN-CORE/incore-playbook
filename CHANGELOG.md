@@ -5,6 +5,15 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+
+## [0.6.3] - 2024-03-27
+
+### Fixed
+- Bugfix on comparison map highlight
+
+### Added
+- Add retrofit layer in result widgets [#431](https://github.com/IN-CORE/incore-playbook/issues/431)
+
 ## [0.6.2] - 2024-03-27
 
 ### Added
