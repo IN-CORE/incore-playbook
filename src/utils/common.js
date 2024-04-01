@@ -451,7 +451,11 @@ export const fetchLegendsForLayers = (layers) => {
 			legends[layerGrpTitle] = layersArray.reduce((acc, layer) => {
 				const layerJSON = layer.getSource().params_;
 				if (layerJSON) {
-					const legendUrl = `${defaultGlobalConfig.geoServerWMS}?REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=20&HEIGHT=20&LAYER=${layerJSON.LAYERS}&STYLE=${layerJSON.STYLES}`;
+					let legendUrl = "";
+					if (layerJSON.STYLES === undefined)
+						legendUrl = `${defaultGlobalConfig.geoServerWMS}?REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=20&HEIGHT=20&LAYER=${layerJSON.LAYERS}`;
+					else
+						legendUrl = `${defaultGlobalConfig.geoServerWMS}?REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=20&HEIGHT=20&LAYER=${layerJSON.LAYERS}&STYLE=${layerJSON.STYLES}`;
 					acc[layer.get("title")] = { url: legendUrl };
 				}
 				return acc;
