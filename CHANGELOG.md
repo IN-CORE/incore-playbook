@@ -6,6 +6,12 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 
+## [Unreleased]
+
+### Fixed
+- Joplin Pole and Substation missing map pin [#436](https://github.com/IN-CORE/incore-playbook/issues/436)
+
+
 ## [0.6.3] - 2024-03-27
 
 ### Fixed
