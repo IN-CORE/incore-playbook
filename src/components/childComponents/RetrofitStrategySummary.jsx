@@ -241,7 +241,7 @@ export default function RetrofitStrategySummary(props) {
 					</Grid>
 					<Grid item xs={4}>
 						<Typography variant="h6" className={classes.tableSavedText}>
-							Number of Zones
+							Number of Conditions
 						</Typography>
 					</Grid>
 					<Grid item xs={8}>
