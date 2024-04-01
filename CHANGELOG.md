@@ -5,6 +5,8 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [Unreleased]
+- Fix typo in the retrofit summary table [#443](https://github.com/IN-CORE/incore-playbook/issues/443)
 
 ## [0.6.3] - 2024-03-27
 
