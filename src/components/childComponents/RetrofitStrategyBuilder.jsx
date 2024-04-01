@@ -1196,7 +1196,7 @@ export default function RetrofitStrategyBuilder(props) {
 			>
 				{activeStep > 0 && activeStep < 2 ? (
 					<Button
-						disabled={activeStep === 0}
+						disabled={activeStep === 0 || loading}
 						variant="outlined"
 						onClick={() => setActiveStep(activeStep - 1)}
 						startIcon={<ArrowBackIcon />}
