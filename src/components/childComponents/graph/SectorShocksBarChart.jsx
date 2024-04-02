@@ -80,7 +80,7 @@ const ParseData = (data) => {
 		regions = regions.sort(sortFunc);
 
 		for (const [subKey, value] of regions) {
-			chartData.push([`${key}_${subKey}`, value, colors[i % 4]]);
+			chartData.push([`${key}_${subKey}`, value, colors[i % 5]]);
 		}
 		i += 1;
 	}
