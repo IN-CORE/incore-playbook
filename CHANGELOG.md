@@ -7,8 +7,13 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+### Changed
+- Joplin hide non-retrofit option in step 3-4 [#442](https://github.com/IN-CORE/incore-playbook/issues/442)
+
 ### Fixed
+- Fix typo in the retrofit summary table [#443](https://github.com/IN-CORE/incore-playbook/issues/443)
 - Fix broken legends when style was undefined [#440](https://github.com/IN-CORE/incore-playbook/issues/440)
+
 
 ## [0.6.3] - 2024-03-27
 
