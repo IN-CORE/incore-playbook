@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 - Fix typo in the retrofit summary table [#443](https://github.com/IN-CORE/incore-playbook/issues/443)
+- Fix broken legends when style was undefined [#440](https://github.com/IN-CORE/incore-playbook/issues/440)
 
 
 ## [Unreleased]
