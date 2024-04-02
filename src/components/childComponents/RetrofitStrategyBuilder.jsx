@@ -809,6 +809,8 @@ export default function RetrofitStrategyBuilder(props) {
 		onRetrofitStrategyBuilderClose();
 
 		setActiveStep(0);
+		// set loading to false to handle the case when user closes the dialog before the execution is finished
+		setLoading(false);
 		// Step 1
 		setName("");
 		setDescription("");
@@ -866,7 +868,7 @@ export default function RetrofitStrategyBuilder(props) {
 					className={classes.closeButton}
 					onClick={
 						// once summary is closed, reset the state
-						activeStep === 1
+						activeStep === 1 && !loading
 							? onRetrofitStrategyBuilderClose
 							: handleCloseSummary
 					}
@@ -1196,7 +1198,7 @@ export default function RetrofitStrategyBuilder(props) {
 			>
 				{activeStep > 0 && activeStep < 2 ? (
 					<Button
-						disabled={activeStep === 0}
+						disabled={activeStep === 0 || loading}
 						variant="outlined"
 						onClick={() => setActiveStep(activeStep - 1)}
 						startIcon={<ArrowBackIcon />}

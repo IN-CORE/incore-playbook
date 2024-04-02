@@ -65,9 +65,12 @@ export default function RetrofitStrategies(props) {
 				});
 			}}
 		>
-			<IncoreMenuItem value="not_retrofitted" key="not_retrofitted">
-				Not Retrofitted
-			</IncoreMenuItem>
+			{globalConfig.testbed !== "joplin" ? (
+				<IncoreMenuItem value="not_retrofitted" key="not_retrofitted">
+					Not Retrofitted
+				</IncoreMenuItem>
+			) : null}
+
 			{retrofitStrategies.map((option) => {
 				return (
 					<IncoreMenuItem value={option["id"]} key={option["id"]}>
