@@ -11,14 +11,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Joplin hide non-retrofit option in step 3-4 [#442](https://github.com/IN-CORE/incore-playbook/issues/442)
 
 ### Fixed
-- Fix typo in the retrofit summary table [#443](https://github.com/IN-CORE/incore-playbook/issues/443)
-- Fix broken legends when style was undefined [#440](https://github.com/IN-CORE/incore-playbook/issues/440)
-
-
-## [Unreleased]
-
-### Fixed
-- Fixed the bugs with the Retrofit Strategy Builder [#435](https://github.com/IN-CORE/incore-playbook/issues/435)
+- Typo in the retrofit summary table [#443](https://github.com/IN-CORE/incore-playbook/issues/443)
+- Broken legends when style was undefined [#440](https://github.com/IN-CORE/incore-playbook/issues/440)
+- The bugs with the Retrofit Strategy Builder [#435](https://github.com/IN-CORE/incore-playbook/issues/435)
+- Dataset style not displayed correctly for earthquake and tornado [#414](https://github.com/IN-CORE/incore-playbook/issues/414)
 
 ## [0.6.3] - 2024-03-27
 
