@@ -16,6 +16,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - The bugs with the Retrofit Strategy Builder [#435](https://github.com/IN-CORE/incore-playbook/issues/435)
 - Dataset style not displayed correctly for earthquake and tornado [#414](https://github.com/IN-CORE/incore-playbook/issues/414)
 - Joplin Pole and Substation missing map pin [#436](https://github.com/IN-CORE/incore-playbook/issues/436)
+- Fixed Comparison map height [#439](https://github.com/IN-CORE/incore-playbook/issues/439)
 
 
 ## [0.6.3] - 2024-03-27
