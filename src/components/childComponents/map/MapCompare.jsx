@@ -663,11 +663,24 @@ const OverlayTable = (props) => {
 									<TableRow key={colName}>
 										<TableCell
 											align="left"
-											style={{ backgroundColor: "#EFF2FF", color: "#69707F" }}
+											style={{
+												backgroundColor: "#EFF2FF",
+												color: "#69707F",
+												whiteSpace: "normal",
+												overflowWrap: "break-word",
+												wordBreak: "break-word",
+											}}
 										>
 											{colName}
 										</TableCell>
-										<TableCell align="right">
+										<TableCell
+											align="right"
+											style={{
+												whiteSpace: "normal",
+												overflowWrap: "break-word",
+												wordBreak: "break-word",
+											}}
+										>
 											{colName === "max_state"
 												? maxStateMapping(
 														fields,
