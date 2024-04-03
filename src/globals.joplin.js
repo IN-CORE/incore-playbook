@@ -265,13 +265,11 @@ globals["retrofitStrategyBuilder"] = {
 			key: "strtypes",
 			possibleOptions: [
 				{
-					label:
-						"1 story residential wood building (small rectangular plan and gable roof)",
+					label: "1-story wood-frame residential buildings",
 					value: "1",
 				},
 				{
-					label:
-						"2 stories residential building (wood, large rectangular plan, gable roof",
+					label: "2-story wood-frame residential buildings",
 					value: "5",
 				},
 			],
@@ -290,15 +288,15 @@ globals["retrofitStrategyBuilder"] = {
 			key: "retrofits",
 			possibleOptions: [
 				{
-					label: "Current Practice - Asphalt Shingles, 8d Sheath, 2x16d R-W",
+					label: "Joplin buildings constructed following the 2006 IRC",
 					value: { ret_key: "retrofit_1", ret_val: "" },
 				},
 				{
-					label: "Asphalt Shingles, 8d Sheath C6/6, 2xH2.5 R-W Clips",
+					label: "Joplin buildings with a cost-effective retrofit plan",
 					value: { ret_key: "retrofit_2", ret_val: "" },
 				},
 				{
-					label: "Clay Tiles, 8d Sheath C6/6, 2xH2.5 R-W Clips",
+					label: "Joplin buildings with a high-performance retrofit plan",
 					value: { ret_key: "retrofit_3", ret_val: "" },
 				},
 			],
