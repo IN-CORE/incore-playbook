@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Changed
 - Joplin hide non-retrofit option in step 3-4 [#442](https://github.com/IN-CORE/incore-playbook/issues/442)
 - Labels  for Joplin Retrofit Strategy Builder [#450](https://github.com/IN-CORE/incore-playbook/issues/450)
+- Attribute table need to have proper width [#438](https://github.com/IN-CORE/incore-playbook/issues/438)
 
 ### Fixed
 - Typo in the retrofit summary table [#443](https://github.com/IN-CORE/incore-playbook/issues/443)
@@ -17,6 +18,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - The bugs with the Retrofit Strategy Builder [#435](https://github.com/IN-CORE/incore-playbook/issues/435)
 - Dataset style not displayed correctly for earthquake and tornado [#414](https://github.com/IN-CORE/incore-playbook/issues/414)
 - Joplin Pole and Substation missing map pin [#436](https://github.com/IN-CORE/incore-playbook/issues/436)
+- Loading div height in RS Builder [#452](https://github.com/IN-CORE/incore-playbook/issues/452)
+- Substation comparison widget map take full width [#437](https://github.com/IN-CORE/incore-playbook/issues/437)
+- Fixed Comparison map height [#439](https://github.com/IN-CORE/incore-playbook/issues/439)
 
 
 ## [0.6.3] - 2024-03-27
