@@ -41,6 +41,9 @@ const useStyles = makeStyles({
 		textAlign: "center",
 		textTransform: "uppercase",
 	},
+	tableHeaderLowerCell: {
+		top: "38px",
+	},
 	tableBodyRow: {
 		height: "28px",
 	},
@@ -129,7 +132,19 @@ export function FunctionalityTable(props) {
 			>
 				<TableHead>
 					<TableRow>
-						<TableCell colSpan={2}> </TableCell>
+						<TableCell
+							style={{
+								width: "647px",
+								backgroundColor: "#EFF2FF",
+								color: "#69707F",
+							}}
+							colSpan={2}
+							rowSpan={2}
+							className={classes.tableHeaderCell}
+							key="playbook-building-clusters"
+						>
+							playbook builidng clusters
+						</TableCell>
 						<TableCell colSpan={2} className={classes.tableTopHeaderRow}>
 							{" "}
 							Percent (%){" "}
@@ -142,41 +157,29 @@ export function FunctionalityTable(props) {
 
 					<TableRow className={classes.tableHeaderRow} key="hdrRow">
 						<TableCell
-							style={{
-								width: "647px",
-								backgroundColor: "#EFF2FF",
-								color: "#69707F",
-							}}
-							colSpan={2}
-							className={classes.tableHeaderCell}
-							key="playbook-building-clusters"
-						>
-							playbook builidng clusters
-						</TableCell>
-						<TableCell
 							style={{ width: "121px", backgroundColor: "#96B712" }}
-							className={classes.tableHeaderCell}
+							className={`${classes.tableHeaderCell} ${classes.tableHeaderLowerCell}`}
 							key="funcPercent"
 						>
 							Functional
 						</TableCell>
 						<TableCell
 							style={{ width: "121px", backgroundColor: "#D63649" }}
-							className={classes.tableHeaderCell}
+							className={`${classes.tableHeaderCell} ${classes.tableHeaderLowerCell}`}
 							key="nonFunctPercent"
 						>
 							Non-Functional
 						</TableCell>
 						<TableCell
 							style={{ width: "121px", backgroundColor: "#96B712" }}
-							className={classes.tableHeaderCell}
+							className={`${classes.tableHeaderCell} ${classes.tableHeaderLowerCell}`}
 							key="FuncNum"
 						>
 							Functional
 						</TableCell>
 						<TableCell
 							style={{ width: "121px", backgroundColor: "#D63649" }}
-							className={classes.tableHeaderCell}
+							className={`${classes.tableHeaderCell} ${classes.tableHeaderLowerCell}`}
 							key="nonFuncNum"
 						>
 							Non-Functional
