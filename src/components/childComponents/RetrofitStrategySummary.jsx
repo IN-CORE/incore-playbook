@@ -28,6 +28,9 @@ const useStyles = makeStyles(() => ({
 	table: {
 		minWidth: 650,
 	},
+	tableContainer: {
+		height: "500px",
+	},
 	tableHeaderCellNo: {
 		width: "8%",
 	},
@@ -315,8 +318,12 @@ export default function RetrofitStrategySummary(props) {
 				)}
 			</Grid>
 			<Grid item xs={12}>
-				<TableContainer>
-					<Table className={classes.table} aria-label="simple table">
+				<TableContainer className={classes.tableContainer}>
+					<Table
+						stickyHeader
+						className={classes.table}
+						aria-label="simple table"
+					>
 						<TableHead>
 							<TableRow className={classes.tableHeaderRow}>
 								<TableCell className={classes.tableHeaderCellNo} align="center">

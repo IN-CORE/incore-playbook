@@ -40,6 +40,9 @@ const useStyles = makeStyles({
 	table: {
 		display: "block",
 	},
+	tableContainer: {
+		height: "400px",
+	},
 	metricsTable: {
 		display: "block",
 		maxWidth: "fit-content",
@@ -169,10 +172,11 @@ export function HuaResultsTableCompare(props) {
 			</div>
 
 			{resultsJsonA !== undefined && resultsJsonB !== undefined ? (
-				<TableContainer>
+				<TableContainer className={classes.tableContainer}>
 					<Table
 						className={isMetrics ? classes.metricsTable : classes.table}
 						size="small"
+						stickyHeader
 						aria-label="a dense table"
 					>
 						<TableHead>

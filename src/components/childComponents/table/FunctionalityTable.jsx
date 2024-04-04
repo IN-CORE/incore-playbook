@@ -18,6 +18,9 @@ const useStyles = makeStyles({
 		backgroundColor: "#FFFFFF",
 		minWidth: "1135px",
 	},
+	tableContainer: {
+		height: "400px",
+	},
 	tableHeaderRow: {
 		height: "34px",
 	},
@@ -117,8 +120,13 @@ export function FunctionalityTable(props) {
 	const classes = useStyles();
 
 	return (
-		<TableContainer>
-			<Table className={classes.table} size="small" aria-label="a dense table">
+		<TableContainer className={classes.tableContainer}>
+			<Table
+				stickyHeader
+				className={classes.table}
+				size="small"
+				aria-label="a dense table"
+			>
 				<TableHead>
 					<TableRow>
 						<TableCell colSpan={2}> </TableCell>

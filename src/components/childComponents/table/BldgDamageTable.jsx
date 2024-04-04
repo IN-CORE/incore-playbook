@@ -17,6 +17,9 @@ const useStyles = makeStyles({
 		backgroundColor: "#FFFFFF",
 		minWidth: "1135px",
 	},
+	tableContainer: {
+		height: "400px",
+	},
 	tableHeaderRow: {
 		height: "34px",
 	},
@@ -151,7 +154,7 @@ export function BldgDamageTable(props) {
 	}
 
 	return (
-		<TableContainer>
+		<TableContainer className={classes.tableContainer}>
 			<Box style={{ float: "right" }}>
 				<FormControlLabel
 					control={
@@ -169,7 +172,12 @@ export function BldgDamageTable(props) {
 					label="View Percentage"
 				/>
 			</Box>
-			<Table className={classes.table} size="small" aria-label="a dense table">
+			<Table
+				stickyHeader
+				className={classes.table}
+				size="small"
+				aria-label="a dense table"
+			>
 				<TableHead>
 					<TableRow className={classes.tableHeaderRow} key="hdrRow">
 						<TableCell

@@ -48,6 +48,9 @@ const useStyles = makeStyles({
 		maxWidth: 700,
 		display: "block",
 	},
+	tableContainer: {
+		height: "400px",
+	},
 	metricsTable: {
 		display: "block",
 		maxWidth: "fit-content",
@@ -170,10 +173,11 @@ export function HuaResultsTable(props) {
 			</div>
 
 			{resultsJson !== undefined ? (
-				<TableContainer>
+				<TableContainer className={classes.tableContainer}>
 					<Table
 						className={isMetrics ? classes.metricsTable : classes.table}
 						size="small"
+						stickyHeader
 						aria-label="a dense table"
 					>
 						<TableHead>
