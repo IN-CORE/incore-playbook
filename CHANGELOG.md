@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Changed
 - Joplin hide non-retrofit option in step 3-4 [#442](https://github.com/IN-CORE/incore-playbook/issues/442)
+- Labels  for Joplin Retrofit Strategy Builder [#450](https://github.com/IN-CORE/incore-playbook/issues/450)
 - Attribute table need to have proper width [#438](https://github.com/IN-CORE/incore-playbook/issues/438)
 
 ### Fixed
