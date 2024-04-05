@@ -884,7 +884,7 @@ export const BuiltEnvironment = ({ step, substep }) => {
 							setStrategySummaryData(null);
 						}}
 						PaperProps={{
-							style: { minHeight: "800px" }, // Set your desired minimum height here
+							style: { minHeight: window.innerHeight - 100 }, // Set your desired minimum height here
 						}}
 						fullScreen={fullScreen}
 						maxWidth={maxWidth}

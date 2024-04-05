@@ -152,7 +152,7 @@ const useStyles = makeStyles((theme) => ({
 export default function RetrofitStrategyBuilder(props) {
 	const classes = useStyles();
 	const theme = useTheme();
-	const fullScreen = useMediaQuery(theme.breakpoints.down("sm"));
+	let fullScreen = useMediaQuery(theme.breakpoints.down("sm"));
 	const largeScreen = useMediaQuery(theme.breakpoints.up("lg"));
 	const mediumScreen = useMediaQuery(theme.breakpoints.up("md"));
 
@@ -867,7 +867,7 @@ export default function RetrofitStrategyBuilder(props) {
 				activeStep === 1 ? onRetrofitStrategyBuilderClose : handleCloseSummary
 			}
 			PaperProps={{
-				style: { minHeight: "800px" }, // Set your desired minimum height here
+				style: { minHeight: window.innerHeight - 100 }, // Set your desired minimum height here
 			}}
 			fullScreen={fullScreen}
 			maxWidth={maxWidth}
