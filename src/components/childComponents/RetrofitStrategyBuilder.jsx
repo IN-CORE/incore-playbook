@@ -32,7 +32,8 @@ import EditIcon from "@material-ui/icons/Edit";
 import LoadingOverlay from "react-loading-overlay";
 import MapIcon from "@material-ui/icons/Map";
 import StopRoundedIcon from "@material-ui/icons/StopRounded";
-import { makeStyles } from "@material-ui/core/styles";
+import { makeStyles, useTheme } from "@material-ui/core/styles";
+import useMediaQuery from "@material-ui/core/useMediaQuery";
 
 import { IncoreInputLabel } from "../styledComponents/IncoreInputLabel";
 import { IncoreTextField } from "../styledComponents/IncoreInput";
@@ -150,6 +151,17 @@ const useStyles = makeStyles((theme) => ({
 
 export default function RetrofitStrategyBuilder(props) {
 	const classes = useStyles();
+	const theme = useTheme();
+	const fullScreen = useMediaQuery(theme.breakpoints.down("sm"));
+	const largeScreen = useMediaQuery(theme.breakpoints.up("lg"));
+	const mediumScreen = useMediaQuery(theme.breakpoints.up("md"));
+
+	let maxWidth = "sm";
+	if (largeScreen) {
+		maxWidth = "lg";
+	} else if (mediumScreen) {
+		maxWidth = "md";
+	}
 
 	const { strategyBuilderModalStatus, onRetrofitStrategyBuilderClose } = props;
 	const globalConfig = useSelector((state) => state.config.globalConfig);
@@ -857,7 +869,8 @@ export default function RetrofitStrategyBuilder(props) {
 			PaperProps={{
 				style: { minHeight: "800px" }, // Set your desired minimum height here
 			}}
-			maxWidth="lg"
+			fullScreen={fullScreen}
+			maxWidth={maxWidth}
 			fullWidth
 			scroll="paper"
 		>
