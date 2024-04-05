@@ -258,7 +258,44 @@ globals["retrofitStrategyBuilder"] = {
 			label: "City Council District",
 			type: "mapSelect",
 			key: "zones",
-			possibleOptions: [],
+			possibleOptions: [
+				{
+					label: "Council District 1",
+					value: "1",
+				},
+				{
+					label: "Council District 2",
+					value: "2",
+				},
+				{
+					label: "Council District 3",
+					value: "3",
+				},
+				{
+					label: "Council District 4",
+					value: "4",
+				},
+				{
+					label: "Council District 5",
+					value: "5",
+				},
+				{
+					label: "Council District 6",
+					value: "6",
+				},
+				{
+					label: "Council District 7",
+					value: "7",
+				},
+				{
+					label: "Council District 8",
+					value: "8",
+				},
+				{
+					label: "Council District 9",
+					value: "9",
+				},
+			],
 		},
 		{
 			label: "Building Structural Type",
@@ -297,7 +334,7 @@ globals["retrofitStrategyBuilder"] = {
 	],
 	zoneLayerId: "65f509b6e42f3b0da55d74cf", // city council district
 	activeLayerNames: "Zone",
-	activeLayerFieldname: "NAME",
+	activeLayerFieldname: "COUNCIL_ID",
 	zoneMapBounds: [
 		-112.10137778755622, 40.69990503292076, -111.74045871645396,
 		40.853385059088794,
