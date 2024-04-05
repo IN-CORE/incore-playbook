@@ -25,12 +25,11 @@ export function fetchZoneGeoJson(globalConfig = defaultGlobalConfig) {
 		return fetch(url, { mode: "cors" }).then((response) => {
 			if (response.status === 200) {
 				response.json().then((json) => {
-					const tmpZoneNames = json["features"].map(
-						(feature) =>
-							feature.properties[
-								globalConfig.retrofitStrategyBuilder.activeLayerFieldname ??
-									"name"
-							],
+					const tmpZoneNames = json["features"].map((feature) =>
+						feature.properties[
+							globalConfig.retrofitStrategyBuilder.activeLayerFieldname ??
+								"name"
+						].toString(),
 					);
 
 					// Removing duplicates and sorting the zone names alphabetically
