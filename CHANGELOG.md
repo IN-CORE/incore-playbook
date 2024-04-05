@@ -7,6 +7,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+### Added
+- Cost value summarization in Retrofit Summary [#451](https://github.com/IN-CORE/incore-playbook/issues/451)
+
 ### Changed
 - Joplin hide non-retrofit option in step 3-4 [#442](https://github.com/IN-CORE/incore-playbook/issues/442)
 - Labels  for Joplin Retrofit Strategy Builder [#450](https://github.com/IN-CORE/incore-playbook/issues/450)

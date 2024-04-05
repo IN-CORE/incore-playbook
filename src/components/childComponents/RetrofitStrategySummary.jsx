@@ -104,12 +104,26 @@ export default function RetrofitStrategySummary(props) {
 
 	const classes = useStyles();
 
-	const getDollarString = (val) => {
-		const formattedNum = parseFloat(val).toLocaleString("en-US", {
-			minimumFractionDigits: 2,
-			maximumFractionDigits: 2,
-		});
+	function formatNumberToHumanReadable(num) {
+		if (num < 1000) {
+			return num.toString(); // Return the number as is if it's less than 1000
+		} else if (num < 1000000) {
+			// Thousands
+			return Math.round(num / 1000) + "k";
+		} else if (num < 1000000000) {
+			// Millions
+			return Math.round(num / 100000) / 10 + "M";
+		} else if (num < 1000000000000) {
+			// Billions
+			return Math.round(num / 100000000) / 10 + "B";
+		} else {
+			// Trillions
+			return Math.round(num / 100000000000) / 10 + "T";
+		}
+	}
 
+	const getDollarString = (val) => {
+		const formattedNum = formatNumberToHumanReadable(parseFloat(val));
 		return `$ ${formattedNum}`;
 	};
 
@@ -138,7 +152,6 @@ export default function RetrofitStrategySummary(props) {
 		return option ? option.label : `${ret_key} ${ret_val}`;
 	};
 
-	// TODO replace with real interaction
 	useEffect(() => {
 		const layerDef = [
 			{
