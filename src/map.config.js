@@ -1,12 +1,12 @@
 const layerStyles = {
 	RetrofitStrategy: "incore:retrofit-rules",
 	RetrofitStrategyHighlight: "incore:retrofit-rules-highlight",
-	BldgDamage: "incore:bldg-dmg-summary",
+	BldgDamage: "incore:galveston-bldg-dmg-fema",
 	BldgFunctionality: "incore:bldg-func",
 	BldgMCS: "incore:bldg-mcs",
 	Interdependency: "incore:substations-label",
 	PoleDamage: "incore:epf-dmg-summary",
-	PopulationDislocation: "incore:slc-pop-dis",
+	PopulationDislocation: "incore:galveston-pop-dis",
 	SubstationDamage: "incore:epf-dmg-summary",
 	Zone: "incore:polygon",
 	MapUtil: {
@@ -73,19 +73,14 @@ const layerStyles = {
 // };
 
 // galveston
-// export const mapConfig = {
-// 	MAP_BOUNDS:[
-// 		-96.211436,
-// 		27.941297,
-// 		-93.611436,
-// 		30.541297,
-// 	],
-// 	MAP_CENTER: [-94.911436, 29.241297],
-// 	ZOOM: 5,
-// 	MIN_ZOOM: 4,
-// 	MAX_ZOOM: 19,
-// 	LAYER_STYLES: layerStyles
-// };
+export const mapConfig = {
+	MAP_BOUNDS: [-96.211436, 27.941297, -93.611436, 30.541297],
+	MAP_CENTER: [-94.911436, 29.241297],
+	ZOOM: 5,
+	MIN_ZOOM: 4,
+	MAX_ZOOM: 19,
+	LAYER_STYLES: layerStyles,
+};
 
 // // lumberton
 // const mapConfig = {
@@ -102,13 +97,23 @@ const layerStyles = {
 // 	LAYER_STYLES: layerStyles
 // };
 
-// Salt Lake City
-export const mapConfig = {
-	MAP_BOUNDS: [-112.625, 40.126, -111.282, 41.24],
-	HAZARD_BOUNDS: [-112.312, 40.277, -111.462, 41],
-	MAP_CENTER: [-111.954, 40.683],
-	ZOOM: 5,
-	MIN_ZOOM: 4,
-	MAX_ZOOM: 19,
-	LAYER_STYLES: layerStyles,
-};
+// // Salt Lake City
+// export const mapConfig = {
+// 	MAP_BOUNDS:[
+// 		-112.625,
+// 		41.240,
+// 		-111.282,
+// 		40.126,
+// 	],
+// 	HAZARD_BOUNDS:[
+// 		-112.312,
+// 		41,
+// 		-111.462,
+// 		40.277
+// 	],
+// 	MAP_CENTER: [-111.954, 40.683],
+// 	ZOOM: 5,
+// 	MIN_ZOOM: 4,
+// 	MAX_ZOOM: 19,
+//  LAYER_STYLES: layerStyles
+// };
