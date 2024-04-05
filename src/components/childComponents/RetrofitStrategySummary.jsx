@@ -17,6 +17,8 @@ import {
 
 import StopRoundedIcon from "@material-ui/icons/StopRounded";
 import { makeStyles } from "@material-ui/core/styles";
+import FormControlLabel from "@material-ui/core/FormControlLabel";
+import Switch from "@material-ui/core/Switch";
 import { fromLonLat, getTransform } from "ol/proj";
 import { applyTransform } from "ol/extent";
 
@@ -94,6 +96,16 @@ const useStyles = makeStyles(() => ({
 		color: "#000000DE",
 		wordBreak: "break-all",
 	},
+	switchBase: {
+		"&$checked": {
+			color: "#00619D",
+		},
+		"&$checked + $track": {
+			backgroundColor: "#00619D",
+		},
+	},
+	checked: {},
+	track: {},
 }));
 
 export default function RetrofitStrategySummary(props) {
@@ -103,6 +115,11 @@ export default function RetrofitStrategySummary(props) {
 	const [zoneLayer, setZoneLayer] = useState(null);
 
 	const classes = useStyles();
+	const [simplify, setSimplify] = useState(false);
+
+	function handleSwitchChange() {
+		setSimplify((simplify) => !simplify);
+	}
 
 	function formatNumberToHumanReadable(num) {
 		if (num < 1000) {
@@ -123,7 +140,15 @@ export default function RetrofitStrategySummary(props) {
 	}
 
 	const getDollarString = (val) => {
-		const formattedNum = formatNumberToHumanReadable(parseFloat(val));
+		let formattedNum = val;
+		if (simplify) {
+			formattedNum = parseFloat(val).toLocaleString("en-US", {
+				minimumFractionDigits: 2,
+				maximumFractionDigits: 2,
+			});
+		} else {
+			formattedNum = formatNumberToHumanReadable(parseFloat(val));
+		}
 		return `$ ${formattedNum}`;
 	};
 
@@ -192,10 +217,28 @@ export default function RetrofitStrategySummary(props) {
 			spacing={3}
 			style={summary ? null : { marginLeft: "25px", marginRight: "25px" }}
 		>
-			<Grid gutterTop item xs={12}>
+			<Grid gutterTop alignContent="center" item xs={10}>
 				<Typography variant="h6" className={classes.mapHeaderText}>
 					Summary
 				</Typography>
+			</Grid>
+			<Grid gutterTop item xs={2}>
+				<FormControlLabel
+					style={{ marginRight: "0px" }}
+					control={
+						<Switch
+							checked={simplify}
+							onChange={(e) => handleSwitchChange()}
+							color="default"
+							classes={{
+								switchBase: classes.switchBase,
+								checked: classes.checked,
+								track: classes.track,
+							}}
+						/>
+					}
+					label="Expand Values"
+				/>
 			</Grid>
 			<Grid item xs={6}>
 				<Box display="flex" flexDirection="column" width="100%">
