@@ -16,6 +16,9 @@ const useStyles = makeStyles({
 		backgroundColor: "#FFFFFF",
 		minWidth: "1135px",
 	},
+	tableContainer: {
+		height: "500px",
+	},
 	tableHeaderRow: {
 		height: "34px",
 	},
@@ -154,8 +157,13 @@ export function BldgDamageTableCompare(props) {
 	}
 
 	return (
-		<TableContainer>
-			<Table className={classes.table} size="small" aria-label="a dense table">
+		<TableContainer className={classes.tableContainer}>
+			<Table
+				stickyHeader
+				className={classes.table}
+				size="small"
+				aria-label="a dense table"
+			>
 				<TableHead>
 					{/*["playbook builidng clusters", "DS_0", "DS_1", "DS_2", "DS_3"];*/}
 					<TableRow className={classes.tableHeaderRow} key="hdrRow">

@@ -27,6 +27,12 @@ import { IncoreFootNote } from "../styledComponents/IncoreFootNote";
 const useStyles = makeStyles(() => ({
 	table: {
 		minWidth: 650,
+		"& .MuiTableCell-stickyHeader": {
+			backgroundColor: "#EDF1F4",
+		},
+	},
+	tableContainer: {
+		height: "500px",
 	},
 	tableHeaderCellNo: {
 		width: "8%",
@@ -52,7 +58,7 @@ const useStyles = makeStyles(() => ({
 	tableHeaderRow: {
 		fontSize: "15px",
 		letterSpacing: "0.17px",
-		backgroundColor: "#EDF1F4",
+		backgroundColor: "#EDF1F4 !important",
 		color: "#000000DE",
 	},
 	tableSavedCell: {
@@ -315,8 +321,12 @@ export default function RetrofitStrategySummary(props) {
 				)}
 			</Grid>
 			<Grid item xs={12}>
-				<TableContainer>
-					<Table className={classes.table} aria-label="simple table">
+				<TableContainer className={classes.tableContainer}>
+					<Table
+						stickyHeader
+						className={classes.table}
+						aria-label="simple table"
+					>
 						<TableHead>
 							<TableRow className={classes.tableHeaderRow}>
 								<TableCell className={classes.tableHeaderCellNo} align="center">
@@ -369,10 +379,19 @@ export default function RetrofitStrategySummary(props) {
 														<Table>
 															<TableBody>
 																{globalConfig.retrofitStrategyBuilder.conditions.map(
-																	(condition) => {
+																	(condition, i) => {
+																		const cellStyle = {};
+																		if (
+																			i ===
+																			globalConfig.retrofitStrategyBuilder
+																				.conditions.length -
+																				1
+																		) {
+																			cellStyle.borderBottom = "none";
+																		}
 																		return (
 																			<TableRow key={key}>
-																				<TableCell>
+																				<TableCell style={cellStyle}>
 																					<Typography
 																						variant="body1"
 																						className={classes.tableSavedText}
@@ -380,7 +399,10 @@ export default function RetrofitStrategySummary(props) {
 																						{condition.label}
 																					</Typography>
 																				</TableCell>
-																				<TableCell align="right">
+																				<TableCell
+																					align="right"
+																					style={cellStyle}
+																				>
 																					<Typography
 																						variant="body1"
 																						className={classes.tableSavedValue}
