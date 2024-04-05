@@ -22,6 +22,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Substation comparison widget map take full width [#437](https://github.com/IN-CORE/incore-playbook/issues/437)
 - Fixed Comparison map height [#439](https://github.com/IN-CORE/incore-playbook/issues/439)
 - Screen aspect ratio issues with certain devices [#460](https://github.com/IN-CORE/incore-playbook/issues/460)
+- Table headers to be sticky for Building Damage, Functionality, Population Dislocation, and Retrofit Summary [#458](https://github.com/IN-CORE/incore-playbook/issues/458)
 
 
 ## [0.6.3] - 2024-03-27

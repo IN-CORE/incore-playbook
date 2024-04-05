@@ -20,7 +20,7 @@ const tableColumnHead = {
 	textAlign: "right",
 	border: "solid 1px rgba(46,91,255,0.08)",
 	borderRadius: "1px",
-	backgroundColor: "rgba(234,238,255, 0.6)",
+	backgroundColor: "rgba(234,238,255, 1)",
 };
 
 const tableRowHead = {
@@ -28,7 +28,7 @@ const tableRowHead = {
 	fontSize: "12px",
 	fontWeight: "500",
 	textAlign: "center",
-	backgroundColor: "rgba(234,238,255, 0.6)",
+	backgroundColor: "rgba(234,238,255, 1)",
 	borderLeft: "solid 1px #FFFFFF",
 	borderRight: "solid 1px #FFFFFF",
 	borderTop: "solid 1px #FFFFFF",
@@ -40,6 +40,9 @@ const useStyles = makeStyles({
 	table: {
 		display: "block",
 	},
+	tableContainer: {
+		height: "600px",
+	},
 	metricsTable: {
 		display: "block",
 		maxWidth: "fit-content",
@@ -50,7 +53,7 @@ const useStyles = makeStyles({
 		fontSize: "12px",
 		fontWeight: "500",
 		textAlign: "center",
-		backgroundColor: "rgba(234, 238, 255, 0.6)",
+		backgroundColor: "rgba(234, 238, 255, 1)",
 		border: "solid 1px #FFFFFF",
 		letterSpacing: "1.13px",
 	},
@@ -61,7 +64,7 @@ const useStyles = makeStyles({
 	},
 	tableRowHeadRight: {
 		...tableRowHead,
-		borderRight: "solid 1px rgba(234, 238, 255, 0.6)",
+		borderRight: "solid 1px rgba(234, 238, 255, 1)",
 	},
 	tableColumnHead: {
 		...tableColumnHead,
@@ -72,7 +75,7 @@ const useStyles = makeStyles({
 	},
 	tableColumnHeadTotal: {
 		...tableColumnHead,
-		backgroundColor: "rgba(234, 238, 255, 0.6)",
+		backgroundColor: "rgba(234, 238, 255, 1)",
 	},
 	tableDataCell: {
 		textAlign: "center",
@@ -169,10 +172,11 @@ export function HuaResultsTableCompare(props) {
 			</div>
 
 			{resultsJsonA !== undefined && resultsJsonB !== undefined ? (
-				<TableContainer>
+				<TableContainer className={classes.tableContainer}>
 					<Table
 						className={isMetrics ? classes.metricsTable : classes.table}
 						size="small"
+						stickyHeader
 						aria-label="a dense table"
 					>
 						<TableHead>
