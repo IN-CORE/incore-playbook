@@ -41,7 +41,7 @@ const useStyles = makeStyles({
 		display: "block",
 	},
 	tableContainer: {
-		height: "400px",
+		height: "600px",
 	},
 	metricsTable: {
 		display: "block",

@@ -18,7 +18,7 @@ const useStyles = makeStyles({
 		minWidth: "1135px",
 	},
 	tableContainer: {
-		height: "400px",
+		height: "600px",
 	},
 	tableHeaderRow: {
 		height: "34px",
