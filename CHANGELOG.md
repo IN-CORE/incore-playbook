@@ -5,7 +5,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
-## [Unreleased]
+## [0.6.4] - 2024-04-05
 
 ### Added
 - Cost value summarization in Retrofit Summary [#451](https://github.com/IN-CORE/incore-playbook/issues/451)
