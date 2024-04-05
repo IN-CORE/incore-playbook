@@ -142,12 +142,12 @@ export default function RetrofitStrategySummary(props) {
 	const getDollarString = (val) => {
 		let formattedNum = val;
 		if (simplify) {
+			formattedNum = formatNumberToHumanReadable(parseFloat(val));
+		} else {
 			formattedNum = parseFloat(val).toLocaleString("en-US", {
 				minimumFractionDigits: 2,
 				maximumFractionDigits: 2,
 			});
-		} else {
-			formattedNum = formatNumberToHumanReadable(parseFloat(val));
 		}
 		return `$ ${formattedNum}`;
 	};
@@ -222,12 +222,12 @@ export default function RetrofitStrategySummary(props) {
 					Summary
 				</Typography>
 			</Grid>
-			<Grid gutterTop item xs={2}>
+			<Grid gutterTop item xs={2} style={{ textAlign: "right" }}>
 				<FormControlLabel
-					style={{ marginRight: "0px" }}
+					style={{ margin: "20px auto auto 0" }}
 					control={
 						<Switch
-							checked={simplify}
+							checked={!simplify}
 							onChange={(e) => handleSwitchChange()}
 							color="default"
 							classes={{
