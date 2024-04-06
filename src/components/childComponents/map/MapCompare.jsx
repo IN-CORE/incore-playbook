@@ -353,7 +353,10 @@ const MapCompare = (props) => {
 						.then((json) => {
 							let bldg = json.features;
 							if (bldg.length > 0) {
-								const returnCoordinates = bldg[0]?.geometry?.coordinates;
+								let returnCoordinates = bldg[0]?.geometry?.coordinates;
+								if (returnCoordinates.length === 1) {
+									returnCoordinates = returnCoordinates[0];
+								}
 								let markerGeometry = new Point(returnCoordinates);
 								markerFeature.setGeometry(markerGeometry);
 								markerFeature.setStyle(markerStyle);
@@ -457,8 +460,10 @@ const MapCompare = (props) => {
 						.then((json) => {
 							let bldg = json.features;
 							if (bldg.length > 0) {
-								const returnCoordinates =
-									json.features?.[0]?.geometry?.coordinates;
+								let returnCoordinates = bldg[0]?.geometry?.coordinates;
+								if (returnCoordinates.length === 1) {
+									returnCoordinates = returnCoordinates[0];
+								}
 								let markerGeometry = new Point(returnCoordinates);
 								markerFeature.setGeometry(markerGeometry);
 								markerFeature.setStyle(markerStyle);

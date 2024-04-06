@@ -1,7 +1,6 @@
 const globals = {};
 
 // ******************* COMMON GLOBAL CONFIGS *******************
-
 let hostname = process.env.INCORE_REMOTE_HOSTNAME || "";
 
 globals["baseUrlRoute"] = "playbook";
@@ -21,8 +20,25 @@ globals["registerNewUserURL"] =
 	"https://identity.ncsa.illinois.edu/register/BSKC2UKQPU";
 globals["resetPasswordURL"] = "https://identity.ncsa.illinois.edu/reset";
 
+// ******************* Joplin GLOBAL CONFIGS *******************
+
+globals["maestroServiceBase"] = `${hostname}/maestro/joplin/`;
+globals["allowedRegions"] = null;
+globals["testbedSpace"] = "commresiliencejoplin";
+globals["testbedGroup"] = "incore_joplin_user"; // incore_galveston_user, incore_joplin_user, incore_slc_user
+
 // might have multiple versions in the future
 globals["inputDatasetTypes"] = {
+	buildings: [
+		{
+			// type: "ergo:buildingInventoryVer6",
+			type: "ergo:buildingInventoryVer7",
+			format: "shapefile",
+			num: 20,
+			isSocioeconomics: false,
+			dispatchKey: "RECEIVE_BLDGS",
+		},
+	],
 	retrofitStrategies: [
 		{
 			type: "incore:retrofitStrategy",
@@ -202,31 +218,21 @@ globals["inputDatasetTypes"] = {
 	],
 };
 
-// ******************* Galveston GLOBAL CONFIGS *******************
-const testbed = "galveston";
+// ******************* Joplin GLOBAL CONFIGS *******************
+const testbed = "joplin";
 globals["maestroServiceBase"] = `${hostname}/maestro/${testbed}/`;
-globals["allowedRegions"] = [
-	{
-		name: "Island",
-		value: "I",
-	},
-	{
-		name: "Mainland",
-		value: "M",
-	},
-];
-globals["testbedSpace"] = "commresiliencegal";
-globals["testbedGroup"] = "incore_galveston_user"; // incore_galveston_user, incore_joplin_user, incore_slc_user
+globals["allowedRegions"] = null;
+globals["testbedSpace"] = "commresiliencejoplin";
+globals["testbedGroup"] = "incore_joplin_user"; // incore_galveston_user, incore_joplin_user, incore_slc_user
 globals["inputDatasetTypes"].buildings = [
 	{
-		type: "ergo:buildingInventoryVer7",
+		type: "ergo:buildingInventoryVer6",
 		format: "shapefile",
 		num: 20,
 		isSocioeconomics: false,
 		dispatchKey: "RECEIVE_BLDGS",
 	},
 ];
-
 globals["testbed"] = testbed;
 globals["retrofitStrategyBuilder"] = {
 	colorCodes: [
@@ -254,44 +260,17 @@ globals["retrofitStrategyBuilder"] = {
 	maxStrategies: 20,
 	conditions: [
 		{
-			label: "Flood Zone",
-			type: "mapSelect",
-			key: "zones",
-			possibleOptions: [
-				{
-					label: "1% annual chance flood hazard",
-					value: "1p",
-				},
-				{
-					label: "0.2% annual chance flood hazard",
-					value: "0.2p",
-				},
-			],
-		},
-		{
 			label: "Building Archetypes",
 			type: "select",
 			key: "strtypes",
 			possibleOptions: [
 				{
-					label:
-						"1 story residential wood building (small rectangular plan and gable roof)",
+					label: "1-story wood-frame residential buildings",
 					value: "1",
 				},
 				{
-					label:
-						"2 stories residential wood building (small square plan and gable roof)",
-					value: "2",
-				},
-				{
-					label:
-						"1 story residential building (medium rectangular plan and gable roof)",
-					value: "3",
-				},
-				{
-					label:
-						"2 stories residential building (medium rectangular plan and hip roof)",
-					value: "4",
+					label: "2-story wood-frame residential buildings",
+					value: "5",
 				},
 			],
 		},
@@ -309,26 +288,21 @@ globals["retrofitStrategyBuilder"] = {
 			key: "retrofits",
 			possibleOptions: [
 				{
-					label: "Elevated by 5 feet",
-					value: { ret_key: "elevation", ret_val: 5 },
+					label: "Joplin buildings constructed following the 2006 IRC",
+					value: { ret_key: "retrofit_1", ret_val: "" },
 				},
 				{
-					label: "Elevated by 10 feet",
-					value: { ret_key: "elevation", ret_val: 10 },
+					label: "Joplin buildings with a cost-effective retrofit plan",
+					value: { ret_key: "retrofit_2", ret_val: "" },
+				},
+				{
+					label: "Joplin buildings with a high-performance retrofit plan",
+					value: { ret_key: "retrofit_3", ret_val: "" },
 				},
 			],
 		},
 	],
-	zoneLayerId: "65f50d44e42f3b0da55d74f5", // 2 labels flood zone map
-	activeLayerNames: "Zone",
-	activeLayerFieldname: "fld_zone",
-	zoneMapBounds: [
-		-95.23304467554465, 29.07743684291063, -94.37074997273265,
-		29.598309974710844,
-	],
-	zoneMapStyle: "incore:zone",
 };
-
 globals["comparisonKey"] = ["A", "B"];
 
 export { globals };
