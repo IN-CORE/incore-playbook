@@ -85,12 +85,13 @@ export const getHazardGroupLayers = (
 		json["hazardDatasets"].map((hazardDataset) => {
 			layerId = hazardDataset["datasetId"];
 			layerTitle = `${json["name"]} - ${hazardDataset["demandType"]}`;
+			let selectedStyle = style[hazardDataset["demandType"]] || style;
 			HazardMapLayers.push(
 				_constructHazardLayer(
 					globalConfig,
 					layerId,
 					layerTitle,
-					style[hazardDataset["demandType"]],
+					selectedStyle,
 					zIndex,
 					opacity,
 				),

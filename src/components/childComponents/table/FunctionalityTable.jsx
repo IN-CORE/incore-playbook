@@ -18,6 +18,9 @@ const useStyles = makeStyles({
 		backgroundColor: "#FFFFFF",
 		minWidth: "1135px",
 	},
+	tableContainer: {
+		height: "400px",
+	},
 	tableHeaderRow: {
 		height: "34px",
 	},
@@ -37,6 +40,9 @@ const useStyles = makeStyles({
 		lineHeight: "14px",
 		textAlign: "center",
 		textTransform: "uppercase",
+	},
+	tableHeaderLowerCell: {
+		top: "38px",
 	},
 	tableBodyRow: {
 		height: "28px",
@@ -117,11 +123,28 @@ export function FunctionalityTable(props) {
 	const classes = useStyles();
 
 	return (
-		<TableContainer>
-			<Table className={classes.table} size="small" aria-label="a dense table">
+		<TableContainer className={classes.tableContainer}>
+			<Table
+				stickyHeader
+				className={classes.table}
+				size="small"
+				aria-label="a dense table"
+			>
 				<TableHead>
 					<TableRow>
-						<TableCell colSpan={2}> </TableCell>
+						<TableCell
+							style={{
+								width: "647px",
+								backgroundColor: "#EFF2FF",
+								color: "#69707F",
+							}}
+							colSpan={2}
+							rowSpan={2}
+							className={classes.tableHeaderCell}
+							key="playbook-building-clusters"
+						>
+							playbook builidng clusters
+						</TableCell>
 						<TableCell colSpan={2} className={classes.tableTopHeaderRow}>
 							{" "}
 							Percent (%){" "}
@@ -134,41 +157,29 @@ export function FunctionalityTable(props) {
 
 					<TableRow className={classes.tableHeaderRow} key="hdrRow">
 						<TableCell
-							style={{
-								width: "647px",
-								backgroundColor: "#EFF2FF",
-								color: "#69707F",
-							}}
-							colSpan={2}
-							className={classes.tableHeaderCell}
-							key="playbook-building-clusters"
-						>
-							playbook builidng clusters
-						</TableCell>
-						<TableCell
 							style={{ width: "121px", backgroundColor: "#96B712" }}
-							className={classes.tableHeaderCell}
+							className={`${classes.tableHeaderCell} ${classes.tableHeaderLowerCell}`}
 							key="funcPercent"
 						>
 							Functional
 						</TableCell>
 						<TableCell
 							style={{ width: "121px", backgroundColor: "#D63649" }}
-							className={classes.tableHeaderCell}
+							className={`${classes.tableHeaderCell} ${classes.tableHeaderLowerCell}`}
 							key="nonFunctPercent"
 						>
 							Non-Functional
 						</TableCell>
 						<TableCell
 							style={{ width: "121px", backgroundColor: "#96B712" }}
-							className={classes.tableHeaderCell}
+							className={`${classes.tableHeaderCell} ${classes.tableHeaderLowerCell}`}
 							key="FuncNum"
 						>
 							Functional
 						</TableCell>
 						<TableCell
 							style={{ width: "121px", backgroundColor: "#D63649" }}
-							className={classes.tableHeaderCell}
+							className={`${classes.tableHeaderCell} ${classes.tableHeaderLowerCell}`}
 							key="nonFuncNum"
 						>
 							Non-Functional

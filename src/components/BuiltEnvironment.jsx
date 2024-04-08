@@ -28,7 +28,8 @@ import fullHtml from "../public/steps/2-4.html";
 import CloseIcon from "@material-ui/icons/Close";
 import EditOutlinedIcon from "@material-ui/icons/EditOutlined";
 import FileUploadDrop from "./childComponents/form/FileUploadDrop";
-import { makeStyles } from "@material-ui/core/styles";
+import { makeStyles, useTheme } from "@material-ui/core/styles";
+import useMediaQuery from "@material-ui/core/useMediaQuery";
 import {
 	IncoreMenuItem,
 	IncoreSelectBox,
@@ -96,6 +97,17 @@ const useStyles = makeStyles((theme) => ({
 
 export const BuiltEnvironment = ({ step, substep }) => {
 	const classes = useStyles();
+	const theme = useTheme();
+	const fullScreen = useMediaQuery(theme.breakpoints.down("sm"));
+	const largeScreen = useMediaQuery(theme.breakpoints.up("lg"));
+	const mediumScreen = useMediaQuery(theme.breakpoints.up("md"));
+
+	let maxWidth = "sm";
+	if (largeScreen) {
+		maxWidth = "lg";
+	} else if (mediumScreen) {
+		maxWidth = "md";
+	}
 
 	const fileInputRef = useRef(null);
 	const [files, setFile] = useState([]);
@@ -872,9 +884,10 @@ export const BuiltEnvironment = ({ step, substep }) => {
 							setStrategySummaryData(null);
 						}}
 						PaperProps={{
-							style: { minHeight: "800px" }, // Set your desired minimum height here
+							style: { minHeight: window.innerHeight - 100 }, // Set your desired minimum height here
 						}}
-						maxWidth="lg"
+						fullScreen={fullScreen}
+						maxWidth={maxWidth}
 						fullWidth
 						scroll="paper"
 					>

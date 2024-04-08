@@ -17,6 +17,8 @@ import {
 
 import StopRoundedIcon from "@material-ui/icons/StopRounded";
 import { makeStyles } from "@material-ui/core/styles";
+import FormControlLabel from "@material-ui/core/FormControlLabel";
+import Switch from "@material-ui/core/Switch";
 import { fromLonLat, getTransform } from "ol/proj";
 import { applyTransform } from "ol/extent";
 
@@ -27,6 +29,12 @@ import { IncoreFootNote } from "../styledComponents/IncoreFootNote";
 const useStyles = makeStyles(() => ({
 	table: {
 		minWidth: 650,
+		"& .MuiTableCell-stickyHeader": {
+			backgroundColor: "#EDF1F4",
+		},
+	},
+	tableContainer: {
+		height: "500px",
 	},
 	tableHeaderCellNo: {
 		width: "8%",
@@ -52,7 +60,7 @@ const useStyles = makeStyles(() => ({
 	tableHeaderRow: {
 		fontSize: "15px",
 		letterSpacing: "0.17px",
-		backgroundColor: "#EDF1F4",
+		backgroundColor: "#EDF1F4 !important",
 		color: "#000000DE",
 	},
 	tableSavedCell: {
@@ -94,6 +102,16 @@ const useStyles = makeStyles(() => ({
 		color: "#000000DE",
 		wordBreak: "break-all",
 	},
+	switchBase: {
+		"&$checked": {
+			color: "#00619D",
+		},
+		"&$checked + $track": {
+			backgroundColor: "#00619D",
+		},
+	},
+	checked: {},
+	track: {},
 }));
 
 export default function RetrofitStrategySummary(props) {
@@ -103,13 +121,40 @@ export default function RetrofitStrategySummary(props) {
 	const [zoneLayer, setZoneLayer] = useState(null);
 
 	const classes = useStyles();
+	const [simplify, setSimplify] = useState(false);
+
+	function handleSwitchChange() {
+		setSimplify((simplify) => !simplify);
+	}
+
+	function formatNumberToHumanReadable(num) {
+		if (num < 1000) {
+			return num.toString(); // Return the number as is if it's less than 1000
+		} else if (num < 1000000) {
+			// Thousands
+			return Math.round(num / 1000) + "k";
+		} else if (num < 1000000000) {
+			// Millions
+			return Math.round(num / 100000) / 10 + "M";
+		} else if (num < 1000000000000) {
+			// Billions
+			return Math.round(num / 100000000) / 10 + "B";
+		} else {
+			// Trillions
+			return Math.round(num / 100000000000) / 10 + "T";
+		}
+	}
 
 	const getDollarString = (val) => {
-		const formattedNum = parseFloat(val).toLocaleString("en-US", {
-			minimumFractionDigits: 2,
-			maximumFractionDigits: 2,
-		});
-
+		let formattedNum = val;
+		if (simplify) {
+			formattedNum = formatNumberToHumanReadable(parseFloat(val));
+		} else {
+			formattedNum = parseFloat(val).toLocaleString("en-US", {
+				minimumFractionDigits: 2,
+				maximumFractionDigits: 2,
+			});
+		}
 		return `$ ${formattedNum}`;
 	};
 
@@ -138,7 +183,6 @@ export default function RetrofitStrategySummary(props) {
 		return option ? option.label : `${ret_key} ${ret_val}`;
 	};
 
-	// TODO replace with real interaction
 	useEffect(() => {
 		const layerDef = [
 			{
@@ -179,10 +223,28 @@ export default function RetrofitStrategySummary(props) {
 			spacing={3}
 			style={summary ? null : { marginLeft: "25px", marginRight: "25px" }}
 		>
-			<Grid gutterTop item xs={12}>
+			<Grid gutterTop alignContent="center" item xs={10}>
 				<Typography variant="h6" className={classes.mapHeaderText}>
 					Summary
 				</Typography>
+			</Grid>
+			<Grid gutterTop item xs={2} style={{ textAlign: "right" }}>
+				<FormControlLabel
+					style={{ margin: "20px auto auto 0" }}
+					control={
+						<Switch
+							checked={!simplify}
+							onChange={(e) => handleSwitchChange()}
+							color="default"
+							classes={{
+								switchBase: classes.switchBase,
+								checked: classes.checked,
+								track: classes.track,
+							}}
+						/>
+					}
+					label="Expand Values"
+				/>
 			</Grid>
 			<Grid item xs={6}>
 				<Box display="flex" flexDirection="column" width="100%">
@@ -241,7 +303,7 @@ export default function RetrofitStrategySummary(props) {
 					</Grid>
 					<Grid item xs={4}>
 						<Typography variant="h6" className={classes.tableSavedText}>
-							Number of Zones
+							Number of Conditions
 						</Typography>
 					</Grid>
 					<Grid item xs={8}>
@@ -315,8 +377,12 @@ export default function RetrofitStrategySummary(props) {
 				)}
 			</Grid>
 			<Grid item xs={12}>
-				<TableContainer>
-					<Table className={classes.table} aria-label="simple table">
+				<TableContainer className={classes.tableContainer}>
+					<Table
+						stickyHeader
+						className={classes.table}
+						aria-label="simple table"
+					>
 						<TableHead>
 							<TableRow className={classes.tableHeaderRow}>
 								<TableCell className={classes.tableHeaderCellNo} align="center">
@@ -369,10 +435,19 @@ export default function RetrofitStrategySummary(props) {
 														<Table>
 															<TableBody>
 																{globalConfig.retrofitStrategyBuilder.conditions.map(
-																	(condition) => {
+																	(condition, i) => {
+																		const cellStyle = {};
+																		if (
+																			i ===
+																			globalConfig.retrofitStrategyBuilder
+																				.conditions.length -
+																				1
+																		) {
+																			cellStyle.borderBottom = "none";
+																		}
 																		return (
 																			<TableRow key={key}>
-																				<TableCell>
+																				<TableCell style={cellStyle}>
 																					<Typography
 																						variant="body1"
 																						className={classes.tableSavedText}
@@ -380,7 +455,10 @@ export default function RetrofitStrategySummary(props) {
 																						{condition.label}
 																					</Typography>
 																				</TableCell>
-																				<TableCell align="right">
+																				<TableCell
+																					align="right"
+																					style={cellStyle}
+																				>
 																					<Typography
 																						variant="body1"
 																						className={classes.tableSavedValue}

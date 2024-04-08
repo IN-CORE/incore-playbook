@@ -353,7 +353,10 @@ const MapCompare = (props) => {
 						.then((json) => {
 							let bldg = json.features;
 							if (bldg.length > 0) {
-								const returnCoordinates = bldg[0]?.geometry?.coordinates;
+								let returnCoordinates = bldg[0]?.geometry?.coordinates;
+								if (returnCoordinates.length === 1) {
+									returnCoordinates = returnCoordinates[0];
+								}
 								let markerGeometry = new Point(returnCoordinates);
 								markerFeature.setGeometry(markerGeometry);
 								markerFeature.setStyle(markerStyle);
@@ -375,7 +378,10 @@ const MapCompare = (props) => {
 						.then((json) => {
 							let bldg = json.features;
 							if (bldg.length > 0) {
-								const returnCoordinates = bldg[0]?.geometry?.coordinates;
+								let returnCoordinates = bldg[0]?.geometry?.coordinates;
+								if (returnCoordinates.length === 1) {
+									returnCoordinates = returnCoordinates[0];
+								}
 								let markerGeometry = new Point(returnCoordinates);
 								markerFeature.setGeometry(markerGeometry);
 								markerFeature.setStyle(markerStyle);
@@ -429,7 +435,10 @@ const MapCompare = (props) => {
 						.then((json) => {
 							let bldg = json.features;
 							if (bldg.length > 0) {
-								const returnCoordinates = bldg[0]?.geometry?.coordinates;
+								let returnCoordinates = bldg[0]?.geometry?.coordinates;
+								if (returnCoordinates.length === 1) {
+									returnCoordinates = returnCoordinates[0];
+								}
 								let markerGeometry = new Point(returnCoordinates);
 								markerFeature.setGeometry(markerGeometry);
 								markerFeature.setStyle(markerStyle);
@@ -451,8 +460,10 @@ const MapCompare = (props) => {
 						.then((json) => {
 							let bldg = json.features;
 							if (bldg.length > 0) {
-								const returnCoordinates =
-									json.features?.[0]?.geometry?.coordinates;
+								let returnCoordinates = bldg[0]?.geometry?.coordinates;
+								if (returnCoordinates.length === 1) {
+									returnCoordinates = returnCoordinates[0];
+								}
 								let markerGeometry = new Point(returnCoordinates);
 								markerFeature.setGeometry(markerGeometry);
 								markerFeature.setStyle(markerStyle);
@@ -513,7 +524,7 @@ const MapCompare = (props) => {
 							ref={fallbackContainerA}
 							style={{
 								width: "100%",
-								height: `${height}-17px`,
+								height: `${height}`,
 								marginRight: "5px",
 							}}
 						>
@@ -536,7 +547,7 @@ const MapCompare = (props) => {
 							ref={fallbackContainerB}
 							style={{
 								width: "100%",
-								height: `${height}-17px`,
+								height: `${height}`,
 								marginLeft: "5px",
 							}}
 						>
@@ -582,7 +593,7 @@ const MapCompare = (props) => {
 						expandIcon={<ExpandMoreIcon />}
 						aria-controls="panel1a-content"
 						id="panel1a-header"
-						style={{ padding: "0" }}
+						style={{ padding: "0", marginTop: "15px" }}
 					>
 						<Box display="flex" flexDirection="column" alignItems="flex-start">
 							<IncoreTitle style={{ color: "#00619D", marginBottom: "auto" }}>
@@ -663,11 +674,24 @@ const OverlayTable = (props) => {
 									<TableRow key={colName}>
 										<TableCell
 											align="left"
-											style={{ backgroundColor: "#EFF2FF", color: "#69707F" }}
+											style={{
+												backgroundColor: "#EFF2FF",
+												color: "#69707F",
+												whiteSpace: "normal",
+												overflowWrap: "break-word",
+												wordBreak: "break-word",
+											}}
 										>
 											{colName}
 										</TableCell>
-										<TableCell align="right">
+										<TableCell
+											align="right"
+											style={{
+												whiteSpace: "normal",
+												overflowWrap: "break-word",
+												wordBreak: "break-word",
+											}}
+										>
 											{colName === "max_state"
 												? maxStateMapping(
 														fields,

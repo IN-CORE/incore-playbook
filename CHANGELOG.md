@@ -5,6 +5,29 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [0.6.4] - 2024-04-05
+
+### Added
+- Cost value summarization in Retrofit Summary [#451](https://github.com/IN-CORE/incore-playbook/issues/451)
+
+### Changed
+- Joplin hide non-retrofit option in step 3-4 [#442](https://github.com/IN-CORE/incore-playbook/issues/442)
+- Labels  for Joplin Retrofit Strategy Builder [#450](https://github.com/IN-CORE/incore-playbook/issues/450)
+- Attribute table need to have proper width [#438](https://github.com/IN-CORE/incore-playbook/issues/438)
+- Shorten the SLC zone and retrofit keys [#122](https://github.com/IN-CORE/incore-helm/issues/122)
+
+### Fixed
+- Typo in the retrofit summary table [#443](https://github.com/IN-CORE/incore-playbook/issues/443)
+- Broken legends when style was undefined [#440](https://github.com/IN-CORE/incore-playbook/issues/440)
+- The bugs with the Retrofit Strategy Builder [#435](https://github.com/IN-CORE/incore-playbook/issues/435)
+- Dataset style not displayed correctly for earthquake and tornado [#414](https://github.com/IN-CORE/incore-playbook/issues/414)
+- Joplin Pole and Substation missing map pin [#436](https://github.com/IN-CORE/incore-playbook/issues/436)
+- Loading div height in RS Builder [#452](https://github.com/IN-CORE/incore-playbook/issues/452)
+- Substation comparison widget map take full width [#437](https://github.com/IN-CORE/incore-playbook/issues/437)
+- Fixed Comparison map height [#439](https://github.com/IN-CORE/incore-playbook/issues/439)
+- Screen aspect ratio issues with certain devices [#460](https://github.com/IN-CORE/incore-playbook/issues/460)
+- Table headers to be sticky for Building Damage, Functionality, Population Dislocation, and Retrofit Summary [#458](https://github.com/IN-CORE/incore-playbook/issues/458)
+
 
 ## [0.6.3] - 2024-03-27
 

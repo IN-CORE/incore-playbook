@@ -119,7 +119,7 @@ export const ZoneSelectionMap = (props) => {
 				const name = selectedFeature.get(
 					globalConfig.retrofitStrategyBuilder.activeLayerFieldname ?? "name",
 				);
-				setSelectedZoneName(name);
+				setSelectedZoneName(name.toString());
 			} else {
 				setSelectedZoneName("");
 			}
@@ -162,7 +162,7 @@ export const ZoneSelectionMap = (props) => {
 								"name",
 						);
 						if (name) {
-							acc[name] = feature;
+							acc[name.toString()] = feature;
 						}
 						return acc;
 					}, {});
