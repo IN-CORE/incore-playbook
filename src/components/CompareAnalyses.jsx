@@ -289,19 +289,19 @@ export const CompareAnalyses = () => {
 								) : (
 									<></>
 								)}
+								{widgetList.includes("PoleDamage") ? (
+									<IncoreMenuItem key="PoleDamage" value="PoleDamage">
+										Pole Damage (Electrical Power Network)
+									</IncoreMenuItem>
+								) : (
+									<></>
+								)}
 								{widgetList.includes("SubstationDamage") ? (
 									<IncoreMenuItem
 										key="SubstationDamage"
 										value="SubstationDamage"
 									>
 										Substation Damage (Electrical Power Network)
-									</IncoreMenuItem>
-								) : (
-									<></>
-								)}
-								{widgetList.includes("PoleDamage") ? (
-									<IncoreMenuItem key="PoleDamage" value="PoleDamage">
-										Pole Damage (Electrical Power Network)
 									</IncoreMenuItem>
 								) : (
 									<></>
