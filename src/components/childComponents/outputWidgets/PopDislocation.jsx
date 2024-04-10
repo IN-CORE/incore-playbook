@@ -34,6 +34,7 @@ export default function PopDislocation(props) {
 		handlePreviewClose,
 		datawolfDatasetConfigItems,
 		hazardLayers,
+		retrofitLayer,
 		setDownloadDialogOpen,
 	} = props;
 
@@ -185,7 +186,12 @@ export default function PopDislocation(props) {
 								getTransform("EPSG:4326", "EPSG:3857"),
 							)}
 							center={fromLonLat(mapConfig.MAP_CENTER)}
-							layers={[basicLayers, hazardLayers, popDislocationLayer]}
+							layers={[
+								basicLayers,
+								hazardLayers,
+								...(retrofitLayer ? [retrofitLayer] : []), // Include retrofitLayer if it's not null
+								popDislocationLayer,
+							]}
 							layerSwitcherOptions={{}}
 							allowBuildingSelection={true}
 							activeLayerNames="Population Dislocation"
