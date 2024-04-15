@@ -191,7 +191,7 @@ export function BldgDamageTable(props) {
 								className={classes.tableHeaderCell}
 								key="playbook-building-clusters"
 							>
-								playbook builiding clusters
+								playbook building clusters
 							</TableCell>
 							<TableCell
 								style={{ width: "121px", backgroundColor: "#96B712" }}
