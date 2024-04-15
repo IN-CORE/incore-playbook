@@ -303,11 +303,11 @@ globals["retrofitStrategyBuilder"] = {
 			key: "strtypes",
 			possibleOptions: [
 				{
-					label: "Mid-Rise Unreinforced Masonry Bearing Walls",
+					label: "Mid-Rise Unreinforced Masonry",
 					value: "URMM",
 				},
 				{
-					label: "Low-Rise Unreinforced Masonry Bearing Walls",
+					label: "Low-Rise Unreinforced Masonry",
 					value: "URML",
 				},
 			],

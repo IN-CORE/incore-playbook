@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [0.6.5] - 2024-04-15
+
+### Fixed
+- SLC sector shock comparison sub-region key [#474](https://github.com/IN-CORE/incore-playbook/issues/474)
+- create EQ failed with minY and maxY swapped [#473](https://github.com/IN-CORE/incore-playbook/issues/473)
+
+
 ## [0.6.4] - 2024-04-05
 
 ### Added
