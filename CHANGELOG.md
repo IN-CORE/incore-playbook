@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## [Unreleased]
 
 ### Fixed
+- SLC sector shock comparison sub-region key [#474](https://github.com/IN-CORE/incore-playbook/issues/474)
 - create EQ failed with minY and maxY swapped [#473](https://github.com/IN-CORE/incore-playbook/issues/473)
 
 

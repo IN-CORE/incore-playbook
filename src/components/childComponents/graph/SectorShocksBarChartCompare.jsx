@@ -77,23 +77,20 @@ const ParseData = (dataA, dataB) => {
 	let chartDataObjB = generateChartDataObj(dataArrB);
 
 	// Make sure both objects have the same keys
-	const keys = Object.keys(chartDataObjA);
+	for (let [keyA, regionsA] of Object.entries(chartDataObjA)) {
+		let regionsB = [];
+		if (keyA in chartDataObjB) {
+			regionsB = chartDataObjB[keyA];
+		}
 
-	// Loop through both objects together
-	for (const key of keys) {
-		let regionsA = chartDataObjA[key];
-		let regionsB = chartDataObjB[key];
 		regionsA = regionsA.sort(sortFunc);
 		regionsB = regionsB.sort(sortFunc);
 
-		regionsA.forEach((objA, i) => {
-			const subKeyA = objA.subKey;
-			const valueA = objA.value;
-			const objB = regionsB[i];
-			const valueB = objB.value;
-
-			chartData.push([`${key}_${subKeyA}`, valueA, colorsA, valueB, colorsB]);
-		});
+		let valueB = 0;
+		for (const [subKeyA, valueA] of regionsA) {
+			valueB = regionsB.length > 0 ? regionsB.shift()[1] : 0;
+			chartData.push([`${keyA}_${subKeyA}`, valueA, colorsA, valueB, colorsB]);
+		}
 	}
 
 	return chartData;
