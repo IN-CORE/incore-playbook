@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [Unreleased]
+
+### Fixed
+- create EQ failed with minY and maxY swapped [#473](https://github.com/IN-CORE/incore-playbook/issues/473)
+
+
 ## [0.6.4] - 2024-04-05
 
 ### Added
