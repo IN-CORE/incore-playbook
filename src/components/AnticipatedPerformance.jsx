@@ -1,6 +1,7 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Box, Grid, makeStyles, Tab, Tabs } from "@material-ui/core";
+import Alert from "@material-ui/lab/Alert";
 import { Layout } from "./Layout";
 
 import ViewResult from "./childComponents/ViewResult";
@@ -10,7 +11,7 @@ import { AlertMessage } from "./childComponents/alert/AlertMessage";
 import { fetchExecutions } from "../actions/datawolf";
 import StepStatusDropdown from "./childComponents/step/StepStatusDropdown";
 
-const useStyles = makeStyles({
+const useStyles = makeStyles((theme) => ({
 	tab: {
 		height: "22px",
 		color: "#69707F",
@@ -25,14 +26,26 @@ const useStyles = makeStyles({
 	selectedTab: {
 		backgroundColor: "#eaedff",
 	},
-});
+	runAnalysisDisabledAlert: {
+		color: theme.palette.primary.main,
+		backgroundColor: "#f2f4ff",
+		border: `1px solid ${theme.palette.primary.main}`,
+		"& .MuiAlert-icon": {
+			color: theme.palette.primary.main,
+		},
+	},
+}));
 
 export const AnticipatedPerformance = (props) => {
 	const { step, substep } = props;
 
 	const classes = useStyles();
+	const globalConfig = useSelector((state) => state.config.globalConfig);
+	const isRunAnalysisEnabled = globalConfig.enableRunAnalysis ?? true;
 
-	const [currTabIndex, setCurrTabIndex] = useState(0);
+	const [currTabIndex, setCurrTabIndex] = useState(
+		isRunAnalysisEnabled ? 0 : 1,
+	);
 	const [errorAlertOpen, setErrorAlertOpen] = useState(false);
 	const [errorStatus, setErrorStatus] = useState(null);
 	const [errorMessage, setErrorMessage] = useState("");
@@ -42,6 +55,12 @@ export const AnticipatedPerformance = (props) => {
 	const getExecutionList = (datawolfConfig, all) =>
 		dispatch(fetchExecutions(datawolfConfig, all));
 	const executions = useSelector((state) => state.execution.executions);
+
+	useEffect(() => {
+		if (!isRunAnalysisEnabled && currTabIndex === 0) {
+			setCurrTabIndex(1);
+		}
+	}, [currTabIndex, isRunAnalysisEnabled]);
 
 	return (
 		<Layout>
@@ -70,12 +89,24 @@ export const AnticipatedPerformance = (props) => {
 				<Box className="outerBox">
 					<Grid container spacing={3} className="innerBox">
 						<Grid item className="gridItem">
+							{!isRunAnalysisEnabled && (
+								<Box style={{ marginBottom: "1rem" }}>
+									<Alert
+										severity="info"
+										classes={{ standardInfo: classes.runAnalysisDisabledAlert }}
+									>
+										Run analysis is currently unavailable. You can still review
+										previously completed analyses in the View Results tab.
+									</Alert>
+								</Box>
+							)}
 							<Tabs
 								TabIndicatorProps={{ style: { background: "#00619D" } }}
 								aria-label="determine anticipated performance tabs"
 								value={currTabIndex}
 								className={classes.tabs}
 								onChange={(e, value) => {
+									if (!isRunAnalysisEnabled && value === 0) return;
 									setCurrTabIndex(value);
 								}}
 							>
@@ -84,6 +115,7 @@ export const AnticipatedPerformance = (props) => {
 									className={classes.tab}
 									style={currTabIndex === 0 ? { color: "#00619D" } : {}}
 									classes={{ selected: classes.selectedTab }}
+									disabled={!isRunAnalysisEnabled}
 								/>
 								<Tab
 									label="view results"
