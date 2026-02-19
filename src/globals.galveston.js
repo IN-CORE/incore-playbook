@@ -17,6 +17,7 @@ globals["spaceServiceBase"] = `${hostname}/space/api/`;
 globals["setGravatarURL"] =
 	"https://en.gravatar.com/support/activating-your-account/";
 globals["allowUpload"] = true;
+globals["enableRunAnalysis"] = true;
 globals["registerNewUserURL"] =
 	"https://identity.ncsa.illinois.edu/register/BSKC2UKQPU";
 globals["resetPasswordURL"] = "https://identity.ncsa.illinois.edu/reset";
